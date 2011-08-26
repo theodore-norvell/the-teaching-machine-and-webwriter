@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Creating a New Site</title>
+</head>
+<body>
+<p>To create a new site simply utilize this manual as a template, as follows:</p>
+<ol>
+  <li>Copy the entire site directory to the new site location and rename the top level directory to correspond to the new site.</li>
+  <li>Go to the content/manualPages directory and delete everything except <code>introduction.htm</code> and <code>printForm.htm.</code></li>
+  <li>Open <code>introduction.htm</code> in an html editor and replace its contents (but not its &lt;head&gt;) with the desired contents.</li>
+  <li>Do this for as many pages as needed. It is generally a good idea to have separate folders for one or a few related pages plus all support files (such as images or code examples). If any pages are created at a different level in the root, be sure to <a href="structure.htm#head">adjust the relative references</a> in the head appropriately. </li>
+  <li>Rename the <code>manualPages</code> folder as appropriate.</li>
+  <li> For the files in the <code>content</code> directory
+    <ol type="a">
+      <li>edit the <code>noteConstants.js</code> file for your own site</li>
+      <li>edit the <code>nav-map.js</code> file for your own site</li>
+      <li>edit (or delete) the <code>dictionary.htm</code> file for your own site.</li>
+      <li>replace or delete the logo files</li>
+      <li>replace or delete the <code>coverPage.htm</code> file</li>
+    </ol>
+  </li>
+  <li>Open the style directory and edit the three parallel style files as required ( <code>lectureScreen.css</code> for projected lectures, <code>notesScreen.css</code> for onscreen notes and <code>notesPrint.css</code> for printed notes).</li>
+  <li>Edit <code>navBar.css</code> and <code>slider.css</code> to change the colours/ layout of the navbar and the slider colour. </li>
+</ol>
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>
+

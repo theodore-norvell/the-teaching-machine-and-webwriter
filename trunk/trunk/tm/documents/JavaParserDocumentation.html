@@ -1,0 +1,871 @@
+<html>
+<head>
+    <title>Compile time syntax trees for the Java Teaching Machine</title>
+</head>
+<body>
+<h1>Compile time syntax trees for the Java Teaching Machine.</h1>
+
+<p>
+This document describes the "compile time syntax trees,"
+that is the output of the pass 1 (parsing pass) and
+the input to passes 2 and 4.
+</p>
+
+<p>
+Pass 1 parses the input string and produces two kinds of output. A 
+marked up representation of the source (the codelines) and a tree --
+the "compile time syntax tree".  The tree is passed on to passes 2 and 4 
+for further processing. Pass 2 populates the compile time symbol table 
+and pass 4 generates the so-called AST code. (Technically the compile 
+time syntax tree is an "abstract syntax tree", however, I'll avoid 
+calling them such to prevent confusion with the AST code interpreted 
+during run time.) Between pass 2 and pass 4, there is a pass 3,
+which is actually a pass over the compile time symbol table that
+produces all the type nodes for the user declared types.
+</p>
+
+<p>
+When we start supporting multiple source files there will actually be 
+one compile time syntax tree for each source file. In that case we 
+must compute all the compile time syntax trees (and execute pass 2 on them)
+prior to the start of pass 3.
+</p>
+
+<p>
+Each compilation unit is represented as a tree of SimpleNodes.
+SimpleNodes have been augmented with the attributes of types
+int, bool, string, ScopedName, and Java_SpecifierSet SourceCoords. By default,
+these are 0, false, null, null, null, and, in most cases, the coordinates
+of the first token consumed while creating the node, respectively.
+</p>
+
+<p>
+The parser adds any implicit modifiers; specifically:
+</p>
+<ul>
+   <li>All interfaces are implicitly abstract.
+   <li>Furthermore, in an interface:
+      <ul>
+         <li>fields are implicitly public, final, and static
+         <li>methods are implicitly public and abstract
+         <li>classes and interfaces are implicitly public 
+      </ul>
+</ul>
+<p>
+The compiler will bail if there is an illegal set of modifiers; for
+example, a method declared both public and private, or a method in
+a concrete class is declared abstract.
+Furthermore, the modifiers will be consistent with the rest of the syntax,
+in that, methods have bodies
+iff they are not abstract, and static, final fields must have initializers.
+Hence any Java_SpecifierSet attributes will represent a legal and complete
+set of modifiers according to the JLS.
+</p>
+
+<p>
+The roughly 60 kinds of nodes are described in the sections below.
+</p>
+
+<h2> Classes of nodes</h2>
+<dl>
+   <dt>an "expression node" is a node of kind</dt>
+   <dd>
+        JJTBINOP,<br>
+        JJTCONDITIONAL,<br>
+        JJTINSTANCEOF,<br>
+        JJTUNARY_PREFIX,<br>
+        JJTUNARY_POSTFIX,<br>
+        JJTCASTEXPRESSION,<br>
+        JJTEXPRESSIONNAME,<br>
+        JJTPARENS,<br>
+        JJTTHISEXP,<br>
+        JJTSUPEREXP,<br>
+        JJTCLASSEXP,<br>
+        JJTSUPERMETHODCALL,<br>
+        JJTMETHODNAMECALL,<br>
+        JJTMETHODCALL,<br>
+        JJTSUBSCRIPT,<br>
+        JJTALLOCATIONEXPRESSION,<br>
+        JJTQUALIFIEDALLOCATIONEXPRESSION, or<br>
+        JJTLITERAL.<br>
+   </dd>
+   
+   <dt>a "statement node" is a node of kind</dt>
+   <dd>
+        JJTLABELEDSTATEMENT,<br>
+        JJTBLOCK,<br>
+        JJTEMPTYSTATEMENT,<br>
+        JJTEXPRESSIONSTATEMENT,<br>
+        JJTASSERTSTATEMENT<br>
+        JJTSWITCHSTATEMENT,<br>
+        JJTIFSTATEMENT,<br>
+        JJTWHILESTATEMENT,<br>
+        JJTDOSTATEMENT,<br>
+        JJTFORSTATEMENT,<br>
+        JJTBREAKSTATEMENT,<br>
+        JJTCONTINUESTATEMENT,<br>
+        JJTRETURNSTATEMENT,<br>
+        JJTTHROWSTATEMENT,<br>
+        JJTSYNCHRONIZEDSTATEMENT, or<br>
+        JJTTRYSTATEMENT
+   </dd>
+   
+   <dt>a "statement or block declaration" is a node that is of kind</dt>
+   <dd>
+        JJTVARIABLEDECLARATOR<br>
+        JJTUNMODIFIEDCLASSDECLARATION<br>
+        JJTUNMODIFIEDINTERFACEDECLARATION, or<br>
+        a statement node
+   </dd>
+   
+   
+   <dt>a "type declaration node" is a node of kind</dt>
+   <dd>
+        JJTUNMODIFIEDCLASSDECLARATION or<br>
+        JJTUNMODIFIEDINTERFACEDECLARATION.
+   </dd>
+        
+   <dt>a "class member declaration" node is a node of kind</dt>
+   <dd>
+        JJTUNMODIFIEDCLASSDECLARATION,<br>
+        JJTUNMODIFIEDINTERFACEDECLARATION,<br>
+        JJTINITIALIZERBLOCK,<br>
+        JJTCONSTRUCTORDECLARATION,<br>
+        JJTMETHODDECLARATION or<br>
+        JJTVARIABLEDECLARATOR.
+   </dd>
+        
+   <dt>an "interface member declaration" node is a node of kind</dt>
+   <dd>
+        JJTUNMODIFIEDCLASSDECLARATION,<br>
+        JJTUNMODIFIEDINTERFACEDECLARATION,<br>
+        JJTMETHODDECLARATION or<br>
+        JJTVARIABLEDECLARATOR.
+   </dd>
+   
+   <dt>an "explicit constructor invocation" node is a node of kind</dt>
+   <dd>
+       JJTTHISEXPLICITCONSTRUCTORINVOCATION, or<br>
+       JJTSUPEREXPLICITCONSTRUCTORINVOCATION.
+   </dd>
+</dl>
+        
+<h2>Declarations</h2>
+
+<h3>JJTCOMPILATIONUNIT</h3>
+<p>    Represents the compilation unit</p>
+<ul>
+  <li>    String attribute is the name of the java file.
+  <li>    Child(0) A JJTOPTPACKAGEDECLARATION
+  <li>    Child(1) A JJTIMPORTDECLARATIONS
+  <li>    Chilren( 2.. ) type declaration nodes
+</ul>
+              
+<h3>JJTOPTPACKAGEDECLARATION </h3>
+<p>    Represents a package declaration: "package Name ;"</p>
+<ul>
+  <li>    bool attribute: indicates whether a package declaration is present.
+  <li>    ScopedName attribute: The name of the package, if any, otherwise null. (Not absolute)
+          (PackageName)
+</ul>
+    
+<h3>JJTIMPORTDECLARATIONS</h3>
+<p>    Represents the sequence of import declarations
+<ul>
+  <li>    Children: JJTIMPORTDECLARATION nodes
+</ul>
+    
+<h3>JJTIMPORTDECLARATION</h3>
+<p>    Represents a single import declaration of the form either
+                   import Name ;
+               or
+                   import Name.* ;
+</p>
+<ul>
+  <li>    bool attribute: indicates the presence of the ".*".
+  <li>    ScopedName attribute: The name. (not absolute) (If the .* is absent then the name
+          is a TypeName; if the .* is present then the name is a PackageOrTypeName)
+
+</ul>
+    
+<h3>JJTUNMODIFIEDCLASSDECLARATION </h3>
+<p>    Represents a class declaration. Either top-level or nested.</p>
+<ul>
+  <li>    Java_SpecifierSet: The specifiers for the class declaration.
+  <li>    ScopedName: The name of the class (not absolute, length==1)
+  <li>    Child(0) A JJTOPTCLASSEXTENDSCLAUSE
+  <li>    Child(1) A JJTOPTIMPLEMENTSCLAUSE
+  <li>    Child(2) A JJTCLASSBODY
+</ul>
+  
+<h3>JJTOPTCLASSEXTENDSCLAUSE</h3>
+<p>    Represents a (possibly absent) "extends" clause for a
+       class: "extends Name;"
+</p>
+<ul>
+  <li>    bool attribute: indicates the presence of the clause
+  <li>    ScopedName attribute: the name of the super class if any, otherwise null. 
+          (not absolute) (TypeName)
+</ul>
+  
+<h3>JJTOPTIMPLEMENTSCLAUSE</h3>
+<p>    Represents a (possibly absent) "implements" clause for a
+       class: "implements NameList;"
+</p>
+<ul>
+  <li>    bool attribute: indicates the presence of an implements clause
+  <li>    Children JJTNAMENODE nodes
+</ul>
+    
+<h3>JJTCLASSBODY </h3>
+<p>    Represents the sequence of declarations in a class.
+<ul>
+  <li>     boolean attribute: Whether the class body includes any constructors.. 
+  <li>Children: class member declaration nodes
+</ul>
+    
+<h3>JJTUNMODIFIEDINTERFACEDECLARATION </h3>
+<p>    Represents an interface declaration. Either top-level or nested.</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: The specifiers for the interface declaration.
+  <li>    ScopedName: The name of the interface (not absolute, length==1)
+  <li>    Child(0) A JJTOPTINTERFACEEXTENDSCLAUSE
+  <li>    Child(1) A JJTINTERFACEBODY
+</ul>
+    
+<h3>JJTOPTINTERFACEEXTENDSCLAUSE</h3>
+<p>    Represents a (possibly absent) "extends" clause for an
+       interface: "extends NameList;"
+</p>
+<ul>
+  <li>    bool attribute: indicates the presence of an extends clause
+  <li>    Children JJTNAMENODE nodes
+</ul>
+    
+<h3>JJTINTERFACEBODY</h3>
+<p>    Represents the sequence of declarations in an interface.</p>
+<ul>
+  <li>    Children: interface member declaration nodes
+</ul>
+    
+<h3>JJTVARIABLEDECLARATOR </h3>
+<p>    Represents the declaration of a single variable, either in a
+               type (class or interface) or local.
+</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: The specifiers for the declaration
+  <li>    ScopedName attribute: The name of the variable  (not absolute, length==1)
+  <li>    int attribute: The number of extra array dimensions associated
+                   with the declaration. For example if we declare
+                   <pre>
+                       Foo[] a[][], b[][][]
+                   </pre>
+                   the the specSet will have 1 dimension, the int attribute
+                   for a's declaration will be 2 and the int attribute for
+                   b's attribute is 3.
+  <li>    Child(0) [Optional]. A JJTVARIABLEINITIALIZER node.
+</ul>
+    
+<h3>JJTVARIABLEINITIALIZER </h3>
+<p>    Represents the initialization of a variable</p>
+<ul>
+  <li>    Child(0): Either an expression node or a JJTARRAYINITIALIZER node.
+</ul>
+    
+<h3>JJTARRAYINITIALIZER </h3>
+<p>    Represents the initialization of an array. E.g. "{{0,-1},{+1,0}}"</p>
+<ul>
+  <li>    Children: 0 or more nodes. Each is either an expression node,
+              or a JJTARRAYINITIALIZER node.
+</ul>
+              
+<h3>JJTCONSTRUCTORDECLARATION </h3>
+<p>    Represents the declaration of a constructor.</p>
+<ul>
+  <li>     Boolean attribute: true if this node represents a compiler generated constructor.
+  <li>Compiler generated JJTCONSTRUCTORDECLARATION nodes are not added by the parser, but rather by the second pass. Their purpose is mainly to serve as a plae to put the declaration associated with compiler generated constructors.
+  <li>If the boolean attribute is true, there are no children.
+  <li>Otherwise
+there are three children:
+  <ul>
+      <li>Child(0) a JJTCONSTRUCTORDECLARATOR node </li>
+      <li> Child(1) a JJTOPTTHROWSCLAUSE node </li>
+      <li> Child(2) a JJTCONSTRUCTORBODY node </li>
+  </ul>
+</ul>
+    
+<h3>JJTCONSTRUCTORDECLARATOR </h3>
+<p>    Represents the header of a constructor.</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: The specifiers for the constructor
+  <li>    ScopedName attribute: The name of the constructor  (not absolute, length==1)
+  <li>    Child(0) A JJTFORMALPARAMETERS node
+</ul>
+  
+<h3>JJTMETHODDECLARATION  </h3>
+<p>    Represents the declaration of a method.</p>
+<ul>
+  <li>    Child(0) a JJTMETHODDECLARATOR node
+  <li>    Child(1) a JJTOPTTHROWSCLAUSE node
+  <li>    Child(2) (optional) a JJTMETHODBODY node (absent for abstract declarations)
+</ul>
+    
+<h3>JJTMETHODDECLARATOR </h3>
+<p>    Represents the header of a method.</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: The specifiers for the method
+  <li>    ScopedName attribute: The name of the method  (not absolute, length==1)
+  <li>    int attribute: The number of extra array dimensions not mentioned in the
+                   specSet.  For example "A[][] foo()[][][] ;" The specSet
+                   will mention only 2 dimensions, the int attribute will be 3.
+  <li>    Child(0) A JJTFORMALPARAMETERS node
+</ul>
+    
+<h3>JJTFORMALPARAMETERS </h3>
+<ul>
+  <li>    Children: 0 or more JJTFORMALPARAMETER nodes.
+</ul>
+    
+<h3>JJTFORMALPARAMETER </h3>
+<p>    Represents a parameter in a method or constructor
+       declaration, or a catch.
+</p>     
+<ul>
+  <li>    Java_SpecifierSet attribute: The specifiers for the parameter.
+  <li>    ScopedName attribute: The name of the parameter  (not absolute, length==1)
+  <li>    int attribute: The number of extra array dimensions not mentioned in the
+                   specSet.  For example "void foo(int[][] p[][][]) ;" The specSet
+                   will mention only 2 dimensions, the int attribute will be 3.
+</ul>
+    
+<h3>JJTOPTTHROWSCLAUSE</h3>
+<p>    Represents a throws clause, that may not be there.</p>
+<ul>
+  <li>    bool attribute: indicates the presence of a throws clause
+  <li>    Children JJTNAMENODE nodes
+</ul>
+    
+<h3>JJTCONSTRUCTORBODY </h3>
+<p>    Represents the body of a constructor.</p>
+<ul>
+  <li>    bool attribute: indicates the presence of an explicit constructor invocation.
+  <li>    Child(0): if the bool attribute is true this is an explicit constructor invocation
+              node. Otherwise it is an (optional) statement or block
+              declaration node).
+  <li>    Children(1..): 0 or more statement or block declaration nodes
+</ul>
+    
+<h3>JJTTHISEXPLICITCONSTRUCTORINVOCATION</h3>
+<p>    Represents a explicit constructor invocation of
+       the form "this( ... )"
+</p>       
+<ul>
+  <li>    Child(0): a JJTARGUMENTS node
+</ul>
+    
+<h3>JJTSUPEREXPLICITCONSTRUCTORINVOCATION</h3>
+<p>    Represents a explicit constructor invocation of the form "super( ... )",
+               Primary.super( ... ), or ExpressionName.super( ... )
+</p>
+<ul>
+  <li>    bool attribute: indicates the presence of the primary expression or ExpressionName
+  <li>    If the bool attribute is true, then 
+      <ul>
+         <li>  Child(0): An expression
+         <li>  Child(1): a JJTARGUMENTS node
+      </ul>
+    Else
+      <ul>
+         <li>   Child(0): a JJTARGUMENTS node
+      </ul>
+</ul>
+
+<h3>JJTMETHODBODY </h3>
+<p>    Represents the body of a method.</p>
+<ul>
+  <li>    Children(0..): 0 or more statement or block declaration nodes
+</ul>
+    
+<h3>JJTINITIALIZERBLOCK </h3>
+<p>    Represents an initializer in a class body.</p>
+<ul>
+  <li>    bool attribute: indicates the initialization is "static"
+  <li>    Child(0) A JJTBLOCK
+</ul>
+    
+<h3>JJTNAMENODE</h3>
+<p>    Represents a possibly qualified name as in a throws clause,
+                 an implements clause, or an extends clause for an interface.)
+</p>                 
+<ul>
+  <li>    ScopedName attribute. The name.  (not absolute) (TypeName)
+
+<h2>Expressions</h2>
+</ul>
+  
+<h3>JJTBINOP </h3>
+<p>    Represents the application of a binary operator</p>
+<ul>
+  <li>    int attribute: The token kind of the operator. One of
+          the following constants (from JavaParserConstants.java):
+          <ul>
+            <li>ASSIGN: "="                
+            <li>PLUSASSIGN: "+="
+            <li>MINUSASSIGN: "-="
+            <li>STARASSIGN: "*="
+            <li>SLASHASSIGN: "/="
+            <li>ANDASSIGN: "&amp;="
+            <li>ORASSIGN: "|="
+            <li>XORASSIGN: "^="
+            <li>REMASSIGN: "%="
+            <li>LSHIFTASSIGN: "&lt;&lt;="
+            <li>RSIGNEDSHIFTASSIGN: "&gt;&gt;="
+            <li>RUNSIGNEDSHIFTASSIGN: "&gt;&gt;&gt;="
+            <li>SC_OR: "||"
+            <li>SC_AND: "&amp;&amp;" 
+            <li>BIT_AND: "&amp;" 
+            <li>BIT_OR: "|" 
+            <li>XOR: "^" 
+            <li>GT: "&gt;" 
+            <li>LT: "&lt;" 
+            <li>EQ: "==" 
+            <li>LE: "&lt;=" 
+            <li>GE: "&gt;=" 
+            <li>NE: "!=" 
+            <li>LSHIFT: "&lt;&lt;" 
+            <li>RSIGNEDSHIFT: "&gt;&gt;" 
+            <li>RUNSIGNEDSHIFT: "&gt;&gt;&gt;" 
+            <li>PLUS: "+" 
+            <li>MINUS: "-" 
+            <li>STAR: "*" 
+            <li>SLASH: "/" 
+            <li>REM: "%" 
+          </ul>
+  <li>    String attribute: The image of the operator.
+  <li>    Child(0): The left operand. An expression node.
+  <li>    Child(1): The right operand. An expression node.
+</ul>
+    
+<h3>JJTCONDITIONAL </h3>
+<p>    Represents a conditional expression:  E0 ? E1 : E2</p>
+<ul>
+  <li>    Child(0): The first operand. An expression node.
+  <li>    Child(1): The second operand. An expression node.
+  <li>    Child(2): The third operand. An expression node.
+</ul>
+    
+<h3>JJTINSTANCEOF </h3>
+<p>    Represents an instanceof expression.</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: represents the right operand
+  <li>    Child(0): The left operand. An expression node.
+</ul>
+    
+<h3>JJTUNARY_PREFIX </h3>
+<p>    Represents a prefix operation.</p>
+<ul>
+  <li>    int attribute: The token kind of the operator. One of
+          the following constants (from JavaParserConstants.java):
+          <ul>
+            <li>PLUS: "+" 
+            <li>MINUS: "-" 
+            <li>INCR: "++"
+            <li>DECR: "--"
+            <li>BANG: "!"
+            <li>TILDE: "~"
+          </ul>
+  <li>    String attribute: The image of the operator.
+  <li>    Child(0): The operand. An expression node.
+</ul>
+    
+<h3>JJTUNARY_POSTFIX </h3>
+<p>    Represents a postfix operation.</p>
+<ul>
+  <li>    int attribute: The token kind of the operator. One of
+          the following constants (from JavaParserConstants.java):
+          <ul>
+            <li>INCR: "++"
+            <li>DECR: "--"
+          </ul>
+  <li>    String attribute: The image of the operator.
+  <li>    Child(0): The operand. An expression node.
+</ul>
+    
+<h3>JJTCASTEXPRESSION </h3>
+<p>    Represents a cast expression.</p>
+<ul>
+  <li>    Java_SpecifierSet attribute: represents the type (the left operand)
+  <li>    Child(0): The right operand. An expression node.
+</ul>
+ 
+<h3>JJTEXPRESSIONNAME </h3>
+<p>     Represents an expression of the form "ExpressionName"
+        (See JLS chapter 6).</p>
+<ul>
+  <li>     ScopedName attribute. The name.  (not absolute, length&gt;=1)
+</ul>
+   
+<h3>JJTPARENS </h3>
+<p>    Represents a parenthesized expression.</p>
+<ul>
+  <li>    Child(0) The operand, an expression node.
+</ul>
+    
+<h3>JJTTHISEXP </h3>
+<p>    Represents expressions of the form
+       "this" or "ClassName.this".</p>
+<ul>
+  <li>    ScopedName attribute: The ClassName or null.
+          (not absolute, length &gt;= 1)
+</ul>
+  
+<h3>JJTSUPEREXP </h3>
+<p>    Represents expressions of the form
+       "super.Identifier" or
+       "ClassName.super.Identifier".</p>
+<ul>
+  <li>    ScopedName attribute: The ClassName or null.
+          (not absolute, length &gt;= 1) </li>
+  <li>    String attribute: The identifier
+</ul>
+    
+<h3>JJTCLASSEXP </h3>
+<p>    Represents an expression of the form "ResultType.class".</p>
+<ul>
+   <li>    Java_SpecifierSet attribute: represents the type.
+</ul>
+
+    
+<h3>JJTSUPERMETHODCALL </h3>
+<p>    Represents a function call expression of the form:
+       "super.Id(...)" or "ClassName.super.Id(...)".
+</p>
+<ul>
+  <li>    ScopedName attribute: The ClassName or null.
+          (not absolute, length &gt;= 1) </li>
+  <li>    String attribute: The identifier
+  <li>    Child(0): The arguments.  A JJTARGUMENTS node.
+</ul>
+
+    
+<h3>JJTMETHODNAMECALL </h3>
+<p>    Represents a method call expression of the form: MethodName(...).
+</p>
+<ul>
+  <li>    ScopedName attribute: The MethodName.  (not absolute, length &gt;= 1)
+  <li>    Child(0): The arguments.  A JJTARGUMENTS node.
+</ul>
+
+<h3>JJTMETHODCALL </h3>
+<p>    Represents a method call expression of the form
+       "Primary . Identifier ( ... )"
+       (But not explicit constructor invocations.)</p>
+<ul>
+  <li>    String attribute: The Identifier.
+  <li>    Child(0): The left operand. An expression node.
+  <li>    Child(1): The arguments.  A JJTARGUMENTS node.
+</ul>
+    
+<h3>JJTSUBSCRIPT </h3>
+<p>    Represents a subscript expression a[b].</p>
+<ul>
+  <li>    Child(0): The left operand. An expression node.
+  <li>    Child(1): The right operand. An expression node.
+</ul>
+    
+<h3>JJTFIELDACCESS </h3>
+<p>    Represents a field access expression of the forma
+       "Primary . Identifier". Note that ExpressionNames are
+       not Primary exprssions, so for example "a.b" is does not
+       used JJTFEILDACCESS, but rather JJTEXPRESSSIONNAME.
+       See also JJTEXPRESSIONNAME,
+       JJTSUPEREXP, JJTQUALIFIEDALLOCATIONEXPRESSION,
+       JJTMETHODCALL, JJTSUPERMETHODCALL, and JJTMETHODNAMECALL for
+       other expression types involving dots. </p>
+<ul>
+  <li>    String attribute: The field name.
+  <li>    Child(0): The (left) operand. An expression node.
+</ul>
+
+<h3>JJTQUALIFIEDALLOCATIONEXPRESSION </h3>
+<p>     Represents a "new" expression of the form
+        Primary "." "new" Identifier (... ) ClassBody_opt
+</p>
+<ul>
+  <li>     String attribute: The identifier
+  <li>     Child(0): The primary expression. An expression node.
+  <li>     Child(1): The argument. A JJTARGUMENTS node.
+  <li>     Child(2) (optional) : A JJTCLASSBODY representing the body of an anonymous class.
+</ul>
+    
+<h3>JJTALLOCATIONEXPRESSION </h3>
+<p>     Represents a "new" expression.  These come in four forms
+</p>
+    <ul>
+    <li>     new PrimitiveType ArrayDimsAndInit </li>
+    <li>     new Name ArrayDimsAndInits </li>
+    <li>     new Name ( ... ) </li>
+    <li>     new Name ( ... ) ClassBody </li>
+    </ul>
+<p>Attributes and children:</p>
+<ul>
+  <li>     Java_SpecifierSet: The base type (including the Name for nonprimitive types)
+  <li>     bool attribute: indicates that arguments are present, i.e the third or fourth form.
+  <li>     If the bool attribute is true:
+     <ul>
+       <li> Child(0): The arguments. A JJTARGUMENTS node.
+       <li> Child(1) (optional) : A JJTCLASSBODY representing the body of an anonymous class.
+     </ul>
+     Otherwise:
+     <ul>
+        <li>Child(0): The array dimensions and initializer. A JJTARRAYDIMSANDINITS node.
+     </ul>
+</ul>
+
+    
+<h3>JJTLITERAL </h3>
+<p>    Represents a literal.</p>
+<ul>
+  <li>    int attribute: The token kind of the literal. One of 
+        DECIMAL_LITERAL, HEX_LITERAL, OCTAL_LITERAL, FLOATING_POINT_LITERAL,
+        CHARACTER_LITERAL, STRING_LITERAL, TRUE, FALSE, or NULL.
+  <li>    Sting attribute: The image of the literal.
+    
+</ul>
+    
+<h3>JJTARGUMENTS </h3>
+<p>    Represents an argument list.</p>
+<ul>
+  <li>    Children: The arguments. Expression nodes.
+</ul>
+       
+<h3>JJTARRAYDIMSANDINITS </h3>
+<p>    Represents the array dimensions and initialization part of an
+        allocation ("new") expression.  These come in two basic forms:
+        Those without initializers may have explicit dimensions. E.g.
+<pre>
+             [i][j][k][][]
+        </pre>
+        Those with initializers must not have explicit dimensions. E.g.
+        <pre>
+             [][] ArrayInitializer
+        </pre>
+</p>
+<ul>
+  <li>    int attribute: The number of "empty" bracket pairs.  In the above examples 2.
+  <li>    bool attribute: Indicates the presence of an array initializer.
+  <li>    If bool attribute then
+      <ul>
+        <li>Child(0): An array initializer, a JJTARRAYINITIALIZER.
+      </ul>
+    Else
+     <ul>
+       <li>Children: The explicit dimensioning expressions. Expression nodes.
+     </ul>
+</ul>
+
+<h2>Statements</h2>
+
+<h3>JJTLABELEDSTATEMENT </h3>
+<p>    Represents statements of the form "identifier:Statement".</p>
+<ul>
+  <li>    String attribute: The label.
+  <li>    Child(0) : The statement
+</ul>
+    
+<h3>JJTBLOCK </h3>
+<p>    Represents a sequence of statements.</p>
+<ul>
+  <li>    Children: statement or block declaration nodes
+</ul>
+    
+<h3>JJTEMPTYSTATEMENT </h3>
+<p>    Represents the empty statement: ";".</p>
+    
+<h3>JJTEXPRESSIONSTATEMENT</h3>
+<p>    Represents an expression statement: "e;"</p>
+<ul>
+  <li>    Child(0) An expression node.
+</ul>
+
+     
+<h3>JJTASSERTSTATEMENT</h3>
+<p>     Represents a statement of the form "assert Expression;" or
+        "assert Expression : Expression".</p>
+<ul>
+  <li>    bool attribute: indicates whether there is a second expression.
+  <li>    Child( 0 ) an expression node.
+  <li>
+      If bool attribute
+      <ul>
+        <li>Child(1) an expresion node for the second expression
+      </ul>
+</ul>
+    
+<h3>JJTSWITCHSTATEMENT </h3>
+<p>    Represents a switch statement. There is no syntactic
+       check that there
+       is only one default.
+</p>
+<ul>
+  <li>    Child(0) An Expression node.
+  <li>    Children(1..) JJTCASE nodes.
+</ul>
+    
+<h3>JJTCASE </h3>
+<p>    Represents one case of a switch statement.
+    Either "case Expression: Statements"
+    or "default: Statements".
+</p>
+<ul>
+  <li>    Child(0) A JJTSWITCHLABEL node.
+  <li>    Chilren(1..) Statement or block declaration nodes
+</ul>
+  
+<h3>JJTSWITCHLABEL </h3>
+<p>    Represent either "case Expression:" or "default:"</p>
+<ul>
+  <li>    bool attribute: indicates the presence of an expression.
+  <li>    If bool attribute then
+      <ul>
+        <li>Child(0) An expression node.
+      </ul>
+</ul>
+       
+<h3>JJTIFSTATEMENT </h3>
+<p>    Represents an if statement.</p>
+<ul>
+  <li>    Child(0): The guard, an expression node,
+  <li>    Child(1): The then statement, a statement node.
+  <li>    Child(2) [optional]. The else statement, a statement node.
+</ul>
+    
+<h3>JJTWHILESTATEMENT </h3>
+<p>    Represents a while statement.</p>
+<ul>
+  <li>    Child(0): The guard, an expression node.
+  <li>    Child(1): The body, a statement node.
+</ul>
+    
+<h3>JJTDOSTATEMENT </h3>
+<p>    Represents a do-while statement.</p>
+<ul>
+  <li>    Child(0): The body, a statement node.
+  <li>    Child(1): The guard, an expression node.
+</ul>
+    
+<h3>JJTFORSTATEMENT </h3>
+<p>    Represents a for statement:</p>
+<ul>
+  <li>    Child(0): a JJTOPTFORINIT node
+  <li>    Child(1): a JJTOPTEXPRESSION node
+  <li>    Child(2): a JJTOPTFORUPDATE
+  <li>    Child(3): the body, a statement node.
+</ul>
+    
+<h3>JJTOPTFORINIT </h3>
+<p>    bool attribute: indicates this part is present.</p>
+<ul>
+  <li>    If bool attribute
+       <ul>
+          <li>      Child(0): A JJTFORINIT node.
+       </ul>
+</ul>
+      
+<h3>JJTFORINIT </h3>
+<p>    When present, ForInits come in two forms: a LocalVariableDeclaration
+    or a list of expressions.
+</p>
+<ul>
+  <li>    bool attribute: indicates a LocalVariableDeclaration
+  <li>    If bool attribute:
+      <ul>
+         <li>Children: JJTVARIABLEDECLARATOR nodes.
+      </ul>
+    Else
+      <ul>
+         <li>Children: expression nodes.
+      </ul>
+</ul>
+      
+<h3>JJTOPTEXPRESSION </h3>
+<p> A optional expression</p>   
+<ul>
+  <li>    bool attribute: indicates the guard expression is present.
+  <li>    If bool attribute
+      <ul>
+         <li>Child(0): The guard, an expression node.
+      </ul>
+</ul>
+      
+<h3>JJTOPTFORUPDATE </h3>
+<p>The third part of a for statement</p>
+<ul>
+  <li>    Children: expression nodes.
+</ul>
+    
+<h3>JJTBREAKSTATEMENT </h3>
+<p>    Represents a break statement:  "break;" or "break label;"</p>
+<ul>
+  <li>    bool attribute: indicates the label is present.
+  <li>    String attribute: The label.
+</ul>
+    
+<h3>JJTCONTINUESTATEMENT </h3>
+<p>    Represents a continue statement:  "continue;" or "continue label;"</p>
+<ul>
+  <li>    bool attribute: indicates the label is present.
+  <li>    String attribute: The label.
+</ul>
+    
+<h3>JJTRETURNSTATEMENT</h3>
+<p>    Represents a return statement:  "return;" or "return Expression;"</p>
+<ul>
+  <li>    bool attribute: indicates the expression is present.
+  <li>    if bool attribute:
+     <ul>
+        <li> Child(0): An expression node
+     </ul>
+</ul>
+      
+<h3>JJTTHROWSTATEMENT </h3>
+<p>    Represents a throw statement: "throw Expression;"</p>
+<ul>
+  <li>    Child(0): An expression node
+</ul>
+    
+<h3>JJTSYNCHRONIZEDSTATEMENT </h3>
+<p>    Represents a synchronized statement: "synchronized(Expression) Block"</p>
+<ul>
+  <li>    Child(0): An expression node.
+  <li>    Child(1): A JJTBLOCK node.
+</ul>
+    
+<h3>JJTTRYSTATEMENT </h3>
+<p>    Represents a try statement.</p>
+<ul>
+  <li>    bool attribute: indicates whether there is a finally clause.
+  <li>    Child( 0 ) a JJTBLOCK node.
+  <li>    Child( 1 ) a JJTCATCHES node.
+  <li>
+      If bool attribute
+      <ul>
+        <li>Child(2) a JJTBLOCK representing the finally block.
+      </ul>
+</ul>
+      
+<h3>JJTCATCHES </h3>
+<p>     Represents the sequence of "catch"es in a "try" statement.</p>
+<ul>
+  <li>     Children: JJCATCH nodes.
+</ul>
+     
+<h3>JJTCATCH</h3>
+<p>     Represents a single "catch( FormalParameter ) Block" clause.</p>
+<ul>
+  <li>     child(0) A JJTFORMALPARAMETER node
+  <li>     child(1) A JJTBLOCK node
+</ul>
+
+</body>
+</html>

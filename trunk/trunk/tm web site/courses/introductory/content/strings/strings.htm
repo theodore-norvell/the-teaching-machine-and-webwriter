@@ -1,0 +1,325 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Strings</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h2><a name="classes">Classes</a></h2>
+<p>Classes are the next higher (above functions) level of modularization in C++
+  (sort of like companies in armies).</p>
+<p>Among other things, classes give us a technique for implementing new data
+  <script language="JavaScript">
+startDefLink("type",50,70);
+  </script>
+types
+<script language="JavaScript">endLink();</script>
+ and operations on them (<EM>data
+    abstraction</EM>). </p>
+<p>Many useful classes are already defined in <em>class libraries</em> and in  this course the focus is on how to <em>use</em> a class, in particular
+  the <code>string</code> class.
+  <em>Advanced Programming</em>, Engi-3891, will focus on how
+  to create your own classes.</p>
+<p>The string class comes in the standard <code>string</code> library and its names are in the <code>std <span class="codeKeyword">namespace</span></code>, so before it can be used the following two lines are required</p>
+<blockquote>
+  <p><code>#include &lt;string&gt;<br>
+      <span class="codeKeyword">using</span> <span class="codeKeyword">namespace</span> std; </code> </p>
+</blockquote>
+<h2><a name="stringDeclare">Declaring Objects of Class <code>string</code></a></h2>
+  <p>Objects are to class as variables are to type. Thus declaration of objects looks like variable declaration.</p>
+  <blockquote>
+    <p><code>string myName = &quot;Michael&quot;;<br>
+    </code><code>string yourName;</code></p>
+  </blockquote>
+  <p><code>myName</code> and <code>yourName</code> are said to be <em>objects of class <code>string</code></em>. </p>
+  <h2><a name="stringAssign"><code>string</code> Assignment</a></h2>
+  <p>we can apply assignment to <code>string</code> objects:</p>
+    <blockquote>
+      <p> <code>yourName = "Dennis
+              Peters";</code>
+      </p>
+    </blockquote>
+    <p>Note again that assignment is subtly different from initialization because
+      <code>myName</code> exists already. For example.</p>
+    <blockquote>
+      <p> <code>string myName = &quot;Michael Bruce-Lockhart&quot;;<br>
+      </code><code>myName
+          = "Dennis
+      Peters";</code> </p>
+</blockquote>
+    <p>first <em>initializes</em> <code>myName</code> to <code>&quot;Michael Bruce-Lockhart&quot;</code> (it
+      creates the <code>myName</code> <em>object</em> in memory and sets it to <code>&quot;Michael
+      Bruce-Lockhart&quot;</code>).</p>
+    <p>Then, in the next line it changes <code>myName</code> to <code>&quot;Dennis
+    Peters&quot;</code> .</p>
+    <p>What happened to <code>&quot;Michael Bruce-Lockhart&quot;</code>? It's gone. How it is disposed
+      of is up to the <code>string</code> class designer.</p>
+<h2><a name="stringIO"><code>string</code> Output </a></h2>
+    <p>We
+          can output to <code>string</code> objects: </p>
+    <blockquote>
+      <pre><code>cout << myName << endl;</code></pre>
+    </blockquote>
+    <h2><a name="memberFunctions">Member Functions</a></h2>
+    <p>The principle difference between objects  and variables is that
+      objects may have <EM>member
+functions</EM></p>
+    <p>member functions are called using the <code>.</code> operator</p>
+    <h3>length()</h3>
+    <p>        <code>len = myName.length();</code>
+</p>
+    <P>returns the no. of characters contained in the <code>myName</code> <code><em>string</em></code><em> object</em>. <code>length()</code> is
+      a <em>member
+      function of the <code>string</code> class</em> (i.e. the class designer built the function
+      into the class).
+    <h3>find()</h3>
+    <P>Characters in a string are actually stored in an array, like so
+    <P><img src="../../content/strings/badKarma.png" width="450" height="94">
+    <P>The find member function finds the position in the string of a character, starting at 0.                
+    <blockquote>
+      <p><code>string problem = &quot;Bad Karma&quot;;<br>
+      int pos = problem.find(&quot;a&quot;);</code></p>
+    </blockquote>
+    <p>will set <code>pos</code> to <code>1</code>, the position of the first <code>a</code> in the <code>problem</code> string.</p>
+    <p><img src="../../content/strings/firstA.png" width="450" height="94"></p>
+    <p>Now writing</p>
+    <blockquote>
+      <p><code>pos = problem.find(&quot;a&quot;, pos +1);</code>  </p>
+    </blockquote>
+    <p>will cause the search to start immediately after the <code>pos</code> of the first <code>a</code> (that is at <code>2</code>) and so will return <code>5</code>( thereby resetting <code>pos</code> to <code>5</code>).</p>
+    <p><img src="../../content/strings/secondA.png" width="450" height="94"></p>
+    <p>If the <code>find</code> function is unsuccessful, it returns the
+<code>string</code> constant <code>string::npos</code> (a constant defined in the <code>string</code> class). </p>
+    <H2>Some <code>string</code> Member Functions</H2>
+    <p>Here we summarize a few of the member functions of the <code>string</code> class. Some we discussed above and others have been added with no further comment.</p>
+  <table width="100%" border="1">
+  <tr>
+    <td width="69"><div align="center"><strong>Function</strong></div></td>
+    <td width="277"><div align="center"><strong>Example</strong></div></td>
+    <td width="507"><div align="center"><strong>Meaning</strong></div></td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>length</code></div></td>
+    <td><code> myName.length()</code></td>
+    <td>Return the number of characters in <code>myName</code>. </td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>at</code></div></td>
+    <td><code>myName.at(3)</code></td>
+    <td>Return the character at  position 3 of <code>myName</code> (actually 4th character
+      since first position is 0).</td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>find</code></div></td>
+    <td><p><code>myName.find(&quot;ia&quot;)<br/>
+    </code><code>myName.find(&quot;ia&quot;,3)</code></p>
+    </td>
+    <td><p>Returns starting position of the first occurrence of <code>&quot;ia&quot;</code> in <code>myName</code>,
+        starting search from beginning (position 0)<br/>
+        Returns starting position
+        of the first occurrence of <code>&quot;ia&quot;</code> in
+        <code>myName</code>, starting search from position 3. </p>
+      <p>In both case returns string::npos if not found. </p></td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>substr</code></div></td>
+    <td><code>myName.substr(5, 4) </code></td>
+    <td>Return a new string consisting of 4 characters from <code>myName</code> starting
+      at the 5th character </td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>insert</code></div></td>
+    <td><code>myName.insert(6, &quot; K. &quot;)</code></td>
+    <td>Insert <code>&quot; K. &quot;</code> into <code>myName</code> starting at position 6.</td>
+  </tr>
+  <tr>
+    <td><div align="right"><code>erase</code></div></td>
+    <td><code>myName.erase(6, 3)</code></td>
+    <td>Erases 3 characters from <code>myName</code> starting at position 6.</td>
+  </tr>
+</table>
+<h2><code><a name="parsing">string Parsing Example</a><code></code></code></h2>
+<p>Parsing is the process of analyzing a string (or a computer program) and breaking it up into recognizable pieces</p>
+<p>Here's a function to break up a name <em>in standard western form</em> into its components.</p>
+<p>The function assumes that there are no leading or trailing spaces and that
+  each separate name is separated from the others by a single space.</p>
+<p>The names are put into an array of names. Because in our culture a person
+  can have multiple given names, the family name is to be put in the array first,
+  followed by the given names in order.</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, true,"","");
+insertCode("parseName.cpp", true, "code", "","B","all");
+  </script>
+</p>
+<p>In essence, the algorithm searches for spaces and then uses the <code>substr</code> member
+  function of the <code>string</code> class to extract an individual name. Here
+  is a drawing of the process as we are about to extract <code>Frances</code> from the
+  original name <code>Mary Frances Katherine O'Toole</code>.</p>
+<p><img src="../../content/strings/lengthFrances.png" width="800" height="157"> </p>
+<p>After finding <code>Mary</code> we set the <code>start</code> for the next search to one more than the position of the space used to extract <code>Mary</code>. This is the beginning of <code>Frances</code>. Now we search for the <code>next</code> space, starting from the <code>F</code> and set <code>next</code> to that position (<code>12</code>). The <code>substr</code> function requires the starting position of the <code>substr</code> and its length, so we compute the length as the difference between <code>start</code> and <code>next</code>. </p>
+<p>We can keep this up indefinetely until suddenly, there is no
+<code>next</code> space (<code>find</code> returns the constant
+<code>string::npos</code>). So we know we've found the family name, and we put it in position <code>0</code> of our <code>components</code> strings array.</p>
+<h2><a name="operators">Operators and <code>strings</code></a></h2>
+<p>C++ strings are designed to be very easy to use. In particular a number of standard operators work with strings.</p>
+<h3>Concatenation: the + and += Operators</h3>
+<blockquote>
+  <p><code>string hi = &quot;hello&quot;;<br>
+    string earth = &quot;world&quot;;<br>
+  </code><code>string greetings = hi + ' ' + earth + &quot;!\n&quot;;</code></p>
+  </blockquote>
+<p>sets <code>greetings</code> to <code>&quot;hello world!\n&quot;.</code></p>
+<p>In other words, you can add two <code>string</code> objects together (which is called <em>concatenation</em>) or you can concatenate a <code>string</code> object with a string <em>literal</em> or even a <code>char</code> <em>literal</em>.</p>
+<p>You can also use the <code>+=</code> operator</p>
+<blockquote>
+  <p><code>string hello = &quot;hello&quot;;</code><code><br>
+      hello += &quot; world!&quot;;</code></p>
+</blockquote>
+<p>means that <code>hello</code> now holds &quot;<code>hello world!</code>&quot; .</p>
+<h3><code>string</code> Comparison</h3>
+<p>Strings of the same capitalization can also be compared using <code>==</code>, <code>!=</code>, <code>&lt;</code>,<code> &gt;</code>, <code>&lt;=</code> and <code>&gt;=</code>.</p>
+<p><code>string1</code> is less than <code>string2</code> if it would precede it in a standard dictionary. That is, given </p>
+<blockquote>
+  <p><code>string string1 = &quot;these&quot;;<br>
+    string string2 = &quot;then&quot;;<br>
+    string string3 = &quot;the&quot;;</code></p>
+  </blockquote>
+<p>The relationships <code>string2 &lt; string1 </code>and<code> string3 &lt; string1 </code>are both <code>true.</code></p>
+
+<p>As a matter of interest, if strings of mixed case are compared the
+comparison is based on ASCII character order, in which all capital letters
+are before the lower-case letters. To compare in standard order the strings
+need to be converted to the same capitalization before comparison.</p>
+<h2><a name="exercises">Exercises</a></h2>
+<p>As always, for each of these problems, you should be able to&#8212; </p>
+<ol type="a">
+  <li>Write the contract (header and prototype).</li>
+  <li>Write the pseudo-code (algorithm for the function)</li>
+  <li>Write the code</li>
+  </ol>
+<ol>
+  <li>Our parsing example assumes the name string is <em>normalized</em>. That is, that it has no leading or trailing  spaces and that the individual names are separated by exactly one space. However, it is common for people to add extra spaces or spaces at the beginning or end. We would like a function to normalize a name by removing all extraneous spaces.</li>
+  <li>Given a normalized  name string(see last problem) with the family name last, re-arrange it so the family name is first, then a comma and a space, then all the other (given) names in their original order. Thus <code>&quot;Mary Campbell Seddall&quot;</code> becomes <code>&quot;Seddall, Mary Campbell&quot;</code>. </li>
+</ol>
+<p>
+  <script language="JavaScript">
+	startHiddenAnswer("1a");
+  </script>
+</p>
+<pre><code>/** normalize *****************************************
+* @params: name - a string reference containing a name
+*
+* @modified: name is modified so that there is only
+*            a single space between each of its parts
+*
+* @return: nothing
+********************************************************/
+void normalize(string&amp; name){</code></pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<p>
+  <script language="JavaScript">
+	startHiddenAnswer("1b");
+  </script>
+</p>
+<blockquote>
+  <p class="pseudoCode"> eliminate all leading spaces</p>
+  <p class="pseudoCode">set next = 0  </p>
+  <p class="pseudoCode">do</p>
+  <blockquote>
+    <p class="pseudoCode">next = position of next space in name starting from next</p>
+    <p class="pseudoCode">If next != -1  eliminate any spaces after it </p>
+  </blockquote>
+  <p class="pseudoCode">while next != -1 </p>
+  <p class="pseudoCode">eliminate any space at end </p>
+  <p>Eliminating spaces is a common activity. The string class has an erase method <code>string.erase(int pos, int number)</code> which erases <code>number</code> characters from the string starting at position <code>pos</code>. So create a method <code>eatSpaces(string&amp; str, int position)</code> which eliminates spaces at <code>position</code> and right after it. </p>
+  <p><span class="pseudoCode">eliminate all leading spaces---&gt;</span> <code>eatSpaces(name, 0)</code></p>
+  <p><span class="pseudoCode">eliminate spaces after it ---&gt;</span> <code>eatSpaces(name, next+1)</code> </p>
+  <p>When the loop is done, if there were trailing spaces it will have eaten all but the first one so at most there can now be only one space at the end. Thus</p>
+  <p><span class="pseudoCode">eliminate any space at end---&gt;</span> <code>eatSpaces(name, name.length()-1)</code>  </p>
+  </blockquote>
+<p><script language="JavaScript">
+	endHiddenAnswer();
+</script>
+</p>
+
+<script language="JavaScript">
+	startHiddenAnswer("1c");
+</script>
+<pre><code>/** normalize *****************************************
+* @params: name - a string reference containing a name
+*
+* @modified: name is modified so that there is only
+*            a single space between each of its parts
+*
+* @return: nothing
+********************************************************/
+
+void normalize(string& name){
+	eatSpacesAt(name, 0);
+
+	int next = 0;
+	do {
+		next = name.find(" ", next);
+		if (next != -1)
+			eatSpacesAt(name, next+1);
+	} while (next != -1);
+	eatSpacesAt(name, name.length()-1);
+}
+
+/** eatSpacesAt *****************************************
+* @params: str - a string reference
+*              - position - in the string
+*                     @pre: >=0 && < length()
+*
+* @modified: any spaces at position and immediately after
+*             are removed from str
+*
+* @return: nothing
+********************************************************/
+void eatSpacesAt(string& str, int position){
+	int numSpaces = 0; // Might not be any at position
+	while (str.at(position+numSpaces) == ' ')
+		numSpaces++;
+	if (numSpaces > 0)
+		str.erase(position, numSpaces);
+}</code></pre>
+
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+<p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("parseName.cpp", false, "code", "","all","all");
+ </script>
+  </p>
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

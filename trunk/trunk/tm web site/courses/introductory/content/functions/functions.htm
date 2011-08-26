@@ -1,0 +1,382 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Functions</title>
+<script language="JavaScript">
+<!--
+nestingDepth = "../../";
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef" onLoad="MM_preloadImages('activeInstruction.png')">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Although we have been writing functions all term, the time has come to visit
+them more formally.
+<p>Remember a function is the smallest programming module.
+    It is the <em>squad</em> of
+    the programming world. Each function should have 
+<ol>
+  <li>a small amount of code</li>
+  <li>a single well specified task</li>
+</ol>
+<p>Up to now, we have focused largely on the problem of writing code for a single
+  function&#8212;that is, on <em>implementing </em>functions<em>. </em></p>
+<p>Once in a while we have had occasion to <em>call</em> another function from
+  within our own function code, most notably by using math functions.</p>
+<p>Occasionally, however, we have even called our own functions. Remember this
+  example?</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../control_flow/combination_2.cpp", false, "code", "", "A","A");
+  </script>
+</p>
+<p>We had multiple tasks to do so we  broke them up into function
+      modules, 1 task per function. The <code>combination</code> function computes <sub>n</sub>C<sub>r</sub> but
+  it also uses the <code>factorial</code> function to get its job done.</p>
+<p>In doing this, there was a detail of the file that we supressed. In order
+  for the combination function to use the factorial function it has to know about
+  it. Functions, like variables, must be declared.</p>
+<p>Here is the code with the declaration revealed.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_3.cpp", false, "code", "", "A","A");
+  </script> 
+ </p>
+<p>Notice that the declaration is just the function prototype with a semi-colon
+  after it</p>
+<blockquote>
+  <p><code>int factorial (int num); </code></p>
+</blockquote>
+<p>The role of the function declaration is to let the compiler check that function
+  calls are being used properly. It defines three things:</p>
+<ol>
+  <li>the name of the function, <code>factorial</code>.</li>
+  <li>the return type, <code>int</code></li>
+  <li>the number and type of the arguments, in this case a single <em>int</em> argument.   </li>
+</ol>
+<p>In fact, we don't even have to name the arguments in the declaration of the
+  function. This declaration has exactly the same effect:</p>
+<blockquote>
+  <p><code>int factorial (int); </code> </p>
+</blockquote>
+<p>The first one is used more often because the name is required when we use
+  the prototype to implement the function, so we usually keep it in the declaration&#8212;heck,
+  we usually cut-and-paste, the two are so similar.</p>
+<p>To summarize, then, functions appear in programs
+    in three ways:</p>
+<ol>
+  <li>Functions have to be <em>implemented</em> (or in C++ we say <em>defined</em>).</li>
+  <li>Functions have to be <em>invoked</em> or <em>called</em>.</li>
+  <li>Just like variables, functions  have be declared before the can be used
+    (called).</li>
+</ol>
+<p>Implementation is just what we have been doing  all along. Writing
+  code for functions.</p>
+<p>The h files used for assignments give the declarations for the assigment functions. By uncluding them in your test code, you are declaring all the functions in the h file in your test code. </p>
+<p>&nbsp;</p>
+<H2><A NAME="FunctionDefinition">Function Definition</A></H2>
+<p>We covered this earlier in <a href="../introduction/language_elements.htm#Functions">language
+    elements</a>. Recapping, a function definition (or implementation) consists
+    of a <em>function prototype</em> and a set of curly brackets containing the <em>body
+    of the function</em>.</p>
+<h2 class="pagebreak"><a name="Calling" >Function Calling</a></h2>
+<p>Here is the general form of a function call:</p>
+<blockquote>
+  <p><code>someFunction(<I>ArgumentList</I>);</code> </p>
+</blockquote>
+<p>where <I>ArgumentList</I> is zero or more expressions, separated by commas. </p>
+<UL>
+  <LI>Argument values are assigned to the parameters in the order that they appear.
+  <LI>If the function is value-returning, then function call is an expression.
+  <LI>If the function is <code>void</code>, then function call is a statement.
+</UL>
+<p>Notice that the function call <em>does not include the return type.</em></p>
+<p>Suppose we have included <code>cmath</code> which has a declaration for a <code>squrt</code> function</p>
+<blockquote>
+  <p><code>double sqrt(double);</code></p>
+</blockquote>
+<p>The declaration doesn't even have a name for the argument. All it does is to tell the compiler that, when sqrt is called, there should be one double argument. SUppose further that we want to compute the sqare root of some double variable z. We write </p>
+<blockquote>
+  <p><code>y = sqrt(z);</code></p>
+  <p><strong>not</strong></p>
+  <p><code>y = sqrt(double z);</code></p>
+  </blockquote>
+<p>z should already exist when the call is made and it should have already been declared as a double.</p>
+<p>Remember our different clients? Functions are implemented (or defined) one time. They get used (called) multiple times. This illustrates a
+ fundamental principle of functions (and more generally
+  program modules).</p>
+<p class="principle">use often? implement once</p>
+<h2 class="pagebreak"><a name="CallFlow">Function Call Control Flow</a></h2>
+<p>Instructions are normally executed <em>sequentially</em>. We call this a <em>flow
+    of control</em>.</p>
+<table width="100%"  border="0">
+  <tr>
+    <td><p class="normal">Control flows from one instruction to the next in a step-like sequence.</p>
+      <p class="normal">Function calls alter the normal flow of control.</p>
+      <p class="normal">When a call is executed we leave the sequence and flow over to the beginning
+        of the function</p>
+      <p class="normal">Instructions are then executed inside the function using the normal
+        sequential sequence.</p>
+      <p class="normal">When the instructions in the function are finished control returns to
+        the original sequence</p>
+    <p class="normal">After the return control flow picks up where it left off. </p></td>
+    <td><table border="0" cellpadding="0" cellspacing="0" width="428">
+      <!-- fwtable fwsrc="FunctionCallFlow.png" fwbase="FunctionCallFlow.gif" fwstyle="Dreamweaver" fwdocid = "958112211" fwnested="0" -->
+      <tr>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="99" height="1" border="0"></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="201" height="1" border="0"></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="99" height="1" border="0"></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="29" height="1" border="0"></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="1" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r1_c1" src="FunctionCallFlow_r1_c1.gif" width="99" height="61" border="0" alt=""></td>
+        <td rowspan="5" colspan="3"><img name="FunctionCallFlow_r1_c2" src="FunctionCallFlow_r1_c2.gif" width="329" height="252" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="61" border="0"></td>
+      </tr>
+      <tr>
+        <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r2_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r2_c1" src="FunctionCallFlow_r2_c1.gif" width="99" height="49" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="49" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r3_c1" src="FunctionCallFlow_r3_c1.gif" width="99" height="30" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="30" border="0"></td>
+      </tr>
+      <tr>
+        <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r4_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r4_c1" src="FunctionCallFlow_r4_c1.gif" width="99" height="48" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="48" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="2"><img name="FunctionCallFlow_r5_c1" src="FunctionCallFlow_r5_c1.gif" width="99" height="92" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="64" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="12"><img name="FunctionCallFlow_r6_c2" src="FunctionCallFlow_r6_c2.gif" width="201" height="460" border="0" alt=""></td>
+        <td rowspan="2"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r6_c3','','activeInstruction.png',1)"><img name="FunctionCallFlow_r6_c3" src="FunctionCallFlow_r6_c3.gif" width="99" height="47" border="0" alt=""></a></td>
+        <td rowspan="12"><img name="FunctionCallFlow_r6_c4" src="FunctionCallFlow_r6_c4.gif" width="29" height="460" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="28" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="2"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r7_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r7_c1" src="FunctionCallFlow_r7_c1.gif" width="99" height="50" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="19" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r8_c3" src="FunctionCallFlow_r8_c3.gif" width="99" height="31" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="31" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r9_c1" src="FunctionCallFlow_r9_c1.gif" width="99" height="31" border="0" alt=""></td>
+        <td rowspan="2"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r9_c3','','activeInstruction.png',1)"><img name="FunctionCallFlow_r9_c3" src="FunctionCallFlow_r9_c3.gif" width="99" height="48" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="31" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="2"><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r10_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r10_c1" src="FunctionCallFlow_r10_c1.gif" width="99" height="48" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="17" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r11_c3" src="FunctionCallFlow_r11_c3.gif" width="99" height="31" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="31" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="2"><img name="FunctionCallFlow_r12_c1" src="FunctionCallFlow_r12_c1.gif" width="99" height="85" border="0" alt=""></td>
+        <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r12_c3','','activeInstruction.png',1)"><img name="FunctionCallFlow_r12_c3" src="FunctionCallFlow_r12_c3.gif" width="99" height="48" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="48" border="0"></td>
+      </tr>
+      <tr>
+        <td rowspan="5"><img name="FunctionCallFlow_r13_c3" src="FunctionCallFlow_r13_c3.gif" width="99" height="255" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="37" border="0"></td>
+      </tr>
+      <tr>
+        <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r14_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r14_c1" src="FunctionCallFlow_r14_c1.gif" width="99" height="49" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="49" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r15_c1" src="FunctionCallFlow_r15_c1.gif" width="99" height="29" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="29" border="0"></td>
+      </tr>
+      <tr>
+        <td><a href="#" onMouseOut="MM_swapImgRestore()" onMouseOver="MM_swapImage('FunctionCallFlow_r16_c1','','activeInstruction.png',1)"><img name="FunctionCallFlow_r16_c1" src="FunctionCallFlow_r16_c1.gif" width="99" height="50" border="0" alt=""></a></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="50" border="0"></td>
+      </tr>
+      <tr>
+        <td><img name="FunctionCallFlow_r17_c1" src="FunctionCallFlow_r17_c1.gif" width="99" height="90" border="0" alt=""></td>
+        <td><img src="spacer.gif" alt="" name="undefined_2" width="1" height="90" border="0"></td>
+      </tr>
+    </table></td>
+  </tr>
+</table>
+<h2><a name="Declaration">Function Declaration</a></h2>
+<p>Before a function can be used, it must be declared.</p>
+<p>Just like variables, functions must be declared before they are used. There
+  is a difference, though.</p>
+<ol>
+  <li>variables are declared <em>inside</em> functions (at the <em>internal level</em>) </li>
+  <li>functions are declared <em>outside</em> functions (at the <em>external
+      level</em>)</li>
+</ol>
+<p> When you include the <code>cmath</code> library, you are actually including
+  the declaration of all the math functions, including the <code>sqrt</code> function,
+  whose declaration looks like this:</p>
+<blockquote>
+  <p><code>double sqrt(double); </code></p>
+</blockquote>
+<p>When a call to the <code>sqrt</code> functions is made</p>
+<blockquote>
+  <p><code>y
+        = squrt(2*x)</code></p>
+</blockquote>
+<p> the compiler finds that there is a declaration for
+        a <code>sqrt</code> function,
+        that takes one <code>double</code> argument and returns a <code>double</code>.</p>
+<p>Similarly, in order to use the factorial function in our combination function,
+  we had to declare it first.</p>
+<blockquote>
+  <p><code>int factorial(int num);</code></p>
+</blockquote>
+<p>Here we have included the name in the argument list. We don't need to (the
+  compiler will throw it away as all it wants is the number and the type of the
+  arguments). It is convenient to do so, however, as all we have to do is cut
+  and paste the prototype from the implementation to the declaration.
+  We simply follow it with a <code>;</code> to make a declaration instead of <code>{
+  }</code> to create an implementation.</p>
+<p>Why declare? It appears redundant.</p>
+<p>Big programs are spread across multiple files.</p>
+<ol>
+  <li>Functions are implemented once only (in one file)</li>
+  <li>Functions are used (called) in many places (many files) so form of function
+    must be declared before it is called.</li>
+  <li>Function declaration allows compiler to check that the grammar of the call
+    is correct.</li>
+</ol>
+<p>Clearly the following is in error.</p>
+<blockquote>
+  <p><code>char c = sqrt(2*x, 3);</code></p>
+</blockquote>
+<p>The square root function returns a <code>double</code>, which can't be converted
+  to a <code>char</code>. Moreover, it only has one argument.</p>
+<p>We don't actually need the implementation code to see the syntax is incorrect.
+  Just the declaration. </p>
+<p> Functions are implemented once but often called many times (a large engineering
+  modelling program might include thousands of calls to the sine function).</p>
+<p>The implementation code will appear in exactly one file.</p>
+<p>The calls may be spread across many files.</p>
+<p>A function declaration must appear once in each file which calls a function. </p>
+<h2><a name="Contract">Function as a Contract</a></h2>
+<p>In professional progams there are usually multiple programmers on a project
+  (writing multiple files) </p>
+<p>A function  written by one programmer is used my many others.</p>
+<p>When implementing a  function think of it as providing a service.</p>
+<p>Whoever calls your function is your client.</p>
+<p>The function <em>prototype,</em> e.g.</p>
+<blockquote>
+  <p><code>double polarAngle(double re, double im)</code></p>
+</blockquote>
+<p>is the start of a contract between the service provider (programmer implementing
+  the function) and the client (programmer using the function). The rest of the
+  contract should be specified in a function header as we have shown all along. </p>
+<p>It is the client's responsibility to provide values for the parameters <code>re</code>  and <code>im</code></p>
+<p>That means, when the program is actually running, these values will be set
+  whenever a call is made to the function.</p>
+<h2>Pass-by-Value</h2>
+<p>Let's have a close look at the call to the factorial in our combination example. <em>Watch
+    carefully what happens in memory</em> when the call gets made </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_3.cpp", true, "code", "", "A","all");
+  </script> 
+</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Once you've entered the <code>combination</code> function, put the cursor
+  on its <code>return</code> statement and click the run-to-line (<img src="../../webWriter/images/ToCursor.gif" width="12" height="12">) button <code></code></p>
+<p class="hang">2. The return expression comb/factorial(r) has been loaded into
+  the expression engine. Step through it there.</p>
+<p class="hang">3. As usual, to evaluate <code>r</code> the
+    TM looks the value of <code>r</code> up in memory and enters the current
+    value (<code>5</code>) into the function call. Then the call is made at it is this value
+    that is passed to the <code>factorial</code> function.</p>
+<p class="hang">4. In the <code>factorial</code> function, the parameter <code>num</code> is 
+  a new variable, whose value gets set to <code>5</code> during the call. </p>
+<hr>
+<script language="JavaScript">
+ endNote();
+</script
+  >
+<p>During the call to <code>factorial</code>, the value of <code>r</code> is passed in and the local parameter
+  <code>num</code> gets set to that value.</p>
+<p>In effect, <code>num</code> is a copy of <code>r</code>.</p>
+<p>Lets make that point clearer by changing the way the <code>factorial</code> function works.</p>
+<p>Here we've used a <code>while</code> loop to compute the <code>factorial</code>,
+  counting <code>num</code> down to
+1 as we do so. But this means that <em>we've changed <code>num</code>.</em> However,
+that does not affect <code>r</code> as <code>num</code> is a copy of <code>r</code>!
+Watch <code>r</code> and <code>num</code> closely as the <code>factorial</code> is evaluated.</p>
+<p>  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_4.cpp", true, "code", "", "A","all");
+  </script> 
+</p>
+<p>You see that <code>r</code> is unaffected. This is becuse only the value of <code>r</code> was
+  passed into the <code>factorial</code> function, not <code>r</code> itself.
+  Although the <code>factorial</code> function
+  changed <code>num</code>, it doesn't affect <code>r</code> because <code>num</code> is
+  a completely different variable.</p>
+<p>We say that &quot;C passes by value&quot;. It was originally a security feature of C,
+  done deliberately so that the implementers of functions like <code>factorial</code> could
+  change <code>num</code> without affecting the original data.</p>
+<p>There are, however, times when we would like to affect the original data.
+  So C++ added the notion of <em>passing-by reference.</em></p>
+<h2><a name="exercises">Exercises</a></h2>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

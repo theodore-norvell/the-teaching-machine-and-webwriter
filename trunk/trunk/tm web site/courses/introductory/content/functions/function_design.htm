@@ -1,0 +1,284 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Design with Functions</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Now that we have some notion of how functions work, let's look at how we can
+  tackle a problem by dividing it into smaller pieces (<em>divide and conquer</em>) </p>
+<H1><a name="decomposition">Functional Decomposition</a></H1>
+<ol>
+  <li> Divide the problem into independent sub-problems that are easier to solve. </li>
+  <li>Start with a <em>high-level</em> solution to the problem&#8212;many
+    steps may be <em>abstract</em> (i.e., some of the implementation details
+    remain unspecified) </li>
+  <li>Gradually refine solution into an concrete solution (i.e., algorithm) 
+    by adding detail. </li>
+  <li>a.k.a. <EM>top-down design</EM> and <EM>stepwise refinement</EM>
+  </li>
+</ol>
+<h2>Example</h2>
+<h3>
+  Problem Statement</h3>
+<p>
+  Write a function to find the total weight of a batch of washers. where every
+washer in the batch is identical.</p>
+<p></p>
+<h3>Analysis</h3>
+<p>
+  A washer is a doughnut shaped disc of metal of uniform thickness whose weight
+  is a product of its volume and its density. The weight of a batch would simply
+be the weight of an individual washer times the number of washers in the batch.</p>
+<h3>Decomposition</h3>
+<table width="100%"  border="0">
+  <tr>
+    <td scope="col"><p class="pseudoCode">Find the weight of a batch of washers--&gt; </p>
+	</td>
+    <td scope="col">&nbsp;
+		
+  </td>
+  </tr>
+  <tr>
+  	<td>      <ol>
+        <li class="pseudoCode">Find the weight, w, of an individual washer</li>
+        <li class="pseudoCode">batch weight = n x w</li>
+      </ol>
+      <p>Now we <em>refine</em> the first step</p>
+</td>
+    <td>&nbsp;
+		 
+  </td>
+</tr>
+	<tr>
+    <td scope="row"><p class="pseudoCode">Find the weight, w, of an individual washer---&gt;</p></td>
+	<td>&nbsp;
+		
+	</td></tr>
+	<tr>
+		<td>
+      <ol>
+        <blockquote>
+          <p class="pseudoCode">1. Find the washer's area, a<br />
+      2. Find the washer's volume, v = a x thickness, t.<br />
+      3. weight: w = v x d ( the density )</p>
+        </blockquote>
+      </ol>
+      <blockquote>
+        <p>We should also refine the first step of this refined step</p>
+      </blockquote></td>
+    <td><p>&nbsp;
+      
+    
+      </p>
+    </tr>
+  <tr>
+    <td scope="row"><p class="pseudoCode">Find the washer's area, a--&gt;</p></td>
+	<td>&nbsp;
+		
+	</td></tr>
+	<tr>
+      <td><blockquote>
+        <p class="pseudoCode">1. Find the area of the outer circle, A<sub>o<br />
+          </sub>2. Find the are of the inner circle (the doughnut hole) A<sub>i<br />
+          </sub>3. a = A<sub>o</sub> - A<sub>i</sub></p>
+        <p>Seems like there's still another refinement</p>
+        <p></p>
+      </blockquote></td>
+    <td>&nbsp;
+	</td>
+  </tr>
+  <tr>
+    <td scope="row"><p class="pseudoCode">Find the area of a circle--&gt;</p></td>
+    <td>&nbsp;
+		
+  </td></tr>
+  <tr>
+      <td><blockquote>
+        <blockquote>
+          <p class="pseudoCode">1. area = pi x r<sup>2</sup> </p>
+        </blockquote>
+      </blockquote></td>
+    <td>&nbsp;
+		
+  </td></tr>
+</table>
+<blockquote>
+  <blockquote>&nbsp;</blockquote>
+</blockquote>
+<p>Note that each of the statements before a refinement arrow (--&gt;) is a candidate to be a <em>function</em>,
+  albeit a very simple one. In the table below the decomposition is repeated on the left. Try to figure out each of the function 
+  <script language="JavaScript">
+startDefLink("functionPrototype",50,50);
+  </script>
+prototypes
+<script language="JavaScript">endLink();</script>
+ required for the statements before the refinement arrows (--&gt;) before you click on the answer buttons to show them.</p>
+<p>The <span class="stxNonterminal">refinements</span> themselves are therefore going to turn into function bodies. Again,  try to figure out what the function bodies will contain before revealing them.</p>
+<table width="100%"  border="0">
+  <tr>
+    <td scope="col"><p class="pseudoCode">Find the weight of a batch of washers--&gt; </p></td>
+    <td scope="col"><script language="JavaScript">
+			startHiddenAnswer("prototype");
+		</script>
+        <code>double batchWeight( int count, double density, double thickness, double innerR, double outerR){</code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td><ol>
+        <li class="pseudoCode">Find the weight, w, of an individual washer</li>
+        <li class="pseudoCode">batch weight = n x w</li>
+      </ol>
+        <p>Now we <em>refine</em> the first step</p></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("body");
+		</script>
+        <code>return count * washerWeight(density, thickness,innerR, outerR);<br>
+      } </code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td scope="row"><p class="pseudoCode">Find the weight, w, of an individual washer---&gt;</p></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("prototype");
+		</script>
+        <code>double washerWeight(double d, double t, double inner, double outer)</code> {
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td><ol>
+        <blockquote>
+          <p class="pseudoCode">1. Find the washer's area, a<br />
+            2. Find the washer's volume, v = a x thickness, t.<br />
+            3. weight: w = v x d ( the density )</p>
+        </blockquote>
+      </ol>
+        <blockquote>
+          <p>We should also refine the first step of this refined step</p>
+      </blockquote></td>
+    <td><p>
+        <script language="JavaScript">
+			startHiddenAnswer("body");
+		</script>
+        <code>return d * t * washerArea(inner,outer);<br>
+        } </code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+      </p>
+  </tr>
+  <tr>
+    <td scope="row"><p class="pseudoCode">Find the washer's area, a--&gt;</p></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("prototype");
+		</script>
+        <code>double washerArea(double innerR, double outerR)</code> {
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td><blockquote>
+        <p class="pseudoCode">1. Find the area of the outer circle, A<sub>o<br />
+          </sub>2. Find the are of the inner circle (the doughnut hole) A<sub>i<br />
+          </sub>3. a = A<sub>o</sub> - A<sub>i</sub></p>
+        <p>Seems like there's still another refinement</p>
+        <p></p>
+    </blockquote></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("body");
+		</script>
+        <code>return circleArea(outerR) -<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; circleArea(innerR);<br>
+      } </code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td scope="row"><p class="pseudoCode">Find the area of a circle--&gt;</p></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("prototype");
+		</script>
+        <code>double circleArea(double radius){</code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+  <tr>
+    <td><blockquote>
+        <blockquote>
+          <p class="pseudoCode">1. area = pi x r<sup>2</sup> </p>
+        </blockquote>
+    </blockquote></td>
+    <td><script language="JavaScript">
+			startHiddenAnswer("body");
+		</script>
+        <code>return PI * radius * radius;<br>
+      } </code>
+        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+    </td>
+  </tr>
+</table>
+
+<h2><a name="delegation">Delegation</a></h2>
+<p>Note that this is an exercise in <span class="stxNonterminal">delegation</span>. Each function delegates most of its work to an assistant function. All the inputs (arguments) needed to carry out the whole problem are sent to the topmost function (<code>weightBatch</code>). It simply passes four of those arguments over to the weightWasher function, then multiplies the weight returned by that function by the fifth input, count, in order to calculate the weight of the entire batch.</p>
+<p>Such delegation is typical of modern programming.</p>
+<p>This is a very simple problem and the amount of delegation involved is fairly extreme in that, once each function delegates, it has very little left to do.</p>
+<p>Nevertheless, it illustrates the principle very well. </p>
+<p>In practice, functions run from one line to one page in length, with the typical function being five to ten lines. Once functions approach (or exceed) a page in length, it is almost always a sign they should be broken up into smaller pieces.   </p>
+<p>Here's what <code>batchWeight</code> function and its coterie of assistants.The comments have been supressed  so you can see the functions all
+ at once, the better to relate one to the other. They will be shown in the Teaching Machine. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("washer.cpp", false, "code", "", "A");
+  </script> 
+</p>
+<h3>&nbsp;</h3>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+<h1>  Example in Full
+</h1> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("washer.cpp", false, "code", "", "all");
+  </script> 
+  </p>
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

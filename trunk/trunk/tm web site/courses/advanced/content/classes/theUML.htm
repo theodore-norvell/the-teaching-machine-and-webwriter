@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>The UML</title>
+</head>
+<body>
+<p>The UML is the Unified Modeling Language, a language that OOPS designers use 
+  to design object-oriented systems. We'll hardly touch on it here, but some of 
+  its basic constructs are useful even at this level. In particular, we'll introduce 
+  you to&#151;</p>
+<h2><a name="classDiagrams">Class Diagrams</a></h2>
+<p>The first Class diagram is the simplest possible. It shows a single class, 
+  representing the way a used car dealership program might view a car. A class 
+  is represented by a box divided into three compartments&#151;</p>
+<blockquote> 
+  <p>The <b>top com<img src="carUML.gif" width="87" height="140" align="left">partment</b> 
+    contains the <i>name</i> of the class. By convention, we will capitalize the 
+    first letter. i.e. the class for a car is called <i>Car.</i></p>
+  <p>The <b>middle compartment </b>contains <i>attributes</i> which are <i>type-name 
+    pairs.</i> For example, <i>model</i>, which is a <i>String</i>.</p>
+  <p>The <b>bottom compartment</b> contains the <i>operations</i> which can be 
+    carried out on objects of the class. For example, any particular car in the 
+    inventory can be sold by calling its <i>sell()</i> operation.</p>
+  <p>&nbsp;</p>
+</blockquote>
+<p>Although we are showing only one class in this system ( a real one would undoubtedly 
+  contain many more), there would be many objects. Every automobile in a dealer's 
+  inventory would constitute a separate object, with it's own <i>values</i> for 
+  its attributes. Thus, while there might be three blue 1998 Cavalier coupes in 
+  the system, each would likely have a different odometer reading and perhaps 
+  different purchase and sticker prices.</p>
+<p>We say that the set of all values for the attributes of an object constitute 
+  the current <i>state</i> of that object.</p>
+<h2><a name="parking">Parking Control</a></h2>
+<p>The class diagram shown for a parking control system is a little more complex. 
+  Here we are showing three classes (again, real systems would have many more) 
+  and defining some relationships, called <i>associations</i>, between them.</p>
+<p><img src="parking.JPG" width="700" height="525"></p>
+<p>Discuss</p>
+<ol>
+  <li>attributes</li>
+  <li>methods</li>
+  <li>associations</li>
+  <li>roles</li>
+  <li>multiplicity</li>
+</ol>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

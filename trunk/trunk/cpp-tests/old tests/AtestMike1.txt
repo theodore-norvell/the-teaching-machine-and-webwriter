@@ -1,0 +1,11 @@
+#include <iostream.h>   /* include info from standard library */
+
+/* The mandatory "Hello world!" program */
+
+int // Line added TSN
+main()
+
+{
+        cout << "Hello, world!\n";
+}
+

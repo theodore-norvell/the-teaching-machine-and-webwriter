@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Subtypes</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="subtypes"></a>Subtypes</h1>
+<p>[<strong>Note:</strong> This section is largely for reference. As such it is rather definition heavy. I may not have time to cover it all in class, but you should read it and understand it.]</p>
+<p>Now we are ready to list all the types in Java. Remember they fit into two groups</p>
+<ul>
+  <li>Primitive type
+      <ul>
+        <li>byte, short, int, long, float, double, char, and boolean</li>
+      </ul>
+  </li>
+  <li>Reference types (i.e. types for Objects)
+      <ul>
+        <li>array types</li>
+        <li> classes (abstract and concrete)</li>
+        <li>interfaces</li>
+      </ul>
+      <p></p>
+  </li>
+</ul>
+<p>The first part of this section only deals with reference types that are not array types. Later we'll talk about arrays. </p>
+<h2>Summary of extension and implementation</h2>
+<pre class="code"><span class="codeKeyword">abstract class</span> A { ... }<br><span class="codeKeyword">interface</span> I0 { ... }<br><span class="codeKeyword">interface</span> I1 { ... }<br><span class="codeKeyword">class</span> C { ... }<br>
+</pre>
+<p>Each class (with one exception) <strong>directly extends</strong> one class and <strong>directly implements</strong> 0 or more of interfaces<br>
+</p>
+<pre class="code"><span class="codeKeyword">class</span> W <span class="codeKeyword">extends</span> A <span class="codeKeyword">implements</span> I0, I1 {<br>    ... must implement all inherited abstract<br>        methods of A, I0, I1 ... }<br><span class="codeKeyword">class</span> X <span class="codeKeyword">extends</span> C <span class="codeKeyword">implements</span> I0, I1 {<br>    ... must implement all inherited abstract<br>        methods of I0, I1 ... }<br><span class="codeKeyword">abstract class</span> Y <span class="codeKeyword">extends</span> A <span class="codeKeyword">implements</span> I0, I1 {<br>    ... }<br><span class="codeKeyword">abstract class</span> Z <span class="codeKeyword">extends</span> C<span class="codeKeyword"> implements</span> I0, I1 {<br>    ... }<br>
+</pre>
+<p>Interfaces can <strong>directly extend</strong> other interfaces. Classes that implement the subinterface must also implement the superinterfaces</p>
+<pre class="code"><span class="codeKeyword">interface</span> I2 <span class="codeKeyword">extends</span> I0, I1 {<br>    ... }</pre>
+<p>(Here I2 is the subinterface while I0 and I1 are the superinterfaces.) </p>
+<h2>The type hierarchy </h2>
+<p>Each class directly extends exactly one class. (With one exception: <span class="codeInline">java.lang.Object</span> directly extends no class.)</p>
+<p> If a class does not have an &quot;extends&quot; clause, it directly extends the library class <span class="codeInline">Object</span> in package <span class="codeInline">java.lang</span>.</p>
+<p>Therefore the set of classes forms a tree with <span class="codeInline">Object</span> at its root.</p>
+<p>Here is a picture of a part of the tree</p>
+<p><img src="subtypes-0.png" alt="Illustration of library types and extends relationship" width="661" height="281" align="texttop"> </p>
+<p>In addition to extending another class, each class implements zero or more interfaces and each interface extends 0 or more other interfaces.</p>
+<p><img src="subtypes-1.png" width="667" height="281"></p>
+<p>Suppose that S and T are two  reference types.</p>
+<p>We say that S is a <strong>direct subtype</strong> of T exactly if </p>
+<ul>
+  <li>the declaration of S says that it implements T, or</li>
+  <li> the declaration of S says that it extends T</li>
+  <li>S is a class, T is java.lang.Object, and the declaration of S does not have an <span class="codeKeyword">extends</span> clause. </li>
+</ul>
+<p>We say that S is is a <strong>subtype</strong> of T exactly if </p>
+<ul>
+  <li>S is T </li>
+  <li>S is a direct subtype of T, or </li>
+  <li> S is a direct subtype of a direct subtype of T, or</li>
+  <li>...</li>
+</ul>
+<p>We say that S is a <strong>proper subtype</strong> of T exactly if </p>
+<ul>
+  <li>S is a direct subtype of T, or </li>
+  <li> S is a direct subtype of a direct subtype of T, or</li>
+  <li>...</li>
+</ul>
+<p>Note that S is a subtype of T iff it is a proper subtype or a S=T. </p>
+<h3>No circularity </h3>
+<p>The compiler will check that no type is a proper subtype of itself. E.g., we can not declare that S extends T and that T extends S. </p>
+<p>It follows that</p>
+<ul>
+  <li>that every class is a subtype of <span class="codeInline">Object</span>. </li>
+  <li>that every class (except <span class="codeInline">Object</span>) is a proper subtype of <span class="codeInline">Object</span>. </li>
+  <li>that no interface is a subtype of any class. </li>
+</ul>
+<h3>Instances</h3>
+<ul>
+  <li>When we say that an object is a <strong>direct instance of</strong> a type T, we mean that T is the type that was used to instantiate (i.e., allocate) the object. Objects are direct instances of exactly one type. For objects that are not arrays, that type is a class and is concrete (i.e. nonabstract).</li>
+  <li>If an object is a direct instance of S and S is a proper subtype of T, then the object is an <strong>indirect instance of</strong> T.</li>
+  <li>An object is an <strong>instance of</strong> T exactly if it is either a direct or an indirect instance of T.</li>
+</ul>
+<p>The &quot;instance of&quot; relation has two important properties that together with the property of &quot;run time type safety&quot; make Java a safe programming language.</p>
+<p class="principle">Property:<strong> Instances implement all declared methods.<br>
+</strong>Each class or interface T declares a set of method signatures. Any object that is an instance of T is sure to implement those signatures.</p>
+<p class="principle">Property: <span class="stxMeta">Instances have all declared fields</span>.<br>
+Each class T declares a set of fields. Any object that is an instance of T is sure to have all those fields.</p>
+<h3>Example</h3>
+<p>Let's look at <span class="codeInline">ArrayList&lt;E&gt;</span> (for any particular reference type <span class="codeInline">E</span>) and consider all its supertypes.</p>
+<p><img src="subtypes-2.png" width="697" height="347"></p>
+<p>You can see that any object that is a direct instance of ArrayList&lt;Ball&gt; is an indirect instance of AbstractList&lt;Ball&gt;, AbstractCollection&lt;Ball&gt;, Object, List&lt;Ball&gt;, Collection&lt;Ball&gt;, Iterable&lt;Ball&gt; RandomAccess, Clonable, and Serializable.</p>
+<p>[<strong>Note on the prefixes super- and sub-</strong>: These come from Latin. Super- means, literally, &quot;above&quot; and sub- means, literally, &quot;below&quot;, as in &quot;superstructure&quot; and &quot;submarine&quot;. Nevertheless, I like to draw subtypes <span class="pseudoCode">above</span> their supertypes; this is because I like to draw types that depend on others above the types they depend on, like a building, where the floors above depend on the floors below for support. In C++ terminology, a supertype is called a &quot;base type&quot;. &quot;Base&quot; means below as in basement.] </p>
+<p>When the compiler is dealing with a type S, it knows the complete set of S's supertypes.</p>
+<p>The compiler does not need to know the complete set of S's subtypes. This is important both for efficiency and because it allows libraries to be distributed in compiled form.</p>
+<h2>Static Type and Dynamic Type</h2>
+<p>Each expression and variable in Java has a <span class="pseudoCode">static type</span> which can be calculated by the compiler.</p>
+<p>For example: if variable <span class="codeInline">r</span> is declared to have reference type <span class="codeInline">T</span>, then every use of variable <span class="codeInline">r</span> has static type of <span class="codeInline">T</span>. Consider:</p>
+<pre class="code">T r ;
+...
+r.foo() ;
+</pre>
+<p> The static type of the reference <span class="codeInline">r</span> is <span class="codeInline">T</span>, regardless of what value <span class="codeInline">r</span> might actually have when the program executes.</p>
+<p>Suppose <span class="codeInline">S</span> is a proper subtype of <span class="codeInline">T</span>. Now consider: </p>
+<pre class="code">T r = <span class="codeKeyword">new</span> S() ;
+r.foo() ;</pre>
+<p>Clearly <span class="codeInline">r</span> will actually refer to a direct instance of <span class="codeInline">S</span>, not <span class="codeInline">T</span>. We say that the <span class="pseudoCode">dynamic type</span> of <span class="codeInline">r</span> at run-time is <span class="codeInline">S</span>.</p>
+<p>By the way, casting has no effect on dynamic type since it doesn't change which object is being referred to:</p>
+<pre class="code">T r = (T) (<span class="codeKeyword">new</span> S()) ;
+r.foo() ;</pre>
+<p>The dynamic type of <span class="codeInline">r</span> is still <span class="codeInline">S</span>. </p>
+<p>[Aside: This cast is an 'up' cast meaning that the static type that is being cast from is a proper subtype of the type being cast to. 'up' casts in Java have no effect on the dynamic type. Up casts happen implicitly. In this example, the cast operation in entirely unneeded. The term &quot;up&quot; is consistant with the prefixes sub- and super-. ]</p>
+<p>In the above examples, it is very easy to see what the dynamic type of <span class="codeInline">r</span> will be. However, it is not always possible to do so, hence the compiler is not expected to do so. Consider the dynamic type of <span class="codeInline">r</span> in the expression <span class="codeInline">r.foo()</span> here: </p>
+<pre class="code">T r ;
+<span class="codeKeyword">if</span>( <span class="pseudoCode">[some complex expression]</span> ) 
+     r = <span class="codeKeyword">new</span> S() ;
+<span class="codeKeyword">else</span> r = <span class="codeKeyword">new</span> U() ;
+r.foo() ;</pre>
+<p>Or here </p>
+<pre class="code"><span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i=0 ; i &lt; N ; ++i ) {
+    T r ;
+    <span class="codeKeyword">if</span>( i%2 == 0)
+         r = <span class="codeKeyword">new</span> S() ; 
+    <span class="codeKeyword">else</span> r = <span class="codeKeyword">new</span> U() ;
+    r.foo() ; }</pre>
+<p>Or here</p>
+<pre class="code"><span class="codeKeyword">void</span> bar(T r) {
+    ...
+    r.foo() ; }
+</pre>
+<p>In general, we can not know what the dynamic type of an expression will be and, in fact, one expression might have a different dynamic type at different times during execution. </p>
+<h3>Run-time type safety</h3>
+<p>However Java supports the following property</p>
+<p class="principle">Property: <strong>Run-time type safety</strong>.<br>
+The rules of the Java language, checked by the compiler, ensure that the dynamic type of any expression will be a subtype of its static type. </p>
+<p align="left">Or, to say the same thing a bit more precisely:</p>
+<blockquote>
+  <p align="left">The rules of the Java language, checked by the compiler, ensure that an expression with a static type <span class="codeInline">T</span> will, at run-time, </p>
+  <ul>
+    <li>evaluate to the <span class="codeKeyword">null</span> reference,</li>
+    <li>evaluate to a reference to an instance of <span class="codeInline">T</span>, or </li>
+    <li>throw an exception. (Exceptions are covered later in the course.) </li>
+  </ul>
+</blockquote>
+<p>In some object-oriented programming languages, it is possible to send a message to an object, but find (at run time) that that object does not have a method that can handle the message. This is not possible in Java. </p>
+<p>Putting the property of runtime type safety together with the property that instances implement all declared methods, and the fact that the compiler will check that methods exist in the static type, we find that when an expression of the form</p>
+<p class="code">E.m( A0, A1, ..., An)</p>
+<p>is executed only the following can happen:</p>
+<ul>
+  <li>The evaluation of E or one of the arguments results in an exception being thrown.</li>
+  <li>E evaluates to <span class="codeKeyword">null</span>, which results in a NullPointerException being thrown.</li>
+  <li>E evaluates to a reference to an object that supports a method with exactly the right signature.</li>
+</ul>
+<p>And similarly, from the property that instances have all declared fields, we find that when an expression of the form </p>
+<p class="code">E.f</p>
+<p>is executed only the following can happen:</p>
+<ul>
+  <li>The evaluation of E results in an exception being thrown.</li>
+  <li>E evaluates to <span class="codeKeyword">null</span>, which results in a NullPointerException being thrown.</li>
+  <li>E evaluates to a reference to an object that has this field and the static type of that field is the same as static type of this expression. </li>
+</ul>
+<h2>Assignment rules for reference types </h2>
+<p> The compile-time rules that ensure run-time type safety are fairly simple.</p>
+<blockquote>
+  <p>Suppose <span class="codeInline">r</span> is an expression (representing a variable) with static type <span class="codeInline">T</span> and <span class="codeInline">e</span> is an expression of static type <span class="codeInline">S</span>:</p>
+  <blockquote>
+    <p align="left">Rule 0: <span class="codeInline">r=e</span> is allowed if<span class="codeInline"> S</span> is a subtype of <span class="codeInline">T</span>.</p>
+    <p align="left">Rule 1: <span class="codeInline">r=e</span> is allowed if<span class="codeInline"> T</span> is <span class="codeInline">Object. </span></p>
+  </blockquote>
+</blockquote>
+<p align="left">Similar rules apply to initialization, to parameter passing, and returning a result from a method.</p>
+<p align="left">(Rule 1 is needed because <span class="codeInline">S</span> could be an interface and therefore not a subtype of <span class="codeInline">Object</span>, nevertheless the assignment is safe as, in Java, all objects are instances of <span class="codeInline">Object</span>.)</p>
+<p align="left">Note that these rules only apply when <span class="codeInline">T</span> is a reference type. When <span class="codeInline">T</span> is a primitive type, the rule is that <span class="codeInline">S</span> must be <span class="codeInline">T</span> or widen to <span class="codeInline">T</span>. </p>
+<h2 align="left">Dynamic dispatch revisited</h2>
+<p align="left">Now let's take another look at how method calls are checked and executed.</p>
+<p align="left">We'll consider a method call</p>
+<p align="center" class="codeInline">e.foo()</p>
+<p align="left">where the static type of expression <span class="codeInline">e</span> is <span class="codeInline">T</span>.</p>
+<p align="left">At compile time:</p>
+<ul>
+  <li>The compiler looks in class <span class="codeInline">T</span> for a method <span class="codeInline">foo</span> with no parameters. The method may be declared in <span class="codeInline">T</span> or it may be inherited from some supertype of <span class="codeInline">T</span>. If the method can't be found, it's a compile-time error.</li>
+  <li>The static type of <span class="codeInline">e.foo()</span> is the return type of foo as declared in <span class="codeInline">T</span>. </li>
+</ul>
+<p>At run time:</p>
+<ul>
+  <li>If <span class="codeInline">e</span> evaluates to <span class="codeInline">null</span>, there is a run-time error (an exception).</li>
+  <li>Otherwise, <span class="codeInline">e</span> must refer to a direct instance of a class<span class="codeInline"> S</span> that is a subtype of <span class="codeInline">T</span>.
+      <ul>
+        <li>In this case, the implementation for the method is the one declared in (or inherited by) class <span class="codeInline">S</span>.</li>
+      </ul>
+  </li>
+</ul>
+<p>In other words, the choice of which method implementation to use is based on the dynamic type of <span class="codeInline">e</span>, not its static type. </p>
+<p>Here is an example. Suppose that <span class="codeInline">S</span> and <span class="codeInline">R</span> are two subtypes of <span class="codeInline">T</span> and that <span class="codeInline">S</span> and <span class="codeInline">R</span> provide different implementations for method foo.</p>
+<pre class="code">T r ;
+r = <span class="codeKeyword">new</span> S() ;
+r.foo() ; // Uses the implementation in S
+r = <span class="codeKeyword">new</span> R() ;
+r.foo() ; // Uses the implementation in R
+<span class="codeKeyword">if</span>( [some complex expression] ) 
+    r = <span class="codeKeyword">new</span> S() ;
+<span class="codeKeyword">else</span> r = <span class="codeKeyword">new</span> R() ;
+r.foo() ; // At run-time it is decided which 
+          // implementation to use.</pre>
+<p>The last call illustrates that the compiler can not (in general) determine which implementation of a method will be called. This determination is made at run-time.</p>
+<p>(You might wonder how dynamic dispatch can be efficiently implemented. This is covered later in these notes. A Java specific explanation can be found in Chapters 5 and 8 of <a href="http://www.artima.com/insidejvm/ed2/index.html">Inside the Java Virtual Machine</a>.) </p>
+<h2 align="left">instanceof</h2>
+<p align="left">You can enquire about the dynamic type of an expression using the <span class="codeKeyword">instanceof</span> operator. For example</p>
+<pre align="left" class="code">if( r <span class="codeKeyword">instanceof</span> T ) ...</pre>
+<p><span class="codeInline">r <span class="codeKeyword">instanceof</span> T</span> is true if <span class="codeInline">r</span> refers to an instance of <span class="codeInline">T</span>. I.e., if <span class="codeInline">r</span> does not evaluate to null and <span class="codeInline">r</span>'s dynamic type is a subtype of <span class="codeInline">T</span>. </p>
+<p>If you find your self using <span class="codeKeyword">instanceof</span>, it is likely that you could design your code better. Code that depends on <span class="codeKeyword">instanceof</span> has a &quot;bad smell&quot; about it. </p>
+<h2>What about arrays?</h2>
+<p>Above we assumed that <span class="codeInline">S</span> and <span class="codeInline">T</span> are not array types.</p>
+<p>If <span class="codeInline">T</span> is an array type, it is considered to extend the library class <span class="codeInline">Object</span> and to implement the library interfaces <span class="codeInline">java.io.Serializable</span> and <span class="codeInline">Clonable</span>.</p>
+<p align="left"></p>
+<pre align="left" class="code">Object r = <span class="codeKeyword">new int</span>[10] ; // This is ok.</pre>
+<p>So far, so good.</p>
+<p>There is one really weird rule about arrays though. Suppose <span class="codeInline">S</span> is a subtype of <span class="codeInline">T</span> and we have variables</p>
+<p align="left"></p>
+<pre align="left" class="code">S[] sa ;
+T[] ta ;</pre>
+<p>Then we can actually assign </p>
+<p align="left"></p>
+<pre align="left" class="code">ta = sa ;</pre>
+<p>even though the static type of <span class="codeInline">sa</span> is not a subtype of the static type of <span class="codeInline">ta</span>. Neither Rule 0 nor Rule 1 help. We need a new rule</p>
+<blockquote>
+  <p>Rule 2: Suppose <span class="codeInline">r</span> is a variable with static type <span class="codeInline">T</span> and <span class="codeInline">e</span> is a value of static type <span class="codeInline">S</span>:</p>
+  <p align="center"><span class="codeInline">r=e</span> is allowed if<span class="codeInline"> S </span> and <span class="codeInline">T</span> are array types and the item types are assignable.<span class="codeInline"></span></p>
+</blockquote>
+<p>and, of course, the same rule applies to initialization, argument passing, and returning results. </p>
+<p>This rule leads to a problem. Consider the following program where <span class="codeInline">S</span> is a subtype of <span class="codeInline">T</span>, <span class="codeInline">R</span> is another subtype of <span class="codeInline">T</span>, but <span class="codeInline">R</span> is not a subtype of <span class="codeInline">S</span>. </p>
+<p align="left"></p>
+<pre align="left" class="code">
+//S is a subtype of T
+//R is a different subtype of T, but not a subtype of S<br>S[] sa = <span class="codeKeyword">new</span> S[10] ;<br>T[] ta = sa ;<br>ta[0] = <span class="codeKeyword">new</span> R();</pre>
+<p>This code actually compiles with no error or warning!</p>
+<p>However, if it were to run, it would violate run-time type safety, as <span class="codeInline">sa[0]</span> would be an <span class="codeInline">R</span> object, not an <span class="codeInline">S</span> object.</p>
+<p>So what really happens? Well, the code compiles, but it does not run to completion. The last statement causes a run-time error.</p>
+<p>Whenever a reference is assigned to an array item, at run time there is a check that the reference is either null or points to an object of an appropriate type. If not, there is a run-time error.</p>
+<p>Why?</p>
+<p>Consider this example: </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/ArrayPassingExample.java", true, "code", "default.cfg", "A" );
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/ArrayPassingExample.java", true, "code", "default.cfg", "C" );
+</script>
+</p>
+<p>The last line is only allowed because of rule 2. However, we can see that the method does not assign to any item of the array, so the call is in fact perfectly safe.</p>
+<h2>What about generic classes and interfaces</h2>
+<p>Specializations of generic classes and interfaces follow similar rules to ordinary classes and interfaces. For example <span class="codeInline">ArrayList&lt;Player&gt;</span> is a subtype of <span class="codeInline">List&lt;Player&gt;</span>.</p>
+<p>However, <span class="codeInline">List&lt;Player&gt;</span> is not a subtype of <span class="codeInline">List&lt;MovingObject&gt;</span> even though <span class="codeInline">Player</span> is a subtype of <span class="codeInline">MovingObject</span>.</p>
+<p>Contrast the following example with the previous. </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/ArrayPassingExample.java", true, "code", "default.cfg", "B" );
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/ArrayPassingExample.java", true, "code", "default.cfg", "D" );
+</script>
+</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

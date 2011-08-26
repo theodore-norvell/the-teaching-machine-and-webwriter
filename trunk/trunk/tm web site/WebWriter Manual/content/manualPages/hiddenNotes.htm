@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Hidden Notes</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>Permits hidden notes which can be turned on or off to be inserted into the text flow.
+  For example, whereas in class a Teaching Machine is likely to be run live,
+  an instructor may want to provide specialised notes for students pointing out
+  what to look for when they run the example themselves. Such notes are a distraction
+  in the lecture and so are turned off. </p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>startNote()</strong><br>
+<strong>endNote()</strong><br>
+<h3>Arguments</h3>
+<p>Neither function takes any arguments</p>
+<h3>Return</h3>
+<p>Nothing is returned</p>
+<h3>Action</h3>
+<p>All HTML between the start and the end of the hidden note can be turned on or off
+  under the control of the a button <img src="../../webWriter/images/extraNoteNormal.gif" alt="hidden note" width="43" height="21"> inserted in the place of the hidden note. </p>
+<h3>Snippet</h3>
+<p>The two functions act naturally together as a wrap snippet.</p>
+<hr>
+<h2><a name="example">Example</a></h2>
+<p>A wrap snippet
+  has been used to mark the following entry as a note:</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+  Most good HTML editors provide snippet support. In the case of a wrap snippet
+  the author just selects the section to be wrapped and inserts the snippet.
+  Begin and end snippets are inserted before and after the selection automatically. 
+<script language="JavaScript">
+ endNote();
+</script  ></p>
+<p>Hidden notes are controlled by the <code>.hiddenNote</code> style in the stylesheets. </p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

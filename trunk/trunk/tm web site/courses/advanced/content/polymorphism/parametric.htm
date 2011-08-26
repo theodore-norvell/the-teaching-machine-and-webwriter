@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Parametric Polymorphism</title>
+</head>
+<body>
+<p>Remember swap?</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("cswapfrag.cpp", false, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>This is the old C style. We had to create different swaps for different data
+  types and give them different names (like <span class="codeInline">dbleSwap(double
+  *,double *)</span>, <span class="codeInline">charSwap(char
+*, char *)</span>).</p>
+<p>
+  C++ improved this by allowing us to overload the swap function, so we could
+    always use the same name. (The compiler then mangles the names to create
+      different ones automatically.) But we still have to write separate functions
+      for each
+(note switch to C++ pass-by-reference as well)</p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("C++SwapOverload.cpp", false, "code", "3891lecture.tmcfg", "", "");   
+</script>
+<h2><a name="generic">A Generic Swap</a></h2>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("swapTemplate.cpp", false, "code", "3891lecture.cfg", "A", "");    
+</script>
+<p>Now the compiler writes all the variations for us!!</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("swapTemplate.cpp", false, "code", "3891lecture.cfg", "B", ""); 
+</script>
+</p>
+<p>If we really want to swap strings (instead of their pointers) we can write
+  a special overload ( an ad hoc polymorphism) on top of the template overload
+(a parametric polymorphism ).</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stringSwap.cpp", false, "code", "3891lecture.tmcfg", "", "");
+    
+  </script>
+</p>
+<p>Given both kinds of polymorphism, the compiler looks first for a match to
+  the ad hoc(special) definitions. i.e. special definition over-rides the template
+definition.</p>
+<h2><a name="template">Template Arguments</a></h2>
+<p>Here's the lazy person's way to be able to equate arrays. You normally can't
+  equate arrays in C++ without writing special code (mainly because the compiler
+can not be assured the arrays are the same mSize)</p>
+<p> However structure variables and objects can be equated and&#8212;the privilege
+extends to an embedded array.</p>
+<p> Cute, eh! (Of course, the embedded arrays are always the same mSize because
+you have to declare the mSize of embedded arrays, so the compiler is happy).</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrayTemplate.cpp", false, "code", "3891lecture.tmcfg", "", ""); 
+</script>
+</p>
+<ul>
+  <li> The declaration looks a little strange. The angle brackets flag the compiler
+    which kind of object to create.</li>
+  <li>This is because the normal declaration <code>Array x;</code> gives no clue as to whether
+    <code>x</code> is an array of integers, doubles, etc.</li>
+</ul>
+<h2><a name="generalizing">Generalizing A Stack Class With A Template</a></h2>
+<p>The operation of container classes (e.g. stacks, queues, arrays) is largely independent of what is being contained.</p>
+<p>For queues, the first object placed in the queue is served regardless of the
+  kind of object.</p>
+<p>Stacks are characterised by last-in-first-out behaviour, again independent
+  of what is being pushed or popped.</p>
+<p>Here we focus on a Stack class. First we make its declaration a template. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.cfg", "A", "");   
+</script>
+</p>
+<p>Notice, we have only used 1 parameter here, the <code>type</code>. In the
+  declaration, the only things parameterized are the <code>push</code> and <code>pop</code> operations
+  and the declaration of the two pointers, <code>mpTos</code> and <code>mpStart</code>.
+  These are the only things in the class declaration that deal with what is being
+  held in, or moved on or off, the stack.</p>
+<p>Now we have to implement the class, creating templates for each function affected.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.cfg", "B", "");   
+  </script>
+</p>
+<p>In definitions external to the class, <span class="codeInline">Stack&lt;type&gt;</span> always
+  replaces <span class="codeInline">Stack</span> <em>except for</em> the constructor &amp; destructor
+  function names which are still <span class="codeInline">Stack()</span> &amp; <span class="codeInline">~Stack()</span></p>
+<p>Even the destructor and the <code>empty</code> function have to have templates created
+  for them even though neither function has anything to do with what is on the
+  stack.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.cfg", "C", "");   
+  </script>
+</p>
+<p>The reason is that a stack of doubles is a different class than a stack of
+  ints and so each will have its own destructor and <code>empty</code> function. </p>
+<p>Note that this parameterized stack handles ADTs as well as built in types.</p>
+<p>We'll define a <code>struct complex</code> after the template has been created.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.cfg", "D", "");   
+  </script> 
+</p>
+<p> Then we'll go ahead and use it with the template.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.cfg", "E", "");   
+  </script>
+</p>
+<p>The compiler was quite happy
+    to have complex declared after class <span class="codeInline">Stack&lt;type&gt;</span>.
+      In essence the template tells the compiler how to build the correct Stack
+  class <em>when it is needed</em>.</p>
+<p> The class is <span class="codeInline">Stack&lt;type&gt;</span> not <span class="codeInline">Stack</span>. That is <span class="codeInline">Stack&lt;int&gt;</span> is a different
+class from <span class="codeInline">Stack&lt;complex&gt;.</span></p>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("swapTemplate.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("stackTemplate.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+
+</div>
+
+<script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</html>

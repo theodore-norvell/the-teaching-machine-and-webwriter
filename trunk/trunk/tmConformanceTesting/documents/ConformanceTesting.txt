@@ -1,0 +1,205 @@
+Conformance testing of the TM Java and C++
+compilers.
+
+Aims.  The aim of this set of tests is to check conformance
+with the C++ and Java standards in a black-box way.
+With it we can check
+   -- That files that should produce error messages, when
+      compiled, do.
+   -- That files that should not produce error messages,
+      when compiled, do not.
+   -- That compiled files output the right values for a given
+      input.
+   -- That display of the state of execution not cause any
+      errors in the DisplayEngine.
+
+Non-aims
+  -- It is not an aim to ensure that the DisplayEngine display 
+     anything sensible.
+  -- It is not an aim to test that the granularity of execution steps
+     be right. E.g. that "step into" actually does a step into something.
+      
+Oracle.
+
+The test must be set by someone who already
+knows the right answer. (Binder calls it a "solved
+example oracle".)  However, it is an aim that the
+same test suite can be run with other compilers in
+order to test the tests themselves against a "gold standard".
+
+Syntax.
+
+We use (yet another) special comment syntax.
+Here is an example test file.
+
+//! Compile this file.
+//! Expect no errors.
+//! Execute with input "1\n".
+//! Expect output "2\n".
+
+#include <iostream>
+using namespace std ;
+
+int main() {
+   int i ; cin >> i ;
+   cout << i+1 << endl ;
+   return 0 ;
+}
+
+The comments at the front should be self explanatory.
+The test fails if the file does not compile.  Furthermore
+it fails if the compiled file does not produce the expected
+value when executed. Otherwise, the test passes.
+
+If there are no special comments, then the file is
+considered not to be a primary test file.
+           
+Examples.
+  * No special comments.  File is not considered a primary test and will not
+    be loaded.
+  
+  * //! Compile.
+    Equivalent to 
+    //! Compile this file. Expect no error.
+
+  * //! Compile expect error ~ /*.no conversion.*/
+    Passes only if the compilation phase matches the regular expression.
+  
+  * //! Run.
+    Equivalent to
+    //! Compile. Run.
+    which is equivalent to
+    //! Compile; expect no error. Run with input = ""; expect any output.
+    which passes only if there is no error during either compilation or execution.
+
+  * //! Compile. Run. Expect output matches /*.abc.*/ .
+    Passes only if the output contains "abc" somewhere in it.
+    
+  * //! Compile. Run with input "xyz". Output = "abc".
+    Passes only if the output is exactly equal to "abc".
+    
+  * //! Run with input "1"; expect output "42". Run with input "2"; expect output "84".
+    Compiles and then runs the resulting program twice.
+
+The syntax of the comments in EBNF form is as follows:
+
+S --> Compile
+
+Compile --> "compile ["this" "file"]   Error
+          | Execute Executes
+          | empty
+
+        Note -- If empty, the file is not considered a primary test file
+                so no compilation will be done.
+             -- In the second case "compile expect no errror" is implied.
+            
+Error --> (["expect" "no" "error" ] Executes
+          |"expect" "any" "error"
+          |"expect" "error" ["equals" |  "matches"] (<string>)+
+          )
+          
+     Notes -- The default is "equals".
+
+Executes --> Execute*
+
+Execute --> "execute"  Input Output
+
+Input --> [ ["with"] "input" ["equals"] (<string>)+ ]
+
+        Notes -- If empty, the input stream is empty.
+
+Output --> ["expect"] ( [ "any" "output" ]
+                      | "no" "output"
+                      | "output" ["equals" |  "matches"] (<string>)+
+                      | "any" "error"
+                      | "error" ["equals" |  "matches"] (<string>)+
+                      )
+        
+        Notes: - If empty, the default is "expect any output".
+               - Any of the first three choices passes only if
+                 there is no run-time error.
+               - The default is "equals".
+    
+Lexical analysis.
+
+Keywords are case insensitive.
+
+The following sets of tokens are equivalent
+   error errors
+   input inputs
+   output outputs
+   ~ match matches matching
+   = == equal equals equaling
+   execute run
+   expect expecting
+
+The following characters may be used to separate tokens in the special
+comments, but are otherwise ignored: 
+         space,  tab, return, formfeed, ",", ".", ";", ":", "!", "?"
+
+Strings are contained between double quotes. A string consists
+of zero or more items each of which is
+   -- An ascii character from from 32 (space) to ~ excluding " and \ .
+      I.e. space ! # $ % & ' ( ) * + , - . / 0-9 : ; < = > ?
+           @ A-Z [ ] ^ _ ` a-z { | } ~
+   -- A \ followed by 
+           *  \  -- backslash
+           *  "  -- double quote
+           *  %  -- a percent sign
+           *  |  -- a vertical bar
+           *  r  -- return (ascii 13)
+           *  n  -- line feed (ascii 10)
+           *  t  -- tab (ascii 9)
+           *  u and then exactly 4 hex digits -- the unicode character.
+Remember that in regular expressions the backslash must be escaped.
+So "\\\\" is a regular expression that matches a single \ .
+
+Alternatively, strings may be written between forward slashes, in
+which case the escape character is %, so /\\/ is a regular expression
+that matches a single backslash.  All the escapes are the same -- only
+the escape character is different.
+
+For the time being, the special string "endl" is short for "\n" .
+In the future, this may match the appropriate line ending for the
+execution platform.
+
+A nonempty sequence of strings is catentated together. So one might write
+  "abc" endl /"hi"/
+           
+Regular expressions.
+
+When "matches" or "~" is used in front of a string sequence, it is interpreted as a
+regular expression according to the java.util.regex package.  Each
+string is compiled using the MUILTLINE and DOTALL flags, which
+means that ^ matches the start of a line, $ mathes the end of a line,
+and . matches any character including line separators.
+
+See http://java.sun.com/j2se/1.4.2/docs/api/java/util/regex/Pattern.html for
+a full description of Java regular expressions.
+
+This is particularly useful where the gold standard compilers and the
+teaching machine have different error messages or slightly different
+output values (e.g. floating point).
+
+
+History.
+
+For each file, we will keep (somewhere) a history
+of how when it has been used as a test and whether it has
+passed or failed.
+
+Further thoughts on the oracle.
+
+I suppose we could arrange it so that each test is first run
+through a gold standard compiler to see what it does and then
+run through the TM, to see if it does the same.  This
+would relieve the test designer of having to annotate.
+But this would require the gold standard compiler to always
+be available.
+
+The best of both worlds might be to have the option of
+using a gold standard implementation to create the annotations,
+which could then be hand edited if need be.  For the first
+version, though, I'll assume that the program is
+human annotated.  After all, coming up with the annotation
+is not the hard part of designing a test.

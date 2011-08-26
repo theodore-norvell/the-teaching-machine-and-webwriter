@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Mutable Objects</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="mutators-and-accessors" id="mutators-and-accessors">Mutators and Accessors</a></h1>
+<p>Nonstatic methods can be classified as either
+    <script language="">
+insertDefLink("mutators","mutator")
+  </script>
+  or
+  <script language="">
+insertDefLink("accessors","accessor")
+</script>
+  . </p>
+<p>Accessors do not usually change the recipient object's state, that is the values of its field.</p>
+<p>If an accessor does change the value of the recipient's fields it does so only in a way that does not affect the value represented by the object. For example, we could add to our <span class="codeInline">BigNat</span> class a method</p>
+<pre class="code"><span class="codeKeyword">public void</span> trim() {<br>    <span class="codeKeyword">int</span> count = digits.length ;<br>    <span class="codeKeyword">while</span>( count &gt; 0<br>           &amp;&amp; digits[ count-1 ] == 0 )<br>        count -= 1 ;<br>    //For all i in {count, count+1, ... digits.length-1} : digits[i]==0<br>    <span class="codeKeyword">if</span>( count &lt; digits.length ) {<br>        <span class="codeKeyword">int</span>[] newDigits = new int[ count ] ;<br>        <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; count ; ++i ) newDigits[i] = digits[i] ;<br>        digits = newDigits ; }<br>}
+</pre>
+<p><span class="codeInline">trim</span> removes any extra zero digits from the representation. Thus while it may change the <span class="codeInline">digits</span> field, it does not change the value of the natural number represented. It is an accessor.</p>
+<p>A mutator is a nonstatic method that is not an accessor. I.e. it may change the value represented by the object. </p>
+<p>Immutable objects are direct instances of classes that have accessors as public methods and have no public nonstatic fields.</p>
+<p>Mutable objects are objects that can be changed via their public interface. Arrays are mutable objects because we can assign to their items. </p>
+<h2><a name="mutable_example" id="mutable_example">An example mutable object.</a></h2>
+<p>Let us consider a class that models a disk that is movable across a 2 dimensional surface.</p>
+<p>(We could use this to represent a ball on a field or a zone around a ship.)</p>
+<p>
+  <script language="JavaScript">
+      setButtons(true, false, true,"","");
+      insertCode("MovableDisk.java", false, "code", "linked.cfg");
+    </script>
+</p>
+<p>The state of each <span class="codeInline">MoveableDisk</span> object is defined by the values of its three fields (centreX, centreY, radius). For example (0, 0, 1) is a state representing a unit disk at the origin. </p>
+<p>Its methods</p>
+<ul>
+  <li><span class="codeKeyword">void</span><span class="codeInline"> setCentre(</span><span class="codeKeyword">double</span><span class="codeInline"> x, </span><span class="codeKeyword">double</span><span class="codeInline"> y) </span>-- May change the state of the object. It is a <span class="pseudoCode">mutator</span>. </li>
+  <li><span class="codeKeyword">void</span><span class="codeInline"> setRadius(</span><span class="codeKeyword">double</span><span class="codeInline"> newRadius</span><span class="codeInline">) </span>-- May change the state of the object. It is a <span class="pseudoCode">mutator</span>. </li>
+  <li><span class="codeKeyword">boolean</span><span class="codeInline"> contains(</span><span class="codeKeyword">double</span><span class="codeInline"> x, </span><span class="codeKeyword">double</span><span class="codeInline"> y)</span> -- Can not change the state. It is an <span class="pseudoCode">accessor</span>. </li>
+</ul>
+<h3>Class invariants</h3>
+<p>Note that some conceivable states do not make sense in this application: They do not represent a disk. For example (0, 0, -1) does not represent a disk. Nor does (Double.PositiveInfinity, Double.NegativeInfinity, 1)</p>
+<p>The class invariant describes the conceivable states of instances that are acceptable.</p>
+<ul>
+  <li>In writing each method, we <span class="pseudoCode">may assume</span> that the invariant is true at the start of its execution. (We also may assume the preconditions are met.) </li>
+  <li>In writing each method and constructor, we <span class="pseudoCode">must ensure</span> that the invariant is true at the end of its execution.</li>
+  <li>We <span class="pseudoCode">must</span> also <span class="pseudoCode">ensure</span> that the state is not changed except by methods and constructors of the class. (We do this with the <span class="codeConstant">private</span> modifier.) </li>
+</ul>
+<h1>Aliases</h1>
+<p>With mutable objects we have to be very careful when more than one variable refers to the same object.</p>
+<p>Consider the following simple class.</p>
+<p>
+  <script language="JavaScript">
+      setButtons(true, false, true,"","");
+      insertCode("MutableInt.java", false, "code", "linked.cfg");
+    </script>
+</p>
+<p>Suppose we create two objects of this class and call a mutator on one; the other will be unaffected.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("DemoNoAlias.java", true, "code", "linked.cfg");
+    </script>
+</p>
+<p>On the other hand, if two variables refer to the same object then a call to a mutator via one variable will affect the object referenced by the other. We say that the two objects are
+    <script>insertDefLink("aliases","alias")</script>
+  of each other. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("DemoAlias.java", true, "code", "linked.cfg");
+    </script>
+</p>
+<p>Variables that have a class type or an array type (or, as we will see later an interface type) are said to have
+    <script language="">
+insertDefLink("referenceType","reference types")
+</script>
+  . Whenever a variable of a reference type is assigned the value of another variable, the two variables become aliases of each other. This is particularly useful when one of the variables is a parameter and the other is an argument.</p>
+<p>Consider the following subroutine.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("DemoMutableIntSwap.java", true, "code", "linked.cfg");
+    </script>
+</p>
+<p>For the duration of the call, the parameters are aliases of the arguments.</p>
+<p>Arrays are also reference types, so an array parameter and an array argument will be aliases.</p>
+<p>Consider this sort routine.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("DemoSort.java", false, "code", "linked.cfg", "A");
+    </script>
+</p>
+<p>Now we call it as follows</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("DemoSort.java", true, "code", "linked.cfg", "B");
+    </script>
+</p>
+<p>During the first call to <span class="codeInline">sort</span>, <span class="codeInline">a</span> is an alias of <span class="codeInline">b</span>; during the second call to <span class="codeInline">sort</span>, <span class="codeInline">a</span> is an alias of <span class="codeInline">c</span>. Thus the same method can operate on different objects at different times. </p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

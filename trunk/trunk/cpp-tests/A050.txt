@@ -1,0 +1,49 @@
+#include <iostream>
+
+using namespace std ;
+void foo ()
+{
+    int k ;
+    return ;
+}
+
+void main() {
+
+    foo() ;
+    
+    int i = 0 ;
+    while( i < 10 ) {
+        ++ i ;
+        double d = i ;
+        if( i == 3 )
+            continue ;
+        else if( i == 6 )
+            break ;
+        ++i ; }
+    i ;
+    
+    for(int j=0; 
+        j < 10 ; 
+        ++j ) {
+        double d = j ;
+        if( j == 3 ) 
+            continue ; 
+        else if( j == 6 ) 
+            break ;
+        ++d ; }
+    
+    i ;
+    
+    i = 0 ;
+    do {
+        ++ i ;
+        double d = i ;
+        if( i == 3 )
+            continue ;
+        else if( i == 6 )
+            break ;
+        ++i ; }
+    while( i < 10 ) ;
+    i ;
+    
+}

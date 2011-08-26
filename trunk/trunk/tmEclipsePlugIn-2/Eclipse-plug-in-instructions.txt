@@ -1,0 +1,26 @@
+To install the TM plug-in for Eclipse:
+  (0) Shutdown any running eclipse processes.
+  (1) Find your Eclipse plug-ins directory.
+      On MS Windows this is typically called
+      C:\Program Files\eclipse\plugins
+      On a Mac it may be called /Installed-software/eclipse/plugins
+  (3) Delete any files in your Eclipse plug-ins directory with names matching
+      tmEclipsePlugIn*.jar or TeachingMachinePlugin*.jar.
+  (4) Move the file TeachingMachinePlugin_3.4.0.jar from
+      the installation directory to your Eclipse plug-ins directory.
+  (5) Start-up Eclipse.
+
+Using the TM plug-in for Eclipse:
+
+   * When you are editing a .java or a .cpp file you should
+     be able to send this file to the Teaching Machine
+     by clicking on the Teaching Machine Icon on the Eclipse
+     toolbar. But, you should save the file first!
+     
+   * Alternatively, in Eclipse's Package Explorer view or
+     Navigator view, right click on a .java or .cpp file
+     and select Teaching Machine/Send to Teaching Machine.
+     Save the file first, though.
+
+We've tested the plug-in on the Galileo and Helios versions of Eclipse.
+

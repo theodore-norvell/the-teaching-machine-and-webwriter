@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Arrays</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="arrays">Arrays</a></h1>
+<p>Arrays are fixed-sized sequences of variables of the same type.</p>
+<p>Later we'll look at exactly where arrays are stored and separating declaration from allocation.</p>
+<p>For now we'll consider the declaration and the allocation of an array together.</p>
+<p>Variable declarations may include a bracket-pair to indicate it is an array reference variable. We extend the syntax of variable declarations to </p>
+<p class="syntaxDef"> <span class="stxNonterminal"> VariableDeclaration --&gt; Type</span> <span class="stxMeta">(</span> <span class="codeInline">[]</span> <span class="stxMeta">)</span>* <span class="stxNonterminal">Identifier</span> <span class="stxMeta">(</span> <span class="style6"><span class="codeInline">= </span></span><span class="stxNonterminal">Expression</span> <span class="stxMeta">)<sup>?</sup></span><span class="style6"><span class="codeInline"> ;</span></span></p>
+<p>[I've allowed the bracket-pair to be repeated any number of times. We've already seen that 0 bracket-pairs is used for declaring non-array variables. One bracket-pair will be used in this section. Later we'll see that multiple bracket-pairs can be used for multidimensional arrays.]</p>
+<p>The expression, when there is one bracket-pair, should have the form</p>
+<p class="syntaxDef"> <span class="stxNonterminal"> Expression --&gt; </span><span class="codeKeyword">new </span><span class="stxNonterminal">Type </span> <span class="codeInline">[ </span><span class="stxNonterminal">Expression</span><span class="codeInline"> ]</span></p>
+<p>with the expression in brackets being a non-negative <span class="codeKeyword">int</span> and the type matching the type in the declaration. Such an expression is called an <strong>array allocation expression</strong>. </p>
+<p>Here is an example of a declaration and allocation of an array of 10 <span class="codeKeyword">int</span>s </p>
+<p class="code"><span class="codeKeyword">int</span>[] a = <span class="codeKeyword">new</span> <span class="codeKeyword">int</span>[ 10 ] ;</p>
+<p>Such a declaration declares a array reference variable <span class="codeInline">a</span> and initializes it to refer to a new array of 10 <span class="codeKeyword">int</span>s. </p>
+<div class="breakoutBox"> <strong>Note</strong>
+    <script language="JavaScript" type="text/JavaScript">
+         startNote();
+      </script>
+    <strong>It may seem odd to have to repeat the type in the above declaration, once in the declaration and once in the allocation. The reason is that in Java we can declare without allocating and allocate without declaring. Later we'll see examples of this. End of Note.</strong>
+    <script language="JavaScript" type="text/JavaScript">
+          endNote();    
+    </script>
+</div>
+<p>An array is a sequence of variables.</p>
+<p>These variables are called the <strong>items</strong> of the array and are numbered from 0 up to one less than the length of the array.</p>
+<p>So the items of an array, referred to by <span class="codeInline">a</span>, of length 10, are </p>
+<p class="code">a[0]</p>
+<p class="code">a[1]</p>
+<p class="code">a[2]</p>
+<p class="code">...</p>
+<p class="code">a[9]</p>
+<p>The syntax is</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression </span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">[</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">]</span> </p>
+<p>The expression on the left is usually an <span class="stxNonterminal">ExpressionName</span>, but it doesn't have to be; it does, however have to refer to an array.</p>
+<p>The expression in the brackets should be of type <span class="codeKeyword">int</span> (or widen to type <span class="codeKeyword">int</span>). At run-time this expression should evaluate to a suitable index, i.e. an integer greater or equal to zero and less than the length of the array. </p>
+<p>By the way, the length of an array can be found by an expression like this </p>
+<p class="code">a.length</p>
+<p>The general syntax is</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression </span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">.</span> <span class="stxTerminal">Identifier</span> </p>
+<p>For example, let's calculate a running average for an array of <span class="codeKeyword">double</span>s of length 10
+    <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("RunningAverage.java", true, "code", "default.cfg", "A");
+  </script>
+</p>
+<p>For another example, here we determine whether an array of integers is nondecreasing.</p>
+<pre class="code"><span class="codeKeyword">boolean</span> isNondecreasing = <span class="codeKeyword">true</span> ;<br><span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 1 ; i &lt; a.length ; ++i )<br>    <span class="codeKeyword">if</span>( a[i-1] &gt; a[i] )<br>        isNondecreasing = <span class="codeKeyword">false</span> ;</pre>
+<p>Arrays are of fixed length. You can never change the size of an array. A statement such as</p>
+<p class="code">a.length = a.length + 1 ; <span class="codeComment">// Don't do this </span></p>
+<p>Will result in a compile time error. </p>
+<h2>Where are the arrays?</h2>
+<p>Do you remember at the start of the section on primitive types, we said &quot;In Java, values are either primitive values or references to objects&quot;?</p>
+<p>When you declare an array reference variable</p>
+<p class="code"><span class="codeKeyword">int</span> [] a ; </p>
+<p>The variable does not contain the array. It contains a <strong>reference</strong> to an array. (A reference to an array is also called a <strong>pointer</strong> to an array.) </p>
+<div class="breakoutBox"> <strong>C++ Note</strong>
+    <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+  In C++, references and pointers are different sorts of things -- though similar. Java's <em>references</em> are essentially the same sort of thing as C++'s <em>pointers</em>. There is nothing in Java that corresponds to C++'s references. The Java Language Specification and most books use the term &quot;reference&quot; and not &quot;pointer&quot;; I'll mostly follow this practice.
+  <p></p>
+  <p><strong>End of Note.</strong>
+      <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<p>Until initialized, the variable refers to no array.</p>
+<p>Only array allocation expressions create arrays. </p>
+<p>Arrays exist in a region of memory called <strong>the heap</strong> and continue to exist as long as they can be accessed.</p>
+<p> Consider this example.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("ArrayAllocation.java", true, "code", "linked.cfg", "A");
+</script>
+</p>
+<p class="principle">Principle<br>
+  In Java, all arrays are objects and, like all objects in Java, they are allocated in the heap. </p>
+<div class="breakoutBox"> <strong>C++ Note</strong>
+    <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+  In C++, arrays can be local variables, static variables, data members, items of other arrays, or allocated in the heap. In Java, there is no choice: all arrays are allocated on the heap.
+  <p></p>
+  In Java, arrays are objects, and all objects must be allocated in the heap.
+  <p><strong>End of Note.</strong>
+      <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<p class="principle">Principle<br>
+  In Java, variables hold either primitive values or references to objects. </p>
+<p>We'll come back to arrays later.</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

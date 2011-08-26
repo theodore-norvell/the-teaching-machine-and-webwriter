@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="./style.css" type="text/css" rel="stylesheet" />
+        
+        <title>Project VISREED: JHigraph</title>
+    </head>
+    <body>
+        <h1>Project visreed: JHigraph</h1>
+        <h2>Introduction</h2>
+        <p>The project visreed is built on top of JHigraph. JHigraph provides generic interfaces for nodes, edges, whole higraphs and subgraphs. It also defined basic operations on these objects such as delete, duplicate, detach and replace. </p>
+        <p>JHigraph is the product of Dr Theodore S. Norvell and Dr Michael Bruce-Lockhart.</p>
+        <h2>Usage related to JHigraph</h2>
+        <h3>JHigraph Nodes</h3>
+        <p>One abstract node, <span class="name">RegexNode</span>, is constructed for <span class="name">Nodes</span> in JHigraph. Please see <a href="./system_design.html#h3_regular_expression_nodes">System Design: Regular Expression Nodes</a> for design details.</p>
+        <h3>JHigraph Branches</h3>
+        <p>This project does not use the <span class="name">Branch</span>es in JHigraph.</p>
+        <h3>JHigraph Edges</h3>
+        <p>This project does not use the <span class="name">Edge</span>s in JHigraph.</p>
+        <h3>JHigraph EdgeLabels</h3>
+        <p>This project does not use the <span class="name">EdgeLabel</span>s in JHigraph.</p>
+        <h3>JHigraph Views</h3>
+        <p>Each kind of <span class="name">Payload</span> has its corresponding <span class="name">NodeView</span>. Please see <a href="./system_design.html#h3_regular_expression_node_views">System Design: Regular Expression Node Views</a> for design details.</p>
+        <h3>LayoutManagers</h3>
+        <p>This project implements a set of horizontal <span class="name">NodeViewLayoutManager</span> to manage the layout of the position within each node.</p>
+        <footer>
+            Last update: <pre>$Id: jhigraph.html 529 2011-06-20 19:01:41Z xiaoyu $</pre>
+        </footer>
+        <script type="text/javascript" src="./js/UmlCanvas/UmlCanvas.standalone.min.js"></script>
+        <script type="text/javascript" src="./js/AutoToc.js"></script>
+    </body>
+</html>

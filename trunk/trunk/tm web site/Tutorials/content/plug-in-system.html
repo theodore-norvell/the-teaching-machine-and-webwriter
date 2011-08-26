@@ -1,0 +1,408 @@
+<title>The Teaching Machine Plug-In System</title>
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+-->
+</style>
+
+<h1>The Teaching Machine Plug-In System: A Cook's Tour</h1>
+<h2>Why Plug-Ins</h2>
+<p>In a component based software system, we would like for components to be able to use other components without being formally dependant on their classes. For example a client component A0 should be able to make use of a server component B0 without depending on any of the classes that comprise component B0. We should be able to replace B0 with some other component B1 composed of a whole other set of classes without needing to recompile A0 or any other part of the system. </p>
+<p>We can think about replacing one component B0 with another B1 at various times.</p>
+<ul>
+  <li><strong>Coding Time.</strong> The most common approach is to replace at <em>coding time</em>. For simplicity let's suppose that component B0 is composed of a single class, <span class="style1">B0</span>, or at least represented to the rest of the system by that single class (see the Facade pattern). Then usually what we do to replace B0 with B1 is to find all mentions of class <span class="style1">B0</span> in component A0 and elsewhere in the system and replace them with mentions of <span class="style1">B1</span>. If we were clever about writing A0 and the rest of the system, then <span class="style1">B0</span> and <span class="style1">B1</span> both implement a common Java interface, let's say <span class="style1">BInterface</span>, and the only place where we have to mention <span class="style1">B0</span> or <span class="style1">B1</span> is when we construct new <span class="style1">BInterface</span> objects. Java's interfaces are solve most of the problem of components not needing to know the implementation of their server objects, but not the issue of constructing the component in the first place. If such objects are created in several places, then we might use a factory object (see the Factory Method pattern) which only needs to be created once, let's suppose the factory class is called either <span class="style1">B0Factory</span> or <span class="style1">B1Factory</span>, depending on the component. But there is still at least one line in the code that has to be edited and recompiled each time we decide to change the implementation of the B component.</li>
+  <li><strong>Link Time.</strong> It is possible to replace B0 by B1 at <em>link time</em>. In Java this can be done by putting B1 in the jar file instead of B0, or by fiddling with the order of the entries on a class path. In this solution, both components should be represented by classes of the same name, so as to avoid the need to do any recoding and recompilation. This solution is not particularly satisfactory, as it requires us to maintain at least two classes with the same name and different implementations. Also, as we will see, it is of no help when we want multiple components that fill the same role.</li>
+  <li><strong>Run time.</strong> Java's reflection mechanism offers a way of deciding at <em>run time</em> which class to instantiate. Basically it allows you to instantiate a class without having its name hard-coded into the machine code. Rather the name of the class is a string that can be read from of a configuration file. Java's reflection system allows us to turn that string, say <span class="style1">&quot;B0Factory&quot;</span> into an object of class <span class="style1">java.lang.Class</span> and then, from that, to create an object of type <span class="style1">B0Factory</span>. If that string is fetched from a file, rather than being hard-coded into the program, then no recoding is needed to replace B0 by B1; it's just a change to a configuration file. However, digging class names out of files and using the reflection classes is a messy bit of coding that should be isolated in one place rather than being duplicated everywhere that one component wants to create another component. So we put all that messy stuff in one place, which is the TM Plug-In System. </li>
+</ul>
+<p>If A can use B without knowing (i.e., having hard-coded within it) the name of the classes that make up B, then A uses B &quot;anonymously&quot;. &quot;Use&quot; really means: creating the component, storing pointers to it, and or sending it messages. </p>
+<p>The TM Plug-In System implements run-time replacement of components. We call these component's &quot;plug-ins&quot;. The TM Plug-In System confines itself to problems of anonymous creation of plug-ins, as Java's interfaces handle anonymous messaging of plug-ins and anonymous storage of pointers to plug-ins quite adequately. The system also deals with storing the names of the classes that represent the various plug-ins and provides a graphical user interface that allows the user to change the names of the classes.</p>
+<h2>Multiple Plug-Ins</h2>
+<p>Another aspect of plug-ins, not yet touched on, is that we might want more than one plug-in to provide the same service. Suppose that component A0 uses component C to provide a view (i.e. visual representation) of some data. Well we might want to show the user multiple views at the same time. So we want to replace C with components C0, C1, C2 all at the same time. If we used coding time replacement we might write</p>
+<pre>   view[0] = new C0(theData) ;
+   view[1] = new C1(theData) ;
+   view[2] = new C2(theData) ;
+</pre>
+<p>Using the TM plug-in system, we can plug several components into the same &quot;jack&quot; to achieve this effect. Note that the link-time solution is quite inadequate to solve this problem. However, it is a simple extension to the run-time system.</p>
+<p>Suppose, though, that we want three instances of the C2 class, perhaps to provide views along 3 different axes of space. Then we might write:</p>
+<pre>   view[0] = new C0(theData) ;
+   view[1] = new C1(theData) ;
+   view[2] = new C2(&quot;x&quot;, theData) ;
+   view[3] = new C2(&quot;y&quot;, theData) ;
+   view[4] = new C2(&quot;z&quot;, theData) ;
+</pre>
+<p>This sort of thing should also be possible.</p>
+<h2>Use of Factories</h2>
+<p>You might expect that the plug-in system itself would construct the plug-in objects using reflection. This would be a good idea if all plug-ins could be constructed with the 0-parameter constructor. However, that would be too annoying a restriction. Furthermore it eliminates the possibility that a plug-in would belong to a singleton class. So instead the Plug-In System creates <em>factory objects</em> belonging to <em>factory classes</em>. The main responsibility of each factory object is to produce plug-ins. <em>By</em> <em>convention</em>, each factory class has a method <span class="style1">createPlugIn</span>,  returning a plug-in. (Note the name &quot;<span class="style1">createPlugIn</span>&quot; is not fixed. You can call it &quot;<span class="style1">createView</span>&quot; or &quot;<span class="style1">createDocument</span>&quot; or what ever you want.) Usually each call to <span class="style1">createPlugIn</span> will create a new plug-in, but in the case of a singleton, it would just return a pointer to the single instance.</p>
+<p>The use of factories is shown in the following figure.</p>
+<p><img src="PIMusage.png" width="970" height="3314"> </p>
+<p>Aside: As a result of the use of factories, the TM Plug-In System does not manage plug-ins at all, but rather factories. Thus it is somewhat misnamed. </p>
+<p>Continuing the example of the previous section, we would have 3 factory classes for constructing plug-ins of types C0, C1, and C2 respectfully. To simplify the coding of A0, it is useful if all the factory classes have a <span class="style1">createPlugIn</span> method with the same interface. This might seem a bit tricky as C2 has  different constructor parameters compared to C0 and C1. For now we'll ignore the axis parameter. It will work out in the end ... trust me. We'll capture this requirement with an interface </p>
+<pre>   <strong>public</strong> <strong>interface</strong> CFactoryInterface <strong>extends</strong> tm.plugins.PlugInFactory {
+      <strong>public</strong> CPlugInInterface createPlugIn( Data theData ) ;
+   }</pre>
+<p>Now we can create three implementations of this interface, one for each of C0, C1, and C2. Here is the first</p>
+<pre>    <strong>public</strong> <strong>class</strong> C0Factory implements CFactoryInterface {
+
+             <strong>private</strong> C0Factory() {} 
+    
+             <strong>static</strong> <strong>public</strong> C0Factory createInstance( ) {
+                  <strong>return</strong> <strong>new</strong> C0Factory() ;
+             }
+    
+             <strong>public</strong> CPlugInInterface createPlugIn(Data theData) {
+                 <strong>return</strong> <strong>new</strong> C0( theData ) ;
+             }
+
+             <strong>public</strong> Requirement[] getRequirements() {
+                 <strong>return</strong> <strong>new</strong> Requirement[0];
+             }
+    }
+</pre>
+<p>You can see that the <span class="style1">createPlugIn</span> method is implemented to create a <span class="style1">C0</span> object. You can also see that the factory must be created using a static method called createInstance. The plug-in system will call the createInstance method to create  the factory objects. (The rationale for using a static method in preference to a constructor is that it allows the factory objects to be singletons, if that is the wish of the designer.) </p>
+<p>The <span class="style1">getRequirements</span> method is used to indicate what kinds of plug-ins <span class="style1">C0</span> objects will need. It will be described later.</p>
+<p>The <span class="style1">C0</span> class, although it isan actual plug-in class, is not particularly interesting for our purposes. Its interface depends on the needs of component A0 and its implementation depends on what it does. For the example it is sufficient to assume <span class="style1">C0</span> is  some class that implements <span class="style1">CPlugInInterface</span> and <span class="style1">CPlugInInterface</span> represents some service that component A0 needs objects to do for it. The content of the <span class="style1">CPlugInInterface</span> and how <span class="style1">C0</span>, in particular, implements it are very important to the designers of the A0 and C0 components; but not to us. We are interested in how the C0 objects get created, but once they are created, the plug-in system has no further role. There are no particular constraints on the plug-in classes; in particular there is no single interface that all plug-in objects must implement. Looking just at a plug-in class you would never know that it is a plug-in class.</p>
+<p><span class="style1">C1Factory</span> is similar to <span class="style1">C0Factory</span>, except it creates C1 objects rather than C0 objects. </p>
+<p><span class="style1">C2Factory</span> is similar to the <span class="style1">C0Factory</span>, except that its createInstance method and its constructor take a string parameter. Factory classes can use this string parameter for any purpose. In this particular example it is simply passed on to the plug-in object. Ultimately this string parameter will be supplied by the user who is configuring the set of plug-ins for their system. This extra parameter allows the same factory class to be reused to create any number of different factory objects that can have  different behaviours.</p>
+<pre>    <strong>public</strong> <strong>class</strong> C2Factory implements CFactoryInterface {
+
+             <strong>private</strong> String parameter ; 
+			 
+             <strong>private</strong> C2Factory(String parameter) { <strong>this</strong>.parameter = parameter} 
+    
+             <strong>static</strong> <strong>public</strong> C2Factory createInstance( String parameter ) {
+                  <strong>return</strong> <strong>new</strong> C2Factory( parameter) ;
+             }
+    
+             <strong>public</strong> CPlugInInterface createPlugIn(Data theData) {
+                 <strong>return</strong> <strong>new</strong> C2( parameter, theData ) ;
+             }
+
+             <strong>public</strong> Requirement[] getRequirements() {
+                 <strong>return</strong> <strong>new</strong> Requirement[0];
+             }
+    }
+</pre>
+<p>Aside: Fans of the Gamma et al. <a href="http://www.awprofessional.com/title/0201633612">Design Patterns</a> book will recognize that we are using their &quot;Factory Method&quot; pattern. What I've been calling a &quot;plug-in&quot;, they call a &quot;product&quot;; and what I've been calling a &quot;factory&quot;, they call a ... &quot;factory&quot;. </p>
+<h2>Registering the Plug-Ins.</h2>
+<p>Normally the registration of plug-ins is done via a GUI. For our example system, we will create the following registrations.</p>
+<table width="80%"  border="1" cellspacing="0" cellpadding="0">
+  <tr>
+    <td><strong>Jack Name</strong></td>
+    <td><strong>Class</strong></td>
+    <td><strong>Parameter</strong></td>
+  </tr>
+  <tr>
+    <td>top</td>
+    <td>A0Factory</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>A0:B</td>
+    <td>B0Factory</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>A0:C</td>
+    <td>C0Factory</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>A0:C</td>
+    <td>C1Factory</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>A0:C</td>
+    <td>C2Factory</td>
+    <td>&quot;x&quot;</td>
+  </tr>
+  <tr>
+    <td>A0:C</td>
+    <td>C2Factory</td>
+    <td>&quot;y&quot;</td>
+  </tr>
+  <tr>
+    <td>A0:C</td>
+    <td>C2Factory</td>
+    <td>&quot;z&quot;</td>
+  </tr>
+</table>
+<p>The convention for Jack Names is the name of the component that requires (creation of) the plug-in, a colon, and then the name of the role that the plug-in will play.</p>
+<p>In the example, I've assumed that A0 is itself a plug-in. </p>
+<p>The registrations are recorded in a singleton object of class <span class="style1">PlugInManager</span>. The <span class="style1">PlugInManager</span> is responsible for creating the factory objects the first time they are needed. </p>
+<h2>Creating a Plug-In or Two or More</h2>
+<p>What about component A0? How do we code it? The whole point of this exercise is to create plug-in objects without using the &quot;<strong>new</strong>&quot; operation. Instead A0 asks the <span class="style1">PlugInManager</span> singleton object to return a plug-in factory. (I say &quot;return&quot; rather than &quot;create&quot;, as the manager creates factories only as needed and caches the factories.) </p>
+<p>Now in component A0, we can create the B component with the following code, the purpose of which is to initialize variable <span class="style1">bPlugIn</span> of type <span class="style1">BPlugInInterface</span>:</p>
+<pre>
+ <b>try</b> {
+     <i>// 0. Obtain the plug-in manager</i>
+        PlugInManager thePlugInManager = PlugInManager.getSingleton() ;
+    <i>// 1. Obtain a factory object from the plug-in manager</i>
+        BFactoryInterface factory
+           = <u>thePlugInManager.getFactory( "A0:B", BFactoryInterface.<b>class, true</b> )</u> ;
+    <i>// 2. Construct a new plug-in from the factory</i>
+        bPlugIn = factory.createPlugIn( ) ; }
+ <b>catch</b>( PlugInNotFound ex ) {
+    <i>...deal with it... </i> }
+</pre>
+<p>The key call here is to <span class="style1">PlugInManager.getFactory</span> (line 1.); it returns a factory capable of creating the plug-in.</p>
+<ul>
+  <li>The first parameter is the jack name under which the plug-in factory is expected to be registered</li>
+  <li> The second parameter is the interface (represented by a <span class="style1">Class</span> object) which the plug-in factory is expected to implement; it must extend <span class="style1">PlugInFactory</span>. </li>
+  <li>The third parameter indicates that the plug-in is mandatory. If that parameter is <strong>false</strong>, then getFactory will return <strong>null</strong>, should there be no plug-ins registered; if it is <strong>true</strong>, the method will not return <strong>null</strong>.</li>
+  <li>The object returned from this method is guaranteed to implement the  interface passed as the second argument. No cast of the returned value is needed, as <span class="style1">getFactory</span> is a generic method whose return type is that same as its second argument.</li>
+</ul>
+<p>The call to <span class="style1">getFactory</span> can fail in numerous ways.</p>
+<ul>
+  <li>There may be no factories registered under the given jack name. This is only a failure if the third (isMandatory) argument is <strong>true</strong>.</li>
+  <li>There may be more than one factory registered under the given jack name.</li>
+  <li>A factory class can not be loaded. E.g., the class is not on the classpath.</li>
+  <li>A factory class does not have a static, public method called <span class="style1">createInstance</span> that optionally takes a single <span class="style1">String</span> argument.</li>
+  <li>A call to <span class="style1">createInstance</span> throws rather than returning.</li>
+  <li>A call to <span class="style1">createInstance</span> returns an object that does not implement the expected interface (the second argument). </li>
+</ul>
+<p>The above sequence works fine when the creating component expects there to be exactly one plug-in for the jack name. If zero or one plug-in factories are expected we can modify the sequence slightly: </p>
+<pre>
+ <b>try</b> {
+     <i>// 0. Obtain the plug-in manager</i>
+        PlugInManager thePlugInManager = PlugInManager.getSingleton() ;
+    <i>// 1. Obtain a factory object from the plug-in manager</i>
+        BFactoryInterface factory
+           = thePlugInManager.getFactory( "A0:B", BFactoryInterface.<b>class, <u>false</u></b> ) ;
+    <i>// 2. Construct a new plug-in from the factory</i>
+        bPlugIn = <u>factory==<strong>null</strong> ? <strong>null</strong> :</u> factory.createPlugIn( ) ; }
+ <b>catch</b>( PlugInNotFound ex ) {
+    <i>...deal with it... </i> }
+</pre>
+<p>When more than one factory may be plugged-into the jack, we use a sequence like the following, the purpose of which is to initialize an array <span class="style1">cPlugIns</span>:</p>
+<pre>
+ <b>try</b> {
+     <i>// 0. Obtain the plug-in manager</i>
+         PlugInManager thePlugInManager = PlugInManager.getSingleton() ;
+     <i>// 1. Obtain a list of factory objects from the plug-in manager</i>
+         List&lt;CFactoryInterface&gt; factories
+            = <u>thePlugInManager.getFactoryList( "A0:C", CFactoryInterface.<b>class</b>, <strong>false</strong> )</u> ;
+     <i>// 2. Construct new plug-ins from the factories</i>
+         cPlugIns = <b>new</b> CPlugInInterface[ factories.size() ] ;
+         <b>for</b>( <b>int</b> i = 0 ; i < fs.size() ; ++i ) {
+             cPlugIns[i] = factories.get(i).createPlugIn( data ) ;
+ <b>catch</b>( PlugInNotFound ex ) {
+     <i>...deal with it...</i> }
+</pre>
+<p>
+The <span class="style1">getFactoryList</span> method is similar to <span class="style1">getFactory</span>, except it returns a list of factories.  Not surprisingly, it does not fail when there is more than one factory registered. Depending on its third parameter (isMandatory), it will either fail or return an empty list, should there be no factories registered. </p>
+
+<h2><a name="requirements"></a>Expressing Requirements</h2>
+<p>The existence of certain plug-ins in the system might place requirements on the existence of other plug-ins in the system. For example an &quot;executive&quot; plug-in might require exactly one &quot;model&quot; plug-in and 1 or more &quot;view&quot; plug-ins. Furthermore, the model plug-in factory must implement a particular interface (extending <span class="style1">PlugInFactory</span>) while the view plug-in factories must implement a different interface. In our running example, suppose that the A0 component is a plug-in created by a factory class <span class="style1">A0Factory</span>. Let's further suppose that the A0 plug-in requires there to be exactly 1 B components, whose factory must implement BFactoryInterface, and any number of C components, whose factories all must implement CFactoryInterface. It would be nice if these requirements could be stated and checked for fulfillment when the set of plug-ins is specified. This is done via the getRequirements method of the factory classes. We would write <span class="style1">A0FactoryInterface</span> as follows</p>
+<pre>
+<strong>public</strong> <strong>class</strong> A0Factory <strong>implements</strong> AFactoryInterface {
+
+    <strong>private</strong> Requirement[] requirements = <strong>new</strong> Requirement[] {
+            <strong>new</strong> Requirement("A0:B", BFactoryInterface.<strong>class</strong>, <strong>true</strong>, <strong>false</strong> ),
+            <strong>new</strong> Requirement("A0:C", CFactoryInterface.<strong>class</strong>, <strong>false</strong>, <strong>true</strong> ) } ;
+    
+    <strong>public</strong> APlugInInterface createPlugIn() {
+        <strong>return</strong> new A0();
+    }
+
+    <strong>public</strong> Requirement[] getRequirements() {
+        <strong>return</strong> requirements ;
+    }
+}
+</pre>
+<p>The <span class="style1">getRequirements</span> method returns an array of two <span class="style1">Requirement</span> objects. The first represents that A0 requires that a jack named &quot;A0:B&quot; be filled by exactly one plug-in and that its factory implements <span class="style1">BFactoryInterface</span>. The second represents that that A0 requires that a jack named &quot;A0.C&quot; be filled by any number of plug-ins, but that they all have factories that implement <span class="style1">CFactoryInterface</span>. The parameters to the constructor of Requirement are as follows:</p>
+<ul>
+  <li>Jack Name: A string. </li>
+  <li>Interface Required. An interface that extends PlugInFactory.</li>
+  <li>Is Mandatory. A boolean indicating whether at least 1 plug-in factory must be registered.</li>
+  <li>Is Multiple. A boolean indicating whether more than 1 plug-in factory is allowed.</li>
+</ul>
+<p>That the requirements are fulfilled is checked by the GUI, so that violations can be reported to the user, as he or she specifies a set of plug-ins. For example, if you unplug the last factory from jack &quot;A0:B&quot;, you will be warned. If you plug a factory into the &quot;A0:C&quot; that does not implement CFactoryInterface, you will be warned. The GUI also checks that the factory classes actually exist and can be instantiated via <span class="style1">createInstance</span>.</p>
+<p>The consistency of the requirements as stated in the factory vs the reality coded into the plug-in is not automatically checked. This is left to the programmer. </p>
+<h2>How to ... </h2>
+<p>In this section, I'll quickly summarize the steps you need to take to accomplish various tasks. </p>
+<h3>How to Write a Component that Uses Plug-ins</h3>
+<h4>0. Create the interfaces.</h4>
+<p>You need one interface for the factories and one for the plug-ins. E.g., </p>
+<pre>
+        <strong>import</strong> tm.plugins.PlugInFactory ;
+        <strong>public interface</strong> MyPIFactoryIntf <strong>extends</strong> PlugInFactory {
+            <strong>public</strong> MyPlugInInterface createPlugIn( <em>...parameters as needed...</em> ) ;
+        }
+</pre>
+<p>and</p>
+<pre>
+        <strong>public interface</strong> MyPlugInInterface {
+            <em>...methods and constance your component will use...</em>
+        }
+</pre>
+<p> Note that the name &quot;createPlugIn&quot; can be changed to whatever you like, &quot;createView&quot;, &quot;createModel&quot;, &quot;createBob&quot;, ... . Actually you can have more than one create routine, in which case you are using the &quot;Abstract Factory&quot; pattern.</p>
+<h4>1. Write code to create the plug-in(s)</h4>
+<p>Now where you need to create the plug-in. If you expect that exactly 1 plug-in factory will be registered, you can do the following:</p>
+<pre>
+        <strong>import</strong> tm.plugins.PlugInManager ;
+        ...
+        PlugInManager thePlugInManager = PlugInManager.getSingleton() ;
+        MyPIFactoryIntf factory
+           = thePlugInManager.getFactory( &quot;X:Y&quot;, MyPIFactoryIntf.class, <strong>true</strong> ) ;
+        plugIn = factory.createPlugIn(<em> ...arguments as needed...</em> ) ;
+</pre>
+<p>If either zero or one plug-in factories is acceptable, do the following: </p>
+<pre>
+        <strong>import</strong> tm.plugins.PlugInManager ;
+        ...
+        PlugInManager thePlugInManager = PlugInManager.getSingleton() ;
+        MyPIFactoryIntf factory
+           = thePlugInManager.getFactory( &quot;X:Y&quot;, MyPIFactoryIntf.class, <strong>false</strong> ) ;
+        plugIn = factory==<strong>null</strong> ? <strong>null</strong> : factory.createPlugIn(<em> ...arguments as needed...</em> ) ;
+</pre>
+<p>If you don't expect the number of plug-in factories to be less than two,  you should call <span class="style1">getFactoryList</span> instead, like this: </p>
+<pre>
+        <strong>import</strong> tm.plugins.PlugInManager ;
+        ...
+        PlugInManager thePlugInManager = PlugInManager.getSingleton( ;
+        List&lt;MyPIFactoryIntf&gt; factories
+           = thePlugInManager.getFactoryList( &quot;X:Y&quot;, MyPIFactoryIntf.class, <strong>false</strong> ) ;
+        plugIns = <strong>new</strong> MyPlugInInterface[ factories.size() ] ;
+        <strong>for</strong>( <strong>int</strong> i = 0 ; i < factories.size() ; ++i ) {
+            plugIns[i] = factories.get(i).createPlugIn( <em>...arguments as needed...</em> ) ; }</pre>
+<p>If you expect the number of plug-in factories to be one or more, do the above, but with <strong>true</strong> replacing <strong>false</strong>.</p>
+<p>Be sure to catch the <span class="style1">PlugInNotFound</span> exception that might be thrown from <span class="style1">getFactory</span> or from <span class="style1">getFactoryList</span>.
+</p>
+<p> The use of &quot;factory objects&quot; to create other objects (&quot;plug-in objects&quot;), as illustrated above, is typical of how the Plug-In System is used in the Teaching Machine. However, the contract embodied by the &quot;factory interface&quot; doesn't have to involve creation at all; what the component does with the &quot;factory&quot; objects it obtains from the plug-in manager is really up to the designer of that component. </p>
+<h3>How to Write a Plug-in</h3>
+<p>To write a new plug-in you write two classes. </p>
+<h4>0. Write the factory class.</h4>
+<pre>
+        <strong>import</strong> tm.plugins.Requirement ;
+        <strong>public class</strong> MyPIFactory <strong>implements</strong> MyPIFactoryIntf {
+
+            <strong>private</strong> MyPIFactory() {} 
+    
+            <strong>static public</strong> MyPIFactory createInstance(  ) {
+                <strong>return new</strong> MyPIFactory() ;
+            }
+    
+            <strong>public</strong> MyPlugInInterface createPlugIn( <em>...parameters as needed...</em>) {
+                <strong>return new</strong> MyPlugIn( <em>...arguments as needed...</em> ) ;
+            }
+  
+            <strong>public</strong> Requirement[] getRequirements() {
+                <strong>return new</strong> Requirement[0];
+            }
+        }
+</pre>
+<p>This particular factory has no parameters for <span class="style1">createInstance</span>. If you wish, <span class="style1">createInstance</span> may take a single <span class="style1">String</span> parameter.</p>
+<h4>1. Write the plug-in.</h4>
+<p>This should be in the same package as the factory and thus need not be public. If you want, you can put it in the same file as the factory class. </p>
+<pre>
+        <strong>class</strong> MyPlugIn <strong>implements</strong> MyPlugInInterface {
+            MyPlugIn(  <em>...parameters as needed...</em>) { ... }
+
+            <em>...the implementation of MyPlugInInterface...</em>
+        }</pre>
+<h3>How to combine the factory class with the plug-in class</h3>
+<p>Here are two methods.</p>
+<h4>(a) Make the plug-in class local.</h4>
+<p>The trick is to make the plug-in a private local class of its factory.</p>
+<p>The code looks for the factory like this</p>
+<pre>
+        <strong>import</strong> tm.plugins.Requirement ;
+        <strong>public class</strong> MyPIFactory <strong>implements</strong> MyPIFactoryIntf {
+
+            <strong>private</strong> MyPIFactory() {} 
+    
+            <strong>static public</strong> MyPIFactory createInstance( ) {
+                <strong>return new</strong> MyPIFactory() ;
+            }
+    
+            <strong>public</strong> MyPlugInInterface createPlugIn( <em>...parameters as needed...</em>) {
+                <strong>return new</strong> MyPlugIn( <em>...arguments as needed...</em> ) ;
+            }<strong>
+
+            public</strong> Requirement[] getRequirements() {
+                <strong>return new</strong> Requirement[0];
+            }
+
+            <strong>private static class</strong> MyPlugIn <strong>implements</strong> MyPlugInInterface {
+                MyPlugIn(  <em>...parameters as needed...</em>) { ... }
+
+                <em>...the implementation of MyPlugInInterface...</em>
+            }
+        }
+</pre>
+<h4>  (b) Make the factory class local.</h4>
+<p>Here we make the Factory class local to the plug-in.</p>
+<pre>
+        <strong>public class</strong> MyPlugIn <strong>implements</strong> MyPlugInInterface {
+            <strong>private</strong> MyPlugIn(  <em>...parameters as needed...</em>) { ... }
+
+            <em>...the implementation of MyPlugInInterface...</em>
+
+            <strong>public static class</strong> MyPIFactory <strong>implements</strong> MyPIFactoryIntf {
+
+                <strong>private</strong> MyPIFactory() {} 
+    
+                <strong>static public</strong> MyPIFactory createInstance( ) {
+                    <strong>return new</strong> MyPIFactory() ;
+                }
+    
+                <strong>public</strong> MyPlugInInterface createPlugIn( <em>...parameters as needed...</em>) {
+                    <strong>return new</strong> MyPlugIn( <em>...arguments as needed...</em> ) ;
+                }
+  
+                <strong>public</strong> Requirement[] getRequirements() {
+                    <strong>return new</strong> Requirement[0];
+                }
+            }
+        }
+</pre>
+<p>There are at least 3 reasons to prefer (a) to (b)</p>
+<ul>
+  <li>In (a) we actually reduce the visibility of the plug-in class. Its existance becomes an implementation detail of the factory class.</li>
+  <li>In (b) we actually increase the visibility of the plug-in class. In order for the factory to by publicly accessible outside the package, the plug-in class must be public. Compare this to the solution in the previous section where the plug-in class need only be visible within its package.</li>
+  <li>If the same factory is capable of producing more than one plug-in (the abstract factory pattern of Gamma et al.), then (b) awkawrdly forces you to pick one of the plug-in classes to contain the factory, whereas with (a) all the plug-in classes can be nested within one factory class. However, in this case you are looking at a large file (it is one thing to put a large class inside an otherwise small class, quite another when there are two large nested classes) and you might consider creating a new package to hold the factory class and its various product classes. </li>
+</ul>
+<h3>How to Write a Singleton Plug-In</h3>
+<p>When the plug-in is a singleton, you can combine the factory  and the plug-in in one class as follows.</p>
+<pre>
+        <strong>import</strong> tm.plugins.Requirement ;
+        <strong>public class</strong> MyPIFactory <strong>implements</strong> MyPIFactoryIntf, MyPlugInInterface {
+  
+            <strong>private static</strong> MyPIFactory theSingleton = <strong>null</strong>;
+	
+            <strong>private</strong> MyPIFactory() {} 
+    
+            <strong>static public</strong> MyPIFactory createInstance( ) {
+                <strong>if</strong>( theSingleton == <strong>null</strong> ) theSingleton = <strong>new</strong> MyPIFactory() ;
+                <strong>return</strong> theSingleton ;
+            }    
+            <strong>public</strong> MyPlugInInterface createPlugIn( ) {
+                <strong>return this</strong> ;
+            }
+
+            <strong>public</strong> Requirement[] getRequirements() {
+                <strong>return new</strong> Requirement[0];
+            }
+
+            <em>...the implementation of the MyPlugInInterface...</em>
+        }</pre>
+<p>However, the previous section shows an arguably better way of reducing the number of (visible) classes to 1.</p>
+<h3>How to Write a Plug-in that uses other Plug-ins </h3>
+<p>If a plug-in uses other plug-ins then it can (and should) state its requirements for those plug-ins via its factory's <span class="style1">getRequirements</span> method. See <a href="#requirements">Expressing Requirements</a>.</p>
+<p>The stated requirements are used only to report inconsistencies to the user. Nevertheless their use is strongly encouraged.</p>
+<h3>How to use the GUI to configure an assemblage of plug-ins </h3>
+<p>The GUI allows the set of plug-in registrations to be altered. The user can</p>
+<ul>
+  <li>Add a new registration.</li>
+  <li>Delete an existing registration.</li>
+  <li>Change a registration.</li>
+</ul>
+<p>Each registration associates a factory class name and, optionally, a string parameter (used to create the factory) with a jack name.</p>
+<p>For example, we might add a registration consisting of</p>
+<ul>
+  <li>&quot;X:Y&quot; as jack name.</li>
+  <li>&quot;MyPIFactory&quot; as class name.</li>
+  <li>&quot;&quot; as parameter. </li>
+</ul>
+<p>Note that the set of registrations is recorded as part of the TM's &quot;configuration&quot;, thus you must save the configuration to record any changes to the set of registrations.</p>

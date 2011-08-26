@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- DW6 -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title> </title>
+<!-- TemplateEndEditable --><link rel="stylesheet" href="../style/2col_leftNav.css" type="text/css">
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-12838378-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!-- TemplateBeginEditable name="head" --><!-- TemplateEndEditable -->
+</head>
+<!-- The structure of this file is exactly the same as 2col_rightNav.html;
+     the only difference between the two is the stylesheet they use -->
+<body>
+<div id="masthead">
+  <h1 id="siteName">TeachingMachine.org </h1>
+  <div id="globalNav">  <strong>principal researchers:</strong> &nbsp;&nbsp;&nbsp;michael
+    bruce-lockhart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;theodore s. norvell</div>
+</div>
+<!-- end masthead -->
+<div id="content"> 
+  <!-- TemplateBeginEditable name="content" -->
+  
+  <!-- TemplateEndEditable --></div> 
+<!--end content -->
+<div id="navBar">
+  <h3>Links</h3>
+  <div id="sectionLinks">
+    <ul>
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="teachingMachine.html">the Teaching Machine</a></li>
+      <li><a href="webWriter.html">WebWriter++</a></li>
+       <li><a href="cookBook/default.htm">PDV Cook Book</a></li>
+     <li><a href="eTexts.html">Sample Courses</a></li>
+      <li><a href="documents.html">Documents</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="downloads.html">Downloads</a></li>
+	</ul>
+  </div>
+  <div class="relatedLinks">
+    <h3>Home Pages </h3>
+    <ul>
+      <li><a href="http://www.engr.mun.ca/%7Empbl">michael bruce-lockhart</a></li>
+      <li><a href="http://www.engr.mun.ca/%7Etheo">theo norvell</a></li>
+    </ul>
+  </div>
+  </div>
+<!--end navbar -->
+</body>
+</html>

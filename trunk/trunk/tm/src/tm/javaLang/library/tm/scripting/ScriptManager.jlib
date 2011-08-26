@@ -1,0 +1,39 @@
+/*#TS*/
+package tm.scripting;
+/*
+ * Created on 6-Apr-2007
+ * Library classes act as cutout relays. The TM treats them as regular libraries.
+ * The declarations are used by the TM compilers to check for correctness
+ * but the runtime engine won't step into the library implementation code.
+ * The native keyword simply says that at runtime the methods are implemented in java.
+ * The TM calls the methods to process the data but won't let their workings be examined.
+ *
+ */
+
+/**
+ * @author mpbl
+ *
+ */
+public class ScriptManager {
+
+/* relayCall can in fact have a number of arguments following the first two. Internally
+they will be treated as Datums and will have to conform to whatever expectations of them
+the target method may have. This relaxes the normal compiler type checking but
+will result in a run time error if a target method cannot be matched up with
+its arguments */	
+	public native static void relay(String configId, String call);
+	public native static int relayRtnInt(String configId, String call);
+	public native static double relayRtnDouble(String configId, String call);
+	
+/* Again, the datums to be compared are not specified for the compiler. There must be two of
+them and they should both be descendents of Datum subtypes which can be compared.
+Currently removed as it requires another compiler exception
+	public native static boolean compareDatums(String configId); */
+		
+	public native static void snapShot(String configId, String portholeId);
+	public native static void autoRun();
+	public native static void showTM(boolean visible);
+	public native static boolean isTMShowing();	
+	public native static boolean isInAuto();
+	public native static void stopAuto();
+}

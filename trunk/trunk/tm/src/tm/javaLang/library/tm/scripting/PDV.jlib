@@ -1,0 +1,136 @@
+/*#TS*/package tm.scripting;
+
+/** Constants for Programmer Defined Visualization */
+public class PDV {
+    
+		// Colors
+	public static final int TRANSPARENT = -1;
+	public static final int WHITE = 0xffffff;
+	public static final int BLACK = 0x000000;
+	public static final int GREY = 0x808080;
+	public static final int RED = 0xff0000;
+	public static final int GREEN = 0x00ff00;
+	public static final int BLUE = 0x0000ff;
+	public static final int AQUA = 0x00ffff;
+
+	// String markers
+	public static final int MARKER_RED = 0xffff;	
+	public static final int MARKER_BLUE = 0xfffe;	
+	public static final int MARKER_BLACK = 0xfffd;	
+	public static final int MARKER_GREEN = 0xfffc;
+	public static final int END_MARKER = 0xfff0;
+
+	// predefined node shapes
+	public static final int ELLIPSE = 0;
+	public static final int RECTANGLE = 1;
+	public static final int ROUND_RECTANGLE = 2;
+	
+	// Decorators for branches, and edges
+	public final static int NONE = 0;
+	public final static int ARROWHEAD = 1;
+	public final static int CIRCLE = 2;
+
+	// Predefined label positions, relative to component being labelled
+	public static final int CENTER = 0;        // (CenterX, CenterY)
+	public static final int EAST = 1;          // (MaxX, CenterY)
+	public static final int NORTHEAST = 2;     // (MaxX, MinY)
+	public static final int NORTH = 3;         // (CenterX, MinY)
+	public static final int NORTHWEST = 4;     // (MinX, MinY)
+	public static final int WEST = 5;          // (MinX, CenterY)
+	public static final int SOUTHWEST = 6;     // (MinX, MaxY)
+	public static final int SOUTH = 7;         // (CenterX, MaxY)
+	public static final int SOUTHEAST = 8;     // (MaxX, MaxY)
+
+	// Predefined label positions, relative to edge or branch being labelled
+	//public static final int CENTER = 0;       
+	public static final int PORT = 1;          
+	public static final int PORTSTERN = 2;    
+	public static final int STERN = 3;        
+	public static final int STARBOARDSTERN = 4;    
+	public static final int STARBOARD = 5;        
+	public static final int STARBOARDBOW = 6;    
+	public static final int BOW = 7;     
+	public static final int PORTBOW = 8;
+	
+	public static void makeArray(int[] array){
+		makeArray(array, true, "");
+	}
+	
+	public static void makeArray(int[] array, boolean showCells){
+		makeArray(array, showCells, "");
+	}
+	
+	public static void makeArray(int[] array, String name){
+		makeArray(array, true, name);
+	}
+	
+    public static void makeArray(int[] array, boolean showCells, String name){
+    	ScriptManager.relay("HigraphManager","makeNode", array, true);
+      	ScriptManager.relay("HigraphManager","setNodeNamePosition", array, true, SOUTH);
+      	if (name.compareTo("")!=0)
+      		ScriptManager.relay("HigraphManager","setNodeNameLabel", array, true, name);
+     	ScriptManager.relay("HigraphManager","setNodeValueShow", array, true, false);
+        ScriptManager.relay("HigraphManager","setNodeLayoutManager", array, true, "HorizNestedTree");
+ 	    for (int i = 0; i <  array.length; i++){
+            ScriptManager.relay("HigraphManager","makeNode", array[i]);
+            if( !showCells){
+                ScriptManager.relay("HigraphManager","setNodeColor", array[i], TRANSPARENT);
+                ScriptManager.relay("HigraphManager","setNodeFillColor", array[i], TRANSPARENT);
+            }  
+           	ScriptManager.relay("HigraphManager","setNodeNamePosition", array[i], SOUTH);
+            ScriptManager.relay("HigraphManager", "setNodeShape", array[i], RECTANGLE);
+            ScriptManager.relay("HigraphManager","addChild", array, true, array[i]);
+     	}
+   }
+	
+	
+    public static void makeMatrix(int[][] matrix){
+    	makeMatrix(matrix, true, "");
+    }
+    
+    public static void makeMatrix(int[][] matrix, boolean showCells){
+    	makeMatrix(matrix, showCells, "");
+    }
+
+    public static void makeMatrix(int[][] matrix, String name){
+    	makeMatrix(matrix, true, name);
+    }    
+    
+    public static void makeMatrix(int[][] matrix, boolean showCells, String name){
+        ScriptManager.relay("HigraphManager","makeNode", matrix, true);
+        ScriptManager.relay("HigraphManager","setNodeValueShow", matrix, true, false);
+       	if (name.compareTo("")!=0)
+      		ScriptManager.relay("HigraphManager","setNodeNameLabel", matrix, true, name);
+        ScriptManager.relay("HigraphManager","setNodeLayoutManager", matrix, true, "VertNestedTree");
+            ScriptManager.relay("HigraphManager", "setNodeShape", matrix, true, RECTANGLE);
+        for( int i = 0; i < matrix.length ; ++i ) {
+            ScriptManager.relay("HigraphManager","makeNode", matrix[i], true);
+            ScriptManager.relay("HigraphManager","addChild", matrix, true, matrix[i], true);
+            ScriptManager.relay("HigraphManager", "setNodeShape", matrix[i], true, RECTANGLE);
+            ScriptManager.relay("HigraphManager", "setNodeColor", matrix[i], true, WHITE);
+            ScriptManager.relay("HigraphManager","setNodeNameShow", matrix[i], true, false);
+            ScriptManager.relay("HigraphManager","setNodeNamePosition", matrix[i], true, CENTER);
+            ScriptManager.relay("HigraphManager","setNodeValueShow", matrix[i], true, false);
+            ScriptManager.relay("HigraphManager","setNodeLayoutManager", matrix[i], true, "HorizNestedTree");
+            for (int j = 0; j <  matrix[i].length; ++j ){
+                ScriptManager.relay("HigraphManager","makeNode", matrix[i][j]);
+                if( !showCells){
+                    ScriptManager.relay("HigraphManager","setNodeColor", matrix[i][j], TRANSPARENT);
+                    ScriptManager.relay("HigraphManager","setNodeFillColor", matrix[i][j], TRANSPARENT);
+                }  
+                ScriptManager.relay("HigraphManager","setNodeNameShow", matrix[i][j], false);
+                ScriptManager.relay("HigraphManager","setNodeNamePosition", matrix[i][j], CENTER);
+                ScriptManager.relay("HigraphManager","setNodeValueShow", matrix[i][j], true);
+                ScriptManager.relay("HigraphManager","setNodeValuePosition", matrix[i][j], CENTER );
+                ScriptManager.relay("HigraphManager", "setNodeShape", matrix[i][j], RECTANGLE);
+                ScriptManager.relay("HigraphManager","addChild", matrix[i], true, matrix[i][j]);
+                if( i == 0 ) {
+                    ScriptManager.relay("HigraphManager", "createNodeExtraLabel", matrix[i][j], "column", NORTH ) ;
+                    String jString = Integer.toString(j) ;
+                    ScriptManager.relay("HigraphManager", "setNodeExtraLabel", matrix[i][j], "column", jString ) ; }
+                if( j == 0 ) {
+                    ScriptManager.relay("HigraphManager", "createNodeExtraLabel", matrix[i][j], "row", WEST ) ;
+                    String iString = Integer.toString(i) ;
+                    ScriptManager.relay("HigraphManager", "setNodeExtraLabel", matrix[i][j], "row", iString ) ; } } }
+   }
+}

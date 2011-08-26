@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<script language="JavaScript" src="content/noteConstants.js"></script>
+<script language="JavaScript" src="webWriter/navBarHeader.js"></script>
+<script language="JavaScript" src="webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="webWriter/standardButtons.js"></script>
+<script language="JavaScript" src="webWriter/tocNavigator.js" type="text/javascript"></script>
+<script language="JavaScript" src="content/nav-map.js" type="text/javascript"></script>
+<script language="JavaScript" src="webWriter/ww_one_time.js" type="text/javascript"><!--
+// --></script>
+</head>
+
+<body>
+<script language="JavaScript">
+document.write('<div id="topBanner">');
+	
+	document.write('<div id="logoContainer"><img src="' + imagesFolder + 'EngineeringLogo.gif" title="Site developed with WebWriter" width="39" height="39"></div>');
+	
+	document.write('<div id="navContainer">');
+		document.write('<button id = "TOC" type="button" onClick="toc();" title="generate Table of Contents">TOC</button>');
+		document.write('<button id = "previous" type="button" onClick="previousTopic();" title="Go to previous topic"><img src="');
+			document.write(imagesFolder, 'purpleBack.gif" width="19" height="16" ></button>');
+		document.write('<button id = "up" type="button" onClick="upTopic();" title="Go to parent page"><img src="');
+			document.write(imagesFolder, 'purpleUp.gif" width="16" height="19"></button>');
+		document.write('<button id = "next" type="button" onClick="nextTopic();" title="Go to next topic"><img src="');
+			document.write(imagesFolder, 'purpleNext.gif" width="19" height="16"></button>');
+	document.write('</div>');
+	
+	document.write('<div id="titleContainer">');
+	  	document.write(siteTitle);
+	document.write('</div>');
+	
+	// Create a place to hook in the buttons
+	document.write('<div id="buttonContainer">');
+	// Reverted to document write approach (see buttonClass.js) code must be in-line
+	var buttonDefArray = new Array();
+	var buttons = 0;
+	if (homeButton)
+		buttonDefArray[buttons++] = homeButtonDef;
+	if(modeButton)
+		buttonDefArray[buttons++] = modeButtonDef;
+	if (printButton)
+		buttonDefArray[buttons++] = printButtonDef;
+	if (shadeButton && startInLectureMode)
+		buttonDefArray[buttons++] = shadeButtonDef;
+	if (helpButton)
+		buttonDefArray[buttons++] = helpButtonDef;
+	if (configButton)
+		buttonDefArray[buttons++] = configButtonDef;
+	if (buttonDefArray.length > 0) {
+		var controlTable = new ButtonSet("controlButtons", buttonDefArray, false);
+//		controlTable.append(document.getElementById("buttonContainer"));
+//		buttonArray[0].attach(document.getElementById("buttonContainer"));
+	}
+	document.write('</div>');
+	
+	document.write('<div id="siteContainer">');
+	
+	if(siteLogo == "") {
+		document.write('<div id="siteTop">' + organization + '</div>');
+		document.write('<div id="siteBottom">' + course + '</div>');
+	} else {
+		document.write('<img src="' + contentFolder + siteLogo + '" title="' + siteTitle + '">');
+	}
+
+	document.write('</div>');
+
+	document.write('<div id="configPicker" display = "none">');
+	document.write('<form name="configPickerForm" >');
+	document.write('<select name = "configSelect" onchange="changeSelection();" title="choose a new default configuration file for the TM">');
+	for (var i = 0; i < configFilesArray.length; i++)
+		document.write('<option value = "', i, '"> ', configFilesArray[i], '</option>');
+	document.write('</select>');	
+	document.write('</form>');
+	document.write('</div>');
+	
+
+	document.write('</div>');
+	
+	document.write('<div id="appletContainer">');
+	document.write('<applet name="url2String" width="1" height="1" code="URL2String.class">');
+	document.write('</applet>');
+	document.write('<applet name="markUp" width="1" height="1" code="MarkUp.class" archive="markUp.jar">');
+	document.write('</applet>');
+	document.write('<applet name="teachingMachine" width="1" height="1" code="tm/TMTinyApplet.class" archive="',tmArchive,'">');
+	document.write('</applet>');
+	document.write('</div>');
+
+	
+	function changeSelection(){
+		changeConfig(configFilesArray[document.configPickerForm.configSelect.value]);
+	}
+	
+	
+</script>
+
+</body>
+</html>

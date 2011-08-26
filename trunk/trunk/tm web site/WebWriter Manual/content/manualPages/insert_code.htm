@@ -1,0 +1,161 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script></script>
+
+<title>Code Insertion</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>Permits code to be imported directly from a source file into the web page.
+  This means that the code can be checked by running it through a compiler. The
+  code is displayed in a special div (<code>class
+= "code"</code>) so that its appearance can be controlled within the style sheets. </p>
+<h2><a name="syntax">Syntax colouring</a></h2>
+<p>The code will be automatically coloured for syntax. Currently the following classes are implemented:</p>
+<ul><li>codeComment</li>
+<li>codeKeyword</li>
+<li>codeConstant</li>
+</ul>
+<p>The appearance of each of these classes is controlled by the stylesheets and
+  can easily be varied by an instructor to match the programming editor being
+  used by students to write their own code.</p>
+<h2><a name="selections">Selections</a></h2>
+<p>It is often convenient to break up a piece of sample code into different sections
+  to focus the discussion. For instance it is common to discuss first the implementation
+  of a function then to focus on how its called. Rather than create separate
+  TM code examples it is much more convenient to have a single source file and
+  to show only those selections it is desirable to focus on.</p>
+<p>WebWriter accomplishes this by <a href="../../pages/markup.htm">pedagogical markup</a>&#8212;that
+  is by marking up the code using a simple markup language embedded in comments.
+  The markup is automatically removed by both WebWriter and the Teaching Machine
+  so that students never see it.</p>
+<p>Formerly, selections were basically marked with letters and could be disjoint.
+  Now they are tagged with tagNames and any piece of code my have 0,* tagNames
+  (i.e. zero to many). </p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>insertCode(relativeURL, buttonSet, className, configurationFile, WWSelection, TMSelection)</strong><br>
+<h3>Arguments</h3>
+<dl> 
+  <dt><strong>relativeURL</strong></dt>
+  <dd>a <strong>string</strong> giving the name & location of the code file to
+    be loaded, relative to the page invoking the fuction. </dd>
+  <dt><strong>buttonSet</strong></dt>
+  <dd>a <strong>boolean</strong>. If true, a teaching machine link buttonSet
+    is  placed within the example. See <a href="#buttonSet">next function</a> for how to define a buttonSet</dd>
+  <dt><strong>className</strong></dt>
+  <dd>a <strong>string</strong> giving the name of the class for the HTML &lt;div&gt;
+    that will hold the code. The author may argue the appearance of the code
+     using the <a href="../../pages/structure.htm#stylesheets">cascading style sheet used for pages</a>. </dd>
+  <dt>configurationFile</dt>
+  <dd>a <strong>string</strong> giving the path of the configuration file (relative
+    to the site root) which is passed to the
+  <strong>TMApplet.readRemoteConfiguration</strong> routine. Authors may have
+  as many configuration files as they want.</dd>
+  <dt>Optional Arguments</dt>
+  <dd> 
+    <dl> 
+      <dt>WWSelection</dt>
+      <dd>a string denoting which pieces of the code will be displayed in the
+        TMContainer on the webPage. See <a href="#selectionStrings">selection
+        strings</a> for details.</dd>
+          <dt>TMSelection</dt>
+          <dd>a string denoting which pieces of the code will be displayed in
+            the Teaching Machine itself, when it is invoked. See <a href="#selectionStrings">selection
+        strings</a> for details.</dd>
+</dl>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The example code is downloaded from the source file, syntax coloured and pedagogically 
+  marked up, then written dynamically in HTML into the document at the point of 
+  invocation. If a <span class="code">buttonSet</span> is called for it is added in.</p>
+<strong><a name="selectionStrings"></a>Selection Strings </strong><br>
+A selection string specifies how to display tagged sections, using tagNames,
+parentheses and boolean operators (. + ~ or &amp; | ! as preferred by the instructor).
+Thus &quot;<code>(A+B).C.~S</code>&quot; is a legitimate selection string specifying
+the display of sections of code which are marked with either tags <code>A</code> OR <code>B</code> AND
+tag <code>C</code> AND NOT tag
+<code>S</code>. <code>S</code> is reserved for internal scripting calls and <code>L</code> for
+Library code.
+<hr>
+<strong>setButtons(run, video, edit, videoR, guidedR)</strong><br>
+<h3>Arguments</h3>
+<dl> 
+  <dt>run</dt>
+  <dd>a <strong>bool</strong>. true if a button is desired for invoking 
+    the teaching machine.</dd>
+  <dt>video</dt>
+  <dd>a <strong>bool</strong>. true if a button to invoke a video is wanted.</dd>
+  <dt>edit</dt>
+  <dd>a <strong>bool</strong>. true if a button to invoke editing on the example is wanted.</dd>
+  <dt>videoR</dt>
+  <dd>a <strong>string</strong>. The name of the video file. Only needed if <strong>video</strong> 
+    is true.</dd>
+  <dt>guidedR</dt>
+  <dd>a <strong>string</strong>. Currently unused. May be omitted. </dd>
+  <dt>Optional Arguments</dt>
+  <dd>No extra arguments are recognized.</dd>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The <code>buttonSet</code> is updated as directed.</p>
+<strong>Comment</strong><br>
+<p>WebWriter only maintains a single button set so it must be set every time buttons 
+  are to be used by <code>insertCode</code>.</p>
+<h3>InsertCode Snippet</h3>
+<p>This is a block snippet, set up for the generic case of an example with 
+run, video and edit buttons (<code>true</code> entries in <code>setButtons</code>).</p>
+<pre>&lt;script language=&quot;JavaScript&quot;&gt;<br>setButtons(true, true, true,&quot;tm_introduction.avi&quot;,&quot;&quot;);<br>insertCode(&quot;first_program.cpp&quot;, true, &quot;code&quot;, &quot;default.tmcfg&quot;, &quot;&quot;, &quot;&quot;);<br>&lt;/script&gt;</pre>
+<p>&nbsp;  </p>
+<hr>
+<h2><a name="example">Examples</a></h2>
+<p>The standard code snippet  was inserted below, then edited to change the program
+  to <code>complex_print.cpp
+  </code>and to display only the code in the selections <a href="../../pages/markup.htm">marked</a> <code>&quot;A</code>.~S&quot;,
+  that is show code marked with an A and no S. Note that S is reserved for scripting.
+  (Since no video was available the second argument in <code>setButtons</code> was
+  turned to <code>false</code> and the avi string
+  was nulled out.)</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complex_print.cpp", true, "code", "default.cfg", "A.~S", "~S");
+  </script>
+</p>
+<p>Here is the exact same piece of code, now displaying the selection <a href="../../pages/markup.htm">marked</a> <code>&quot;M.~S&quot;</code>.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("complex_print.cpp", true, "code", "default.cfg", "M.~S", "~S");
+  </script>
+</p>
+<p>Note that in both cases the TM was instructed to display all code <em>except</em> scripting
+  calls. </p>
+<p>Here's the code snippet for an example that includes a video. The extension for the video is <code>htm</code> because the actual video is a shockwave animation (produced by macromedia's <em>Captivate</em> tool) encapsulated its own html page. </p>
+<pre>  &lt;script language=&quot;JavaScript&quot;&gt;<br>setButtons(true, true, true,&quot;quadratic.htm&quot;,&quot;&quot;);<br>insertCode(&quot;quadratic.cpp&quot;, true, &quot;code&quot;, &quot;default.cfg&quot;, &quot;A,~S&quot;, &quot;~S&quot;);<br>  &lt;/script&gt;</pre>
+<p>And here is the actual example.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"quadratic.htm","");
+insertCode("quadratic.cpp", true, "code", "default.cfg", "A.~S", "~S");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

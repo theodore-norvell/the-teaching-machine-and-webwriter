@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+<head>
+<!-- This form should probably be a template but at the moment must be handcopied into any folder in which pages are to be ptinted -->
+<script language="JavaScript" src="content/noteConstants.js"></script>
+<script language="JavaScript" src="webWriter/printHeader.js"></script>
+<script LANGUAGE="JavaScript">
+	function loadForm(theBody) {
+//		if (document.all != null)   // isIE
+			document.body.innerHTML = theBody;
+/*		else {
+			for (var i = 0; i < theBody.length; i++)
+				document.body.appendChild(theBody[i].cloneNode(true));
+		}*/
+	/*				var fullExamples = document.createElement("div");
+		fullExamples.setAttribute("class", "fullExamples");
+		myBody.appendChild(fullExamples);
+		for (var j = 0; j < examples.length; j++) {
+			var element = document.createElement("p");
+			element.setAttribute("class", "pagebreak");
+			fullExamples.appendChild(element);
+			element = document.createElement("div");
+			element.setAttribute("class", "code");
+			fullExamples.appendChild(element);
+			element.innerHTML = examples[j];
+		}*/
+	}
+	
+	</script>
+
+<title>Print Form</title>
+</head>
+
+<body id = "bodyRef"; onLoad="self.opener.printFormLoaded();">
+
+
+
+</body>
+</html>

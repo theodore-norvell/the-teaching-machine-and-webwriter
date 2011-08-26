@@ -1,0 +1,15 @@
+struct Node {
+     int data ;
+     char moreData ;
+     Node *next ; } ;
+
+ int main() {
+    Node *p = new(nothrow) Node ;
+    int i =13 ;
+    (*p).data = i ;
+    (*p).next = new Node ;
+    (* (*p).next).data = 14 ;
+    (* (*p).next).next = 0 ;
+
+    return ;
+ }

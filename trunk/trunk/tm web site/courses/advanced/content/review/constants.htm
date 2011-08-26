@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Constants</title>
+</head>
+<body>
+<h2><a name="userDefined">User-Defined Types</a></h2>
+<p>In C & C++ you can create your own types</p>
+<p class="codeInline">typedef int number;</p>
+<ul>
+  <li> This declares <span class="codeInline">number</span> to be a new type, 
+    the same as <span class="codeInline">int</span>.</li>
+  <li>Then, I can use type <span class="codeInline">number</span> in declarations, 
+    as&#151;</li>
+</ul>
+<p class="codeInline">int i,j,k; number n;</p>
+<p>Later on, if I find all numbers really should have been long, it is easily 
+  changed.</p>
+<p class="codeInline"> typedef long number; </p>
+<ul>
+  <li>Changes all instances of <span class="codeInline">number</span> throughout 
+    the program.</li>
+  <li>Scoping rules the same as for external variables. </li>
+</ul>
+<h2><a name="enumerated">Enumerated variables</a></h2>
+<p>Any variable can be declared as enumerated. </p>
+<p><span class="codeInline">enum{BLACK,WHITE,RED,GREEN,YELLOW,BLUE} colour;</span></p>
+<p><span class="codeInline"> enum{SOLID,DOTTED,DASHED,INVISIBLE} line1,line2;</span></p>
+<p>declares <span class="codeInline">colour</span> as a variable of a distinct 
+  integral type with named constants -<span class="codeInline">BLACK(0), WHITE(1).BLUE(5)</span></p>
+<p>Of limited utility as it stands. We often want to create an enumerated type</p>
+<p><span class="codeInline">enum daysOfTheWeek { SUNDAY, MONDAY, TUESDAY, WEDNESDAY, 
+  THURSDAY, FRIDAY, SATURDAY };</span></p>
+<p> then, later in the code (within scope of <span class="codeInline">daysOfTheWeek</span>). 
+</p>
+<p><span class="codeInline">daysOfTheWeek workDays;</span></p>
+<p>Alternatively, both can be done at once</p>
+<p> <span class="codeInline">enum colour {BLACK,WHITE,RED,GREEN}c1,c2;</span></p>
+<p><span class="codeInline"> daysOfTheWeek</span> & <span class="codeInline">colour</span> 
+  are now special integral types, each with its own constants. We've also declared 
+  two variables of type <span class="codeInline">colour</span>. </p>
+<p>enumerated constants are assigned consecutive values, starting from 0. These 
+  may be overridden</p>
+<p><span class="codeInline">enum linestyle {SOLID=1,DOTTED,DASHED,INVISIBLE=0};</span></p>
+<p> (<span class="codeInline">DOTTED</span> & <span class="codeInline">DASHED</span> 
+  are <span class="codeInline">2</span> & <span class="codeInline">3</span> respectively). 
+</p>
+<h2>Enumerations really are constants.</h2>
+<p>Note that the compiler will complain about the following:</p>
+<p class="codeInline">enum day {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, 
+  SATURDAY, SUNDAY};</p>
+<p class="codeInline"> enum weekendDay {SATURDAY,SUNDAY};</p>
+<p><span class="codeInline">SATURDAY</span> and <span class="codeInline">SUNDAY</span> 
+  are redefined (within the same scope). Making sure the constants have the same 
+  value won't help</p>
+<p><span class="codeInline">enum day {SATURDAY, SUNDAY, MONDAY, TUESDAY, WEDNESDAY, 
+  THURSDAY,FRIDAY};</span></p>
+<p><span class="codeInline">enum weekendDay {SATURDAY,SUNDAY};</span></p>
+<p> is still illegal</p>
+<p>It also sees this as legal&#151;</p>
+<p class="codeInline">day d = 8;</p>
+<p>in essence, an <i>implicit typecast</i> has been carried out. It is an error 
+  because only the constants <span class="codeInline">0-6</span> are defined in 
+  the declaration but <i>it is legal!</i> (Good compilers will issue a warning).</p>
+<p>Both these problems drive Pascal programmers crazy! </p>
+<h2><a name="const">The <code>const</code> keyword</a></h2>
+<p>constants are declared in C++ as follows:</p>
+<pre> const int GEORGE = 0;
+ const int MARY = 1;
+ const int JOE = 0;
+ const char initial = 'M';</pre>
+<p><span class="codeInline">enum</span> may be used anonymously. For instance</p>
+<p class="codeInline"> enum {GEORGE,MARY,JOE=0};</p>
+<p> is equivalent to the first three declarations.</p>
+<p> You will often see the following in old code (usually in header files):</p>
+<pre> #define GEORGE 0
+ #define MARY 1
+ #define JOE 2 </pre>
+<ul>
+  <li>This is not the same and we won't use it because compiler does no type checking 
+    on defines.</li>
+  <li><span class="codeInline">const</span> keyword is used with variable names 
+    to tell the compiler the value is not to be changed (however it is to be type 
+    checked). </li>
+  <li>Used with pointers in function calls.</li>
+</ul>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

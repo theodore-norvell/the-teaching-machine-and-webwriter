@@ -1,0 +1,210 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<!-- Content pages should be based on this page -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>Hiding Code and Suppressing Lines</title>
+<!-- change nesting depth to reflect location of site root relative to this page. This page reflects the standard webWriter
+setup with most topic pages located in topic folders inside a content folder which is in the root folder -->
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- these are relative to page. For standard setup first one could also be written ../noteConstants.js -->
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+  <h3>How can I hide code from the user? </h3>
+  <p>Generally if you are preparing an example for the Teaching Machine   there is code you want students to see and code you don't want them to   see -- usually the latter is things like scripting calls and   declarations of variables that are only used for visualization purposes.</p>
+  <p>Hidden code is marked as such in one of two ways.</p>
+  <ul>
+    <li>If you want regular compilers to see the code, then you shold use "tagging" comments. For example if you write
+      <pre> i = get() ; /*#T S*/ setColourOf_i() ; /*#/T S*/j = 3 ;</pre>
+      then  the characters between /*#T S*/ and /*#/T S*/ will be hidden. They won't   be seen, by default, in the TM's  code subwindow. This works as   follows. Each character on a source code line is associated with a set   of tags &mdash;called its tag set. The command  /*#T S*/ means that future   characters will have "s" in their tag set and the command /*#/T S*/   means that future characters will not have "s" in their tag set. (Tags   are case insensitive, so "S" and "s" are the same tag.) The TM maintains   a "selection" which is a boolean expression. The default selection is   "!S&amp; !L". For each character, the selection is evaluated with   respect to that character's tag set to decide whether or not to show   that character. (That is it is evaluated considering tags in the tag set   to be "true" and tags not in the tag set to be "false") For example,   the first "i" has a tag set of {}; !s &amp; !l evaluates to true,  the   character is shown. For the first "C" on the line, the tag set is {"s"};   for that set, the expression evaluates to false; the character is not   shown. You can change the selection using the TM's View menu. By the   way, "s" is short for "script" and "l" is short for library. Library   code should be tagged with "l" and script code should be tagged with   "s". </li>
+    <li>If you want to hide some code not only from students but also from   other compilers, you can put it in a special comment. For example
+      <pre> i = get() ; /*#I setColourOf_i() ; */j = 3 ;</pre>
+      The TM tags all code within such a comment with {"s"}&cup;<em>T</em>, where <em>T</em> is the tag set prior to the comment and passes it on to its internal   compiler. From the TM's point of view, this example and the last are   essentially identical. From the point of view of any other compiler, of   course, they are not. </li>
+  </ul>
+  <h3>What happens when entire lines are hidden?</h3>
+  <p>When an entire line is hidden, the TM does not display the line in   the source code window at all. When line numbers are being shown, it   shows that there is a gap in the lines by displaying an elipsis (...)   where the line number(s) would normally go. When line numbers are not   shown, there is no indication that a line is missing. In either case, we   say that the line is <em>suppressed</em>.</p>
+  <p>Here is an example where lines are suppressed </p>
+  <pre>    <strong>public static void</strong> main(String args ) {<br>
+          System.out.println(0) ;<br>
+/*#I          System.out.println(1) ;<br>
+*/          System.out.println(2) ;<br>
+/*#I          System.out.println(3) ; */<br>
+          System.out.println(4) ; /*#I<br>
+          System.out.println(5) ; */<br>
+          System.out.println(6) ;<br>
+          System.out.println(7) ; /*#I<br>
+          System.out.println(8) ;<br>
+*/    } </pre>
+  <p>The lines that print 1, 3, 5, and 8 are suppressed (assuming the   default selection). With line numbers, it looks like this in the TM </p>
+  <p align="center"><img src="../../Images/withLineNumbers.png" width="411" height="146"></p>
+  <p>Without line numbers, it looks like this</p>
+  <p align="center"> <img src="../../Images/withoutLineNumbers.png"></p>
+  <p>How does the TM decide whether to suppress a line? If every character   on the line is hidden in the current selection, then the line will be   suppressed. We don't consider newline of charage return characters to be   characters on a line, because the serve to separate lines. We also   don't consider pedagogical markup, because that is never displayed in   the code subwindow. We do, however, consider space characters (blanks   and tabs). In our example, adding a blank (or any other) character at   the end of lines 16 or line 18 would mean that they are not suppressed,   since that character would not be hidden. Similarly adding a blank at   the start of lines 14 or 16 would mean that the the lines are not   suppressed.</p>
+  <p>There is a special case needed here. If a line has no characters,   after discarding pedagogical markup, then, of course, that would mean   that all (0) of its characters are hidden, regardless of the selection.   In this case we only suppress the line if a hypothetical character added   to the end of the line would be hidden. For example if the source code   looks like this (using &middot; to represent space characters) </p>
+  <pre>/*#TS*/this&middot;line&middot;is&middot;suppressed<br>&middot;/*/#TS*/  </pre>
+  <p>Then the second line is suppressed. However if the space at the start   of the second line were removed, then that line would not be   suppressed. </p>
+  <h3>How does hidden or suppressed code interact with the TM's controls?</h3>
+  <p>The Teaching Machine's compilers associate each bit of compiled code   with some line. Unfortunately they do not (currently) associate compiled   (machine) code with the actual characters used to produce it. For   example, in the line</p>
+  <pre>   i = 0 ;  /*#I k = 1 ; */ j = 0; </pre>
+  <p>all three  statements are associated with the same line. The compilers <em>do not</em> record that the first and third statements came from the unhidden part   of the line and that the second statement came from the hidden part of   the line.</p>
+  <p>The TM will stop at hidden code on unsuppressed lines, just as it   does for unhidden code. The TM's interpreter is in fact completely   unaware of whether the code that produced a given statement is hidden or   not, and so it makes no distinction. If we were to step through the   example code, we would see only i = 0; j = 0 ; in the code subwindow, but it would take <em>three</em> clicks on a "single stepping over button" (<img src="http://stepOver.gif" alt="stepOver button gif" width="12" height="12">) to execute the whole line; furthermore, after the first click, the hidden expression k = 1 will appear in the expression engine subwindow.</p>
+  <p>However, the TM's interpreter is aware of what line produced each bit   of machine code and tries not to stop on code associated with   suppressed lines. If we change the example to </p>
+  <pre>   i = 0 ; /*#I<br>
+   k = 1 ; */<br>
+   j = 0; </pre>
+  <p>or</p>
+  <pre>   i = 0 ; /*#T S*/<br>
+   k = 1 ; /*#/T S*/<br>
+   j = 0; </pre>
+  <p>It will only take two clicks on the <img src="http://stepOver.gif" alt="stepOver button gif" width="12" height="12"> button to step through the code and k = 1 will never appear in the expression engine.</p>
+  <p>For this reason, it is better to put scripting code on suppressed   lines, rather than in hidden code on unsuppressed lines. One should also   use a configuration file that suppresses line numbers and hence the   elipses.</p>
+  <h3>Writing code for the Teaching Machine and for WebWriter++</h3>
+  <p>The Teaching Machine and WebWriter++ interpret tagging slightly   differently. Therefore, the recommended style what we call   "trailing-trailing" : put "/*#T S*/" (or "/*#I") at the end of the line   before the first one to be suppressed and /*#/T S*/ (or "*/") at the   very end of the last line to be suppressed, being careful not to add   gratuitous spaces after. For example (using &middot; for spaces)</p>
+  <pre>&middot;&middot;&middot;&middot;i&middot;=&middot;0&middot;;&middot;/*#I&lt;br&gt;
+&middot;&middot;&middot;&middot;k&middot;=&middot;1&middot;;&middot;*/<br>
+&middot;&middot;&middot;&middot;j = 0; </pre>
+  <p>If trailing-trailing style is not possible (for example because of a comment) then you can use leading-leading style like this. </p>
+  <pre>&middot;&middot;&middot;&middot;i&middot;=&middot;0&middot;;&middot;//&middot;A&middot;comment<br>
+/*#I&middot;&middot;&middot;&middot;k&middot;=&middot;1&middot;;  */<br>
+&middot;&middot;&middot;&middot;j = 0; </pre>
+  <p>As you can see, when using leading-leading style, it is probably   better to use space rather than tab characters  at the start of lines to    minimize confusion.</p>
+  <p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Any section of code can be tagged by adding before it </p>
+<p><code>/*#T tagName */</code></p>
+<p>and</p>
+<p><code>/*#/T tagName */</code> </p>
+<p>after it. tagName can be any legal string. Leading and trailing whitespace
+  are optional (that is, they are  ignored).</p>
+<p>A piece of code can carry as many tags as the instructor wishes. Tags do not
+  have to nest.</p>
+<p>Tags are used in conjunction with a pair of selection strings in the insertCode command (see the  <a href="http://www.teachingmachine.org/WebWriter%20Manual/default.htm">webWriter manual</a> for more information)
+  to control independently what code selections are shown in webWriter++ and
+  in the TM. Here is a C++ example marked up using the Tagged approach.</p>
+<pre>class MyString{
+public:
+  MyString(char* p);	// Construct using a standard string
+  MyString();			// &quot;default&quot; (no arguement) constructor
+  MyString(MyString&amp; orig);		// Copy constructor
+  ~MyString();		// standard destructor to deal with heap
+
+// Accessor functions - used to read object data without changing it
+  int length() ;
+  char getChar(int i) ;	// get char at location i
+  void get(char* buff) ;	// Get the string &amp; put it into user buff
+  bool compare(MyString&amp; other);	// true if equal
+  
+// Mutator functions - used to change string objects
+  void setChar(int i, char c); // Change char at i to c
+  void changeTo(char* newString);	// Change the whole string
+  
+/* Notice the change to pass by ref to improve efficiency */
+  void changeTo(MyString&amp; newString);	// Function overload
+
+private:
+  char* mPtr;	// pointer into the heap where the actual string will be
+  int mLength;	// length of the string
+  };
+
+/*#TA*/ // A class of users for network management
+class User{
+public:
+  User(char* n, char* u, char* p);
+
+// Accessors
+  MyString&amp; name();	// return reference
+  int allocation();	// Disk space allowed
+  MyString password();	// return value
+  MyString uname() ;
+  bool confirm(MyString&amp; uName, MyString&amp; pass);
+
+// Mutators
+  bool setPassword(MyString&amp; p1, MyString&amp; p2);
+  void setAllocation(int a);
+
+protected:
+  MyString mName;	// Notice attributes that are OBJECTS!
+  MyString mUname;
+  MyString mPassword;
+  int mAllocation;	// Memory allocation, in MBytes
+};/*#/TA*/
+
+/*#TB*/class Student: public User{
+public:
+  Student(char* n, char* id, char* u, char* p);
+  MyString id();
+  void buy(long amount);
+  bool approvePrint(int pages);
+
+protected:
+  MyString mId;
+  long mPrintPennies;
+};/*#/TB*/
+
+/*#TC*/class Faculty: public User{
+public:
+  Faculty(char* n, char* u, char* p, char* today);
+
+// accessor functions
+  long pages();
+  MyString cleared();
+
+// mutator functions
+  bool approvePrint(int pages);	// increases page count
+  void clear(char* d);	// clears count &amp; notes date
+
+protected:
+  long mPages;	// Pages used since
+  MyString mCleared;	// last date cleared
+};/*#/TC*/</pre>
+<p>To expose only class <code>User</code> on the webSite the code is inserted
+  using the <code>insertCode</code> command as follows:</p>
+<p><code>function insertCode(&quot;userInherit.cpp&quot;, true, &quot;code&quot;, &quot;default.tmcfg&quot;, &quot;A&amp;~S&quot;,
+  &quot;~S&quot;)</code></p>
+<p>which shows only code tagged with &quot;<code>A</code>&quot; on the eBook page, but the whole example
+  when it gets run in the TM. The <code>~S</code> means <em>don't display Scripts,</em> referring
+  to internal scripting calls which instructors can build into the code. Let's now look at the result of displaying with the separate tags. First here is class <code>User</code></p>
+<p><script language="JavaScript">
+     insertCode("userInherit.cpp", true, "code", "default.tmcfg", "A&~S", "~S");
+</script> </p>
+<p>Now class <code>Student</code> (using Tag B). Isolating pieces of complex code on a Teaching web page allows the author to discuss the parts separately while keeping the original code in one, compilable program.</p>
+<p><script language="JavaScript">
+     insertCode("userInherit.cpp", true, "code", "default.tmcfg", "B&~S", "~S");
+</script> </p>
+<p>Similarly, her is  class <code>Faculty</code> broken out by using Tag C.</p>
+<p><script language="JavaScript">
+     insertCode("userInherit.cpp", true, "code", "default.tmcfg", "A&~S", "~S");
+</script> </p>
+<h3>Reserved Tags </h3>
+<p>Tags &quot;<code>S</code>&quot; and &quot;<code>Script</code>&quot; are equivalent and reserved for marking intenal scripting
+  calls (only &quot;<code>S</code>&quot; should be used in the <code>insertCode</code> selection strings).</p>
+<p>Tags &quot;<code>L</code>&quot; and &quot;<code>Lib</code>&quot; are equivalent and reserved for
+  marking TM library code(only &quot;<code>L</code>&quot; should be used in the <code>insertCode</code>selection strings). </p>
+<p>Tag &quot;I&quot; </p>
+<h2>Hiding PDV Script Calls from Students</h2>
+<p>&nbsp;</p>
+<p>In the TM <strong>View</strong> menu, notice that line numbering may be turned off. The view can also be changed from <strong>Select default</strong> to <strong>Select all</strong> to see the visualization code that has been supressed so as to not clutter up the example for students.</p>
+<div id="allExamples">
+<!-- The allExamples div is hidden in on-line content and only shows in the printed version of the page. It was intended
+for printing out examples in full, where only partial windows into examples are displayed on the browser page. To use
+this facility, place an insertCode snippet into this div for each example, setting the selector to "all".
+Also, make sure there is a copy of the printForm.htm page in the same folder as this page.-->
+<p>&nbsp;</p> 
+</div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

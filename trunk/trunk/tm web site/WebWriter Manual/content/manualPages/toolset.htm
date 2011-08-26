@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Toolset</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>The <strong>toolset</strong> is a series of what might ambitiously
+    be called authoring tools designed explicitly for the production of programming
+    tutoring or training pages. They are designed to be as easy to use as possible
+    so that authors can concentrate upon content.</p>
+<p>The toolset is implemented in JavaScript (sometimes with a Java applet in the background). Tools are accessed as JavaScript function calls.</p>
+<h2>Usage</h2>
+<p>HTML embeds JavaScript within <code>&lt;script&gt; &lt;/script&gt;</code> tags. Although
+  in the last edition of this manual, the actual code was escaped in HTML comments,
+  it no longer is, on the grounds that browsers that don't support
+  javaScript will be of little use on WebWriter authored sites.</p>
+<p> For example,
+  shown below is a request to start a note (a section that will usually be turned
+  off in lecture mode but on in study mode), here without escaping&#8212; </p>
+<pre>&lt;script language=&quot;JavaScript&quot; type="text/javascript"&gt;<br> startNote();<br>&lt;/script&gt;
+</pre>
+<p>and here with&#8212;</p>
+<pre>
+&lt;script language="JavaScript" type="text/javascript"&gt;&lt;!--
+ startNote();
+// --&gt;
+&lt;/script&gt;
+</pre>
+<h2><a name="snippets">Snippets</a></h2>
+<p>Many HTML editors (e.g.  DreamWeaver or 1st Page 2000) support 
+  snippets, which let standard boilerplate, including JavaScript, be inserted
+  automaticaly into a document. Generally, there are two modes:</p>
+<dl>
+  <dt>Wrap Selection</dt>
+  <dd>A piece of one's html document is selected and then is <em>wrapped</em>,
+    that is separate snippets are inserted before and after the selection.</dd>
+  <dt>Block</dt>
+  <dd>The snippet is inserted at the insertion point as a single block.</dd>
+</dl>
+<p>Most of WebWriter's tools have been designed with snippets in mind. For example,
+  to make a section of your document into a note, you would select the desired
+  section and then insert a wrap snippet. Before the selection would go the above
+  piece of code</p>
+<pre>&lt;script language=&quot;JavaScript&quot; type="text/javascript"&gt;<br> startNote();<br>&lt;/script&gt;</pre>
+<p>while the selection would be followed by</p>
+<pre>&lt;script language=&quot;JavaScript&quot; type="text/javascript"&gt;<br> endNote();<br>&lt;/script&gt;
+</pre>
+
+<h2><a name="specificPages">Specific Tools</a></h2>
+<ol>
+   <li><a href="insert_code.htm">Inserting Code</a></li>
+   <li><a href="hiddenNotes.htm">Hidden Notes</a></li>
+   <li><a href="popups.htm">Pop-ups</a></li>
+   <li><a href="definitions.htm">Definitions</a></li>
+   <li><a href="rollover_blocks.htm">Rollover Blocks</a></li>
+   <li><a href="answerBoxes.htm">Answer containers</a></li>
+   <li><a href="buttons.htm">Buttons</a></li>
+   <li><a href="utilities.htm">Utilities</a></li>
+</ol>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

@@ -1,0 +1,14 @@
+void ptrfunc( char a[5], char *b ) {
+	char *p  ;
+	for( p = a ; *p ; ++p ) ;
+	while( p-- != a )
+		*(b++) = *p ;
+	*b = 0 ;
+}
+
+
+void main() {
+	char y[10] ;
+	char *x = "abcd" ;
+	ptrfunc( x, y ) ;
+}

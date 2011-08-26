@@ -1,0 +1,14 @@
+ int main() {
+
+   bool b ;
+   char c ;
+   b = cin.get( c ) ;
+   b = c == EOF ;
+   b = 13 ;
+   b = 0 ;
+   b = 0.1 ;
+   char *p = 0 ;
+   b = p ;
+   p = & c ;
+   b = p ;
+}

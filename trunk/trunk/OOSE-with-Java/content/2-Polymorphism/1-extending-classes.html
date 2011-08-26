@@ -1,0 +1,379 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Extending classes</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+.style8 {font-family: georgia, palatino, "Times New Roman", times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="interfaces" id="mutators-and-accessors">Extension</a></h1>
+<p>As we have seen, two or more classes can implement the same interface.</p>
+<p>Such classes then have the signatures of certain methods in common, but each class must provide a body for these methods. Interfaces do not contain the bodies of their methods.</p>
+<p>Furthermore interfaces can not contain the declarations of field (except for static final fields).</p>
+<p>What if we want two classes to share more than just the signatures of methods?</p>
+<h2>Soccer Example </h2>
+<p>Consider a graphical simulation of a soccer game.</p>
+<p>Each object represents either a player or a ball.</p>
+<h3>First attempt --- using an interface </h3>
+<p>Balls and players have certain behaviours in common we represent these with an interface</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer0/MovingObject.java", true, "code", "default.cfg" );
+  
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer0/Ball.java", true, "code", "default.cfg" );
+  
+  
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer0/Player.java", true, "code", "default.cfg" );
+  
+  
+  
+</script>
+</p>
+<p>This solution contains much repetition.</p>
+<ul>
+  <li>It will be harder to maintain -- every change to repeated methods must be done twice.</li>
+  <li>It compiles to a large amount of machine code. </li>
+</ul>
+<p>Note that each subroutine in <span class="codeInline">Ball</span> and <span class="codeInline">Player</span> is of one of four kinds:</p>
+<ul>
+  <li>Subroutines that have the same signature and the same implementation in both classes
+      <ul>
+        <li>Examples: <span class="codeInline">getXPosition</span>, <span class="codeInline">getYPosition</span>, <span class="codeInline">updatePosition</span>, <span class="codeInline">distanceTo</span></li>
+      </ul>
+  </li>
+  <li>Subroutines that have the same signature, but different implementations
+      <ul>
+        <li>Example: <span class="codeInline">drawToScreen</span></li>
+      </ul>
+  </li>
+  <li>Subroutines that have signatures unique to the class
+      <ul>
+        <li>Examples: <span class="codeInline">kick</span>, <span class="codeInline">isOnField</span></li>
+      </ul>
+  </li>
+  <li>Subroutines that have different signatures but that share part of their implementation
+      <ul>
+        <li>Examples: the constructors </li>
+      </ul>
+  </li>
+</ul>
+<p>Each field is of one of two kinds</p>
+<ul>
+  <li>Fields that are common to <span class="codeInline">Ball</span> and <span class="codeInline">Player</span>
+      <ul>
+        <li>Example <span class="codeInline">x</span> and <span class="codeInline">y</span></li>
+      </ul>
+  </li>
+  <li>Fields that are not common
+      <ul>
+        <li>Example: <span class="codeInline">team</span></li>
+      </ul>
+  </li>
+</ul>
+<h3>Second attempt --- delegation </h3>
+<p>We can put all the common methods into one class <span class="codeInline">MovingObjectDelegate</span>.</p>
+<p>Each <span class="codeInline">MovingObject</span> object uses an instance of MovingObjectDelegate to store its position and to implement common behaviour. </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer1/MovingObjectDelegate.java", true, "code", "default.cfg" );
+  
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer1/Ball.java", true, "code", "default.cfg" );
+  
+  
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+    setButtons(false, false, false,"","");
+    insertCode("soccer1/Player.java", true, "code", "default.cfg" );
+  </script>
+</p>
+<p>The <span class="codeInline">MovingObject</span> interface for this example, is unchanged.</p>
+<p>This solution replaces a lot of code duplication with a little code duplication.</p>
+<div class="breakoutBox">
+  <p> <strong>Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    In this particular example, the common methods don't do very much, because I wanted to keep the example short. So there really wasn't much code duplication to start with. In a more realistic situation, the savings can be considerable.</p>
+  <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<p>However it is still a bit messy.</p>
+<p>We can do better using class extension.</p>
+<h3>Third Attempt: Extending a common superclass.</h3>
+<p>For this solution, we need to introduce a new kind of class &#8212;an <strong>abstract class</strong>&#8212; and a new kind of relationship between classes &#8212;<strong>extension</strong>.</p>
+<p>An abstract class contains both common signatures and common implementations.</p>
+<p>We replace the <span class="codeInline">MovingObject</span> interface of the last two examples with a <span class="codeInline">MovingObject</span> abstract class as follows. </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/MovingObject.java", true, "code", "default.cfg" );
+</script>
+</p>
+<p>An abstract class may provide implementations for some methods, but may provide no implementation for other methods (such as <span class="codeInline">drawToScreen</span>) .</p>
+<p>Methods that do not have an implementation must be marked with the modifier <span class="codeKeyword">abstract</span>. </p>
+<p>Any class that has abstract methods, must itself be marked with the modifier <span class="codeKeyword">abstract</span>. </p>
+<p>Since an abstract class contains unimplemented methods, it does not make sense to use the class to create an object.</p>
+<p>Why?</p>
+<p>Well suppose we could. Consider:</p>
+<pre class="code">MovingObject m = <span class="codeKeyword">new</span> MovingObject(3, 5) ; <span class="codeComment">// You can't really do this</span>
+m.drawToScreen() ;
+</pre>
+<p>What does <span class="codeInline">m.drawToScreen()</span> mean? There is no method implementation associated with <span class="codeInline">drawToScreen</span> method in the <span class="codeInline">MovingObject</span> class. This method call makes no sense. </p>
+<p>Therefore the expression </p>
+<pre class="code"><span class="codeKeyword">new</span> MovingObject(3, 5)</pre>
+<p>is marked as an error by the compiler. You can not create objects using the constructor of an abstract class. </p>
+<p>Abstract classes can not have direct instances. </p>
+<p>But, we can create classes that <span class="pseudoCode">extend</span> an abstract class, filling in the missing implementation and adding new signatures.</p>
+<p>In our example, we have</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/Ball.java", true, "code", "default.cfg" );
+</script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("soccer2/Player.java", true, "code", "default.cfg" );
+</script>
+</p>
+<p>The keyword <span class="codeKeyword">extends</span> indicates that each of these classes extends the <span class="codeInline">MovingObject</span> class.</p>
+<p>We say that <span class="codeInline">MovingObject</span> is the <strong>superclass</strong> of <span class="codeInline">Ball</span> and of <span class="codeInline">Player</span>. </p>
+<p><span class="codeInline">Ball</span> and <span class="codeInline">Player</span> inherit both the signatures and the implementation of their <strong>superclass</strong>. </p>
+<p>The syntax is</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="stxNonterminal">ExtendsClause ImplementsClause </span><span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* <span class="codeInline">}</span><br>
+    <span class="stxNonterminal">ExtendsClause</span> --&gt; <span class="style8"><span class="stxMeta">(</span> </span><span class="codeKeyword">extends</span> <span class="stxNonterminal">ClassName</span><span class="style8"> <span class="stxMeta">)<sup>?</sup></span></span></p>
+<p>&nbsp; </p>
+<p>Each class can only extend one class.</p>
+<p>If <span class="codeInline">S</span> extends <span class="codeInline">T</span>:</p>
+<ul>
+  <li><span class="codeInline">S</span> inherits all abstract methods' signatures from <span class="codeInline">T</span>. <span class="codeInline">S</span> may provide implementations for these methods. (If <span class="codeInline">S</span> does not provide an implementation for all inherited abstract methods, then it itself must be declared abstract.)</li>
+  <li><span class="codeInline">S</span> inherits all nonabstract, nonstatic methods from <span class="codeInline">T</span> including both the signature and the implementation.</li>
+  <li><span class="codeInline">S</span> inherits all nonstatic fields from <span class="codeInline">T</span>, even fields marked as private. </li>
+</ul>
+<p>Classes that are not abstract are called <strong>concrete</strong>.</p>
+<p>This is considerably simpler than the delegation method.</p>
+<h2>Construction of Objects </h2>
+<p>Note that the implementation of <span class="codeInline">Ball</span> is now spread across two classes, this raises the question of how to construct the object. The answer is that the constructor of <span class="codeInline">Ball</span> calls the constructor of MovingObject.</p>
+<p>In the <span class="codeInline">Ball</span> class this call is</p>
+<pre class="code"><span class="codeKeyword">super</span>( x, y ) ;</pre>
+<p>Such a call is optional, but must be the first statement in a constructor.</p>
+<p>If there is no call to <span class="codeKeyword">super</span> in a constructor, the default is</p>
+<pre class="code"><span class="codeKeyword">super</span>() ;</pre>
+<p>I.e. a call to the 0-parameter constructor of the superclass.</p>
+<p>Regardless of whether the call is explicit of implicit the sequence is this.</p>
+<ul>
+  <li>Space is found for the new object.</li>
+  <li>The object is created on the heap.</li>
+  <li>The fields inherited from the superclass are initialized</li>
+  <li>The constructor of the superclass is executed</li>
+  <li>The fields of the concrete class are initialized</li>
+  <li>The constructor of the concrete class is executed </li>
+</ul>
+<h2>Using Abstract Classes as Types</h2>
+<p>A class or interface, in Java, may be used for several purposes</p>
+<ul>
+  <li>To create direct instances of it (using the &quot;<strong>new</strong>&quot; keyword)</li>
+  <li>As the type for reference variables</li>
+  <li>To modify generic types (such as List or ArrayList)</li>
+  <li>To be extended by other classes</li>
+  <li>In &quot;casting expressions&quot; and with <span class="codeKeyword">instanceof</span></li>
+</ul>
+<p>Abstract classes can be used for all these purposes, except the first. </p>
+<p>For example </p>
+<pre class="code">List&lt;MovingObject&gt; drawList = <span class="codeKeyword">new</span> ArrayList&lt;MovingObject&gt; ;
+<br>...<br><span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i=0 ; i &lt; drawList.size() ; ++i ) {<br>    MovingObject p = drawList.get(i) ;<br>    p.drawToScreen() ; }
+</pre>
+<p class="code">&nbsp;</p>
+<h2>Summary of Programmer-Defined Types</h2>
+<p>So far we've seen 3 kinds of programmer-defined types:</p>
+<ul>
+  <li>Interfaces</li>
+  <li>Abstract Classes</li>
+  <li>Concrete classes (i.e. non abstract) </li>
+</ul>
+<p>Let's summarize what can and can't be declared within each kind of type</p>
+<table width="90%"  border="2" align="center" cellpadding="5" cellspacing="0">
+  <tr valign="bottom">
+    <th align="right">&nbsp;</th>
+    <th>Concrete classes </th>
+    <th>Abstract Classes </th>
+    <th>Interfaces</th>
+  </tr>
+  <tr>
+    <th align="right">Static fields</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">*</td>
+  </tr>
+  <tr>
+    <th align="right">Static methods </th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+  </tr>
+  <tr>
+    <th align="right">Nonstatic fields </th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+  </tr>
+  <tr>
+    <th align="right">Abstract method signatures</th>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">&#8224;</td>
+  </tr>
+  <tr>
+    <th align="right">Concrete methods</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+  </tr>
+  <tr>
+    <th align="right">Constructors</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">&#8225;</td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+  </tr>
+</table>
+<ul>
+  <li>* Only if <span class="codeKeyword">final</span>. I.e. static fields in interfaces must be constants. </li>
+  <li>&#8224; The keyword's <span class="codeKeyword">abstract</span> and <span class="codeKeyword">public</span> are optional. Nevertheless methods declared in interfaces are always abstract and public. </li>
+  <li>&#8225; However these constructors are not called from allocation expressions (<span class="codeKeyword">new</span> expressions). They are called using the <span class="codeKeyword">super</span> keyword in the constructors of classes that extend the abstract class. </li>
+</ul>
+<p>Now let's look some of the ways programmer defined types can (and can't) be used. </p>
+<table width="90%"  border="2" align="center" cellpadding="5" cellspacing="0">
+  <tr valign="bottom">
+    <th align="right">&nbsp;</th>
+    <th>Concrete classes </th>
+    <th>Abstract Classes </th>
+    <th>Interfaces</th>
+  </tr>
+  <tr>
+    <th align="right">Type for reference variables and parameters</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+  <tr>
+    <th align="right">Item type for arrays of references</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+  <tr>
+    <th align="right">Result type of a method </th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+  <tr>
+    <th align="right">In allocation (<span class="codeKeyword">new</span>) expressions</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22">*</td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22">*</td>
+  </tr>
+  <tr>
+    <th align="right">As the type argument for a generic type </th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+  <tr>
+    <th align="right">In <span class="codeKeyword">instanceof</span> and casting expressions.</th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+  <tr>
+    <th align="right">Extended by a class </th>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">&#8224;</td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">&#8225;</td>
+    <td align="center">&nbsp;</td>
+  </tr>
+  <tr>
+    <th align="right">Implemented by a class </th>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23">&#8225;</td>
+  </tr>
+  <tr>
+    <th align="right">Extended by an interface</th>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+    <td align="center"><img src="answer_bad.gif" width="25" height="22"></td>
+    <td align="center"><img src="answer_good.gif" width="23" height="23"></td>
+  </tr>
+</table>
+<blockquote>
+  <p>* Using anonymous inner classes, it <span class="pseudoCode">is</span> possible to use abstract classes and interfaces in allocation expressions. This is covered later in these notes. However in that case the new object is not a direct instance of the interface or the abstract class, but rather of the anonymous class. Objects always are always direct instances of concrete types or to array types. </p>
+  <p>&#8224; But not if the concrete class is final. In any case, I generally prefer not to extend concrete classes because they then play two very different roles: class of objects and superclass. </p>
+  <p>&#8225; A concrete type that extends an abstract class, or that implements an interface, must provide an implementation for all methods that are abstract in the extended or implemented type. </p>
+</blockquote>
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,75 @@
+/*#TS*/
+package java.lang;
+/*
+ * Created on 4-Apr-2005
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+
+/**
+ * @author mpbl
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class Math {
+	public static final double PI = 4*atan(1.0);
+	public static final double E = java.lang.Math.E;
+	
+	public native static int abs(int x);
+	public native static long abs(long x);
+	public native static float abs(float x);
+	public native static double abs(double x);
+	
+	public native static double acos(double x);
+	public native static double asin(double x);
+	public native static double atan(double x);
+	public native static double atan2(double num, double denom);
+	
+	public native static double ceil(double x);
+	public native static double floor(double x);
+	public native static double signum(double x);
+	public native static float signum(float x);
+	public native static long round(double x);
+	public native static int round(float x);
+	
+	public native static double cos(double x);
+	public native static double sin(double x);
+	public native static double tan(double x);
+
+	public native static double cosh(double x);
+	public native static double sinh(double x);
+	public native static double tanh(double x);
+
+	public native static double sqrt(double x);
+
+	public native static double exp(double x);
+	public native static double expm1(double x);
+	public native static double log(double x);
+	public native static double log10(double x);
+	public native static double log1p(double x);
+	public native static double pow(double x, double a);	// x^^a
+	public native static double hypot(double x, double a);	//
+	
+	public native static int max(int x, int y);
+	public native static long max(long x, long y);
+	public native static float max(float x, float y);
+	public native static double max(double x, double y);
+	public native static int min(int x, int y);
+	public native static long min(long x, long y);
+	public native static float min(float x, float y);
+	public native static double min(double x, double y);
+
+	public native static double toDegrees(double x);
+	public native static double toRadians(double x);
+
+	public native static double random();
+	public native static double rint(double x);
+	
+	public native static double cbrt(double x);
+	public native static double IEEERemainder(double x, double a);
+	public native static float ulp(float x);
+	public native static double ulp(double x);
+
+}

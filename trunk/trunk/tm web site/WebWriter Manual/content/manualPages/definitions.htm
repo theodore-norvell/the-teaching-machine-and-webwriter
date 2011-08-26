@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Definitions</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>These are special-purpose <a href="popups.htm">pop-ups</a> for accessing standard definitions. A single dictionary is used for the whole site. It can actually be loaded & viewed by students as a dictionary. However, it also used as the source of the definition pop-ups.</p>
+<p>The definitions are kept in a page called <code>dictionary.htm</code>  which
+  is normally located in the root directory and which is loaded into a hidden
+  frame in the frameset. </p>
+<h3>Definition Styles</h3>
+<p>Currently uses pop-up styles, vis&#151;</p>
+<dl>
+<dt>popup</dt>
+<dd>controls the appearance of the definition pop-ups</dd>
+<dt>poplink</dt>
+<dd>controls the appearance of the definition links</dd>
+</dl>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>insertDefLink(name, link )</strong><br>
+<h3>Arguments</h3>
+<dl><dt>name</dt>
+  <dd>a <strong>string</strong> giving the unique name of the definition's key 
+    in the standard dictionary.</dd>
+<dt>link</dt>
+  <dd>a <strong>string </strong>containing the text for the link itself. This is 
+    exactly how conventional links work.</dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The definition link is written dynamically into the document at the point of invocation.</p>
+<hr>
+<strong>startDefLink(name)<br>
+endLink()</strong><br>
+<strong>Comment</strong><br>
+<p>These two routines are an alternative to the <strong>insertDefLink</strong> routine. The only difference is that the <strong>startDefLink</strong> function is invoked before the link text and the <strong>endLink</strong> after it. No <strong>link</strong> argument is used because the link text is already on the page between the two calls marking the beginning and ending of the link.</p>
+<hr>
+<h2>Usage</h2>
+<p>The advantage of definitions is that standard concepts like 
+  <script language="Javascript" type="text/javascript">
+<!--
+insertDefLink("scope","scope");
+//-->
+  </script> 
+  and 
+  <script language="Javascript" type="text/javascript">
+<!--
+insertDefLink("externalLevel","external level");
+//-->
+  </script> 
+  are available all over the site. While they are just pop-ups authors do not have to write the actual pop-up since it is found in the standard dctionary.</p>
+<p>Definition style is controlled by the class <code>.definition</code> in the style sheets and definition links by <code>.deflink</code>. </p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

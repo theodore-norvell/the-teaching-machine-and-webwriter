@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Pedagogical Markup</title>
+</head>
+<body>
+<h2>Introduction</h2>
+<p><span class="WW">WebWriter++</span> tries to meet a number of objectives in allowing authors to present code to students&mdash;</p>
+<ol>
+<li>The code should be presented in a fashion familiar to students. Typically, this means <em>syntax-staining</em> the code in a manner that is as close to the way their editor does it as possible.</li>
+<li>The code should be exportable to the <span class="TM">Teaching Machine</span>.</li>
+<li>The code should be isolated in a separate, compilable file, to allow an instructor to check for syntax and even debug it. </li>
+<li>Markup techniques available in the <span class="WW">WebWriter++</span> toolset
+  should be available for use with code.</li>
+</ol>
+<p>It might seem that syntax-staining (1) and code mark-up (4) would be incompatible with the other two objectives. However, (1) is easily achieved by importing the source code and parsing and staining it on the fly. <a href="insert_code.htm" onMouseOver="window.status='Jump to insert code tools.'; return true;" onMouseOut="window.status=''; return true;">This feature</a> was included in the toolset, which leaves only the fourth objective.</p>
+<p>Enter <em>pedagogical mark-up</em> which is a small language that allows certain <span class="WW">WebWriter++</span> calls to be embedded in C/C++ comments.</p>
+<h2><a name="tools">Supported Tools</a></h2>
+<p>Currently, the following tools are supported:</p>
+<ul><li>pop-ups</li>
+<li>definitions</li>
+<li>rollover blocks</li>
+<li>selection display (deprecated)</li>
+<li>selection tagging (replaces selection display) </li>
+</ul>
+<p>Indeed, pop-ups and rollover blocks were initially developed specifically to enable the marking of code.</p>
+<h2><a name="syntax">Syntax</a></h2>
+<h3>General</h3>
+<p>All mark-ups must appear inside C-style (multi-line) comments ('/* */'). Currently <span class="WW">WebWriter++</span> is unforgiving about white space so that pedagogical markups must occur immediately after (and before) the comment operators, as follows:</p>
+<code><pre>		/*#p="integerPopup"*/int/*#/p*/ count = 0;	</pre></code>
+<p>Here, the keyword <code>int</code> has been marked as a pop link. The <code>#p="integerPopup"</code> command (which is wrapped in comment characters with no intervening spaces) declares that a pop link (which will call up a pop-up named integerPopup) starts at the keyword. Similarly, <code>#/p</code> marks the end of the link. Thus, the <code>int</code> keyword will appear as a link to the integerPopup when the code is displayed by <span class="WW">WebWriter++</span>.</p>
+<h3><a name="popups">Popups</a></h3>
+<code>
+<pre>   /*#P="popupName" &quot;The text for the popUp&quot;*/</pre>
+</code>
+<p>Creates the  pop-up.  While html is
+  allowed it does not currently work. A pop-up only has to be defined once (on
+  a particular page). It can be linked multiple times. If you want cross-site
+  pop-ups, use definitions and put them in the dictionary.</p>
+<code>
+<pre>   /*#p="popupName"*/</pre></code>
+<p>Marks the beginning of a pop-up link. The "popupName" should be the name of the pop-up you want to see appear when the link is rolled over.</p>
+<code><pre>    /*#/p*/</pre></code>
+<p>Terminate a pop-up link.</p>
+<h3><a name="rollovers">Rollover Blocks</a></h3>
+<code><pre>   /*#B="blockName"*/</pre></code>
+<p>Starts the block. The background colour of the block will change when its link is rolled over. Blocks may be wholly nested within each other.</p>
+<code><pre>    /*#/B*/</pre></code>
+<p>Terminate a block.</p>
+<code><pre>   /*#b="blockName"*/</pre></code>
+<p>Marks the beginning of a rollover block link. The "blockName" should be the name of the rollover block you want to see illuminated when the link is rolled over.</p>
+<code><pre>    /*#/b*/</pre></code>
+<p>Terminate a rollover block link.</p>
+<h3><a name="definitions">Definitions</a></h3>
+<code><pre>   /*#d="definitionName"*/</pre></code>
+<p>Marks the beginning of a definition link. The "definitionName" should be the name of the definition you want to see pop-up when the link is rolled over. Definitions are kept in a separate, standard dictionary.</p>
+<code><pre>    /*#/d*/</pre></code>
+<p>Terminate a definition link.</p>
+<h2><a name="Tagging">Selection Tagging</a></h2>
+<p>Any section of code can be tagged by adding before it </p>
+<p><code>/*#T tagName */</code></p>
+<p>and</p>
+<p><code>/*#/T tagName */</code> </p>
+<p>after it. tagName can be any legal string. Leading and trailing whitespace
+  are optional (that is, they are  ignored).</p>
+<p>A piece of code can carry as many tags as the instructor wishes. Tags do not
+  have to nest.</p>
+<p>Tags are used in conjunction with a pair of selection strings in the <a href="insert_code.htm#insertCode">insertCode</a>  command
+  to control independently what code selections are shown in webWriter++ and
+  in the TM. Here is the above example marked up using the Tagged approach.</p>
+<pre>class MyString{
+public:
+  MyString(char* p);	// Construct using a standard string
+  MyString();			// &quot;default&quot; (no arguement) constructor
+  MyString(MyString&amp; orig);		// Copy constructor
+  ~MyString();		// standard destructor to deal with heap
+
+// Accessor functions - used to read object data without changing it
+  int length() ;
+  char getChar(int i) ;	// get char at location i
+  void get(char* buff) ;	// Get the string &amp; put it into user buff
+  bool compare(MyString&amp; other);	// true if equal
+  
+// Mutator functions - used to change string objects
+  void setChar(int i, char c); // Change char at i to c
+  void changeTo(char* newString);	// Change the whole string
+  
+/* Notice the change to pass by ref to improve efficiency */
+  void changeTo(MyString&amp; newString);	// Function overload
+
+private:
+  char* mPtr;	// pointer into the heap where the actual string will be
+  int mLength;	// length of the string
+  };
+
+/*#TA*/ // A class of users for network management
+class User{
+public:
+  User(char* n, char* u, char* p);
+
+// Accessors
+  MyString&amp; name();	// return reference
+  int allocation();	// Disk space allowed
+  MyString password();	// return value
+  MyString uname() ;
+  bool confirm(MyString&amp; uName, MyString&amp; pass);
+
+// Mutators
+  bool setPassword(MyString&amp; p1, MyString&amp; p2);
+  void setAllocation(int a);<p></p>
+
+protected:
+  MyString mName;	// Notice attributes that are OBJECTS!
+  MyString mUname;
+  MyString mPassword;
+  int mAllocation;	// Memory allocation, in MBytes
+};/*#/TA*/
+
+/*#TB*/class Student: public User{
+public:
+  Student(char* n, char* id, char* u, char* p);
+  MyString id();
+  void buy(long amount);
+  bool approvePrint(int pages);
+
+protected:
+  MyString mId;
+  long mPrintPennies;
+};/*#/TB*/
+
+/*#TC*/class Faculty: public User{
+public:
+  Faculty(char* n, char* u, char* p, char* today);<p></p>
+
+// accessor functions
+  long pages();
+  MyString cleared();
+
+// mutator functions
+  bool approvePrint(int pages);	// increases page count
+  void clear(char* d);	// clears count &amp; notes date
+
+protected:
+  long mPages;	// Pages used since
+  MyString mCleared;	// last date cleared
+};/*#/TC*/</pre>
+<p>To expose only class <code>User</code> on the webSite the code is inserted
+  using the <code>insertCode</code> command as follows:</p>
+<p><code>function insertCode(&quot;userInherit.cpp&quot;, true, &quot;code&quot;, &quot;default.cfg&quot;, &quot;A~S&quot;,
+    &quot;~S&quot;)</code></p>
+<p>which shows only code tagged with &quot;<code>A</code>&quot; on the eBook page, but the whole example
+  when it gets run in the TM. The <code>~S</code> means <em>don't display Scripts,</em> referring
+  to internal scripting calls which instructors can build into the code.</p>
+<h3>Reserved Tags </h3>
+<p>Tags &quot;<code>S</code>&quot; and &quot;<code>Script</code>&quot; are equivalent and reserved for marking intenal scripting
+  calls (only &quot;<code>S</code>&quot; should be used in the <code>insertCode</code> selection strings).</p>
+<p>Tags &quot;<code>L</code>&quot; and &quot;<code>Lib</code>&quot; are equivalent and reserved for
+marking TM library code(only &quot;<code>L</code>&quot; should be used in the <code>insertCode</code>selection strings). </p>
+<h2><a name="removed">Mark-Up Removed for Presentation</a></h2>
+<p>While pedagogically marked code compiles just fine it is still messy and confusing
+  for students to look at. Consequently, both <span class="WW">WebWriter++</span> and
+  the <span class="TM">Teaching Machine</span> automatically remove pedagogical
+  markups from their displays.
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</body>
+</html>
+

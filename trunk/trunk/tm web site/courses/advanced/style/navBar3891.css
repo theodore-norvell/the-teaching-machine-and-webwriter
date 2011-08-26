@@ -1,0 +1,140 @@
+body {
+	font-family: Verdana, arial, helvetica, sans-serif;
+	font-size: 20pt;
+	color:#EEEEEE; /*#000066;*/
+	border: 0px;
+	margin-top: 2px;
+	margin-left: 2px;
+	padding-top: 0px;
+	padding-left: 0px;
+	vertical-align: middle;
+}
+h1{
+	text-align: center;
+}
+/* Hidden container for applets */
+
+#appletContainer{
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#topBanner{
+	position:absolute;
+	top: 0px;
+	width: 100%;
+	height: 60px;
+	background-color:#993333; /*#FFFF00;*/
+	margin: 0px;
+	padding: 0px;	
+}
+
+/*
+#leftBox{
+	position: relative;
+	float: left;
+	background-color:#00FF00;
+	margin-top: 5px;
+	margin-left: 5px;
+	padding-top: 0px;
+	padding-left: 0px;
+	width: 200px;
+	height: 60px;
+	vertical-align: middle;
+}
+*/
+#logoContainer{
+	background-color:#993333; /*#FFFF00;*/
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 60px;
+	height: 60px;
+	vertical-align:middle;
+	text-align:center;
+	
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	color: #FF0000;
+}
+
+
+#navContainer{
+	background-color:#993333; /*#FFFF00;*/
+	position: absolute;
+	top: 0px;
+	left: 60px;
+	width: 200px;
+	height: 60px;
+	margin-top: 0px;
+	margin-left: 2px;
+	padding-top: 0px;
+	padding-left: 0px;
+	text-align: center;
+}
+
+#titleContainer{
+	position: absolute;
+	top: 0px;
+	left: 260px;
+	height: 60px;
+	background-color:#993333; /*#FFFF00;*/
+	margin-top: 0px;
+	margin-left: 20px;
+	padding-top: 0px;
+	padding-left: 0px;
+	text-align: center;
+}
+/*
+#rightBox{
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+	float: right;
+	width: 360px;
+}
+*/
+
+/* Furthest right container */
+#siteContainer{
+	background-color:#993333; /*#FFFF00;*/
+	position: absolute;
+	top: 0px;
+	right: 20px;
+	width: 155px;
+	height: 60px;
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+	margin-right: 0px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	text-align: right;
+}
+#siteBottom{
+	background-color:#993333; /*#FFFF00;*/
+	width: 155px;
+	height: 15px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#buttonContainer{
+	background-color:#993333; /*#FFFF00;*/
+	position: absolute;
+	top: 0px;
+	right: 155px;
+	width: 150px;
+	height: 60px;
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-top: 0px;
+	padding-left: 0px;
+	vertical-align:top;
+}

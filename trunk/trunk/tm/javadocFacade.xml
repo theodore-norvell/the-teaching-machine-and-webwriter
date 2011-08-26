@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="visualizerView" default="javadoc" basedir=".">
+	<description>
+	        javadoc to provide a view of the TeachingMachine limited to those classes
+		needed to build a data visualizer plugin
+	</description>
+	<property name="src" location="src"/>
+	<property name="dist"  location="doc/VPIView"/>
+	 <target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	  </target>
+	
+	
+	  <target name="copy.subsidiary.documents"
+	  	description="collect all subsidiary documents int doc-file directories for each package">
+	  	<copy todir="${dist}/tm/displayEngine/doc-files">
+	  		<fileset dir="${src}/tm/displayEngine/doc-files"/>
+	  	</copy>
+	  	<copy todir="${dist}/tm/plugins/doc-files">
+	  		<fileset dir="${src}/tm/plugins/doc-files"/>
+	  	</copy>
+	  </target>
+
+	
+	<target name="javadoc" depends="init, copy.subsidiary.documents">
+        <javadoc
+        	classpath="\tm\bin;tm-build"
+        	destdir="${dist}"
+        	doctitle="Teaching Machine View for Visualizer Plugins"
+   	        link="http://java.sun.com/j2se/1.5.0/docs/api/"
+        	version="true"
+        	overview="${src}/tm/overview.html">
+        	
+            <fileset dir="${src}/tm/interfaces" defaultexcludes="yes">
+              <include name="Configurable.java"/>
+              <include name="Scriptable.java"/>
+              <include name="CommandInterface.java"/>
+              <include name="Datum.java"/>
+              <include name="ExternalCommandInterface.java"/>
+              <include name="PlugIn.java"/>
+              <include name="EvaluatorInterface.java"/>
+              <include name="DisplayContextInterface.java"/>
+            </fileset>
+        	<fileset dir="${src}/tm/clc" defaultexcludes="yes">
+            	<include name="datum/AbstractDatum.java"/>
+                <include name="datum/AbstractArrayDatum.java"/>
+            </fileset>
+        	<fileset dir="${src}/tm/displayEngine" defaultexcludes="yes">
+                <include name="DisplayInterface.java"/>
+                <include name="DataVisualizerAdapter.java"/>
+            </fileset>
+        	<fileset dir="${src}/tm/plugins" defaultexcludes="yes">
+                <include name="PlugInFactory.java"/>
+                <include name="PlugInRegistration.java"/>
+            </fileset>
+        	<fileset dir="${src}/tm/scripting" defaultexcludes="yes">
+                <include name="ScriptManager.java"/>
+            </fileset>
+
+        </javadoc>       	
+    </target>
+	
+
+	
+</project>

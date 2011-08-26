@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../";
+</script>
+<script language="JavaScript" src="../content/noteConstants.js"></script>
+<script language="JavaScript" src="header.js"></script>
+<title>webWriter Help</title>
+</head>
+<body>
+<h1>The Technologies</h1>
+<p><a href="#base">base technologies</a> | <a href="#tm">teaching machine</a> | <a href="#ww">webWriter</a></p>
+<p>This page is just for those interested, provided on the premise that a number
+  of programming students might be interested in the programming
+  technologies used to create this site.</p>
+<h2>Base Technologies<a name="base"></a> </h2>
+<p>Web pages are generally created in something called <em>HTML</em> (for Hyper-Text
+  Markup Language). The HTML is interpreted by your browser which then <em>renders</em> the
+  page on your computer screen. HTML sets content off with <em>tags</em> that
+  identify its structure. For example, the heading before this paragraph is set
+  between an &lt;h2&gt; &lt;/h2&gt; pair (for start heading level 2, end heading level 2)
+  while the paragraph itself appears between the start and end paragraph tags
+  &lt;p&gt; and &lt;/p&gt;.</p>
+<p>In modern sites, the look of the pages is often controlled by a separate file
+  (known as a CSS2 file for Cascading Style Sheets version 2). Thus the HTML
+  pages hold the content and the stylesheet argues the appearance (you can check
+  <a href="http://www.csszengarden.com">css zengarden</a> for a truly amazing
+  look at how far this idea can be pushed). This technique allows your instructor
+  to create a look for your whole course website at once. It is also what lets
+  the appearance of examples be varied to match a particular programming environment. </p>
+<p>Just to make things more interesting, it is often useful to create pages automatically.
+  Enter dynamic HTML or DHTML, a technique for writing HTML on the fly instead
+  of storing it in a file. HTML can be created dynamically on a server (server-side&#8212;which
+  is what most large company web sites use) or locally (client-side&#8212;done
+  by embedding the instructions to build the page right in the page and letting
+  your browser do the work). </p>
+<p>The base pages in this web site are created using HTML, CSS2 and 
+  client-side DHTML.</p>
+<h2> Behind The Teaching Machine<a name="tm"></a> </h2>
+<p>The Teaching Machine is written in Java (one of the currently two Object-Oriented
+  languages it is designed to animate). For us Java has the advantage that it
+  can be integrated into a standard web page in the form of an <em>applet</em>.
+  An applet is a Java program that is specially designed to be started from within
+  a web page (and to display as part of that web page).</p>
+<h3>The JAR File </h3>
+<p>The entire Teaching Machine is stored in a single JAR (for Java ARchive) file.
+  Due to a little bit of wizardy, the Teaching Machine archive file (tm.jar)
+  can be run as an applet from within a web page or an application ( a stand-alone
+  program).</p>
+<h3>Standalone Mode </h3>
+<p>Stand-alone mode requires that your computer have the SUN JRE (Java Runtime
+  Environment) installed. This is available free from <a href="http://java.sun.com">Sun
+  Microsystems</a>. In many environments, once JRE is installed properly, the
+  Teaching Machine can be run simply by double-clicking on the tm.jar file.</p>
+<p>Running the Teaching Machine as a standalone application will allow you to
+  open your own files. A couple of words of warning.</p>
+<ol>
+  <li>It is not a compiler and
+      so provides only the most rudimentary grammar checking. You should make
+    sure your program compiles within your development environment before running
+    it on the TM.</li>
+  <li>Only a subset of C++ and JAVA are supported by the Teaching Machine so
+    even programs that compile on a conventional compiler may be rejected by
+    the Teaching Machine.</li>
+</ol>
+<h3>WebEnabled Mode</h3>
+<p>In order for the Teaching Machine to run from within your browser, Java Applets
+  must be enabled and pop-up windows must be enabled. </p>
+<h2>Behind webWriter<a name="ww"></a></h2>
+<p>webWriter is largely a set of JavaScripts. JavaScript is not the same as
+  Java. Rather it is one of a number of high level scripting languages. Scripting
+  languages are used to control applications such as word processors or spread
+  sheets or browsers, originally by replacing a series of user commands with
+  a <em>script</em> to drive the application automatically. Although they generally
+  still interface with applications they have become steadily more powerful
+  to the point where they are full bore programming languages in their own right.
+  JavaScript controls html documents. We use it to create the Dynamic HTML that
+  builds a big part of the web pages you see on this site. </p>
+<p>We say largely JavaScript, because a couple of webWriter's features depend
+  on running Java in the background and communicating back and forth to it (via
+  a mechanism called LiveConnect).</p>
+<p>Thus, to run completely succesfully, your browser must support all three technologies
+  and have them enabled.</p>
+<p>For example, when an example is loaded onto teaching page, the JavaScript
+  routines paint the dark blue outline and create the buttons. Then they pass
+  the name of the examples file to a Java program which retrieves the file and
+  then analyzes it (using the same technology a compiler would) and marks it
+  up for display. This marked up version is then passed back to webWriter's JavaScript
+  routines to dynamically create the  HTML that displays the example. </p>
+</body>
+</html>

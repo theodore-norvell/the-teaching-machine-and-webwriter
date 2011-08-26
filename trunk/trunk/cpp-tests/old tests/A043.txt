@@ -1,0 +1,12 @@
+#include <iostream>
+
+using namespace sdt ;
+ 
+void main() {
+
+   bool b ;
+   char c ;
+   while( true ) {
+       cin >> c ;
+       b = cin ; }
+}

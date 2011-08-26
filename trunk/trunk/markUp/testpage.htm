@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<title>Test Markup Applet</title>
+<script>
+   function convert(fileName ) {
+      var input = document.getElementById("in").value ;
+      var muApplet = document.applets["markupApplet"] ;
+      var output = muApplet.markUpString(input, fileName ) ;
+      document.getElementById("out").value = output ;
+      document.getElementById("pre").innerHTML = output ;
+   }
+</script>
+<style>
+  .codeKeyword { color: purple ; font-weight: bold ; }
+  .codeComment { color: green ; }
+  .codePreprocessor { color: blue ; }
+  .codeConstant{ color: red ; }
+</style>
+</head>
+<body>
+  <applet name ="markupApplet" code="MarkUp.class" archive="mu.jar" height="1" width="1" ></applet>
+  <p> 
+    <textarea id="in" rows="10" cols="80">
+/** This is a comment *//*So is this*/// And this
+final int i = 123 ; // Try that
+    </textarea>
+<p>
+    <form>
+            <input value="toString" type="button"
+             onClick="alert(markupApplet.toString())">
+      <input value="bad lang" type="button"
+             onClick="convert('file.ftn')">
+      <input value="C++" type="button"
+             onClick="convert('file.cpp')">
+      <input value="Java" type="button"
+             onClick="convert('file.java')">
+    </form>
+<p>
+    <textarea id="out" rows="10" cols="80">
+    </textarea>
+
+<pre id="pre"></pre>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../";
+  </script>
+  <script language="JavaScript" src="noteConstants.js"></script>
+  <script language="JavaScript" src="../webWriter/parser.js"></script>
+  <script language="JavaScript" src="../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../webWriter/header.js"></script>
+  <title>Display Adapter</title>
+
+
+</head>
+
+
+<body>
+
+<h2><a name="intro">Introduction</a></h2>
+
+<p>The DisplayAdapter class is a convenience class designed to be
+extended by visualization plugin developers. It's class file is
+included in the standard TM distribution (tm.jar). Properly speaking it
+should be javadoc'd. Until that happens, here is the class itself.</p>
+
+<p>
+<script language="JavaScript">
+insertCode("DisplayAdapter.java", false);
+</script></p>
+
+<h2><a name="generator">The Generator Set</a></h2>
+
+<p>Visualization plugins are designed to run off a <span style="font-style: italic;">generator</span>,
+that is a set of datums used to generate the&nbsp; display.
+&nbsp;There are two modes for selecting generators. In explicit
+mode, datums have to be added to the
+plugins generator set explicitly by sending a message to the plugin.
+Methods addSelection (which will be changed to addToGenerator) and
+clearSelection (clearGenerator) are provided in the adaptor for
+that purpose and should not normally be over-ridden.</p>
+
+<p>In implicit mode, selections for the generator are made using
+a mouse, usually
+on a data store display. Every time the TM visual system is refreshed,
+it polls all display plugins to see if any datums are selected (via the
+getSelection method) and forms a generator set from the union of all
+selected datums across all displays. Most displays are not capable of
+selecting datums (for example datums have no meaning in the code
+display) so most display plugins automatically return null for
+getSelected. This is the default behaviour for the adapter but may be
+overridden in the derived plugin if it wants to participate in the
+generation process.</p>
+
+<p>The current default is explicitMode but this is temporary and
+will change as soon as a scripting interface issue is resolved.</p>
+
+<h3><a name="winnow">Winnowing the Generator Set</a></h3>
+
+<p>It is possible to have multiple visualization plugins
+co-operate, one displaying one type of datum from the set (say arrays
+of ints), while another displays another. Thus it is possible an
+implicit mode (mouse driven) generator set includes datums a plugin
+can't handle. Consequently winnow should be overloaded to eliminate any
+datums from the generator set that don't match the plugin's criteria.</p>
+
+<p>Here is the winnow routine for the simple ArrayBarVisualizer</p>
+
+<p>
+<script language="JavaScript">
+insertCode("ArrayBarDisplay.java", false, "code", "default.cfg", "A");
+</script></p>
+
+<h2><a name="visualization">The Visualization</a></h2>
+
+<p>The visualization is mainly produced by the drawArea method
+which must be overloaded. For example here is the drawArray code for a
+simpleminded arrayBar visualizer, which handles only a single array of
+ints.</p>
+
+<p>
+<script language="JavaScript">
+insertCode("ArrayBarDisplay.java", false, "code", "default.cfg", "B");
+</script></p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+
+
+</body>
+</html>

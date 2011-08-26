@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<title>Introduction</title>
+</head>
+<body>
+<p>WebWriter++ is designed to help build web sites which function as eBooks for
+  programming and programming related courses.</p>
+<p>Compared to a book, the web is
+  a highly non-linear medium. Moreover, as rich as it is, users are forced to
+  view it via a very small window. While it has great potential for the effective
+  delivery of courses, the
+  production of pedagogical material for the web is not easy. The more one tries
+  to take advantage of its unique capabilities, the more difficult this <em>authoring</em> becomes.</p>
+<p>In tackling course development, it was decided very early on to separate the <em>scaffolding</em> from the actual content. From the first, the site was intended to serve multiple courses, indeed to serve the whole C/C++ / Java student community within the Faculty of Engineering at Memorial without regard to whether a student was still formally associated with a programming course or not. Multiple courses implies multiple authors, with instructors from different courses lending their particular expertise. Ultimately, in order for that to be successful, content writers have to be allowed to concentrate on content and the scaffolding has to get out of the way. </p>
+<p>Initially that conception was something of a set-back, in that the
+  scaffolding took on a life of its own. Indeed, it has now become a small
+  authoring system, hence the name <span class="WW">WebWriter++</span>. When
+  its initial development was under way, very little content was created. Over
+  the past few years we have been able to focus on content,  using
+  the tool to produce two complete courses&#8212;Engineering
+  3891, <em>Advanced Programming</em> and Engineering 2420, <em>Structured Programming</em>, as well as parts of others</p>
+<p>In the best tradition of incremental development, that experience led to a
+  complete reworking of <span class="WW">WebWriter++</span>. Some things turned out to be problematic or were simply not useful and were removed.
+  A number of features have been added. The tool was and
+  is experimental. It evolves practically every time it gets used so that a manual is at best a snapshot.  Here is the latest one.</p>
+<p>&nbsp;</p>
+<h2><a name="technology">Technology</a></h2>
+<p>The authoring system is based on the following technologies:</p>
+<ol>
+  <li>HTML 4 is the basic markup language. The strict compliance model is being
+    used. </li>
+  <li>Cascading Style Sheets(CSS-2) are used to control the appearance of pages</li>
+  <li>Dynamic HTML (DHTML) is usedfor automatic generation of HTML on the fly,
+    principally via dociment.write commands rather than direct manipulation of
+    the DOM tree. </li>
+  <li>JavaScript produces the necessary DHTML as well as providing most of the
+  scaffold's toolset. Version 1.5 or greater is assumed . </li>
+<li>Java, the language in which the Teaching Machine (and several smaller applets used in the scaffold) are written.</li></ol>
+<h2><a name="browsers">Browsers Supported</a></h2>
+We  moved to so-called fifth-generation browsers when they bacame available.
+Originally the site was extensively tested on Explorer 6 and FireFox 1.5
+with some testing on Safari for OSX.  Today we test almost exclusively on Firefox
+(currently version 3) although no attempt is made to use features that are exclusive
+to Firefox. As far as we know, the site continues to work on Explorer and Safari
+as well.
+<p>Earlier browsers have  been categorically
+      abandoned. We
+      are focusing on the teaching of a very high technology topic (C/C++ &amp; Java
+      programming). All our students have access to powerful computers running
+      Windows, MAC-OSX or Linux. Firefox is
+      readily available, free, on all those platforms. Automatic updates to
+      Firefox, while ever more frequent, break our code far less often than do
+      IE updates. We do not have enough resources to constantly worry about maintaining
+      the system for multiple browsers.</p>
+<p>Whichever browser is used, it must be set up to permit JavaScripts, to allow JavaScripts to invoke Java (an ability sometimes called live connect), and the Java Runtime System must be installed on the local machine. See the <a href="../../TMSetup/TM_setup.htm">TMSetup page</a> included in this manual. It is recommended the TMSetup folder be installed on any website using WebWriter and /or the TM, exactly as it is in this manual. </p>
+<h2>Frames</h2>
+<p>Be warned. WebWriter++ uses frames. A very serious effort was made in the
+  winter of 2006 to remove them but was defeated by FireFox. The navigationBar
+  that occupies the top frame also holds all the Applets. If it wasn't there,
+  all applets have to be reloaded every time a new page is loaded. While IE handled
+  the new code without a blink, Firefox would sometimes hang. A week's intensive
+  investigation of the problem could turn up no solution and so frames are still
+  being used.</p>
+<p>The navBar frame holds a <code>ww_one_time.js </code>script that is loaded
+  one time only. This script in turn loads the large Teaching Macine applet as
+  well as any other applets required, holding them ready at all times. Most of
+  the active code is in the <code>web_writer.js </code>script
+  that is attached anew to any document loaded into the content frame. Since
+  it has to be there, the <code>navBar</code> frame also holds the site dictionary. </p>
+<h2>Browser Detection</h2>
+<p>Browser detection is implemented in the <code>ww_one_time.js</code> that is invoked 
+  from the WebWriter toolbar in the <code>navBar</code> frame.</p>
+<p>It attempts to detect whether an appropriate fifth-generation browser is being
+  used (IE 6 and up or Gecko&#8212;that is Mozilla&#8212;1.4 and up) as well
+  as whether Java is enabled. As the top level frames are only loaded once, the
+  non-compliant warning is only given once.</p>
+<p>Individual pages simply detect whether or not the browser is IE based. Dependencies
+  upon that are kept as few as possible. Unhappily, even in strict compliance
+  mode, there are still some unavoidable differences. </p>
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>
+

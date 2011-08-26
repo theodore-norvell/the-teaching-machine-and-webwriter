@@ -1,0 +1,228 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Flow of Control</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>The bulk of this lecture is still in <a href="Program%20Control.ppt" target="_top">power-point
+    form</a> </p>
+<h2 class="pagebreak"><a name="compound">Compound Statements</a></h2>
+    <p>In many of the syntax definitions we use to define flow-of-control you
+      will see the term <em>statement</em></p>
+    <p>It is important to understand that whenever you see it it can mean</p>
+    <ol>
+      <li>a single statement</li>
+      <li>a block of statements (surrounded by <code>{ }</code> )</li>
+    </ol>
+    <p>These can be slightly tricky to define. Here's a partial grammar for various
+      kinds of statements</p>
+    <p class="pagebreak">We've seen the declaration-statement in the section on <a href="../variables/variables.htm">variables.</a></p>
+    <div class="syntaxDef">
+      <h3> statements :</h3>
+      <strong>1. declaration-statement:</strong>
+      <div class="insetClause">
+        <p><font class="stxTerminal">Type</font> <font class="stxNonterminal">Identifier </font> <font class="stxTerminal">;
+            | </font><br>
+      <font class="stxTerminal">Type</font> <font class="stxNonterminal">Identifier </font> <font class="stxTerminal"> = </font><font class="stxNonterminal">Value</font> <font class="stxTerminal">;</font></p>
+      </div>
+      <strong></strong><strong>2. executable-statement:</strong>
+      <div class="insetClause">
+        <p><span class="stxTerminal"><font class="stxNonTerminal">expression<sub>opt</sub> </font><font class="stxTerminal">;</font>|<br>
+        </span><span class="stxTerminal">return</span><font class="stxNonTerminal"> expression<sub>opt</sub> </font><font class="stxTerminal">;|</font><br>
+        <font class="stxNonTerminal"> other executable statement </font></p>
+      </div>
+      <strong></strong><strong>3. single-statement:</strong>
+      <div class="insetClause">
+        <p><font class="stxNonTerminal">declaration-statement </font> <font class="stxTerminal">|</font><br>
+          <font class="stxNonTerminal">executable-statement</font></p>
+      </div>
+	  	  <strong>4. statement-sequence: </strong>
+          <div class="insetClause">
+        <p><font class="stxNonTerminal">single-statement </font> <font class="stxTerminal">| </font><br>
+          <font class="stxNonTerminal">statement-sequence<br>
+          single-statement</font></p>
+      </div>
+      <p><strong>5. statement-block:</strong>
+      <div class="insetClause">
+          <p><font class="stxTerminal"> {</font><font class="stxNonTerminal">statement
+              sequence<sub>opt</sub></font><font class="stxTerminal">}</font></p></div>
+          <p><strong>6. statement:</strong>
+          <div class="insetClause">
+            <p> <span class="stxNonterminal">executable-statement</span><font class="stxTerminal"> |<br>
+            </font><font class="stxNonTerminal">statement-block</font></p>
+      </div>
+	  <p><strong>Example:</strong>
+      <div class="insetClause">
+        <pre><code>{   // open block
+    double pi=3.14159; //dec
+    cout &lt;&lt; pi;     // exec
+}   // close block</code></pre>
+      </div>
+      
+      <p><strong>Interpretation:</strong> The second line is a declaration-statement.
+        The 3rd line is an executable statement. 2 and 3 together constitute
+        a statement-sequence and lines 1-4 are a statement-block. Thus line 3
+        is a statement as is lines 1-4 taken together. </p>
+</div>
+    <p>Let's just take a little more extensive example:</p>
+    <blockquote>
+      <pre><code>double pi = 3.14159;
+double r = 2.4;
+double y;
+y = 4*pi*r*r/3;
+cout&lt;&lt;&quot;The area is &quot; &lt;&lt; y &lt;&lt; endl;</code></pre>
+    </blockquote>
+    <p>Now we try to categorize it according to the grammar</p>
+    <ol>
+      <li>By Rule 1 the  1st and 2nd lines are
+            <em>declaration statements</em> (of the second type) </li>
+      <li>By Rule 1 the 3rd line is a <em>declaration statement</em> of the
+        first type</li>
+      <li>By Rule 2 the 4th line is an <em>expression</em> followed by a <code>;</code> and
+        so is an <em>executable
+        statement</em> of the first type.</li>
+      <li>The 5th line is less obvious. Actually it's the same as the 4th because <code>cout&lt;&lt;&quot;The
+      area is &quot; &lt;&lt; y &lt;&lt; endl</code> <em>is technically an expression!</em></li>
+    </ol>
+    <p> Now it gets interesting</p>
+    <ol start="5">
+      <li>By Rule 3 every one of the five lines is also  a <em>single statement.</em>	  </li>
+      <li>By Rule 4 (1st type) the 1st line (and actually all the others) is
+        a <em>statement sequence</em>.</li>
+      <li>By Rule 5 (2nd type) line 1 &amp; 2 together also form a <em>statement sequence</em></li>
+      <li>Applying Rule 5 <em>recursively</em>, we see that lines 1,2 &amp; 3 also form a
+        <em>statement sequence</em> and we keep going until we run out of lines at which
+        point</li>
+      <li>All 5 lines together  form a <em>statement sequence</em>  </li>
+    </ol>
+    <p>Here
+      are a bunch of examples. Try to decide, based on the grammar above, exactly
+            what each of them corresponds to (it may be more than one).</p>
+<blockquote>
+      <p><code><pre><script language="JavaScript">
+startBlockLink("Example 1");
+        </script>{}<script language="JavaScript">
+endLink();
+</script></pre>
+</code></p>
+<code>
+        <script language="JavaScript">
+startBlockLink("Example 2");
+        </script>
+        ;
+<script language="JavaScript">
+endLink();
+</script></code>
+<pre><code><script language="JavaScript">
+startBlockLink("Example 1");
+        </script>{
+y=3.5;
+}<script language="JavaScript">
+endLink();
+</script></code></pre>
+
+<pre><code><script language="JavaScript">
+startBlockLink("Error");
+        </script>x<script language="JavaScript">
+endLink();
+</script></code></pre>
+</blockquote>
+    <ol>
+      <li>      
+        <script language="JavaScript">
+startBlock("declaration");
+        </script>
+        declaration-statement
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("Example 2");
+        </script>
+        executable-statement
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("Example 2");
+        </script>
+        single statement
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("Sequence");
+        </script>
+        statement-sequence
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("Example 1");
+        </script>
+        block
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("#Example 2");
+        </script>
+        <script language="JavaScript">
+startBlock("Example 1");
+        </script>
+statement
+<script language="JavaScript">
+endBlock();
+        </script>
+
+<script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+      <li>
+        <script language="JavaScript">
+startBlock("Error");
+        </script>
+        none of the above (syntax error?)
+        <script language="JavaScript">
+endBlock();
+        </script>
+      </li>
+    </ol>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

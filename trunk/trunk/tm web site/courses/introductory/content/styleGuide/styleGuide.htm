@@ -1,0 +1,222 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Style Guide</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../content/styleGuide/styleGuideConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h1>Purpose</h1>
+<p>This quick style guide is designed as an aid when you are programming. It lays out the style standards we expect you to practice in your first year programming course.</p>
+
+ 
+<p>The purpose of style is to make programs easier to read and understand. Programs are not just written for oneself. Modern programming teams often have large numbers of people. Moreover, the average lifetime of a piece of code is ten years. Thus more time (and therefore money) may be spent on maintaining a piece of code than was spent originally creating it. Consequently, we need to make code as readable as possible for</p>
+<ol>
+  <li>Other members of our programming team</li>
+  <li>Engineers tasked to maintain our code long after we are gone</li>
+  <li>Ourselves, perhaps coming back to our code a year or two after we wrote it. </li>
+</ol>
+<p>While many organizations seek to make their code understandable by using auxiliary documentation, bitter experience has shown that auxiliary documentation seldom gets updated when code gets changed. Thus it is important to make code as self-documenting as possible. Good style is an important means of achieving that goal.</p>
+<p>The guide is divided into four parts.</p>
+<ul>
+  <li><a href="#comments">comments</a></li>
+  <li><a href="#whiteSpace">white space </a></li>
+  <li><a href="#naming">naming</a></li>
+  <li><a href="#structure">structure</a></li>
+</ul>
+<h2><a name="comments"></a>Comments</h2>
+<p>Comments are written for people (see list above). The compiler throws them away. Thus they are the first-line tool in making our code files self-documenting. Comments should be used in the following ways:</p>
+<h3>File Header</h3>
+<p>This appears at the beginning of every file. It's purpose is to document when this file was created and by whom. For your assignments we would like you to use this format.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("properComments1.cpp", false, "code", "", "A","A");
+  </script>
+</p>
+<p>Note that we want header comments set off by starting them with a</p>
+<p><code>/****** fileName.ext ************************************************************* </code></p>
+<p>and terminating them with</p>
+<p><code>*********************************************************************************/</code></p>
+<p>In addition each line inside the block should start with a <code>* </code>. Please make sure you provide all the information indicated. </p>
+<h3>Function Header</h3>
+<p>Similar in appearance to a file header, its purpose is to give a description of the function in a standard way. An example appears below. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("properComments1.cpp", false, "code", "", "B","B");
+  </script>
+</p>
+<p>Note that the name of the function should be embedded in the top star bar. Sections include</p>
+<dl>
+  <dt>@descript:</dt>
+  <dd>only needed for complex functions when the name, parameter and return type may not be enough to define what the function does.</dd>
+  <dt>@param:</dt>
+  <dd>Name and description of each parameter, in order. Omit <strong>iff</strong> (if and only if ) there are no parameters. </dd>
+  <dt>@pre:</dt>
+  <dd>short for precondition, attached to a parameter to describe restrictions on the range of values the function client may send in. Omit <strong>iff</strong> there are no restrictions.</dd>
+  <dt>@return:</dt>
+  <dd>a description of what is to be returned. Omit <strong>iff</strong> return type is <code>void</code>. </dd>
+</dl>
+<h3>Multiline Comments</h3>
+<p>These are typically used to explain how a section of code works. They should used <strong>iff</strong> the working of the section of code is not obvious to a reasonably experienced programmer.</p>
+<p>They may also be used in place of mutiple single line comments where a single line comment is too long.</p>
+<p>Should appear <em>before</em> the piece of code being explained.</p>
+<h3>Single Line Comments</h3>
+<p>Often used to the right of a variable declaration when the name of the variable is not enough to make its use self-evident. If a little too long to appear on the same line, can be used just before the declaration instead.</p>
+<p>Also used just before an instruction to explain it at that point. For example</p>
+<pre><code>double cascade(double a1, double a2, double a3){
+     return -a1*(-a2)*(-a3);
+}</code></pre>
+<p>is function to compute the combined gain of three inverting amplifiers (a &quot;cascade&quot;). It might better be rendered as</p>
+<pre><code>double cascade(double a1, double a2, double a3){
+     // three inverting amps in a row produce a negative gain
+     return -a1*a2*a3;
+}</code></pre>
+<p>where the result of three minus signs muliplied together is of course a negative. While every programmer knows that, not all programmers would know that inverting amps have negative gains (which requires electrical engineering knowledge).</p>
+<p>The single line comment explains that. The resultant equation is cleaner than the first version and requires two less operations. </p>
+<h3>Overusing Comments</h3>
+<p>This generally occurs in first year programming courses generally on the grounds that <em>if my instructors want comments I'll give them *&amp;#@$! comments!</em> Here's a case in point.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("overCommented.cpp", false, "code", "", "A","A");
+  </script>
+</p>
+<p>A good rule of thumb is to tell your readers something they might not know. </p>
+<h2><a name="whiteSpace"></a>White Space</h2>
+<p>White space includes spaces, tabs and new lines. Judicious use of white space can markedly improve a program's readability. Here's some rules:</p>
+<ol>
+  <li>Only one instruction per line, please.</li>
+  <li>Only one declaration per line, please.</li>
+  <li>Separate major sections of code with an empty vertical line</li>
+  <li>Make judicious use of single spaces to increase the readability of expressions, for example to separate terms in an expression e.g.<code><br>
+    a + b*x</code> instead of <code>a+b*x</code> or <code>a + b * x</code>.</li>
+  <li>Indent every time you start a new block. Your editor will try do this automatically but can get fooled, so you may have to fix it up. Backdent when you leave the block. </li>
+  <li>Be consistent in how you use block operators '{' and '}'.</li>
+</ol>
+<p>With regard to the last rule any of the following usages of the curly brackets are acceptable. Just stick to one however. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("bracketStyle.cpp", false, "code", "", "A","A");
+  </script>
+</p>
+<h2><a name="naming"></a>Naming</h2>
+<p>Programmers give names to constants, variables, functions and classes, although in this course we'll focus only on the first two. Most of the time, names should be nmemonic, that is, self descriptive.</p>
+<h3>Constant Names</h3>
+<p>Constant names should be in capitals, with underscores to separate parts visually, as</p>
+<blockquote>
+  <pre><code>const double PI = 4 * atan(1.0);
+const double DELTA_T = .001;</code>    </pre>
+</blockquote>
+<h3>Variable Names</h3>
+<p>Variable names should always be in camelCase, that is lower case, except for the first letter of embedded words which should be uppercase; notwithstanding that, the variable name itself should start with a lower case. For example&#8212; </p>
+<blockquote>
+  <pre><code>int startingBalance;	// in pennies
+int closingBalance;	// in pennies
+
+String firstName;
+String familyName;</code></pre>
+</blockquote>
+<p>Notice the crucial short comment added to the first two declarations providing the information that the monetary amount is to be stored in pennies.</p>
+<p><code>i</code>, <code>j</code> and <code>k</code> are often used as integer counting variables and <code>n</code> is often used as a number of things or a size. For example</p>
+<blockquote>
+  <pre><code>for (int i = 0; i &lt; n; i++) { ....</code></pre>
+</blockquote>
+<p>is undoubtedly the most commonly encountered form of a <span class="codeKeyword">for</span> loop. Similarly, in mathematical applications (such as algebra or graphics) <code>x</code>, <code>y</code> and <code>z</code> are common names for double variables. Such usage is perfectly acceptable so long as the variables are used in a general sense (as in algebra) or by convention, for example&#8212; </p>
+<blockquote>
+  <pre><code>// The co-ordinates of a point in 3-D space.
+double x;
+double y;
+double z;</code></pre>
+</blockquote>
+<p>They should not be used when a more particular usage is being implemented. For example&#8212;</p>
+<blockquote>
+  <pre><code>double getSlope(double rise, double run);</code></pre>
+</blockquote>
+<p>For the particular case of computing a slope, the terms <code>rise</code> and <code>run</code> are more descriptive than <code>y</code> and <code>x</code>. </p>
+<blockquote> </blockquote>
+<h3>Function Names</h3>
+<p>The rules for function names are similar to variable names:</p>
+<ol>
+  <li>Start with a lowercase letter</li>
+  <li>Use camelCase</li>
+  <li>Make the name descriptive of what the function does. </li>
+  </ol>
+<p>Note most functions represent <em>actions</em> (in which case they are verbs) while variables tend to represent <em>things</em> (nouns).</p>
+<p>Functions that return a <span class="codeKeyword">bool</span> (<span class="codeKeyword">true</span> of <span class="codeKeyword">false</span>) should start with the word &quot;is&quot; as</p>
+<blockquote>
+  <pre><code>bool isOn();
+bool isOpen();   </code></pre>
+</blockquote>
+<p>Consider starting simply value returning functions (functions that read a value from somewhere as opposed to calculating it using an expression) with a &quot;get&quot;</p>
+<blockquote>
+  <pre><code>int getWidth();
+double getBalance();   </code></pre>
+</blockquote>
+<p>Anytime you do use a naming system, such as starting value reading functions with &quot;get&quot; and bool reading
+functions with &quot;is&quot;, make sure you do so consistently.</p>
+<h2><a name="structure"></a>Structure</h2>
+<p>Structure refers to the way code is constructed, primarily with regard to conrol structures like <span class="codeKeyword">for</span> loops and <span class="codeKeyword">if-then-else</span> SInce we are just starting that topic, we'll add more to this later.</p>
+<h3>Creating Variables</h3>
+<p>Avoid creating unnecessary variables. For example&#8212; </p>
+<blockquote>
+  <pre><code>double quadratic(double x, double a, double b, double c){
+    double term1 = a*x*x;
+    double term2 = b*x;
+    double term3 = c;
+    return term1 + term2 + term3;
+}</code></pre>
+</blockquote>
+<p>There is absolutely no good reason to create the three term variables. <code>term3</code> is particularly bad as all it amounts to is a creation of an exact copy of <code>c</code>. The following code is simpler, easier to read and easier to maintain.</p>
+<blockquote>
+  <pre><code>double quadratic(double x, double a, double b, double c){
+    return a*x*x + b*x + c;
+}</code></pre>
+</blockquote>
+<p>A good rule of thumb is to create variables where their value is going to be used more than once. For example, this code fragment &#8212; </p>
+<blockquote>
+  <pre><code>    double radical = sqrt(b*b - 4*a*c)/(2*a);
+    double bOver2A = b / (2*a);
+    cout &lt;&lt; &quot;the first root is &quot; &lt;&lt; (-b + radical)/(2*a);
+    cout &lt;&lt; &quot; while the second is &quot; &lt;&lt; ((-b - radical)/(2*a);</code></pre>
+</blockquote>
+<p>is preferable to this one &#8212; </p>
+<blockquote>
+  <pre><code>    cout &lt;&lt; &quot;the first root is &quot; &lt;&lt; (-b + sqrt(b*b - 4*a*c))/(2*a);
+    cout &lt;&lt; &quot; while the second is &quot; &lt;&lt; ((-b - sqrt(b*b - 4*a*c))/(2*a);</code></pre>
+</blockquote>
+<p>because the computation of the radical is very expensive so that computing it once and saving its value in a variable is much better than computing it twice. This&#8212; </p>
+<blockquote>
+  <pre><code>    double radicalBy2A = sqrt(b*b - 4*a*c)/(2*a);
+    double bBy2A = -b / (2*a);
+    cout &lt;&lt; &quot;the first root is &quot; &lt;&lt; bBy2A + radicalBy2A;
+    cout &lt;&lt; &quot; while the second is &quot; &lt;&lt; bBy2A - radicalBy2A;</code></pre>
+</blockquote>
+<p>is even more efficient, though perhaps at some small cost in readability. </p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ 
+ 
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

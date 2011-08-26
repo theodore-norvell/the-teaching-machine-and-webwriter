@@ -1,0 +1,97 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>More On Pointers</title>
+</head>
+<body>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("more1.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<ul>
+  <li>Comment at beginning to explain what function does. Needed as it is not 
+    self-explanatory.</li>
+  <li><span class="codeInline">const</span> in front of pointers <span class="codeInline">pS1</span> 
+    & <span class="codeInline">pS2</span> says they are read only pointers.</li>
+  <li>Check loop runs as long as characters are equal and we haven't run out of 
+    string 1. (What about string 2 ??)</li>
+  <li>Notice, we didn't even need a temporary variable. </li>
+</ul>
+<h2> <a name="constantP">Constant Pointers</a></h2>
+<p> Compiler will not allow programmer to write through<span class="codeInline"> 
+  pS1</span> and <span class="codeInline">pS2</span>. But it can't stop the following&#151;</p>
+<p> 
+  <script language="JavaScript">
+insertCode("more2.cpp", false, "code");
+</script>
+</p>
+<p>To quote one author, <i>This is evil, pure and simple! </i>The coder has maliciously 
+  broken the contract implicit in the declaration.</p>
+<h1><a name="errors">Errors, Pernicious and Egregious</a> (Pointers from Hell)</h1>
+<h3>1. The <i>Blindfolded Shooting</i> Problem</h3>
+ 
+<p>  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("blindfolded.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<ul>
+  <li> 
+    Implicit in the declaration of <span class="codeInline">strCpy</span> is 
+      that the calling code will provide a pointer to somewhere to put the copy.
+  </li>
+  <li> 
+    salutation points to a constant string (put automatically by the compiler 
+      in the constant store)
+  </li>
+  <li> <span class="codeInline">buffer</span> is actually a pointer and it points 
+    <i>nowhere</i>! </li>
+</ul>
+<h3>2. The <i>But its only one bullet</i> problem! </h3>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("oneBullet.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<h3 class="pagebreak">&nbsp;</h3>
+<h3>3. The <i>Dangling Pointer</i> Problem</h3>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("dangling.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("more1.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+  <p><script language="JavaScript">
+insertCode("blindfolded.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("oneBullet.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("dangling.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+</div>
+
+<p>
+  <script language="JavaScript">
+bottomSTamp(true, true);
+bottomStamp(true, true);
+</p>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta NAME="Generator" CONTENT="DreamWeaver CS3">
+<meta NAME="Author" CONTENT="Michael Bruce-Lockhart">
+<meta NAME="copyright" CONTENT="&copy; 2004, 2010 Michael Bruce-Lockhart">
+<meta NAME="resource-type" CONTENT="document">
+<meta NAME="distribution" CONTENT="global">
+<link rel="STYLESHEET" type="text/css" media="screen" href="../style/stylesheets/clecture.css" title="C tutoring Screen stylesheet">
+<link rel="STYLESHEET" type="text/css" media="print" href="../style/stylesheets/clectureprint.css" title="C tutoring Print stylesheet">
+<meta content=
+"This web site is primarily directed at students in the Faculty of Engineering at Memorial University who are either taking a programming course or using C/C++ in one of their other courses or projects. It is new and skeletal at the moment. It will include a number of different tutorial styles including interactive examples, sample code with pop-up comments, videos, code dissection and FAQs.">
+<meta content="C C++ programming tutor tutoring teaching machine code">
+<meta name="copyright" content="&copy; 2000, Michael Bruce-Lockhart">
+<title>C++ Dictionary</title>
+</head>
+<body>
+<h1>Higraph and TM Dictionary</h1>
+
+<a name="activeViewSet"></a>
+<div class = "dictionary">
+  <p class="entry">Active View Set</p>
+  <p>The set of Visualizers to which View commands are sent.</p>
+</div>
+
+<a name="branch"></a>
+<div class = "dictionary">
+  <p class="entry">Branch</p>
+  <p>A visible link between a <a href="#parent">parent node</a> and a <a href="#child">child node</a>.</p>
+</div>
+
+<a name="child"></a>
+<div class = "dictionary">
+  <p class="entry">Child or Child Node</p>
+  <p>A child is a node which has been attached to a <a href="#parent">parent node</a>.</p>
+</div>
+
+<a name="datum"></a>
+<div class = "dictionary">
+  <p class="entry">Datum</p>
+  <p>The Teaching Machine's internal model for a piece of data. Datums are quite sophisticated. For example a datum knows the name attached to the piece of data (if there is one), its type, value and address. If it is compound(for example, an array) it knows the number of children and can access them all and the children themselves will be datums.</p>
+</div>
+
+<a name="edge"></a>
+<div class = "dictionary">
+  <p class="entry">Edge</p>
+  <p>An edge can be created between any two <a href="#node">Nodes</a> in a <a href="#higraphModel">Higraph</a>. The edge is directed from a source <a href="#node">Node</a> to a target <a href="#node">Node</a>.</p>
+</div>
+
+<a name="higraphModel"></a>
+<div class = "dictionary">
+  <p class="entry">Higraph Model</p>
+  <p>A Higraph contains 0 or more <a href="#node">Nodes</a>, each of which is either a <a href="#child">child</a> of another <a href="#node">Node</a> or a <a href="#topNode">TopNode</a>. Thus a Higraph can be considered
+  as a forest or trees. Directed <a href="#edge">Edges</a> may be created from any Higraph <a href="#node">Node</a> (the source Node) to any Higraph <a href="#node">Node</a> (the target Node)</p>
+</div>
+
+<a name="higraphView"></a>
+<div class = "dictionary">
+  <p class="entry">Higraph View</p>
+  <p>A particular view of the <a href="#higraphModel">Higraph Model</a>. It could be of the <a href="#wholeGraph">wholeGraph</a> or a <a href="#subGraph">subGraph</a>.</p>
+</div>
+ 
+  
+<a name="node"></a>
+<div class = "dictionary">
+  <p class="entry">Node</p>
+  <p>A node is the fundamental component of a Higraph. Either it is assigned as a <a href="#child">child</a> of another <a href="#node">Node</a> or it is considered a <a href="#topNode">TopNode</a>.</p>
+  <p>A node to which another node has been assigned as a <a href="#child">child</a> is said to be a <a href="#parent">parent</a> of the <a href="#child">child node</a>.</p>
+</div>
+
+<a name="parent"></a>
+<div class = "dictionary">
+  <p class="entry">Parent or Parent Node</p>
+  <p>Any node which has 1 or more <a href="#child">child nodes</a> attached to it.</p>
+</div>
+
+<a name="pdv"></a>
+<div class = "dictionary">
+  <p class="entry">Program DependentVisualization or PDV</p>
+  <p>A Visualization driven by code running on the Teaching Machine</p>
+</div>
+
+<a name="scriptingCall"></a>
+<div class = "dictionary">
+  <p class="entry">Scripting Call</p>
+  <p>A call from within the demonstration code being run on the <a href="#tm">Teaching Machine</a>. A typical call is of the form</p>
+  <p><code>ScriptManager.relay("HigraphManager", "setDefaultNodeValueColor", WHITE);</code>, from inside Java code. (The call would be identical
+  from inside C++ code except that the '.' is replaced by ::</p>
+  <p>where <code>relay</code> is a standard <a href="#scriptManager">ScriptManager</a> function that relays the call to the HigraphManager module in the
+  <a href="#tm">Teaching Machine</a> which has a member function called <code>setDefaultNodeValueColor</code> taking a single int argument.</p>
+  <p>All TM Higraph calls use the relay mechanism.</p>
+</div>
+
+<a name="scriptManager"></a>
+<div class = "dictionary">
+  <p class="entry">Script Manager</p>
+  <p>A module in the <a href="#tm">Teaching Machine</a>which receives all <a href="#scriptingCall">scripting calls</a> from within the demonstration code being run on the <a href="#tm">Teaching Machine</a>.</p>
+</div>
+
+<a name="source"></a>
+<div class = "dictionary">
+  <p class="entry">Source or Source Node</p>
+  <p>A node on which an <a href="#edge">edge</a> begins.</p>
+</div>
+
+<a name="subGraph"></a>
+<div class = "dictionary">
+  <p class="entry">SubGraph</p>
+  <p>A graph, with a user defined id, which contains 0 up to all of the <a href="#node">Nodes</a> of the <a href="#higraphModel">Higraph</a>. <a href="#node">Nodes</a> in a subgraph have the same relationship to other <a href="#node">Nodes</a> of the same subGraph as they do in the <a href="#higraphModel">Higraph</a></p>
+</div>
+
+<a name="target"></a>
+<div class = "dictionary">
+  <p class="entry">Target or Target Node</p>
+  <p>A node on which an <a href="#edge">edge</a> terminates.</p>
+</div>
+
+<a name="topNode"></a>
+<div class = "dictionary">
+  <p class="entry">TopNode</p>
+  <p>Any <a href="#node">Node</a> which is not a <a href="#child">child</a> of another <a href="#node">Node</a>. That is any <a href="#node">Node</a> which has no <a href="#parent">parent node</a>.</p>
+</div>
+
+<a name="visualizer"></a>
+<div class = "dictionary">
+  <p class="entry">Visualizer</p>
+  <p>A window in the <a href="#tm">Teaching Machine</a>for displaying a <a href="#higraphView">Higraph View</a>. The <a href="#tm">Teaching Machine</a> supports multiple visualizers.</p>
+</div>
+ 
+<a name="wholeGraph"></a>
+<div class = "dictionary">
+  <p class="entry">WholeGraph</p>
+  <p>The subGraph which contains all of the <a href="#node">Nodes</a> of the <a href="#higraphModel">Higraph</a>. It has the reserved id "wholeGraph".</p>
+</div>
+
+</body>
+</html>
+

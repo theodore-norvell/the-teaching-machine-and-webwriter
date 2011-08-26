@@ -1,0 +1,225 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Library Classes</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+.style8 {font-family: georgia, palatino, "Times New Roman", times, serif}
+.style10 {font-size: small}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1>Some important library classes </h1>
+<p>The easiest way to write software is to have someone else write it. </p>
+<p>Java's library is extensive.</p>
+<p>I can only point to some of its highlights here. See Horstmann and Cornell for much more. </p>
+<p>Java's library is one of the keys to its success. No other language gives you a <span class="pseudoCode">standard</span> library that covers so many areas and is so widely supported.</p>
+<ul>
+  <li>Input and Output</li>
+  <li>Graphical User Interfaces</li>
+  <li>Data Structures </li>
+  <li>Concurrency</li>
+  <li>Reflection</li>
+  <li>Distributed computing</li>
+  <li>Security</li>
+  <li>Databases</li>
+  <li>Networking</li>
+  <li>XML </li>
+</ul>
+<h2><a name="Object" id="Object">Object</a></h2>
+<p><span class="codeInline">java.lang.Object</span> is a class that is at the root of the &quot;extends&quot; tree. That is, every class extends from the <span class="codeInline">Object</span> class either directly or indirectly.</p>
+<p>Even array types extend the <span class="codeInline">Object</span> class.</p>
+<p>There are some things you can do with all objects</p>
+<ul>
+  <li><span class="codeInline">boolean equals( Object y ) </span>
+      <ul>
+        <li><span class="codeInline">x.equals(y)</span> is true if <span class="codeInline">x</span> and <span class="codeInline">y</span> represent the same thing</li>
+      </ul>
+  </li>
+  <li><span class="codeInline">String toString() </span>
+      <ul>
+        <li>Return a string representation for the object</li>
+      </ul>
+  </li>
+  <li>...</li>
+</ul>
+<h2><a name="String" id="String">String</a></h2>
+<p><span class="codeInline">java.lang.String</span> is a class of immutable strings (sequences of characters).</p>
+<p>String literals are really objects of class <span class="codeInline">String</span>. E.g.</p>
+<p class="code"><span class="codeConstant">&quot;abc&quot;</span>.equals( x )</p>
+<p>looks unusual, but it sends the <span class="codeInline">equals(x)</span> message to an object of type string.</p>
+<p>Strings can be concatenated (producing new strings). For example</p>
+<p class="code"> <span class="codeConstant">"("</span>.concat( x.toString() ).concat( <span class="codeConstant">")"</span> ) </p>
+<p>gives the string representation of object x inside parentheses.</p>
+<p>The + operator is overloaded to mean concat so</p>
+<p class="code"><span class="codeConstant">&quot;to&quot;</span> + <span class="codeConstant">&quot;get&quot;</span> + <span class="codeConstant">&quot;her&quot;</span></p>
+<p>produces the object <span class="codeConstant">&quot;together&quot;</span>. </p>
+<p>Furthermore if one operand of + is a string and the other isn't, the other will be converted to a string (using toString for objects). So you can write</p>
+<p class="code">System.out.println( <span class="codeConstant">&quot;The value of i is &quot;</span> + i ) ; </p>
+<p>which (if <span class="codeInline">i</span> is an <span class="codeKeyword">int</span>) is the same as</p>
+<p class="code">System.out.println( <span class="codeConstant">&quot;The value of i is &quot;</span>.concat( Integer.toString(i) ) ) ; </p>
+<h2><a name="System" id="System">System</a> </h2>
+<p><span class="codeInline">java.lang.System</span> is used for its static fields and method. No need to instantiate it.</p>
+<ul>
+  <li><span class="codeInline">System.in</span>, <span class="codeInline">System.out</span>, <span class="codeInline">System.err</span>
+      <ul>
+        <li>These are three static fields that give you access to the standard input, standard output, and standard error streams.</li>
+        <li>When you start a java program from the command prompt (cmd.exe in windows or sh/bash/csh etc in Unix) there are, by default, connected to the keyboard and the terminal.</li>
+        <li><span class="codeInline">System.in</span> is of type <span class="codeInline">java.io.InputStream</span></li>
+        <li><span class="codeInline">System.out</span> and <span class="codeInline">System.err</span> are of type <span class="codeInline">java.io.PrintStream</span></li>
+      </ul>
+  </li>
+  <li><span class="codeInline">System.exit( </span><span class="codeKeyword">int</span><span class="codeInline"> status ) </span>
+      <ul>
+        <li>Stops the program immediately. Use 0 for success and 1 for failure.</li>
+      </ul>
+  </li>
+</ul>
+<h2><a name="Integer-Etc" id="Integer-Etc">Byte, Short, Integer, Long, Float, Double, Character, Boolean</a></h2>
+<p>These classes provide static methods and constants relevant to the corresponding primitive types.</p>
+<p>For example</p>
+<ul>
+  <li><span class="codeInline">Integer.MAX_VALUE</span> and <span class="codeInline">Integer.MIN_VALUE</span>
+      <ul>
+        <li>give maximum and minimum values for the <span class="codeKeyword">int</span> type. </li>
+      </ul>
+  </li>
+  <li><span class="codeInline">String Integer.toString( </span><span class="codeKeyword">int</span><span class="codeInline"> i )</span>
+      <ul>
+        <li>as we've seen formats an <span class="codeKeyword">int</span> as a <span class="codeInline">String</span>. </li>
+      </ul>
+  </li>
+  <li ><span class="codeKeyword">double</span><span class="codeInline"> Double.parseDouble( String s )</span>
+      <ul>
+        <li>converts a <span class="codeInline">String</span> to a <span class="codeKeyword">double</span></li>
+        <li>Throws <span class="codeInline">NumberFormatException</span> if the format is wrong.</li>
+      </ul>
+  </li>
+</ul>
+<p>Also you can use these classes to create immutable <span class="codeInline">Object</span>s that can be used where primitive values can not.</p>
+<p>For example the <span class="codeInline">ArrayList</span> class holds references to <span class="codeInline">Object</span>s. So we can't store <span class="codeKeyword">int</span> values on an <span class="codeInline">ArrayList</span>. But we can do the following</p>
+<pre class="code">ArrayList&lt;Integer&gt; intList = <span class="codeKeyword">new</span> ArrayList&lt;Integer&gt;() ;
+  .
+  .
+  .
+  <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; M ; ++i )
+      intList.add( <span class="codeKeyword"><u>new</u></span><u> Integer(</u>i<u>)</u> ) ;
+  .
+  .
+  .
+  <span class="codeKeyword">int</span> k = intList.get(0)<u>.intValue()</u> ;
+  
+</pre>
+<p>In many cases, the Java compiler automatically inserts such allocation expression and calls to intValue() and similar methods. This is called autoboxing -- read about it. </p>
+<h2><a name="Input-Output">Input and Output</a></h2>
+<h3><a name="File" id="File">File</a></h3>
+<p>File names are represented by objects of type <span class="codeInline">java.io.File</span>.</p>
+<p>For example</p>
+<pre class="code"><span class="codeKeyword">new</span> File( <span class="codeConstant">&quot;myData.txt&quot;</span> ) ;</pre>
+<p>creates a <span class="codeInline">File</span> object representing a file named myData.txt in the current working directory. </p>
+<p>For example</p>
+<pre class="code">(<span class="codeKeyword">new</span> File(<span class="codeConstant">&quot;.&quot;</span>)).getCanonicalPath()</pre>
+<p>gives the full name of the current working directory.</p>
+<h3><a name="Reader-Writer" id="Reader-Writer">Reader and Writer</a> and binary I/O</h3>
+<p><span class="codeInline">java.io.Reader</span> and <span class="codeInline">java.io.Writer</span> provide simple interfaces for human readable files (text files).</p>
+<p><span class="codeInline">java.io.DataInput</span> and <span class="codeInline">java.io.DataOutput</span> provide nice interfaces for reading and writing binary files in a portable format.</p>
+<h3><a name="Formated-IO" id="Formated-IO">Formatted I/O</a></h3>
+<p>To print human readable files, use <span class="codeInline">java.io.PrintWriter </span></p>
+<p>For example</p>
+<pre class="code">File aFile = ... ;
+PrintWriter pwriter = new PrintWriter( aFile ) ;
+pWriter.print( anInt ) ;
+pWriter.print( aString ) ;
+pWriter.printf("Unable to open file '%1$s': %2$s",
+               fileName,
+               exception.getMessage());
+pWriter.printf(&quot;Today is %1$tB %1$te,%1$tY&quot;,
+               <span class="codeKeyword">new</span> GregorianCalendar() ) ;
+  </pre>
+<p>To read formatted data use <span class="codeInline">java.util.Scanner</span></p>
+<pre class="code">File aFile = ... ;
+Scanner scanner = <span class="codeKeyword">new</span> Scanner( aFile ) ;
+<span class="codeKeyword">int</span> anInt = scanner.nextInt() ;
+<span class="codeKeyword">double</span> aDouble = scanner.nextDouble() ;</pre>
+<p>Scanners generally skip over spaces and newlines. </p>
+<p></p>
+<h2><a name="GUIs" id="GUIs">Graphical User Interfaces </a></h2>
+<p>Java provides two libraries for GUIs.</p>
+<ul>
+  <li>The AWT is the Abstract Windowing Toolkit.
+      <ul>
+        <li>It is &quot;abstract&quot; as it abstracts away from the details of the underlying windowing system (Windows, X, Mac)</li>
+      </ul>
+  </li>
+  <li>&quot;Swing&quot; is more modern and even more portable.</li>
+</ul>
+<p>A simple swing program</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("HelloWorldSwing.java", true, "code", "default.cfg");
+    
+    </script>
+</p>
+<p>Swing GUIs are made up of objects that are &quot;Components&quot;</p>
+<ul>
+  <li>JLabel: contains fixed text </li>
+  <li>JTextField: editable text</li>
+  <li>JTextArea: multi-line editable text</li>
+  <li>JEditPane: multi-line formatted editable text </li>
+  <li>JButton: clickable areas</li>
+  <li>JMenuItem: like a button, but intended for menus </li>
+  <li>JTree: trees (like in Windows Explorer)</li>
+  <li>JTable: tables</li>
+</ul>
+<p>Some components are &quot;containers&quot; that other components can be added to</p>
+<ul>
+  <li>JFrame: primary window of applications </li>
+  <li>JDialog: windows that are tied to others</li>
+  <li>JMenuBar: menu bars</li>
+  <li>JMenu: menus</li>
+</ul>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,11 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+   
+   cout << 'a' << '\n' << '\a' << '\r' <<'\0' ;
+   cout << '\x30' << '\061' ;
+   cout << "\'\"\?\\\a\b\f\n\r\t\v\045\01200\07\x5A\x6a\x5F\x6f" ;
+
+}

@@ -1,0 +1,457 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Logical Expressions</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h1><a name="LogicalExpressions">Logical Expressions </a></h1>
+<p>The formal syntax for the <span class="codeKeyword">if</span> and <span class="codeKeyword">while</span> statements are </p>
+<pre>if (logical expression)            while (logical expression)
+    statement;                           statement;</pre>
+<p> The
+    <script language="JavaScript">
+startDefLink("expression");
+    </script>
+  expression<b><em>
+  <script language="JavaScript">
+endLink();
+  </script>
+  </em></b> in parentheses is known as a <em>logical expression</em> (or <em>boolean
+  expression</em>). Now that we have some idea of how <span class="codeKeyword">if</span> and <span class="codeKeyword">while</span>
+  statements work we need to study logical expressions in a little more depth. </p>
+<p>A <em>logical expression</em> is one which lets us <em>test</em> a <em>relationship</em> between
+    two operands and express the result as a <em>bool</em>&#8212; that is, <code>true</code> or <code>false</code>.
+    An example is </p>
+<p><code>n &lt; 3</code></p>
+<p>which evaluates to <code>true</code> if <code>n</code> is less than <code>3</code> and <code>false</code> if <code>n</code> is either equal
+  to or greater than <code>3</code>. The symbol <code>&lt;</code> in this context
+  is known as a <em>relational operator</em>.</p>
+<p>There are six relational operators, all of which
+  take two operands.</p>
+<table width="100%"  border="1">
+  <tr>
+    <td><div align="center"><strong>operator</strong></div></td>
+    <td><div align="center"><strong>operation</strong></div></td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>&lt;</code></div></td>
+    <td><em>left operand</em> <strong>is less than? </strong><em> right operand</em> </td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>&gt;</code></div></td>
+    <td><em>left operand</em> <strong>is greater than? </strong><em> right operand</em> </td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>&lt;=</code></div></td>
+    <td><em>left operand</em> <strong>is less thanor equal to? </strong><em> right
+        operand</em> </td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>&gt;=</code></div></td>
+    <td><em>left operand</em> <strong>is greater thanor equal to? </strong><em> right
+        operand</em> </td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>==</code></div></td>
+    <td><em>left operand</em> <strong>is equal to? </strong><em> right operand</em> </td>
+  </tr>
+  <tr>
+    <td><div align="center"><code>!=</code></div></td>
+    <td><em>left operand</em> <strong>is not equal to? </strong><em> right operand</em> </td>
+  </tr>
+</table>
+<p>Again, the outcome of a relational operation is always <code>bool</code>&#8212;<code>true</code> or <code>false</code>.</p>
+<h2>Boolean Operators</h2>
+<p>By themselves, the 
+  <script language="JavaScript">
+startDefLink("relationalOperator");
+  </script>
+relational operators <b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b>don't allow us to write terribly
+  interesting 
+<script language="JavaScript">
+startDefLink("expression");
+  </script>
+expressions<b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b> yet. However, we can combine relationships, using three
+  special <em>boolean</em> operators. Boolean operators are like relational operators
+  in that they produce <code>true</code> or <code>false</code> results. The difference
+  is that their operands also have to be <code>bool</code>. </p>
+<table border="1" cellpadding="3">
+  <tr>
+    <td align="middle"><strong>Operator </strong></td>
+    <td align="left"><strong>Kind</strong></td>
+    <td align="left"><strong>Relationship </strong></td>
+  </tr>
+  <tr>
+    <td align="middle">&amp;&amp; </td>
+    <td align="left">binary</td>
+    <td align="left">And </td>
+  </tr>
+  <tr>
+    <td align="middle">|| </td>
+    <td align="left">binary</td>
+    <td align="left">Or </td>
+  </tr>
+  <tr>
+    <td align="middle">! </td>
+    <td align="left">unary</td>
+    <td align="left">Not </td>
+  </tr>
+</table>
+<p>They correspond to what you would expect and, or and not to mean in ordinary
+  speech. But we can define them more rigorously using a table.</p>
+<p>
+<table border="1" cellpadding="3">
+  <tr>
+    <td align="middle"><code><strong>a </strong></code></td>
+    <td align="middle"><code><strong>b </strong></code></td>
+    <td align="middle"><code><strong>a &amp;&amp; b </strong></code></td>
+    <td align="middle"><code><strong>a || b </strong></code></td>
+    <td align="middle"><code><strong>!a </strong></code></td>
+  </tr>
+  <tr>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>true </code></td>
+  </tr>
+  <tr>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>true </code></td>
+  </tr>
+  <tr>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>false </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>false </code></td>
+  </tr>
+  <tr>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>true </code></td>
+    <td align="middle"><code>false </code></td>
+  </tr>
+</table>
+<p><code>a||b</code> is <code>true</code> if <em>either</em> <code>a</code> or <code>b</code> is <code>true</code></p>
+<p><code>a&amp;&amp;b</code> is <code>true</code> only if <em>both</em> <code>a</code> and <code>b</code> are <code>true</code></p>
+<p>Now this lets us construct more interesting expressions such as</p>
+<blockquote>
+  <p><em>test whether n is  3 or between 7 and 10 </em></p>
+</blockquote>
+<p> The equivalent logical expression is</p>
+<p><code>n == 3 || n&gt;= 7 &amp;&amp; n&lt;=
+      10</code></p>
+<p> Of course, if I didn't mean to include the end points when I said 'between'
+  (open interval instead of a closed interval,
+</p>
+<p><code>n == 3 || n&gt; 7 &amp;&amp; n&lt; 10</code></p>
+<p>Notice, for this to work, relational operators have to have a higher precedence
+than the boolean operators <code>&amp;&amp;</code> and <code>||</code>, as indeed they do. For the  boolean operators themselves, <code>&amp;&amp;</code> (and) takes precedence over <code>||</code> (or) and <code>!</code> (not) has precedence over them both. Let's look at an example. Consider the proposition:</p>
+<p><em>In order to go to the movies &#8230;</em></p>
+<p>Here are some possible conditions</p>
+<p>&nbsp;&nbsp;<strong>if</strong></p>
+<ol type="a">
+  <li>I have enough money.</li>
+  <li>I have enough money <strong>or</strong> I have a free movie pass. </li>
+  <li>I have enough money <strong>and</strong> my wife wants to see the movie.</li>
+  <li>I have enough money <strong>or</strong> my wife has enough money <strong>and</strong> she wants to see the movie.    </li>
+</ol>
+<p>(a)  (b) &amp; (c) are pretty clear:</p>
+<ol type="a">
+  <li>I can go to the movies <strong>if</strong> I have enough money.</li>
+  <li>I can go to the movies <strong>either if</strong> I have enough money <strong>or if</strong> I have a free pass </li>
+  <li>I can go to the movies <strong>only if both</strong> I have enough money <strong>and</strong> my wife wants to see the movie</li>
+  </ol>
+<p>(a) is a simple proposition with a single condition. In (b) I can go if either of two conditions is met.  (c) is much stronger; now both conditions must be met.</p>
+<p>What about (d). It's slightly ambiguous. Two meanings are possible: </p>
+<ol type="i">
+  <li>I can go to the movie <strong>if either</strong> myself or my wife has enough money <strong>and</strong> she wants to go</li>
+  <li>I can go to the movie <strong>either if</strong> I have enough money <strong>or if</strong> my wife has enough money <strong>and</strong> she wants to go. </li>
+  </ol>
+<p>Most people would probably read the original wording in the second sense, grouping the <strong>and</strong> conditions together first. It is not ambiguous in boolean algbra. <strong>and</strong> has precedence over <strong>or</strong> so the second meaning is the correct one. </p>
+<h2><a name="PrecedenceTable">Table of Precedence</a></h2>
+<p>Here is a table for the 
+  <script language="JavaScript">
+startDefLink("precedence");
+  </script>
+precedence
+<script language="JavaScript">
+endLink();
+  </script>
+ of all the operators we know about so far</p>
+<table width="100%"  border="1">
+  <tr>
+    <td><strong>Operator</strong></td>
+    <td><strong>Precedence</strong></td>
+    <td><strong>Description</strong></td>
+  </tr>
+  <tr>
+    <td><code>!&nbsp;&nbsp; + &nbsp;&nbsp;- </code></td>
+    <td>Highest</td>
+    <td>logical not, unary plus, unary minus </td>
+  </tr>
+  <tr>
+    <td><code>*&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;%</code></td>
+    <td rowspan="6">&nbsp;</td>
+    <td>multiplication, division, modulo </td>
+  </tr>
+  <tr>
+    <td><code>+&nbsp;&nbsp;&nbsp;-</code></td>
+    <td>addition, subtraction </td>
+  </tr>
+  <tr>
+    <td><code>&lt;&nbsp;&nbsp;&nbsp;&lt;=&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&gt;=</code></td>
+    <td>relational inequalities</td>
+  </tr>
+  <tr>
+    <td><code>==&nbsp;&nbsp;&nbsp;!=</code></td>
+    <td>equal, not equal </td>
+  </tr>
+  <tr>
+    <td><code>&amp;&amp;</code></td>
+    <td>and</td>
+  </tr>
+  <tr>
+    <td><code>||</code></td>
+    <td>or</td>
+  </tr>
+  <tr>
+    <td><code>=</code></td>
+    <td>Lowest</td>
+    <td>assignment</td>
+  </tr>
+</table>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("bool_2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>Because and (<code>&amp;&amp;</code>) and or(<code>||</code>) have a lower precedence than the relational operators,
+  the relational operations are carried out first. That is, it as if we put in
+  parentheses as follows:</p>
+<blockquote>
+  <p><code>return (number == 4) || (number &gt;= 7) &amp;&amp; (number &lt;= 10)</code></p>
+</blockquote>
+<p>This makes sense because the relational operators can have non-boolean operands,
+  but they will produce boolean results. <code>||</code> and <code>&amp;&amp;,</code> however,
+  require boolean operands (as well as producing boolean results).</p>
+<p>So you do the relational operations first, getting all boolean results, then
+  you use the boolean operators to combine those results.</p>
+<p>Logicists (or philosophers) would consider the three phrases to be <em>propositions</em> each
+  of which is either <code>true</code> of <code>false</code> </p>
+<h2><a name="Conversion">Bool Conversions</a></h2>
+<h3>Conversion to Bool</h3>
+<p>Integer types are converted to <code>bool</code> as follows:</p>
+<ol>
+  <li><code>0</code> is converted to <code>false</code></li>
+  <li>anything else is converted to <code>true</code></li>
+</ol>
+<p>Integer types include both <code>int</code> and <code>char</code>. Note also that since <code>double</code>s can
+  be converted to <code>int</code>s, this effectively means <code>double</code>s can be converted to <code>bool</code>  as well. </p>
+<p>If an <code>int</code> value occurs where a <code>bool</code> is expected,
+  this conversion is often applied automatically, e.g</p>
+<blockquote>
+  <p><code>if (i) x*=i;<br>
+    else x+=1;
+</code></p>
+</blockquote>
+<p>This is generally regarded as poor style.</p>
+<h3>Conversion from Bool</h3>
+<p>values of type <code>bool</code> can be converted to <code>int</code> as follows:</p>
+<ol>
+  <li><code>false</code> is converted to <code>0</code></li>
+  <li><code>true</code> is converted to <code>1</code></li>
+</ol>
+<p>Again, if a <code>bool</code> value is encountered where an <code>int</code> is expected the conversion
+  can occur automatically. In the following example <code>flag</code> is a <code>bool</code> and <code>x</code> is
+  a <code>double</code>:</p>
+<blockquote>
+  <p><code>x = x + flag;</code></p>
+</blockquote>
+<p>Since <code>x</code> is a <code>double</code> and only a <code>double</code> can be added
+  to a <code>double</code>,  the value of <code>flag</code> is first converted
+  to an <code>int</code> ( <code>0</code> or <code>1</code>) and then that <code>int</code> is converted to a <code>double</code> <code>(0.0</code> or <code>1.0</code>). </p>
+<p>If
+  <code>flag</code> is <code>false</code>, <code>x</code> remains unchanged.
+  If <code>true</code>, <code>1.0</code> is added to <code>x</code>.</p>
+<p>Such &quot;clever&quot; programming is seldom justified and we will penalize it as bad
+  style. </p>
+<h2><a name="ShortCircuit">The Short Circuit Property</a></h2>
+<p>C++ (and many languages which borrow its syntax such as Java, JavaScript,
+  PHP) have something know as the <em>short-circuit property</em>.</p>
+<p>Within the bounds of 
+  <script language="JavaScript">
+startDefLink("precedence");
+  </script>
+precedence<b><em>,
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b>boolean expressions are executed left to
+  right. Once the outcome of the expression is known, <strong>execution stops
+  with no farther evaluation</strong>.</p>
+<p>In the above example, the steps are as follows.</p>
+<ol>
+  <li>evaluate whether the first proposition is true or false (<code>number==4</code>)</li>
+  <li>evaluate the second proposition (<code>number &gt;=7</code>)</li>
+  <li>evaluate the third proposition (<code>number &lt;= 10</code>)</li>
+  <li>combine the second and third results by <strong>and</strong>ing them</li>
+  <li>combine first result by <strong>or</strong>ing it with result of step 4.  </li>
+</ol>
+<p>if we input to number a value
+    of 4, the first proposition will be <code>true</code>. Since that guarantees the entire
+  combined proposition is <code>true</code> (<code>true</code> <strong>or</strong> anything else is always <code>true</code>), step 1
+  is the only step that is executed.</p>
+<p>If we input 5 or 6, the first proposition will be <code>false</code>, proposition
+  two will be <code>false</code>, guaranteeing the entire proposition is <code>false</code>,
+  so execution stops after step 3.</p>
+<p>Let's run this example again, focusing on the short-circuit property.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("bool_2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<h3 align="center">Code Notes</h3>
+<p class="hang">1. Try editing the code to add a <code>cin</code> statement just before the <code>return</code> in <code>main</code>. Then use it to enter your own data. See if you can get the expression to quit evaluating on any of the terms. </p>
+<hr>
+<script language="JavaScript">
+ endNote();
+</script>
+<h2>Boolean Variables and Functions </h2>
+<p>As soon as one has a <code>bool</code> type, you can declare variables of that type and
+  functions that return that type.</p>
+<p>Let's write a function that determines whether I can go to the movies given
+  that I have to have enough money and my wife has to want to go to.</p>
+<p>First, let's create the prototype.</p>
+<p>We often start <code>bool</code> function names with a simple verb like &quot;is&quot;.
+  In this case I will use &quot;can&quot; and I will pass in how much money I
+  have and my wife's willingness (a <code>bool</code>!). So what should the prototype
+  look like? </p>
+  <script language="JavaScript">
+	startHiddenAnswer("canGo prototype");
+</script>
+<p><code>bool canGo(double myMoney, bool willGo);</code></p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<p>Checking out ticket prices at the local theatre I find I have to pay $6.99
+  no matter what day of the week. So what should my code look like?</p>
+  <script language="JavaScript">
+	startHiddenAnswer("canGo code");
+</script>
+<pre><code>bool canGo(double myMoney, bool willGo)</code>{
+    return willGo &amp;&amp; (myMoney &gt;= 2*6.99);
+} </pre>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+</p>
+  <p>Where did the 2 come from?</p>
+  <h2><a name="exercises">Exercises</a></h2>
+<p>Given four integer variables, A, B, C and D, create functions to do the following:</p>
+<ol>
+  <li>return <code>true</code> if any of them is negative.</li>
+  <li>return <code>true</code> if A is the smallest value.</li>
+  <li>return <code>true</code> if any pair is equal.</li>
+  <li>return <code>true</code> if the product of any pair is equal to the product of the other pair.</li>
+  </ol>
+  <h3>Solutions</h3>
+  <script language="JavaScript">
+	startHiddenAnswer("1");
+</script>
+<pre>bool anyNegative(int A, int B, int C, int D){
+    return A < 0 || B < 0 || C < 0 || D < 0;
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2");
+</script>
+<pre>bool isALeast(int A, int B, int C, int D){
+    return A < B && A < C && A < D;
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3");
+</script>
+<pre>bool anyEquality(int A, int B, int C, int D){
+    return A == B || A == C || A == D || B == C || B == D || C == D;
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("4");
+</script>
+<pre>bool productEquality(int A, int B, int C, int D){
+    return AB == CD || AC == BD || AD == BC;
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full</h1>
+ 
+ <p>
+   <script language="JavaScript">
+insertCode("roundRight.cpp", false, "code", "", "all", "all");
+   </script>
+ </p>
+ <p><script language="JavaScript">
+insertCode("bool_2.cpp", false, "code", "","all","all");
+  </script></p>
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

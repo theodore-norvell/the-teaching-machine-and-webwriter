@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Inheritance</title>
+</head>
+<body>
+<p>Inheritance is one of the most powerful tools in the Object Oriented Programming 
+  Style (OOPS)</p>
+<p>It is one (of a number) of techniques for making code <i>reusable</i></p>
+<p>It allows one to extend a piece of existing code by <i>specialising</i> it.</p>
+<p>It models a very particular kind of relationship between classes known as <i>polymorphism</i>. 
+  This is often known as the &quot;is-a&quot; relationship.</p>
+<p>Consider two of the classes we have been working with recently. Account and 
+  User</p>
+<p>Both are representative of a kind of generic category. Consider the table below.</p>
+<table width="100%" border="2">
+  <tr> 
+    <td><b>General Class</b></td>
+    <td> 
+      <div align="center">Account</div>
+    </td>
+    <td> 
+      <div align="center">User</div>
+    </td>
+  </tr>
+  <tr> 
+    <td><b>Specialty Classes</b></td>
+    <td> 
+      <div align="center">Savings Account</div>
+    </td>
+    <td> 
+      <div align="center">Undergraduate</div>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td> 
+      <div align="center">Checking Account</div>
+    </td>
+    <td> 
+      <div align="center">Graduate</div>
+    </td>
+  </tr>
+  <tr> 
+    <td>&nbsp;</td>
+    <td> 
+      <div align="center">Line of Credit</div>
+    </td>
+    <td> 
+      <div align="center">Faculty</div>
+    </td>
+  </tr>
+</table>
+<p>Savings and checking accounts and lines of credit are all special kinds of 
+  accounts. They all share common characteristics, such as a balance and an ability 
+  to put money in or take it out.</p>
+<p>But they all have special characteristics as well. Lines of credit normally 
+  have negative balances and large overdraft limits, while savings accounts pay 
+  interest.</p>
+<p>Similarly, different kinds of computer accounts have different policies applied 
+  to them. For example, in our institition, undergraduates pay for printing while 
+  faculty don't. Graduate students fall in between, getting an allocation large 
+  enough to do a thesis, but paying if they exceed the allocation.</p>
+<p>This kind of organization scheme is quite general.</p>
+<p>Remember that, at bottom, classes represent categories.</p>
+<p>Human categorization of knowledge is not confined to single categories.</p>
+<p>Rather we use sub categories and more sub categories, organizing knowledge 
+  into <i>hierarchies</i>.</p>
+<p>Thus human beings are hominids which are primates which are mammals</p>
+<p>That is humans are <i>a kind of</i> hominid which in turn is <i>a kind of</i> 
+  primate which is <i>a kind of</i> mammal.</p>
+<p>All mammals have warm blood.</p>
+<p>All primates have large brains and opposable thumbs. As mammals they also have 
+  warm blood. (In the OOPS world we would say they <i>inherit</i> the characteristic 
+  of warm bloodedness.)</p>
+<p>All hominids walk on two legs. (They also have opposable thumbs and large brains, 
+  because they are primates, and warm blood because primates are mammals.)</p>
+<p>Humans have a soft palate. (They also walk on two legs because &#133;but you 
+  get the picture)</p>
+<p>In OOPS, a sub-category is called a sub-class. And objects of sub-classes inherit 
+  all the attributes and methods of their super class(es).</p>
+<p>Before turning our attention to Users and Accounts let's look at a very simple 
+  minded system.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("simpleInherit.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>This system forms a <i>hierarchy </i>with three <i>generations.</i></p>
+<p>You can think of <span class="codeInline">A</span> as the grandparent, <span class="codeInline">B</span> 
+  as the parent and <span class="codeInline">C</span> as the child.</p>
+<p>We say that <span class="codeInline">b</span> is a<span class="codeInline"> 
+  B</span> (an object of class <span class="codeInline">B</span>). But it is also 
+  an <span class="codeInline">A</span>.</p>
+<p>Likewise, <span class="codeInline">c</span> is a<span class="codeInline"> C</span> 
+  as well as a<span class="codeInline"> B</span> as well as an <span class="codeInline">A</span>.</p>
+<p>Thus an object of class <span class="codeInline">C</span> has five attributes 
+  (its own <span class="codeInline">z</span> plus <span class="codeInline">y1</span> 
+  and <span class="codeInline">y2</span> from <span class="codeInline">B</span> 
+  and <span class="codeInline">x1</span> and<span class="codeInline"> x2</span> 
+  from <span class="codeInline">A</span>)</p>
+<p>And it has three methods (its own <span class="codeInline">c()</span> plus 
+  <span class="codeInline">b()</span> from <span class="codeInline">B</span> and 
+  <span class="codeInline">a()</span> from <span class="codeInline">A</span>).</p>
+<p>We have also introduced a new access modifier, <span class="codeInline">protected</span>.</p>
+<p>Protected members of a class are accessable to sub-classes of the class but 
+  not to the outside.</p>
+<p>Here is the implementation code for the three methods declared in the classes 
+  <span class="codeInline">A</span>, <span class="codeInline">B</span> and <span class="codeInline">C</span>.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("simpleInherit.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>the code in the implementation for<span class="codeInline"> c()</span> </p>
+<ul>
+  <li>can set <span class="codeInline">z</span> directly (because it belongs to 
+    <span class="codeInline">C</span>)</li>
+  <li>can set <span class="codeInline">y1</span> and <span class="codeInline">x1</span> 
+    directly (because, although they belong to classes <span class="codeInline">B</span> 
+    &amp; <span class="codeInline">A</span> respectively, they are protected and 
+    thus available to <span class="codeInline">C</span> objects)</li>
+  <li>must go through the public interface function <span class="codeInline">b()</span> 
+    to set<span class="codeInline"> x2</span> and <span class="codeInline">y2</span> 
+    as they are private.</li>
+</ul>
+<h2><a name="modifiers">Access Modifiers</a></h2>
+<p>Let's look at our simple hierarchial class declarations one more time</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("simpleInherit.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Note that the syntax</p>
+<pre>class B : public A</pre>
+<p>means that class B is <i>publicly</i> derived from A</p>
+<p>It is also possible to derive a class <i>privately</i> from another.</p>
+<p>To see what that means consider the following table:</p>
+<table width="100%" border="2">
+  <tr> 
+    <td><b>Access in Base Class</b></td>
+    <td><b>Access Modifier</b></td>
+    <td><b>Access in Derived Class</b></td>
+  </tr>
+  <tr> 
+    <td><b>public</b></td>
+    <td>public</td>
+    <td>public</td>
+  </tr>
+  <tr> 
+    <td><b>private</b></td>
+    <td>public</td>
+    <td>can't access</td>
+  </tr>
+  <tr> 
+    <td><b>protected</b></td>
+    <td>public</td>
+    <td>protected</td>
+  </tr>
+  <tr> 
+    <td><b></b></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr> 
+    <td><b>public</b></td>
+    <td>private</td>
+    <td>private</td>
+  </tr>
+  <tr> 
+    <td><b>private</b></td>
+    <td>private</td>
+    <td>can't access</td>
+  </tr>
+  <tr> 
+    <td><b>protected</b></td>
+    <td>private</td>
+    <td>private</td>
+  </tr>
+</table>
+<p>Notice that the derived class cannot loosen the security defined by its parent. 
+  It can only tighten it.</p>
+<p>Thus public members stay public if publically derived but become private if 
+  privately derived.</p>
+<p>Private members of the parent class are inaccessable by children, period.</p>
+<p>Protected mebers of the parent class stay protected if publicly derived but 
+  become private if privately derived.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("access.cpp", false, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>What variables may <span class="codeInline">john()</span>, <span class="codeInline">george()</span> 
+  & <span class="codeInline">alice()</span> access?</p>
+<p>What access is permitted objects of classes <span class="codeInline">A</span>, 
+  <span class="codeInline">B</span> & <span class="codeInline">C</span>?</p>
+<h2><a name="account">Extending Class Account</a></h2>
+<p>Let's apply these ideas to extending class <span class="codeInline">Account</span> 
+  to Savings Accounts and Checking Accounts. Here is the Accounts class as we 
+  left it.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../constructors/account3.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>When you start to think in terms of a hierarchy of classes, it is best to rethink 
+  them from scratch.</p>
+<p>First, what is common to all accounts? That's what should go into the base 
+  class.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>The base class is quite stripped down. It just has a balance and four functions. 
+</p>
+<p>Moreover, the names of deposit and withdraw have been changed to the more generic 
+  credit and debit (which are better terms for charge accounts, like VISA).</p>
+<p>These functions are implemented in a very generic way</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Now let's look at extending <span class="codeInline">Account</span> to checking 
+  accounts.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p><span class="codeInline">Checking</span> is publicly derived from class <span class="codeInline">Account</span>. 
+  It adds the notion of minimum balance as well as various charges.</p>
+<p>It over-rides the <span class="codeInline">debit</span> function because the 
+  generic one can't do the job. But not the <span class="codeInline">credit</span> 
+  function because the generic one in Account works just fine.</p>
+<p>Notice, however, all the charges are <span class="codeInline">static</span>. 
+  This means that there is one set of charges for all <span class="codeInline">Checking</span> 
+  account objects.</p>
+<p>The member functions to set charges are also <span class="codeInline">static</span>. 
+  What does this mean?</p>
+<p>After all there's only one actual member function for a whole class anyway.</p>
+<p>Static functions are called with respect to the whole class not a particular 
+  object of the class. That is to invoke <span class="codeInline">setRate</span> 
+  for the <span class="codeInline">Checking</span> class I would write</p>
+<pre>Checking::setRate(.02);</pre>
+<p>The real benefit of this is that <i>we don't have to create any <span class="codeInline">Checking</span> 
+  objects before invoking the function</i>.</p>
+<p>With regular member functions, <i>you must have an object before you can call 
+  the function</i>.</p>
+<p>Here's the extension to savings accounts</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", false, "code", "3891lecture.cfg", "D", "");
+</script>
+</p>
+<p>It's quite similar <i>but the policies will be different.</i> For example there 
+  is no <span class="codeInline">bool odAllowed</span> attribute because no savings 
+  accounts are ever allowed to go into overdraft.</p>
+<p>Here is the implementation code for <span class="codeInline">Checking</span> 
+  objects.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", false, "code", "3891lecture.cfg", "E", "");
+</script>
+</p>
+<p>Note that the <span class="codeInline">debit</span> function is much more complex 
+  than the one in <span class="codeInline">Account</span> since it has to take 
+  both charges and overdrafts into account.</p>
+<p>Finally here is some code that utilizes the various kind of accounts.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("accountInherit.cpp", true, "code", "3891lecture.cfg", "F", "");
+</script>
+</p>
+<p>Pay particular attention to the constructor calling sequences (by stepping 
+  into them in the TM)</p>
+<h2><a name="user">Extending Class User</a></h2>
+<p>Our <span class="codeInline">User</span> class created a very simple model 
+  of computer users.</p>
+<p> Now let's <i>extend</i> it to deal with different kinds of users&#151;faculty 
+  & students&#151;by first grouping what is <i>common</i> about the two in a single 
+  User class</p>
+<p> Then <i>derive</i> the two new classes from this <i>base class</i>. First 
+  we have to change the base class a little</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("userInherit.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>The only change is to use the new access control <span class="codeInline">protected</span> 
+  where we had <span class="codeInline">private</span> before. This allows the 
+  class to be extended, giving member functions of derived classes direct access 
+  to this data.</p>
+<h3>Specialization to Student</h3>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("userInherit.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Students have id numbers and they have to pay for printing so two attributes 
+  have been added&#151;</p>
+<blockquote>
+  <p><span class="codeInline">mId</span> records their id</p>
+  <p><span class="codeInline">mPrintPennies</span> keeps track of how much money 
+    they have in their print accounts</p>
+</blockquote>
+<p>a number of operations have been included to handle these extra attributes.</p>
+<h2><a name="chaining">Constructor Chaining</a></h2>
+<p>Recall that a <span class="codeInline">Student</span> object <i>is a</i> <span class="codeInline">User</span> 
+  object so that constructing a <code>Student</code> object also implies constructing
+  the <code>User</code> part of it. The constructors are <em>chained</em>. </p>
+<p>when a <span class="codeInline">Student</span> object is constructed
+     its <span class="codeInline">User</span> part must be constructed first.</p>
+<p>That is, declaring a <span class="codeInline">Student</span> object</p>
+<ol>
+  <li>invokes the <span class="codeInline">Student</span> constructor which <em>in 
+    turn</em></li>
+  <li>invokes the <span class="codeInline">User</span> constructor which, <em>when 
+    it has finished</em></li>
+  <li>returns to the <span class="codeInline">Student</span> constructor which 
+    <em>then does its initialization</em></li>
+</ol>
+<p>As you can see, the <span class="codeInline">Student</span> constructor takes 
+  four arguments. Three of them, however, are needed by the <span class="codeInline">User</span> 
+  constructor. How do they get passed along?</p>
+<p>One again the answer is to employ an <i>initializer list</i></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("userInherit.cpp", false, "code", "3891lecture.cfg", "E", "");
+  </script>
+</p>
+<p>Here we show the <span class="codeInline">User</span> constructor, which as 
+  was seen previously, uses an initializer list to pass arguments on to the various 
+  <span class="codeInline">MyString</span> constructors.</p>
+<p>Displayed right after it for comparison is the <span class="codeInline">Student</span> 
+  constructor. </p>
+<blockquote>
+  <p>It uses the initializer list to pass the three arguments needed by the <span class="codeInline">User</span> 
+    constructor</p>
+  <p>As well as to pass the id string to the <span class="codeInline">MyString</span> 
+    constructor to build the <span class="codeInline">mId</span> object</p>
+  <p>Finally, in the body of the constructor, the allocation and number of print 
+    pennies are initialized.</p>
+</blockquote>
+<p><img src="ConstructorChain.gif" width="717" height="493"></p>
+<p>Constructor Chaining for Class User</p>
+<p>(The arguments are actually passed as pointers. We show strings pointed at
+  for clarity)</p>
+<h3>Specialization to Faculty</h3>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("userInherit.cpp", false, "code", "3891lecture.cfg", "C", "");
+  </script>
+</p>
+<p>Faculty members get free printing but a record of total pages is kept. It can 
+  be cleared from time to time so the record is actually the number of pages printed 
+  since the last clearing date.</p>
+<p>This requires the addition of attributes</p>
+<blockquote>
+  <p><span class="codeInline">mPages</span> which tracks pages</p>
+  <p><span class="codeInline">mCleared</span> which is a <span class="codeInline">MyString</span> 
+    object which records the last time pages were cleared</p>
+</blockquote>
+<p>plus new functions for manipulation.</p>
+<p>The constructor issues are similar to those for class <span class="codeInline">Student</span>.</p>
+<p>Here is a little bit of driver code to try it out.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("userInherit.cpp", true, "code", "3891lecture.cfg", "D", "");
+</script>
+
+</p>
+<p>Use the <span class="TM">Teaching Machine</span> to step through the constructor 
+  chains when objects of class <span class="codeInline">Student</span> and <span class="codeInline">Faculty</span> 
+  get declared.</p>
+<p>Again, watch how <i>automated</i> the process is.</p>
+<p>We take care of implementing the code correctly.</p>
+<p>The compiler worries about which constructors have to be called when.</p>
+<h2><a name="copyChain">Copy Constructor Chaining</a></h2>
+<p>Copy constructors for base classes are chained just like regular constructors.
+  For example, suppose that we needed an explicit copy constructor for both User
+  and Student (we don't). Then the implementation of the Student copy constructor
+  would go as follows:</p>
+<pre><code>Student::Student(const Student::Student&amp; original) : User(original) {
+	// Extra code for student copy construction goes here
+}</code></pre>
+<p>Again, the idea is to reutilize the copy constructor code for the <code>User</code> object,
+  then just add whatever extra is needed to copy construct a <code>Student</code> object.</p>
+<p>If the copy constructor code for <code>Student</code> is to be written from scratch, simply
+  omit the initilizer invocation of <code>User</code>. </p>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("simpleInherit.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("accountInherit.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("userInherit.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+
+</div>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

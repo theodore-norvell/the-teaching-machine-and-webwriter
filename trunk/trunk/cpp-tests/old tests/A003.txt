@@ -1,0 +1,9 @@
+#include <iostream.h>   /* include info from standard library */
+
+
+int main()
+
+{
+        cout << "The answer to the question of life the universe and everything\n"
+             << "is\t" << 42 <<"\n" ;
+}

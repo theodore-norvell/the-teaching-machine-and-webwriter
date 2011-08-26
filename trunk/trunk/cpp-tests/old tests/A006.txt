@@ -1,0 +1,21 @@
+#include <iostream.h>   /* include info from standard library */
+
+int a = 1;
+int b = 2;
+int c = 3;
+
+int main()
+
+{
+   {
+    int a ;
+    signed int b = 1 ;
+    signed x ;
+    signed char y ;
+    a = 4 ;
+
+    cout << a << "\n" ;
+    cout << c << "\n" ;
+   }
+   char c ;
+}

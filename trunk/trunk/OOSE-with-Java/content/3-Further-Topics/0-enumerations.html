@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Enumeration types</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="enumerations" id="enumerations"></a>Enumerations</h1>
+<p>Enumeration types are a special kind of class. Only a fixed set of objects are instances of the class and each of these has a name.</p>
+<p>A declaration</p>
+<pre class="code"><span class="codeKeyword">enum</span> Suit {<br>	HEART, CLUB, DIAMOND, SPADE<br>}</pre>
+<p>is, in essence, very similar to a declaration</p>
+<p></p>
+<pre class="code"><span class="codeKeyword">class</span> Suit {<br>    <span class="codeKeyword">private</span> Suit() {}<br>    <span class="codeKeyword">static final public</span> Suit HEART = <span class="codeKeyword">new</span> Suit() ;<br>    <span class="codeKeyword">static final public</span> Suit CLUB = <span class="codeKeyword">new</span> Suit() ;<br>    <span class="codeKeyword">static final public</span> Suit DIAMOND = <span class="codeKeyword">new</span> Suit() ;<br>    <span class="codeKeyword">static final public</span> Suit SPADE = <span class="codeKeyword">new</span> Suit() ;<br>}</pre>
+<p>In each case, there is a fixed set of 4 instances of the <span class="codeInline">Suit</span> type; no more instances of the type can be created. </p>
+<p>This can be useful for creating types that represent small set of a distinct values. </p>
+<p>Some more examples</p>
+<pre class="code"><span class="codeKeyword">enum</span><span class="codeInline"> Face {<br>	ACE, TWO, THREE, FOUR, FIVE,<br>	SIX, SEVEN, EIGHT, NINE, TEN,<br>	JACK, QUEEN, KING <br>}</span><span class="codeKeyword"><br>enum</span> Gender {<br>	MALE, FEMALE<br>}<br><span class="codeKeyword">enum</span> AgeCategory {<br>	INfANT, CHILD, ADULT, SENIOR<br>}<br><span class="codeKeyword">enum</span> ElevatorState {<br>	STOPPED, ASCENDING, DESCENDING<br>}</pre>
+<p>Enumeration types have a few more useful characteristics.</p>
+<p>For example</p>
+<pre class="code">Suit.HEART.toString()</pre>
+<p>results in &quot;HEART&quot;</p>
+<p>The <span class="codeInline">.values() </span>static method returns an array of all values.</p>
+<p>Therefore, we can loop through all members of an enumeration</p>
+<pre class="code"><span class="codeKeyword">for</span>( Suit s : Suit.values() ) <br>    <span class="codeKeyword">for</span>( Face f : Face.values() ) <br>        deck.add( <span class="codeKeyword">new</span> Card( s, f ) ) ;</pre>
+<p>You can use an enumeration valued expression to control a <span class="codeKeyword">switch</span> statement. For example</p>
+<pre class="code">    <span class="codeKeyword">boolean</span> isBlack ;<br>    <span class="codeKeyword">switch</span>( s ) {<br>        <span class="codeKeyword">case</span> CLUB:<br>        <span class="codeKeyword">case</span> SPADE:<br>            isBlack = <span class="codeKeyword">true</span> ;<br>        <span class="codeKeyword">break</span> ;<br>        <span class="codeKeyword">case</span> HEART:<br>        <span class="codeKeyword">case</span> DIAMOND:<br>            isBlack = <span class="codeKeyword">false</span> ;<br>    }</pre>
+<p>Note that, for this switch statement, it is a run-time error for <span class="codeInline">s</span> to be null. </p>
+<p>Enumeration types can not be extended.</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="tmEclipsePlugIn_2.contribution1"
+            objectClass="org.eclipse.core.resources.IFile">
+         <menu
+               id="tmEclipsePlugIn_2.menu1"
+               label="&amp;Teaching Machine"
+               path="additions">
+            <separator
+                  name="group1">
+            </separator>
+         </menu>
+         <action
+               enablesFor="1"
+               label="Send to TM"
+               tooltip="Send to the Teaching Machine"
+               class="tmeclipseplugin_2.actions.SendToTMObjectActionDelegate"
+               icon="icons/logo.gif"
+               menubarPath="tmEclipsePlugIn_2.menu1/group1"
+               id="tmEclipsePlugIn_2.newAction">
+         </action>
+      </objectContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            id="tmEclipsePlugIn-2.editorContribution1"
+            targetID="org.eclipse.jdt.ui.CompilationUnitEditor">
+         <action
+               toolbarPath="Normal/additions"
+               label="Send to the Teaching Machine"
+               class="tmeclipseplugin_2.actions.SendToTMEditorActionDelegate"
+               icon="icons/logo.gif"
+               tooltip="Send to the Teaching Machine"
+               id="tmEclipsePlugIn.action1">
+         </action>
+      </editorContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.cdt.ui.editor.CEditor"
+            id="tmEclipsePlugIn.editorContribution2">
+         <action
+               toolbarPath="Normal/additions"
+               label="Send to the Teaching Machine"
+               class="tmeclipseplugin_2.actions.SendToTMEditorActionDelegate"
+               icon="icons/logo.gif"
+               tooltip="Send to the Teaching Machine"
+               id="tmEclipsePlugIn.action2">
+         </action>
+      </editorContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.editorActions">
+      <editorContribution
+            targetID="org.eclipse.ui.DefaultTextEditor"
+            id="tmEclipsePlugIn.editorContribution3">
+         <action
+               toolbarPath="Normal/additions"
+               label="Load file into the TM"
+               class="tmeclipseplugin_2.actions.SendToTMEditorActionDelegate"
+               icon="icons/logo.gif"
+               tooltip="Send to the Teaching Machine"
+               id="tmEclipsePlugIn.action3">
+         </action>
+      </editorContribution>
+   </extension>
+</plugin>

@@ -1,0 +1,144 @@
+/**
+ * This file contains the common style sheet for project VISREED
+ * $Id: style.css 656 2011-08-15 16:03:11Z xiaoyu $
+ */
+body{
+    font-family: "Times New Roman", Georgia, serif;
+}
+
+pre{
+    font-family: "Courier New", courier, monospace;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+table{
+    border: solid 2px black;
+    border-collapse: collapse;
+    margin: 10px auto;
+    caption-side: bottom;
+}
+
+caption{
+    font-family: Arial, sans-serif;
+    padding: 10px 0;
+}
+
+th, td{
+    border: solid 1px black;
+    text-align: center;
+    padding: 5px 10px;
+}
+
+h1{
+    text-align: center;
+}
+
+.box{
+    border: solid 1px black;
+    padding: 4px;
+}
+
+footer{
+    border-top: solid 1px black;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.name{
+    font-family: "Courier New", courier, monospace;
+    font-size: 13px;
+}
+
+.name :hover{
+    font-weight: bold;
+}
+
+/* general boxes */
+.box{
+    padding: 5px;
+    margin: 5px 0;
+    border: solid 1px grey;
+}
+
+/* external links */
+a.external{
+    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAFZJREFUeF59z4EJADEIQ1F36k7u5E7ZKXeUQPACJ3wK7UNokVxVk9kHnQH7bY9hbDyDhNXgjpRLqFlo4M2GgfyJHhjq8V4agfrgPQX3JtJQGbofmCHgA/nAKks+JAjFAAAAAElFTkSuQmCC") no-repeat scroll right center transparent;
+    padding-right: 13px;
+}
+
+a.external[href$=".pdf"], a.external[href$=".PDF"]{
+    background: url("data:image/png;base64,R0lGODlhEAAQAMQfAOmNjMfHx9UqJ3Fvb9hoZqmpqbe3t96pqPn4+IeHh9ra2qRSUOXl5dtFQ9i2turq6uDg4NTT0+7u7uzMy/DX15OTk9/Ew99+fa89PN+Yl/Hp6eLi4vPz8/v7+////////yH5BAEAAB8ALAAAAAAQABAAAAWgoCeO5PidHhOtQWC8ReyhEdLdOB5Usxd1HARnSOy0eD4gkUO5UHAJUaAjqVYBl8zjgYh6pg/J9mFpZBiMrsjQGaMZDQsEovYYEI/3hiEQWBQcA2scaBtzBxkZcRoDCB4FhBuGEBcOCg19GBePHJJzCgQEDQQZBxgAjwiTChcNlSuBIhVpHBMNDRRiDxwKgo8JFQkCGAsJA8fHXiQAuCUjIQA7") no-repeat scroll right center transparent;
+    padding-right: 18px;
+}
+
+/* use cases */
+.use_case{
+    width: 65%;
+    margin: 5px auto 5px 4em;
+}
+
+.use_case h4{
+    margin: 0;
+}
+
+.use_case p, .use_case li{
+    margin: 0;
+}
+
+.use_case p{
+    margin: 0 2em;
+}
+
+.use_case ul, .use_case ol{
+    margin: 0 auto;
+}
+
+/* diagrams */
+.diagram{
+    margin: 5px auto;
+    text-align: center;
+}
+.UmlCanvas{
+    border: 1px solid grey;
+    padding: 5px;
+}
+pre.uml{
+    display: none;
+}
+
+/* table of contents */
+@media print{
+    #toc, #toc_handler{
+        display: none;
+    }
+}
+#toc{
+    background-color: white;
+    position: fixed;
+    width: 20em;
+    top: 10%;
+    right: 5px;
+    border: solid 1px black;
+    opacity: 0.1;
+    height: 80%;
+    word-wrap: break-word;
+    overflow: auto;
+    padding: 0 5px;
+}
+
+#toc:hover{
+    opacity: 1;
+}
+
+#toc h3{
+    text-align: center;
+    margin: 5px auto;
+}
+#toc_handler{
+    text-decoration: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 5px 10px;
+}

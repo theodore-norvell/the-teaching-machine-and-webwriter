@@ -1,0 +1,36 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+
+<head>
+<script LANGUAGE="JavaScript">
+             function loadCode() {
+			 	self.opener.changeCode(document.theForm.text.value);  
+			  /*var t = top.content_frame.
+            	top.applet_frame.document.tm_applet.loadString('C++', t) ;*/
+            } 
+            
+            function loadForm(code) {
+              document.theForm.text.value = code;
+			}
+            
+          </script>
+
+<title>TM input form</title>
+</head>
+
+<body onload="self.opener.formLoaded();">
+
+
+
+<p>You can use this experimental form to change any example for which it has been activated with the <img src="images/editButtonNormal.gif"> button).</p>
+<p><strong>The changes will not be permanent, </strong>so don't put too much effort and energy into making major rewrites. </p>
+<p> Please be aware that the Teaching Machine does not handle all valid C++ constructs.</p>
+<form name="theForm">
+  <p><input type="button" value="Load code into the Teaching Machine" name="B1"
+  onClick="loadCode()"><br>
+  <p><textarea rows="20" name="text" cols="90"></textarea></p>
+</form>
+
+<p>&nbsp;</p>
+</body>
+</html>

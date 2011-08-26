@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<title>Function Arguments</title>
+</head>
+<body>
+<p>Probably no subject causes as much angst for students as function arguments.
+<p>Let's review a few key points 
+<ul>
+  <li>Functions appear in programs in three ways:
+    <ul>
+      <li>To <em>use</em> functions we <em>call</em> them</li>
+      <li>To <em>create</em> functions we <em>implement</em> them.</li>
+      <li>Just like variables, functions  have be <em>declared</em> before they
+        can be <em>used</em> (called).</li>
+    </ul>
+  </li>
+  <li>Functions may or may not return a value</li>
+  <li>Functions may or may not have arguments</li>
+</ul>
+<p>Below is a very simple program with just one function.</p>
+<p>Like many of the functions in your assignments (and unlike most functions
+  in real programs) it is only called once.</p>
+<p>Let's focus on the arguments </p>
+<ol>
+  <li>The function <code>hypot</code> is declared before <code>main</code>. We tell the compiler that,
+    <em>when the function is called, </em>the arguments are to be <code>doubles</code> </li>
+  <li><code>hypot</code> is called in <code>main</code>&#8212;<code>hypot(side1,
+      side2)</code>&#8212;and <em>we don't say
+      <code>double</code> in the call because <code>side1</code> and <code>side2</code> are
+      know to be <code>doubles</code></em>. The compiler
+    checks the call against the declaration to make sure it is legal.</li>
+  <li><code>hypot</code> is implemented after <code>main</code>. This is where
+    we write the code to carry out whatever calls get made.</li>
+</ol>
+<p>We're going to run the code. <em>Watch carefully what happens in memory. </em></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("hypot.cpp", true, "code", "", "A");
+  </script>
+</p>
+<p>We used different names for the parameters (arguments) in the declaration
+  than in the call.</p>
+<p>We could have used the same names. Here's the same program, simply with same
+  names. Run it and again <em>watch carefully what happens in memory.</em> </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("hypot2.cpp", true, "code", "", "A");
+  </script>
+</p>
+<p>Here's the original program with two function calls in it. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("hypot3.cpp", true, "code", "", "A");
+  </script>
+</p>
+<p>
+    <script language="JavaScript">
+<!--
+dateStamp();
+-->
+    </script>
+    
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="./style.css" type="text/css" rel="stylesheet" />
+        
+        <title>Project VISREED: Use Case</title>
+    </head>
+    <body>
+        <h1>Project visreed: Use Case</h1>
+        <p>The use cases of the project are listed below.</p>
+        <h3>UC1: Diagram generation from text</h3>
+        <div class="use_case box">
+            <h4>Primary Actor:</h4>
+            <p>the user</p>
+            <h4>Stakeholders and Interests: </h4>
+            <ul>
+                <li>The User: Wants accurate graphical representation of the text input.</li>
+            </ul>
+            <h4>Preconditions: </h4>
+            <p></p>
+            <h4>Success Guarantee (Postconditions): </h4>
+            <p></p>
+            <h4>Basic Flow: </h4>
+            <ol>
+                <li>The use inputs the text form of the regular expression to the system.</li>
+                <li>The system parses the regular expression, and apply sytle to it.</li>
+                <li>The system generates a graphical diagram from the input text, reflecting its lexical structure.</li>
+                <li>The system generates another graphical diagram from the input text, showing its lexical flow.</li>
+                <li>The system arrange these two diagrams, together with the text, to a propriate position.</li>
+            </ol>
+            <h4>Extensions: </h4>
+            <h4>Special Requirements:</h4>
+            <h4>Technology and Data Variantions List: </h4>
+            <ul>
+                <li>Regular expression parsing</li>
+                <li>Generating views for each model</li>
+            </ul>
+        </div>
+        <h3>UC2: Diagram re-generation from text</h3>
+        <div class="use_case box">
+            <h4>Primary Actor:</h4>
+            <p>the user</p>
+            <h4>Stakeholders and Interests: </h4>
+            <ul>
+                <li>The User: Wants accurate graphical representation of the modified text input.</li>
+            </ul>
+            <h4>Preconditions: </h4>
+            <p>The user has input some text already, and the system has successfully done the UC1.</p>
+            <h4>Success Guarantee (Postconditions): </h4>
+            <p></p>
+            <h4>Basic Flow: </h4>
+            <ol>
+                <li>The user modifies the text form of the regular expression to the system.</li>
+                <li>The user triggers the update action.</li>
+                <li>The system re-parses the regular expression, and updates the style to it.</li>
+                <li>The system generates an updated lexical tree diagram / modifies the existing lexical tree diagram from the input text.</li>
+                <li>The system generates an updated lexical flow diagram / modifies the existing lexical flow diagram from the input text.</li>
+                <li>The system arrange these two diagrams, together with the text, to a propriate position.</li>
+            </ol>
+            <h4>Extensions: </h4>
+            <h4>Special Requirements:</h4>
+            <h4>Technology and Data Variantions List: </h4>
+            <ul>
+                <li>Regular expression parsing</li>
+                <li>Generating views for each model</li>
+            </ul>
+        </div>
+        <h3>UC3: Diagram editing on the diagram</h3>
+        <div class="use_case box">
+            <h4>Primary Actor:</h4>
+            <p>the user</p>
+            <h4>Stakeholders and Interests: </h4>
+            <ul>
+                <li>The User: Wants modify the tree structure of the regular expression on the graphical representation.</li>
+            </ul>
+            <h4>Preconditions: </h4>
+            <p></p>
+            <h4>Success Guarantee (Postconditions): </h4>
+            <p></p>
+            <h4>Basic Flow: </h4>
+            <ol>
+                <li>The user does some operation on one of the generated diagrams.</li>
+                <li>The system recognizes the intention of the user, and performs corresponding modifications on that diagram.</li>
+                <li>The system updates the other diagram and the styled text to show that modification.</li>
+            </ol>
+            <h4>Extensions: </h4>
+            <h4>Special Requirements:</h4>
+            <h4>Technology and Data Variantions List: </h4>
+        </div>
+        <h3>UCX: Use case template</h3>
+        <div class="use_case box">
+            <h4>Primary Actor:</h4>
+            <p>the user</p>
+            <h4>Stakeholders and Interests: </h4>
+            <ul>
+                <li>The User: Wants </li>
+            </ul>
+            <h4>Preconditions: </h4>
+            <p></p>
+            <h4>Success Guarantee (Postconditions): </h4>
+            <p></p>
+            <h4>Basic Flow: </h4>
+            <ol>
+                <li>The user</li>
+            </ol>
+            <h4>Extensions: </h4>
+            <h4>Special Requirements:</h4>
+            <h4>Technology and Data Variantions List: </h4>
+        </div>
+        <footer>
+            Last update: <pre>$Id: use_case.html 529 2011-06-20 19:01:41Z xiaoyu $</pre>
+        </footer>
+        <script type="text/javascript" src="./js/UmlCanvas/UmlCanvas.standalone.min.js"></script>
+        <script type="text/javascript" src="./js/AutoToc.js"></script>
+    </body>
+</html>

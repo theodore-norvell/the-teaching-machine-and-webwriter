@@ -1,0 +1,305 @@
+Updated 1998 April 17.
+
+Class TMTinyApplet
+   Why:
+        The point of this applet is to have something that can be 
+        launched and controlled from a web page, but that takes up 
+        minimal space on the page. This Applet simply creates a 
+        TMMainFrame, which, to the OS, is a separate application 
+        (i.e. a separate button on the misnamed
+        `task bar'). It can be sized as 1 by 1 (or 0 by 0).
+   Extends: Applet
+   Implements: CommandsInterface
+   Implements: AppletStub
+   Responsibilities:
+        Creates and manages a frame.
+        Passes commands from HTML pages onto the frame.
+        Serves images and URLs to the frame.
+ 
+    Constructor
+    
+        TMTinyApplet()
+    
+    Methods
+        init()
+                Creates the frame
+                        new TMMainFrame( this )
+                (TMMainFrame expects an AppletStub.  Ideally, instead 
+                of 'this', we would pass getStub().  Then there would 
+                be no reason for this class to implement the 
+                AppletStub interface.  But the Applet class does not 
+                define getStub() and the 'stub' field is private. So 
+                instead we make the TMTinyApplet impersonate an 
+                AppletStub and pass this object as an AppletStub.)
+                        
+        appletResize(int,int){}
+                This method is defined only so that this class 
+                implements the appletStub interface.  The method is 
+                never called.
+                
+        destroy()
+                Destroys the frame.
+ 
+    Methods belonging to CommandsInterface
+    
+        These are simply forwarded to the  TMMainFrame.
+ 
+Class TMMainFrame
+   Why:
+        Suitable either as the main class of the application or as a 
+        frame created by an applet (see TMTinyApplet)
+   Extends: Frame
+   Implements: CommandsInterface
+   Responsibilities:
+        Manages the menu. (Applets can't have menus in Java 1.1).
+        Creates and contains a TMBigApplet.
+        Reads files.
+        Has main program of the application.
+   
+   Constructor
+
+        TMMainFrame( AppletStub stub )
+                Creates and adds a menu. Adds any commands that are 
+                needed in both the applet and the application to the 
+                menu.
+                Creates and adds a TMBigApplet:
+                        a = new TMBigApplet( ) ;
+                        add( a ) ;
+                        a.setStub( stub ) ;
+                The TMBigApplet will then use the stub argument 
+                object to load images and to obtain base URLs.
+                Starts the applet:
+                        a.init() ; show() ; a.start() ;
+        
+    Methods
+    
+        static main( String [] )
+                Creates a simple AppletContext object and a simple
+                AppletStub object. See Core Java p. 362 (2nd ed.).
+                These must really implement getImage, and 
+                getDocumentBase. (Note the application parameters can 
+                be used to communicate the directory to find images 
+                in and the URL string to use for the document base.)
+                Then a TMMainFrame is created:
+                        new TMMainFrame( newlyCreatedStub )
+                Adds any application-only commands to the menu. E.g.
+                reading a local file.
+                
+    Methods belonging to CommandsInterface
+        These are simply forwarded to the  TMBigApplet.
+        
+Class TMBigApplet
+   Why:
+        Suitable for embedding in a web page or as part of an 
+        application.
+   
+   Extends Applet.
+   Implements CommandsInterface
+   Implements StatusInterface
+   
+   Responsibilities:
+        Central processing of commands.
+        Mediates between the Evaluator and the Display manager.
+        Creates Language objects and the DisplayManager object and
+        Evaluator objects.
+        Manages the status line and creates `attention dialogs' (This
+        responsibility is delegated to the display manager.)
+   
+   Note:
+        If we decide there is no point to ever embedding the TM 
+        directly in a web page, (e.g. because we need a menu or don't 
+        believe there would be any space left over for anything 
+        else), then there is no point this being an Applet rather 
+        than a Panel. In fact there is no reason not to merge this 
+        class with TMMainFrame. But it must, at least, know of an 
+        applet or of an AppletStub in order to get the documentBase 
+        URL and to load images. In any case making it an Applet is no 
+        extra work over making it a Panel.  Also the menu problem can 
+        be gotten around by creating ones own menu mechanism, using 
+        popup menus, or waiting for Java 2.0.
+        
+   Constructors:
+   
+        TMBigApplet()
+                Creates a DisplayManager which then creates the 
+                display windows:
+                        dm_ = new DisplayManager( this, this )
+                'this' object is passed 
+                        (a) so that the DisplayManager can use 
+                        Applet's getImage method to obtain gif files. 
+                        (b) so that the DisplayManager can route 
+                        commands to the TMBigApplet.
+                Adds the panel to itself.
+   
+   Methods Belonging to CommandsInterface
+   
+        loadString( String language, String programSource)
+                Creates a language object for the language. E.g.:
+                        new CPlusPlusLang() 
+                Creates an evaluator:
+                        currentEvaluator_
+                        = new Evaluator( lang, programSource, this)
+                Obtains information about resources from the
+                		evaluator and passes them to the
+                		displayManager.
+                Refreshes the display.
+                        
+        loadRemoteFile( String language, String fileName)
+                Uses the Applet method documentBase() and the file
+                name to construct a URL for the remote file:
+                        new URL( this.documentBase(), fileName )
+                Reads the file to create a string.
+                If there are any exceptions the user is informed.
+                Otherwise, loadString is called.
+        
+        reStart() --- maybe this name should be changed.
+                Just like loadString, but recycling the previous 
+                string and language.  It is an error, if no previous 
+                load was done.
+                
+        goForward()
+                See goBack.
+        microStep() --- this is a new command.
+                See goBack.
+        overAll()
+                See goBack.
+        stepInto()
+                See goBack.
+        stepOver()
+                See goBack.
+        toCursor( int cursor )
+                See goBack.
+        goBack()
+                All the above are implemented by calling the 
+                corresponding method in the current evaluator and 
+                then calling the refresh method of the 
+                displayManager.
+                It is an error for the user to call these methods if 
+                no Evaluator is currently in existence
+        
+    Methods Belonging to StatusInterface:
+    
+        setStatus( String )
+                Sends a status line to the DisplayManager
+                
+        attention( String )
+                Sends an alert string to the DisplayManager
+  
+Class DisplayManager
+    Extends: Panel
+    Implements: StatusInterface
+   
+    Responsibilities.
+        Creating, containing and managing the various display objects.
+        Status line and attention dialogs.
+
+    Constructor:
+    
+        DisplayManager( Applet imageSource,
+                        CommandsInterface commandProcessor )
+                The Applet argument is used to get images. E.g.
+                        Image foo = imageSource.getImage( "foo.gif")
+                The CommandsInterface object is delegated to for any 
+                commands that need to be processed. E.g. if the user 
+                click on the goForward button, then
+                        commandProcessor.goForward()
+                should be called.
+                On construction the Displays may be constructed, or 
+                that may wait until the corresponding resource is 
+                first registered, or even until the first call to 
+                refresh.
+
+    Methods
+        
+        registerRegion( ViewableStore, String, int bottom, int top)
+        	(This one gets callled once per memory region)
+                See below.
+        
+        registerSymTab( ViewableST )
+                See below.
+                
+        registerCode( ViewableCode )
+                See below.
+        
+        registerExpression( ViewableExpression )
+                See below.
+        
+        registerOutput( ViewableOutput )
+                See below.
+        
+        registerInput( ViewableInput )
+                The above methods tell the display window about the
+                resources provided by the evaluator.
+        
+        refresh()
+                Causes each display to refresh itself.
+
+Interfaces Viewable*
+        These interfaces must be augmented so that data that was
+        previously pushed is now pulled. E.g. the expression string 
+        and the highlighted elements used to be pushed. Now they will 
+        be pulled and thus must be available via callbacks.
+
+Class Evaluator
+    Extends Object
+    Responsibilities
+        Creating a symbol table (delegated to its language object).
+        Creating and managing the VMState.
+        Parsing (delegated to its language object).
+        Advancing the VMState.
+        Taking checkpoints of the state and undoing.
+    
+    Constructor:
+        Evaluator( LanguageInterface lang, String sourceCode,
+                   StatusInterface status)
+                throws Exception
+                Constructs the VMState.
+                Trys to parse the sourceCode.
+                Reports syntax errors and other apologies via the 
+                status object.
+                Reports any other exceptions via the status object.
+                Throws an exception if the evaluator can not be built
+                (e.g. on a syntax error).   
+    Methods
+        ViewabelStore getStore()
+                See below.
+        
+        ViewableST getST()
+                See below.
+                
+        ViewableCode getCode()
+                See below.
+        
+        ViewableExpression getExpression()
+                See below.
+        
+        ViewableOutput getOutput()
+                See below.
+        
+        ViewableInput getInput()
+                The above methods are used by the TMBigApplet to 
+                obtain resources for use by the DisplayManager.
+                
+        goForward()
+                Advance the state until an interesting point.
+        microStep()
+                Advance the state one step
+        overAll()
+                Advance the state until the current function 
+                invocation is complete.
+        stepInto()
+                Advance the state until either a function call is 
+                made or the next expression is loaded.
+        stepOver()
+                Advance the state until the current expression is 
+                completed.
+        toCursor( int cursor )
+                Advance the state until the cursor is not on this 
+                line, then advance the state until the cursor is on 
+                this line.
+        goBack()
+                Wind the state back to where it was before the 
+                previous command.
+        
+        NOTE: The above methods all trap any exceptions and report 
+        them via the status object.

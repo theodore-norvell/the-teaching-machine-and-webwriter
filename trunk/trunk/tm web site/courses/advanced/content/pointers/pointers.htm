@@ -1,0 +1,280 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Pointers</title>
+</head>
+<body>
+<h1><a name="byValue">C++ Passes by Value</a></h1>
+<p> Recall the default for C/C++ is to pass scalars by value. The function</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../review/functions4.cpp", true, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p> is perfectly legal, but will not have the intended effect.</p>
+<ul>
+  <li><span class="codeInline">x</span> and <span class="codeInline">y</span> 
+    are true variables&#151;can be used on the left hand side of an expression-&#151;but 
+    they are temporary copies of the original variables!</li>
+  <li>Only the values of the original, external arguments are available to the 
+    function.</li>
+</ul>
+<p>Note that <span class="codeInline">y = sin(x)</span> and <span class="codeInline">y 
+  = sin(4)</span> are equivalent. In the first case, the current value of the 
+  variable <span class="codeInline">x</span> is passed, in the second, the value 
+  <span class="codeInline">4</span> is passed directly.</p>
+<h1><a name="byRef">Pass-by-Reference</a></h1>
+<p>In 2420, you learned that the solution to this problem is to pass parameters 
+  by reference</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../review/functions5.cpp", true, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>The type of parameters <span class="codeInline">x</span> and <span class="codeInline">y</span> 
+  is reference-to-integer. </p>
+<p>Note that</p>
+<p><span class="codeInline">intswap(int& x, int& y)</span></p>
+<p><span class="codeInline"> intswap(int & x, int & y)</span></p>
+<p class="codeInline"> intswap(int &x, int &y)</p>
+<p> are all acceptable but the first is preferred.</p>
+<p> Call to <span class="codeInline">intSwap</span> looks exactly the same as 
+  before</p>
+<p> 
+  <script language="JavaScript">
+insertCode("pointers1.cpp", false, "code");
+</script>
+</p>
+<p> Results in 3, 2</p>
+<p> Referencing is done automatically. It is sometimetimes called <i>passing by 
+  variable</i>.</p>
+<h1><a name="pointers"></a>Pointers</h1>
+<p>C++ has a third, passing mechanism, similar to (but more primitive than) references.</p>
+<p>First we introduce two new operators</p>
+<p><span class="codeInline">& </span>unary operator: <i>references</i> (gives 
+  the address of) an object. </p>
+<p><span class="codeInline">p = &c</span> </p>
+<p>assigns the address of <span class="codeInline">c</span> to the variable <span class="codeInline">p</span>.</p>
+<p> <span class="codeInline">p</span> references or points to <span class="codeInline">c</span>.</p>
+<p> <span class="codeInline">* </span><i>indirection</i> or <i>dereferencing</i> 
+  operator: Applied to a pointer it accesses the object pointed to. </p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("pointers2.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Note the last usage is potentially erroneous. Incrementing the pointer means 
+  you have no idea where it is pointing (what it addresses) unless it is pointing 
+  into a well defined structure (such as an array).</p>
+<p>The declaration <span class="codeInline">int* ip;</span></p>
+<ul>
+  <li>sets storage aside for a pointer to type integer.</li>
+  <li> <span class="codeInline">ip</span> is not an integer --- it is a pointer 
+    to an integer</li>
+  <li>no storage space is made for an integer (because there is no integer variable). 
+  </li>
+</ul>
+<p class="pagebreak">&nbsp;</p>
+<p>Now redefine <span class="codeInline">intSwap</span> to use pointers.</p>
+<p> 
+  <script language="JavaScript">
+insertCode("pointersIntSwap.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Now let's look at some different calls to <span class="codeInline">intSwap</span>
+<p> 
+  <script language="JavaScript">
+insertCode("pointersIntSwap.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p> Both calls to <span class="codeInline">intSwap</span> are legal and both are 
+  the same. The case is just like <span class="codeInline">sin(x)</span> vs <span class="codeInline">sin(4)</span>. 
+  In either case C passes the value, which happens to be an address.</p>
+<p>Note difference between swap code at end of <span class="codeInline">main</span> 
+  and in <span class="codeInline">intSwap</span> function.</p>
+<p>What confuses neophyte C users is the difference between the function prototype&#151;<span class="codeInline">intSwap(int* 
+  px,int* py)</span> and the function call&#151;<span class="codeInline">intSwap(&x,&y);</span> 
+  but they are perfectly logical.</p>
+<ul>
+  <li>The prototype specifies that the values to be passed in will point at integers 
+    (ie that they will be addresses).</li>
+  <li>The call passes the addresses of the integers.</li>
+</ul>
+<p>A second point of confusion is that to build functions like <span class="codeInline">intSwap</span> 
+  that operate on input variables, you have to operate indirectly , whereas if 
+  the code were not buried in a function, you could operate directly.</p>
+<p>The difference has been highlighted by carefully using different names for 
+  the pointer variables. This is something you would do well to copy.</p>
+<h1><a name="pointersByVal">Even Pointers are Passed by Value</a></h1>
+<p>A function to position a pointer at the end of string (C++ programmers would 
+  often say <i>move</i> the pointer to the end of the string)</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("pntrToEndBad.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>This example doesn't work because <i>pointers are also passed by value!</i></p>
+<p>What is needed instead is</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("pntrToEndGood.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>This says that <span class="codeInline">pString</span> is a pointer to char 
+  (<span class="codeInline">char*</span>) and it is passed by reference!</p>
+<h1><a name="pArithmetic">Pointer Arithmetic</a></h1>
+<p>Pointers allow us to work with computer addresses without ever knowing what 
+  the addresses are. This independence of actual addresses is important because</p>
+<ul>
+  <li>It allows code and data to be relocated when it is first loaded into the 
+    computer.</li>
+  <li>It will allow data to be allocated dynamically at run time (for example, 
+    by using the <span class="codeInline">new</span> operator).</li>
+</ul>
+<p>Pointer arithmetic supports address independence by allowing us to work with 
+  pointers relative to some base address</p>
+<p>For example, another way to move a pointer to the end of a string would be 
+  to write</p>
+<p> 
+  <script language="JavaScript">
+insertCode("pointers3.cpp", false, "code");
+</script>
+</p>
+<p>See more examples at end of next section.</p>
+<h2><a name="pointerArray">Pointer - Array Notational Equivalence</a></h2>
+<pre> int a[10];    // An array of 10 integers
+ int* pa, x1<b></b>;<b><font size="-2">1</font></b>  // A pointer to an integer  and an integer
+ pa = &a[0];   // pa points to element 0
+ pa = a;       // equivalent to last line
+ x = *pa;      // contents of a[0] to x
+ x = *(pa+1)   // contents of a[1] to x</pre>
+<ul>
+  <li>Whenever <span class="codeInline">pa</span> points to <span class="codeInline">a</span> 
+    then <span class="codeInline">pa+i</span> is the address of <span class="codeInline">a[i]</span> 
+    and <span class="codeInline">*(pa+i)</span> is the contents of <span class="codeInline">a[i]</span>.</li>
+  <li>The expression <span class="codeInline">pa+i</span> is an example of pointer 
+    arithmetic.</li>
+  <li><span class="codeInline">pa</span> is a pointer variable whose value is 
+    an address.</li>
+  <li><span class="codeInline">pa+i</span> is an expression whose value is the 
+    address held in <span class="codeInline">pa</span> plus<span class="codeInline"> 
+    i</span> times the size in bytes of the object <span class="codeInline">pa</span> 
+    points at.</li>
+  <li> Pointers work in terms of base units. Thus </li>
+</ul>
+<div><span class="redBox"><font size="-1"> 
+  <p><font size="-2"><b>1</b></font> Note that, as with references, the declarations</p>
+  <pre> int* p1;
+ int * p1;
+ int *p1; </pre>
+  <p>are all equivalent. We use the first one because it highlights that the type 
+    of <span class="codeInline">p1</span> is pointer-to-int.</p>
+  <p>Unhappily, it leads to confusion in the following case:</p>
+  <pre> int* p1,i; </pre>
+  <p>which appears to declare both <span class="codeInline">p1</span> and <span class="codeInline">i</span> 
+    as pointers-to-int.</p>
+  <p>In fact, it is actually declaring <i>p1</i> as a pointer-to-int and <i>i</i> 
+    as an int.</p>
+  <p>For this reason, some people prefer the third form&#151;</p>
+  <pre>int *p1, *p2;int *p3, j, k; </pre>
+  <p>which makes it clear that<span class="codeInline"> p1</span> and <span class="codeInline">p2</span> 
+    and <span class="codeInline">p3</span> are pointers to int while <span class="codeInline">j</span> 
+    and <span class="codeInline">k</span> are int.</p>
+  <p>We will stick with the first notation and insist that pointers be declared 
+    one at a time on their own lines, thus&#151;</p>
+  <pre> int* p1;
+ int* p2;
+ int* p3;
+ int j,k;
+</pre>
+  </font></span></div>
+  
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("pointers4.cpp", true, "code", "3891lecture.tmcfg");
+</script>  
+<p>creates an array of doubles and a pair of pointers which are intialized to 
+    the first and last elements of the array respectively</p>
+  <p><span class="codeInline">pEnd</span> is initialised to <span class="codeInline">array 
+    + ASIZE - 1</span>.</p>
+  <p> <span class="codeInline">array</span> is the same as <span class="codeInline">&array[0]</span> 
+    and is the address of the 0'th element of the array.</p>
+  <p> <span class="codeInline">ASIZE - 1</span> is an offset between the initial 
+    address of <span class="codeInline">array[0]</span> and the final address 
+    of <span class="codeInline">array[SIZE - 1]</span>. It actually represents 
+    (<span class="codeInline">ASIZE-1</span>) x the number of bytes required to 
+    hold a double </p>
+  
+<h1><a name="strings">Strings Revisited</a></h1>
+  <p> Although strings are arrays of characters pointer notation is almost always 
+    used in connection with them.</p>
+  <p> We will use string examples a lot. Students sometimes find this obsessive. 
+  </p>
+  <p>(a) You MUST know both notations (both on exams)</p>
+  <p>(b) We usually use pointer notation (the hardest one!)</p>
+  <p>So what's the big deal? Are strings really that important?</p>
+  <p> Well, Yes. But that's not why we study them. </p>
+  <p>They are the fastest route into the heart of C. If you understand string 
+    routines, you have a big part of C. </p>
+  <p>String length revisited</p>
+  <p> 
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("strLenArray.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+  <p> 
+    
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("strLenPointer.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+  </p>
+  <p>Note that all of these work in a function call</p>
+  <pre>strlen("Hello world"); /* string constant - Pointer is passed!*?
+strlen(array);
+strlen(ptr); </pre>
+  <p>Note, finally, that although pointer notation and array notation can be regarded 
+    as equivalent, <i>pointers are not arrays!</i></p>
+  <p> The following two declarations do very different things:</p>
+  <pre> int myArray[20]; </pre>
+  <pre>int* p = myArray; </pre>
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("../review/functions4.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+  <p><script language="JavaScript">
+insertCode("../review/functions5.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("pointers2.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("pointersIntSwapTM.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("pntrToEndBad.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("pntrToEndGood.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+</div>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</body>
+</html>

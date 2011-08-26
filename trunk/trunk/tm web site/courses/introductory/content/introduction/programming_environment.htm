@@ -1,0 +1,102 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>The Programming Environment</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Nowadays, most code is developed inside what is known as an IDE&#8212;an <em>Integrated
+  Development Environment</em>. An IDE integrates all the tools you need to prepare,
+debug, test and run a program.</p>
+<p>Most programming projects are done by teams with one (or sometimes two) people working on each separate file. The picture below shows two separate people working on the same project each at their own machine, with their own copy of the IDE.</p>
+<p>Your assignments are done like that. You write your assignment code, typically in a file called <code>assign0.cpp</code>,  <code>assign1.cpp</code> up to maybe <code>assign9.cpp</code>. Meantime, the instructional staff are writing code to test your assignment. The complete program consists of the test code plus your assignment.</p>
+<p>As the key shows, each of the green blocks is a process&#8212;a running program&#8212;usually within the IDE </p>
+<p>&nbsp; </p>
+<img src="../../content/introduction/build_process.png" width="515" height="672">
+<p>Preparation of a program requires the following basic steps:</p>
+<ol>
+  <li><em>Edit</em> your module to produce a <em>source
+      file</em></li>
+  <li><em>Compile</em> your module to produce an <em>object
+      file</em></li>
+  <li><em>Link</em> the object file with other <em>object
+      modules</em> to produce an <em>executable file</em> (a
+      program).</li>
+  <li><em>Run</em> the executable (your program). </li>
+</ol>
+<p>All of these steps can be done from within the IDE. </p>
+<p>For convenience, steps 2 and 3 may be combined in which case they are referred
+  to as a <em>build</em>. </p>
+<p>Once a program has been built, it is a standalone program.</p>
+<p>It may be executed  independently from the IDE.</p>
+<h2><a name="steps">Steps for Each Assignment</a> </h2>
+<p>Here are the steps that occur on each assignment, call it assignment #x.</p>
+<ol>
+  <li>You develop your assignment file, <code>assignx.cpp</code>, and make sure it compiles (the  
+    <script language="JavaScript">
+startDefLink("syntax",50,50);
+    </script>
+syntax
+<script language="JavaScript">endLink();</script>
+ is correct).</li>
+  <li>Needing to test it yourself,  you then build a second file (this one with <code>main</code> in it) to test your code, making sure it compiles.</li>
+  <li>You link the two modules together and run your combined program. </li>
+  <li>Once you've seen the results, you iterate on your solution, fixing  and improving it.</li>
+  <li>Once you're satisfied, you submit the <code>assignx.cpp</code> file <strong>only</strong> (before the deadline). If you discover you've made a mistake, you may submit again (as long as it's still before the deadline). We'll just see the <em>last file you submitted</em>. </li>
+  <li>We automatically fetch each student <code>assignx.cpp</code> file and compile it, then link it with our test file which will run a number of tests and count the number of correct answers, then generate a report, which will be returned to you.</li>
+  </ol>
+<p>The only way this can  work is for the assignx.cpp file and the test file to be separate files.</p>
+<p><strong>Do not </strong>build your code as a single file, with
+<code>main</code> and your tests and your assignment solution all lumped
+together, then try to separate it out just before you submit it. It is hard
+to do this without breaking your assignment in some way. If we can't
+compile your code, we <strong>cannot</strong> run it. We're not being mean,
+honest. We will handle about 4500 assignments this semester so the system has to be automated.</p>
+<!--h3><a name="reruns">Reruns</a></h3>
+<p>If you submitted your assignment originally, but weren't satisfied with
+your results, you get a rerun. For the first few assignments, the rerun is
+frre. Later it will cost you 1 mark. This privilege is not extended to
+students who did not submit in the first place.</p-->
+<h2><a name="include">The #include Statement</a></h2>
+<p>You've already encountered the following</p>
+<p><code>#include &lt;cmath&gt;</code></p>
+<blockquote>
+  <p>which includes the declarations for the standard math library</p>
+</blockquote>
+<p><code>#include &lt;iostream&gt;</code></p>
+<blockquote>
+  <p>which includes the declarations for the input/output library.</p>
+</blockquote>
+<p><code>#include &quot;assign0.h&quot;</code></p>
+<blockquote>
+  <p>which includes the declarations for assignment 0</p>
+</blockquote>
+<p>The angle brackets mean that the file inside is to be found in the library (which your IDE knows how to find).</p>
+<p>The quotation marks mean the file inside is to be found in the local folder. </p>
+<p> The <code>#</code> which starts the include means it is actually a command to the <em>precompiler</em>.</p>
+<p>The precompiler is a kind of administrative assistant to the compiler. What <code>#include &lt;cmath&gt;</code> really means is &quot;<em>I want to use the cmath library so go and get the declarations for it and add them to my file.&quot;</em> The compiler never sees this line of code. Instead it sees the lines of code from the include file (declarations for the various math library functions like <code>sin</code> and <code>tan</code> and <code>tan2</code>) inserted by the precompiler right at the point of the include. Thus you can go ahead and use the functions, knowing their declarations have been made. </p>
+<p>&nbsp;</p>
+<h2>&nbsp;</h2>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" --><!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

@@ -1,0 +1,139 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta NAME="Generator" CONTENT="DreamWeaver MX2004">
+<meta NAME="Author" CONTENT="Michael Bruce-Lockhart & Dennis Peters">
+<meta NAME="copyright" CONTENT="&copy; 2004, Michael Bruce-Lockhart & Dennis Peters">
+<meta NAME="resource-type" CONTENT="document">
+<meta NAME="distribution" CONTENT="global">
+<link rel="STYLESHEET" type="text/css" media="screen" href="../style/slider.css" title="slider Screen stylesheet">
+<script language="JavaScript" type="text/JavaScript">
+
+window.onload = loaded;
+document.onmousemove=trackMouse;
+document.onmouseup=stopSliding;
+
+var isLoaded = false;
+var moveSlider = false;
+var isActivated = false;
+var docBackgroundColor;
+var docBackgroundImage;
+var myBackgroundColor;
+var myBackgroundImage;
+
+// page load handler
+function loaded(){
+	isLoaded = true;
+	if (document.all) {
+		myBackgroundColor = document.body.currentStyle.backgroundColor;
+		myBackgroundImage = document.body.currentStyle.backgroundImage;
+	} else {
+//	alert("getComputedStyle is " + document.defaultView.getComputedStyle(document.body, null).backgroundColor);
+		myBackgroundColor = document.defaultView.getComputedStyle(document.body, null).backgroundColor;
+		myBackgroundImage = document.defaultView.getComputedStyle(document.body, null).backgroundImage;
+	}
+	if (docBackgroundColor) { // already set
+		document.body.style.backgroundColor = docBackgroundColor;
+		document.body.style.backgroundImage = docBackgroundImage;
+	}
+//	alert("my backgroundColor is " + myBackgroundColor + " and my backgroundImage is " + myBackgroundImage);
+}
+
+function setCamouflage(color, image){
+	docBackgroundColor = color;
+	docBackgroundImage = image;
+	if (isLoaded) {
+		document.body.style.backgroundColor = docBackgroundColor;
+		document.body.style.backgroundImage = docBackgroundImage;
+	}
+}
+
+// activate the slider
+function activate(enable){
+//alert("Activating is " + (enable ? "on" : "off"));
+	if (isLoaded && top.contents.isLoaded) {
+		var h = document.getElementById("handle");
+		var s = document.getElementById("closedShade");
+		if (enable) {
+			h.style.display = "block";
+			s.style.display = "block";
+			isActivated = true;
+			top.contents.showShade(true);
+			var wh = getWinHeight();
+			setShade( 0);  /*wh - parseInt(h.style.height)*/
+			document.body.style.backgroundColor = myBackgroundColor;
+			document.body.style.backgroundImage = myBackgroundImage;
+		} else {
+			h.style.display = "none";
+			s.style.display = "none";
+			isActivated = false;
+			top.contents.showShade(false);
+			document.body.style.backgroundColor = docBackgroundColor;
+			document.body.style.backgroundImage = docBackgroundImage;
+		}
+	}
+}
+
+function startSliding(){
+//alert("starting slide");
+	if (isLoaded && top.contents.isLoaded) {
+		top.contents.showShade(true);	
+		moveSlider = true;
+	}
+	return true;
+}
+
+function stopSliding(){
+	moveSlider = false;
+	return true;
+}
+
+
+function trackMouse(e){
+	if (!moveSlider) return true;
+	if (!document.all)  // not IE
+		mouseY = e.pageY - window.pageYOffset;
+	else 
+		mouseY = event.clientY;
+	
+	setShade(mouseY);
+}
+
+function getWinHeight(){
+	if (!document.all)  // not IE
+		winHeight = window.innerHeight;
+	else if (document.documentElement &&
+				document.documentElement.clientWidth||document.documentElement.clientHeight) // compliant mode
+			winHeight = document.documentElement.clientHeight;
+	else // Quirky mode
+		winHeight = document.body.offsetHeight;
+	return winHeight;
+}
+
+function setShade(y){
+	if (isActivated) {
+		var handle = document.getElementById("handle");
+		var closedShade = document.getElementById("closedShade");
+	//	alert("y: " + y + "handleHeight: " + handle.style.height );
+		handle.style.top = y +"px";
+		var hh = parseInt(handle.style.height);
+		closedShade.style.top = y +"px";
+		var sh = getWinHeight() - y;
+		if (sh < 0 ) sh = 0;
+		closedShade.style.height = sh+"px";
+//		alert("y: " + y + " h: " + h);
+		top.contents.setShade(y, sh);
+	}
+}
+
+</script>
+
+
+</head>
+
+<body>
+<div id="handle" class="handle" onmousedown="JavaScript: startSliding();" style="height:18px; display:none;"></div>
+<div id="closedShade" class="closedShade" style="display:none;">
+</body>
+</html>

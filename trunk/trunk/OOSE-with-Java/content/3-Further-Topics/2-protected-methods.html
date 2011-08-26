@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Protected Access</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1>Protected Access to Private Fields. </h1>
+<p>It is a good idea for variables to be private.</p>
+<p>However it may be that subclasses still need access to a variable.</p>
+<p>For example:</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("protectedMethods/BaseAccount.java", true, "code", "default.cfg");
+    
+</script>
+</p>
+<p>Then subclasses can access the interest rate, but can not change it.</p>
+<p>If we want to allow subclasses to alter the interest rate, we can add a method</p>
+<pre class="code">    <span class="codeKeyword">protected</span> <span class="codeKeyword">void</span> setInterestRate(<span class="codeKeyword">double</span> interestRate ) {<br>        <span class="codeKeyword">assert</span> interestRate &gt;= 0 ;<br>        <span class="codeKeyword">this</span>.interestRate = interestRate ; }</pre>
+<p>Then regardless of the implementation in the subclasses, the invariant is respected. </p>
+<h1>Base Class Utilities</h1>
+<p>Base Class Utilities are protected methods defined in the base class for use by subclasses. </p>
+<p>You can use Base Class Utilities to &quot;factor out&quot; common code.</p>
+<p>Consider the following class representing editors of various kinds.</p>
+<p>Every kind of document will need to be written to a file. </p>
+<p>The details of how a document is written vary depending on the class of the editor.</p>
+<p>Here is the Editor class. It provides method openFileForWriting as a utility to its subclasses.</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("protectedMethods/Editor.java", true, "code", "default.cfg");
+    
+    
+</script>
+</p>
+<p>Now a subclass can implement its writeToFile method more easily</p>
+<p>For example</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("protectedMethods/HTMLEditor.java", true, "code", "default.cfg");
+    
+    
+    
+</script>
+</p>
+<p>This saves code, if there are several subclasses that all need the same utility. </p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Browser Problems with WebWriter</title>
+</head>
+
+<body>
+<h1>Browser Problems with WebWriter++</h1>
+<p>My current version of Explorer on my computer can't render 3891 lectures properly
+  when they are on the web. Renders them locally, ok. JavaScript error is: Line
+  480. Object doesn't support this property or method. Problem is in <code>webWriter.js</code>,
+  and appears to be actually line 479 (IE reports line numbers 1 different than
+  dreamwaever)</p>
+<p><code>var stainedCode = parseApplet.markUpString(rawCode, relativeURL);</code></p>
+<p><code>parseApplet</code> is actually in the <code>markUp.jar</code> file. We changed the
+  syntax of the call a few months ago but the local and web files have been synchronized
+  many times since and, in particular, both <code>markUp.jar</code> and <code>webWriter.js</code> are the
+  same. </p>
+<p>I'm using Explorer X6.0.2800.1106 xpsp2.021108-1929. Microsoft VM is enabled
+  with Java Console &amp; Java logging enabled but not the JIT. The problem only
+  showed up after I did an update of XP to service pack 2. I subsequently undid
+  the update but, as is apparent from the explorer version no., not everything
+  got undone. Lest that was the problem, I re-installed sp2. The problem persists.</p>
+<p>The Java Console shows</p>
+<p><code>java.lang.ClassNotFoundException: MarkUp<br>
+at com/ms/vm/loader/URLClassLoader.loadClass<br>
+at com/ms/vm/loader/URLClassLoader.loadClass<br>
+at com/ms/applet/AppletPanel.securedClassLoad<br>
+at com/ms/applet/AppletPanel.processSentEvent<br>
+at com/ms/applet/AppletPanel.processSentEvent<br>
+at com/ms/applet/AppletPanel.run<br>
+at java/lang/Thread.run</code></p>
+<p>Explorer's settings under sp2 are quite different so I tried changing many
+  of those that seemed apposite. One real annoyance is that MS is lumping JavaScripts
+  and X-controls  together. Nevertheless, local files are read without problem
+  so all the capabilities are there (and turned on). When explorer finds what
+  it regards as a security problem it normally tells you. Still, it could be
+  some security protocol applied to the net but not locally.</p>
+<p>Interestingly, when trying to open the 3891 lecture site locally, Explorer
+  blocks the site. It doesn't do that when I access it over the internet, another
+  sign the zones are set differently.</p>
+<p>So, try adding the 3891 lecture site to trusted sites - </p>
+</body>
+</html>

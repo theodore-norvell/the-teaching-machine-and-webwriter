@@ -1,0 +1,12 @@
+struct Node {
+     int data ;
+     char moreData ;
+     Node *next ; } ;
+
+ int main() {
+    Node x ;
+    x.data = 0 ;
+    x.moreData = x.data + 'A' ;
+    x.next = & x ;
+    cout << (*x.next).moreData ;
+ }

@@ -1,0 +1,310 @@
+BODY {	font-family: arial, helvetica, sans-serif;
+	background: #FFFFFF;
+	color:#000000;
+	border-color: #e9e9dc;
+	font-size: 12pt;
+	margin:.4in;
+    border: #e9e9dc
+}
+
+/*Over-ride browser to get back to body text */
+.normal {font-family: arial, helvetica, sans-serif;
+	background: #FFFFFF;
+	color:#000080;
+	border-color: #e9e9dc;
+	font-size: 12pt;
+	margin:.4in;
+    font-weight: normal
+}
+
+H1{font-family: "comic sans ms", arial, helvetica, sans-serif;
+	font-size: 16pt;
+    text-decoration: underline;
+    page-break-before: always;
+}
+H2 { font-family: "comic sans ms", arial, helvetica, sans-serif;
+	font-size: 16pt;
+	page-break-after: avoid;
+}
+H3 {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+	page-break-after: avoid;
+}
+H4 {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 14pt;
+	text-decoration: underline;
+	font-weight: normal;
+	page-break-after: avoid;
+}
+
+DT{
+   font-weight: bold;
+}
+
+/* Quotes*/
+Q{
+	font-style: italic;
+}
+
+EM{
+	font-style:italic; font-weight: normal;
+}
+dfn{font-weight: bold;
+}
+
+/* Running heads */
+.header{
+	padding-top: 0px;
+	margin-top: 0px;
+	font-family: "comic sans ms", arial, helvetica, sans-serif;
+	font-size: 20pt;
+	border: thin solid #FF0000;
+	background-color: #999999;
+	text-align: right;
+}
+
+p.hang{text-indent: -3em; margin-left: 3em;}
+
+p.indent{margin-left: 3em;}
+
+/*Trademarks*/
+.TM{
+	font-family: "BrushScript BT", "brush script", script, arial, helvetica, sans-serif;
+	color: #000000;
+}
+
+.WW{
+	font-family: "Staccato220 BT", "BrushScript BT", script, arial, helvetica, sans-serif;
+	color: #000000;
+}
+/* Built in HTML style */
+code {
+	font-family: "Courier New", Courier, mono;
+	font-size: larger;
+}
+/* deprecated. Use built in HTML style */
+.codeInline {
+	border-color: #ffcc99;
+	border-width: 1px;
+ 	color: #000000;
+  	font-size: 100%;
+    font-family: "courier new", monospace;
+	border: #ffcc99 none
+}
+
+/* div used to hold entire tm example including header bar */
+.tmContainer {
+	position: relative;
+	border: thick solid #000000;
+	background-color: #FFFFff;
+	margin-right: 40px;
+}
+/* The titleBar for a TMContainer*/
+.tmBar {
+	color: #ffffff;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-width: 0px;
+	background-color: gray;
+}
+
+
+
+/* Define the look of a code example */
+.code {
+   margin-right: 3%;
+   margin-left: auto;
+   padding-left: 3px;
+   padding-right: 3px;
+   padding-top: 16px;
+   padding-bottom: 0px;
+   border-color: #ffcc99;
+   border-width: 1px;
+   color: #000000;
+   font-size: smaller;
+   font-family: "courier new", monospace;
+   page-break-inside: avoid;
+   border: 1px #999999 ridge
+}
+
+/* Styles used to "color stain" code */
+.codeComment{
+		 color: #000000;
+		 font-style: italic;
+}
+
+.codeKeyword{
+	color: #000000;
+    font-weight: bold
+}
+.codeConstant{
+	font-weight: bold;
+}
+
+.pseudoCode{
+    font-style: italic;
+}
+
+
+/* Define the look of the popups. */
+
+.popup {
+  background-color: #CCCCCC;
+  border-color: #000000;
+  border-style:solid;
+  border-width: 1px;
+  font-family: arial, sans-serif;
+  font-size: smaller;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: absolute;
+  visibility: hidden;
+  z-Index: -1;
+}
+
+/* Define the look of a link that has a popup  #4682b4*/
+.poplink{
+   color: #999999;
+   background-color: transparent;
+   text-decoration: none;
+}
+
+
+/* Define the look of graphics text */
+.graphicsText{
+	color: #666666;
+	font-size: 10pt;
+	vertical-align: middle;
+	text-align: center;
+}
+
+
+/* Define the look of a slide show */
+.slideShow {
+	background-color: #CCCCCC;
+	/*margin: 8px;*/
+	float: right;
+	border-color: #000000;
+	border-style: ridge;
+	border-width: 2px;
+}
+
+.slideTitleBar {
+	background-color: #999999;
+	border-width: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+.slideTitle {
+	color: black;
+	font-weight: bold;
+}
+
+/* Define the look of slides*/
+.slide {
+	padding-left: 3%;
+	padding-right: 3%;
+	font-size: 11pt;
+}
+.hint {
+	color: #000000;
+	background-color: #FFFF00;
+	border-style: solid;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium;
+	font-style: italic
+}
+pre {
+	font-family: "Courier New", Courier, mono;
+	color: #000000;
+	font-size: 100%
+}
+.redBox {
+	border-color: #ffcc99;
+	border-width: 1px;
+	margin-right: 10%;
+	margin-left: 10%
+}
+.yellowBox { 
+	border-color: #ffcc99;
+	border-width: 1px;
+	margin-right: 10%;
+	margin-left: 10%
+}
+.blocklink  { 
+   color: #999999;
+   background-color: transparent;
+   text-decoration: none;
+ }
+ .deflink { 
+   color: #999999;
+   background-color: transparent;
+   text-decoration: none;
+ }
+ .pagebreak {  page-break-before: always}
+ 
+
+
+/* Sidebars */
+.sideBarRight {
+	color: #FF3333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: right;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+
+.sideBarLeft {
+	color: #FF3333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: left;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+/* These styles together define syntax definitions. Use with syntax def code snippet*/
+.syntaxDef {
+	background-color: #EEEEEE;
+	border: thin solid #FF0000;
+	position: relative;
+	left: .5in;
+	right: .5in;
+	padding: 5px;
+	width: 75%;
+	page-break-inside: avoid;
+}
+.stxTerminal {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.stxNonterminal {
+	font-style: italic;
+}
+.stxMeta {
+	font-weight: bold;
+}
+
+.insetClause {
+	margin-left: 1in;
+}
+.principle {
+	font-size: x-large;
+	background-color: #777777;
+	text-align: center;
+	border: thin ridge #FF0000;
+}

@@ -1,0 +1,54 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>rand function</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3> Library Declaration</h3>
+<div class="syntaxDef">
+  <p class="code"> #include  &lt;cstdlib&gt;</p>
+  </div>
+  <p>must be typed into any file in which calls to the <code>rand</code> function are to be made, ahead of all such calls. </p>
+  <div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> int </span><span class="codeRequired"> rand(</span><span class="codeRequired">);</span></p>
+  </div>
+<p>returns a pseudorandom number between <code>0</code> and <code>RAND_MAX where RAND_MAX</code> is a constant defined in the <code>cstlib</code> include file.</p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

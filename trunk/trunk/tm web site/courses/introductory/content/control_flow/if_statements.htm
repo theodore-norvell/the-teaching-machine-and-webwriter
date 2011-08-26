@@ -1,0 +1,604 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>If Statements</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h1><a name="spaghettiCode">Spaghetti Code </a></h1>
+<p>Maybe you've seen a tee shirt like this</p>
+<p><img src="../../content/control_flow/spaghetti.jpg" width="1000" height="750"></p>
+<p>This is what is called a <em>flow-chart</em>, a tool we don't use anymore.
+  It traces the <strong>flow of control</strong> through a program while it is
+  running, which is a fancy way of saying where the program goes after it finishes
+  a step.</p>
+<p>The rectangles are process steps and the diamonds are decision boxes, representing
+  tests that have a yes-no (true-false) answer.</p>
+<p>Programs actually used to be designed like this once. The problem is, they
+  were hard to build and harder to debug.</p>
+<p>The lines are too uncontrolled, they go all over the place, like a plate of
+  spaghetti. In fact, this style of coding came to be called <em>spaghetti code</em>.</p>
+<p>Its hard to build spaghetti code in modern programming languages because flow
+  of control (where you go next) is very carefully structured. </p>
+<h1><a name="controlFlow">Flow of Control </a></h1>
+<p>Up to now we have had very limited control of how our programs run. To review
+  what happens&#8212;</p>
+<ol>
+  <li>Programs always start at the first
+      <script language="JavaScript">
+startDefLink("instruction");
+    </script>
+    instruction
+    <script language="JavaScript">
+endLink();
+  </script>
+    in <code>main.</code></li>
+  <li>Each instruction is executed exactly once.</li>
+  <li>After an instruction has been executed the program goes on to the next
+    instruction, in sequence.</li>
+  <li>If an instruction includes a function
+      <script language="JavaScript">
+startDefLink("call");
+    </script>
+    call
+    <script language="JavaScript">
+endLink();
+  </script>
+    , the program diverts into the
+    <script language="JavaScript">
+startDefLink("function");
+    </script>
+    function
+    <script language="JavaScript">
+endLink();
+  </script>
+    code, executing each instruction in the function, in sequence, starting with
+    the first one. When return (or the end of the function) is encountered it
+    returns to the calling point and continues to execute as before.</li>
+</ol>
+<p>Much of the power of modern programming comes from altering this flow. And
+  we do it in only two basic ways.</p>
+<ol>
+  <li>We make provision for executing alternative sections of code, depending
+    upon some condition.</li>
+  <li>We make provision for repeating a section of code (called <em>looping</em>).</li>
+</ol>
+<p>Let's start by using a condition to choose alternate sections of code. Looking
+  at the flowchart again, we said that <em>the diamonds are
+  decision boxes, representing tests that have a yes-no (true-false) answer</em>.</p>
+<p>In modern programming that idea is  embodied in
+  the <span class="codeKeyword">if</span> statement, our primary
+  decision mechanism.</p>
+<p><span class="codeKeyword">If</span> statements are used to switch the flow of control between alternate paths.
+  There are two forms. </p>
+<h2><a name="ifThen">The <span class="codeKeyword">If</span> Statement</a></h2>
+<p>Here is a simple <span class="codeKeyword">if</span> statement. </p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt; 0) cout &lt;&lt; <span class="codeConstant">&quot;x is positive.\n&quot;</span>; </code></p>
+</blockquote>
+<p><code class="codeKeyword">if</code> is a 
+  <script language="JavaScript">
+startDefLink("keyword",50,50);
+  </script>
+keyword
+<script language="JavaScript">endLink();</script>
+. The 
+<script language="JavaScript">
+startDefLink("expression",50,50);
+</script>
+expression
+<script language="JavaScript">endLink();</script>
+ inside the parentheses is often called a <em>condition</em>. The condition must</p>
+<ol>
+  <li>appear inside parentheses</li>
+  <li>evaluate to a <code class="codeKeyword">bool</code> (or something that
+    can be converted to a <span class="codeKeyword">bool</span>).</li>
+</ol>
+<p>A <code class="codeKeyword">bool</code> is a special type that has only two possible values&#8212;<code class="codeKeyword">true</code> or
+  <code class="codeKeyword">false</code>. We'll study <code class="codeKeyword">bool</code> a little more formally in the next section. For the
+  moment, we'll just use a relationship like x &gt; 0. Such relationships can only
+  be <code class="codeKeyword">true</code> or <code class="codeKeyword">false</code>.</p>
+<p>The single
+    <script language="JavaScript">
+startDefLink("statement",50,50);
+  </script>
+    statement
+    <script language="JavaScript">endLink();</script>
+    after the condition is known as the <em>then clause</em>. When the program
+    runs, the <code class="codeKeyword">if</code> statement executes by evaluating
+    the condition and, <em>only if it is true</em>, executing the then clause.
+    If the condition is false the then clause is skipped over.</p>
+<p>Here are some equivalent ways of writing the same statement. Unless the then clause is very short, it is usually better style to put it on the line following the if, indented to the right (most code editors will do the indent automatically). </p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt; 0)<br>
+ &nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is positive.\n&quot;</span>; </code> </p>
+</blockquote>
+<p>It is also possible to put multiple statements in a then clause by forming a compound statement by using the block operators { and }, like so</p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt; 0) { <br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is positive.&quot;</span>;<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; endl;<br>
+} 
+ </code> </p>
+</blockquote>
+<p>Now both statement in the block are treated as if they were a unit by the <span class="codeKeyword">if</span> statement. If the condition is true, the entire block is executed, if it is false, the entire block is skipped.</p>
+<p>The
+    control flow looks like this.</p>
+<table width="100%"  border="0">
+  <tr>
+    <td class="normal"><p><img src="if-then.png" width="295" height="353"></p>    </td>
+    <td><p class="normal">The <code>b</code> in the decision block represents the <em>condition</em> in the if statement </p>
+      <p class="normal">The <code>then</code> clause represents either a single statement or
+        a block of statements.</p>
+      <p class="normal">If <code>b</code> is <code>true</code> the <code>then</code> clause
+        is executed</p>
+      <p class="normal">If it is <code>false</code>, it is bypassed</p>
+      <p class="normal">In either case, <em>the flows of control come back together</em> and
+    the same following statement is executed. If you look at our tee shirt you'll
+        see <strong>the arrows can go anywhere! </strong><img src="../../library/images/sad0013.gif" width="15" height="15"></p></td>
+  </tr>
+</table>
+<p>Let's use the <code class="codeKeyword">if</code> statement to determine the letter grade
+that should be assigned to a particular numeric mark. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("if_1.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<h3 align="center">Code Notes</h3>
+<p class="hang">1. We don't bother to initialize <code>grade</code> because we
+  know that data will be entered into it before it will be used.</p>
+<p class="hang">2. When checking whether a mark is between boundaries, the perfectly
+  well-formed <em>mathematical</em> condition <code>50&lt;= mark &lt; 55</code> is
+  not legal as a C++ expression and must be reformulated as two separate boolean
+  conditions joined by an <strong>and</strong> </p>
+<p class="indent"> <code>if (mark &gt;= 50 &amp;&amp; mark &lt; 55 )</code></p>
+<p class="hang">3. Note the use of the <code class="codeKeyword">if</code> statement in <code>main</code> to determine whether to say &quot;a B&quot; or &quot;an F&quot; </p>
+<hr>
+
+<script language="JavaScript">
+ endNote();
+</script>
+<div class="sideBarLeft" style="position:relative; width: 395px; height: 836px;"><img src="if_1.png" width="388" height="836"></div>
+<p>Here's how our program looks diagrammatically.</p>
+<p>Competent C++ programmers would complain about the program. </p>
+<p>The larger decision diamonds were made bigger to hold the bigger expressions</p>
+<p>They demonstrate graphically that each of these require two tests to be made  </p>
+<p>Note that a lot of the tests are redundant</p>
+<p>if the result of <code>mark&gt;=80</code> is false then we know it must be<code> &lt;80</code>.
+  Why retest it?</p> 
+<br clear="left">
+<p>&nbsp;</p>
+<h2><a name="ifThenElse">The <code class="codeKeyword">if-else</code> Statement</a> </h2>
+<p>It is often useful to pick between two alternatives. </p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt;= 0)<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is positive.\n&quot;</span>;<br>
+<span class="codeKeyword">else</span><br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is negative.\n&quot;</span>;  </code></p>
+  </blockquote>
+<p>Again, we can use { and } to create compund then and else clauses.</p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt;= 0){<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is positive.&quot;</span>;<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; endl;<br>
+}
+    <span class="codeKeyword">else</span> {<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is negative.&quot;</span>;<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; endl;<br>
+} 
+ </code></p>
+  </blockquote>
+<p>Of course it would be more efficient to write the second version this way (and in doing so show another variation)</p>
+<blockquote>
+  <p><span class="codeKeyword"><code>if</code></span><code> (x &gt;= 0){<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is positive.&quot;</span>;<br>
+    } <span class="codeKeyword">else</span> {<br>
+&nbsp;&nbsp;&nbsp;cout &lt;&lt; <span class="codeConstant">&quot;x is negative.&quot;</span>;<br>
+    }<br>
+    cout &lt;&lt; endl;</code> </p>
+</blockquote>
+<p>Since <code>cout &lt;&lt;endl;</code> is common to both clauses, it has been
+  moved to after the <span class="codeKeyword">if</span> statement where it will be executed no matter which clause is chosen. Notice, however, the block operators were left in even though there is only one 
+  <script language="JavaScript">
+startDefLink("statement",50,50);
+  </script>
+statement
+<script language="JavaScript">endLink();</script> 
+in each clause. This is perfectly acceptable and many programmers will always use <code>{</code> and <code>}</code> with then and else clauses even when they are unnecessary. You may do it either way, but must recognize both ways as being valid. </p>
+<p>Here's the control flow:</p>
+<p class="normal"><img src="if-then-else.png" width="502" height="341"></p>
+<p class="normal">if the <em>
+  <script language="JavaScript">
+startDefLink("logicalExpression",50,50);
+  </script>
+  <em>logical expression</em>
+  <script language="JavaScript">endLink();</script>
+</em><code>b</code> is <code>true</code> the then clause is executed</p>
+<p class="normal">if it's <code>false</code> the else clause is executed</p>
+<p>Let's see how we can use the <span class="codeKeyword">if-else</span> form of the <span class="codeKeyword">if</span> statement to improve
+  our first example.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("if_2.cpp", true, "code", "", "A","all");
+  </script>
+</p>
+<p>Here, by using the <code>else</code> clause, and <em>by nesting each subsequent <code>if</code> statement in
+its preceding statement's <code>else</code> clause</em>, we have eliminated the double testing</p>
+<p>The strategy is actually very simple. In essence what we're doing is</p>
+<blockquote>
+  <p><strong>if </strong>the mark is greater than or equal to 80 </p>
+  <p><strong>then</strong> the grade is an A </p>
+  <p><strong>otherwise</strong> go on to further testing   </p>
+</blockquote>
+<p>Here's
+    what the control flow looks like </p>
+<div class="sideBarLeft" style="position:relative; width: #1px; height: #2px;"><img src="if_2.png" width="499" height="719"></div>
+<p>If you look back at our first example you will see we used five decision blocks,
+  three of which were "big" ones&#8212;i.e., contained two separate tests</p>
+<p>That's a total of eight tests! </p>
+<p>Here we only use four, single-test, decision blocks</p>
+<p>Before we tested <code>mark</code> to see if it was <code>&gt;=80</code>, then turned around
+  and tested it to see if it was<code> &lt;80</code></p>
+<p>Here we use <code>else</code> clause to take advantage of the fact that if it is not <code>&gt;=80</code>,
+  <em>it must be </em><code>&lt;80</code> </p><br clear="left">
+<p>But haven't we generated spaghetti code? Not really. The flow of control is
+  highly constrained and so very orderly</p>
+<div class="sideBarLeft" style="position:relative; width: #1px; height: #2px;"><p><img src="if_2_nesting.png" width="520" height="719"></p>
+</div>
+<p>In this diagram the hatched area is actually the <code>else</code> clause of the
+  first <code>if</code> statement.</p>
+<p>All the rest of the <code>if</code> statements are wholly embedded within
+  that <code>else</code> clause.</p>
+<p>The power of control structures really stems from our ability to nest them,
+  one inside the other, to build almost arbitrarily complex structures.</p>
+<p>Of course, we don't want arbitrarily complex, just complex enough to do the
+  job (and not one jot more).</p>
+<p>One of the most basic design skills good programmers have is an ability to
+  get their control structures right.</p>
+<br clear="left">
+<h2><a name="rounding">Rounding Any Number</a></h2>
+<p>Remember our round function?</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../variables/rounding.cpp", true, "code", "", "A","all");
+  </script>
+</p>
+<p>It worked fine for postive nos. but not for negative. The reason is we need
+  to <em>add</em> .5 to a positive no. <em>but</em> subtract .5 from a negative
+  in order to round it.</p>
+<p>We can do this by using an <code>if</code> statement</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("roundRight.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<h2><a name="complicated">A Complicated Example</a></h2>
+<p>Let's look at the problem of computing the roots of a quadratic equation.
+  We'd like to create a function to do that but we have a problem. Quadratic
+  equations have two roots and so far we have only learned how to return one
+  value from a function.</p>
+<p>OK. Let's calculate the maximum root. That still leaves a problem. The roots
+  could be complex and how do we deal with that. Again, we have no way to do
+  so yet.</p>
+<p>Problem Statement</p>
+<blockquote>
+  <p><em>Write a function to calculate the largest root of the standard
+    quadratic equation, ax<sup>2</sup> + bx + c, given that the roots are real
+    (that is that b<sup>2</sup> &gt;=
+    4ac)</em></p>
+</blockquote>
+<p>Let's break this down into steps</p>
+<ol class="pseudoCode">
+  <li><em>answer = -b</em></li>
+  <li><em>if b<sup>2</sup>-4ac &gt; 0 answer = answer + sqrt(b<sup>2</sup>-4ac)</em></li>
+  <li><em>answer = answer/2a </em></li>
+</ol>
+<p> This might look a little strange but I think like a computer programmer.
+  I've computed a partial answer, then tested the expression under the radical</p>
+<p>If it's positive I calculate its square root then add that to the answer.</p>
+<p>If its negative my client has violated the condition of the design contract
+  (the 
+  <script language="JavaScript">
+startDefLink("logicalExpression",50,50);
+  </script>
+  precondition  <script language="JavaScript">endLink();</script>
+  ). I don't want to call <code>sqrt</code> with a negative
+  number because it will generate an error, so I just leave things as they are.
+  The answer is wrong, but that's ok&#8212;</p>
+<blockquote>
+  <p class="principle">If the contract is violated, my function is under
+      no obligation to provide the correct answer.</p>
+</blockquote>
+<p>Note that if it is zero there's no point in invoking the <code>sqrt</code> function because
+  I know <code>sqrt(0)</code> is<code> 0</code>.</p>
+<p>Whichever is the case, I divide the answer by 2a and that should do it.</p>
+<p>Or does it? There's a couple of errors. Can you spot them?</p>
+<script language="JavaScript">
+	startHiddenAnswer("show error");
+</script>
+<ol>
+  <li>What happens if a is 0? Dividing by 0 is going to cause problems. There's
+      nothing in our preconditions that says that is illegal so we have to deal
+    with it.</li>
+  <li>If a is negative, both roots are negative and so the largest one is actually
+    the one with the smallest magnitude.</li>
+</ol>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<p>What we need is something like this </p>
+<blockquote class="pseudoCode">
+  <p><em>if a is 0</em></p>
+  <blockquote>
+    <p><em> if b is 0  equation is invalid</em></p>
+    <p><em>else answer = -c/b</em></p>
+  </blockquote>
+  <p><em>else</em></p>
+  <blockquote>
+    <p><em>answer = -b</em></p>
+    <p><em> if b<sup>2</sup>-4ac &gt; 0</em></p>
+    <blockquote>
+      <p><em>if (a &gt; 0) </em></p>
+      <blockquote>
+        <p><em>answer = answer + sqrt(b<sup>2</sup>-4ac)</em></p>
+        </blockquote>
+      <p>else</p>
+      <blockquote>
+        <p><em>answer = answer - sqrt(b<sup>2</sup>-4ac)</em></p>
+      </blockquote>
+    </blockquote>
+    <p></p>
+    <p><em>answer = answer/2a </em></p>
+  </blockquote>
+</blockquote>
+<p>Once again we have used <em>
+  <script language="JavaScript">
+startDefLink("pseudoCode",50,50);
+  </script>
+pseudo-code
+<script language="JavaScript">endLink();</script>
+</em>. Our solution is partly written in English but
+  It utilizes the <span class="codeKeyword">if-else</span> structure to allow us to plan out our algorithm
+  without having to fuss about coding details. It is also language independent
+  as virtually all computer languages have an <span class="codeKeyword">if-else</span> in some form. </p>
+<p>As this example shows, getting the right program structure can be tricky,
+  so its nice to be able to do it in pseudo-code before investing a lot of time
+  in real code.</p>
+<p>Here is the real code  </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("if_3.cpp", true, "code", "","A","all");
+  </script> 
+</p>
+<p>Note that we've slipped something new into the code. Up
+  to now we've said that the then clause and <span class="codeKeyword">if</span> clause consisted of a single
+  statement. Sometimes, however, we want to put more than one statement into
+  the clause (which is why we called it a clause).</p>
+<h2><a name="blocks">Statement Blocks</a></h2>
+<p>Again, we can <em>always replace a single statement in a clause</em> with
+  a block of statements by simply enclosing them in block operators. Thus the
+  last else clause consists of four statements enclosed in block operators.</p>
+<blockquote>
+  <blockquote>
+    <p>
+    <pre><code>
+	<span class="codeKeyword">else</span> {
+        answer = -b;
+        <span class="codeKeyword">double</span> rad = b*b-<span class="codeConstant">4</span>*a*c;
+        <span class="codeKeyword">if</span> (rad &gt; 0)
+            <span class="codeKeyword">if</span> (a &gt; 0)
+                answer += sqrt(rad);
+            <span class="codeKeyword">else</span>
+                answer -= sqrt(rad);
+        answer /= <span class="codeConstant">2</span>*a;
+    } </code></pre>
+  </blockquote>
+</blockquote>
+<p>It might look to you as if there are as many as eight statements but in fact
+  the lines</p>
+<pre>    <code> <span class="codeKeyword">if</span> (a &gt; 0)
+        answer += sqrt(rad);
+     <span class="codeKeyword">else</span>
+        answer -= sqrt(rad);</code></pre>
+<p> are actually all part of the preceding <code>if</code> statement. </p>
+<h2><a name="style">Style Issues</a></h2>
+<h3>Placement of the <code>{</code> </h3>
+<p>There are two schools of thought on where to place the <code>{ </code>(open block) operator</p>
+<blockquote>
+  <p>
+  <pre><code>
+	<span class="codeKeyword">else</span> {
+       answer = -b;
+       <span class="codeKeyword">double</span> rad = b*b-<span class="codeConstant">4</span>*a*c;
+       <span class="codeKeyword">if</span> (rad &gt; 0)
+           <span class="codeKeyword">if</span> (a &gt; 0)
+               answer += sqrt(rad);
+           <span class="codeKeyword">else</span>
+               answer -= sqrt(rad);
+       answer /= <span class="codeConstant">2</span>*a;
+   } </code></pre>
+	or
+  <pre><code>
+<span class="codeKeyword">   else</span>
+   {
+       answer = -b;
+     <span class="codeKeyword">  double</span> rad = b*b-<span class="codeConstant">4</span>*a*c;
+       <span class="codeKeyword">if</span> (rad &gt; 0)
+           <span class="codeKeyword">if</span> (a &gt; 0)
+               answer += sqrt(rad);
+           <span class="codeKeyword">else</span>
+               answer -= sqrt(rad);
+       answer /= <span class="codeConstant">2</span>*a;
+</code><code>  } </code></pre>
+  </blockquote>
+<p>The second one makes it easy to line up the <code>}</code> with its own <code>{</code>.</p>
+<p>The first one is more compact, taking one less line vertically.</p>
+<p>We accept either in this course but <em>you must be consistent</em>. Whichever
+  one you decide on use it always. Again, you must also be able to recognize either style as valid code, because other people will make style decisions different from yours. </p>
+<p>Other aspects are consistent.</p>
+<ol>
+  <li>indent statements inside the block (most program editors try to automate
+    this anyway&#8212;set the indent to 4 spaces)</li>
+  <li>Don't indent the <code>}</code>. It should line up with the start of its own <code>if</code> (or
+    <code>else</code> if it terminates an else clause). </li>
+</ol>
+<h3>To Block or Not to Block</h3>
+<p>The code above our <span class="codeKeyword">else</span> clause is</p>
+<blockquote>
+  <pre>	<span class="codeKeyword"><code>if</code></span><code> (a == <span class="codeConstant">0.0</span>)
+		<span class="codeKeyword">if</span> (b == <span class="codeConstant">0.0</span>)
+			answer = <span class="codeConstant">-1.0</span>;
+		<span class="codeKeyword">else</span>
+			answer = -c/a;</code>
+  </pre>
+</blockquote>
+<p>This could equally well have been written</p>
+<blockquote>
+  <pre>	<span class="codeKeyword"><code>if</code></span><code> (a == <span class="codeConstant">0.0</span>){
+		<span class="codeKeyword">if</span> (b == <span class="codeConstant">0.0</span>){
+			answer = <span class="codeConstant">-1.0</span>;
+       }
+		<span class="codeKeyword">else</span> {
+			answer = -c/a;
+       }
+ } <span class="codeKeyword">else</span> {
+     etc....</code></pre>
+</blockquote>
+<p>Some programming shops routinely insist upon the second&#8212;that is always
+  using block operators even on single statements. Others prefer the second as
+  being more compact. We will accept either.</p>
+<p>It is also acceptable to write an entire <span class="codeKeyword">if</span> statement on a single line (<strong>so long as the line is still fairly short</strong>): </p>
+<blockquote>
+  <pre><span class="codeKeyword"><code>if</code></span><code> (b == <span class="codeConstant">0.0</span>) answer = <span class="codeConstant">-1.0</span>;</code></pre>
+</blockquote>
+<p>or even </p>
+<blockquote>
+  <pre><span class="codeKeyword"><code>if</code></span><code> (b == <span class="codeConstant">0.0</span>){ answer = <span class="codeConstant">-1.0</span>;}</code></pre>
+</blockquote>
+<h2 class="pagebreak">The <code>else if</code> Construct </h2>
+<p>Remember this fragment of code taken
+    from our second example? </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("if_2.cpp", false, "code", "", "B");
+  </script>
+</p>
+<p>All <code class="codeKeyword">if</code> statements subsequent to the first one are wholly embedded
+  in the preceding <span class="codeKeyword">else</span> clause. In fact, as we showed above, <em>they are the
+  else clause</em>.</p>
+<p>Some languages actually have a special <code>elseif</code> keyword.</p>
+<p>There's no need of that, but many experienced programmers
+  would simulate that as below.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("if_4.cpp", false, "code", "","B","all");
+  </script>
+</p>
+<p>Because of the regularity of this structure, the normal indenting has been
+  supressed. This is unusual and should only be done in a long sequence of <code>else
+  if</code></p>
+<h2><a name="exercises">Exercises</a></h2>
+<ol>
+  <li>Given a complex number (Re, Im), we would  print Re if Im were zero; otherwise, we would only print it if it were not zero. Write a function to tell us whether we should print it.</li>
+  <li>Given three integers, A, B &amp; C we would like to know which one is the middle value. Write a function to return the middle value. In the event two or more are the same, return one of the equal values.</li>
+  <li>Oh my, Poppy has a problem! The government has fouled up his pension check but still wants his taxes, so he needs to borrow money from one of his children. Delilah, his oldest, is always good for up to $500, no matter how often he asks. George, his second child will go up to $1000 while Tracy, his youngest, will stretch to $2000; however, George and Tracy will only do it once in a while so he doesn't like to ask them unless he has to. Given Poppy owes D dollars, where D is between $0 and $2000, he wants a function to tell him who to ask. It should return 1 for his oldest, 2 for his middle kid and 3 for the youngest, and 0 if he shouldn't ask at all. </li>
+</ol>
+<h3>Solutions</h3>
+
+<script language="JavaScript">
+	startHiddenAnswer("1");
+</script>
+<pre>bool shouldPrintRe(double re, double im){
+// Note: we don't need else here because if any
+// condition is true, we return from the function.
+// Only get to the nest test if previos one was false.
+    if (im == 0.) return true;
+    if (re == 0.) return false;
+    return true; 
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2");
+</script>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("middle.cpp", false, "code", "","B","A");
+  </script>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3");
+</script>
+<pre>int whoToAsk(double amount){
+    if (amount &lt;= 0.) return 0;
+	// To get here poppy actually owes some tax
+    if (amount &lt;= 500.) return 1; // ask Delilah
+ // Poppy owes more than $500
+    if (amount &lt;= 1000.) return 2; // ask George
+ // More than $1000!
+    return 3; // ask Tracy
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full </h1>
+<p><script language="JavaScript">
+insertCode("if_1.cpp", false, "code", "","all","all");
+  </script></p>
+<p class="pagebreak">
+  <script language="JavaScript">
+insertCode("if_2.cpp", false, "code", "", "all","all");
+  </script>
+  </p>
+<p class="pagebreak">
+  <script language="JavaScript">
+insertCode("if_3.cpp", false, "code", "","all","all");
+  </script> 
+</p>
+<p class="pagebreak">
+  <script language="JavaScript">
+insertCode("if_4.cpp", false, "code", "","all","all");
+  </script>
+</p>
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

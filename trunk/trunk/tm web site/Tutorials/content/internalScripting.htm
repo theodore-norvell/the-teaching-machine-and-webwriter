@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../";
+  </script>
+  <script language="JavaScript" src="noteConstants.js"></script>
+  <script language="JavaScript" src="../webWriter/parser.js"></script>
+  <script language="JavaScript" src="../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../webWriter/header.js"></script>
+  <title>Internal Scripting</title>
+
+
+</head>
+
+
+<body>
+
+<h2><a name="description">Description</a></h2>
+
+<p>A ScriptManager has been developed for the TM to allow its
+behaviour to be controlled by script calls from within the code files it is running
+  (<em>internal scripting</em>).
+This is as opposed to <em><a href="externalScripting.htm">external scripting</a></em> which
+allows the Teaching Machine to be controlled from outside (generally from <a href="../../webWriter.html">WebWriter++</a>).
+Internal script calls give instructors a mechanism for <a href="#instrumenting">instrumenting</a> their
+examples.</p>
+<h2>The ScriptManager Library </h2>
+<p>All calls to the ScriptManager are of the form <code>ScriptManager.someCall(arguments)</code> where <code>someCall</code> is
+  a static function of ScriptManager. All script calls are to be compiled in
+  the Teaching Machineas as part of the original
+  source program. They are exposed to the compilers as part of a
+  ScriptManager library. </p>
+<p>To date <code>relayCall</code>, which relays
+  calls to methods within plugins, has been developed as well as a number of other internal scripting calls. As well, the <a href="dataVisualizerAdapter.htm">DataVisualizerAdapter</a> provides a
+  number of sevice&nbsp;methods designed to work with <code>relayCall</code>,
+  effectively multiplying the number of script calls already available.
+  These include capabilities to clear the plugins selection (the set of
+  datums it is displaying), and to add datums to the selection. A
+  snapshot capability is to be developed to render a standard (e.g. jpeg,
+  png and/or gif) visualization file which can be dropped for insertion
+  into the quiz.</p>
+<h2><a name="explicitFunctions">Explicit Internal Scripting Functions</a></h2>
+
+ <p>Explicit internal scripting functions are called directly from within code being run on the Teaching Machine. They are all static member functions of class <code>ScriptManager</code>. As such they have to be declared in the Teaching Machine's <code>ScriptManager.jlib</code> file
+   (a pseudo library file which tells the TM compiler that a function call is legitimate but that it will be handled internally and not traced into at run time) and explicit provision must be made to handle the function within  the TM run time system.</p>
+ <p>The declarations are as they appear in the <code>ScriptManager.jlib</code> file. </p>
+ <p><code>public native static void snapShot(String configId, String portholeId);</code></p>
+ <div style="margin-left: 80px;">
+   <p> finds the plugin
+     with
+     id <code>"configId"</code> and requests that is take a snapshot of its current state to be held for the porthole identified by <code>portholeId</code>. The snapshot is a java image of what is currently painted on the plugIn. This method is already implemented in the <code><a href="dataVisualizerAdapter.htm">DataVisualizerAdapter</a></code> and so will be automatically inherited by visualization plugIns that extend that adapter. Effectively, the image will reflect the results of the <code>drawArea(Graphics screen)</code> function of the Visualizer adapter.</p>
+   <p>Developers of Visualizer plugins that do not extend the <code>DataVisualizerAdapter</code> (or any kind of plugin, for that matter) may, of course, implement this method themselves if it is wanted.</p>
+</div>
+<p><code>public native static void stopAuto();</code></p>
+ <div style="margin-left: 80px;">
+   <p>halts the TM at the nearest natural stopping point, when it is either autoRunning or autoStepping. See <a href="externalScripting.htm">external scripting</a>.</p>
+</div>
+<h2><a name="implicitFunctions">Implicit Internal Scripting Functions</a></h2>
+<p>Unlike explicit internal scripting calls, methods called via the following
+    three versions of <code>relayCall</code> do
+  not have to be declared in the <code>ScriptManager.jlib</code> file, nor does
+  the TM have to make specific provisions to handle them. Thus, they require
+  no changes to the TM and no recompilation, so that plugIn developers may create
+  their own functions, then utilize the <code>relayCall</code> methods to relay
+  the calls into their own plugins. Thrre versions are provided to allow void,
+  int and double returns. Thus third party plugIns can return simple data to
+the model code. </p>
+<p><code>relayCall("plugInID", "methodName", arg1, arg2, arg3....);</code></p>
+
+<div style="margin-left: 80px;"><p><code>relayCall</code> finds the plugin
+with
+id <code>"plugInID"</code> and calls methodName(arg1Datum, arg2Datum, arg3Datum) in
+that plugin (thus relaying the call to the plugin). An exception is
+thrown if the plugin doesn't exist or the
+method can't be matched.&nbsp; </p>
+
+<p>There can be any no. of
+arguments (including none). The calling arguments are from the model
+program (be it in C++ or Java) and must be valid at the point of
+calling. In relaying them to the plugin, the arguments are converted
+into the TM's native <a href="datums/datums.htm">datums</a>. </p>
+
+<p>Although scripting functions
+must compile properly in model space, there is no a priori way for the
+compiler to know about the plugin method. Thus, in this one case, the
+compiler restrictions are relaxed to the extent that the arguments are
+not matched at compile time against the target methods.</p>
+<p>The return type must be <code>void</code>.</p>
+</div>
+<p><code>relayCallRtnInt("plugInID", "methodName", arg1, arg2, arg3....);</code></p>
+<div style="margin-left: 80px;">
+  <p>A version of relayCall which returns an  int appropriate to the language
+    of the model program. The return type is <code>int</code>.</p>
+</div>
+<p><code>relayCallRtnDouble("plugInID", "methodName", arg1, arg2, arg3....);</code></p>
+<div style="margin-left: 80px;">
+  <p>A version of relayCall which returns a  double appropriate to the language
+    of the model program. The return type is <code>double</code>.</p>
+</div>
+  <p>Calls passed via the three <code>relayCall</code> methods are referred to
+    as <em>impicit
+      internal scripting calls.</em></p>
+  </div>
+<h2><a name="implicitFunctions">DataVisualizationAdapter Implicit Internal Scripting
+  Functions</a></h2>
+<p>Any function in any plugin accessed by the <code>relayCall</code> method above
+  is referred to as an implicit call. However, the <code><a href="dataVisualizerAdapter.htm">DataVisualizerAdapter</a></code> provides
+  a number of useful functions already. Those not available as explicit internal
+  scripting calls are documented here.</p>
+<p><code>public final void compareDatums(Datum datum1, Datum datum2);</code></p>
+<div style="margin-left: 80px;">
+  <p> check whether <code>datum1</code> is equal to <code>datum2</code>. Both datums must be in the TeachingMachine memory and must be reasonable to compare. For example</p>
+  <p class="code"> for (int i = 0; i &lt; dimensionality; i++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;for (int j = i+1; j &lt; dimensionality; j++)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ScriptManager.relay(&quot;MUN.PlugIn.ArrayBar&quot;, &quot;compareDatums&quot;,column[i],column[j]);<br>
+  </p>
+  <p><code>column[i]</code> and <code>column[j]</code> both have to be in memory so they can be checked one against the other.</p>
+  <p><code>column[i]</code> and <code>column[j]</code> represent two comparable data structures. This allows the model code to specify an arbitrary pair of datums  which is why the <code>relayCall</code> mechanism is used as it is the only scripting function to relax compile time argument checking.</p>
+  <p>One consequence is that no comparison can be returned to to the model code (there is no mechanism in <code>relayCall</code> to return data).  Instead it accumulates the results in the <code>comparisonSet</code> vector.</p>
+  <p>In practice it appears this is a more useful approach than the <code>setReference</code> <code>compareReference</code> originally contemplated and implemented. If that holds up the original pair will proabably be removed in favour of this function.</p>
+  <p>Curently this function compares datums not generators. Extending it to generators is not difficult.</p>
+</div>
+<h3><a name="generatorControl">Generator Control</a></h3>
+<p>Every display derived from the <a href="dataVisualizerAdapter.htm"><code>DataVisualizerAdapter</code></a> has a generator, which
+  is the set of root datums used to generate a <em>visualization</em>. A <a href="datums/datums.htm">datum</a> is
+  the TM.s universal representation of data of any type from a simple <code>int</code> to
+  an <code>object</code>, such as a linked list or a balanced tree<em>. </em>For
+  data structures (such as the latter two) the datum is generally a reference
+  or pointer to the data structure and so acts as a <em>root</em> for the visaulization
+  of the structure itself. There are three generator modes:</p>
+<dl>
+  <dt><code>SELECTION</code></dt>
+  <dd>Datums are selected manually, typically using a mouse, by clicking on entries
+    in one of the store displays (store displays represent memory regions in
+    the TM, e.g. heap, stack or static store) or in any other display which can
+    act as a data source for the selection system.</dd>
+  <dt><code>MALLEABLE</code></dt>
+  <dd>Datums are selected by method calls (see addToGenerator, clearGenerator
+    below).</dd>
+  <dt><code>LOCAL</code></dt>
+  <dd><code>Datums are selected under local control of the display plugin (e.g.
+      by construction or using buttons on the display itself)</code></dd>
+</dl>
+<p>The following implicit  functions are built into the <a href="dataVisualizerAdapter.htm"><code>DataVisualizationAdapter</code></a>  for scripting control of the visualization's generator:</p>
+<p><code>public final void setGeneratorMode(int genMode);</code></p>
+<div style="margin-left: 80px;">
+  <p>Set the generator's mode. To enable generator scripting, the mode should
+    be set to <code>MALLEABLE</code>. The mapping for the three constants is <code>(SELECTION,
+      MALLEABLE, LOCAL)&#8212;>(0,
+      1, 2)</code></p>
+</div>
+<p><code> </code><code>public final void addToGenerator(Datum datum);</code></p>
+<div style="margin-left: 80px;">
+  <p>add the <code>datum</code> to the current generator. The generator selection
+    mode must be set to <code>MALLEABLE</code> (see <code>setGeneratorMode</code>,
+    above).
+    Since
+    the call is generated from within the model code it might go something as
+    follows:</p>
+  <p><code>int SELECTION = 0;<br>
+  int MALLEABLE = 1;<br>
+  int LOCAL = 2;<br>
+  <br>
+  ScriptManager.relayCall(&quot;mVisualizer&quot;,&quot;setGeneratorMode&quot;,
+      MALLEABLE);<br>
+  int [] A = new int[arraySize];<br>
+  randomFill(A);<br>
+  ScriptManager.relayCall(&quot;mVisualizer&quot;,&quot;addToGenerator&quot;, A);</code></p>
+  <p>From the point of view of 
+  the programmer creating the code being run on the TM <code>A</code> is simply an array of integers that has been randomly populated and which she would like to see displayed in her visualizer.</p>
+  <p>From the point of view of the Visualizer programmer, any data passed in from the model code space is a <a href="datums/datums.htm">datum.</a></p>
+  <p>Generators simply allow multiple datums to be used to build a Visualizer. For example, the TMs own stack display uses every datum that appears on the stack in its generator.</p>
+  <p>Since the state of all datums in the TM are updated as the model code is run, once a datum is added to a visualizer, its state evolves automatically with the code.</p>
+</div>
+<p><code>public final void clearGenerator();</code></p>
+<div style="margin-left: 80px;">
+  <p>Usage</p>
+  <p><code>ScriptManager.relayCall(&quot;mVisualizer&quot;,&quot;clearGenerator&quot;);</code></p>
+  <p>clears the generator. Nothing is displayed. Has no effect on the datums marked by the explicit <code>setReference</code> scripting call.</p>
+</div>
+<h2><a name="hiding">Script Hiding</a></h2>
+
+<p>We will have to&nbsp;use a variant on the standard
+TM/Webwriter++
+markup to hide scripts. Calls to the ScriptManager will appear <span style="font-style: italic;">inside the Teaching
+Machine&nbsp;</code>as standard Java (or C++) function calls
+and will be marked something as follows </p>
+
+<p><code>/*#Script<br>Script code goes here<br>#endScript*/<br></code></p>
+
+<p>This approach has two big advantages</p>
+
+<ol>
+
+  <li>it is basically already implemented</li>
+
+  <li>it allows the instructor to use any standard code allowable
+in the model space (e.g., ifs and loops)&nbsp; for scripting </li>
+
+</ol>
+
+<p>This gives us access to very powerful scripting without having
+to generate a special scripting language. It does mean that the
+instructor is limited to the constructs of the model space but since
+that is the instruction space, that should be no problem. It also means
+that scripts written for a course in C++ may have to be rewritten for a
+course in Java. However, the level of coding likely to be used for
+scripting should not differ greatly between the two languages.</p>
+
+<p>Why markup at all? Scripting is going to be used for
+applications
+other than the quizGenerator and may well appear in code you want to
+show to students. Instructors need to have the option of hiding the
+scripting from students. Moreover, you would like to be able to compile
+and run code in standard compilers, so the TM-specific script code will
+have to be transparent to them.</p>
+
+<p>The script-endscript syntax is not yet developed in either
+webWriter
+or the TM. Instead we have been using the existing /*#HS*/ /*#DS*/
+syntax. While it works fine within the TM/WebWriter++ environment, it
+does not hide scripting calls from conventional compilers.</p>
+<h2><a name="instrumenting">Instrumenting Model Code</a></h2>
+<p>&nbsp;</p>
+<p>&nbsp; </p>
+<script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+
+</body>
+</html>

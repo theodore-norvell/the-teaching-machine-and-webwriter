@@ -1,0 +1,1436 @@
+This file contains a list of all changes made to the Teaching Machine By Theo.
+
+Jan 31
+------
+
+cppparser.jj  -- added switch, case and default statments.
+CPlusPlus.Ast.StatSwitch  -- new class for representing switches
+CPlusPlus.Ast.IntegralConversionNode -- new class
+CPlusPlus.Ast.ConAbsIntegral -- new abstract class
+CPlusPlus.Ast.ConBool -- now under ConAbsIntegral
+CPlusPlus.Ast.ConChar -- now under ConAbsIntegral
+CPlusPlus.Ast.ConInt -- now under ConAbsIntegral
+cpp_tests/A051.txt -- new test file
+cpp_tests/A052.txt -- new test file
+
+    Implemented support for switch.
+    
+    Jumping over variable declarations is not allowed. The
+    case expressions must be lexical constants.
+
+Jan 31
+------
+
+Java.Ast.StatDo
+CPlusPlus.Ast.StatDo
+cppparser.jj
+Java1dot1.jj
+cpp_tests/A049.txt -- new test file.
+
+    Implemented break and continue for loops for C++.
+    
+    In StatDo the meaning was changed slightly so that
+    the interpreter will stop at a StatDo node even
+    if there is no expression to evaluate.  But if
+    the line number is also -1, then the interpreter
+    does not stop at the StatDo node, but goes
+    straight to the next node.  This way nodes generated
+    from continue and break will stop the interpreter,
+    but true dummy node do not.
+
+    In Java1dot1.jj I just changed things to reflect the
+    line number = -1 convention, but didn't implement
+    anything break or continue.
+
+Jan 19
+------
+
+CPlusPlus.CPlusPlusLang
+
+    Added endl.
+
+CPlusPlus.Ast.OpFuncCall
+    
+    Support for the following built-in functions added:
+        double abs( double )
+        long   abs( long )            // From cstdlib
+        double fabs( double ) 
+        long   labs( long )           // From cstdlib
+        double ceil( double )
+        double floor( double )
+        double sqrt( double )
+        double pow( double, double )
+        double cos( double )
+        double sin( double )
+        double tan( double )
+        double acos( double )
+        double asin( double )
+        double atan( double )
+        double atan2( double, double )
+        double exp( double )
+        double log( double )
+        double log10( double )
+        
+Jan 15
+------
+
+CPlusPlus/Parser/cppparser.jj
+CPlusPlus.Parser.ParserUtilities
+CPlusPlus.Ast.OpConditional
+    
+    Implemented the x?y:z operator.
+
+Jan 14
+------
+
+    Updated help files.
+   
+Jan 5ish
+--------
+
+Many classes including
+CPlusPlus.Ast.OpRightShift
+CPlusPlus.Datum.AbstractInteger
+CPlusPlus.Datum.AbstractFloat
+VirtualMachine.Console
+
+    Implemented cin>>var for types bool, int, long, float, double, char.
+
+VirtualMachine.Console
+VirtualMachine.InputFrame (Renamed InputFrame)
+Evaluator.Evaluator
+TMBigApplet
+
+    Fixed bug where input did not appear on console window soon enough.
+
+December 1
+----------
+
+LanguageInterface.ConstantExpressionNode
+	New tag interface
+	
+Evaluator.Evaluator
+	Now does not stop when a ConstantExpressionNode is
+	selected.
+	
+JavaAST.Con*
+JavaAST.NoExp
+CPlusPlusAST.Con*
+CPlusPlusAST.NoExp
+	These now implement the new ConstantExpressionNodeInterface
+	
+BTTimeManager
+	Fixed undo bug where an exception was thrown when there
+	were more undos than things done.
+	
+CPlusPlusAST.StatDecl
+	Changed the behaviour of declarations without initializers
+	so that the TM stops prior to the declaration.
+	(C++ only, as java treats missing initializers differently).
+	
+December 1, 1999
+----------------
+
+All over the place
+DisplayEngineInterface7.doc
+	Added method getName to the Datum interface.
+	Each datum should be able to report its name.
+	E.g. the 4th elemnent of an array, which is a
+	field in a datum named "foo" will report "foo.a[3]".
+	Also added toString for Datums.
+
+TMBigApplet
+TMMainFrame
+MTMainFrameAppletContext
+	Changed the implementation of help so that
+	help will work for applications.
+	The help file for applications 
+	is hardcoded to be
+		./help/help.html
+	This file is displayed in a browser. The
+	user will be asked for the browsers name if neither
+	Iexplore, nor netscape can be found.
+	
+Nov 5
+-----
+TMBigApplet
+TMMainFrame
+	I used reflection to find, load, and instantiate the
+	Java.JavaLang and CPlusPlus.CPlusPlusLang classes.
+	This way we can distribute language specific versions,
+	simply by selecting the JAR files that we ship. E.g.
+	if we don't ship a Java/JavaLang.class file in any
+	JAR file then the TM will simply not load Java
+	programs. The source code of TMBigApplet need
+	not be changed for language specific versions.
+	I also made the "Load C++ File" and "Load Java File"
+	menu items appear, only if the corresponding
+	Language class exists.
+	
+Nov 5
+-----
+Added MBPLs changes of Nov 1.  This fixed the null font bug.
+
+Oct 5
+-----
+
+LanguageInterfaces.Language
+Evaluator
+CplusPlus.CPPLang
+Java.JavaLang
+Both jj files
+	Added syntax colouring.
+	
+	
+Sept 28
+-------
+
+Configuration.
+	Incorporated MPBLs changes
+	Fixed up TMBigApplet to reload the last configuration file
+	or URL, whenever a new program is loaded. This includes
+	restarts of the current program.  Personally, I find
+	this behaviour a little complicated.
+
+Changed the name of the Locical View to Box and Arrow.
+	DisplayManager.java
+
+Updated version name
+	TMConstants.java
+
+Sept 2?
+--------
+
+Changes for syntax colouring.
+	Partial implementation to prove concept.
+	The C++ lexer is about ready to go.
+
+Sept 1 1999
+-----------
+
+TMBigApplet.java
+TMTinyApplet.java
+TMMainFrame.java
+Interfaces/ExternalCommandInterface.java
+Docs/DiplayEngineInterface7.doc
+DisplayEngine.DisplayManager -- just for testing
+	Added to ExternalCommandInterface
+		void readRemoteConfiguration( String fileName )
+		void readConfigurationFile( Frame parent )
+		void writeConfigurationFile( Frame parent )
+	Added (stubs) to DisplayManager
+		void readConfiguration( InputStream inStream )
+		void writeConfiguration( OutputStream outStream )
+
+TMBigApplet.java
+TMTinyApplet.java
+TMMainFrame.java
+AttentionFrame.java
+	Eliminated all calls to deprecated code.
+
+TMConstants.java
+	Change version name and "about" info.
+
+Summary up to 1999 Aug 25
+-------------------------
+
+	Global declarations
+		Working
+			Variables --- with initialization, 
+			static and const are recognized, but have no effect.
+			Structures
+			function definitions
+		Not Yet
+			private, public, protected.
+			enumeration declarations
+
+	Functions
+		Working
+			int main() { ... }
+			cin.get( ch )
+			cout.put( ch )
+			calls to user defined functions.
+			array syntax for pointer parameters without size, e.g. f( int p[] ) {...}
+		Not yet
+			array syntax for pointer parameters with size. E.g. void f( int p[10] ) {...}
+			Display of parameter conversions.
+			Overloading -- probably never
+			methods
+	
+	Statements:
+		Working
+			Compound statements
+			Expression Statements
+			Null statement (;)
+			while
+			do-while
+			variable declarations
+			for --- including with declaration. Uses new scoping rules!
+			if, if-else  --- excluding with declaration
+			return --- from main
+		Not yet
+			switch, case
+			break, continue
+			goto, labelled statements
+			try-catch
+	Types
+		Working
+			char, int, long --- 1, 4, 8 bytes respectively.
+			signed char, signed int, signed long --- alternate syntax for above
+			long int, signed long int -- alterate syntax for above
+			bool
+			float, double  --- 4 and 8 bytes.
+			user defined struct types -- syntax is limited.
+			pointers including [] notation.
+			references
+			arrays --- size must be decimal literal
+		Not Yet
+			unsigned types
+			classes
+			typedef	
+			function pointers
+			enum types
+			union types
+			array syntax for pointer parameters with size. E.g. void f( int p[10] ) {...}
+	Expressions
+		Working
+			Literals
+				String, character, decimal, octal, double, boolean
+					--- including character escapes like \\ and \n
+			Unary
+				++, --   <--- including pointers
+				~
+				!
+				-
+				+
+				&
+				*
+				new  --- including arrays (but doesn't throw an exception)
+				new(nothrow) --- including arrays (warning, doesn't require #include<new>
+				delete --- including arrays
+			Binary
+				*
+				/
+				%
+				+    --- including pointers
+				-    --- including pointers
+				<<   -- including output of simple types
+				>>   -- excluding input -- you must use cin.get( ch ) for now
+				<, >, <=, >=, ==, !=   --- but not for pointers
+				&, |, ^
+				=
+				*=, /=, %=, +=, -=, &=, |=, ^=, <<=, >>=  --- including pointers
+		Not Yet
+			conditional (?:), and comma (,)
+			::
+			explicit casting
+			sizeof
+			.*
+			->*
+			method calls
+			Float, long, and hex literals.
+			All arithmetic is carried out in either long or double. This
+				leads to some errors (or what I think are errors).  E.g.
+				1 << 32 == 0 is false.
+			No `compile time' evaluation.
+	
+	Interaction
+		Working
+			All kinds of forward steps.
+			Backward steps.
+		Not Yet
+			Input is echoed to the Console window, but not immediately.
+	
+	GUI
+		Major problems include:
+			Source window does not scroll when the highlight moves off screen.
+			  (This is already fixed in-house.)
+			Logical Display Window displays arrays incorrectly.
+			Some scroll bars don't work under Linux/netscape.
+			
+	Applet
+		Working.
+		Very slow under Windows/Netscape.
+
+Aug 20--25, 1999
+----------------
+Overhauled the implementation of both stack and heap regions.
+Much nicer now.
+
+Removing a Datum from the stack no longer fills its memory with
+garbage.
+
+Regions now extend PropertyList (a new class) and implement RegionInterface,
+which in turn implements Datum.
+
+Datums are now abstract tree nodes with uniform methods for
+counting, naming, and obtaining contained datums.
+	getNumChildren
+	getChildLabelAt(int)
+	getChildAt(int)
+These methods replace the similar methods in arrays, structures,
+and regions.
+
+Datum.getSize renamed as Datum.getNumBytes to distinguish it from
+Datum.getNumChildren better.
+
+Methods getStackSize, getStaticSize, getStackDatum, and getStaticDatum
+have been removed from the EvaluatorInterface and all methods implementing
+them
+
+Datums now support properties via setDisplayInfo and getDisplayInfo.
+The former getVDO and setVDO methods are gone, as is the VDOInterface.
+
+DisplayEngineInterface7.doc, has been rewritten to reflect all
+this -- accurately, I think.
+
+PointerInterface now extends ScalarInterface.
+
+Specific changes are too many to mention.
+
+June 20, 1999
+-------------
+BigApplet.  Changed LoadFile so that one may click the Cancel
+button on the file dialog without any error report.
+
+May 11, 1999
+-------------
+In symbol tables (C++ and Java)
+	Changed class VarEntry to use a BTVar for highlight information.
+	Fixed bug MPBL reported that symbol table highlights were not
+	changing with undo.
+
+May 6, 1999
+-----------
+
+In display engine:
+	Changed name of "Logical View" to "Box & Arrow View"
+
+In Logical Store Display
+	Deleted overide of update.
+	Moved functionality of update to override of update.
+	Changed paint to repaint() each VDO.
+
+
+Jan 19, 1999 Changes.
+---------------------
+TMMainFrame -- Added help menu.
+TMMainFrameAppletStub -- Apologetic implementation of showDocument.
+TMConstants -- New Class.
+	Added a HELP menu to the menu bar.
+	But the actual Help command only work in the applet, since it
+	displays a web page and I really didn't want to bother with
+	spawning a browser from the teaching machine application.
+
+NOTE new file
+	TMConstants.java.
+Holds configuration constants including the version name.
+We need a versioning system.
+
+Dec 14 Changes
+--------------
+
+GUI Interface document
+Interfaces.ImageSourceInterface  --- New File
+TMBigApplet  --- Implements above interface
+DisplayManager --- Uses above interface rather than Applet for image source
+Subwindow Package --- Uses above interface rather than Applet for image source.
+	The interface has one method
+		Image fetchImage( String name )
+	These changes are a kludge to make Netscape Navigator load the images
+	from the .jar file.
+	When Netscape releases a better browser, we can reimplement the interface.
+
+TMBigApplet
+TMTinyApplet
+	Instrumented these to find out why Navigator is so slow.
+
+Dec 2 changes
+--------------
+
+Changed GUI interface documentation and externalCommnadInterface
+to document that toCursor is 0 based.
+
+GUI Issues from December 1, 1998.
+-------------------------
+Status line does not show. Fixed
+Resize of main frame screws up. Fixed
+
+[Fixed]
+Click on subwindow bar does not always bring subwindow to front.
+Click on subwindow scroll bar does not bring subwindow to front.
+Subwindow bars do not always lose blue colour when not at front.
+
+Syntax colouring-GUI needs interface-parser needs to compute
+marked-up string.
+
+Redraw step buttons [Done]
+ and rename functions and menu items as StepIn, StepOver, and StepOut.
+Backup button on source window. [Done]
+Grey out the backup button that is not relevant.[Greying done but not hooked up]
+
+from Theo Dec 10, 98 --------------------------------------
+[This is fixed but it is hardly elegant. I (mpbl) am considering
+switching to handles to subWindows so that there is one and
+only one handle per subWindow (although multiple references
+are still allowed to the handle). The handle interface would require
+a destruct() method that would void the handle so that all
+future references to its subWindow would consistently return null.
+The actual handle would be called something like subWindow but would
+own a single refence, say h, to the actual subWindow. Thus all
+references to subWindow would be changed to subWindow.h
+Bit too big to do before Christmas]
+---------------------------------------------------------------------
+Try closing [x] a store subwindow.
+Now do something like go forward.
+Bingo
+Exception occurred during event dispatching:
+java.lang.NullPointerException
+at SubWindowPkg/WorkArea.update
+at SubWindowPkg/WorkArea.refresh
+at DisplayEngine/StoreDisplay.refresh
+at DisplayEngine/DisplayManager.refresh
+at TMBigApplet.goForward
+at DisplayEngine/ExpressionDisplay.buttonPushed
+at SubWindowPkg/ToolBar.actionPerformed
+at SubWindowPkg/SmallButton.processActionEvent
+at SubWindowPkg/SmallButton$1.mouseReleased
+at java/awt/Component.processMouseEvent
+at java/awt/Component.processEvent
+at java/awt/Component.dispatchEventImpl
+at java/awt/Component.dispatchEvent
+at java/awt/EventDispatchThread.run
+Please add this to the wish list.
+
+Tool tips ?
+Rename "Logical Store Display" as "Graphical Store Display".
+Graphical Store display does not scroll.
+Graphical Store display does not always update.
+Redo all store displays.
+Configuration files for window size, state, Z order.
+
+
+Summary up to Sept 29 1998
+-------------------------
+
+	Global declarations
+		Working
+			Variables --- with initialization, 
+			static and const are recognized, but have no effect.
+			Structures
+			function definitions
+		Not Yet
+			private, public, protected.
+			enumeration declarations
+
+	Functions
+		Working
+			int main() { ... }
+			cin.get( ch )
+			cout.put( ch )
+			calls to user defined functions.
+		Not yet
+			array syntax for pointer parameters. E.g. void f( int p[10] ) {...}
+			Display of parameter conversions.
+			Overloading -- probably never
+			methods
+	
+	Statements:
+		Working
+			Compound statements
+			Expression Statements
+			Null statement (;)
+			while
+			do-while
+			variable declarations
+			for --- including with declaration. Uses new scoping rules!
+			if, if-else  --- excluding with declaration
+			return --- from main
+		Not yet
+			switch, case
+			break, continue
+			goto, labelled statements
+			try-catch
+	Types
+		Working
+			char, int, long --- 1, 4, 8 bytes respectively.
+			signed char, signed int, signed long --- alternate syntax for above
+			long int, signed long int -- alterate syntax for above
+			bool
+			float, double  --- 4 and 8 bytes.
+			user defined struct types -- syntax is limited.
+			pointers including [] notation.
+			references
+			arrays --- size must be decimal literal
+		Not Yet
+			unsigned types
+			classes
+			typedef	
+			function pointers
+			enum types
+			union types
+			array syntax for pointer parameters. E.g. void f( int p[10] ) {...}
+	Expressions
+		Working
+			Literals
+				String, character, decimal, octal, double, boolean
+					--- including character escapes like \\ and \n
+			Unary
+				++, --   <--- including pointers
+				~
+				!
+				-
+				+
+				&
+				*
+				new  --- including arrays
+				new(nothrow) --- including arrays
+				delete --- including arrays
+			Binary
+				*
+				/
+				%
+				+    --- including pointers
+				-    --- including pointers
+				<<   -- including output of simple types
+				>>   -- excluding input -- you must use cin.get( ch ) for now
+				<, >, <=, >=, ==, !=   --- but not for pointers
+				&, |, ^
+				=
+				*=, /=, %=, +=, -=, &=, |=, ^=, <<=, >>=  --- including pointers
+		Not Yet
+			conditional (?:), and comma (,)
+			::
+			casting
+			sizeof
+			.*
+			->*
+			method calls
+			Float, long, and hex literals.
+			All arithmetic is carried out in either long or double. This
+				leads to some errors (or what I think are errors).  E.g.
+				1 << 32 == 0 is false.
+			No `compile time' evaluation.
+	
+	Interaction
+		Working
+			All kinds of steps
+		Not Yet
+			The backward button is not yet implemented
+			Input is echoed to the Console window, but not immediately.
+	
+	GUI
+		Major problems include:
+			Status line is not visible: This is a sizing problem.
+			Source window does not scroll when the highlight moves off screen.
+			Logical Display Window displays arrays incorrectly.
+			
+	Applet
+		Working.
+		
+Changes upto to Sept 29
+-----------------------
+
+Fixed bug in Branching code.  Now the boolean is displayed and the branch
+goes the right way.  There is still a minor UI problem. There is an extra
+step to convert bool to bool!  E.g. if( 1==2 ) takes an extra step.
+
+Pointer arithmetic added.
+
+Improved stepping behavior. Now pauses at return from void, but not
+at StatDo nodes that have no expression.
+
+		
+Changes up to Sept 27 1998
+---------------------------
+
+Added support for function calls.
+	Working:
+		Value Parameters
+		Reference Parameters
+		Value return
+		Reference return
+		void functions.
+	Not Working:
+		Some conversions of arguments.
+		Some conversions of results.
+
+Minor changes to Graphical animation doc.
+
+Summary up to Sept 17 1998
+---------------------------
+
+Added highlighting support for:
+	Store:
+		+= etc (actually this was already there)
+		-- and ++
+	Load:
+		()
+		.
+		*
+		->
+		array indexing [].
+
+Summary up to Sept 16 1998
+--------------------------
+
+Added hooks to GUI interface to allow highlighting of sybol table entries 
+and datums. See
+	Interfaces/STEntry.java
+	Interfaces/Datum.java
+	Doc/DisplayInterface7.doc
+Also changed
+	Java.SymbolTable.VarEntry
+	CPlusPlus.SymbolTable.VarEntry
+	Java.Datum.AbstractDatum
+	CPlusPlus.Datum.AbstractDatum
+	VirtualMachine.EmptyDatum
+
+Added limited support for highlighting. For now only identifier look-up and
+plain assignment (=) are supported. When we know what we want, better I'll do
+the rest. (C++ only).
+	CPlusPlus.Ast.IDNd
+	CPlusPlus.OpAbsBinAsg
+	
+Summary up to Sept 10 1998
+--------------------------
+
+Implemented operators && and ||.
+
+Added EOF as a keyword standing for 0.
+
+Added conversions for assignments to booleans.
+	
+Added syntax for `using namespace std ;' declarations.
+	These declarations are ignored.
+
+Added syntax for const volitile register static auto.
+	These declarations are ignored.
+
+Added some support cin to act as a boolean in control statements.
+Still need proper conversion, e.g. on assignment etc.
+	New export to console atEOF must be documented.
+
+
+Changes up to Aug 25
+--------------------
+
+VirtualMachine/*
+And all over.
+	Class Output changed name to Console.
+	Added capabilities for input.
+	New class VirtualMachine.InputFrame is used to add input.
+	
+CPlusPlus/Ast/*
+CPlusPlus/Parser/*
+	Added function call syntax.
+	Added cin.get and cout.put.
+
+CPlusPlus/Ast/*
+	Fixed bug in parentheses.
+	
+CPlusPlus/Ast/*
+CPlusPlus/Parser/*
+CPlusPlus/Datum/*
+	Implemented arrays, array indexing, pointer indexing and
+	conversion of arrays to pointers.
+	
+CPlusPlus/Ast/*
+CPlusPlus/Parser/*
+	Added pre and post ++ and -- operators for ints and floats.
+	Still need to do pointers.
+	
+DisplayEngine/DisplayManager
+	Added symbol table to the refresh list in refresh.
+	Changed order that store displays are created.
+
+CPlusPlus/Ast/*
+CPlusPlus/Parser/*
+	Implemented *=, /=, %=, +=, -=, <<=, >>=, &=, |=, ^= for arithmetic
+	types.  Still need to deal with pointer arithmetic.
+
+Changes up to Aug 4
+-------------------
+
+Incorporated MPBLs changes for image loading.
+Fixed last image loading problem.
+
+Found out that IE 4.0 does not allow inner classes to access private
+fields. Changed a number of fields to public in:
+	SubWindowPkg/SmallButton
+	SubWindowPkg/Edge
+	SubWindowPkg/TitleBar
+	
+Changes up to Aug 3
+--------------------
+
+Added methods quit and loadFile to the ExternalCommandInterface
+and all classes implementing it.
+Added support for closing the TMMainFrame.
+
+Changes up to July 29
+----------------------
+
+Redesign of Application to make applets possible.
+The top level pacakge now contains
+	TMTinyApplet --- Applet for web pages.
+	TMMainFrameAppletStub -- Alternative stub for use of application.
+	TMMainFrame --- Frame containing menu and TMBigApplet.
+	TMBigApplet --- Applet owning DisplayManager and Evaluator.
+	AttentionFrame --- Used for high priority messages.
+
+Also a big change to the GUI<-->Evaluator interaction.
+All interactions are now routed through the TMBigApplet.
+
+Changes made by theo since release of April 16
+----------------------------------------------
+
+Interfaces/Datum -- added method putByte 
+C++/Datum/AbstractDatum -- added method putByte
+Java/Datu/AbstractDatum -- added method putByte
+VirtualMachine/StackRegion -- changed pop to put garbage in the place of popped vars.
+Changes made by theo since release of March 31
+-----------------------------------------------
+
+Interfaces/TypeInterface -- Added method inheritsFrom
+C++/AST/TypeNd -- Checked that method inheritsFrom is there
+C++/Datum/PointerDatum -- altered copyTo to use the inheritsFrom method
+                       -- added method compatiple pointer
+
+C++/OpAbsBinAriBool
+    Changed to allow pointers to be compared for ==, !=, <, > etc.
+
+C++/Parser/cplusplus.jj
+    Fixed off-by-one bug in linenumber of return.
+
+
+Changes made by theo since release of March 27
+-----------------------------------------------
+
+Subwindow/WorkArea
+	Eliminated paint method
+
+Subwindow/Static.gif
+Subwindow/Stack.gif
+	New files
+
+LogicalView/*-- updated from Paul's
+DisplayEngine/LogicalStoreDisplay -- updated from Paul's
+
+Various
+	Eliminated debug messages.
+
+Evaluator/Evaluator
+	Added more exception handling.
+
+Changes made by Theo since the release of March 20
+--------------------------------------------------
+
+C++/Ast/OpNew -- new class -- so to speak.
+C++/Parser/cplucplus.jj
+	Added support for
+		new          Type
+		new(nothrow) Type
+		new(nothrow) Type [ size ]
+	Already had
+		new          Type [ size ]
+	But all variation neither return 0 nor throw an exception on heap exaustion.
+	They only offer an apology :-(
+
+Interfaces/Datum
+	Added get- and setVDO methods.
+	I thought I'd done that before
+
+LogicalView/VDOPointer
+LogicalView/VisualDatumObject
+	Removed all references of CPlusPlus layer.
+	This should stop crashes when the Java interpreter refreshes the LogicalView.
+
+Changes made by Theo since the release of March 18
+--------------------------------------------------
+
+Interfaces/StructureInterface -- added method getInheritanceParent
+C++/Datum/StructureDatum -- added method getInheritanceParent
+C++/Datum/AbstractPointer -- added method derefVirtual
+VirtualMachine/Store -- addedMethod chasePointerVirtual.
+Docs/VirtualMachineInterface6.doc
+Docs/DisplayEngineInterface6.doc
+	The store now recognizes inheritance when dereferencing a pointer.
+	Suppose class C inherits from class P and we have
+		P p = new C ;
+	Let pDatum be the pointer.
+	Previously pDatum.deref failed (returned null).
+	Now:
+	pDatum.deref() will return a datum of type P representing the P aspect of the object.
+	pDatum.derefVirtual() will return a datum of type C representing the full object.
+
+Changes made by Theo since the release of March 11
+--------------------------------------------------
+
+C++/Ast/OpArrow.java  -- new class
+C++/parser/cplusplus.jj -- added -> syntax
+A021.txt -- new test file.
+	Added -> operator.
+
+C++/Ast/ExpressionNd -- toString no longer removes markers from selected expression
+DisplayEngine/ExpressionDisplay -- changed meaning of markers.
+Docs/DisplayEngineInterface6.doc
+	The selected expression is now underlined.
+
+DisplayEngine/AttentionDialog.java -- new class
+Docs/DisplayEngineInterface6.doc
+Evaluator/Evaluator
+	Error messages are now sent to a Dialog rather than System.out.
+
+Evaluator/Evaluator
+	Implemented the ``to cursor'' command.
+	Implemented the ``into subroutine'' command
+	Implemented the ``out of subroutine'' command
+	Reimplemented the ``into expression'' command
+	Reimplemented the ``go forward'' command.
+
+Evaluator/Evaluator
+	Fixed tab bug. Tabs in code window are now supported.
+
+Docs/VirtualMachineINterface6.doc
+VirtualMachine/VMState.java
+	Two new public methods
+		public void saveCurrentLine() -- call this before a func call
+		public void restoreCurrentLine() -- call this after a func call
+
+VirtualMachine/HeapRegion.java
+	Fixed bug in heap allocatation algorithm. Gap after last datum was not considered.
+	Now it is.
+
+DisplayEngine/ExpressionDisplay
+	Fixed bug of un initialized expression.
+	Or at least I think I did.
+
+Docs/DisplayEngineINterface6.doc
+DisplayEngine/DisplayManager
+DisplayEngine/LogicalStoreDisplay  -- New class from Paul
+LogicalView -- New class
+A000pb*.txt -- new test files
+	Added Paul's code to the project
+
+DisplayEngine/DisplayManager  -- now uses connect method
+DisplayEngine/LogicalStoreDisplay  --- added connect method
+	Fixed bug where logical display was not connecting when second file was opened.
+	However the behaviour is still rather bizare.
+
+Changes made by Theo since the release of Mar 6
+-----------------------------------------------
+
+Docs/DisplayEngineInterface6.doc
+Interfaces/StructureInterface
+VirtualMachine/Store
+CPlusPlus/Datum/StructDatum
+	Changed interface to structures to get rid of the ``iterator''
+	methods.
+	Why? Well the previous method put the state in the wrong place
+	and was a magnet for bugs.
+	New interface is:
+		// How many fields are there
+		public int fieldCount() ;
+
+		// What is the name of field i (counted from 0)
+		public String getFieldName(int i) ;
+
+		// What is field i (counted from 0)
+		public Datum getField( int i ) ;
+
+Docs/DisplayEngineInterface6.doc
+Interfaces/ViewableStore
+VirtualMachine/Store
+VirtualMachine/StackRegion
+	Added methods to get datums from stack and static regions by
+	number rather than by address.  They are
+	    int getStackSize() ;
+	    /* How many stack items are there? */
+
+	    int getStaticSize() ;
+	    /* How many static items are there? */
+
+	    Datum getStackDatum(int i) ;
+	    /* Pre: 0 <= i < getStackSize()
+	       Returns: the (i+1)th datum from the bottom of the stack.
+	       Thus the top of the stack is vs.getStackDatum( vs.getStackSize() -1 ).
+	       Note: there is no guarantee of which way the stack grows. So
+	     vs.getStackDatum( 0 ).getAddress() < vs.getStackDatum( 1 ).getAddress()
+	     might be true or false.
+	    */
+
+	    Datum getStaticDatum(int i) ;
+	    /* Pre: 0 <= i < getStaticSize()
+	       Returns: the (i+1)th datum from the bottom of the static area
+	    */
+
+Store
+Evaluator
+	Dumping the store after every user interaction for better debugging
+	info.  Also changed the dump to print all stored datums recursively.
+
+
+Changes made by Theo since releast of Mar 3
+-------------------------------------------
+
+VirtualMachine/HeapRegion
+	Fixed bug in findSpace
+
+VirtualMachine/Store
+	Added debugging routine dumpStore to help with store problems
+	Added checking to check that Datums added to the store do not overlap.
+
+Interfaces/PointerInterfaces
+Docs/DisplayEngineInterface5.doc
+	Added method isNull to interface PointerInterfaces
+
+Docs/DisplayEngineInterface5.doc
+DisplayEngine/StoreDisplay
+	Changed documentation to allow a PointerInterface to also be a ScalarInterface.
+	Changed code to conform.
+
+CPlusPlus/Ast/TyPointer
+CPlusPlus/Ast/TyRef
+CPlusPlus/Ast/TyIStream
+	These three classes had a bug where method MakeMemberDatum called
+	Store.addDatum.  I deleted the extraneous call in all three.
+
+Docs/DisplayEngineInterface6.doc
+DisplayEngine/ExpressionDisplay
+CPlusPlus/Ast/ExpressionNd
+	Changed method of highlighting strings in the expression window.
+	Turns out it wasn't needed, but it is done.
+
+VirtualMachine/VMState
+	Added methods
+		void pushResultDatum( Datum )
+		void popResultDatum()
+		Datum topResultDatum()
+	These are for remembering the location of function result datums.
+
+CPlusPlus/Ast/OpNewArray  -- new unary operator
+cplusplus.jj
+A019.txt -- new test
+	Added operator   new T[ exp ]   to the language.
+	Haven't got to  new T  yet.  Use  new T[1]  instead.
+
+
+
+Changes made by Theo since release of 1998 Feb 25
+-------------------------------------------------
+
+CPlusPlus/Ast/TyDouble
+CPlusPlus/Ast/TyFloat
+CPlusPlus/Ast/TyInt
+CPlusPlus/Ast/TyBool
+CPlusPlus/Ast/TyFun
+CPlusPlus/Ast/TyLong
+CPlusPlus/Ast/TyPointer
+CPlusPlus/Ast/TyIStream
+CPlusPlus/Ast/TyOStream
+CPlusPlus/Ast/TyChar
+CPlusPlus/Ast/TyRef
+	Corrected methods makeMemberDatum.
+	They had erroneously added the new datum to the store.
+
+CPlusPlus/Ast/Ty*
+Interfaces/TypeInterface
+	Added methods
+		public boolean inheritsFrom( TypeInterface t ) ;
+		public abstract int getSize() ;
+		public abstract String getTypeString() ;
+	The inheritsFrom is also added to TypeInterface.
+	This is so the virtual machine can dereference pointers. A pointer to
+	type A may point to an object of type B if B inherits from A.
+	The getSize method is needed to figure out the size of compound data types.
+	It can also be used to simplify the implementation of Datums.
+	The getTypeString method simplifies the implementation of Datums.
+
+CPlusPlus/Datum/Datum
+CPlusPlus/Datum/ concrete datum classes
+	Changed implementation of getTypeString to call the getTypeString method
+	of the datum's type.
+
+Evaluator/Evaluator
+	Fixed off-by-one bug in call to CodeDisplay.setFocus
+
+CPlusPlus/NodeList
+	Calls to new Vector() changed to new Vector(0) or new Vextor(1) to
+	save some space.
+
+A0018.txt -- new test file
+CPlusPlus/Parser/cplusplus.jj -- added syntax for struct type defns and struct type vars
+CPlusPlus/SymbolTable -- added methods to store and retrieve StructDfnNds during parsing
+CPlusPlus/Ast/StructDfnNd -- new class pairs name with struct type
+CPlusPlus/Ast/TyStruct -- new class for representing structure types
+CPlusPlus/Datum/StructDatum -- new class for representing struct objects
+	Changes made to support definition of Struct types and Struct variables.
+	NB Initializations of fields are parsed, but not executed.
+
+CPlusPlus/Ast/OpDereference -- changed
+	Creates a reference that displays as (*addr).  Was *addr.
+
+CPlusPlus/Ast/OpParentheses -- changed
+	Rewrote to allow parentheses around an lvalue.
+
+CPlusPlus/Parser/cplusplus.jj -- added syntax of .member
+CPlusPlus/AstOp/OpAbsUnaRef -- new class: unary op. operand must be reference, result is lvalue
+CPlusPlus/AstOp/OpAbsUnaRefNone -- no conversions
+CPlusPlus/AstOp/OpMember -- The member-of operator
+	Changes to support foo.bar
+
+Interfaces/VDOInterface -- new class
+Interfaces/Datum -- added methods setVDO and getVDO
+CPlusPlus/Datum/AbstractDatum -- added methods setVDO and getVDO and member vdo
+VirtualMachineState/EmptyDatum -- added methods setVDO and getVDO and member vdo
+Docs/DisplayInterface6.doc
+	Changes to support linking Datums to their visual counterparts.
+
+Changes made by Theo since release of 1998 Feb 20
+-------------------------------------------------
+
+CPlusPlus/Ast/OpAbsUna             -- modified
+CPlusPlus/Ast/OpAbsUnaBop          -- modified
+CPlusPlus/Ast/OpAbsUnaBopAri       -- New
+CPlusPlus/Ast/OpAbsUnaBopAriSim    -- New
+CPlusPlus/Ast/OpAbsUnaBopAriBool   -- New
+CPlusPlus/Ast/OpUnaryMinus      -- Modified
+CPlusPlus/Ast/OpUnaryPlus       -- New
+CPlusPlus/Ast/OpBitNot          -- New
+CPlusPlus/Ast/OpLogicalNot      -- New
+CPlusPuls/Parser/ParserUtilities   -- Modified
+    Changes made to support arithmetic unary operands: -, +, !, ~
+
+
+CPlusPlus/Ast/OpAddressOf       -- New
+CPlusPlus/Ast/OpDereference     -- New
+CPlusPuls/Parser/ParserUtilities   -- Modified to add above operators
+    Added pointer operations * and &.
+
+CPlusPlus/Ast/StatDecl          -- Modified
+    Fixed bug. Initializations like int i=j ; did not dereference
+    the reference to j.
+
+CPlusPlus/Ast/TyPointer -- changed. Now uses TypeNdLinks.
+CPlusPlus/Ast/TyRef -- changed. Now uses TypeNdLinks.
+CPlusPuls/Parser/cplusplus.jj -- changed syntax of declarators to include *.
+A016.txt -- new test file.
+    Changes to allow declaration of pointer variables.
+    (TyRef changed in anticipation of reference variables.)
+    Also fixed bug in comparing pointer and ref types.
+
+CPlusPuls/Parser/cplusplus.jj -- Changed syntax of declartors to include &
+CPlusPlus/Datum/RefDatum -- implemented copyDatum method
+CPlusPlus/Ast/IdNd -- Changed to treat references specially
+A017.txt -- new test file
+CPlusPlus/Ast/StatDecl -- changed step to initialize references in special way.
+        Changes in support of reference variables.
+
+CPlusPlus/Ast/IdNd -- changed.
+        Fixed bug (??) where extra copies of datums were being put on
+        the scratch pad when identifiers were evaluated for reference.
+        Before i = j would map the j node to a copy of j. Now it
+        maps the j node to the j datum.
+
+CPlusPlus/Ast/TypeNd
+CPlusPlus/Ast/TyDouble
+CPlusPlus/Ast/TyFloat
+CPlusPlus/Ast/TyInt
+CPlusPlus/Ast/TyBool
+CPlusPlus/Ast/TyFun
+CPlusPlus/Ast/TyLong
+CPlusPlus/Ast/TyPointer
+CPlusPlus/Ast/TyIStream
+CPlusPlus/Ast/TyOStream
+CPlusPlus/Ast/TyChar
+CPlusPlus/Ast/TyRef
+CPlusPlus/Ast/AstUtilities
+CPlusPlus/Ast/ParserUtilities
+    Added method TypeNd.makeMemberDatum to all types.
+    Modified interface of TypeNd.makeDatum, to eliminate parent.
+
+
+Changes made by Theo since release of 1998 Feb 18
+-------------------------------------------------
+
+Changes made by Theo since release of 1998 Feb 02
+-------------------------------------------------
+
+CPlusPlus\AST\AstUtilities -- changed file
+CPlusPlus\AST\CharConstNd -- new file
+CPLusPLus\AST\BottomUpBinNode -- changed
+CPlusPlus\Datum\AbstractDatum -- changed
+CPlusPlus\Datum\CharDatum -- changed
+CPlusPlus\Datum\DatumUtilities -- New file
+CPlusPlus\Datum\IntDatum -- changed
+CPlusPlus\Datum\LongDatum -- New File
+CPlusPlus\Parser\cplusplus.jj -- Changed
+CPlusPlus\Parser\ParserUtilites
+A007.txt -- New test file
+A008.txt -- New test file
+VirtualMachine\Output -- Changed
+        These changes are to support Chars. and Longs
+        --Added method asciiToString to DatumUtilities
+        --Changed class VirtualMachine.Output to filter out non printing chars
+        --Created Class Datum.LongDatum to represent type long
+        --Cheated Class CharConstNd to represetn char constants
+        --In the parser: corrected syntax of chars and strings and
+        added parsing of char constants and (signed long) types.
+        --Added interpretation of character constants and fixed
+        interpretation of string constants in the ParserUtilities.
+        --Added override of output to CharDatum Class
+        --Factored CopyDatum up to AbstractInt
+        --Added scratchLong to AstUtilities
+
+CPlusPlus\AST\ArithmeticBinOP.java -- new file
+CPlusPlus\AST\AssignmentOp.java -- changed
+CPlusPlus\AST\BinOp -- changed File
+CPlusPlus\AST\BottomUpBinOp -- Changed file
+CPlusPlus\AST\OpLeftShift -- New file
+CPlusPlus\AST\OpTimes -- New file
+CPlusPlus\Parser\ParserUtilities.java -- Changed
+Evaluator\Evaluator.java -- Changed.
+A009.txt -- new test file for << operator
+        These changes reflect a new approach to both
+        operator stepping and conversions.
+        Both are now handled with template methods. I.e.
+        the invariant parts are written higher up the
+        class higherarchy and the parts specific to
+        a particulr operator or class of operators
+        is handled by calls down the class hierarchy.
+        Each Operator will have a separate node class
+        (e.g. OpTimes for binary *) which is responible
+        for the details of execucting that operator.
+        -- Added Method convert to BinOp. It is
+        intended to be overidden to effect conversions.
+        -- Added abstract method innerStep to BottomUpBinOp.
+        This method does operator specific stepping.
+        -- BottomUpBinOp.step calls innerStep.
+        -- New Class ArithmeticBinOp under BottomUpBinOp.
+        -- New Classes OpTimes an OpLeftShift under ArithmeticBinOp.
+        -- Added construction of these new operators to
+        ParserUtilities.
+        -- Enlarged memory size by factor of 10.
+
+CPlusPlus.Parser package
+CPlusPlus.Ast Package
+CPlusPlus.Datum Package
+        Many changes were made to support Float, Double, and Bool types.
+        Parser now recognizes declaration of variables of these types
+        and double and bool constants.
+        Added Datum classes: AbtractFloat and FloatDatum (DoubleDatum was modified)
+        Added BoolDatum under AbstractInt
+        Added AST nodes for constants and the types.
+        Conversions convert int operands
+
+CPlusPlus.Ast Package
+CPlusPlus.Parser Package
+        New operators and wholesale renaming of AST clases.
+        The following operators are now supported as far as AbstractInt and
+        AbstractFloat operands are concerned:
+                Binary: * / % + - << >> < <= > >= == != & ^ | =
+                Unary: - ()
+        Each has a class eg OpTimes.
+        As a part of these changes, most AST classes were renamed:
+                Old                     New
+                --------------------------------------
+                ArithmeticBinOp         OpAbsBinBupAri
+                AssignmentNd            OpAssign
+                BinOpNd                 OpAbsBin
+                BoolConstNode           TyBool
+                BottomUpBinOpNd         OpAbsBinBup
+                BottomUpBinOpNd         OpAbsUnaBup
+                CharConstNd             ConChar
+                CharNd                  TyChar
+                DeclStatementNd         StatDecl
+                DoNd                    StatDo
+                DoubleConstNd           ConDouble
+                DoubleNd                TyDouble
+                FloatNd                 TyFloat
+                FunTypeNd               TyFun
+                IntConstNd              ConInt
+                IntNd                   TyInt
+                IStreamNd               TyIStream
+                LongNd                  TyLong
+                OStreamNd               TyOStream
+                PointerNd               TyPointer
+                RefNd                   TyRef
+                ReturnNd                StatReturn
+                StringConstNd           ConString
+                UnaryOpNd               OpAbsUna
+                UnimplementedOp         OpUnimplemented
+
+        Almost all AST class now have a prefix:
+                OpAbs... -- Abstract operator class
+                Op...    -- Operator Expression
+                Ty       -- Type
+                Con...   -- Constant Expression
+                Stat...  -- Statement
+
+        The inheritence hierachy for operators will eventually be as follows:
+
+Number of arguments
+        How to evaluate operands
+                How to convert operands
+                        Type of result
+-----------------------------------------------------------------------
+OpAbsUna  -- One operand: (), &
+        OpAbsUnaBup  -- Fully evaluate operand: *, ->member
+                OpAbsUnaBupAri -- Arithmetic conversions
+                        OpAbsUnaBupAriSim -- Similar to operands: -, +, ~
+                        OpAbsUnaBupAriBool -- Boolean: !
+        OpAbsUnaRef  -- Evaluate operand to reference result is reference:
+                OpAbsUnaRefNone -- no conversion: .member
+        OpAbsUnaAsg -- Result is value
+                OpUnaAsgPre:  Pre++ and Pre--
+                OpUnaAsgPost: Post++, Post--
+OpAbsBin -- Two operands: left and right
+        OpAbsBinBup  -- Fully evaluate left and right
+                OpAbsBinBupAri -- Arithmetic conversions
+                        OpAbsBinBupAriSim -- Similar to operands: *, /, %, +, -
+                                                        ^, |, &, <<, >>
+                        OpAbsBinBupAriBool -- Boolean result: ==, !=, <=, >=,
+                                                                <, >
+        OpAbsBinAsg -- Evaluate Left to a reference and right fully:
+                OpAbsBinAsgAsg -- Convert right so it is similar to left: =
+                OpAbsBinAsgWithop -- Convert int to float, only
+                             : *=, /=, %=, +=. -=. <<=, >>=, &=. !=. ^=
+        OpAbsBinLr   -- Fully evaluate left then step then fully right: &&,||, ,
+OpAbsTer -- Ternary: ?:
+
+
+Evaluator\Evaluator.java
+        Added support for ``Into Expression'' Button.
+
+Utilities\Assert
+Most packages
+        -- added method Assert.apology( string ) issues apology unconditionally.
+
+CPlusPlus\Ast\StatBranch -- new class file
+CPluPlus\Parser\cpluplus.jj
+A0014.txt -- new test file
+A0015.txt -- new test file
+        -- Added parsing and interpretation of if, if-else, while, do-while,
+        and for statments.
+        -- No support of break, continue, or switch yet.
+
+Changes made by Theo since release of 1998 Jan 23.
+--------------------------------------------------
+
+DisplayEngine\newStoreDisplay.java -- Deleted
+Utilities\testobj.java  -- Deleted
+      Deleted obselete files.
+
+DisplayEngine\DisplayManager.java -- Modified
+    -- Changed type declarations (VCafe insisted)
+            Object[2] ... ;
+       to
+            Object[] ... ;
+
+CPlusPlus\Ast\IdNd.java
+    Changed
+        import CPlusPlus.SymbolTable.* ;
+    to
+        import CPlusPlus.SymbolTable.SymbolTable ;
+        import CPlusPlus.SymbolTable.VarEntry ;
+    This made a mysterious error message go away in VCafe
+
+CPlusPlus\Ast\DeclStatementNd.java
+    Changed
+        import CPlusPlus.SymbolTable.* ;
+    to
+        import CPlusPlus.SymbolTable.SymbolTable ;
+    This made a mysterious error message go away in VCafe.
+
+VirtualMachine\Memregion.java
+VirtualMachine\StackRegion.java -- New file
+VirtualMachine\HeapRegion.java  -- New file
+    -- VCafe compiler complained that classes StackRegion and HeapRegion
+       should be in their own files, so I put them in their own files.
+
+Evaluator\Evaluator.java
+VirtualMachine\Memregion.java
+CPlusPlus\SymbolTable\SymbolTable.java
+        -- Fixed typos introduced just prior to last release!  Whoops.
+
+Changes made by Theo since release of 1998 Jan 15.
+--------------------------------------------------
+
+TheoChanges.txt
+	-- Created new file to track changes made in working versions.
+        -- Added TheoChanges.txt to Project TMachine5
+
+All DOC files in DOCS project
+        -- Changed all docs to Word 6.0/95 format.
+        -- Changed names to end in 6.doc.
+
+All TXT files in DOCS project
+        -- Deleted these files (CPlusPlusSymbolTable.txt,evaluator.txt,
+           languageinterface.txt, overview.txt, virtualmachine.txt). They
+           are superceded by Word documentation files.
+
+TMachine.java
+        -- Deleted obselete file
+
+Docs\VirtualMachineInterface6.doc
+Docs\DisplayEngineInterface6.doc
+DisplayEngine\DisplayManager.java
+VirtualMachine\Store.java
+VirtualMachine\VMState.java
+VirtualMachine\MemRegion.java
+Evaluator\Evaluator.java
+        Changes to support Scratch as a 4th memory Region
+        --Added method connectScratchDisp to class DisplayManager and changed
+          the interface of method setMemBounds.
+        --Added private member theScratch to Store
+        --Added method getScratch to Store
+        --Changed interface of constructor Store
+        --Changed interface of constructor VMState
+        --Changed implementation of Evaluator to accomodate the above
+        --Added methods getExpressionResult and setExpressionResult to the
+          VMState
+        --Changed class stackRegion to support marks. A mark is simply
+          a record of how many Datums were on the stack at some point. These
+          are kept in a stack themselves so that many marks can be kept.
+        --Added methods topScratch, popScratch, setScratchMark, getScratchMark,
+          unsetScratchMark, scratchSize to Store. These allow the interpreters
+          to manage the scratch area.
+        --Changed all Statement Nodes so that before evaluating an expression they
+          set the scratch mark and after an expression is done, they
+          clean up the scratch area to the way it was.
+        --Changed the DelarationStatement to use getExpressionResult from the
+          State.
+        --Changed Evaluator to use setExpressionResult before popping an expression
+          evaluation.
+
+CPlusPlus\Ast\WHOLE PACKAGE
+        Changes to use the scratch area rather than the stack for temporaries.
+        -- All expression nodes changed.
+
+Docs\CPlusPlus6.doc
+CPlusPlus\CPlusPlusLang.java  Changed
+LanguageInterfaces\PError.java Changed
+Evaluator\Evaluator.java Changed
+Parser\cplusplus.jj  Changed Build procedure
+Parser\custom_parser.java  Deleted
+Parser\custom_token_manager,java Deleted
+Parser\ParseError.java Delete
+Parser\ParseException Added to project ParserGenerated
+Parser\TokenMgr\Error Added to project ParserGenerated
+        Changed JavaCC to version 0.7.
+        --This made the subclasses custom_parser and custom_token_manager
+           obselete.
+        --Changed CPlusPlusLang to catch the new generated exceptions.
+        --Changed Evaluator to print error messages to status line.
+        --Changed PError to be constructed with a string argument.
+        --All parser generated files were deleted and replaced with new versions.
+        --The new paser and lexer can be compiled by jvc -- so far.
+        --Projects Parser and ParserGenerated were updated.
+
+TMachine5.dsw  --- Changed name to TM.dsw
+TMachine5.opt  --- Changed name to TM.opt
+TMachine5.ncb  --- Changed name to TM.ncb
+        Changed Workspace name.
+
+END OF FILE

@@ -1,0 +1,172 @@
+<html>
+
+<head>
+<title>JSnoopy</title>
+<meta name="GENERATOR" content="Microsoft FrontPage 3.0">
+</head>
+
+<body>
+
+<h1>JSnoopy: A tool for regression and integration testing</h1>
+
+<p>JSnoopy is a tool to help automate the testing of Java software. It is particularly
+aimed at regression testing of programs with graphical user interfaces (GUIs), but can be
+used in a number of other situations.</p>
+
+<p>Consider a system consisting of three layers: A GUI layer, a middle layer, and a bottom
+layer. Suppose the GUI layer calls the middle layer in response to user actions, and the
+middle layer calls the bottom layer. JSnoopy is capable of capturing the details of all
+calls made from the GUI layer to the middle layer and subsequent calls from the middle
+layer to the bottom layer. These details include the method called, the argument
+values,and the value returned or exception thrown. Later, after a change to the software,
+JSnoopy can reconstruct the sequence of calls made to the middle layer and compare the new
+sequence of events with the old sequence. If there is a difference, then it is likely that
+the change to the software has introduced a defect. </p>
+
+<h2>Using JSnoopy</h2>
+
+<h3>Instrumenting objects</h3>
+
+<p>JSnoopy uses &quot;instrumented objects&quot; to record events (calls, returns and
+exceptions). Creating an instrumented object is easy provided all the methods of interest
+are listed in a Java interface. Suppose the middle and bottom layers of our system are
+represented by facade objects that implement interfaces <tt>MiddleLayerInterface</tt> and <tt>BottomLayerInterface</tt>
+respectively. We might put together the system as follows:</p>
+
+<pre>  static void main(String[] args) {
+    BottomLayerInterface bottom = new BottomLayer() ;
+    MiddleLayerInterface middle = new MiddleLayer( bottom ) ;
+    GUI gui = new GUI( middle ) ;
+  }</pre>
+
+<p>In order to instrument the middle and bottom layers we make the following modifications
+(in bold):</p>
+
+<pre>a class ExampleSystem {</pre>
+
+<pre>b static void main(String[] args) {
+c   <strong>jsnoopy.JSnoopy.setActive(true);</strong>
+d   <strong>jsnoopy.Instrumentor instrumentor = jsnoopy.JSnoopy.getInstrumentor() ;</strong>
+e   BottomLayerInterface bottom = <strong>(BottomLayerInterface)</strong>
+f     <strong>instrumentor.instrument( &quot;bottom&quot;,</strong>
+g                              new BottomLayer()<strong>,</strong>
+h                              <strong>BottomLayerInterface.class )</strong> ;
+i   MiddleLayerInterface middle = <strong>(MiddleLayerInterface)
+</strong>j<strong>     instrumentor.instrument( &quot;middle&quot;,</strong>
+k                              new MiddleLayer( bottom )<strong>,</strong>
+l                              <strong>MiddleLayerInterface.class )</strong> ;
+m   GUI gui = new GUI( middle ) ;
+n } }</pre>
+
+<p>Line (c) turns JSnoopy on. By changing the &quot;true&quot; on this line to
+&quot;false&quot; we cause JSnoopy to have no effect at all on the running program; this
+will be useful for making a shippable version of the software.</p>
+
+<p>Line (d) fetches an instrumentor object. This object is essentially a
+&quot;factory&quot; for &quot;proxy objects&quot; as is explained next.</p>
+
+<p>The call at lines (f-h) constructs two objects, one is the actual bottom layer
+constructed on line (g), the other is a &quot;proxy object&quot;. The proxy object
+implements the <tt>BottomLayerInterface</tt>; it does so by passing on all calls to the
+actual bottom layer. However it also captures information about the calls and sends that
+information to JSnoopy to be recorded. The call at lines (j-l) is similar.</p>
+
+<p>The calls to <tt>instrument</tt> return the proxy objects and so, in the example, the
+middle layer is constructed with the bottom layer's proxy and the gui layer is constructed
+with the middle layer's proxy. Thus all communication between the layers will be via the
+proxies and will be seen by JSnoopy.</p>
+
+<p>The strings &quot;bottom&quot; and &quot;middle&quot; passed to instrument, serve to
+identify the objects to JSnoopy. Each instrumented object must have a unique name.</p>
+
+<p>If, on line (c), we had passed &quot;false&quot; instead of &quot;true&quot;, the <tt>instrument</tt>
+method would not create proxies, but rather simply return its second argument. This allows
+you to easily ship uninstrumented code, without having to strip out the calls to <tt>instrument</tt>.
+For shipping, a lightweight version of JSnoopy can be used that only includes three small
+classes.</p>
+
+<h3>Capturing&nbsp; a trace</h3>
+
+<p>When JSnoopy is active, a small window will pop up. Clicking on &quot;Record&quot;
+initiates capture of events. You can then manually test the system by using its GUI.
+Clicking on &quot;Stop&quot; stops the recording and allows you to save the trace in a
+file. The file format is ascii and intended to be somewhat readable. If the results are
+deemed acceptable then the trace should be stored for future playback.</p>
+
+<h3>Manual playback</h3>
+
+<p>The JSnoopy GUI also has a &quot;Replay and Compare&quot; button. This allows you to
+replay the primary calls from a previously captured trace. If there is an observable
+change in the system's behaviour, then a comparison of the two traces is shown.</p>
+
+<p>The replayed primary calls are executed by the AWT's event dispatch thread.</p>
+
+<h3>Automatic playback</h3>
+
+<p>Automatic playback uses the JUnit test framework. JUnit's test runner programs are
+capable of running test suites that conform to the interface junit.framework.Test.</p>
+
+<p>The abstract class jsnoopy.ReplayTestSuit is an implementation junit.framework.Test
+that adapts JSnoopy tests to this interface. (See the Gang of Four's &quot;Adapter&quot;
+pattern.) We extend the abstract class as follows</p>
+
+<pre>public class ExampleTestSuite extends ReplayTestSuite {
+
+    public void setUpForSuite() {
+        ExampleSystem.main( new String[0] ) ;
+    }</pre>
+
+<pre>    ...
+}</pre>
+
+<p>The <tt>setUpForSuite</tt> method is an extension point that allows some set up to be
+done. In this case it runs the main program, and thus starts the system under test (an
+instrumented version we hope) and JSnoopy. Other extention points are tearDownForSuite,
+setUpForTest and tearDownFOrTest. Whereas setUpForSuite is done only once for any number
+of replay-and-compare runs, setUpForTest is done prior to each replay-and-compare run; it
+could be used to put the system back to a standard starting state. The default
+implementation of all extension points is to do nothing.</p>
+
+<p>Now we add a static method called <tt>suite</tt> that returns a JUnit test suite.
+&nbsp; This is the interface to JUnit's test runners. The test suite we return contains
+only one <tt>Test</tt> object. That object, when run, does a replay-and-compare for each
+of the four files added to the object.</p>
+
+<pre>public class ExampleTestSuite extends ReplayTestSuite {</pre>
+
+<pre>    ...</pre>
+
+<pre>    public static Test suite() {
+        ExampleTestSuite thisTest = new ExampleTestSuite() ;
+        thisTest.addFile(&quot;test0.jst&quot;);
+        thisTest.addFile(&quot;test1.jst&quot;);
+        thisTest.addFile(&quot;test2.jst&quot;);
+        thisTest.addFile(&quot;test3.jst&quot;);
+        TestSuite suite = new TestSuite(&quot;An example test suite.&quot;);
+        suite.addTest( thisTest );
+        return suite ; }
+}</pre>
+
+<p>To execute the tests, we an use any JUnit test runner with &quot;ExampleTestSuite&quot;
+as argument. The class can also be added to another test suite.</p>
+
+<p>As with manual playback, the replayed primary calls are executed by the AWT's event
+dispatch thread.</p>
+
+<h3>Manual instrumentation</h3>
+
+<p>TBD</p>
+
+<h2>Advantages of using JSnoopy</h2>
+
+<h2>Limitations</h2>
+
+<ul>
+  <li>Limitations due to toString. TBD</li>
+  <li>Determinism. TBD</li>
+  <li>Single threading. TBD</li>
+  <li>Parameter types on primary calls. TBD</li>
+  <li>No new event types. TBD</li>
+</ul>
+</body>
+</html>

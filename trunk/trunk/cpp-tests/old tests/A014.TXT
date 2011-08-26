@@ -1,0 +1,30 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+        int a = 9 ;
+        int b = 8 ;
+        if( a < b ) {
+                int c = 7 ; }
+        if( a > b ) {
+                int d = 8 ; }
+        if( a==b ) {
+                int e = 9 ; }
+        else {
+                int f = 10 ; }
+        if( a != b )
+                int g = 11 ;
+        else 
+                int h = 12 ;
+        if( "abc" ) {
+                int i = 13 ; }
+        if( 1.0 )
+                int j = 14 ;
+        if( 0.0 ) 
+                int k = 15 ;
+        if( 1 ) 
+                int l = 16 ;
+        if( 0 ) 
+                int m = 17 ;
+}

@@ -1,0 +1,66 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>function declaration</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3>Syntax</h3>
+<div class="syntaxDef">
+  <p class="code"><em>returnType</em> <em>functionName</em><span class="codeRequired"> (</span><em>parameterList</em><span class="codeRequired">);</span></p>
+  </div>
+<p>where <em>returnType</em> should be <span class="codeKeyword">void</span> if the function returns nothing, otherwise should be the type of the value to be returned when the function is called. </p>
+<p><em>paramaterList</em> is a comma-separated list of zero or more <em>parameters</em> of the form </p>
+<div class="syntaxDef">
+  <p class="code"><em> type parameterName </em></p>
+  </div>
+<p>where the parameterName, is actually optional. </p>
+<h3>Examples</h3>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> double </span><span class="codeRequired">sin(</span><span class="codeKeyword">double</span> x<span class="codeRequired">);</span></p>
+  <p class="code"><span class="codeKeyword">double </span><span class="codeRequired">cos(</span><span class="codeKeyword">double</span><span class="codeRequired">);</span></p>
+  <p class="code"> </span></p>
+</div>
+<p>declares sin and cosine functions which take a single <span class="codeKeyword">double</span> argument and return a <span class="codeKeyword">double</span> value (representing the sin or cos of the argument). </p>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> void </span><span class="codeRequired">printComplex(</span><span class="codeKeyword">double</span> real, <span class="codeKeyword">double</span> imag<span class="codeRequired">);</span></p>
+  </div>
+<p>declares a function to print a complex number. As the function is just doing a task it returns nothing. While the names real and imag are not required, they are useful to let the user know which argument is which.</p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

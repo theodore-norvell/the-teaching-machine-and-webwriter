@@ -1,0 +1,26 @@
+#include <iostream.h>   /* include info from standard library */
+
+/* The mandatory "Hello world!" program */
+
+int // Line added TSN
+main()
+
+{
+        cout << "Hello, world!0\n";
+        cout << "Hello, world!1\n";
+        cout << "Hello, world!2\n";
+        cout << "Hello, world!3\n";
+        cout << "Hello, world!4\n";
+        cout << "Hello, world!5\n";
+        cout << "Hello, world!6\n";
+        cout << "Hello, world!7\n";
+        cout << "Hello, world!8\n";
+        cout << "Hello, world!9\n";
+        cout << "Hello, world!10\n";
+        cout << "Hello, world!11\n";
+        cout << "Hello, world!12\n";
+        cout << "Hello, world!13\n";
+        cout << "Hello, world!14\n";
+        cout << "Hello, world!15\n";
+}
+

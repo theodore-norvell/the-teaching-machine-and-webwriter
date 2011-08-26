@@ -1,0 +1,544 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Loops</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>A <em>loop</em> is the only control-flow construct that lets you <em>go back
+  to an earlier point in the code</em>. Loops are designed to allow us to <em>iterate</em>&#8212;to
+  repeat executing the same piece of code over and over again.</p>
+<p>We'll consider three different kinds of loops, but first, we have to consider
+  a couple of new 
+  <script language="JavaScript">
+startDefLink("operator");
+  </script>
+operators<b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b>.</p>
+<h2>Increment and Decrement</h2>
+<p>Incrementing (adding 1 to) a number and decrementing (subtracting 1 from)
+  are so common that they have their own special operators, <code>++</code> and <code>--.
+  Thus </code></p>
+<p><code>i++</code></p>
+<p>means add <code>1</code> to <code>i</code> and</p>
+<p><code> i--</code></p>
+<p>means subtract <code>1</code> from <code>i</code>. </p>
+<p>We'll have more to say about these operators later. </p>
+<h2 class="pagebreak"><a name="for">For Loops</a></h2>
+<p>Here is a simple <code>for</code> loop
+<pre>    <span class="codeKeyword">for</span> (<span class="codeKeyword">int</span> i = <span class="codeConstant">0</span>; i &lt; <span class="codeConstant">5</span>; i++)
+        cout &lt;&lt; i &lt;&lt; '\t' &lt;&lt; i*i &lt;&lt; endl;</pre>
+<p>which produces the following output</p>
+<pre>0    0
+1    1
+2    4
+3    9
+4    16</pre>
+<p>In essence, a variable <code>i</code> is created and set to <code>0</code>, then, as long as it is less than <code>5</code> the statement following is executed, printing out a line with the value of <code>i</code>, a tab and then <code>i<sup>2</sup></code>. After that,<code> i</code> is incremented and then tested. The process is repeated so long as it is less than <code>5</code>. </p>
+<p>The single statement after the parentheses is called <em>the body of the loop</em>. Just as with <span class="codeKeyword">if</span> and <span class="codeKeyword">else</span> clauses a loop body
+      can either be a <em>single statement</em> or a <em>statement block</em>. Inside the parentheses after the keyword for are three expressions separated by semi-colons.</p>
+<ol>
+  <li>The <em>initialization expression</em> (<span class="codeKeyword">int</span> i = <span class="codeConstant">0</span>) is executed once, before any other part of the loop. The scope of any variable declared in it (i in this case) extends just to the end of the loop.</li>
+  <li>The <em>loop continuation condition</em> (i &lt; <span class="codeConstant">5</span>) is an expression that is evaluated before the body of the loop is entered. It must evaluate to a <span class="codeKeyword">bool</span>. If it is <span class="codeConstant">true</span>, the body of the loop is executed. If it is <span class="codeConstant">false</span> the loop is exited and execution proceeds to the next instruction after the <span class="codeKeyword">for</span> loop.</li>
+  <li>Despite the fact that the <em>update expression</em> (i++) appears in the code before the loop body, it is not  executed until after the loop body. </li>
+</ol>
+<p class="pagebreak">Here's an example of a function that uses the <code>for</code> loop
+  to compute the factorial of a number.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"controlFlow/forLoops.htm","");
+insertCode("for_loop.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>One of the things that gives students trouble when they start out is that
+  computer code is written on a page (effectively <em>in space</em>), but when it runs
+  it does so <em>in time</em>.</p>
+<p>The following table shows a diagram on the left tracing the code flow&#8212;how
+  the code evolves in time. In the commentary to the right, we show the line
+  of as it appears on the page, except the various parts have been colour coded
+  to try to help you see what code parts correspond to what time sequences. </p>
+<p>&nbsp; </p>
+<table width="100%"  border="0">
+  <tr>
+    <td class="normal"><p><img src="for.png" width="513" height="652"></p></td>
+    <td><code>for (<span style="background-color: red">i = 2;</span> <span style="background-color: yellow">i &lt;= num;</span> <span style="background-color:#FF00FF">i++</span>)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;      <span style="background-color:#00FFFF">fact *= i;</span></code>
+      <p class="normal"><span style="background-color: red">The <em>initial 
+            <span style="background-color: red"><em>
+            <span style="background-color: red"><em><span style="background-color: red"><em>
+            <script language="JavaScript">
+startDefLink("keyword");
+            </script>
+            </em></span></em></span> </em></span>
+expression<b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b></em> is
+          executed</span> <strong>once</strong>,
+          before anything else in the <code>for</code> loop. </p>
+      <p class="normal"><span style="background-color: yellow">The <em>loop continuation 
+        <script language="JavaScript">
+			startDefLink("condition");
+         </script>condition
+          <script language="JavaScript">
+				endLink();
+          </script>
+          </em> is executed</span> <strong>before</strong> <span style="background-color:#00FFFF"> the
+          body of the loop.</span></p>
+        <p class="normal"><strong>After</strong> <span style="background-color:#00FFFF"> the
+          body of the loop</span> <span style="background-color:#FF00FF">the <em>update expression</em> is executed</span> </p>
+        <p class="normal">After <span style="background-color:#FF00FF">the <em>update expression</em> is executed,</span> we
+          go back and test <span style="background-color:yellow">the <em>loop continuation condition</em> again</span></p>
+        <p class="normal">As soon as the condition is false, <em>the flow of
+    control </em>moves to the statement immediately after the loop.</p></td>
+  </tr>
+</table>
+<h2><a name="prime">Example: Prime Number Check</a> </h2>
+<p>A prime number is a number that is only divisible by 1 and itself. How can we test whether a number is prime?</p>
+<p>A simple approach is to try dividing the number by all other numbers starting from 2. How high should we go? Well, any factor greater than the square root of the number will have to be paired with a factor less than its square root. Thus, we could write an <code>isPrime</code> function as follows.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime1.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>Note that the square root is calculated before the loop is entered. The alternative would be to write</p>
+<p><span class="codeKeyword"><code>for</code></span><code>(<span class="codeKeyword">int</span> i = <span class="codeConstant">2</span>; i &lt;= sqrt(num); i++) </code></p>
+<p>The trouble with this is that the test is carried out every time <code>i</code> is incremented so that the square root function is called repeatedly, That is both expensive and unnecessary, so a <code>root</code> variable has been created instead. This is one typical use of variables, to hold values returned from function calls for later re-use.</p>
+<p>Notice also the boolean <em>flag variable</em> <code>prime</code>. Since every number up to <code>root</code> is being tested, it is necessary to keep track of the fact that a factor has been found. Otherwise, you're stuck with the result of the last test. For example, if 14 were being checked it would be divided by 2 and then 3. 2 divides evenly but 3 doesn't so the fact that 2 did has to be <em>flagged</em>.</p>
+<p>Of course, it would be even better to quit once we know for sure that a number is not prime. Here's a version that does just that.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>This version takes advantage of the fact that the moment a <code class="codeKeyword">return</code> statement is executed it forces an exit from the function <em>even if there is code after it. </em>Thus the only way the final <code class="codeKeyword">return</code> can be reached is if no value from 2 to <code>root</code> divides evenly into <code>num</code>.  If even one did it would force the early <code class="codeKeyword">return</code>. </p>
+<h2><a name="combinations">Example: Poker Hand Combinations</a> </h2>
+<p>Here's a nice little example that exposes the dangers of blindly applying
+    formulae. Suppose we would like to know how many different five card poker
+    hands can be dealt from a deck of 52? The standard mathematical formula is
+    known as <sub>52</sub>C<sub>5</sub> , the number of combinations of 52 things
+    taken 5 at a time. The standard formula is</p>
+<blockquote>
+  <blockquote>
+    <p><sub>n</sub>C<sub>r</sub> = n! / ( (n-r)!r! ) </p>
+  </blockquote>
+</blockquote>
+<p>Applying the formula is straightforward. We simply adapt our previous example.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_1.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>When we run it, however, we get a nonsensical answer. If you step through
+  the example in the Teaching Machine carefully, recording its answer and comparing
+  it to a calculator, we can generate the following table:</p>
+<table width="50%"  border="0">
+  <tr>
+    <th scope="col">num</th>
+    <th scope="col">num!</th>
+    <th scope="col">TM</th>
+  </tr>
+  <tr>
+    <th scope="row">1</th>
+    <td><div align="right">1</div></td>
+    <td><div align="right">1</div></td>
+  </tr>
+  <tr>
+    <th scope="row">2</th>
+    <td><div align="right">2</div></td>
+    <td><div align="right">2</div></td>
+  </tr>
+  <tr>
+    <th scope="row">3</th>
+    <td><div align="right">6</div></td>
+    <td><div align="right">6</div></td>
+  </tr>
+  <tr>
+    <th scope="row">4</th>
+    <td><div align="right">24</div></td>
+    <td><div align="right">24</div></td>
+  </tr>
+  <tr>
+    <th scope="row">5</th>
+    <td><div align="right">120</div></td>
+    <td><div align="right">120</div></td>
+  </tr>
+  <tr>
+    <th scope="row">6</th>
+    <td><div align="right">720</div></td>
+    <td><div align="right">720</div></td>
+  </tr>
+  <tr>
+    <th scope="row">7</th>
+    <td><div align="right">5,040</div></td>
+    <td><div align="right">5,040</div></td>
+  </tr>
+  <tr>
+    <th scope="row">8</th>
+    <td><div align="right">40,320</div></td>
+    <td><div align="right">40,320</div></td>
+  </tr>
+  <tr>
+    <th scope="row">9</th>
+    <td><div align="right">362,880</div></td>
+    <td><div align="right">362,880</div></td>
+  </tr>
+  <tr>
+    <th scope="row">10</th></span>
+    <td><div align="right">3,628,800</div></td>
+    <td><div align="right">3,628,800</div></td>
+  </tr>
+  <tr>
+    <th scope="row">11</th>
+    <td><div align="right">39,916,800</div></td>
+    <td><div align="right">39,916,800</div></td>
+  </tr>
+  <tr>
+    <th scope="row">12</th>
+    <td><div align="right">476,001,600</div></td>
+    <td><div align="right">476,001,600</div></td>
+  </tr>
+  <tr>
+    <th scope="row">13</th>
+    <td><div align="right">6,227,020,800</div></td>
+    <td><div align="right">1,932,053,504</div></td>
+  </tr>
+</table>
+<p>The TM tracks up to 12! then goes awry. A problem in its code? Not at all.
+  13!  gives us a number that's too big for our <code>int</code> type
+    to hold. Remember, we said <code>int</code>s had a limited range. The Teaching
+    Machine uses 32 bits (4 bytes) to represent integers, but half of those are
+  for negative nos. Thus the max positive no. is 2<sup>31</sup> = 2,147,483,648</p>
+<p>What the TM has done is to wrap around like an odometer on an old car that
+  reads 35,000 kilometres when it has actually gone 135,000. </p>
+<p>To solve the problem, we notice  that 52!/(47! * 5!) = 52*51*50*49*...../(47*46*45*....*5!)
+  = 52 * 51 * 50 * 49 * 48/5!. Only the first five nos. of the largest factorial
+  need be multiplied because the rest get divided out by 47! </p>
+<p>So can we write a loop to do that? Of course, here it is.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>Notice the extra test. This is because <sub>52</sub>C<sub>5</sub> and <sub>52</sub>C<sub>47</sub> are
+  actually the same (because of symmetry). But calculating 52 * 51 * 50 * ....
+  * 5 would still be too big.</p>
+<p>Notice also that we are counting down instead of up. The <code>for</code> loop lets us
+  go whichever way is most convenient for our problem </p>
+<p>Finally, there are extra big integers called long integers which might be
+  big enough to handle 52! Still, our second algorithm takes fewer calculations
+  to make and so uses less resource to get the same answer. The most reliable
+  approach would be to use our new algorithm and long integers as well.</p>
+<h2><a name="Fibonacci">A Design Problem: Fibonacci Numbers</a></h2>
+<p>Create a 
+  <script language="JavaScript">
+startDefLink("function");
+  </script>
+function
+<script language="JavaScript">
+endLink();
+  </script>
+to deliver the nth Fibonacci number. The Fibonacci series
+  is created by starting with 0 and 1 and then creating each new number by adding
+  the previous two in the sequence together. The n'th Fibonacci number is the
+  n'th one in the sequence.</p>
+<p>if n is 0 F<sub>0</sub> is 0</p>
+<p>if n is 1 F<sub>1</sub> is 1</p>
+<p>let F<sub>last</sub> be F<sub>1</sub> that is 1</p>
+<p>let F<sub>2ndlast</sub> be F<sub>0</sub> that is 0</p>
+<p>for i = 2 to n</p>
+<blockquote>
+  <p>F<sub>i</sub> = F<sub>last</sub> + F<sub>2ndlast</sub></p>
+  <p>F<sub>2ndlast</sub> = F<sub>last</sub> </p>
+  <p>F<sub>last</sub> = F<sub>i</sub> </p>
+</blockquote>
+<p>The key to this algorithm is that F<sub>last</sub> and F<sub>2ndLast</sub> are
+  constantly changing</p>
+<p>Here is the code.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("fibonacci.cpp", true, "code", "","A","all");
+  </script> 
+</p>
+<h2><a name="while">While Loops</a> </h2>
+<p>A <code>while</code> loop is created by a <code>while</code> statement. For example the factorial loop could also be written</p>
+<pre>long fact = 1;
+while (num &gt; 1){
+    fact *= num;
+    num--;
+}</pre>
+<p>which computes the factorial by working downwards from <code>num</code> to 2. The while loop has a <em>loop continuation condition</em> and a body. As long as the condition is <code class="codeConstant">true</code> the body keeps executing. Note that since there is no update expression,  programmers must take care to include their own in the body of the loop. The condition is always looked at before the body is executed so it is possible to have a case where the body is never executed (because the codition is false from the get-go). </p>
+<p>The control flow for the example in the syntax definition looks like this.
+  Once again we colour code it to allow you to correlate the time sequence on
+  the left with the code itself. </p>
+<table width="100%"  border="0">
+  <tr>
+    <td class="normal"><p><img src="while.png" width="229" height="400"></p></td>
+    <td><p class="normal"><code>fact = 1;<br>
+      while (<span style="background-color: yellow">num &gt; 1</span>){<br>
+<span style="background-color:#00FFFF">&nbsp;&nbsp;&nbsp;&nbsp; fact *= num;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num--;</span><br>
+        }</code></p>
+        <p class="normal">The boolean expression <span style="background-color: yellow"><code>num &gt; 1</code></span> represents
+          a <em>loop
+            continuation condition</em></p>
+        <p class="normal">If the condition is <code>true</code> the <span style="background-color:#00FFFF"><em>body
+          of the loop</em></span>          is executed.</p>
+        <p class="normal">After <span style="background-color:#00FFFF">the body</span> is executed, we go back and (<span style="background-color: yellow">test the
+          <em>loop continuation condition</em></span> again</p>
+        <p class="normal">As soon as the condition is false, <em>the flow of
+            control </em>moves to the statement immediately after the loop.</p></td>
+  </tr>
+</table>
+<p class="pagebreak">Let's run the full code in the Teaching Machine. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("while_1.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<h2><a name="LoopCategories">Loop Categories</a></h2>
+<p>There are a number of well-recognized loop categories, a couple of which
+  we outline here </p>
+<h3><a name="CountControlled">Count-Controlled Loops </a></h3>
+<p>  When you know how many times to iterate. All the loops we have shown so
+  far are count-controlled loops. </p>
+<h3 class="pagebreak"><a name="EventControlled">Event-Controlled Loops </a></h3>
+<p>Iteration continues until some event occurs in the body of the loop. 
+  Consider the problem of evaluating the well known p series:
+<p><font face="SYMBOL">&#229;</font><sub>k=1</sub><sup>k=<font face="SYMBOL">&#165;</font></sup> 1/k<sup>p</sup> = 1 + 1/2<sup>p</sup> +
+  1/3<sup>p</sup>
+ + 1/4<sup>p</sup> + ...
+<p>This series is known to converge for p &gt; 1.
+<p> 
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("sum1.cpp", true, "code", "", "A","all");
+  </script>
+</p>
+<p>In this case, the event is that the new <code>term</code> falls below a predefined
+  threshold. The prime2 program had a loop that was both count controlled and event controlled (because it returned the moment a divisor is found).<h1><a name="LoopDesign">Loop Design </a></h1>
+<ol>
+  <li>The general case: </li>
+  <ul>
+    <li>What should be done in the body? </li>
+  </ul>
+  <li>The special cases:</li>
+</ol>
+<ul>
+  <li>Under what condition should the iteration stop? </li>
+  <li>How should the loop control condition be initialized? </li>
+  <li>How should the loop control condition be updated? </li>
+  <li>How should other variables be initialized? </li>
+  <li>How should other variables be updated? </li>
+  <li>What is the state when the loop exits? </li>
+</ul>
+<p>Notice we have put the general case first. Although it may seem counter-intuitive
+  (because when you read the code the <code>while</code> or the <code>for</code> precedes the body of the
+loop)
+<p class="principle">Design loops from the inside out (from the general to the specific). 
+<p>Note the implication here is that</p>
+<ol>
+  <li>first design the loop, then</li>
+  <li>code the loop  </li>
+</ol>
+<h2><a name="doWhile">Do While Loops</a> </h2>
+<p>Our final kind of loop.</p>
+<p>A <code>do-while</code> loop is created by a <code>do-while</code>  <script language="JavaScript">
+startDefLink("statement");
+  </script>
+statement
+<script language="JavaScript">
+endLink();
+  </script>
+ . It is really just a variant of the <code>while</code> statement. The
+  difference is that the test 
+ <script language="JavaScript">
+startDefLink("condition");
+  </script>
+condition
+<script language="JavaScript">
+endLink();
+  </script>
+ comes <em>after</em> the body of the loop which means that
+  the <em>body of the loop will always be executed at least one time</em>. This is often used to test inputs. Consider the main function from the prime number examples.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime1.cpp", true, "code", "","M","all");
+  </script>
+</p>
+<p>We asked the user to enter a positive number but there is no way to enforce that. do-while loops are perfect for that.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime3.cpp", true, "code", "","M","all");
+  </script>
+</p>
+<p>In the new version the input and prompt are put inside a do-while loop, forcing them to be executed at least once. If the number is entered correctly the loop exits. On the other hand, if is less than 2, it cycles back and tries again (and keeps doing so until the number meets the criterion). </p>
+<h2><a name="exercises">Exercises</a></h2>
+<ol>
+  <li>In the first example, <code>for_loop.cpp</code>, there was a factorial funtion which computed  <code>factorial(num)</code> using a for loop. However the <code>main</code> function also used a loop to produce a table to test the function. The double looping is redundant. Create a  single function to print out a table of factorials from <code>1</code> to <code>n</code>, where <code>n</code> is an argument. It should only have a single for loop in it and should not call any other functions. </li>
+  <li>Rewrite the original <code>isPrime</code> function using (a) a while loop and (b) a do-while loop.</li>
+  <li>The prime3.cpp program will loop on the input value until the user  puts in a correct value. However, the prompt gives the user no hint what the error is. Can you fix up that piece of code to do a better job prompting?</li>
+  <li>The integral of <code>f(x)</code> from <code>x = a</code> to <code>x = b</code> can be approximated by n trapezoids, each of width <code>deltaX = (b-a)/2</code>. The <code>i</code>'th trapezoid has a left edge height<code> f(x<sub>i</sub>)</code> and a right edge height of <code>f(x<sub>i+1</sub>)</code>. Write a function for computing the integral with arguments <code>a</code>, <code>b</code> and <code>n</code>, assuming the function <code>f(x)</code> has been declared and written (you don't need to know what<code> f(x)</code> is). You may assume <code>b &gt; a</code>. </li>
+  </ol>
+
+<p><script language="JavaScript">
+	startHiddenAnswer("1");
+</script>
+<blockquote>
+  <p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("factorialTable.cpp", true, "code", "","all","all");
+    </script>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script></p>
+</blockquote>
+<p><script language="JavaScript">
+	startHiddenAnswer("2a");
+</script>
+<blockquote>
+  <p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("primeWhile.cpp", true, "code", "","all","all");
+    </script>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script></p>
+</blockquote>
+<p><script language="JavaScript">
+	startHiddenAnswer("2b");
+</script>
+<blockquote>
+  <p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("primeDoWhile.cpp", true, "code", "","all","all");
+    </script>
+  </p>
+</blockquote>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script></p><p><script language="JavaScript">
+	startHiddenAnswer("3");
+</script>
+<blockquote>
+  <p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime3BetterPrompt.cpp", true, "code", "","all","all");
+    </script>
+  </p>
+</blockquote>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script></p><p><script language="JavaScript">
+	startHiddenAnswer("4");
+</script>
+  <p>Note the following relationships: there are <code>n</code> trapezoids but <code>n+1</code> endpoints. Number the trapezoids from <code>0</code> to<code> n-1</code> and the end points from <code>0</code> to <code>n</code>. Then<code> x<sub>0</sub> = a</code> and <code>x<sub>n</sub> = b</code> and <code>x<sub>i+1</sub> = x<sub>i</sub> + deltaX</code>. We don't actually have to have all n endpoints at once. Instead we'll calculate the area of each trapezoid starting with the leftmost, then moving right, calculating and adding each new area as we go. Thus, there are really only two x values to worry about, the left and right values for the trapezoid being worked on. </p>
+  <p>So we only need two x variables&#8212;call them <code>xLeft</code> and <code>xRight</code>. For trapezoid 0 <code>xLeft = a</code> and <code>xRight = xLeft + deltaX</code>. </p>
+  <p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("integral.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script></p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full </h1>
+ <p>
+  <script language="JavaScript">
+setButtons(true, true, true,"","");
+insertCode("for_loop.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime1.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime2.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("prime3.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_1.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("combination_2.cpp", true, "code", "","all","all");
+  </script>
+</p>
+  <p><script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("fibonacci.cpp", true, "code", "","all","all");
+  </script>
+</p>
+  <p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("while_1.cpp", true, "code", "","all","all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("sum1.cpp", true, "code", "", "all","all");
+  </script>
+</p>
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

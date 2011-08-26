@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Pop-Ups</title>
+</head>
+<body>
+<script language="Javascript" type="text/javascript">
+<!--
+insertPopUp("demo1","This is the demo1 pop-up!");
+insertPopUp("demo2","<h2>Hint</h2><p>You can use <strong>html</strong> in popups!</p>");
+insertPopUp("click","<h2>Hint</h2><p>You can clear a frozen pop-up by clicking on its link again.</p>");
+//-->
+</script>
+
+<h2><a name="purpose">Purpose</a></h2>
+<p>Web sites are very non-linear and windows are really quite small. It's hard to get a lot of information on the screen without cluttering it. Scrolling or drilling down are fine for some things but it is easy to lose context. <script language="Javascript" type="text/javascript">
+insertPopLink("demo1", "Pop-ups");
+</script> are an alternative. They are quite familiar from windows help pages. In essence, when you rollover a pop-up link a small <code>&lt;div&gt;</code> of html code pops up.</p>
+ <h2>Pop-up Styles</h2>
+<dl>
+<dt>popup</dt>
+<dd>controls the appearance of the pop-ups</dd>
+<dt>poplink</dt>
+<dd>controls the appearance of the pop-up links</dd>
+</dl>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>insertPopUp(name, htmlString, isDef, width, height)</strong><br>
+<h3>Arguments</h3>
+<dl><dt>name</dt>
+<dd>a <strong>string</strong> giving a unique name (for the current page) to
+  the pop-up.</dd>
+<dt>htmlString</dt>
+<dd>a <strong>string</strong> containing the html for the pop-up. It can be a
+  simple string or it can contain HTML markups.</dd>
+<dt>isDef</dt>
+<dd>a <strong>boolean</strong> which should be set to <code>false.</code></dd>
+<dt><code></code></dt>
+<dt>Optional Arguments</dt>
+<dd>width and height give the dimensions of the pop-up in pixels. If not specified,
+  default values will be used. </dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The pop-up is written dynamically into the document at the point of invocation. It is initially hidden.</p>
+<strong>Comment</strong><br>
+<p>If HTML markups are included in the pop-up, authors would be advised to embed
+  the function call within an HTML comment.</p>
+<hr>
+<strong>startPopUp(name)<br>
+endPopUp()</strong><br>
+<strong>Comment</strong><br>
+<p>These two routines are an alternative to the <strong>insertPopUp</strong> routine. The only difference is that the <strong>startPopUp</strong> function
+is invoked before the pop-up HTML text and the <strong>endPopUp</strong> after it. No <strong>htmlString</strong> argument
+is used because the desired HTML appears directly on the page between the two
+calls marking the beginning and ending of the pop-up.</p>
+<hr>
+<strong>insertPopLink(name, link )</strong><br>
+<h3>Arguments</h3>
+<dl><dt>name</dt>
+<dd>a <strong>string</strong> giving a the name of the pop-up to be displayed
+  when the link is rolled-over. Multiple links can reference the same pop-up.</dd>
+<dt>link</dt>
+<dd>a <strong>string</strong>containing the text for the link itself. This is exactly how conventional links work.</dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The pop-up link is written dynamically into the document at the point of invocation. 
+  (dx,dy) can be used to move it around by trial and error, however, the effect 
+  is problematic since the page may be laid out on the user's browser differntly 
+  from the author's.</p>
+<hr>
+<strong>startPopLink(name )<br>
+endLink()</strong><br>
+<strong>Comment</strong><br>
+<p>These two routines are an alternative to the <strong>insertPopLink</strong> routine. The only difference is that the <strong>startPopLink</strong> function is invoked before the link text and the <strong>endLink</strong> after it. No <strong>link</strong> argument is used because the link text is already on the page between the two calls marking the beginning and ending of the link.</p>
+<hr>
+<h2>Usage</h2>
+<p>Pop-ups can be used to provide <script language="Javascript" type="text/javascript">
+<!--
+insertPopLink("demo2", "hints");
+//-->
+</script> or answers to questions or to give more information, a piece at a time, without cluttering up the screen or losing its context. The two popups for this page were created by inserting the following javaScript right after the <code>&lt;body&gt;</code> tag.</p>
+<div><pre><code>
+&lt;script language="Javascript" type="text/javascript"&gt;
+&lt;!--
+insertPopUp("demo1","This is the demo1 pop-up!");
+insertPopUp("demo2","&lt;h2&gt;Hint&lt;/h2&gt;&lt;p&gt;You can use &lt;strong&gt;html&lt;/strong&gt; in popups!&lt;/p&gt;");
+//--&gt;
+&lt;/script&gt;
+</code></pre></div>
+<p>They didn't have to go right after the <code>&lt;body&gt;</code> tag but they do have to appear before any pop-up link that references them, so immediately after the <code>&lt;body&gt;</code> tag is a good, safe choice which doesn't alter the structure of the page; after all,  pop-ups are invisible and will ultimately be placed in juxtaposition with their invoking link.</p>
+<p>Any number of links may refer to the same <script language="Javascript" type="text/javascript">
+<!--
+insertPopLink("demo1", "pop-up");
+//-->
+</script>. Here the JavaScript call <code>insertPopLink("demo1", "pop-up");</code> was inserted in-line into this paragraph between the word <i>same</i> and the period that ended the previous sentence.</p>
+<p>If you <script language="Javascript" type="text/javascript">
+<!--
+insertPopLink("click", "click");
+//-->
+</script> 
+on a pop-up link the pop-up will freeze into place. This one give the appropriate hint as to how to clear it.</p>
+<p>Popup style is controlled by the class <code>.popup</code> in the style sheets and popup links by <code>.poplink</code>. </p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

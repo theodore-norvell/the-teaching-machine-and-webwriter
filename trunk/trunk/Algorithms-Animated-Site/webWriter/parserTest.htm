@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Parser Test</title>
+<script language="JavaScript" src="parser.js"></script>
+</head>
+
+<body>
+<h2>Set Tests</h2>
+<p>Put the following operator strings into a set: &amp; ! != == \ + and</p>
+<script language="javascript">
+	var set = new TokenSet();
+	set.add("&");set.add("!");set.add("!=");set.add("==");set.add("\\"); set.add("+"); set.add("and");
+</script>
+<p>Now dump as a string: 
+<script language="javascript">
+	document.write(set.toString());
+</script></p>
+<!-- <p>and as a regular expression
+<script language="javascript">
+	document.write(set.toRegExp().toString());
+	var regExp = new RegExp("&|\!|\!\=|\=\=|\\|\+|and","g");
+	document.write("</p><p>Compare to regExp: " + regExp.toString());
+</script></p>
+ --><p>Now let's check to see if this string 
+<script language="javascript">
+	var str = "x == y and !z";
+	document.write(str);
+</script></p>
+contains any of the op strings. String contains 
+<script language="javascript">
+	var p=-1;
+	while (true){
+		p = set.getPosIn(str, p+1);
+		if (p > -1) document.write(str.substr(p) + ", ");
+		else break;
+	} 
+	
+</script></p>
+
+<h2>Op Table Tests</h2>
+<p>Define opOr, opAnd and opNot functions and then create an op table by adding</p>
+<pre> opTable.add(new Op("&", "\u2022", 2, opAnd, Op.LEFT));
+opTable.add(new Op(".", "\u2022", 2, opAnd, Op.LEFT));
+opTable.add(new Op("|", "+", 1, opOr, Op.LEFT));
+opTable.add(new Op("+", "+", 1, opOr, Op.LEFT));
+opTable.add(new Op("!", "~", 3, opNot, Op.UNARY));
+opTable.add(new Op("~", "~", 3, opNot, Op.UNARY));
+</pre>
+<script language="javascript">
+function opOr(left, right){
+	return left || right;
+}
+
+function opAnd(left, right){
+	return left && right;
+}
+
+function opNot(left){
+	return !left;
+}
+// Also need an evaluateLeaf function
+function evaluateLeaf(token, set){
+	return set.contains(token);
+}
+
+
+
+
+myTable = new Array();
+myTable[0] = new Op("&", "\u2022", 2, opAnd, Op.LEFT);
+myTable[1] = new Op(".", "\u2022", 2, opAnd, Op.LEFT);
+myTable[2] = new Op("|", "+", 1, opOr, Op.LEFT);
+myTable[3] = new Op("+", "+", 1, opOr, Op.LEFT);
+myTable[4] = new Op("!", "~", 3, opNot, Op.UNARY);
+myTable[5] = new Op("~", "~", 3, opNot, Op.UNARY);
+
+var opTable = new OpTable(myTable);
+
+var equivalents = new Array();
+equivalents[0] = new Alias("Script", "S");
+equivalents[1] = new Alias("Lib", "L");
+
+document.write("<p>" + opTable.toString() + "</p>");
+document.write("<p>binaryOps - " + opTable.binaryOps.toString() + "</p>");
+document.write("<p>unaryOps - " + opTable.unaryOps.toString() + "</p>");
+document.write("<p>terminators - " + opTable.terminators.toString() + "</p>");
+
+  </script>
+  <h2>Parser Tests</h2>
+ <p>Now creating a parser using the opTable</p>
+<script language="javascript">
+var parser = new Parser(opTable, evaluateLeaf, equivalents);
+
+  </script>
+  </p>
+</p>
+<p>This is a test of the parser. Parsing &quot;(C|D&E)&(A&B)&!S&quot;</p>
+<p><script language="javascript">
+parser.setParseString("(C|D&E)&(A&B)&!S");
+var tree = parser.eParser();
+tree.dump();
+</script> </p>
+<p>Check for A, A&amp;C&amp;S, A&amp;B&amp;D&amp;E&amp;S, A&amp;B&amp;D&amp;E&amp;!S </p>
+<p>
+  <script language="javascript">
+parser.setParseString("(C|D&E)&(A&B)&!S");
+var tree = parser.eParser();
+tree.dump();
+  </script>
+</p>
+<p>Parsing &quot;(C.D+E).(A+B).~S&quot;</p>
+<p>
+  <script language="javascript">
+parser.setParseString("(C.D+E).(A+B).~S");
+var tree = parser.eParser();
+var set = new Set();
+set.add("A");
+document.write("<p>inside tag A yields " + tree.evaluate(set) + "<\p>");
+set.add("C");
+set.add("S");
+document.write("<p>inside tags A, C and S yields " + tree.evaluate(set) + "<\p>");
+set.remove("C");
+set.add("B");
+set.add("D");
+set.add("E");
+document.write("<p>inside tags A, B, D, E and S yields " + tree.evaluate(set) + "<\p>");
+set.remove("S");
+document.write("<p>inside tags A, B, D and E yields " + tree.evaluate(set) + "<\p>");
+set.remove("A");
+set.remove("D");
+document.write("<p>inside tags B and E yields " + tree.evaluate(set) + "<\p>");
+
+  </script>
+</p>
+<p>Parsing &quot;George.Fred+Ted.~Alice&quot;</p>
+<p>
+  <script language="javascript">
+parser.setParseString("George.Fred+Ted.~Alice");
+var tree = parser.eParser();
+tree.dump();
+  </script>
+</p>
+</body>
+</html>

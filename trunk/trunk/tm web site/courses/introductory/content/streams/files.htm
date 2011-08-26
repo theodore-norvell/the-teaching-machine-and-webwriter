@@ -1,0 +1,319 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Streams and Files</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h2>Input and Output <a name="inputAndOutput"></a></h2>
+<p>C++ treats inputs and outputs as <em>streams</em> of data&#8212;that is piece of data after piece of data after piece of data, flowing one after another as if in a stream.</p>
+<p>There are three standard streams, only two of which we need to be concerned with (the third is an error stream, used for reporting errors, and works just like the output stream). </p>
+<h3>cout</h3>
+<p>The standard output stream. Data is <em>inserted</em> into the standard output stream using the <em>insertion</em> operator, &lt;&lt; , for example,</p>
+<p><code>cout &lt;&lt; &quot;The value of x is &quot; &lt;&lt; x &lt;&lt; endl;</code></p>
+<p>This means that the string literal <code>&quot;The value of x is &quot;</code> is first inserted into <code>cout</code>, then the current value of <code>x</code> is inserted and finally a special token <code>endl</code> is tossed in which tells the <code>cout</code> stream that the line has ended.</p>
+<p>In this course the standard output stream will almost always be attached to the console window. Assuming <code>x</code> is currently <code>3.76</code>, you would see</p>
+<p><code>The value of x is 3.76</code></p>
+<p>displayed on a console window on your computer screen.</p>
+<p><code>cout</code> is a pretty smart object and knows how to display data of almost any type properly.</p>
+<h3>cin</h3>
+<p>The standard input stream. Data is extracted from it using the standard extraction operator, <code>&gt;&gt;</code> . For example</p>
+<pre><code>double x;
+int i;
+cin &gt;&gt; x &gt;&gt; i;</code></pre>
+<p>declares a <code>double</code> variable <code>x</code>, an <code>int</code> variable <code>i</code> and then extracts values for them from the input stream, <code>cin</code>. <code>cin</code> will almost always be connected to the keyboard in this course.</p>
+<h3>Formatting Input</h3>
+<p>It's hard for a user to enter data into a program unless the programmer tells the user what is wanted. That is your program must prompt the user for input. Do this by mixing input and output commands as follows.</p>
+<pre><code>double cost;
+int quantity;
+cout &lt;&lt; &quot;Please input the unit cost: &quot;;
+cin &gt;&gt; cost;
+cout &lt;&lt; endl &lt;&lt; &quot;And now the number of items: &quot;;
+cin &gt;&gt; quantity;
+cout &lt;&lt; endl;</code></pre>
+<p>Note that by not inserting an <code>endl</code> at the end of the first <code>cout</code> statement we leave the cursor at the end of the prompt. Then we start the next <code>cout</code> with an <code>endl</code> moving the second prompt (and input) onto its own line. </p>
+<h4>Input: Stream Extraction Operator</h4>
+<p> <code>cin &gt;&gt; x;</code> &#8212;Read a value from the<em> standard input</em> stream (usually the keyboard) and store it in the variable named <code>x</code>. </p>
+<p><code>cin</code> is an <em>identifier</em> for the <em>standard input</em> stream (keyboard) .</p>
+<ol>
+  <li> Assigns to variables left to right order. </li>
+  <li> What can be input depends on the data type of the variable. </li>
+  <li> whitespace (tab, space, newline) is skipped. </li>
+  <li> The reading marker keeps track of the next character to be read. </li>
+</ol>
+<p>Below is a representation of a  <em>stream</em> which is a sequence of characters
+  used for input or output </p>
+  <p><img src="../../content/streams/input_stream.png" width="800" height="92"></p>
+  <p>Each stream has a <em>stream buffer pointer</em> which advances through the steam
+  character by character.</p>
+  <p>If the above were the input stream and we wrote the following code</p>
+  <blockquote>
+    <pre><code>char next;
+cin &gt;&gt; next; </code> </pre>
+  </blockquote>
+  <p>The initial space would be skipped. The pointer would advance to the next
+    <em>non-whitespace</em> character, <code>a</code>, and read that into <code>next</code>, then move
+    to the character after, leaving it like so</p>
+  <p><img src="../../content/streams/input_stream3.png" width="800" height="92"></p>
+  <p>If we were to write a loop</p>
+  <blockquote>
+    <pre><code>char next;
+cin &gt;&gt; next;
+while (!cin.fail()) {
+   // do something with next
+   cin &gt;&gt; next;
+}</code></pre>
+</blockquote>
+<p>and the pointer were to start at the <code>n</code> as above, <code>next</code> would
+  be set to <code>'n',
+  '3', '4', '.', '7', 't', 'o',  'n'</code> and finally <code>'1'</code> in
+  turn. The whitespace ( <code>' '</code> and <code>'\n'</code> ) would be skipped
+  over.</p>
+<p>The <code>fail()</code> method of class <code>istream</code> returns <code>true</code> <em>after
+  we try to read in the character</em> if the operation failed for any reason
+  whatsoever (for example, there are no more characters in the <code>istream</code>). </p>
+<p>There is no way to look at the <code>istream</code> before we read the character to tell
+  if its going to fail. </p>
+<h2 class="pagebreak"><a name="formatted">Extracting Formatted Data from <code>cin</code> </a></h2>
+  <p>Suppose we had the pointer in this position</p>
+  <p><img src="../../content/streams/input_stream4.png" width="800" height="92"></p>
+  <p>and were to write</p>
+  <blockquote>
+    <pre><code>double next;
+cin &gt;&gt; next; </code> </pre>
+  </blockquote>
+  <p>Since <code>next</code> has been declared a <code>double</code> here, the
+    input stream extraction operator will try to extract a number. In this case <code>next</code> would
+    be set to <code>34.7</code> and
+    the pointer would end up like so</p>
+  <p><img src="../../content/streams/input_stream8.png" width="800" height="92"></p>
+  <p>That is, the pointer stops as soon as the character under it cannot be part
+    of the number. </p>
+  <p>Where would it have stopped if <code>next</code> had been declared an <code>int</code>?</p>
+  <p>Obviously, to use the extraction operator successfully, <em>we must know
+    ahead of time what kind of data to expect</em>.</p>
+  <p>If we try to extract to an <code>int</code> variable with the pointer in
+    the position shown above, the variable will end up undefined. </p>
+  <h2 class="pagebreak"><a name="readingAll">Reading All Characters</a></h2>
+  <p>There are times when we would like to read every character (including whitespace).
+    Instead of using the extraction operator <code>&gt;&gt;</code> we can utilize
+    another member function of class <code>istream</code>, the <code>get()</code> function.</p>
+  <p>Here's a program to count words in the input stream. It assumes the stream
+    only contains text.</p>
+  <p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("word_count.cpp", true, "code", "", "A");
+    </script>
+  </p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+  <hr>
+  <p align="center"><strong>Code Notes</strong></p>
+  <p class="hang">1. The program works by processing one character at a time.
+    It recognizes that at any time we are either in a word or not, which is determined
+    by whether the character we've just retreived is whitespace or not. We increment
+    the <code>wordCount</code> whenever we make a <em>transition</em> from whitespace
+    into a word.</p>
+  <p class="hang">2. The separate <code>bool</code> variable <code>inWord</code> is
+    used to detect the transition. If the <code>next</code> character is non-whitespace
+    but we are not <em>currently</em>    in a word (<code>inWord</code> is <code>false</code>)
+    then <code>next</code>  must represent the first character of a new word.</p>
+  <p class="hang">3. We say that the variable <code>inWord</code> represents
+    our current <em>state</em>.</p>
+  <hr>
+  
+  <script language="JavaScript">
+ endNote();
+</script  
+  >
+  <h2><a name="files">Files</a> </h2>
+  <p>A file is a named area on a
+        secondary storage device (e.g., disk). </p>
+  <p>In C++ files are streams, similar to <code>cout</code> and <code>cin</code> .
+</p>
+  <p>Files have to be opened before they can be used, (and should be closed
+      when we're done with them). </p>
+<pre><script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("file.cpp", false, "code", "3891lecture.tmcfg", "");
+  </script>
+</pre>
+<h3>File Types</h3>
+<p><code>ifstream</code> &#8212;input file stream. Program can read from it using <code>&gt;&gt;</code> ,
+    <code>get</code> or <code>getline</code> . </p>
+<p><code>ofstream</code>&#8212;output file stream. Program can write to it using <code>&lt;&lt;</code> or
+  <code>put</code>. </p>
+<h3>File Stream Operations</h3>
+<p>ifstream and ofstream are actually classes, so, like strings, when we use
+  them for seclarations we are actually declaring objects instead of variables.
+<p>That is
+<p><code>ifstream inFile;</code>
+<p>declares <code>inFile</code> <em>to be an object of class</em> <code>ifstream</code>
+<p>As with strings, file stream objects have a number of operations (or
+    member functions) available to them. Here is a table of some very simple
+  ones:
+<table width="100%"  border="1">
+  <tr>
+    <th scope="col">operation</th>
+    <th scope="col"><div align="center">ifstream</div></th>
+    <th scope="col"><div align="center">ofstream</div></th>
+    <th bordercolor="#999999" scope="col">description</th>
+  </tr>
+  <tr>
+    <th bordercolor="#000000" scope="row"><code>void open(string filename)</code> </th>
+    <td><div align="center">yes</div></td>
+    <td><div align="center">yes</div></td>
+    <td>opens <code>filename</code> for input for <code>ifstream</code> objects or for output for <code>ofstream</code>      objects</td>
+  </tr>
+  <tr>
+    <th scope="row"><code>void close()</code></th>
+    <td><div align="center">yes</div></td>
+    <td><div align="center">yes</div></td>
+    <td>closes the file</td>
+  </tr>
+  <tr>
+    <th scope="row"><code>bool fail()</code></th>
+    <td><div align="center">yes</div></td>
+    <td><div align="center">yes</div></td>
+    <td>returns true if file operation fails for any reason </td>
+  </tr>
+  <tr>
+    <th scope="row"><code>bool eof() </code></th>
+    <td><div align="center">yes</div></td>
+    <td><div align="center">no</div></td>
+    <td>returns true if last read was an end of file </td>
+  </tr>
+  <tr>
+    <th scope="row"><code>char get() </code></th>
+    <td><div align="center">yes</div></td>
+    <td><div align="center">no</div></td>
+    <td>reads 1 character from an input file stream </td>
+  </tr>
+  <tr>
+    <th scope="row"><code>void put(char c)</code> </th>
+    <td><div align="center">no</div></td>
+    <td><div align="center">yes</div></td>
+    <td>writes one char to an output file stream </td>
+  </tr>
+</table>
+<p>Note that the non-mmber function getline can be used with input file streams
+  as well as the regular input stream. That is, given the declaration of inFile
+above, it is possible to read in a whole line from the file as follows:
+<blockquote>
+  <p>  <code>string aLine;<br>
+    getline(inFile, aLine);</code>
+</p>
+</blockquote>
+<p>This fetches everything from the current position up to the next newline char
+  from the <code>inFile</code> file stream. By adding a third argument to <code>getlune</code> you can
+  specify any other character. For example</p>
+<blockquote>
+  <p> <code>string aLine;<br>
+    getline(inFile, aLine, '*');</code> </p>
+</blockquote>
+<p>fetches everything up to the next asterisk.  </p>
+<h3>Input/Output Redirection</h3>
+<p>On Unix, Cygwin, or in a DOS window:
+<p><code>myprog &lt; mydata.txt</code>&#8212;run <code>myprog</code> using <code>mydata.txt</code> for the standard
+  input ( <code>cin</code> ).
+<p><code>myprog &gt; myoutput.txt</code>&#8212;run <code>myprog</code> using <code>myoutput.txt</code> for the
+  standard output ( <code>cout</code> ).
+<p><code>myprog &lt; mydata.txt &gt; myoutput.txt</code>&#8212;run <code>myprog</code> using <code>mydata.txt</code>  for
+  the standard input, and <code>myoutput.txt</code> for the standard output.</p>
+<p>Here's a little program that reads the input stream and copies it to the output
+  stream, capitalizing every letter as it goes.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("to_caps.cpp", true, "code", "", "", "");
+    </script>
+</p>
+<script language="JavaScript">
+ startNote();
+  </script>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. The program works by reading one character at a time and transferring
+  it unchanged to the output stream unless it is a lowercase alpha character
+  in which case it is made uppercase.</p>
+<p class="hang">2. Characters are stored in computers in an <em>underlying code</em>.
+  For example it is probable the letter <code>'a'</code> is represented by the
+  binary code
+  <code>01100001</code>  on your computer (if we read <code>01100001</code> as
+  an <code>int</code> it would be rendered as <code>97</code> so we often call
+  this code <code>97</code>). This is the coding scheme used by the Teaching
+  Machine (you can see characters evaluate to codes in the Expression Engine).</p>
+<p class="indent">The trouble is, you can't count on that code. It can
+  change over time, or from operating system to operating system, or from country
+  to country. Besides who wants to know anyway?</p>
+<p class="indent">What C++ does guarantee is that it is in a code and that whatever
+  the code is the characters <code>'a'</code>-<code>'z'</code> will be
+  contiguous, as will <code>'A'</code>-<code>'Z'</code> and <code>'0'</code>-<code>'9'.
+  </code>Thus the code for<code> 'b'</code> will be one greater than the code
+  for <code>'a'</code> while the code for <code>'k'</code> will be 10 bigger
+  than the code for <code>'a'</code>.</p>
+<p class="indent">The expression 
+
+
+<code>next &gt;= 'a' &amp;&amp; next &lt;= 'z'</code> takes advantage of this
+to check if <code>next</code> is lowercase. Literally, is the character between<code> 'a'</code> and <code>'z'</code>? </p>
+<p class="hang">3. Similarly, the computation 
+
+
+  <code>next += 'A' - 'a'</code> takes advantage of the fact that there is an
+  underlying code as well as the contiguity properties. <code>'A' - 'a'</code>is
+  the numerical difference between the codes for <code>'A'</code> and for <code>'a'.</code></p>
+<p class="indent">For example,
+    if we input a <code>'c'</code> into the Teaching Machine you will see in
+  the Expression Engine that the code for <code>'c'</code> is <code>99</code> while the code for <code>'A'</code>  is <code>65</code>, while that for <code>'a'</code> is <code>97</code>. Thus the difference between <code>'A'</code> and <code>'a'</code>  is <code>-32</code> (which just means the code for <code>'A'</code> is 32 less than the code for <code>'a'</code>).</p>
+<p class="indent">Since C++ guarantees that the code for <code>'c'</code> is <code>2</code> higher
+  than the code for <code>'a'</code> and the code for <code>'C'</code> is <code>2</code> higher
+  than the code for <code>'A'</code>, adding
+  <code>-32</code> to the code for <code>'c'</code> (<code>99</code>) will give
+  us <code>67</code> which of course represents <code>'C'</code>. Voila&#8212;instant
+  capitalization!</p>
+<hr>
+<p>
+  <script language="JavaScript">
+ endNote();
+</script  
+  >
+</p>
+<p>Programs that simply relay chars from the input to the output stream, possibly
+  changing them as they do so, are known as <em>filters</em>.</p>
+<p>The program above doesn't appear to run so well in the TM because both the
+  input stream and the output stream appear on the console together. But they
+  actually are separate streams! </p>
+<p>Filter programs  are really designed to work with files, using i/o redirection.
+  For example, if I take the executable version of the above program, I could
+  use it to capitalize any file by running the following command:</p>
+<blockquote>
+  <p><code>to_caps &lt; someFile.txt &gt; newFile.txt </code> </p>
+</blockquote>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- TemplateBeginEditable name="doctitle" -->
+<title>Unnamed Page</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<!-- TemplateEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- TemplateBeginEditable name="contents" -->
+&nbsp;
+<!-- TemplateEndEditable -->
+<div id="allExamples">
+ <!-- TemplateBeginEditable name="allExamples" -->
+<h1>Examples Shown in Full </h1>
+ <!-- TemplateEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

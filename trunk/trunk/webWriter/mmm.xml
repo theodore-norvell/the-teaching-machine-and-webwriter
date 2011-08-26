@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0//EN"
+          "http://www.w3.org/TR/MathML2/dtd/xhtml-math11-f.dtd">
+		 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:math="http://www.w3.org/1998/Math/MathML"
+	  xmlns:xlink="http://www.w3.org/1999/xlink">
+<head>
+<title>Untitled Document</title>
+<meta http-equiv="Content-Type" content="text/xml; charset=iso-8859-1"/>
+</head>
+
+<body>
+<p>Not using mathml: d &ge; 2 </p>
+
+<p>Let's try a simple symbol:
+  <math xmlns='http://www.w3.org/1998/Math/MathML'>
+    <mi>d</mi><mo>&ge;</mo><mn>2</mn>
+  </math>
+</p>
+
+<p>No MathML: f &isin; &Theta;(N<sup>2</sup>) </p>
+
+<p>With MathML:
+  <math xmlns='http://www.w3.org/1998/Math/MathML'>
+   <mi>f</mi>
+   <mo>&Element;</mo>
+   <mi>&Theta;</mi><mo>(</mo><msup><mi>N</mi> <mn>2</mn></msup><mo>)</mo>
+</math>
+</p>
+
+<p>Are there scripts? <script language="JavaScript">
+       alert('alert');
+       document.write( 'yes!' ) ;
+   </script>
+   <noscript>
+       no!
+   </noscript>
+</p>
+</body>
+</html>

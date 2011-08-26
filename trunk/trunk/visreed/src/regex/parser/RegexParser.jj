@@ -1,0 +1,86 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  JDK_VERSION = "1.5";  static = false;}PARSER_BEGIN(RegexParser)package regex.parser;
+
+import regex.model.RegexNode;
+import regex.model.RegexWholeGraph;
+
+public class RegexParser{
+    private RegexBuilder builder;
+        public static RegexNode parse(
+        RegexWholeGraph wg,
+        java.io.Reader reader
+    ) throws ParseException {        RegexParser parser = new RegexParser(reader);
+        parser.builder = new RegexBuilder(wg);        try{            parser.alternation();
+            parser.makeRoot();
+            return parser.result();        }        catch (Exception e){            System.out.println("Parsing Exception, message: " + e.getMessage());
+            throw new ParseException(e.getMessage());        }        catch (Error e){            System.out.println("Parsing Error, message: " + e.getMessage());
+            throw new ParseException(e.getMessage());        }    }
+
+    public RegexNode result(){
+        return builder.pop();    }
+
+    private void makeRoot(){
+        builder.makeRoot();    }
+      }PARSER_END(RegexParser)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : /* OPERATORS */{  < PLUS : "+" >| < STAR : "*" >
+| < QUESTION_MARK : "?" >| < ALTERNATION : "|" >
+| < OPEN_PAR : "(" >
+| < CLOSE_PAR : ")" >
+| < SEMI_COLON : ";" >}TOKEN :{  < STRING : (< DIGIT > | < TERMINAL >)+ >| < #DIGIT : [ "0"-"9" ] >
+| < TERMINAL : [ "a"-"z" ] | [ "A"-"Z" ] >}
+void terminal() :
+{
+    Token t;}
+{
+    t = < STRING >
+    { builder.buildTerminal(t.image); }
+  |
+    < OPEN_PAR >
+    alternation()
+    < CLOSE_PAR > }
+
+void alternation() :
+{
+    int numOfChildren;
+}
+{
+    seq()
+    (
+        { numOfChildren = 1; }
+        (          < ALTERNATION >
+          seq()
+          { numOfChildren++; }
+        )+
+        { builder.buildAlternation(numOfChildren); }
+    | 
+      {}
+    )   
+}
+
+void non_seq() :
+{}
+{
+    terminal()
+    (
+        < QUESTION_MARK >
+        { builder.buildOptional(); }
+      |
+        < PLUS >
+        { builder.buildKleenePlus(); }
+      |
+        < STAR >
+        { builder.buildKleeneStar(); }
+      |{} 
+    ) }
+
+void seq() :{    int numOfChildren;
+}
+{
+    non_seq()
+    { numOfChildren = 1; }    
+    (
+        (< SEMI_COLON >)?        non_seq()
+        { numOfChildren ++; }
+    )*
+    { builder.buildSequence(numOfChildren); }
+}

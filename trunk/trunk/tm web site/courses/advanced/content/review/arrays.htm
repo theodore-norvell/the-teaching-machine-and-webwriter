@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Arrays</title>
+</head>
+<body>
+<p>
+<script language="JavaScript">
+insertCode("arrays1.cpp", false, "code");
+</script>
+</p>
+<p>Dimensionality of the array must be declared so that compiler knows how much 
+  storage to set aside.</p>
+<p>Multidimensional arrays are declared as arrays of arrays (in row-column order).</p>
+<p>Beware of declaring large arrays as temporary variables - temporary storage 
+  is extremely limited.</p>
+<p>Declare as <span class="codeInline">external</span> or as <span class="codeInline">static</span> 
+  <span class="codeInline">internal</span>. </p>
+<p> 
+<script language="JavaScript">
+insertCode("arrays2.cpp", false, "code");
+</script>
+</p>
+<p>What is the difference between these two declarations? </p>
+<p>Which is preferred?</p>
+<p class="pagebreak">&nbsp;</p>
+<p>Use the external form except to explicitly share variables&#151;</p>
+<p> 
+<script language="JavaScript">
+insertCode("arrays3.cpp", false, "code");
+</script>
+</p>
+<p>Initialization of Arrays</p>
+<p> 
+  <script language="JavaScript">
+insertCode("arrays4.cpp", false, "code");
+</script>
+</p>
+<p>(as usual compiler pays no attention to the white space)</p>
+<h1><a name="reference">Element References</a></h1>
+<p> 
+  <script language="JavaScript">
+insertCode("arrays5.cpp", false, "code");
+
+</script>
+</p>
+<p> 
+  <script language="JavaScript">
+insertCode("arrays6.cpp", false, "code");
+
+</script>
+</p>
+<p>In fact, we will see later on that it is possible to develop code in C++ which 
+  will allow arrays to be copied by the statement <span class="codeInline">b = 
+  a</span> where<span class="codeInline"> b</span> and <span class="codeInline">a</span> 
+  are both arrays (even if they are a different size!).</p>
+<p>Passing arrays by value is problematic </p>
+<ol>
+  <li>Large amounts of data may have to be copied - slow!</li>
+  <li>The stack (temporary data store) may get over-run.</li>
+  <li>Preclude indefinite limits on array size to avoid (2).</li>
+</ol>
+<p> Arrays are passed by reference.</p>
+<p>In function prototypes</p>
+<div style="position:relative; width:89px; height:57px; z-index:1; left: 354px; top: 0px" class="breakoutBox">why 
+  is n passed in?</div>
+<p class="codeInline">void dummy(int grades[], int n)</p>
+<p>is used to declare <span class="codeInline">grades</span> as an array of integers</p>
+<h1><a name="CStrings">C Style Strings</a> </h1>
+<p>In C a string is an array of characters terminated by a null character ( <span class="codeInline">'\0'</span>) 
+  For example</p>
+<p><span class="codeInline">char stringArray[15] = "Hello world\n";</span></p>
+<ul>
+  <li>declares <span class="codeInline">stringArray</span> to be a an array of 
+    15 characters.</li>
+  <li> initializes it to the constant string <span class="codeInline">"Hello world\n"</span> 
+    which is permanently embedded in the code. </li>
+</ul>
+<p>How many characters do you think are in the constant string? In other words, 
+  how small could I make <span class="codeInline">stringArray</span> and still 
+  be able to hold all of <span class="codeInline">"Hello world!\n"</span>?</p>
+<p> A function to return the length of a string</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrays7.cpp", true, "code", "", "A","");
+</script>
+</p>
+<p>How else could we write this? </p>
+<h1><a name="multi">Passing Multidimensional Arrays</a></h1>
+<p>Unhappily, this isn't possible</p>
+<p class="codeInline">void matrixComp(double x[][]);</p>
+<p>because the compiler has no idea what <span class="codeInline">x[i][j]</span> 
+  means. There are two alternatives</p>
+<p>(a) <span class="codeInline">void matrixComp(double x[][6]);</span> </p>
+<p>i.e. declaring all dimensions except (possibly) the first one.</p>
+<p>Fine if you know the dimensionality beforehand e.g. computer graphics.</p>
+<p>(b) <span class="codeInline">void matrixComp( double *x, int cols);</span></p>
+<p>Treating the array as a one dimensional array and passing in the dimensionality 
+  yourself.</p>
+<p>
+  <script language="JavaScript">
+insertCode("arrays8.cpp", false, "code");
+
+</script>
+</p>
+<p>In other words, multidimensional arrays are stored as follows: </p>
+<blockquote> 
+  <blockquote> 
+    <blockquote>
+      <p><span class="codeInline">x[0] x[4] x[8]</span></p>
+      <p><span class="codeInline"> x[1] x[5] x[9]</span></p>
+      <p><span class="codeInline"> x[2] x[6] x[10]</span></p>
+      <p><span class="codeInline"> x[3] x[7] x[11]</span></p>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<p> so <span class="codeInline">x[3][1]</span> is at <span class="codeInline">x[3
+     + 1.4] = x[7]</span></p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

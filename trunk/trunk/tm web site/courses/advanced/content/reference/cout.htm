@@ -1,0 +1,57 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>the cout stream</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3> Library Declaration</h3>
+<div class="syntaxDef">
+  <p class="code"> #include  &lt;iostream&gt;</p>
+  <p class="code"><span class="codeKeyword">using</span> <span class="codeKeyword">namespace</span> std; </p>
+</div>
+  <p>must be typed into any file in which  the <code>cout</code> stream is to be utilized, ahead of all such calls. Actually the <span class="codeKeyword">using</span> directive is optional but if it is not included, all references to <code>cout</code> must be in the form <code>std::cout</code>.</p>
+  <p><code>cout</code> is the standard output stream and is usually connected to the console. variables, expressions and objects may all be tossed into the output stream using the insertion operator <span class="codeRequired">&lt;&lt;</span>.</p>
+  <h3>Examples </h3>
+  <div class="syntaxDef">
+  <p class="code">cout &lt;&lt; &quot;The value of x + y is &quot; &lt;&lt; x + y &lt;&lt; endl; </p>
+  </div>
+<p>causes the string literal<code> &quot;The value of x + y is &quot;</code> to be inserted into the output stream followed by the value of the expression <code>x + y</code> followed by an <code>endl</code> token which both puts a newline into the output stream and requests that all elements be displayed on the screen at once. </p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

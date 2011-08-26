@@ -1,0 +1,113 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Main and Program Output</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+    <h2><a name="screenOutput">Screen Output</a></h2>
+    <p>In programming when we talk about output we can mean two things</p>
+    <ol>
+      <li>Output from a function.</li>
+      <li>Output from a program (i.e. to a screen or file).</li>
+    </ol>
+    <p>So far we have concentrated on the first, our mechanisms for passing data back from a function to the code that called the function.</p>
+    <p>Let's look at how we write to the computer screen. It's actually very simple.</p>
+    <p><code>cout &lt;&lt; &quot;Hello world!\n&quot;; </code></p>
+    <p>This line of code tells us to output the string literal<code> &quot;Hello world!\n&quot;</code> to the standard output device (which is called <code>cout</code>). </p>
+    <p>We should point out that this particular technique is only available in C++. We can write to a screen in C as well, but we have to use an older, more difficult technology which we won't cover  in this course.</p>
+    <h2><a name="completePrograms">Complete Programs</a></h2>
+    <p>To creat a complete program, one has to have a <code>main()</code> function. <code>main</code> is a special function in C/C++ that marks the starting point of a program.</p>
+    <p>Each program has one, and only, one <code>main()</code> function.</p>
+    <p>Here is the traditional C++ first program,</p>
+	<p>
+	  <script language="JavaScript">
+		setButtons(true, false, true,"","");
+		insertCode("hello_world.cpp", true, "code", "", "A", "A");
+	</script>
+</p>
+	<p>Note that <code>main()</code> returns an <code>int</code>. Who's getting the <code>int</code>? It's actually being sent to the operating system. Normally, returning a <code>0</code> means the program ran error free. Anything else means there was some kind of problem. We'll always <code>return 0</code> in this course. </p>
+	<p><code>cout</code> is actually part of the <code>iostream</code> library, so you must <code>include iostream</code> before you can use <code>cout</code>.</p>
+	<p><code>using namespace</code> is something new. <code>cout</code> has actually got two names. It's full name is <code>cout std</code> (which is written in C++ as <code>std.cout</code>). <code>cout</code> is similar to a personal name and <code>std</code> to a family name.</p>
+	<p>Instead of writing the whole name out in full, we put the <code>using namespace</code> command right after the <code>#include &lt;iostream&gt;</code>. Then every time the compiler sees <code>cout</code> it will know we mean <code>cout</code> in the <code>std</code> namespace (that is, the <code>cout</code> in the <code>std</code> family).</p>
+	<h2><a name="moreCout">More on  cout</a></h2>
+	<p>When we write</p>
+	<blockquote>
+	  <p><code>cout &lt;&lt; &quot;Hello world!\n&quot;;</code></p>
+    </blockquote>
+	<p><code>cout </code>is a stream, the stuff in quotations is a string literal, and the &lt;&lt; is actually an operator. It's called the <span class="stxNonterminal">insertion</span> operator.</p>
+	<p>So the line above actually means insert the string to the right of the operator into the stream at the left of it.</p>
+	<p>We can insert multiple items into the output stream, for example</p>
+	<blockquote>
+	  <p><code>cout &lt;&lt; &quot;Hello &quot; &lt;&lt; world!\n&quot;;</code></p>
+    </blockquote>
+	<p>puts exactly the same thing to the screen as does the first example, as does
+	  this one</p>
+	<blockquote>
+	  <p><code>cout &lt;&lt; &quot;Hello &quot;;<br>
+      </code><code>cout &lt;&lt; world!\n&quot;;</code></p>
+</blockquote>
+	<p>When you are done outputting a string literal to the screen, it does not
+	  force a newline (unless of course, you put one in, as we did at the end
+	  of <code>world</code>). The next output takes up exactly where the old one
+	  left off.</p>
+	<p>
+	  <script language="JavaScript">
+		setButtons(true, false, true,"","");
+		insertCode("hello_world_2.cpp", true, "code", "", "A", "A");
+	  </script>
+	</p>
+	<h3><a name="endl">The <code>endl</code> Token</a></h3>
+	<p>There is another way to force a newline. We can insert an endl token into
+	  the output stream like this.</p>
+	<blockquote>
+	  <p><code>cout &lt;&lt; &quot;Hello world! &lt;&lt; endl &quot;;</code> </p>
+    </blockquote>
+	<p>Why have two ways? As it happens, there is a difference, which has to do
+	  with the way computers write to the screen. The actual writing is handled
+	  by the operating system (e.g. Windows XP, Linux, Mac OSX). For reasons
+	  of efficiency, output requests are normally written in a two step process.
+	  They are first written to a <em>buffer. </em>Then, sometime later, the contents
+	  of the buffer get written to the screen.</p>
+	<p>This means you might output something and it won't appear right away. If
+	  you toss and <code>endl</code> into the output stream, it not only ends the line, it
+	  also requests that the buffer contents be written to the screen at once.</p>
+	<p>So for interaction with humans, we often use <code>endl</code>.</p>
+	<h2><a name="otherData">Outputting Other Data</a></h2>
+	<p>The output stream routines know how to handle most built-in data types (and
+	  can be told how to handle user defined types as well).</p>
+	<p>Thus we can write</p>
+	<p>
+	  <script language="JavaScript">
+		setButtons(true, false, true,"","");
+		insertCode("div_remainder.cpp", true, "code", "", "A");
+	  </script>
+</p>
+	<p>Note that the cursor stops right after the last character written so we have
+	  to be careful to put in spaces so things don't run together. 	</p>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

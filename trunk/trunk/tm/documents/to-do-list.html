@@ -1,0 +1,117 @@
+<html>
+<head>
+  <title>To Do List for the Teaching Machine</title>
+</head>
+<body>
+  <h1>To-dos</h1>
+  <h2>Programmer-defined-visualization and JHigraph related To-Dos </h2>
+  <h3>Open</h3>
+  <ul>
+    <li> Triggered Calls (Theo)</li>
+    <li>Breakpoints (Theo and Michael)</li>
+    <li>Toolbar for visualizer with undo and go-to-breakpoint. (MPBL) </li>
+    <li>Curved lines when multiple edges between two nodes. (MPBL) </li>
+    <li>Scrollbars for visualizer windows. (MPBL)</li>
+    <li>Caching script manager relays for speed. </li>
+    <li> Callbacks (Theo)</li>
+    <li> Complete comprehensive list of Higraph scripting calls in interface and using @Override (Michael)</li>
+    <li> Set up Google site for examples (Pilu) [Done?]</li>
+    <li>Develop a set of examples for Pilu's course (Pilu).</li>
+    <li>Pull out generally useful instrumentation routines and put inPDV.jlib</li>
+    <li>Pull out instrumentation routines useful for Pilu's examples into separate user-level Java classes. (MPBL &amp; Theo &amp; Pilu)</li>
+    <li> When setting a TM breakpoint in the code (green box), do not immediately scroll to the highlighted line (Michael) </li>
+    <li> Consider a marker bar beside the scroll (like Eclipse) showing highlight and breakpoint locations (Michael)</li>
+    <li> Breakpiont (i.e. green cursor) should be moved to the nearest line where it will be effective or should be effective everywhere (Theo and Michael)</li>
+    <li> Pilu will document exact code plus steps to freeze undo and Theo will then look at the problem (Pilu and Theo)</li>
+    <li> Animated Transitions (Michael and Theo)</li>
+    <li>Layout manager plugins. </li>
+    <li>Look at creating a magic &quot;Datum&quot; type in Java. (Theo) </li>
+    <li>Hinting mechanism for layout managers. </li>
+  </ul>
+  <h3>Closed</h3>
+  <ul>
+    <li>Edge labels and label fills. (Theo) [Done.] </li>
+    <li>Turn off ellipses for hidden code when line nos. are off (Theo) [Done.] </li>
+    <li> Scripting Java (Michael) [Done]</li>
+    <li>In scripting, Invocation Target Exceptions mask the true error message. (Theo) [Done]</li>
+    <li> Complete Point Decorators (Michael)
+ [Done]       
+      <ul>
+          <li>There is a problem with defaults that are not null. (Michael) [Done]</li>
+      </ul>
+    </li>
+    <li>Redo of makeView crashes</li>
+  </ul>
+  <h2>Student oriented web-site</h2>
+  <h3>Open and in progress </h3>
+  <ul>
+    <li>Dijkstra's Algorithm [In progress, Theo]</li>
+    <li>Dynamic Array [In progress, Theo]</li>
+    <li>Kruskal's [In progress, Theo]</li>
+    <li>Others to be added </li>
+  </ul>
+  <h3>Closed</h3>
+  <h2>Language to-dos</h2>
+  <h3>Open</h3>
+  <ul>
+    <li>assert statements in Java (Theo)</li>
+    <li>In Java, if a package and a class have the same name, the compiler bails with an odd message. This is even true if the package and class names differ by case. E.g. fred.Fred means trouble.</li>
+    <li>Conditional expression (?:) in Java</li>
+    <li>Conditional expression (?:) in C++ </li>
+    <li>Make sure that + operator is properly overloaded for String+int and all such like. </li>
+    <li>+= operator and similar operators in C++ (Theo) </li>
+    <li>+= operator and similar operators in Java (Theo) </li>
+    <li>Multiple compilation units for C++ (Theo) </li>
+    <li>In Java, the syntax p.a.length does not work, although p.(a.length) does. (Theo)</li>
+  </ul>
+  <h2>VM &amp; Evaluator to-dos </h2>
+  <h3>Open and in progress</h3>
+  <ul>
+    <li>Need to not stop after declaration if there is a subsequent initialization.</li>
+    <li>Java stops on parameter initialization.  </li>
+    <li>After program has terminated, we can go back, but not forward. (Theo) </li>
+    <li>Sometimes the TM stops in invisible code. 
+      <ul>
+        <li>I'm not sure what was meant by this. --TSN </li>
+      </ul>
+    </li>
+  </ul>
+  <h3>Closed</h3>
+  <ul>
+    <li>Crashes on undo. (Theo) [Done] </li>
+  </ul>
+  <h2>WebWriter++ to-dos </h2>
+  <h3>Open</h3>
+  <ul>
+    <li>Putting back &quot;setSourceRoot&quot; capability. (In progress, Theo)</li>
+    <li>Selection expressions with spaces in them.</li>
+    <li>Configuration file is not applied correctly. (Possibly a race condition?)</li>
+  </ul>
+  <h2>Display to-dos</h2>
+  <h3>Open</h3>
+  <ul>
+    <li>Code window shows two current lines (yellow rectangles) after scroll. (MPBL) </li>
+    <li>Enhancement: Zooming for subwindows</li>
+    <li>Retrieving closed subwindows. Also configurations need to allow subwindows to be closed at start. </li>
+    <li>On Macintosh, the status line does not show or is black on black. (Theo)
+      <ul>
+        <li>[Fixed for application, by forcing Metal Look and Feel. Need to look at Applet situation.] </li>
+      </ul>
+    </li>
+  </ul>
+  <h3>Closed</h3>
+  <ul>
+    <li>Improve hiding of code lines. A code line should be hidden (in the current slection) if it contains no characters that are not hidden in the current selection. (Theo) [Done] </li>
+    <li>Highlighted line in code view is off by one for each pedagogical markup that ends a line. (Theo) [Done] </li>
+    <li>Mixed tabs and spaces at beginning of lines. (Theo) [Done] </li>
+    <li>Sometimes no lines show in code window until the selection is changed (Theo)  [Done] </li>
+  </ul>
+  <h2>Misc to-dos</h2>
+  <h3>Open</h3>
+  <ul>
+    <li>Standby dialogue should pop up as soon as load begins.</li>
+    <li>Need menu item for restart. </li>
+    <li>Drag and drop files and URLs</li>
+    <li>Fix link to instructor's manual in Windows installer.</li>
+  </ul>
+</html>

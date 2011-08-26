@@ -1,0 +1,221 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Complexity and Structure</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+  <h2><a name="Why">Why Study Programming?</a> </h2>
+  <ul>
+    <li>Virtually all engineers use computers in some way.</li>
+    <li> Engineers are responsible for output from programs they use.</li>
+    <li> It's likely that you'll have to write some programs some time.</li>
+    <li> Programming skills are needed in other courses.</li>
+    <li> Being able to program is a valuable job skill.</li>
+    <li> Programming/problem solving skills from this course can be applied to other areas.</li>
+    <li> Fundamental ideas underpin our digital world.</li>
+    <li>It's fun!!</li>
+  </ul>
+  <h2><a name="ComputerIntro">An Introduction to the Computer</a></h2>
+  <p>What's inside a computer?</p>
+<p>Here's roughly the way an engineer would view a computer </p>
+<p><img src="../../content/introduction/computer.png" width="596" height="507">
+</p>
+<p>The components </p>
+<ol>
+  <li>input devices (mouse, keyboard) which let us input data into a computer</li>
+  <li>output devices (screen, printer) which let us view data.</li>
+  <li>Memory devices, which let us store data, and are subdivided into
+    <ol>
+      <li>volatile memory (RAM) which loses data when the power is off</li>
+      <li>non-volatile memory (disks of various kinds) which hold data when power
+        is off.</li>
+    </ol>
+  </li>
+  <li>The CPU (Central Processing Unit) which processes all data.</li>
+  <li>The Data Highway (Bus) which is used to move data between memory and CPU</li>
+</ol>
+<p>When we send <script language="JavaScript">
+startDefLink("data",50,50);
+</script> 
+data<script language="JavaScript">endLink();</script> 
+to 
+<script language="JavaScript">
+startDefLink("memory",50,50);
+</script>
+memory
+<script language="JavaScript">endLink();</script>
+ we say we <em>write</em> the data.</p>
+<p>When we fetch data from memory we say we <em>read</em> the data.</p>
+<h3>Computers process data sequentially. </h3>
+<p>One or more pieces of data are <em>read</em> from memory (one at a time)</p>
+<p>The data is processed in the CPU</p>
+<p>The results are <em>written</em> back into memory (one at a time)</p>
+<h2><a name="ComputerPrograms">Computer Programs</a></h2>
+<p>A computer program is set of 
+  <script language="JavaScript">
+startDefLink("instruction",50,50);
+  </script>
+instructions
+<script language="JavaScript">endLink();</script>
+  (such as <em>add two numbers</em> or <em>print the answer</em>) to a computer bundled together for doing some common set of tasks (such as word processing or mathemetical modeling). Most of the instructions in a program involve the processing of 
+  <script language="JavaScript">
+startDefLink("data",50,50);
+  </script>
+data.
+<script language="JavaScript">endLink();</script>
+</p>
+<p>The program <span class="stxMeta">itself is a form of computer data </span>and is stored in computer memory.</p>
+<p>Instructions are <em>fetched</em>, one at a time from computer memory to
+  the 
+  <script language="JavaScript">
+startDefLink("cpu",50,50);
+  </script>
+CPU
+<script language="JavaScript">endLink();</script>
+</p>
+<p>Then they are <em>executed</em> (carried out) by the CPU.</p>
+<h2><a name="Complexity">Complexity</h2>
+<p>Computer programs are among the most complex artifacts engineered by humankind.
+  Consider the following: </p>
+<ol>
+  <li>A 700 page novel occupies 2.6 MB of disk space.</li>
+  <li>Windows XP takes about 1 GB.</li>
+  <li>A switch built by Nortel in the mid 90's took about 6 million lines of
+    code</li>
+</ol>
+<p>How do we manage such complexity? We use a strategy known as <em>Divide and
+    Conquer</em>, one of the oldest strategies used by humankind.</p>
+<ol>
+  <li>Complex systems are <em>modularized</em>&#8212;broken into smaller more
+    manageable pieces</li>
+  <li>The modules themselves are often broken into smaller modules, and those
+    into smaller modules again.</li>
+  <li>The set of modules is organized <em>hierarchically</em> to constitute the
+    system</li>
+</ol>
+<p>This schema has been  used almost from the moment humanity developed complex cultures. Its best known ancient example is the Roman army. </p>
+<h2 class="pagebreak"><a name="Roman">Organization Chart  of a Roman Legion&#8212;a Rigid
+    Hierarchy</a></h2>
+<p><img src="../../content/introduction/roman_army.png" width="611" height="445"></p>
+<p>With 6000 men under his command a Roman Legate couldn't know every legionary.
+  His job was to worry about the <em>big picture</em>. He would give commands
+  like, <q>"Move the Ist cohort forward"</q> or, <q>"Hold the IIIrd cohort in
+  reserve."</q></p>
+<p>At the bottom level, the centurion would know each of his legionaries. He
+  would decide who best should be on the critical left edge of the shield wall,
+  who in the centre. It was his job to sweat the <em>details</em>.</p>
+<h2><a name="Hierarchy">Hierarchy, Hierarchy, Everywhere</a></h2>
+<p>The universe is built of galactic clusters, which are made up of galaxies, which are made up of star systems, which are made up of a star or two and some planets and moons.</p>
+<p>Earth is divided into countries which are divided into provinces or states or regions which are made up of cities, towns, villages and counties and we could keep dividing those up until we get to streets and houses. This hierarchy is by no means as rigid as the Roman Army's&#8212;each country has its own internal system&#8212;but the overall shape is clear. We would call it a flexible hierarchy.</p>
+<p>Modern mega corporations are split into companies which are made up of divisions and those of departments and so on. Again, a flexible hierarchy, as each corporation creates its own, according to its own needs. If you built  organization charts for a bunch of corporations they would all look different. But the basic, branching structure we see in the chart of the Roman army would be apparent (we call this a tree structure). </p>
+<p>Engineers use hierachy whenever we design complex systems. We think of buildings as being made up of foundations, walls, rooves, heating systems and so on, instead of bricks and boards. Cars are divided into chassis, power train, body and control systems. Computers consist of cases, memory, CPUs, disk drives, power supplies and peripherals. In each case, of course, the subsystems are further broken down until we get to bricks or nuts and bolts or transistors. Such complex artifacts are seldom designed by a single person. Instead, there are teams of engineers at work. Most are specialised. A power supply designer is not expected to design a new CPU chip, nor the CPU design team, a power supply.</p>
+<h2><a name="softwareHierarchy">Hierarchy in Software</a></h2>
+<p>Modern programs are <span class="stxNonterminal">complex! </span>The chip that runs your computer  is made of hundreds of millions of transistors. The operating system that runs it (e.g. Windows XP or MacOSX) is a computer program with approximately the same level of complexity (roughly the same level as it would take to design an entire modern city, as the Chinese government did with Shanghai recently, or a jumbo passenger jet, or a large modern cruise ship).</p>
+<p>Thus it is no surprise that computer programs are also organized hierarchially. Before we have a look at a program  &quot;organization chart&quot; here are a few observations about the modules that occur in any org chart.</p>
+<ol>
+  <li class="normal">There are different <em>kinds </em>of modules at different levels<em>.</em></li>
+  <li class="normal">Modules towards top are bigger, more complex</li>
+  <li class="normal">Modules towards bottom are smaller, simpler</li>
+  <li class="normal">Modules towards top have high overhead&#8212;e.g. cabinet ministers in Canada have large staffs. </li>
+  <li class="normal">Modules towards bottom have low overhead&#8212;in the army a <em>squad</em> consists of a handful of soldiers and a corporal. </li>
+</ol>
+<p>The same is true of computer programs. As languages get more powerful, the
+  smallest modules get smaller.</p>
+<p> In this course we will focus on the squads of computer programming.</p>
+<ol>
+  <li>small amounts of code</li>
+  <li>single well specified task</li>
+  <li>minimal overhead</li>
+</ol>
+<h2><a name="ProgrammingModules">Programming Modules</a></h2>
+<p>To summarize all the preceding examples. Modular hierarchies </p>
+<ol>
+  <li>have been around for a long time</li>
+  <li>are similar for similar systems whether by design (armies) or self-organizing
+    (companies)</li>
+  <li>get bigger, more complex, and more specialized as the system grows. </li>
+</ol>
+<p>It's no wonder that we use the same approach to design and build computer
+  programs.</p>
+<p><img src="../../content/introduction/large_scale_program.png" width="736" height="587"></p>
+<h3>Teaching Machine</h3>
+<p>Typical medium scale program</p>
+<ol>
+  <li>7000 programming hours</li>
+  <li>14 packages </li>
+  <li>14 sub-packages</li>
+  <li>over 700 classes</li>
+  <li>around 5000 functions</li>
+</ol>
+<h3>Mini-Programs</h3>
+<table width="100%" border="0">
+  <tr>
+    <td><p class="normal">Full model too complex to teach initially</p>
+        <p class="normal">Concentrate on a mini-model</p>
+        <p class="normal">Only kind of modules are 
+          <script language="JavaScript">
+startDefLink("function",50,50);
+          </script>
+          functions<script language="JavaScript">endLink();</script>
+&#8212;the <em>squads</em> of
+          the programming world</p>
+        <ol>
+          <li class="normal">small</li>
+          <li class="normal">single task</li>
+          <li class="normal">low overhead</li>
+        </ol>
+        <p class="normal">Every C/C++ program includes one (and one only) function
+          called <code>main()</code></p>
+        <p class="normal"><code>main()</code> is the starting point of the program</p></td>
+    <td><img src="../../content/introduction/mini_program.png" width="517" height="481"></td>
+  </tr>
+</table>
+<p>We will write the <code>main</code> function that will get things started.</p>
+<p>We're going to teach you how to create 
+<script language="JavaScript">
+startDefLink("function",50,50);
+</script>functions.<script language="JavaScript">endLink();</script>
+</p>
+<p>The functions you create will be <em>embedded</em> in our main function (and
+  therefore in the program). </p>
+<p>Notice that each function consists of a set of 
+  <script language="JavaScript">
+startDefLink("instruction",50,50);
+          </script>
+<em>instructions</em>.
+<script language="JavaScript">endLink();</script>
+</p>
+<p>These instructions come one after another in an <em>ordered sequence</em>.
+  That is how they are executed when they are run on the computer.</p>
+<ol>
+  <li>The first instruction is executed</li>
+  <li>Then the second instruction is executed</li>
+  <li>Then the third instruction is executed</li>
+</ol>
+<p>and so on.</p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

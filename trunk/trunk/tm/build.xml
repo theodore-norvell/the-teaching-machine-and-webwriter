@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<!-- Let's all build a Teaching Machine. -->
+<project name="tm" default="distribution">
+      <description>
+            Build the Teaching Machine
+      </description>
+      
+	  <!-- Use The Eclipse compiler -->
+	  <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+	  
+	  <!-- Source and target are 1.6 -->
+	  <property name="source.version" value="1.6"/>
+	  <property name="target.version" value="1.6"/>
+	  
+	  <!-- Names for directories and files -->
+	  <property name="src" location="src"/>
+	  <property name="build" location="tm-build"/>
+	  <property name="dist"  location="tm-dist"/>
+	  <property name="tarfile"  location="tm-dist.tar.gz"/>
+	  <property name="qgProject" location="../../../quizGen.proj/trunk"/>
+	  <property name="portholeProject" location="../portHole/porthole-dist"/>
+
+
+      <target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	    <!-- Create the build directory structure used by compile -->
+	    <delete dir="${build}" quiet="true"/>
+	    <mkdir dir="${build}"/>
+	  	<delete dir="${dist}" quiet="true"/>
+	    <mkdir dir="${dist}"/>
+      	<!-- Modify the properties file -->
+      	<propertyfile file="${src}/tm/tm.properties" comment="Property file generated from build.xml.">
+      	  <entry  key="build.date" type="date" value="now" pattern="yyyy.MMMM.dd"/>
+      	</propertyfile>
+	  </target>
+
+	  <target name="compile" depends="init"
+	        description="compile the source " >
+	    <!-- The next task is intended to print the version, not to compile -->
+	  	<javac srcdir="${src}" destdir="${build}">
+	  	    <compilerarg value="-verbose"/>
+	  	    <compilerarg value="-version"/>
+	    </javac>
+	    <!-- Compile the java code from ${src} into ${build} -->
+	    <!-- Should have fork=true if compiler is javac -->
+	  	<javac srcdir="${src}" destdir="${build}"  source="${source.version}" target="${target.version}">
+	    	<compilerarg  value="-g:lines"/>
+	    	<compilerarg  value="-nowarn"/>
+	    	<compilerarg  value="-deprecation"/>
+	    </javac>
+	  </target>
+
+	  <target name="tm.jar" depends="compile"
+	        description="generate the distribution" >
+
+	  	<!-- Copy the .gif files, the .inc files, the .jlib files, the .tmcfg file, and the tm.properties file. -->
+	  	<copy todir="${build}/tm/subWindowPkg">
+	  	   <fileset file="${src}/tm/subWindowPkg/*.gif"/>
+	    </copy>
+	  	<copy todir="${build}/tm/plugins">
+	  	   <fileset file="${src}/tm/plugins/*.gif"/>
+	    </copy>
+		<copy todir="${build}/tm/cpp/include">
+		   <fileset file="${src}/tm/cpp/include/*.inc"/>
+		</copy>
+		<copy todir="${build}/tm/javaLang/library">
+		   <fileset dir="${src}/tm/javaLang/library"
+		            includes="**/*.jlib" />
+		</copy>
+	  	<copy todir="${build}/tm">
+	  	    <fileset file="${src}/tm/tm.properties"/>
+	    </copy>
+	  	<copy todir="${build}/tm">
+	  	    <fileset file="${src}/tm/default.tmcfg"/>
+	    </copy>
+	  	<manifest file="MANIFEST.MF">
+	  	    <attribute name="Built-By" value="${user.name}"/>
+	  	    <attribute name="Built-On" value="${TODAY}"/>
+	  	    <attribute name="Main-Class" value="tm.TMMainFrame"/>
+	  	</manifest>
+	  	<!-- Put everything in ${build} into the tm.jar file -->
+	    <jar jarfile="${dist}/tm.jar"
+	    	 basedir="${build}"
+	         manifest="MANIFEST.MF"
+	    />
+	  	<delete dir="${build}"/>
+	  </target>
+	
+	  <target name="refresh.help" description="collect all help files into the help directory">
+	  	<copy todir="help">
+	  		<fileset file="${src}/tm/subWindowPkg/stepOver.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/stepInto.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/stepOut.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/ToCursor.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/ReStart.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Advance.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Backup.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Logical.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Scaled.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Binary.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Stack.gif"/>
+	  		<fileset file="${src}/tm/subWindowPkg/Static.gif"/>
+	  	</copy>
+	  </target>
+	  
+	  <target name="gather.help" depends="init,refresh.help">
+	       <copy toDir="${dist}/help">
+	  	       <fileset dir="help"/>
+	  	   </copy>
+	  </target>
+	  
+	  <target name="distribution" depends="tm.jar,gather.help"
+	          description="Make a distribution of the Teaching Machine" >
+	  	<!-- Duplicate the default.tmcfg file as the initial.tmcfg file in the distribution. -->
+	  	<copy file="${src}/tm/default.tmcfg" tofile="${dist}/initial.tmcfg"/>
+	  	<!-- Make a .tar.gz the whole distribution for unix. -->
+	    <!-- Windows should use the Windows installer. -->
+	  	<tar destfile="${tarfile}" basedir="${dist}" compression="gzip"/>
+	  </target>
+	  	
+	  
+    <target name="relayToQG" depends="distribution"
+	  	description="make an independent copy of the distribution for project quizGen">
+	  	<copy file="${dist}/tm.jar" tofile="${qgProject}/code/tm.jar"/>
+	  	<copy file="${dist}/tm.jar" tofile="${qgProject}/site/tm.jar"/>
+	  	<copy file="${dist}/tm.jar" tofile="${portholeProject}/tm.jar"/>
+    </target>
+
+
+
+	  <target name="clean"
+	        description="clean up" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${build}"/>
+	    <delete dir="${dist}"/>
+	  </target>
+</project>

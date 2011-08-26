@@ -1,0 +1,407 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Expressions</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>The course <a href="../../content/dictionary.htm">dictionary</a> (which is the source of all the rollover definitions in the website) defines an expression as follows:</p>
+<blockquote>
+  <p><em>A combination of variables, constants, operators and functions which is progressively evaluated an operation at a time until it is reduced to a final value.</em></p>
+</blockquote>
+<p>You're  familiar with expressions from mathematics and we have built on that familiarity already by using expressions in a limited fashion. Its time to introduce them  more formally.</p>
+<p>The crucial thing about expressions is the last part of that definition. When an expression is run as part of a program, <strong>it is always reduced to a single value</strong>. That expression reduction process  is called <em>evaluation</em>.</p>
+<p>Here is a list of statements that include expressions, most lifted from the previous topics (possibly in modified form):</p>
+<table width="80%"  border="1">
+  <tr>
+    <th>statement</th>
+    <th>expression included </th>
+  </tr>
+  <tr>
+    <td><pre>e;</pre></td>
+    <td><pre>e</pre></td>
+  </tr>
+  <tr>
+    <td><pre>pi = <span class="codeConstant">3.14159</span>;</pre></td>
+    <td><pre>pi = <span class="codeConstant">3.14159</span></pre></td>
+  </tr>
+  <tr>
+    <td><span class="codeKeyword">return</span> (base * height)/ <span class="codeConstant">2</span>;</td>
+    <td>(base * height)/ <span class="codeConstant">2</span></td>
+  </tr>
+  <tr>
+    <td>speed(distance, time);</td>
+    <td>speed(distance, time)</td>
+  </tr>
+</table>
+<p>Even just the occurrence of a  
+  <script language="JavaScript">
+startDefLink("variable",50,50);
+  </script>
+variable
+<script language="JavaScript">endLink();</script>
+ or  
+<script language="JavaScript">
+startDefLink("constant",50,50);
+</script>
+constant
+<script language="JavaScript">endLink();</script>
+ by itself is an expression <em>because it can be evaluated. </em>If e represents the charge on an electron it is <span class="codeConstant">1.60217646e-19.</span>
+Similarly, a function call by itself is an expression, <em>because it can be evaluated.</em></p>
+<h1><a name="arithmetic">Arithmetic Expressions</a> </h1>
+<p>Arithmetic expressions are based on the use of arithmetic operators. The first thing you have to understand is that computers have two sets of special hardware for doing arithmetic<em>&#8212;one set  for integer arithmetic and one set  for real (in the form of doubles) arithmetic. </em>Whenever you create an arithmetic operation, the machine has to decide which set of hardware to use. The integer hardware is much faster. The double hardware can handle real numbers.</p>
+<p>Every operation involves an <em>
+  <script language="JavaScript">
+startDefLink("operator");
+  </script>
+  operator</em>
+  <script language="JavaScript">
+endLink();
+  </script> 
+  and either one or two operands (the values being operated on by the operator). The decision as to which piece of hardware to invoke is based on the type of the operands.</p>  
+
+<h2><a name="DoubleArithmetic">Double Arithmetic </a></h2>
+<p>We characterize C++ 
+  <script language="JavaScript">
+startDefLink("operator");
+  </script>
+  operators
+  <script language="JavaScript">
+endLink();
+  </script>
+  <b><em>
+  </em></b> as being</p>
+<ol>
+  <li>Unary (one operand): <code>+ -</code></li>
+  <li>Binary (two operands) <code>+ - * /</code></li>
+</ol>
+<p>where <code>*</code> and <code>/</code> signify respectively multiplication and division. C++ has no exponentiation operator.</p>
+<p>Here's an example of the unary + and - at work.</p>
+<blockquote>
+  
+<pre><span class="codeKeyword"><code>double</code></span><code> a = <span class="codeConstant">-4.3</span>;
+<span class="codeKeyword">double</span> b = <span class="codeConstant">-5.73</span>;
+<span class="codeKeyword">double</span> x = 2.0;
+y = <span class="codeConstant">2</span>*x *(-b) + <span class="codeConstant">3.4</span>*x*(+a);
+</code></pre>
+</blockquote>
+<p>The minus signs in <span class="codeConstant">-4.3</span> and <span class="codeConstant">-5,73</span> are part of the 
+  <script language="JavaScript">
+startDefLink("literal");
+  </script>
+  literal
+  <script language="JavaScript">
+endLink();
+  </script>
+  values. However, the unary minus applied to <code>b</code> is clearly an 
+  <script language="JavaScript">
+startDefLink("operator");
+  </script>
+operator
+<script language="JavaScript">
+endLink();
+  </script>
+. It means <em>take whatever <code>b</code>'s value is (positive or negative) and negate it</em> (reverse the sign). The value of the unary <code>+</code> as applied to a might be dubious but it is legal. Unary + is part of the language for the sake of consistency.</p>
+<p> The four multiplies (*) and one addition in the example above are examples of binary operations. They each have two operands, one to the left of the operator and one to the right. Evaluation of the expression is carried out one operation at a time.</p>
+<p>In double arithmetic, all operands are
+    <script language="JavaScript">
+startDefLink("double");
+  </script>
+    <code>double</code>
+    <script language="JavaScript">
+endLink();
+  </script>
+    and the result is always <code>double</code>. Consider the following function to compute the quadratic x<sup>2</sup>+2x+1.5 for
+	any x (without an exponentiation operator, x*x is used in place of  x<sup>2</sup>). Focus on the step by step evaluation of the quadratic expression within the Expression Engine. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/quadratic.htm","");
+insertCode("quadratic.cpp", true, "code", "","A", "all");
+  </script>
+</p>
+<h2 class="pagebreak"><a name="IntegerArithmetic">Integer Arithmetic</a></h2>
+<p>The 
+  <script language="JavaScript">
+startDefLink("int");
+  </script>
+  <code>int</code>  <script language="JavaScript">
+endLink();
+  </script>  
+  operators are </p>
+<ol>
+  <li>Unary (one operand): <code>+ -</code></li>
+  <li>Binary (two operands) <code>+ - * / % </code></li>
+</ol>
+<p>where <code>*</code> and <code>/</code> signify respectively multiplication
+  and division. Notice that integer arithmetic has an extra operator. The % operator, known as the modulo operator, computes the <em>remainder</em> of an integer division. In integer arithmetic, all operands are <code>int</code> and <em>the result is always <code>int</code></em> </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/integerArithmetic.htm","");
+insertCode("expression_eval_int.cpp", true, "code", "","M", "all");
+  </script>
+</p>
+<p>The results are what you would expect until you get to division.</p>
+<p>In normal arithmetic <code>11/7</code> would be <code>1.571</code>. However, the <em>result
+  of an integer operation is always an integer</em>.</p>
+<p>So why not <code>2</code>?</p>
+<p>C++ <code>int</code> arithmetic doesn't round. Instead it gives us two <code>int</code> division operators.</p>
+<ol>
+  <li> <code>/</code> gives us the integer part. </li>
+  <li> <code>%</code> gives us the remainder</li>
+  </ol>
+<p>This is exactly arithmetic as you first learned it in grade school, before you learned &quot;decimals&quot;. Seven goes into eleven one time with four left over. </p>
+<h1 class="pagebreak"><a name="Conversions">Conversions</a></h1>
+<p><code>int</code>s and <code>double</code>s are different types. Computers
+  can </p>
+<ul>
+  <li>do <code>double</code> arithmetic</li>
+  <li>do <code>int</code> arithmetic</li>
+</ul>
+<p>They can't do mixed arithmetic. Instead, they convert from one
+  <script language="JavaScript">
+startDefLink("type");
+  </script>
+  type
+  <script language="JavaScript">
+endLink();
+  </script> 
+   to the
+  other.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/mixedArithmetic.htm","");
+insertCode("quadratic2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>In the example evaluation of the term <code>2 * x</code> requires an <em>implicit
+    conversion</em>.</p>
+<p>The <code>2</code> is <em>automatically</em> converted to a <code>double</code> yielding <code>2.0
+    * x</code> and then a <code>double</code> multiply is called.</p>
+<h2><a name="downcasts">Explicit Casting</a></h2>
+<p>A programmer can also force a conversion explicitly by doing a <em>type cast</em>.</p>
+<p><code>int y = 2 * (int) x; </code></p>
+<p>Here the operator <code>(int)</code> is an <code>int</code> type cast applied
+  to the <code>double</code> variable
+  <code>x</code> coercing it to an <code>int</code>.</p>
+<p class="pagebreak">This is known as a downcast because precision is lost. Downcasting also occurs in the following example because, although the expressionis evaluated using doubles, the final result is returned as an int. There's no video for this one. At this point in the course you should be able to run it yourself. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("downcast.cpp", true, "code", "", "A","all");
+  
+</script>
+</p>
+<h2><a name="Rounding">Rounding</a></h2>
+<p>When a <code>double</code> is converted to an <code>int</code>, it is not rounded, it is <em>truncated</em>.</p>
+<p>The fractional part is discarded</p>
+<p>This is consistent with the integer <code>/</code> operator's behaviour.</p>
+<p>Here's how you round <em>positive</em> nos.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("rounding.cpp", true, "code", "", "A", "all");
+  
+  </script> 
+</p>
+<p>The technique has to be ammended for negative nos. We'll show you how later.</p>
+<h2>Compiler Warnings</h2>
+<p>Many compilers, including Eclipse, will warn you about downcasts. Such warnings are not syntax errors. Rather, they are telling the programmer that a logical error is likely to occur. Crudely, a logical error is one that occurs once you start the program running.</p>
+<h1><a name="compositeAssignment">Composite Assignment Operators</a></h1>
+<p>There are some special shorthand assignment operators in C++, created because
+  the original designer of C didn't like to type more than necessary. We just
+  show them by example. </p>
+<p><code>x += 2;&nbsp;</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;means&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>x
+  = x+2;</code></p>
+<p><code>x -= 2;&nbsp;</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;means&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>x
+= x-2;</code></p>
+<p><code>x *= 2;&nbsp;</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;means&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>x
+  = x*2;</code></p>
+<p><code>x /= 2;&nbsp;</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;means&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>x
+  = x/2;</code></p>
+<p>Again, remember, these aren't equations. They're assignments. We evaluate
+  the right side that write the value into the left side. The Teaching Machine will automatically convert compound assignment expression to the right hand form in the Expression Engine. </p>
+<h1 class="pagebreak"><a name="EvaluationOrder">Order of Evaluation</a> </h1>
+<p>The order of evaluation in compound expressions is determined by </p>
+
+<ol>
+  <li>Parenthesis <code>( )</code> </li>
+  <li>Precedence 
+
+  <TABLE CELLPADDING=3 BORDER="1">
+    <TR>
+      <TD ALIGN="CENTER">unary <code> &nbsp;- , +</code> </TD>
+      <TD ALIGN="LEFT">Highest (evaluated first)</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="CENTER"> <code>*, /, %</code></TD>
+      <TD ALIGN="LEFT">&nbsp;</TD>
+    </TR>
+    <TR>
+      <TD ALIGN="CENTER">
+	    <code>-, +</code></TD>
+      <TD ALIGN="LEFT">Lowest (evaluated last)</TD>
+    </TR>
+    </TABLE></li>
+</ol>
+<p>For example, given the expression 4+3*2, the multiply operation is carried out before the addition because multiply has a higher precedence than addition. Thus the value of the expression is  10 instead of 14. Here are a few simple examples. </p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("precedence.cpp", true, "code", "","", "");
+  </script>
+<h1><a name="Library">Library Functions</a></h1>
+<p>There are thousands of prebuilt functions available in dozens of <em>libraries</em> </p>
+<P>
+<UL>
+  <LI>Don't re-invent the wheel!
+  <LI>Many common functions are included in <EM>libraries</EM>.
+  <LI>Need to <code>#include</code> the appropriate library header file for
+      each.
+</UL>
+<p>The header files mostly contain the declarations needed to use the libraries</p>
+<p>For example, the math library has declarations for</p>
+<ul>
+  <li>Trigonometric functions e.g. <code>double sin(double x), double tan(double
+      x)</code></li>
+  <li>Hyperbolic functions. e.g. <code>double atan(double x)</code></li>
+  <li>The power function which has to be used since C++ has no exponentiation
+    operator: <code>double pow(double x, double exp)</code></li>
+  <li>the special function <code>double atan2(double y, double x)</code> which
+    returns the arc tangent of <code>y/x</code>, a function which is defined
+    for <code>x = 0</code>. </li>
+</ul>
+<p>To use any of these functions you would add to the top of your file the line</p>
+<p><code>#include &lt;cmath&gt;</code></p>
+<p>This is a very special line of code. The <code>#</code> which
+  starts it means it is actually a command to the <em>precompiler</em>.</p>
+<p>The precompiler is a kind of administrative assistant to
+  the compiler. What this line really means is &quot;<em>I want to use the cmath
+  library so go
+  and get it and add it to our program.&quot;</em> The compiler never sees this
+  line of code. Instead it sees special lines </code>of code inserted by the precompiler
+  that it needs in order to be able to use the <code>cmath</code> library. </p>
+<p> Here is a package of functons to provide  services
+  for conversion between rectangular and polar co-ordinates. <p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("libfunc.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>Note that the functions we build are <em>calling</em> library functions. Up
+  to now, we have <em>built</em> or <em>implemented</em> functions, thus <em>providing
+  a service for someone else</em>.</p>
+<p>When <em>call</em> a function, it means that <em>we are the client making
+    use of a service</em> provided by some other developer.</p>
+<p>Some special lines of note:</p>
+<blockquote>
+    <p>In <code>polarMag</code> we have the following:</p>
+  <pre><span class="codeKeyword">return</span> sqrt(pow(x,<span class="codeConstant">2</span>) + pow(y,<span class="codeConstant">2</span>))</pre>
+    <p><code>sqrt</code> is the square root function as provided by the <code>cmath</code> library and as you
+    would expect, it takes a single <code>double</code> argument.</p>
+    <p>For that argument, we are actully giving it an expression that has two other
+    function calls in it.</p>
+    <p>Thus we can have function calls embedded in function calls&#8212;now we're
+      getting some power!</p>
+</blockquote>
+<p>Also note</p>
+<blockquote>
+  <p>As the comment says, neither C nor C++ have a built-in value for <code>&pi;</code> so we
+    calculate it on the fly. This is much better than typing something like 3.14159
+    because our calculation gives us the full precision of the floating point
+    processor built in to the computer.</p>
+  <p>Still, creating a function to do it is inefficient, since we have to recompute
+    pi every time we need it. What we need is a constant available throughout
+    our entire program. </p>
+  <p>The solution, as it appeared in one of your assignments, is to create a computed constant </p>
+  <p><code>const double PI = 4.0 * atan(1.0); </code></p>
+  <p>and then put it into an h file which can be shared throughout the program. </p>
+  <h1><a name="exercises">Exercises</a></h1>
+  <p>Your textbooks are full of formulae. Pick some out and write functions for them. For example, from circuits:</p>
+  </blockquote>
+
+<ol>
+  <li>Equivalent resistance of a pair of resistors in parallel is given by their product divided by their sum.</li>
+  <li>The voltage output from a voltage divider is the input voltage times the lower resistor divided by the sum of the lower and upper resistors.</li>
+  <li>Given an element with a phasor voltage across it (V<sub>pk</sub>, &Theta;)and a phasor current through it(I<sub>pk</sub>, &Phi;), the real power dissipated by the element is the square root of (V<sub>pk</sub>&times;I<sub>pk</sub>) times the cosine of the  difference between the two angles. </li>
+</ol>
+<script language="JavaScript">
+	startHiddenAnswer("1");
+</script>
+<script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("parallelR.cpp", true, "code", "", "A", "ALL");
+</script>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2");
+</script>
+<script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("vDivider.cpp", true, "code", "", "A", "ALL");
+</script>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3");
+</script>
+<script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("phasorPower.cpp", true, "code", "", "A", "ALL");
+</script>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full </h1>
+<p><script language="JavaScript">
+insertCode("quadratic.cpp", false, "code", "","all", "all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("expression_eval_int.cpp", false, "code", "default.tmcfg","all", "all");
+  </script></p>  
+ <p class="pagebreak"><script language="JavaScript">
+insertCode("quadratic2.cpp", false, "code", "","all","all");
+  </script></p>
+ <p class="pagebreak"><script language="JavaScript">
+insertCode("downcast.cpp", false, "code", "", "all","all");
+  
+ </script></p>
+ <p class="pagebreak"><script language="JavaScript">
+insertCode("rounding.cpp", false, "code", "", "all", "all");
+  
+  </script></p>
+  <p class="pagebreak"><script language="JavaScript">
+insertCode("precedence.cpp", false, "code", "default.tmcfg", "all", "all");
+  
+  </script></p>
+ <p class="pagebreak"><script language="JavaScript">
+insertCode("libfunc.cpp", false, "code", "","all","all");
+  </script></p>
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

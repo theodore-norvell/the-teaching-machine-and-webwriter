@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="./style.css" type="text/css" rel="stylesheet" />
+        
+        <title>Project VISREED: Specification</title>
+    </head>
+    <body>
+        <h1>Project VISREED: Specification</h1>
+        <h2>Regular Expression Tree</h2>
+        <p>Regular Expression can be represented and constructed in a form of a tree (an "ordered, rooted, directed tree").</p>
+        <p>Particularly, this is a tree with only nodes (no edges).</p>
+        
+        <h3 id="h3_regular_expression_nodes">Regular Expression Nodes</h3>
+        <p>There are many kinds of regular expression nodes, as listed below:</p>
+        <table id="table1_regular_expression_nodes">
+            <caption>Table 1 &nbsp; Regular Expression Nodes</caption>
+            <thead>
+                <tr><th>Name</th><th>Notation</th><th>Description</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Sequence</td><td>';'</td><td>Matches the sequence made of its children</td></tr>
+                <tr><td>Alternation</td><td>'|'</td><td>Matches any one of its children</td></tr>
+                <tr><td>Kleene Star</td><td>'*'</td><td>0 or more times of repetition of its child</td></tr>
+                <tr><td>Kleene Plus</td><td>'+'</td><td>1 or more times of repetition of its child</td></tr>
+                <tr><td>Terminal</td><td></td><td>Terminal characters</td></tr>
+            </tbody>
+        </table>
+        
+        <h3 id="h3_normalization_of_regular_expressions">Normalization of Regular Expressions</h3>
+        <p>In order to simplify the complexity of regular expressions, a suggested normal form named <strong>sequential normal form</strong> is represented by the following rules:</p>
+        <ul>
+            <li>The root of the tree is always a sequence node</li>
+            <li>Sequence nodes may have 0 or more children, but none can be a sequence node</li>
+            <li>Alternation nodes must have 2 or more children, all must be sequence nodes</li>
+            <li>Kleene star nodes must have exactly 1 child and it must be a sequence node</li>
+            <li>Kleene plus nodes must have exactly 1 child and it must be a sequence node</li>
+            <li>Terminal nodes must have no children</li>
+        </ul>
+        <p>The above rules gives us some facts:</p>
+        <ul>
+            <li>The root of the tree is always a sequence node</li>
+            <li>The branche nodes of the tree may be sequence, alternation, kleene star or kleene plus nodes</li>
+            <li>A leaf nodes is either a sequence node or a terminal node</li>
+            <li>Sequence nodes only appears on the same level of a tree, and these levels appears in alternation. <br />
+            (e.g. sequence nodes can never appear in the level of direct children of the root node) </li>
+        </ul>
+        
+        <h3>Notations of the Regular Expression Nodes</h3>
+        <p>Currently there is no particular notations for lexical nodes of regular expressions. These notations are only for temporary use and subject to change later.</p>
+        <ul>
+            <li>All nodes in lexical tree diagram are shown as a circle, with an abbreviation in the center.</li>
+            <li></li>
+        </ul>
+        <h2></h2>
+        <footer>
+            Last update: <pre>$Id: specification.html 529 2011-06-20 19:01:41Z xiaoyu $</pre>
+        </footer>
+        <script type="text/javascript" src="./js/UmlCanvas/UmlCanvas.standalone.min.js"></script>
+        <script type="text/javascript" src="./js/AutoToc.js"></script>
+    </body>
+</html>

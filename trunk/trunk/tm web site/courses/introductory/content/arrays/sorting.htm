@@ -1,0 +1,247 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Sorting</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<style type="text/css">
+<!--
+.style1 {background: #00FF00}
+.style2 {background: #00FFFF}
+.style3 {background: #FF0000}
+.style4 {background: #FFFF00}
+.style5 {background: #FF00FF}
+-->
+</style>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>In this module we look at the problem of sorting, in particular, sorting an
+  array of numbers so the values are in ascending order.</p>
+<p>We'll look at a few standard sorting algorithms. At bottom, however, they
+  all work by examining a single pair of numbers and switching them if they are
+  out of order. The trick is organizing which pair. </p>
+<h2><a name="bubble">Bubble Sort</a></h2>
+<p>Here's the code for a bubble sort. A bubble sort is fairly easy to understand
+  but it's pretty slow.</p>
+ <script language="JavaScript">
+	startNote();
+ </script>
+ <p class="hiddenNote">We are doing some different things with the TM here. Here's how to get the
+   most of this demo</p>
+ <ol>
+   <li>Click the run button to get the demo loaded into the TM</li>
+   <li>In the TM click the stepOver button (<img src="../../webWriter/images/OverAll.gif" width="12" height="12">)
+     until the array apears in the local memory.</li>
+   <li>Click on the title bar of the local memory display to select it.</li>
+   <li>Click on the array itself to select it. It should turn pink, showing it
+     has been selected to be displayed in the special arrayBar display. <em>It
+     won't appear there yet.</em></li>
+   <li>Click on the + button beside the array to expand it. It should not be
+     initialized yet.</li>
+   <li>Click on the code window title bar to move back to it, then click carefully
+     just above the line <span class="code">bubbleSort(array, SIZE);</span>.
+     The green selection rectangle should move in front of that line. If you
+     missed (it's a bit tricky) try again until you've got it there.</li>
+   <li>Now click run to cursor button (<img src="../../webWriter/images/ToCursor.gif" width="12" height="12">)
+     to get the TM to run through the array initialization code. You should see
+     the array fill up with random numbers between 10 and 50 and there should
+     now be a representation of it in the ArrayBar display window. The ArrayBar
+     display shows each value stored in the array but also represents that value
+     as a bar whose length is proportional to the value. I.e., bigger value means
+     longer length bar.</li>
+   <li>Click on the animated run button (<img src="../../webWriter/images/AutoStep.gif" width="32" height="32">)
+     to run the TM in animated mode. You will see a slider appear on top of
+     the code window. By grasping the slide you can control the animation speed&#8212;farther
+     right is faster.</li>
+   <li>Note that clicking on the animated run button (<img src="../../webWriter/images/AutoStep.gif" width="32" height="32">)
+    again will stop the animation. </li>
+   <li>The various bar colours have the following meanings:
+     <ol type="a">
+       <li><span class="style1">green</span> (default). Usually means, <em>to
+           be done</em>.</li>
+       <li><span class="style2">cyan</span>. <em>To be (or is being) examined</em>.</li>
+       <li><span class="style3">red</span>. <em>To be (or is being) swapped</em>.</li>
+       <li><span class="style4">yellow</span>. <em>Known to be sorted into the correct position</em>. </li>
+     </ol>
+   </li>
+  </ol>
+ <script language="JavaScript">
+	endNote();
+ </script>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("bubble.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A.~S", "~S");
+      </script>
+  </p>
+<p>We should also comment that, while we have delegated the inner sort to the <code>bubbleOnce</code> function both to improve the animation and also to re-inforce our work on delegation, in a speed sensitive algorithm like sorting, we can go faster by putting all the code into a single function, which is what would normally be done for efficiency. Of course, no-one interested in efficiency would use a bubble sort anyway!</p>
+    <h2><a name="efficiency">Algorithm Efficiency</a> </h2>
+    <p>Can we get a handle on how many comparisons and swaps we have to do.</p>
+    <p>If we have an array of 4 elements, we first start with all 4, so we have to do 3 comparisons, and possibly 3 swaps. Then we take a subarray of 3, so it takes 2, and the final subarray of 2 takes 1. So ops on an array of 4 could be denoted&#8212;</p>
+    <blockquote>
+      <blockquote>
+        <p><code>ops<sub>4</sub> = 3 + 2 + 1</code> </p>
+      </blockquote>
+    </blockquote>
+    <p>pretty clearly then</p>
+    <blockquote>
+      <blockquote>
+        <p><code>ops<sub>n</sub> = n-1 + n-2 ... +2 + 1</code></p>
+      </blockquote>
+    </blockquote>
+    <p>which <a href="bubbleSortEquations.htm" target="_top">can be shown</a> to be <code>(n<sup>2</sup> - n) / 2</code>. For large n this is dominated by the squared term so we call the bubble sort an <code>O(n<sup>2</sup>)</code> (order n-squared) algorithm. </p>
+    <p>Other algorithms are much faster. q-sort  is <code>O(n log(n))</code> which means its processing speed grows in time with <code>n</code> as <code>n log(n).</code> So if you measure how much time it takes to sort some number of items it would take <code>100 log(100)</code> or <code>200</code> times as long to sort a list <code>100</code> times longer. By contrast, a bubble sort, being order<code> n<sup>2</sup></code> would take <code>10,000</code> times longer (than the original bubble sort, which would be slower in the first place.) </p>
+    <blockquote>
+      <blockquote>
+        <p>&nbsp;</p>
+      </blockquote>
+    </blockquote>
+    <h2><a name="improvedBubble">An Improved Bubble Sort</a></h2>
+    <p>The swapping that is constantly being done in the subarrays means that, very often, the remaining subarray is already sorted. The bubble sort blindly keeps going.</p>
+    <p>Here we detect that fact, by the simple expedient of having the <code>bubbleOnce</code> routine let us know if it did any swaps at all. If it didn't we know the subarray is sorted and we can quit.</p>
+    <p>
+      <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("bubbleQuitEarly.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A", "~S");
+      </script>
+    </p>
+    <h2><a name="selection">Selection Sort</a></h2>
+    <p>Instead of swapping our way through the sub-array, the selection sort merely moves through the sub-array looking for the smallest value. Thus, for a sub-array starting at <code>i</code>, it does <code>n-i-1</code> comparisons but no swaps. At the end of the search, the smallest value is swapped with the value at position <code>i</code>. Thus the selection sort does at most<code> n-1</code> swaps.</p>
+    <p>Again, we have used delegation for illustration where it would not normally be used because of efficiency. Function calls are expensive (i.e. they take a lot of time).    </p>
+<script language="JavaScript">
+	startNote();
+ </script>
+ <p class="hiddenNote">We added an  extra colour. Here's the new legend.</p>
+ <ol type="a">
+        <li><span class="style1">green</span> (default). Usually means, <em>to
+             be done</em>.</li>
+         <li><span class="style2">cyan</span>. <em>To be (or is being) examined</em>.</li>
+         <li><span class="style3">red</span>. <em>To be (or is being) swapped</em>.</li>
+         <li><span class="style4">yellow</span>. <em>Known to be sorted into the correct position</em>.</li>
+         <li><span class="style5">magenta</span>. <em>Smallest
+         value found so far</em>. </li>
+ </ol>
+ <script language="JavaScript">
+	endNote();
+ </script>
+    <p>
+      <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("selection.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A", "~S");
+      </script>
+</p>
+<h2><a name="compact">Compact Versions</a></h2>
+<p>Since function calls are expensive, real sorts usually don't call a function
+  inside the loop. Instead they are more compact. Here are the three sorts written
+  in a more standard, compact form:</p>
+<p><script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("bubbleCompact.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A", "~S");
+</script></p>
+<p><script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("quitEarlyCompact.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A", "~S");
+</script></p>
+<p><script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("selectionCompact.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A", "~S");
+</script></p>
+<h2><a name="insertion">Insertion Sort</a></h2>
+<p>Finally, with little comment, we show a faster sort, known as the insertion
+  sort. In essence the insertion sort works by starting at the top and working
+  steadily towards the bottom examining each entry as you go. As you do so all
+  entries above the one being examined are sorted so all you do is look at each
+  entry above the one being examined and find the place to put it and you insert
+  it there. </p>
+<script language="JavaScript">
+	startNote();
+ </script>
+ <p class="hiddenNote">We have added an extra variable, <span class="code">next</span>, to the arrayBar
+   display. It is used to hold the next unsorted value. </p>
+ <ol>
+   <li>Run the demo in the TM as before (look at the note associated with the
+     first, bubbleSort, demo at the beginning of the topic.</li>
+   <li>As each element is examined in the array, its value is held in <span class="style5">next</span>,
+     just opposite the place where the value was found. That leaves a hole (marked
+     in black). </li>
+   <li>Then each value above that point is examined to see where <span class="style5">next</span> should
+     be put and <span class="style5">next</span> is moved up accordingly. Each
+     time, to determine if it should be moved again, the value<span class="style2"> before
+     it</span> is examined.
+     If <span class="style5">next</span> is smaller than that, it gets moved
+     to that position. </li>
+   <li>The process stops once a <span class="style2">value smaller (or equal
+    to)</span> <span class="style5">next</span> is found.</li>
+   <li> At that point, <span class="style2">all the values marked in cyan</span> have
+     to be shifted downwards in the array to make room for <span class="style5">next</span>.
+     <ol>
+       <li>First the hole where next used to be gets
+         <span class="style3">the value just above it</span>.</li>
+       <li>Once the move happens we have a new hole. That
+           hole gets filled from
+         <span class="style3">the one above it</span> and so on until all the values have been moved.</li>
+      </ol>
+   </li>
+   <li>That leaves a hole for <span class="style5">next</span> and it gets written
+     into it.</li>
+   <li>Now everything from where next was found to the top is sorted and the
+     process repeats with the value after where next was found until the entire
+     array is done.   </li>
+ </ol>
+ <script language="JavaScript">
+	endNote();
+ </script>
+<p><script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("insertionCompact.cpp", true, "code", "engr1020AngusBruneauArrayBar.tmcfg", "A.!script", "~S");
+</script></p>
+<!--  
+<h2>Exercise</h2>-->
+  <!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <p>&nbsp;</p>
+ <h1>Examples in Full</h1>
+  <p>&nbsp;</p>
+  <p><script language="JavaScript">
+		insertCode("bubble.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("bubbleQuitEarly.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("selection.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("bubbleCompact.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("quitEarlyCompact.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("selectionCompact.cpp", false, "code", "", "default", "default");
+  </script></p>
+  <p><script language="JavaScript">
+		insertCode("insertionCompact.cpp", false, "code", "", "default", "default");
+  </script></p>
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

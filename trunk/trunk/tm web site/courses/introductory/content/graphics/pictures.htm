@@ -1,0 +1,208 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Digital Pictures</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Digital pictures surround us. The digital camera, introduced barely a decade
+  ago, has become so ubiquitous that Kodak has stopped making film. But they've
+  been with us longer than that. Even though digital televisions are relatively
+  new, television has been effectively digital for a long time.</p>
+<p>A digital picture can be described as a raster of pixels where a raster is
+  nothing more than a rectangular matrix. The size of the matrix&#8212;described
+  by a width and a height&#8212;then determines the size of the image. If we're
+  trying to reproduce an image, each pixel represents a dot of ink (for printing)
+  or a point of light (for displays). If we're trying to capture an image (digital
+  photography) then each pixel represents a sensor which captures light at a
+  point.</p>
+<p>For example here is a simple 16 x 16 pixel image containing only blue and
+  white pixels. All pixels in the centre are white while those in the four pixel
+  band around the edge are blue. The individual pixels have been edged in black
+  to make them stand out. </p>
+<p><img src="BluePeter16x16.gif" width="257" height="259"> </p>
+<p>This is how pixels look when you view them on a computer screen. However,
+  we can't store colous in memory, only bit patterns. These have to be interpreted
+  as colours.</p>
+<h2><a name="RGBModel">The RGB Colour Model</a> </h2>
+<p>The colour of a pixel is made up of three components. Although these can be
+  described in a number of ways, the most common is as three intensities, an
+  intensity of red, of green and of blue. This is known as an additive colour
+  model and represents how pure light combines to create colours, as in the picture
+  below.</p>
+<p><img src="RGB_illumination.jpg" width="400" height="300"> Here, three pure
+  lights have been projected against a wall. Regions containing no light appear
+  balack. Regions illuminated by a single light are red, green or blue. However,
+  regions illuminated by more than one light produce additive colours, aqua for
+  green and blue, purple for red and blue, and yellow for red and green. The
+  area illuminated by all three lights should be white. That it is slightly pink
+  is probably due to the fact the lights are shining on a brick wall which is
+  likely red. </p>
+<p>We represent these intensities in a computer as three numbers.</p>
+<p>Let's consider what is often called twenty-four bit colour, probably the most
+  common system in use today. The intensity number for each colour is an eight
+  bit number which can represent 2<sup>8</sup> different levels, that is 256.
+  Since we need a zero to correspond to no colour at all, these levels can be
+  represented as integers which run between 0 and 255, where 0 turns a colour
+  off completely and 255 turns it on completely. A value of 100 will turn it
+  on at 100/255 of full intensity.</p>
+<p>Here is a table representing the eight basic colours that show in the illustration
+  of the lights:</p>
+<p>&nbsp; </p>
+<table width="45%"  border="1">
+  <tr>
+    <th scope="col">&nbsp;</th>
+    <th scope="col">R</th>
+    <th scope="col">G</th>
+    <th scope="col">B</th>
+  </tr>
+  <tr>
+    <th scope="row">Black</th>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th scope="row">Red</th>
+    <td>255</td>
+    <td>0</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th scope="row">Green</th>
+    <td>0</td>
+    <td>255</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th scope="row">Blue</th>
+    <td>0</td>
+    <td>0</td>
+    <td>255</td>
+  </tr>
+  <tr>
+    <th scope="row">Yellow</th>
+    <td>255</td>
+    <td>255</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <th scope="row">Purple</th>
+    <td>255</td>
+    <td>0</td>
+    <td>255</td>
+  </tr>
+  <tr>
+    <th scope="row">Aqua</th>
+    <td>0</td>
+    <td>255</td>
+    <td>255</td>
+  </tr>
+  <tr>
+    <th scope="row">White</th>
+    <td>255</td>
+    <td>255</td>
+    <td>255</td>
+  </tr>
+</table>
+
+
+<p>More subtle colours are possible by using partial intensities of the three
+  base colours. Since there are 256 possible values for each, we can produce
+  a total of 256 x 256 x 256 = 16,777,216 colours. That's more than even the
+  biggest box of crayons you could ever find!</p>
+<h2><a name="buildingPictures">Building Pictures in the TM</a></h2>
+<p>For processing pictures, we've added an image display with two pictures to
+  the TM. We've also added a number of simple routines to the TM for manipulating
+  the two pictures. The routines are defined below. In every case the argument
+  <span class="code">p</span> specifies which of the two pictures is involved. </p>
+<dl>
+  <dt class="code">void loadPicture(int p)</dt>
+  <dd>load a picture into picture frame p (where p can be
+      1 or 2). This will load a standard jpeg (which you get to choose) into the
+      frame.</dd>
+  <dt class="code"> void savePicture(int p)</dt>
+  <dd>save the picture in frame p as a jpeg. </dd>
+  <dd>&nbsp;</dd>
+  <dd>&nbsp;</dd>
+  <dt class="code"> void updatePicture(int p)</dt>
+  <dd>update the picture in frame p</dd>
+  <dt class="code"> void createPicture(int width, int height, int p);</dt>
+  <dd>&nbsp;</ddt>
+create a picture or width x height pixels in frame p 
+  <dt class="code"> void scaleImageUp(int p);</dt>
+  <dd>Scale the image in frame p up</dd>
+  <dt class="code">int getWidth(int p);</dt>
+  <dd>get the width of picture p </dd>
+  <dt class="code"> int getHeight(int p);</dt>
+  <dd>get the height of picture p</dd>
+  <dd>&nbsp;</dd>
+  <dt class="code"> int getPixel(int x, int y, int p);</dt>
+  <dd>get the 24 bit pixel at location (x,y) of picture p, where 0&lt;= x &lt;=
+    width - 1 and 0 &lt;=
+    y &lt;= height - 1 </dd>
+  <dt class="code"> void setPixel(int x, int y, int pix, int p);</dt>
+  <dd>set the 24 bit pixel at location (x,y) of picture p to value pix, where
+    0&lt;= x &lt;=
+    width - 1 and 0 &lt;=
+    y &lt;= height - 1  </dd>
+</dl>
+<h2><a name="creatingImage">Creating an Image</a></h2>
+<p>Here is a program to create a Blue Peter flag
+    as image 1.</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("bluePeter.cpp", true, "code", "en1020AngusBruneauImagePlugIn.tmcfg", "A.~S", "A.~S");
+  </script>
+<h2><a name="modifyingImage">Modifying an Image</a></h2>
+<p>Many graphics programs, such as photo editors, work by modifying an existing
+  image. In such cases a common paradigm is to leave the original image alone
+  and 
+  <script language="JavaScript">
+	setButtons(true, false, true,"","");
+	createDataFileSet("Cove40x31.jpg","Sunset40x30.jpg");
+	insertCode("grayScale.cpp", true, "code", "en1020AngusBruneauImagePlugIn.tmcfg", "A.~PI.~S", "A.~PI.~S");
+  </script>
+  create the modified image by copying (and modifying as necessary) pixels
+  from the original image to the new image. This is actually why we created two
+  image spaces in the plugin.</p>
+<p>In the following example we load an existing jpg file into the image 1 location,
+  then we create a black and white version in image 2 (usually known as a
+  grayscale image). The idea is to replace every pixel by a shade of gray that
+  has the same brightness as the original coloured pixel. </p>
+<p>It's actually not as hard as you might think. Black corresponds to no colour
+  at all. White to all colours being turned on fully. The common characteristic
+  is that the RGB values are always the same. So other shades of gray are produced
+  by keeping this property, letting no colour prevail.</p>
+<p>How do we get even brightness? By using the average value of the three colour
+  values. That is</p>
+<p>R<sub>2</sub> = G<sub>2</sub> = B<sub>2</sub> = (R<sub>1</sub> + G<sub>1</sub> +
+  B<sub>1</sub>)/3</p>
+<p>where the subscripts denote the number of the image. Here's the actual code.</p>
+<p>&nbsp;  </p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

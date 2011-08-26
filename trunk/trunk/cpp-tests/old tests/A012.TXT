@@ -1,0 +1,53 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+   
+   int m = -5 ;
+   int n = 8 ;
+   float x = -44 ;
+   float y = 99 ;
+   bool bb = false;
+   bb = true ;
+   bb = bb < x ;
+   bb = m < n ;
+   bb = m < m ;
+   bb = n < m ;
+   bb = m <= n ;
+   bb = m <= m ;
+   bb = n <= m ;
+   bb = m > n ;
+   bb = m > m ;
+   bb = n > m ;
+   bb = m >= n ;
+   bb = m >= m ;
+   bb = n >= m ;
+   bb = m == n ;
+   bb = m == m ;
+   bb = n == m ;
+   bb = m != n ;
+   bb = m != m ;
+   bb = n != m ;
+   bb = x < y ;
+   bb = x < x ;
+   bb = y < x ;
+   bb = x <= y ;
+   bb = x <= x ;
+   bb = y <= x ;
+   bb = x > y ;
+   bb = x > x ;
+   bb = y > x ;
+   bb = x >= y ;
+   bb = x >= x ;
+   bb = y >= x ;
+   bb = x == y ;
+   bb = x == x ;
+   bb = y == x ;
+   bb = x != y ;
+   bb = x != x ;
+   bb = y != x ;
+   bb = bb < bb ;
+   bb = bb < m ;
+   x = bb < x ;
+}

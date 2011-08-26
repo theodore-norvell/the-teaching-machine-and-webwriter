@@ -1,0 +1,15 @@
+#include <iostream.h>   /* include info from standard library */
+
+int a ;
+int b ;
+int c ;
+
+int main()
+
+{
+        a = 9 ;
+        b = 6 ;
+        c = 42 ;
+        cout << a << " times " << b << " is " << c << "\n" ;
+        a = b = c ;
+}

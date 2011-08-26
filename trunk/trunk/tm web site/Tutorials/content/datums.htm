@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../";
+  </script>
+  <script language="JavaScript" src="noteConstants.js"></script>
+  <script language="JavaScript" src="../webWriter/parser.js"></script>
+<script language="JavaScript" src="../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../webWriter/header.js"></script>
+  <title>Datums</title>
+
+
+</head>
+
+
+<body>
+
+<h2><a name="intro">Introduction&nbsp;</a></h2>
+
+<p>All data within the TM is represented by Datum objects which
+were originally developed as a common model for data between the TM
+model (compiler and run time engine) and view (display) sides. Because
+the TM is so thoroughly separated into model and view, the datum set
+forms a major part of its interface. This turns out to be a big
+advantage when developing plugins.</p>
+
+<p>Below is the declaration of the Datum interface, implemented
+by all classes of datums.</p>
+
+<p>
+<script language="JavaScript">
+insertCode("datums/Datum.java", false, "code", "default.cfg");
+</script></p>
+
+<p>All program data in the TM is represented as
+datums, including function arguments and formal paramaters. Datums are
+aware of physical memory (they know their address) well as higher order
+structure (parents and children). Also note that the last two methods
+allow the
+attachment of extra properties to datums which can be useful for
+special displays (for example, colouring datums).</p>
+
+<h2><a name="language">Language Independent Datums</a></h2>
+
+<p>As the TM is capable of running both C and Java programs it
+has separate datums for each language. Such duality
+complicates&nbsp;the writing of language independent code so a
+common core of datum behaviour is defined in what is known as the
+Common Language Classes or CLC. Here, for example is the definition of
+an AbstractIntDatum.&nbsp;</p>
+
+<p>
+<script language="JavaScript">
+insertCode("datums/AbstractIntDatum.java", false, "code", "default.cfg");
+</script></p>
+
+<p>Although objects of AbstractIntDatum cannot be instantiated
+directly both Java and C int datums <span style="font-style: italic;">are</span>&nbsp;AbstractIntDatum
+objects so that is the class we want to use when dealing with int
+datums.</p>
+
+<p>Similarly for ArrayDatums. Here is AbstractArrayDatum</p>
+
+<p>
+<script language="JavaScript">
+insertCode("datums/AbstractArrayDatum.java", false, "code", "default.cfg");
+</script></p>
+
+<h2><a name="handling">Handling Datums in a Language
+Indepent Way</a></h2>
+
+<p>Arrays in C and Java have quite different implementations. For
+example,
+the declaration</p>
+
+<pre style="margin-left: 40px;">int [10] a;</pre>
+
+<p>has quite different results in the two languages. In C, a is
+an
+uninitialized array of 10 ints&nbsp;created either on the stack (if
+the declaration is internal) or in the static store (if external). In
+Java, a is created on the stack as a pointer (reference) to an array
+object. When the actual object is created, using the new operator, it
+appears on the heap with a length field and then the 10 ints.
+AbstractArrayDatum lets us ignore such details. However, we do have to
+be careful about what datum gets passed into a visualizer. Here is a
+routine taken from the ArrayBarDisplay that handles this in a language
+independent way</p>
+
+<p>
+<script language="JavaScript">
+insertCode("ArrayBarDisplay.java", false, "code", "default.cfg", "C");
+</script></p>
+
+<p>The routine takes the i'th selection from the display and
+checks to see if it is a (language independent) AbstractPointerDatum
+(here is its interface)</p>
+
+<p>
+<script language="JavaScript">
+insertCode("datums/AbstractPointerDatum.java", false, "code", "default.cfg");
+</script></p>
+
+<p>If so, it extracts the datum referenced and uses it to replace
+the original one. Only then does it check to see if it has an
+AbstractArrayDatum and returns that. If not it sends back a null.</p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+
+</body>
+</html>

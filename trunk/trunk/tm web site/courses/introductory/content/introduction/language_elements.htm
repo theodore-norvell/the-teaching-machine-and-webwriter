@@ -1,0 +1,399 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Language Elements</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<style type="text/css">
+<!--
+.style1 {font-family: "Times New Roman", Times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>C++ is one of a number of well-known computer <em>languages</em>, about which we
+may say:</p>
+<ol><li>They genuinely are languages.</li>
+  <li>The good news is they have a very small, closed vocabulary.</li>
+  <li>The bad news is they are much fussier about grammar than a grade eight
+    english teacher!</li>
+</ol>
+<p>The purpose of computer languages is for human programmers to write out detailed
+  instructions for computers to carry out.</p>
+<p>Our objective is to get you familiar
+    enough with C++ to write meaningful sets of instructions for computers.</p>
+<p>There are two aspects to this:</p>
+<dl>
+  <dt>Syntax</dt>
+  <dd>The computer engineering term for <em>grammar</em>. You have to form your instructions
+    correctly, or they will be rejected by the compiler.</dd>
+  <dt>Semantics</dt>
+  <dd>The computer engineering term for <em>meaning</em>. <em>My dog flies books </em>is
+    a well formed English sentence, whose meaning is at least suspect. The
+    compiler is a grammar cop only. It is incapable of checking for meaning.</dd>
+</dl>
+<p>When you learn a new human language you have to learn both the grammar
+    and the vocabulary. However we generally learn concentrate on vocabulary
+  equivalent to our own. <em>Fermez
+    la porte</em> means
+  the same in French as its English counterpart <em>Close
+  the door</em>. </p>
+<p>Learning a computer language is a little different. There is no equivalent
+  in C++ to <em>Close the door</em>. While C++'s vocabulary is very small, it
+  requires you to understand a whole new set of concepts. Consider the sentence,</p>
+<p><em> One whose theories are based on a concept of strength will lose little
+    ground if he can make a stand on the claim that an all-or-none acquisition
+    is simply a peculiarity of the paired-association experiment and not characteristic
+    of human learning in general (</em>p. 115 of a Cognitive Theory on Learning
+    by Marvin Levine<em>). </em></p>
+<p>While the vocabulary is relatively straightforward it is hard to make much
+  of the sentence without knowing something about  cognitive psychology. </p>
+<p>Similarly, to learn computer languages effectively
+   (to make them meaningful) you will have to learn something about
+  how computers work.</p>
+<p>So, throughout the course, there will be twin threads, woven together: <strong>Syntax</strong>&#8212;get
+  the grammar right. <strong>Semantics</strong>&#8212;make it meaningful.</p>
+<p>Initially, we will focus on syntax.</p>
+<h1><a name="SomeElements">Some Language Elements</a> </h1>
+<h2><a name="alphabet">Alphabet</a></h2>
+<p>Uppercase &amp; lowercase roman letters, A-Z and a-z, the digits 0-9, a well
+defined set of symbols available on every standard keyboard, e.g.</p>
+<pre><code>&lt; &gt; { } ( ) : ; , . ? / * &amp; + - ! ^ ' &quot; = | _</code></pre>
+<p>Some non-printing characters, the most common of which are the newline (<code>\n</code>)
+  and tab (<code>
+    \t</code> ) characters</p>
+<p>Any continuous combination of newline, tab and/or  spaces  are
+  collectively known as <strong>whitespace</strong></p>
+<h2><a name="words">Words</a> are Tokens </h2>
+<p>The programming language equivalent to  word is <em>token</em>.</p>
+<p>Simply put</p>
+<ol>
+  <li>Tokens contain no whitespace</li>
+  <li>Operators are tokens</li>
+  <li>Words with no whitespace are tokens</li>
+</ol>
+<p>So the following are all C++ tokens: <code>while window { x George
++</code></p>
+<p>The following <em>expression</em> contains five tokens: <code>(x1+b)</code> </p>
+<p>They are <code>(&nbsp;&nbsp;&nbsp;&nbsp;x1&nbsp;&nbsp;&nbsp;&nbsp;+&nbsp;&nbsp;&nbsp;&nbsp;b&nbsp;&nbsp;&nbsp;&nbsp;)</code></p>
+<p>You can see why the more specialised term
+    token was adopted. <code>while</code> <code>window</code>  <code>George</code> and <code>x</code> look
+    like words but <code>{</code> and <code>+</code> don't</p>
+<p>There are effectively four kinds of words</p>
+<dl>
+  <dt>keywords</dt>
+  <dd>words defined for the language. Basically, its vocabulary. </dd>
+  <dt>identifiers</dt>
+  <dd>words created by the programmer as <em>names</em> for things.</dd>
+  <dt>symbols</dt>
+  <dd>Sometimes single as <code>{ + *</code> and sometimes in pairs as <code>!=</code> or<code>    /*</code></dd>
+  <dt>literals</dt>
+  <dd>A constant written directly into the text such as 3.14159 or &quot;Hello&quot;. See
+    <a href="#Literals">below</a>. <code></code></dd>
+</dl>
+<h3><a name="keywords">Keywords</a></h3>
+<p>Keywords are sometimes called <em>reserved words</em> as programmers may not use them
+    as identifiers. They are <em>reserved</em> for the language. There are only about a hundred keywords in C++ and we won't be using all of them. Here is a list of the ones we will use:</p>
+<p class="codeKeyword"><code>int &nbsp;&nbsp;double &nbsp;&nbsp;char &nbsp;&nbsp;bool &nbsp;&nbsp;if &nbsp;&nbsp;else &nbsp;&nbsp;for &nbsp;&nbsp;while &nbsp;&nbsp;do &nbsp;&nbsp;using &nbsp;&nbsp;namespace &nbsp;&nbsp;return &nbsp;&nbsp;void&nbsp;&nbsp;&nbsp;true&nbsp;&nbsp;&nbsp;false&nbsp;&nbsp;&nbsp;const</code></p>
+<p>And that's all.</p>
+<h3>Symbols</h3>
+<p> C++ is rich in symbols but, again, we won't use all of them. Here's the one's we will use:</p>
+<p><strong><code>+&nbsp;&nbsp;-&nbsp;&nbsp;*&nbsp;&nbsp;/&nbsp;&nbsp;%&nbsp;&nbsp;=&nbsp;&nbsp;&nbsp;==&nbsp;&nbsp;&nbsp;!=&nbsp;&nbsp;&nbsp;&lt;&nbsp;&nbsp;&nbsp;&gt;&nbsp;&nbsp;&nbsp;&lt;=&nbsp;&nbsp;&nbsp;&gt;=&nbsp;&nbsp;&nbsp;{ }&nbsp;&nbsp;&nbsp;( )&nbsp;[ ]&nbsp;&nbsp; &amp;&amp;&nbsp;&nbsp;||&nbsp;&nbsp;!&nbsp;&nbsp;&nbsp;++&nbsp;&nbsp;&nbsp;--&nbsp;&nbsp;&nbsp;&nbsp;/*&nbsp;&nbsp;*/&nbsp;&nbsp;//&nbsp;&nbsp;&nbsp;;&nbsp; ,&nbsp;&nbsp;. &nbsp;+= -= *= /= &nbsp;&lt;&lt;&nbsp; &gt;&gt; </code></strong></p>
+<h3><a name="identifiers">Identifiers and the Naming Rules</a></h3>
+<p>Identifiers are the names we, as programmers, give to things. They have to conform to the <em>naming rules</em>.</p>
+<ul>
+  <li>they can include alphabetic characters (a-z, A-Z)</li>
+  <li>they can include  digits (0-9)</li>
+  <li>they can include the underscore character (_)</li>
+  <li>they may not start with a digit</li>
+  <li>they should not start with an underscore</li>
+  <li>they can be up to 31 characters long</li>
+  </ul>
+<p>Here are some legal identifiers:</p>
+<p><code>x&nbsp;&nbsp;&nbsp;y&nbsp;&nbsp;&nbsp;i&nbsp;&nbsp;&nbsp;circle&nbsp;&nbsp;&nbsp;arg22 &nbsp;&nbsp;thisIsAVeryLongIdentifier &nbsp;&nbsp;swap&nbsp;&nbsp;&nbsp;Swap&nbsp;&nbsp;&nbsp;PI&nbsp;&nbsp;&nbsp;DEFAULT_WINDOW &nbsp;&nbsp;_legalButDontUse</code></p>
+<p>C++ is case sensitive so <code>swap</code> and <code>Swap</code> are different names.</p>
+<p>And some bad ones</p>
+<p><code>1x &nbsp;&nbsp;thisIsAnIncrediblyLongIdentifier1 &nbsp;&nbsp;&nbsp;thisIsAnIncrediblyLongIdentifier2 &nbsp;&nbsp;default-window</code></p>
+<p><code>1x</code> starts with a digit which is illegal</p>
+<p><code>default-window</code> includes a - which is illegal</p>
+<p>The two long identifiers are legal but the difference between the two of them occur past the 31st character which means that they may not be distinguished by all compilers</p>
+<h3><a name="nameStyle">Name Style Rules</a></h3>
+<p>Here are some <em>style</em> rules we will use for names.</p>
+<ul>
+  <li>names for constants should be uppercase, as <code>PI</code>. Use underscore to separate words in constant names, as <code>DEFAULT_WINDOW</code></li>
+  <li>other names should be lowercase, as <code>circle</code>, except when using muliple word names where uppercase should be used for the first letter in the second and subsequent word, as <code>starshipEnterpriseVoyage</code>. Because the capitals hump up in the middle, this is often referred to as <em>camelcase</em>. </li>
+</ul>
+<h2><a name="sentences">Sentences are Statements</a></h2>
+<p>The equivalent of a sentence is a statement. Statements are always terminated
+  by a semicolon.</p>
+<pre><code>x = y + z - <span class="codeConstant">4</span>;
+cout &lt;&lt; <span class="codeConstant">&quot;Hello world!\n&quot;</span>;</code></pre>
+
+<p>spaces have been inserted for readability but are not required</p>
+<pre><code>x=y+z-<span class="codeConstant">4</span>;
+cout&lt;&lt;<span class="codeConstant">&quot;Hello world!\n&quot;</span>;</code></pre>
+<p>are fine as well. It is not even necessary to stay on a single line.</p>
+<pre><code>x = <span class="codeConstant">24</span>*gorganzola - <span
+class="codeConstant">14</span>*emmenthaler
+     + <span class="codeConstant">17</span>*balderson;
+cout  &lt;&lt;  
+	<span class="codeConstant">&quot;The quick brown fox jumped over the lazy dogs\n&quot;</span>;</code></pre>
+<p>are both legal. </p>
+<h2><a name="paragraphs">Paragraphs are Blocks </a></h2>
+<p>Again we have a different technical term. The C++ equivalent of a paragraph
+  is a block&#8212;a set of statements enclosed in a pair of curly brackets {
+  }</p>
+<p>We can turn the above statements into a block as follows:</p>
+<pre><code>{
+   x = y + z - <span class="codeConstant">4</span>;
+   cout &lt;&lt; <span class="codeConstant">&quot;Hello world!\n&quot;</span>;</code>
+}</pre>
+<p>It is considered <em>good style</em> to indent statements inside a block.</p>
+<h1><a name="Specifics">Some Specifics</a></h1>
+<h2><a name="comments">Comments</a></h2>
+<p>Comments are for people. The precompiler actually throws them away</p>
+<p>They are a major mechanism for documenting programs.</p>
+<p>They come in two flavours:</p>
+<pre><code>              <span class="codeComment">// A single line comment. Ends at the end of the line</span>
+   <span class="codeComment">/*
+   * Comments enclosed in slash-asterix ... asterix-slash can
+   * extend over several lines
+   */</span></code></pre>
+<h2><a name="Literals">Literals</a></h2>
+<p>A literal is a constant as it appears in the text of the code. For example, the line of code</p>
+<blockquote>
+  <p><code>x = <span class="codeConstant">3</span>;</code></p>
+</blockquote>
+<p>tells the computer to set <code>x</code> to the value <span class="codeConstant"><code>3</code>. <code>3</code></span> is a literal as it appears in the text code.</p>
+<dl>
+  <dt>integer literals</dt>
+  <dd>standard integers such as <span class="codeConstant"><code class="cppconstant">1</code></span><code class="cppconstant">, <span class="codeConstant">0</span>, </code><span class="codeConstant"><code class="codeConstant">2</code></span>, <code class="codeConstant">&nbsp;-17</code> or<span class="codeConstant"> <code class="cppconstant">2056</code></span><code class="cppconstant">. </code> There are also some special ones such as <code class="codeConstant">0xff</code>, the hexadecimal (base 16) representation of <code>255</code>. We won't worry about these this term. </dd>
+  <dt>double literals</dt>
+  <dd>real number literals using decimal notation (<code class="codeConstant">3.</code>,<code class="codeConstant"> 3.0</code>, <code class="codeConstant">3.14159</code> or <code class="codeConstant">-17.65</code>) or floating point (exponential) notation (<code class="codeConstant">1.0e11</code> or<code class="codeConstant"> -23.6e-3</code>)</dd>
+  <dt>character literals</dt>
+  <dd>single characters such as <code class="codeConstant">'a'</code>, <code class="codeConstant">'x'</code>, <code class="codeConstant">'H'</code>, <code class="codeConstant">'!'</code> or <code class="codeConstant">'\n'</code></dd>
+  <dt>string literals</dt>
+  <dd>a sequence of characters such as <code class="codeConstant">&quot;hello world!\n&quot;</code>, <code class="codeConstant">&quot;Michael&quot;</code> or </dd>
+  <dt><code class="codeConstant">&quot;The quick fox jumped over the lazy dogs.&quot;</code></dt>
+</dl>
+<p>Note that single characters are always enclosed by a single quote while a set of characters, known as a string, are always enclosed in double quotes.</p>
+<h2><a name="cout">The Standard Output Stream </a></h2>
+<p>When we write</p>
+<blockquote>
+  <p><code>cout &lt;&lt; <span class="codeConstant">&quot;Hello world!\n&quot;</span>;</code></p>
+</blockquote>
+<p><code>cout </code>is the <em>standard output  stream</em> while the &lt;&lt; is actually an operator, called the <span class="stxNonterminal">insertion</span> operator. So the line  actually means, <em>insert the string to the right of the operator into the stream at the left of it. </em>The standard output stream is normally connected to a <em>console</em>, a plain text window. (The word console is historical, harking back to the era of large, central computers. A console was a simple, dumb terminal with no computing ability of its own.)</p>
+<p>You can insert multiple items into the output stream, for example</p>
+<blockquote>
+  <p><code>cout &lt;&lt; <span class="codeConstant">&quot;Hello
+&quot;</span> &lt;&lt; <span
+class="codeConstant">&quot;world!\n&quot;</span>;</code></p>
+</blockquote>
+<p>puts exactly the same thing to the screen as does the first example, as does this one</p>
+<blockquote>
+  <p><code>cout &lt;&lt; <span class="codeConstant">&quot;Hello &quot;</span>;<br>
+  </code><code>cout &lt;&lt; <span class="codeConstant">&quot;world!\n&quot;</span>;</code></p>
+</blockquote>
+<p>When you are done outputting a string literal to the screen, it does not force a newline (unless of course, you put one in, as we did at the end of <code>world</code>). The next output takes up exactly where the old one left off.</p>
+<h3><a name="endl">The <code>endl</code> Token</a></h3>
+<p>There is another way to force a newline. We can insert an endl token into the output stream like this.</p>
+<blockquote>
+  <p><code>cout &lt;&lt; <span class="codeConstant">&quot;Hello world!&quot;</span> &lt;&lt; endl ;</code> </p>
+</blockquote>
+<p>Why have two ways? As it happens, there is a difference, which has to do with the way computers write to the screen. The actual writing is handled by the operating system (e.g. Windows XP, Linux, Mac OSX). For reasons of efficiency, output requests are normally written in a two step process. They are first written to a <em>buffer. </em>Then, sometime later, the contents of the buffer get written to the screen.</p>
+<p>This means you might output something and it won't appear right away. If you toss and <code>endl</code> into the output stream, it not only ends the line, it also requests that the buffer contents be written to the screen at once. So for interaction with humans, we often use <code>endl</code>. </p>
+<p>This example pulls together most of the preceding code samplets so you can see them in action. </p>
+<p>
+  <script language="JavaScript">
+		setButtons(true, false, true,"","");
+		insertCode("hello_world_2.cpp", true, "code", "", "A", "all");
+	  </script>
+</p>
+<h2><a name="otherData">Outputting Other Data</a></h2>
+<p>The output stream routines know how to handle most built-in data types (and can be told how to handle user defined types as well).</p>
+<p>Thus we can write</p>
+<p>
+  <script language="JavaScript">
+		setButtons(true, false, true,"","");
+		insertCode("outputs.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<p>Run this example yourself. Note that a line of <code>cout</code> code does not necessarily produce a line of output. The next piece of data output starts right where the last one left off. If you want to start a new line, you have to output either a <code>'\n'</code> (alone or as part of a string literal) or an <code>endl</code>.</p>
+<h2><a name="expressions">Arithmetic Expressions</a></h2>
+<p>
+  <script language="JavaScript">
+startDefLink("expression",50,50);
+  </script>
+Expressions
+<script language="JavaScript">endLink();</script>
+ occur in C++ in many places. Most are easily read by engineering
+  students as they are often based on mathematical expressions. Again, we will
+  study them in detail shortly. What you need to know now is that when an expression
+  is encountered in a statement while a program is running, it is <em>always
+  evaluated</em>. In C++, that quite literally means <strong>reduced to a single value</strong>. The standard arithmetic operators should be familiar except that in programming a * is always used to signify multiplication instead of an x. </p>
+<p>Here's a very simple program that just ouputs the results of evaluating some expressions.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true, "introduction/expressions.htm","");
+insertCode("expression.cpp", true, "code", "");
+  
+  </script>
+</p>
+<h2><a name="goodBad">Good Code, Bad Code</a></h2>
+<p>Here are different versions of the <em>hello world</em> program, stripped of comments. See if you can tell which are good code and which are not. Click the answer button to see if you are right. </p>
+<pre>#include &lt;iostream&gt;
+<span class="codeKeyword">using</span> <span class="codeKeyword">namespace</span> std;
+<span class="codeKeyword">int</span> main(){
+cout&lt;&lt;"Hello world!\n";
+<span class="codeKeyword">return</span> 0;
+}</pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal code. As a matter of style the <code>cout&lt;&lt;"Hello world!\n";</code> should be indented but poor style does not render the code wrong. It does make it harder to read and maintain. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+
+<pre>#include &lt;iostream&gt;
+<span class="codeKeyword">using</span> <span class="codeKeyword">  namespace</span>   std   ;
+<span class="codeKeyword">int</span> main(){
+   cout  &lt;&lt;   "Hello world!\n"   ;
+<span class="codeKeyword">return</span> 0  ;
+}</pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal code. The extra spaces are simply ignored. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+ 
+<pre><span class="codeKeyword">int</span> main(){
+    cout&lt;&lt;"Hello world!\n";
+<span class="codeKeyword">return</span> 0;
+}</pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is ilegal code. <code>cout</code> is a name from the library and won't be recognized because <code>&lt;iostream&gt;</code> has not been included.</p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+
+<pre>#include &lt;iostream&gt;
+<span class="codeKeyword">int</span> main(){
+    std::cout&lt;&lt;"Hello world!\n";
+<span class="codeKeyword">return</span> 0;
+}</pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal code. The <code>using namespace</code> has been dropped but the full name of <code>cout</code> has been used instead. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<pre>#include &lt;iostream&gt;
+<span class="codeKeyword">using</span> <span class="codeKeyword">namespace</span> std;
+<span class="codeKeyword">int</span> main()
+{
+   cout&lt;&lt;"Hello world!\n";
+<span class="codeKeyword">return</span> 0;}  </pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal code. Which line the brackets go on is a matter of style. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<pre>#include &lt;iostream&gt;
+<span class="codeKeyword">using</span> <span class="codeKeyword">namespace</span> std; <span class="codeKeyword">int</span> main(){ cout&lt;&lt;"Hello world!\n"; <span class="codeKeyword">return</span> 0; } </pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal code, The <code>#include</code> should be on a separate line (as it is) but most other C++ code is not line sensitive. C++ is a <em>character oriented language</em>. Using lines is to make code easier for people to read. </p>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+</p>
+<h2>Exercises</h2>
+<ol>
+  <li>Go  to the <code>outputs.cpp</code> TM example above and edit the second set of outputs to present the numeric data differently. For example, separate the nos with a comma followed by a space, or put each number on its own line. </li>
+  <li>Spot the syntax (grammar) errors in the following code:
+    <blockquote>
+      <pre>#include &lt;iostream&gt;
+using namespace std;
+
+
+main()
+    cout &lt; &quot;All is vanity/n;
+    return 0
+}</pre>
+    </blockquote>
+  </li>
+  </ol>
+<p>
+  <script language="JavaScript">
+	startHiddenAnswer("answer");
+  </script>
+</p>
+<blockquote>
+  <blockquote>
+    <pre>#include &lt;iostream&gt;
+using namespace std;
+
+<span class="codeHighlight">int</span> main()<span class="codeHighlight">{</span>
+    cout &lt;<span class="codeHighlight">&lt;</span> &quot;All is vanity/n<span class="codeHighlight">&quot;</span>;
+    return 0<span class="codeHighlight">;</span>
+}</pre>
+  </blockquote>
+</blockquote>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+</p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+<h1>Examples Shown in Full </h1>
+ <p>
+   <script language="JavaScript">
+		insertCode("hello_world_2.cpp", false, "code", "", "all", "all");
+	  </script>
+</p>
+ <p>
+   <script language="JavaScript">
+		insertCode("outputs.cpp", false, "code", "", "all", "all");
+   </script> 
+   </p>
+ <p>
+   <script language="JavaScript">
+insertCode("expression.cpp", false, "code", "", "all", "all");
+  
+   </script> 
+   </p>
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

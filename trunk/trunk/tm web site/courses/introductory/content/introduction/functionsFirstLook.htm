@@ -1,0 +1,358 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Functions: A First Look</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<style type="text/css">
+<!--
+.style1 {font-family: "Times New Roman", Times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p class="style1">Functions are the smallest modules in computer programs. All active code has to appear inside functions. You've already seen a function in that <code>main</code> itself is a function.</p>
+<p>Now we take   our very first program and put the hello part  into a separate function, called <code>hello()</code>. Here's what results. </p>
+<p>
+<script language="JavaScript">
+	setButtons(true, true, true,"introduction/hello.htm");
+	insertCode("hello.cpp", true, "code", ""); 
+</script>
+</p>
+<p>One of the advantages of creating functions is that the code in them can be re-used, like so.</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, true, true,"introduction/hello3.htm");
+	insertCode("hello3.cpp", true, "code", ""); 
+</script>
+</p>
+<p>Here's another example, based on &quot;personalized&quot; letters that were all the rage with businesses in the middle nineties. The idea was to &quot;personalize&quot; a letter by inserting the customer's own name. Run this one yourself. Maybe edit it to use your own name. As you can see, the results are laughable (and anything but personal). It was no wonder the trend didn't last.</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, false, true);
+	insertCode("personalLetter.cpp", true, "code", ""); 
+  </script>
+</p>
+<p>It does, however, show one of the main reasons for functions, and leads to our first <em>programming principle</em>.</p>
+<p class="principle">Functions are implemented once but used many times. </p>
+<h2><a name="withArgs">Functions with Arguments</a></h2>
+<p>On your assignments, you will be asked to write functions only, with no <code>main()</code>. The reason for this is that we will write our own <code>main()</code> to automatically test your assignments and since there can only be one <code>main()</code> function in a program, you will be writing just functions. How this all works we will show you shortly, but one thing we will be doing is to pass you some arguments to work on and get you to pass us back an answer.</p>
+<p>Let's demonstrate by example first, then we'll pull together some rules. Here's a function that calculates the area of  any triangle. It's called twice from <code>main</code> which tests it using two famous triangles.</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, true, true,"introduction/triangleArea.htm","");
+	insertCode("triangleArea.cpp", true, "code", "");
+  </script>
+</p>
+<p>The keyword <span class="codeKeyword">double</span> stands for double precision floating point number. It means that the arguments are real numbers and not integers. As you can see, we actually provided the arguments with integers when we <em>called </em>the function from inside <code>main()</code><em>.</em> If you watched the video or ran the example yourself you will see that the integers provided at the call are automatically converted to real nos.</p>
+<p>In each of these examples, the functions involved have appeared in three different ways. They have been <em>declared</em>, they have been <em>defined</em> (or <em>implemented</em>) and they have been <em>called</em>. At this point, it's time to define these three a little more formally.  </p>
+<h2><a name="declaration">Function Declaration</a></h2>
+<p>Repeating the original example (with no buttons this time) let's focus on the program's anatomy.</p>
+<p>
+<script language="JavaScript">
+	setButtons(true, true, true,"introduction/hello.htm");
+	insertCode("hello.cpp", false, "code", ""); 
+</script>
+</p>
+
+<p>Before  the function can be used (called from inside <code>main</code>) it has to be <em>declared</em>.</p>
+<p><span class="codeKeyword"><code>void</code></span><code> hello();</code> </p>
+<p>Functions <em>normally should not be declared inside other functions</em> so the declaration of <code>hello()</code> occurs <em>before</em> <code>main()</code>.</p>
+<p>The declaration starts with the keyword <code class="codeKeyword">void</code> which means that unlike the <code>triangleArea()</code> funtion, the <code>hello()</code> function doesn't return anything. </p>
+<p>The parentheses <code>()</code> mark <code>hello</code> as a function. The 
+  <script language="JavaScript">
+startDefLink("argument",50,50);
+  </script>
+arguments
+<script language="JavaScript">endLink();</script>
+ for the <code>triangleArea()</code> funtion were put inside the parentheses. Empty parentheses means there are no arguments. </p>
+<h2>Function Definition (Implementation)</h2>
+<p>The <code>hello()</code> function is defined or implemented after main().</p>
+<h3><a name="prototype">The Prototype</a></h3>
+<p>A function  implementation consists of the function <em>prototype</em> followed by a <em>body</em> which contains the actual code for the function. The prototype is the same as the declaration without the semicolon. In fact it's really the other way around.</p>
+<ul>
+  <li>A function declaration consists of a function prototype followed by a semicolon.</li>
+  <li>A function definition (or implementation) consists of a function prototype followed by a body.</li>
+</ul>
+<p>Formally, a function prototype consists of a <em>return type</em>, an <em>identifier</em> and a set of parentheses containing an <em>argument list </em>or<em> parameter list.</em></p>
+<p>The <em>identifier</em> represents the name of the function
+(<code>hello</code> and <code>triangleArea</code> in the examples above).</p>
+<p>The <em>parameter list</em> (which goes between parentheses) represents data passed into the function. In our triangleArea example we have two pieces of data, separated by a comma.</p>
+<p>Each parameter (or argument) in the list specifies the type of the data and the name of the parameter. In our case the two parameters are called <code>base</code> and <code>height</code> and both are <em>doubles</em>.</p>
+<p>Finally, the <em>return type</em> specifies what kind of data will be returned by the function. In the case of triangleArea a <code>double</code> is to be returned representing the area of the triangle. <code>hello()</code> and <code>name()</code> return nothing so <code>void</code> is used for their return type. Instead of returning a value, they are tasked with inserting <code class="codeConstant">&quot;hello&quot;</code> or a name into the output stream. </p>
+<h4></h4>
+<h2><a name="call">Function Call</a></h2>
+<p>The function is called from inside <code>main()</code>. As you can see from running the Teaching Machine, the effect of a call is to move to the code inside the function, execute the instructions inside it (again in sequence) then come back to where the call was made and go to the next instruction after the call. Here's what the execution sequence looks like for the original hello program. </p>
+<table width="700" border="1">
+  <tr>
+    <td><strong>Inside <code>main()</code></strong> </td>
+    <td><strong>Inside <code>hello()</code> </strong></td>
+  </tr>
+  <tr>
+    <td><code>hello(); // make call to hello </code></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><code>cout &lt;&lt; &quot;hello, &quot;;</code> </td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>return back to calling point </td>
+  </tr>
+  <tr>
+    <td><code>cout &lt;&lt; &quot;world!\n&quot;; // next instruction</code> </td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h4>The Function Body</h4>
+<p>The body of a function generally consists of a number of 
+  <script language="JavaScript">
+startDefLink("statement",50,50);
+  </script>
+statements
+<script language="JavaScript">endLink();</script>, enclosed in a block, that is a set of curly brackets { }. Remember, blocks are our basic paragraphing mechanism.</p>
+<p>There is only a single statement in each of the  examples above. </p>
+<h4>The Return Statement</h4>
+<p>The <em>return</em> statement is a command to return a value from a function. It really does two things.</p>
+<ol>
+  <li>It causes the function to end</li>
+  <li>It causes a specific value to be returned, usually by evaluating an <em>expression</em>.</li>
+  </ol>
+<p>It is not always required. In all of the examples with no return value, <code class="codeKeyword">return</code> was not used at all. There is an implicit return at the end of any function. </p>
+<h2><a name="headers">Header Comments and Design-by-Contract</a></h2>
+<p>Every function should be preceded by a header comment which, together with the prototype, defines a <em>contract between the progammer of the function</em> (who is providing a service with his or her function) and the programmer who will use it (the <em>client</em>).</p>
+<p>Let's repeat our triangleArea example, showing just the function, its header (and no buttons).</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, true, true,"introduction/triangleArea.htm","");
+	insertCode("triangleArea.cpp", false, "code", "", "A");
+  </script> 
+  </p>
+<p>First we start with the name of the function in a line of asterisks (preceded by a <code>'/'</code>) </p>
+<pre class="codeComment"><code>/** </code>triangleArea ***************************************************</pre>
+<p>then we add information defining our 
+  <script language="JavaScript">
+startDefLink("parameter",50,50);
+  </script>
+<em>parameters</em>
+<script language="JavaScript">endLink();</script>
+ and what we will <em>return</em>. This is a matter of <em>good style</em> rather than syntax, so the compiler won't care if you don't do it.</p>
+<p>But your instructor will!</p>
+<p>Here are the definitions. Use only the ones needed</p>
+<p><strong>@params:</strong> defines the parameters for the function. Usually one line per parameter.</p>
+<p><strong>@returns:</strong> defines what is returned by the function. </p>
+<p><strong>@modifies:</strong> defines what the function modifies. This doesn't apply to the one header shown so far so it wasn't used at all. </p>
+<h3><a name="preconditions">Pre-Conditions</a></h3>
+<p><strong>@pre: </strong>short for pre-condition. Pre-conditions are used to qualify input parameters. It is the client's responsibility to provide values for the parameters when the program is running and the function gets called. If the pre-conditions are met, the function will work as advertised. Otherwise, the function provider may do anything at all.</p>
+<p>Pre-conditions are important for maintenance. When a function implementation is changed, the programmer must continue to adhere to the contract, but may change the behaviour when pre-conditions are violated in any way at all. This is a warning to clients not to depend upon behaviour they observe when preconditions are violated. For example, the triangleArea function states that base and height can't be negative. If you test how the function works (or examine the code) you'll see it goes ahead and does the calcualtion anyway. Depending on that and  feeding the function negative values is dangerous because future versions of the function might put in a test for negative values and bring the program to a halt if any are detected.</p>
+<p>Clients who observed the pre-conditions are unaffected. Clients who depend upon undocumented behaviour suddenly find their programs quitting when a new version of the code they are using comes out.</p>
+<h2><a name="Library">Library Functions</a></h2>
+<p>There are thousands of prebuilt functions available in dozens of <em>libraries</em> </p>
+<P>
+<UL>
+  <LI>Don't re-invent the wheel!
+    <LI>Many common functions are included in <EM>libraries</EM>.
+    <LI>Need to <code>#include</code> the appropriate library  file for each.
+  </UL>
+<p>The library include files mostly contain the declarations needed to use the libraries</p>
+<p>For example, the math library has declarations for</p>
+<ul>
+  <li>Trigonometric functions e.g. <code>double sin(double x), double tan(double x)</code></li>
+  <li>Hyperbolic functions. e.g. <code>double atan(double x)</code></li>
+  <li>The power function which has to be used since C++ has no exponentiation operator: <code>double pow(double x, double exp)</code></li>
+  <li>the special function <code>double atan2(double x, double y)</code> which returns the arc tangent of <code>y/x</code>, a function which is defined for <code>x = 0</code>. </li>
+</ul>
+<p>To use any of these functions you would add to the top of your file the line</p>
+<p><code>#include &lt;cmath&gt;</code></p>
+<h2><a name="goodBad">Good Code, Bad Code</a></h2>
+<p>Again, we take a piece of code from this topic, then vary it. Which variations are not legal.</p>
+<pre> #include &lt;iostream&gt; 
+ using namespace std; 
+ 
+ int main(){ 
+     cout &lt;&lt; "The area of Pythagorus' famous 3-4-5 triangle is " ; 
+     cout &lt;&lt; triangleArea( 3 , 4 ); 
+     cout &lt;&lt; "\n while that of his 5-12-13 triangle is " ; 
+     cout &lt;&lt; triangleArea( 5 , 12 ); 
+     return 0 ; 
+ }
+ 
+double triangleArea( double base, double height );
+
+double triangleArea( double base, double height ){ 
+     return (base * height)/ 2 ; 
+ }
+ </pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is not legal because, although there is a declaration for the function</p>
+<blockquote>
+  <p><code>double triangleArea( double base, double height );</code></p>
+  </blockquote>
+<p>It has to occur before the function is used (called) in <code>main</code> ( <code>triangleArea(3,4)</code> and <code>triangleArea(5,12)</code>) </p>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  </p>
+<pre> #include &lt;iostream&gt; 
+ using namespace std; 
+ 
+ int main(){ 
+     double triangleArea( double base, double height );
+     cout &lt;&lt; "The area of Pythagorus' famous 3-4-5 triangle is " ; 
+     cout &lt;&lt; triangleArea( 3 , 4 ); 
+     cout &lt;&lt; "\n while that of his 5-12-13 triangle is " ; 
+     cout &lt;&lt; triangleArea( 5 , 12 ); 
+     return 0 ; 
+ }
+ 
+ double triangleArea( double base, double height ){ 
+     return (base * height)/ 2 ; 
+ }
+ </pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is legal, but it is not very good style. The declaration for
+<code>triangleArea</code> should not normally be inside another function, and <code>main</code> is a function. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<pre> #include &lt;iostream&gt; 
+ using namespace std; 
+ 
+ int triangleArea( double base, double height ); 
+ 
+ int main(){ 
+     cout &lt;&lt; "The area of Pythagorus' famous 3-4-5 triangle is " ; 
+     cout &lt;&lt; triangleArea( 3 , 4 ); 
+     cout &lt;&lt; "\n while that of his 5-12-13 triangle is " ; 
+     cout &lt;&lt; triangleArea( 5 , 12 ); 
+     return 0 ; 
+ }
+ 
+ double triangleArea( double base, double height ){ 
+     return (base * height)/ 2 ; 
+ }
+ </pre>
+<script language="JavaScript">
+	startHiddenAnswer("answer");
+</script>
+<p>This is not legal because the  
+  <script language="JavaScript">
+startDefLink("prototype",50,50);
+  </script>
+prototype
+<script language="JavaScript">endLink();</script>
+ in the declaration of <code>triangleArea</code> promises to return an <code>int</code> while
+ the prototype in the function definition (implementation) says it returns a <code>double</code>.
+ The name of the function, the return type and the number and type of the parameters <em>must
+ all agree</em> in the two prototypes. Interestingly, the <em>names of the parameters </em> do
+ not have to be the same. </p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<p>&nbsp;</p>
+<h2><a name="exercises">Exercises</a></h2>
+<p>For each of the following questions:</p>
+<ol type="a">
+  <li>Write a header for the function</li>
+  <li>Write the function</li>
+ </ol>
+ <ol type = "1">
+  <li>Each liter of gasoline burned adds 3 kg. of CO2 to the atmosphere. Create a function that calculates the amount of CO2 a vehicle adds to the atmosphere annually given the number of km. it drives a year and its gas &quot;mileage&quot; in km/liter.</li>
+  <li> Under the Kyoto protocol Canada is required to reduce its greenhouse gases by 7% wrt 1990 levels by 2012. However, that is estimated to be 29% below the levels we would otherwise have been producing in 2012. We would like a function that would calculate what kilometerage the next car someone buys should have in order to be 29% below their current car's kilometerage.</li>
+  </ol>
+ <p>The answers are below in hidden answer boxes. You will get very little out of these exercises if you don't spend some real time trying to solve them. HINT: first <strong>figure out</strong> (don't go look it up) what your formula should be, then create the function. Then, when you're done you can check your answer by clicking on the button in the appropriate box. </p>
+ <p>&nbsp;</p>
+<script language="JavaScript">
+	startHiddenAnswer("1a");
+</script>
+<pre class="codeComment"><code>/** annualCO2 ********************************************************
+*
+* #params: kilometers - the annual no. of km. driven @pre: &gt;= 0
+*          consumption - gas consumption in km/l @pre: &gt; 0
+*
+* #returns: No. of kg of CO2 added to atmosphere annually
+**********************************************************************/</code></pre>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  
+<script language="JavaScript">
+	startHiddenAnswer("1b");
+</script>
+</p>
+<pre><span class="codeKeyword"><code>double</code></span><code> annualCO2 (<span class="codeKeyword">double</span> kilometers, <span class="codeKeyword">double</span> consumption){
+    <span class="codeKeyword">return</span> <span class="codeConstant">3.0</span> * kilometers/consumption;
+}</code></pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2a");
+</script>
+<pre class="codeComment"><code>/** kilometerage ******************************************************
+*
+* #params: consumption - gas consumption in km/l @pre: &gt; 0
+*
+* #returns: consumption required for a 29% improvement
+**********************************************************************/</code></pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1b");
+</script>
+</p>
+<pre><span class="codeKeyword"><code>double</code></span><code> kilometerage (<span class="codeKeyword">double</span> consumption){
+    <span class="codeKeyword">return</span> <span class="codeConstant">1.29</span> * consumption;
+}</code></pre>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+</p>
+<h2>Problems </h2>
+<p>Here are some practice problems</p>
+<ol>
+  <li>In pre-calculus physics the distance an object travels is given by the
+    formula <span class="mathFont">s = ut + 1/2at<sup>2</sup></span> where <span class="mathFont">u</span> is
+    the initial speed, <span class="mathFont">a</span> is a constant acceleration
+    and <span class="mathFont">t</span> is the time. Create a function to compute <span class="mathFont">s</span> plus
+    a main function to that tests it by calling it with some values.</li>
+  <li>Create a function to compute the area of a circle given its radius (note
+    that a value for PI is not built in to C++ so use 3.14159) plus a main function
+    to that tests it by calling it with some values.</li>
+</ol>
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ 
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

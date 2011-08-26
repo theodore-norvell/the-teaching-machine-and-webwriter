@@ -1,0 +1,16 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+   
+   int ii = -6 ;
+   int jj = -9 ;
+   ii = ii | jj ;
+   ii = -6 ^ -12 ;
+   ii = -6 & -12 ;
+   float ff = 99.9 ;
+   ff = ff - 6 ;
+   ff = 5 / ff ;
+   ff = (-6) % 3 ;
+}

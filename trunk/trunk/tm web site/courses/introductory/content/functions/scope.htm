@@ -1,0 +1,169 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Scope</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Scope is an
+<em>attribute</em> (or property) of an <em>identifier</em> (or <em>
+<script language="JavaScript">
+startDefLink("<em>name</em>",50,50);
+    </script>
+name
+<script language="JavaScript">endLink();</script>
+)</em>.</p>
+<p>The <EM>scope</EM> of an identifier is the region of the program code in which
+it can be used. </p>
+<DL>
+  <DT><a name="local">local scope</a></dt>
+  <DD>An identifier declared within a block (braces <code>{ }</code>)
+      <DL COMPACT>
+        <dt></dt>
+        <DD>scope extends from declaration to end of block.</dd>
+        <DT></dt>
+        <DD>parameter scope extends to the whole function definition.</dd>
+  </DL></dd>
+  <DT><a name="global">global scope</a></EM></dt>
+  <DD>An identifier declared outside all blocks.
+      <DL COMPACT>
+        <DT></dt>
+        <DD>scope extends from declaration to the end of the compilation unit
+          (source file).</dd>
+      </DL></dd>
+</DL>
+<p>As  a property of names, it applies to</p>
+<ul>
+  <li>
+    <script language="JavaScript">
+startDefLink("variable",50,50);
+    </script>
+variable
+<script language="JavaScript">endLink();</script>
+ names
+  <li>
+    <script language="JavaScript">
+startDefLink("constant",50,50);
+    </script>
+constant
+<script language="JavaScript">endLink();</script>
+ names
+  <li>
+    <script language="JavaScript">
+startDefLink("function",50,50);
+    </script>
+function
+<script language="JavaScript">endLink();</script>
+ names
+  <li>
+    <script language="JavaScript">
+startDefLink("class",50,50);
+    </script>
+class
+<script language="JavaScript">endLink();</script>
+ names </li>
+</ul>
+<p>as well as to other names. </p>
+<h2><a name="examples">Scope Examples</a></h2>
+<p> A do-nothing example with many of the names  declared multiple
+  times.</p>
+<dl>
+  <dt>Mouse Instructions</dt>
+  <dd> To find out
+        what the scope of a name is roll the mouse over where the name is first
+    declared. Note that if you click on the names you can freeze the scope marking,
+    letting you scroll around the program. Click on the same name again to turn
+    it off.</dd>
+</dl>
+<p class="pagebreak">
+  <script language="JavaScript" >
+setButtons(true, false, true,"","");
+insertCode("scope_demo.cpp", true, "code", "");
+</script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Note that the first John and Mary are declared at the external
+  level (outside all functions). Although this is legal we will discourage it
+  in this course. This is one of the few places you will see it.</p>
+<hr>
+
+<script language="JavaScript">
+ endNote();
+</script
+><h2> <a name="Visibility">Visibility</a></h2>
+<p>Scope &amp; visibility are slightly different</p>
+<p>It is possible for a 
+  <script language="JavaScript">
+startDefLink("name",50,50);
+    </script>
+name
+<script language="JavaScript">endLink();</script>
+ to be in 
+  <script language="JavaScript">
+startDefLink("scope",50,50);
+    </script>
+scope
+<script language="JavaScript">endLink();</script>
+ but not be visible</p>
+<p> There are lots of john's and mary's in the example above.
+  Like families, the scope of many of them overlap. How do we know which is which?</p>
+<p>We repeat the same example below, only now we have marked it for visibility.
+  Note that the first john, which is declared at the <em>external level</em>, is only visible at the external level as well as inside functionFoo. This
+  is because main and functionFoo have their own johns. We say these johns <em>occlude</em> the
+  other one.</p>
+<p class="pagebreak">
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("visibility_demo.cpp", true, "code", "");
+  </script>
+</p>
+  <ul>
+    <li>Try to keep the scope of 
+      <script language="JavaScript">
+startDefLink("variable",50,50);
+      </script>
+variables
+<script language="JavaScript">endLink();</script>
+ small&#8212;it can make your code easier
+          to read and modify. </li>
+    <li>Prefer local variables over global variables. </li>
+    <li>Use 
+      <script language="JavaScript">
+startDefLink("parameter",50,50);
+      </script>
+parameters
+<script language="JavaScript">endLink();</script>
+ rather than global variables to pass information to functions. </li>
+    <li>If your parameter list is too long maybe your function is doing too much.
+    </li>
+  </ul>
+  <p>A more <a href="../../content/functions/discussion.htm">detailed discussion </a> of
+    the concept of scope is available here. </p>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" --><!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

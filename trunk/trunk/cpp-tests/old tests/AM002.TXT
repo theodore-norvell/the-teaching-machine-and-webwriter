@@ -1,0 +1,22 @@
+#include <iostream.h>
+
+/* print Fahrenheit-Celsius table
+        for fahr = 0,20, ... 300 */
+
+int // LINE ADDED BY TSN
+main()
+
+{
+        int     fahr, celcius;
+        int     lower = 0;      // Lower limit of temperature table
+        int upper = 300;    // upper limit
+        int step = 20;
+
+        fahr = lower;
+        while (fahr <= upper) {
+                celcius = 5 * (fahr-32) / 9;
+                cout << fahr << "\t" << celcius << "\n";
+                fahr += step;
+        }
+}
+

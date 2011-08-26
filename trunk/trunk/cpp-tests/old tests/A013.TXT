@@ -1,0 +1,7 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+        int a = 3*(8+1.0) ;
+}

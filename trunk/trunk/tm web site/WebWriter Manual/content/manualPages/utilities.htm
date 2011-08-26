@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Utilities</title>
+</head>
+<body>
+<p>There are a few utilities which are not covered off under any other category.</p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>bottomStamp()</strong><br>
+<h3>Arguments</h3>
+<dl>
+  <dt>copyright</dt>
+  <dd>set to true to include copyright </dd>
+  <dt>date</dt>
+  <dd>set to true to include date </dd>
+  <dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>None, if both arguments are false. Otherwise a div of class <code>bottomStamp</code> is created and a <code>copyright</code> div and a <code>dateStamp</code> div are put into it. The copyright notice is taken from the constants.js script, the date is the last date the document was modified. Appearance of the divs is controlled from the stylesheets. </p>
+<script>dateStamp()</script>
+<hr>
+<strong>retrieveSource()</strong><br>
+<h3>Arguments</h3>
+<p>No arguments are recognized.</p>
+<dl>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>All the HTML source in the BODY of the page is retreived and displayed in an alert.</p>
+<strong>Comment</strong>
+<p>This is useful for debugging dynamic HTML development as the HTML will be shown <em>as generated</em>. However, its usefulness is limited by the size of the alert that can be shown. If you are having trouble with a piece of dynamic HTML, isolate it and put it into it's own page so there is not too much stuff to fit comfortably in the alert box. Much better is to use FireFox and <a href="http://jennifermadden.com/scripts/ViewRenderedSource.html">Jennifer Madden's</a> wonderful render source plugin. </p>
+<hr>
+<strong>examine(object)</strong><br>
+<h3>Arguments</h3>
+<dl><dt>object</dt><dd> The object to be examined.</dd>
+
+<dt>Return</dt><dd>A string containing the object description is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>Every property in the object, together with its value, is dumped into a string.</p>
+<strong>Comment</strong> 
+<p>Again, a function useful for debugging JavaScript development. This is most 
+  useful with an alert containing whatever prompt you want plus the returned string 
+  describing the object. For example&#151;</p>
+<code> 
+<pre>alert("My object contains:" + examine(myObject));<br>
+</pre></code>
+<hr>
+<strong>getToContent()<br>
+getToImages()<br>
+getToConfigurations()<br>
+getToWebWriter()<br>
+getToVideos()<br></strong>
+<h3>Arguments</h3>
+<dl> 
+  <dd> None</dd>
+  <dt>Return</dt>
+  <dd>A string containing the relative URL from the current page to the  
+    directory containing the desired resource. </dd>
+</dl>
+<strong>Action</strong><br>
+<p>returns the specified string.</p>
+<strong>Comment</strong> 
+<p>A set of functions useful for navigating to a desired resource, such as an 
+  image or a video.</p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

@@ -1,0 +1,430 @@
+/**
+ * JSnoopy
+ *
+ * Author: Theodore Norvell
+ * (C) 2002 Theodore Norvell
+ *
+ */
+options {
+        STATIC = true ;
+        ERROR_REPORTING = true ;
+}
+
+PARSER_BEGIN(Parser)
+
+package jsnoopy.parser ;
+
+import java.util.* ;
+import java.lang.reflect.* ;
+import java.io.* ;
+
+import jsnoopy.Trace ;
+import jsnoopy.Event ;
+import jsnoopy.CallEvent ;
+import jsnoopy.ReturnEvent ;
+import jsnoopy.ExceptionEvent ;
+import jsnoopy.PrimaryCallEvent ;
+import jsnoopy.Format ;
+
+public class Parser {
+    static Parser parserObj ;
+    static private void init(java.io.InputStream stream) {
+        if( parserObj == null ) {
+            parserObj = new Parser( stream ) ; }
+        else {
+            Parser.ReInit( stream ) ; }
+    }
+    static private void init(java.io.Reader reader ) {
+        if( parserObj == null ) {
+            parserObj = new Parser( reader ) ; }
+        else {
+            Parser.ReInit( reader ) ; }
+    }
+    
+    static public Trace parseTrace( java.io.InputStream stream )
+    throws ParseException, TokenMgrError {
+        init( stream ) ;
+        return trace() ;
+    }
+    
+    static private String methodName ;
+    static private Class[] parameterTypes ;
+    
+    static public Method parseMethod( String fullMethodName, Class klass )
+    throws ParseException, TokenMgrError, NoSuchMethodException,
+           SecurityException, ClassNotFoundException, IOException
+    {
+        init( new StringReader( fullMethodName ) ) ;
+        method() ;
+        //System.out.println( "Getting method name <"+methodName+">" ) ;
+        for( int j=0 ; j<parameterTypes.length ; ++j ) {
+            Class paramType = parameterTypes[j] ;
+            //System.out.println( "Param type "+j+" is "+paramType.getName() );
+        }
+        return klass.getMethod( methodName, parameterTypes ) ;
+    }
+    
+    static public Object[] parseArgs( String[] fullArgs )
+    throws ParseException, TokenMgrError, ClassNotFoundException {
+        Vector vec = new Vector() ;
+        for( int i=0 ; i<fullArgs.length ; ++i ) {
+            init( new StringReader( fullArgs[i] ) ) ;
+            Object obj = fullyFormattedObject() ;
+            vec.addElement( obj ) ; }
+        return vectorToObjectArray( vec ) ;
+    }
+    
+    static Object[] vectorToObjectArray( Vector v ) {
+        final int sz = v.size() ;
+        Object[] rtn = new Object[sz ] ;
+        for( int i=0 ; i<sz ; ++i ) {
+            rtn[i] = v.elementAt(i) ; }
+        return rtn ;
+    }
+    
+    static String[] vectorToStringArray( Vector v ) {
+        final int sz = v.size() ;
+        String[] rtn = new String[sz ] ;
+        for( int i=0 ; i<sz ; ++i ) {
+            rtn[i] = (String) v.elementAt(i) ; }
+        return rtn ;
+    }
+    
+    static Class[] vectorToClassArray( Vector v ) {
+        final int sz = v.size() ;
+        Class[] rtn = new Class[sz ] ;
+        for( int i=0 ; i<sz ; ++i ) {
+            rtn[i] = (Class) v.elementAt(i) ; }
+        return rtn ;
+    }
+    
+    static Object vectorToArray( Vector v, Class klass ) {
+        final int sz = v.size() ;
+        Object rtn = Array.newInstance(klass, sz) ;
+        for( int i=0 ; i<sz ; ++i ) {
+            Array.set( rtn, i, v.elementAt(i) ) ; }
+        return rtn ;
+    }
+            
+}
+
+PARSER_END(Parser)
+
+
+///////////////////////////////////////
+// Here follows the lexical grammar  //
+///////////////////////////////////////
+
+
+SKIP : {  " " | "\t" | "\n" | "\r" | "//" : IN_LINE_COMMENT }
+
+<IN_LINE_COMMENT> SKIP: { "\n" : DEFAULT }
+<IN_LINE_COMMENT> MORE: {  < ~[] > }
+  
+TOKEN : {
+ < STRING : "\""
+                ( ( [ " ", "!", "#"-"[", "]"-"~"] ) // Any ascii char from 32 to 126
+                                                    // excluding backslash and double quote.
+                  | <SIMPLEESCAPESEQ>
+                  | <SHORTUCODENAME>
+                )*
+              "\"" >
+
+|  < #SIMPLEESCAPESEQ : "\\" ["n","t","\\","\""] >
+|  < #SHORTUCODENAME :       "\\" ["u","U"] <HEXQUAD> >
+|  < #HEXQUAD :         <HEXDIG> <HEXDIG> <HEXDIG> <HEXDIG> >
+|  < #HEXDIG :          ["0"-"9","a"-"f","A"-"F"] >
+}
+
+TOKEN :
+{
+  < INTEGER_LITERAL:  // Unlike Java JLS, no Hex, no Octal, no suffix.
+        (["0"-"9"])+ >
+|
+  < FLOATING_POINT_LITERAL:  // Same as Java JLS
+        (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+      | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+      | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+  >
+|
+  < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+}
+
+///////////////////////////////////////////////////////////////////
+// Here begins the context free grammar
+///////////////////////////////////////////////////////////////////
+
+Trace trace( ) :
+{
+    Event e ;
+    String comment ;
+    Trace t = new Trace() ;
+}
+{
+    string()
+    comment = string()
+    { t.appendComment( comment ) ; }
+    ( <INTEGER_LITERAL>
+      (
+          ">>>" e=primary_call()
+      |
+          ">>" e=call()
+      |
+          ( "<<" 
+            ( e = exception_return()
+            | e = normal_return()
+            )
+          )
+      )
+      { t.add(e) ; }
+    )*
+    <EOF>
+    {return t ;}
+}
+
+Event primary_call() : {
+    String objectName ;
+    String methodName ;
+    String[] arguments ;
+    String fullMethodName ;
+    String[] fullArgs ; 
+    Vector vec = new Vector() ; 
+    String temp ; }
+{
+    objectName = string()
+    "."
+    methodName = string()
+    "("
+    [
+        temp = string()         {vec.addElement(temp); }
+        ( ","
+          temp = string()       {vec.addElement(temp); }
+        )*
+    ]
+    ")"                         {arguments = vectorToStringArray(vec) ;}
+    
+    fullMethodName = string()
+    "("                         {vec = new Vector() ; }
+    [
+        temp = string()         {vec.addElement(temp); }
+        ( ","
+          temp = string()       {vec.addElement(temp); }
+        )*
+    ]
+    ")"                         {fullArgs = vectorToStringArray(vec) ;}
+    {return new PrimaryCallEvent( objectName, methodName, arguments, fullMethodName, fullArgs ) ; }
+}
+
+Event call() : {
+    String objectName ;
+    String methodName ;
+    String[] arguments ;
+    Vector vec = new Vector() ; 
+    String temp ; }
+{
+    objectName = string()
+    "."
+    methodName = string()
+    "("
+    [
+        temp = string()         {vec.addElement(temp); }
+        ( ","
+          temp = string()       {vec.addElement(temp); }
+        )*
+    ]
+    ")"                         {arguments = vectorToStringArray(vec) ;}
+    {return new CallEvent( objectName, methodName, arguments ) ; }
+}
+
+
+
+Event normal_return() : {
+    String objectName ;
+    String methodName ;
+    String rtnVal ; }
+{
+    "return"
+    objectName = string()
+    "."
+    methodName = string()
+    "=="
+    rtnVal = string()
+    {return new ReturnEvent( objectName, methodName, rtnVal ) ; }
+}
+
+
+Event exception_return() : {
+    String objectName ;
+    String methodName ;
+    String exceptVal ; }
+{
+    "throw"
+    objectName = string()
+    "."
+    methodName = string()
+    "=="
+    exceptVal = string()
+    {return new ExceptionEvent( objectName, methodName, exceptVal ) ; }
+}
+
+String string() : {
+    Token t ; }
+{
+    t = <STRING>
+    { return Format.unformatString( t.image ) ; }
+}
+
+void method()  throws ClassNotFoundException : {
+    Vector vec = new Vector() ;
+    String temp ;
+    Class klass ;
+}
+{
+    methodName = string()
+    "<"
+    [
+        klass = classNT()         { vec.addElement(klass); }
+        ( ","
+          klass = classNT()       { vec.addElement(klass); }
+        )*
+    ]
+    ">"                           { parameterTypes = vectorToClassArray(vec) ; }
+}
+
+Class classNT() throws ClassNotFoundException : {
+    Token t;
+    String str = "";
+}
+{
+    "boolean"   { return boolean.class ; }
+|   "byte"      { return byte.class ; }
+|   "char"      { return char.class ; }
+|   "double"    { return double.class ; }
+|   "float"     { return float.class ; }
+|   "int"       { return int.class ; }
+|   "long"      { return long.class ; }
+|   "short"     { return short.class ; }
+|   ("["        { str += "[" ; }
+    )*
+    t=<IDENTIFIER>          { str += t.image ; }
+    ( "." t=<IDENTIFIER>    { str += "."+t.image ; }
+    )*                      
+    [ ";"                   { str += ";" ; }
+    ]                       { return Class.forName( str ) ; }
+}
+
+Object fullyFormattedObject()  throws ClassNotFoundException : {
+    double dbl ;
+    long lng ;
+    Vector vec ;
+    Object obj ;
+    String str ;
+    Class klass ;
+}
+{
+    "null"                                  { return null ; }
+|   "true"                                  { return new Boolean( true ) ; }
+|   "false"                                 { return new Boolean( false ) ; }
+|   "byte" lng=integer()                    { return new Byte( (byte)lng ) ; }
+|   "char" str=string()                     { return new Character( str.charAt(0) ) ; }
+|   "double" dbl=floatingPoint()            { return new Double( dbl ) ; }
+|   "float" dbl=floatingPoint()             { return new Float( dbl ) ; }
+|   lng=integer()                           { return new Integer( (int)lng ) ; }
+|   "long" lng=integer()                    { return new Long( lng ) ; }
+|   "short" lng=integer()                   { return new Short( (short)lng ) ; }
+|   str = string()                          { return str ; }
+|
+   "{"                                      { vec = new Vector() ; }
+    [
+        obj = fullyFormattedObject()        { vec.addElement(obj); }
+        ( ","
+          obj = fullyFormattedObject()      { vec.addElement(obj); }
+        )*
+    ]
+    "}"                                     
+    klass=classNT()                         { return vectorToArray(vec, klass) ; }
+}
+
+double floatingPoint() : {
+    Token t ;
+}
+{
+    t=<IDENTIFIER>
+    LOOKAHEAD({ getToken(0).image.equals( "NaN" )
+                || getToken(0).image.equals( "Infinity" ) })
+                                            { if( t.image.equals( "NaN" ) ) {
+                                                return Double.NaN ; }
+                                              else {
+                                                return Double.POSITIVE_INFINITY ; }
+                                            }
+|   "-"
+    ( <IDENTIFIER>
+      LOOKAHEAD({ getToken(0).image.equals( "Infinity" ) })
+                                            { return Double.NEGATIVE_INFINITY ; }
+    |
+      t=<FLOATING_POINT_LITERAL>            { return - Double.parseDouble( t.image ) ; }
+    )
+|
+    t=<FLOATING_POINT_LITERAL>              { return Double.parseDouble( t.image ) ; }
+}
+
+
+
+long integer() : {
+    Token t ;
+}
+{
+    "-"
+    t=<INTEGER_LITERAL>                     { return Long.parseLong( "-"+t.image ) ; }
+|
+    t=<INTEGER_LITERAL>                     { return Long.parseLong( t.image ) ; }
+}
+
+TOKEN :
+{
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:
+      [
+       "\u0024",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+// Finally a catch all to prevent token manager errors
+TOKEN :
+{
+  <  UNEXPECTED_CHAR : ~[] >
+}

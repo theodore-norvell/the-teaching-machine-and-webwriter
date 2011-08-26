@@ -1,0 +1,1604 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE></TITLE>
+  </HEAD>
+  <BODY>
+<h1>The Teaching Machine</h1>
+<h1>Analysis Package – C++ Implementation
+</h1>
+<div> 
+      <div align="right">Author: Derek Reilly<br>
+        Created: November, 2001<br>
+        Last Revision: May 2002<br>
+      </div>
+    </div>
+<ol>
+  <li><a href="#introduction"> introduction</a> 
+    <ol>
+      <li><a href="#structure">structure of this document</a></li>
+      <li> <a href="#javadoc">a note about the javadoc</a></li>
+      <li> <a href="#uml">a note about UML diagrams not in this document</a></li>
+      <li> <a href="#otherMaterials">other materials</a></li>
+    </ol>
+  </li>
+  <li> <a href="#design">design</a> 
+    <ol>
+      <li><a href="#majorCompomemts">major components</a></li>
+      <li><a href="#Managers">managers</a></li>
+      <li><a href="#Cpp_Expression_Manager">Cpp_Expression_manager</a></li>
+      <li><a href="#Cpp_Declaration_Manager">Cpp_Declaration_manager</a></li>
+      <li><a href="#DesignJavaNotes">java notes</a></li>
+    </ol>
+  </li>
+  <li> <a href="#declarationBuilding">declaration building and code generation</a> 
+    <ol>
+      <li> <a href="#decBuildingJavaNotes">java notes</a></li>
+      <li> <a href="#decBuildingPhaseIINotes">phase 2 notes</a></li>
+      <li> <a href="#expressionBuilding">expression building</a></li>
+      <li> <a href="#rules">rules, rulesets, and rule sequences</a></li>
+      <li> <a href="#designNotes">design notes</a></li>
+      <li> <a href="#buildingRules">building, grouping, and storing rules and 
+        rulesets</a></li>
+      <li> <a href="#executingRules">executing rulesets</a></li>
+      <li> <a href="#designingRules">designing rules</a></li>
+      <li> <a href="#decBuildingJavaNotes">java notes</a></li>
+    </ol>
+  </li>
+  <li> <a href="#symTab">symbol table</a> 
+    <ol>
+      <li> <a href="#rationale">rationale</a></li>
+      <li> <a href="#analysis">analysis</a></li>
+      <li> <a href="#idSteps">steps in id resolution</a></li>
+      <li> <a href="#namespaces">namespaces</a></li>
+      <li> <a href="#translation">phase 2 note : translation units and linkage</a></li>
+      <li> <a href="#symTabDesign">symbol table design</a></li>
+      <li> <a href="#CTSymTab">CTSymbolTable</a></li>
+      <li> <a href="#scopeHolder">Scope_holder</a></li>
+      <li> <a href="#declaration">Declaration</a></li>
+      <li> <a href="#LFlags">LFlags and LFConsts</a></li>
+      <li> <a href="#lookup">lookup algorithms</a></li>
+    </ol>
+  </li>
+  <li> <a href="#typeAnalysis">type analysis</a>
+<ol>
+      <li> <a href="#comparison">comparison and conversion</a></li>
+      <li> <a href="#extraction">extraction and categorization</a></li>
+      <li> <a href="#typeJavaNotes">java notes</a></li>
+    </ol>
+  </li>
+  <li> <a href="#overload">overload resolution</a> 
+    <ol>
+      <li> <a href="#interface">interface</a></li>
+      <li> <a href="#overloadJavaNotes">java notes</a></li>
+    </ol>
+  </li>
+  <li> <a href="#integration">integration</a> 
+    <ol>
+      <li> <a href="#representational">representational classes</a></li>
+      <li> <a href="#utility">utility / support classes</a></li>
+    </ol>
+  </li>
+  <li> <a href="#examples">examples</a> 
+    <ol>
+      <li> <a href="#parser">parser interaction</a> </li>
+    </ol>
+  </li>
+</ol>
+<h2>introduction<a name="introduction"></a></h2>
+
+
+<p>The <i>analyzer</i> in the Teaching Machine plays several roles. It is most 
+  like a traditional compiler front-end, except that it only supports but does 
+  not implement lexical and syntactic analysis (these are implemented by the Parser 
+  package). It does implement semantic analysis and the construction of an AST 
+  (abstract syntax tree) “intermediate code” representation of the program. </p>
+<p>n the C++ implementation, “compilation” occurs in a single phase. The parser 
+  directs semantic analysis and code generation on the fly as it is building the 
+  parse tree. Most of the compile-time representation built by the analyzer is 
+  meant to be disposable between translation units (source files). </p>
+<p>An easy (and less precise) way to visualize the analyzer’s role in the grand 
+  scheme of things is as the bridge between the parser and the intermediate/runtime 
+  representation of the program.</p>
+<p><img src="image001.gif" width="657" height="140"></p>
+<p><b>Table 1: analyzer responsibilities by compilation phase (front-end)</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td><b>phase</b></td>
+    <td><b>role</b></td>
+  </tr>
+  <tr>
+    <td>preprocessing </td>
+    <td>none at present</td>
+  </tr>
+  <tr>
+    <td>lexical analysis </td>
+    <td>provides supporting data structures</td>
+  </tr>
+  <tr>
+    <td>syntactic analysis</td>
+    <td>provides compile-time symbol table, semantic lookahead, convenience methods</td>
+  </tr>
+  <tr>
+    <td>semantic analysis </td>
+    <td>performs semantic analysis </td>
+  </tr>
+  <tr>
+    <td>intermediate code generation</td>
+    <td>builds intermediate code representation<sup><a href="#footnote1">1</a></sup></td>
+  </tr>
+</table>
+
+<p><b>Table 2: analyzer relationships to other Clc/Cpp packages</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td><b> package</b></td>
+    <td><b>relationship</b></td>
+  </tr>
+  <tr>
+    <td><code>Preprocessor</code></td>
+    <td>none at present</td>
+  </tr>
+  <tr>
+    <td><code>Parser</code></td>
+    <td>supports parser activities through data structures and convenience methods. 
+      Responds to parser calls by performing semantic analysis and intermediate 
+      code generation. </td>
+  </tr>
+  <tr>
+    <td><code>Ast</code></td>
+    <td>the stuff of intermediate code generation. The analyzer constructs AST 
+      expressions, statements and types according to the language rules. </td>
+  </tr>
+  <tr>
+    <td><code>RT_Sym_Tab</code></td>
+    <td>places entries on the “runtime symbol table”, which is an abstraction 
+      of the compile time symbol table with some additional runtime functional 
+      responsibility. </td>
+  </tr>
+  <tr>
+    <td><code>Datum</code></td>
+    <td>occasionally constructs Datums (for certain literals and initialization 
+      expressions), but generally leaves this to Ast</td>
+  </tr>
+</table>
+
+<h3>structure of this document<a name="structure"></a></h3>
+<p>This document tries to accomplish several things</p>
+<ol><li>provide a description and rationale for the analyzer design</li>
+<li>identify areas that may play a role in the phase 2 implementation</li>
+<li>provide information relevant to a java language implementation</li>
+<li>introduce the operation of the analyzer through example</li>
+</ol>
+
+<p>Objectives 1 through 3 are addressed throughout this document, in a hierarchical, design-oriented fashion. The analyzer is broken into several functional areas. Each area is then presented individually, analysed, and discussed in terms of phase 2 and java where appropriate.  Analyzer examples are provided in the
+appendices</p>
+
+<h3>a note about the javadoc<a name="javadoc"></a></h3>
+<p>This document does not go into specific detail about individual classes, methods, etc. Instead, the javadoc for the Analysis packages should be used as a supplementary document and the authoritative implementation reference. It is a good idea to have the javadoc handy when reading this
+document</p>
+
+<h3>a note about UML diagrams not in this document<a name="uml"></a></h3>
+<p>The “high-level interface” interaction diagram is a useful complement to the related topics in this document. It shows the interactions at the top level for a simple declaration followed by an assignment statement in a main routine.
+</p>
+
+<h3>other material<a name="otherMaterial"></a></h3>
+<p>There is a flash animation to supplement and illustrate the example provided 
+  in the appendix. It provides a visual description of a typical expression building 
+  procedure. <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=4,0,2,0" width="550" height="400">
+    <param name=movie value="analysis_tut.swf">
+    <param name=quality value=high>
+  </object></p>
+ 
+<h2>Design<a name="Design"></a></h2>
+
+<p>The <i>analyzer</i> is implemented across two packages; <code>Clc.Analysis</code>, 
+  which contains language-neutral functionality and base classes, and <code>Cpp.Analysis</code>, 
+  which contains language-specific functionality and implementations of <code>Clc</code> 
+  base classes. </p>
+
+<p>Where potential for reuse was clear, there is a fairly good split between <code>Clc</code> 
+  and <code>Cpp</code>. When the level and nature of applicability to other languages 
+  was less clear, the design and implementation errs on the side of being C++-specific. 
+  Without a precise knowledge of the analysis rules for each language, the other 
+  option would have been to make “informed guesses” throughout the design. In 
+  the end, the additional work required to do this well was prohibitive given 
+  the size, complexity, and very language-specific nature of the C++ language 
+  specification. This does not mean that reuse was abandoned as a design goal. 
+  The data structures and interfaces defined for the C++ language implementation 
+  should prove abstract enough in many circumstances to permit straightforward 
+  cross implementations for Java.</p>
+
+<p>Because of the language-specific nature of several components key to the overall 
+  design, it made less sense to break the document according to Clc and Cpp packages. 
+  Instead, it is hoped that the document serves to introduce reusable <i>concepts</i> 
+  to the developer of a java version. Design refactoring is also strongly encouraged 
+  where possible when implementing java language support, and is part of the java-specific 
+  discussion.</p>
+
+<h3>Major Components<a name="MajorComponents"></a></h3>
+
+<p><b>Managers.</b> constitute the high level interfaces to analysis functionality., fulfilling the specific requirements of the Parser and the runtime representation.
+</p>
+
+<p><b>Expression Building.</b> Considers the raw materials of an expression and the context in which it is encountered, and applies rules in sequence to generate the runtime representation of the
+expression.</p>
+
+<p><b>Declarations and Code Generation.</b> Handles all kinds of declaration. 
+  Compile-time and runtime representations of declarations must be classified 
+  and built. Class declarations may require the generation of implicitly defined 
+  <i>special member functions</i>, and initialization code is often required for 
+  declarations and function definitions.</p>
+
+<p><b>Symbol Table.</b> The compile-time symbol table stores declarations, maintains a representation of various scopes, and performs id resolution (retrieving matching
+declarations).</p>
+
+<p><b>Type Analysis.</b> This includes user-defined and built-in type conversion logic, conversion sequences, extracting types from specifier sequences, and categorizing types.
+</p>
+
+<p><b>Overload Resolution.</b> Overload resolution uses type analysis to locate the best match among a set of candidate
+functions.</p>
+
+ 
+<p><img src="image003.gif" width="569" height="337"></p>
+<p><b>Figure 2: high level component dependencies </b> </p>
+<h3>Managers<a name="Managers"></a></h3>
+
+<p>The highest level interfaces to analysis functionality are the “managers”. 
+  These are responsible for handling broad categories of messages coming from 
+  the Parser. There are three main categories of message: expression requests, 
+  declaration requests, and notification of scope entry/exit. Conceptually, a 
+  distinct manager is responsible for each category. The <code>Parser_context</code> 
+  façade class exposes the interfaces of each manager to the Parser<a href="#footnote2"><sup>2</sup></a> 
+  . </p>
+
+<p>Managers do not implement a common interface, nor do they derive from a common base class. They all utilize the Analysis subsystem to meet the specific needs of the Parser, but they do so in very different ways. In the C++ implementation, a single manager is responsible for the declaration and scope categories, because they share internal
+data.</p>
+
+<p><b>Table 3: manager implementation in C++</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td><b>manager</b></td>
+    <td><b>description</b></td>
+  </tr>
+  <tr>
+    <td><code>Cpp_Declaration_manager</code></td>
+    <td>handles declaration requests and scope changes </td>
+  </tr>
+  <tr>
+    <td><code>Cpp_Expression_manager</code></td>
+    <td>handles expression requests</td>
+  </tr>
+</table>
+<h3><code>Cpp_Expression_manager</code><a name="Cpp_Expression_manager"></a></h3>
+<p>The expression manager constitutes a relatively consistent interface into the expression building logic. Distinct methods fulfill requests for particular classes of expression; most follow the same general
+pattern:</p>
+<ol>
+  <li>build an <code>Expression_ptr</code> given the method arguments and particular 
+    method called</li>
+  <li>pass this to the relevant <code>ExpressionBuilder</code>, which then applies 
+    expression building rules</li>
+  <li>return the resulting AST representation of the expression (retrieved from 
+    the <code>Expression_ptr</code>)</li>
+</ol>
+<h4><code>Cpp_Declaration_manager</code><a name="Cpp_Declaration_Manager"></a></h4>
+<p>The declaration manager is something else entirely. Subject to a sudden, dramatic, and late growth spurt, it provides a significant amount of its functionality directly. Much of this should be encapsulated into new classes. In addition to being the declaration and scope “manager”, it implements much of the “declaration building and code generation” functionality outlined
+below.</p>
+
+<h3>java notes<a name="DesinJavaNotes"></a></h3>
+<p>The high-level interface for a Java analyzer will be impacted by the need for 
+  multiple passes. The first pass will build much of the compile-time representation 
+  of the program, and the second will traverse and complete this representation. 
+  The flow of control will likely be very similar however, i.e. the analyzer will 
+  respond to requests from the parser. The nature of these requests should also 
+  be similar. It is conceivable that managers exist in the Java language implementation 
+  for expressions, declarations, and scopes, with the most notable differences 
+  in scope management. Very lean <code>Expression_manager</code> and <code>Declaration_manager</code> 
+  base classes exist in <code>Clc.Analysis</code>. </p>
+ 
+<h2>Declaration building and code generation<a name="declarationBuilding"></a></h2>
+
+<p>As stated previously, the declaration manager handles declaration requests and scope changes. This
+includes:</p>
+<ul><li>generating compile-time and runtime representations of all kinds of declaration (class, function, variable,
+..)</li>
+<li>generating the AST representation of initialization expressions</li>
+<li>entering/leaving translation units, function bodies, class declaration bodies, block scopes, parameter
+lists.</li>
+<li>building declaration and initialization statements for parameters</li>
+<li>building initialization statements given constructor initializers</li>
+<li>building special member functions when not user-defined (default constructor,
+etc.)</li>
+<li>building the three initialization chains for entities with static storage duration (zero initialization, static initialization, dynamic
+initialization)</li>
+</ul>
+<p>The declaration manager relies on four Analysis package classes when doing its
+work.</p>
+ <p>These are the high-level interface to the compile-time symbol table</p>
+<p><code>(Cpp_CTSymbol_table)</code> the initialization expression builder<br>
+  <code>(Eb_Initialization)</code> the expression manager <code>(Cpp_Expression_manager)</code> and <code>TypeExtractor</code>.</p>
+
+
+
+<p><code>Cpp_CTSymbol_table</code> is used in many ways by the declaration manager:<p></p>
+<ul><li>when adding a declaration (variable, function ,class, …)</li>
+<li>when entering/leaving a scope</li>
+<li>for id resolution</li>
+</ul>
+<p></p>
+<p><code>Eb_initialization</code> is used whenever an initialization expression 
+  needs to be built for a declaration statement. <code>TypeExtractor</code> further 
+  categorizes a type for a declaration’s compile-time representation. </p>
+<p></p>
+
+<p>At present, the declaration manager is itself responsible for “implicit code 
+  generation”. That is, it builds any code that is generated automatically as 
+  a result of a variable declaration, class definition, or function definition. 
+  <code>Cpp_Expression_manager</code> is used during code generation to obtain 
+  <code>Expression_nodes</code> (such as initialization expressions), but <code>Statement_nodes</code> 
+  are generated directly. Code generation is required in the following circumstances:</p>
+<ul>
+  <li>implicitly defined <i>special member functions</i> (default constructor, 
+    copy constructor, copy assignment operator, destructor)</li>
+<li>parameter initialization prior to executing a function body</li>
+  <li>initialization of non-static data members and subobjects prior to executing 
+    a constructor body. This includes processing the <i>mem-initializer list</i>, 
+    if any.</li>
+<li>initialization of variables with static storage duration. </li>
+  <li>definition of certain builtin library classes (e.g. cin, cout) and predefined 
+    constants (e.g. <code>NULL</code>). <b>not yet implemented</b></li>
+<li>any default initialization not covered in the previous cases</li>
+</ul>
+
+<p>In addition to generating <code>Expression_nodes</code> where appropriate, 
+  and a variety of <code>Statement_nodes</code> during code generation (outlined 
+  above), the declaration manager also builds <code>Statement_nodes</code> for 
+  declarations (<code>StatDecl</code>) and initializations (<code>StatDo</code>). 
+  Statement nodes are linked together, and generally the last-generated node’s 
+  “next” link is returned to the <code>Parser</code>. </p>
+
+<p>Finally, the declaration manager adds entries to the runtime symbol table where
+required:</p>
+<ul>
+  <li>to map a function’s key with its AST representation</li>
+  <li>to map a static variable’s runtime id with its Datum<a href="#footnote3"><sup>3</sup></a> 
+  </li>
+  <li>to start, add to, and end a “static initialization chain”, which is a sequence 
+    of initialization statements that need to be executed for variables with static 
+    storage duration<a href="#footnote4"><sup>4</sup></a> .</li>
+</ul>
+<p>The declaration manager’s relation to the “runtime” portion of the teaching 
+  machine is more varied and direct, therefore, than that of the expression manager, 
+  which simply builds <code>AST Expression_nodes</code> and returns them to the 
+  <code>Parser</code>.</p>
+
+<h3>Java Notes<a name="decBuildingJavaNotes"></a></h3>
+<p>There will be a similar need for code generation, initialization and declaration 
+  building, but the range of scenarios will decrease in each case. Declaration 
+  building may require two phases, one for each pass. Roughly, in the first pass 
+  a <code>Declaration</code> can be added to the symbol table, and in the second 
+  pass the <code>Declaration</code>’s type can be established. The means of building 
+  the runtime representation will likely stay the same.</p>
+<h3>Phase 2 Notes<a name="decBuildingPhaseIINotes"></a></h3>
+<p>The code generation portion of the declaration management could be factored out of the declaration manager itself. A more generic code generation interface could potentially facilitate implementation of library classes and functions, but this kind of “internal generation” should be avoided if a large portion of the library is to be supported. Another approach would be to process raw source implementations of those portions of the library that are utilized in a user’s code. How this code is identified, accessed, processed and integrated is outside the scope of this
+document.</p>
+
+<p>Multiple translation units may cause a change in the way file scopes are entered and exited, and how extern declarations are
+handled.</p>
+
+ 
+<h3>Expression Building<a name="expressionBuilding"></a></h3>
+
+<p><i>Expression building</i> means (in this document) building the AST representation 
+  of an expression encountered by the Parser. This covers the full range of expressions 
+  in C++, as defined primarily in clause 5 of the C++ ISO spec.</p>
+
+<p>Expression Building is a core analysis process of the front end. Where the syntactical analyzer (the Parser) identifies sequences of tokens as belonging to a particular syntactic category, the Expression Building logic performs semantic analysis; determining what is meant by the syntax, and generating an internal, executable representation of this. This “internal representation” consists primarily of a tree of AST
+nodes.</p>
+
+<p>Broadly, the factors impacting expression building are:</p>
+<ul><li>rules, rulesets and rule sequences, which embody the language-specific procedures to follow given certain combinations of the other inputs. These are generally constructed once, prior to performing any
+analysis.</li>
+<li>context: loosely, external factors that influence the interpretation of an expression. This is generally the location of an expression in relation to other expressions in a statement or enclosing expression, and in relation to other statements and language constructs (scope, storage duration,
+..)</li>
+<li>the expression’s raw materials. These are an optional operator plus any number of operands (including zero). Operands are represented by AST
+nodes.</li>
+<li>the Parser_context call – the method called indicates the syntactical
+category</li>
+</ul>
+
+<p>The general design idea is to define generic, atomic rules, and combine them in various ways to handle each expression building circumstance. Expression building rules have a potential for reuse across different kinds of expression, different syntax with the same meaning, and (less frequently) across language implementations.
+</p>
+
+<code><pre>public void apply (Expression_ptr exp) ;
+</pre></code>
+<p>Individual rules extend the <code>CodeGenRule</code> abstract base class, which 
+  specifies a single abstract method (apply). In the apply method, the rule will 
+  use other parts of the analyzer and possibly other Clc or Cpp packages, usually 
+  resulting either in the generation of one or more AST expression nodes, or the 
+  test of some condition. In this way, criteria leading up to a rule’s application 
+  in a particular circumstance need not be validated by the rule itself; much 
+  or all of this may be encapsulated in separate rules (conditions and/or assertions), 
+  which are then combined in an appropriate manner with this rule (see below).	
+  The single parameter to the apply method is an <code>Expression_ptr,</code> 
+  which contains a progressive representation of the AST expression tree being 
+  built as a rule sequence is traversed; the <code>Expression_ptr</code> is described 
+  in detail below. </p>
+<h3>rules, rulesets, and rule sequences<a name="rules"></a></h3>
+<p>A <i>rule</i> is a single instance of a <code>CodeGenRule</code>. </p>
+<p>A <i>ruleset</i> is an ordered combination of rules. </p>
+<p>We use the term <i>rule sequence</i> to distinguish a ruleset comprised of 
+  all rules required to generate a particular expression given a particular category 
+  of inputs. </p>
+
+<p>There are several different ways that rules can be combined together to form 
+  a ruleset. These have themselves been abstracted to form a family of classes 
+  deriving from the base class <code>CGR_node</code>. Nodes are combined to form 
+  tree-like structures, which are traversed (generally post-order) against the 
+  “raw materials” of an expression. When the appropriate nodes in the tree have 
+  been applied, the AST representation of the expression will have been built 
+  (or a relevant error message provided). .</p>
+
+ 
+<p>Table 4 briefly describes the various types of <code>CGR_nodes</code>.</p>
+<p> <b>Table 4: <code>CGR_nodes</code>, "structural" rules</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td><b>name</b></td>
+    <td><b>description</b></td>
+    <td><b>args required at construction</b></td>
+  </tr>
+  <tr>
+    <td><code>CGR_sequential _node</code></td>
+    <td>node with a single immediate child, calls child.apply prior to executing 
+      its own rule</td>
+    <td><code>CodeGenRule</code> to associate with the node, child rule</td>
+  </tr>
+  <tr>
+    <td><code>CGR_operand _node</code></td>
+    <td>node with a single immediate child, which is applied against each of the 
+      operand values in sequence, prior to executing its own rule</td>
+    <td><code>CodeGenRule</code> to associate with the node, child rule. </td>
+  </tr>
+  <tr>
+    <td><code>CGR_operand _branch_node</code></td>
+    <td>node with one or more immediate children. Child[0] is applied against 
+      Operand[0], Child[1] against Operand[1], and so on until there are no more 
+      operands. An error is generated if there are not enough child rule nodes 
+      for operands, but not vice versa. After applying child nodes, its own rule 
+      is executed. </td>
+    <td><code>CodeGenRule</code> to associate with the node, list of child rules</td>
+  </tr>
+  <tr>
+    <td><code>CGR_conditional _node</code></td>
+    <td>node implementing conditional execution of rulesets. After applying the 
+      (optional) “precursor” child, a test is applied, determining which of the 
+      other two children to apply (named “onTrue” and “onFalse”). Any or all children 
+      can be null, meaning the conditional node will do nothing in place of applying 
+      the child node.</td>
+    <td><code>CGR_test</code> (its applies method is used), precursor, <code>onTrue</code>, 
+      and <code>onFalse</code> rules. </td>
+  </tr>
+</table>
+<p>In addition to the <code>CGR_nodes</code>, there are <code>CodeGenRules</code> 
+  that perform other mechanical or generic operations. These are listed in Table 
+  5.</p>
+<p><b>Table 5: generic rules</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td width="20%"><b>rule</b></td>
+    <td width="48%"><b>description</b></td>
+    <td width="32%"><b>constructor args</b></td>
+  </tr>
+  <tr>
+    <td width="20%"><code>CGR_error</code></td>
+    <td width="48%">Generates an error message.</td>
+    <td width="32%">The error message to display. </td>
+  </tr>
+  <tr>
+    <td width="20%"><code>CGR_none</code></td>
+    <td width="48%">Does nothing.</td>
+    <td width="32%">-- </td>
+  </tr>
+  <tr>
+    <td width="20%"><code>CGR_test</code></td>
+    <td width="48%">Base class. Performs a test, indicating pass or fail. Used 
+      by conditional nodes and assertions. Derived classes must implement the 
+      abstract <code>applies</code> method <a href="#footnote5"><sup>5</sup></a> 
+      .</td>
+    <td width="32%">0, 1, or 2 operand indexes, specifying which operand(s) to 
+      apply the test against, if applicable.</td>
+  </tr>
+  <tr>
+    <td width="20%"><code>CGR_assertion</code></td>
+    <td width="48%">Applies a test, generating an error message if it fails.</td>
+    <td width="32%">The test to apply, and an optional supplementary message to 
+      display if the test fails.</td>
+  </tr>
+  <tr>
+    <td width="20%"><code>CGR_unimplemented</code></td>
+    <td width="48%">Generates a “sorry not implemented” apology for a particular 
+      rule.</td>
+    <td width="32%">A description of the unimplemented rule (usually the rule 
+      key).</td>
+  </tr>
+  <tr>
+    <td width="20%"><code>RuleProxy</code></td>
+    <td width="48%">Delays the construction of a ruleset until first use. This 
+      is useful when a ruleset is fairly large, and is used only in non-typical 
+      circumstances<a href="#footnote6"><sup>6</sup></a> .</td>
+    <td width="32%">The rule key, and the rulebase to add the generated ruleset 
+      to.</td>
+  </tr>
+</table>
+<h3>Design Notes<a name="designNotes"></a></h3>
+<p>The “structural” nodes have some design weirdness that deserves explanation.
+</p>
+<p>Originally a “CGR_terminal_node” structural node completed the set; this <code>CGR_node</code> 
+  contained a single rule that it would execute. This is why structural nodes 
+  distinguish their “own rule”; all children were <code>CGR_nodes</code>, their 
+  “own rule” was an internal attribute of the node. A simpler approach that saved 
+  time, space and typing was to consider <code>CGR_nodes</code> as types of <code>CodeGenRule</code>, 
+  and have other “non-structural” <code>CodeGenRules</code> essentially be their 
+  own “terminal node”. </p>
+
+<p>Another artifact from the original design is that the order of execution might 
+  seem backwards. The way in which a set of rules is specified reflects its tree 
+  structure, and a post-order traversal means you tend to interpret the rule sequence 
+  from right to left, up to the top rule<a href="#footnote7"><sup>7</sup></a> 
+  . </p>
+
+<p>For example, in:</p>
+
+<code><pre>CodeGenRule rs_std_assign = 
+  new CGR_sequential_node
+    (new CGR_assignment (), 
+     new CGR_operand_branch_node 
+       (new CGR_arithmetic_conversion (…), 
+        new CodeGenRule []
+          {new CGR_assertion 
+             (new CGR_modifiable_lvalue_test ()), 
+           new CGR_fetch ()}
+       )
+);
+</pre></code>
+<p>the (non-structural) rules are applied in this order:</p>
+<ol>
+  <li><code>CGR_assertion</code>, which uses the “modifiable lvalue test”</li>
+  <li><code>CGR_fetch</code></li>
+  <li><code>CGR_arithmetic_conversion</code></li>
+  <li><code>CGR_assignment</code>
+</ol>
+
+
+<p>This ordering makes sense (to me, after writing and using it) if viewed as the culmination of rule application from low-level, operand-specific rules up towards the final generation of the desired AST expression node. It also tends to mimic the complete AST representation being built. For
+example:</p>
+
+<code><pre>Op_assign (Exp_id (), 
+ Op_arithmetic_conversion (Exp_fetch (Exp_id())))
+</pre></code>
+<p>is a typical AST expression node structure built by the rule sequence
+above.</p>
+
+<h3>building, grouping, and storing rules and rulesets<a name="buildingRules"></a></h3>
+<p>Rules are normally constructed at startup, and put into a <code>RuleBase</code>, 
+  which is accessed as needed when building rule sequences. The intention is to 
+  have one <code>RuleBase</code> in the system per language implementation, but 
+  this is not enforced, in case there is a good reason to have more than one in 
+  a particular language implementation. The <code>RuleBase</code> is a table that 
+  associates <code>CodeGenRules</code> with descriptive strings. Each string is 
+  defined by the class responsible for building the related rule. In addition 
+  to functioning as keys, the strings can serve to identify rules in error messages 
+  and debugging. Because <code>CGR_nodes</code> are <code>CodeGenRules</code>, 
+  rulesets can be placed in the <code>RuleBase</code>.</p>
+
+<h4>expression builders</h4>
+<p>The responsibility for building rules and rulesets is shared across a special 
+  class of <code>CodeGenRule</code> called <code>ExpressionBuilder</code>. <code>ExpressionBuilders</code> 
+  are high-level rules, serving as starting points for different classes of expression<a href="#footnote8"><sup>8</sup></a> 
+  . The <code>ExpressionBuilders</code> for C++ are defined primarily along lines 
+  of syntax (binary operation, postfix expression, primary expression, etc.), 
+  but this categorization is somewhat arbitrary; it may make more sense to group 
+  according to different criteria in another language implementation. Because 
+  the meaning of an expression and the rules applied in building it are not cleanly 
+  distinguished along lines of syntax, expression builders must share common rules 
+  and rulesets. While it makes sense for a particular <code>ExpressionBuilder</code> 
+  to build rulesets that only it will use, rulesets shared across <code>ExpressionBuilders</code> 
+  are built once by a common base class and stored in the <code>RuleBase</code>. 
+</p>
+
+<p><b>Table 6: Expression Builders (C++)</b></p>
+<table width="75%" border="1">
+  <tr>
+    <td><b>builder</b></td>
+    <td><b>description</b></td>
+  </tr>
+  <tr>
+    <td><code>Eb_Operator</code></td>
+    <td>unary and binary operator expressions, plus the ternary conditional operator, 
+      and subscripting. </td>
+  </tr>
+  <tr>
+    <td><code>Eb_Initialization</code></td>
+    <td>initialization expressions, covering zero, default, copy, direct, aggregate 
+      and no initialization. </td>
+  </tr>
+  <tr>
+    <td><code>Eb_Primary</code> </td>
+    <td>this, parentheses, id expressions (literals are handled by <code>Literals</code>)</td>
+  </tr>
+  <tr>
+    <td><code>Eb_Unary</code></td>
+    <td>sizeof, new, delete, prefix increment/decrement </td>
+  </tr>
+  <tr>
+    <td><code>Eb_Postfix</code></td>
+    <td>function calls, member access, typeid, postfix increment/decrement</td>
+  </tr>
+  <tr>
+    <td><code>Eb_Cast</code> </td>
+    <td>const, static, reinterpret and dynamic casts in all notations</td>
+  </tr>
+  <tr>
+    <td><code>Literals</code></td>
+    <td>integral, floating, character, boolean and string literals </td>
+  </tr>
+</table>
+<p>Once the rulesets have been built, <code>ExpressionBuilders</code> are responsible 
+  for turning an expression building request (coming from the <code>Parser</code>) 
+  into the application of a specific rule sequence. For example, a request to 
+  build a binary arithmetic expression may evaluate to the construction of an 
+  overloaded operator method call. </p>
+<h4>Operand table</h4>
+<p>To accomplish this, <code>ExpressionBuilders</code> often maintain tables of 
+  rule sequences, called <code>OperandTables</code>, mapped to the various possible 
+  “raw materials” (passed as arguments). The particular organization and manner 
+  of use of these tables will depend on the format of the expressions supported 
+  by the class, but ordinarily follow a similar pattern. </p>
+
+<p>For example, the rules supporting unary operator expressions are categorized 
+  first by operator; searching for an operator returns an <code>OperandTable</code> 
+  (keyed by the operand’s <code>Type_node</code> class). Applying our operand 
+  returns a rule sequence appropriate for the particular operator-operand combination. 
+  In this way many type categorization rules are embedded in the table structure. 
+  Operands will match the first key for which their type is a direct or derived 
+  instance.</p>
+<p><img src="image006.gif" width="613" height="240"></p>
+<p><b>Figure 5: use of OperandTable</b></p>
+
+ 
+
+<h3>executing rulesets<a name="executingRules"></a></h3>
+
+<h4>expression pointers</h4>
+<p>In order to understand how expression building works, we need to take a close 
+  look at the <code>Expression_ptr</code>. This is the data structure that embodies 
+  the expression as it is being built; it is passed between rules as a rule sequence 
+  is applied. </p>
+
+<p>The expression pointer first contains the “raw materials” of an expression, 
+  i.e. an operator (or function id) and any operands (or arguments). The operands 
+  are usually AST <code>Expression_nodes</code> that have been built prior to 
+  this point, but may be “expression placeholders” (fake AST expression nodes 
+  that act as surrogates, containing preliminary information until the actual 
+  node can be built), <code>Type_nodes</code> (in explicit casts, for example), 
+  or <code>Node_lists</code><a href="#footnote9"><sup>9</sup></a> . This variety 
+  in operand type is necessary to support a wide range of expression building 
+  rules with a single interface.</p>
+
+<p>The operator or function id is represented by a <code>Scoped_name</code> called 
+  <code>opid</code>. This is the operator/fnid that will be displayed in the expression 
+  window as the expression is being evaluated by the TM. Often, this is also sufficient 
+  to identify the category of operation to be performed. In some circumstances, 
+  however, there are finer shades of meaning introduced by context, that can’t 
+  be distinguished by looking at the <code>opid</code> and operands alone. In 
+  other circumstances there may be several possible images for a single operation 
+  category. In these cases an additional identifier called <code>opcat</code> 
+  will uniquely identify the category of operation to be built. Rules look at 
+  <code>opcat</code> when they need to analyze an operation category, but use 
+  <code>opid</code> when specifying the visible representation of the operator/function. 
+  The <code>opid</code> value is also the <code>opcat</code> unless an <code>opcat</code> 
+  value is explicitly provided.</p>
+
+<p>When a rule sequence is successfully applied, the expression pointer contains 
+  the resulting AST representation of the expression, accessible via <code>Expression_ptr.get 
+  ().</code> This will contain AST representations of any additional operations 
+  that need to be performed, such as conversions and fetches.</p>
+<p><img src="image007.gif" width="554" height="260"></p>
+<p><b>Figure 6: the expression pointer</b></p>
+
+<h4>expression building in action</h4>
+<p>A Flash animation is available, which illustrates the effect of applying a 
+  rule sequence against an <code>Expression_ptr</code>. </p>
+<p>&nbsp;</p>
+
+<h3>designing rules<a name="designingRules"></a></h3>
+
+<p>reasons for the “rule” approach</p>
+<ul><li>there is a common, basic abstraction in expression building of all kinds; this is the application of a sequence of rules against raw materials and contextual information, towards the generation of an expression. Employing this abstraction enforces a uniformity in approach to rule application, making individual rules easier to understand, dissect, and
+formulate.</li>
+<li>Enforcing an interface permits easier combination and reuse of rules to support multiple contexts. This is very important in expression analysis, as rules for different situations criss-cross and combine in truly Byzantine
+ways.</li>
+<li>The combination of rules into rulesets (ideally) forms a high level, readable and verifiable summary of the rule sequence(s) for a particular
+expression.</li>
+</ul>
+
+<h4>guidelines for defining rules</h4>
+<p>The overall design goal is to establish a high level of rule and structural 
+  reuse both within C++ and across languages, while avoiding a proliferation of 
+  rules. A couple of basic guidelines have been followed when defining <code>CodeGenRules</code>. 
+  Following these guidelines will help maintain consistency under a relatively 
+  fluid pattern:</p>
+<dl>
+  <dd><i>atomicity</i>:</dd>
+  <li>a rule should generally be responsible for a single step in building an expression. What constitutes a “single step” will depend on the circumstance, but some examples are: type conversion, id resolution, and lvalue->rvalue conversion (fetches). The goal is to define rules that can be applied in different situations. The exception to atomicity is a sequence of steps that are truly only ever applied in the circumstance covered by a rule. A set of rules so implemented may, therefore, correspond one for one with the related set of assertions and directives in the language specification; or a single rule may encapsulate several.
+</li>
+  <dd><i>generality</i>:</dd>
+  <li>a rule should not hard-code attributes when constructor arguments could 
+    increase its reuse in different circumstances. For example, a single <code>CodeGenRule</code> 
+    might exist for the generation of binary arithmetic expressions, taking an 
+    indication of the specific operator (or class of operator) it is responsible 
+    for as a constructor argument. </li>
+</dl>
+
+
+<h4>towards defining an expression builder : binary operations example</h4>
+<p>In this section, we look at an example of the analysis process involved in defining a particular expression builder; the same general approach has been followed for most expression builders in the C++ implementation. Note that the terminology in the analysis example is not
+precise.</p>
+
+<p><i>--- begin example</i></p>
+
+<p>We are concerned here with generating an expression given two operands (themselves expressions) and an operator (a built-in, possibly overloaded id). The procedure followed to build the resulting expression is more or less the same across
+operations:</p>
+
+<ol><li>determine the operation node and expression type using the operation and the two expressions.
+</li>
+<li>build and attach any implicit conversion nodes and fetches as required</li>
+<li>build and return the operation expression</li>
+</ol>
+
+<p>During this procedure, there are several interrelated factors to consider when determining the meaning of a binary
+expression:</p>
+<ul><li>the category of operator (see below)</li>
+<li>the types of the operands</li>
+<li>conversion rules surrounding the operator and between operands</li>
+<li>whether the operator is overloaded</li>
+</ul>
+
+<p>Categories of binary operators in C++:</p>
+<p><i>comma, assignment, logical, bitwise, equality, relational, shift, additive, 
+  multiplicative, pointer-to-member.<br>
+  </i> </p>
+<code></code> 
+<p>General rule sequence identification procedure:</p>
+<ol><li>lookup possible left operands by operator</li>
+<li>lookup possible right operands by left operand (establishing left operand as valid for
+operator)</li>
+<li>lookup rule sequence by right operand</li>
+<li>apply rules in rule sequence</li>
+</ol>
+
+<ul>Individual rules may include: 
+<li>performing standard arithmetic conversions</li>
+<li>other conversions (boolean conversions, array ->pointer)</li>
+<li>determining type of expression</li>
+<li>looking for overloaded meaning</li>
+<li>building the expression node (ultimate step)</li>
+</ul>
+
+<p><i>Summary</i>: type evaluation is represented in the table structure – these 
+  lead to rule sequences that apply to the pair of operand types. </p>
+
+<p>The rule sequences given where either or both operands are of a user-defined type will include appropriate rules concerning overloading. Where type evaluation yields no result, and either or both operands are of a user-defined type, similar rules are applied concerning overloading.
+</p>
+
+<p><i>--- end example</i></p>
+<p>After a similar analysis is made for the category of expression you are concerned 
+  with, the overall structure of the ExpressionBuilder should be clearer. In the 
+  C++ implementation, most expression builders use the same rule sequence location 
+  procedure (using OperandTables). When a particular kind of expression doesn’t 
+  lend itself well to this procedure, an interface is provided which directly 
+  accesses the expression’s rule sequence. An example in C++ is the <i>id expression</i>.</p>
+
+
+ 
+<p><img src="image010.gif" width="575" height="259"></p>
+<p><b>Figure 7: expression building class diagram</b> </p>
+<h3>java notes<a name="decBuildingJavaNotes"></a></h3>
+<p>The expression building design should transfer well to a Java implementation. 
+  A java implementation would categorize expressions to be handled and define 
+  a corresponding set of <code>ExpressionBuilders</code>; as stated previously 
+  the categorization will be language specific; but given the similarity of Java 
+  and C++ expressions at the syntactical level, this may turn out to be very similar 
+  to the C++ categorization. There will also likely be a <code>JavaExpressionBuilder</code> 
+  base class, concerned with building common rulesets. </p> 
+<h2>symbol table<a name="symTab"></a></h2>
+
+<p>A compile-time symbol table provides a mapping from names as presented to a parser to their related declarations. By knowing the type of entity being referred to, a compiler or interpreter is able to perform syntactical and semantic analysis, and ultimately generate the desired representation or
+actions.</p>
+
+<p>In this document, symbol table refers to the data structures used to express the mapping from names to declarations, plus the logic required to access and manipulate
+it.</p>
+<h3>rationale<a name="ratioanle"></a></h3>
+<p>The first version of C++ support in the Teaching Machine was for a subset of the language roughly equivalent to C. Support for more language features, including classes and overloading, requires a more robust knowledge/handling of scope rules and name resolution. In particular, the first parser implementation did not persist declarations beyond their enclosing scope, which is required once classes are introduced.
+</p>
+
+<p>In addition, the Teaching Machine is designed to support multiple languages, and Java support is scheduled for implementation. The “Common Language Classes” represent a design initiative to reuse code when generating an AST representation. While not an explicit requirement for this design, this kind of reuse is kept in
+mind.</p>
+<h3>analysis<a name="analysis"></a></h3>
+<p>In a procedural, statically-scoped, block-structured programming language, 
+  a symbol table can be implemented as a straightforward stack of scopes. Once 
+  a block is exited, the corresponding scope is popped from the stack and discarded. 
+  Supporting classes and namespaces introduces the need to maintain symbol table 
+  information beyond the block in which something is declared. When a method of 
+  class X is defined outside the outer scope of the class, for example, the corresponding 
+  scope for class X must be referred to when resolving the names used inside the 
+  method<a href="#footnote10"><sup>10</sup></a> . </p>
+
+<p>Inheritance and overloading make the scoping rules for a class more complex than a map of simple names to objects. Name resolution must resolve ambiguity by looking at the full ‘scoped name’ as per the rules of the language. Additionally, the scope model for a class may be structured hierarchically in correspondence with inheritance
+relationships.</p>
+
+<p>The finer points of scopes in C++, including “point of declaration” and “declaration hiding”, will further direct the name resolution logic. The complete scope and lookup rules for C++ are described in the ISO standard, and particularly sections 3.3 and
+3.4.</p>
+<h3>steps in id resolution<a name="idSteps"></a></h3>
+<p>Id resolution in C++ follows two distinct phases, in order:</p>
+<ol><li>id lookup / scope resolution</li>
+<li>ambiguity resolution for overloaded functions</li>
+</ol>
+
+<p>Once these have completed, access rules are typically enforced. If the matching declaration is accessible in the current context, type checking is performed to ensure that the id is being used
+legally.</p>
+
+<p>The symbol table design is concerned primarily with supporting the first phase of id resolution. Aspects of this must be available for use in the subsequent phases also, so it is important to consider the entire resolution process in the design.
+</p>
+
+<h4>inheritance and member access control</h4>
+<p>We might like to honour access modifiers (private, protected, public, and friend) or types when resolving name ambiguity in a multiple inheritance context. For example, an unqualified reference to an attribute y that is declared in two or more parent classes could be resolved where only one of those declarations is public or protected. However, in C++ checking for ambiguity occurs before access control and type checking (ARM 10.1.1).
+</p>
+
+<p>Ultimately, access modifiers should be ignored during scope resolution, provided the appropriate declaration hiding rules are followed (see below).
+</p>
+
+<h4>overloading and hiding</h4>
+<p>At first blush, it seems we can resolve overloading ambiguities up front and 
+  hash to a single value every time, by flattening (‘munging’) method signatures 
+  such that (for example) methods <code>z(int) </code>and <code>z(char)</code> 
+  would have keys <code>zint</code> and <code>zchar</code> respectively<a href="#footnote11"><sup>11</sup></a> 
+  . However, when determining the method signature that is the ‘best fit’ for 
+  a given call, we often need to look at the whole set of candidates (or at least 
+  those with the same number of arguments). For example, implicit type conversion 
+  might take place to convert a function call argument to the function parameter 
+  type – hashing to munged function signatures is out in this case. Name lookups 
+  for overloaded function names should instead return the set of matches, to be 
+  further analyzed until the best match is found or an error is flagged<a href="#footnote12"><sup>12</sup></a> 
+  .</p>
+
+<p>The rules for declaration hiding impact id resolution; we always need to know which declaration(s) is/are in scope when performing a lookup. For example, overloading from different levels of an inheritance hierarchy is not permitted in C++, but instead is an instance of hiding.
+</p>
+
+<p>One finer point of declaration hiding is exhibited where there are multiple 
+  declarations using the same name in the same scope (say <code>struct x</code> 
+  followed by <code>int x</code>). The rule here is that <code>struct x</code> 
+  must be referred to using its expanded name (<code>struct x</code>). This is 
+  just one example of the impact of context in id resolution.</p>
+
+<h4>context and id lookup</h4>
+<p>At any given point during symbol table generation or name resolution, the current 
+  scope must be known. This means there should be communication between the Parser 
+  and the symbol table when scopes are entered/exited<a href="#footnote13"><sup>13</sup></a> 
+  In addition, when a name is passed in (when parsing a declaration or id expression), 
+  the symbol table requires the name exactly as encountered in the code. </p>
+
+<p>Other contextual information may be required in certain cases. This includes an indication of dot and dereference operators, casts, and arguments (where the name refers to a function). Information about the current statement may also be required (e.g. is this id encountered in a declaration statement – lookup rules are different in this
+context).</p>
+<h3>namespaces<a name="namespaces"></a></h3>
+<p>Namespace support is not present in the first phase of the new C++ language implementation. It needed to be considered in the overall design of the symbol table, however, as namespaces constitute a set of scoping/name resolution rules in themselves and in relation to other scopes. Indeed, from the perspective of id resolution, classes and namespaces are closely interrelated.
+</p>
+
+<p>Some details concerning the relationship between namespaces and classes:</p>
+<ul><li>Classes are considered to be special forms of namespaces for the purposes of name
+resolution.</li>
+  <li>Namespace <i>using declarations</i> when applied to class member functions 
+    can force overloading of base class member functions in derived classes (ARM 
+    3.3.1.3). This is because classes are considered namespaces for the purposes 
+    of name lookup.</li>
+<li>Using declarations add individual identifiers to the current scope; the using directive adds all identifiers in the named namespace to the current scope. Thankfully, a class cannot have names added by namespace directives, and using declarations must refer to accessible members of a base class (ARM
+3.3.1.3).</li>
+</ul>
+<h3>phase 2 note : translation units and linkage<a name="translation"></a></h3>
+<p>Type definitions with external linkage must be kept between translation units so that subsequent declarations will map to the same Type node. Symbol table lookups on ‘extern’ declarations may assist in locating the actual type definition, or detecting multiple definitions. These ‘held over’ definitions are not added to a translation unit’s scope until they are explicitly referred to via an extern
+declaration.</p>
+
+<h3>symbol table design<a name="symTabDesign"></a></h3>
+<p>The symbol table design revolves largely around the use and maintenance of an abstract representation of the scopes and declarations in a translation unit.
+</p>
+
+<p>A <i>scope</i> contains declarations, may enclose one or more scopes, and is 
+  ‘physically’ enclosed by a single scope (or no scope in the case of the global 
+  scope). A scope may have additional ‘enclosed by’ or ‘uses’ relationships with 
+  other scopes, as with class inheritance. Finally, a scope may itself be related 
+  to a <code>Declaration</code>; this is the case with functions, classes and 
+  namespaces in C++.</p>
+
+<p>The representation of scope is built as new scopes are entered by the Parser. 
+  The resulting data structure representing scope for the entire translation unit 
+  is a directed, acyclic graph, with a single origin (representing the global 
+  scope). The nodes (<code>Scope_holders</code>, see below) contain a table representing 
+  the immediate scope at that level (i.e. containing those <code>Declarations</code> 
+  encountered in this scope), and also lookup routines appropriate for a symbol 
+  table lookup beginning in or including this scope.</p>
+
+<p>Symbol table lookups return declarations. Representing the compile-time view of a declaration, they provide data and functionality permitting the generation of a runtime representation, including AST id expressions and runtime symbol table ids.
+</p>
+ 
+<p><img src="image013.gif" width="575" height="296"></p>
+<p><b>Figure 8 - Class Diagram for symbol table </b> </p>
+<h3><code>CTSymbolTable</code><a name="CTSymTab"></a></h3>
+<p>This is the abstracted external interface for symbol table lookups. There is 
+  one <code>CTSymbolTable</code> per translation unit. The various managers (declaration, 
+  expression, scope) communicate with the <code>CTSymbolTable</code> (when a new 
+  declaration/definition is encountered, when an id needs to be resolved, and 
+  when entering/exiting a scope). Some <code>CodeGenRules</code> and the type 
+  conversion logic also use <code>CTSymbolTable</code>.</p>
+
+<p>responsibilities / features:</p>
+<ul>
+  <li>manages the internal symbol table representation (<code>Scope_holder</code> 
+    hierarchy)</li>
+<li>interprets and directs lookup requests</li>
+  <li>contains a reference to the global namespace (in C++ concrete subclass: <code>Cpp_CTSymbol_table</code>)</li>
+  <li>contains a reference to the <code>Scope_holder</code> with the current local 
+    scope.</li>
+  <li>tells the current <code>Scope_holder</code> to add declarations when requested</li>
+</ul>
+
+<code><pre>Declaration_set lookup (Scoped_name name, LFlags flags)</pre></code>
+<p>This is the main point of entry for id resolution. The <code>Scoped_name</code> 
+  should contain the id as encountered (i.e. qualified if it is qualified in the 
+  code). The second parameter is optional, and contains contextual information 
+  that will direct the search (e.g. within a declaration statement, or a member 
+  accessed via class name or object reference). The returned <code>Declaration_set</code> 
+  contains all matching <code>Declarations</code> given the current scope, input 
+  parameters and applicable lookup rules.</p>
+
+<h3><code>ScopeHolder</code><a name="scopeHolder"></a></h3>
+
+<p><code>ScopeHolder</code> is the abstract base class for all structural language 
+  elements that contain scope, i.e. namespaces, files, classes, functions, and 
+  blocks. Derived classes represent these entities from the perspective of the 
+  compile-time symbol table (in a manner that facilitates name resolution).</p>
+
+<p>responsibilities / features:</p>
+<ul><li>manages all lookups and new declarations in its outermost scope. Derived classes implement this
+logic.</li>
+  <li>provides ability to search the scope for a <code>Declaration</code> matching 
+    a <code>Scoped_name</code></li>
+  <li>will be tightly coupled to a related <code>Declaration</code> class where 
+    one exists (classes, namespaces and functions), and have concrete references 
+    to associated <code>Scope_holders</code>.</li>
+<li>has one enclosing scope – this is the “physically enclosing” scope as expressed in the code
+structure.</li>
+</ul>
+<h4><code>Scope</code> </h4>
+<p>This is the actual symbol table for a particular scope, and is used directly 
+  by the related <code>Scope_holder</code> only. Essentially a <code>Hashtable</code>, 
+  it maps raw ids (<code>Strings</code>) to <code>Declaration_sets</code>. Each 
+  <code>Scope</code> object represents a single immediate local scope only; it 
+  does not have knowledge of enclosing scopes or other related scopes.</p>
+
+<h4>java notes</h4>
+<p>The concrete subclasses of <code>Scope_holder</code> are specific to C++. This 
+  is because they represent language-specific scope rules in their structure and 
+  lookup implementations, and sometimes relate to language-specific elements (such 
+  as namespaces and regular functions). In addition, attributes and methods common 
+  to C++ <code>Scope_holders</code> are located in <code>Common_sh</code>, which 
+  itself derives from <code>Scope_holder</code>. Language-neutral functionality 
+  is located in <code>Scope_holder</code> where possible, but some will necessarily 
+  be hidden in the class hierarchy and interrelationships. </p>
+
+<p>Therefore, a Java implementation would require a similar class hierarchy, or a refactoring of those structural and functional elements of the Scope_holder subclasses that prevent reuse across language implementations.
+</p>
+
+ 
+<p><img src="image014.gif" width="622" height="437"></p>
+<p><b>Figure 9 - Class Diagram showing Scope_holder relationships </b> </p>
+<h3><code>Declaration</code><a name="declaration"></a></h3>
+
+<p>The <code>Analyzer</code>’s view of a declaration. Declarations of all kinds 
+  (namespace, function, type, variable, label) have an associated <code>Declaration</code> 
+  object. As stated previously, <code>Declarations</code> are crucial representative 
+  elements during semantic analysis and code generation.</p>
+
+<h4>responsibilities / features:</h4>
+<ul>
+  <li>uniquely represent user-defined (or library, and possibly built-in) entities 
+    during compile time</li>
+  <li>are returned during id resolution</li>
+  <li>provide the <i>fully qualified id</i> of the entity</li>
+  <li>provide the <i>runtime id</i> of the entity<a href="#footnote14"><sup>14</sup></a> 
+  </li>
+  <li>have a category attribute that identifies many of an entity’s properties 
+    (see <code>LFlags</code>, below). </li>
+  <li>have a related <code>Definition</code> (see below).</li>
+</ul>
+<h4><code>Definition</code></h4>
+<p>Every <code>Declaration</code> has a <code>Definition</code><a href="#footnote15"><sup>15</sup></a> 
+  . The <code>Definition</code> interface is used to represent this relationship, 
+  and can refer to any type of definition (type, namespace, function, variable). 
+</p>
+<i>notes:</i> 
+<ul>
+  <li>definitions as encountered in code are fully represented by a combination 
+    of <code>Declaration</code> and <code>Definition</code> object </li>
+  <li>label and scalar variable definitions are considered declarations from the 
+    perspective of the symbol table. They are their own <code>Definition</code> 
+    object.</li>
+  <li>class object <code>Declarations</code> have their related type <code>Declaration</code> 
+    as their <code>Definition</code>.</li>
+-
+  <li>type, namespace and function <code>Declarations</code> have their <code>Scope_holder</code> 
+    as their <code>Definition</code>.</li>
+</ul>
+<h3><code>LFlags</code> and<code> LFConsts</code> <a name="LFlags"></a></h3>
+<p><code>LFlags</code> are used for two overlapping purposes in the symbol table. 
+  One is to categorize <code>Declarations</code> without needing to build a class 
+  hierarchy representing all possible definable language elements. Binary operations 
+  indicate the type and salient features of a <code>Declaration</code>.</p>
+
+<p>The other purpose is to provide constraints to the lookup logic. Indication 
+  of the desired class of <code>Declaration</code>, and additional contextual 
+  information (such as ‘id encountered in a declaration statement’) is provided 
+  and tested using this mechanism. </p>
+
+<p>In some cases, these objects will be used in a read-only fashion, as classifiers 
+  or for comparison. For this reason, <code>LFConsts</code> provides a set of 
+  static object references for common classifications. The <code>LFConsts</code> 
+  class also derives from <code>LFlags</code>, enforcing their read-only status. 
+</p>
+<h3>lookup algorithms<a name="lookup"></a></h3>
+<p>Lookup logic is implemented jointly by the <code>Scope_holder</code> hierarchy 
+  and the <code>CTSymbol_table</code> class. The rules are highly language-dependent.</p>
+
+<p>The general pattern of C++ id resolution is as follows:</p>
+<ol><li>Gather contextual information for the lookup</li>
+<li>Find the scope referred to by the qualified name or object/class/namespace reference, if
+applicable</li>
+<li>look for the terminal id in the scope determined in (2), according to the rules for that scope and the additional contextual information gathered in
+(1)</li>
+<li>if the id is not found or resolution logic requires it, continue the search in related scopes as determined by the scope, the contextual information, and the relevant lookup rules. This is achieved by calling the appropriate lookup methods. These related scopes may in turn call the lookup methods in other scopes as
+necessary.</li>
+</ol>
+
+<p>The name resolution rules for C++ are found in the ISO document, primarily section 3.4. The relevant sections are identified in each method implementing lookup logic.
+</p> 
+<h2>type analysis<a name="typeAnalysis"></a></h2>
+
+<p>Types have the single greatest impact on the analyzer’s function. Type-related 
+  functionality is found in several places in the Analysis package<a href="#footnote16"><sup>16</sup></a> 
+  , but is concentrated in two areas: the conversion classes and <code>TypeExtractor</code>. 
+</p>
+<h3>comparison and conversion<a name="comparison"></a></h3>
+<p>Type conversion logic is required in several places by the analyzer. One is 
+  during overload resolution: when determining the <i>best viable function</i>, 
+  the conversions required to have a function accept an argument are crucial in 
+  comparing which among a set of functions is ‘best’. </p>
+
+<p>Type information is also required during expression evaluation, initialization and assignment, and in all cases there may be implicit or explicit conversions that must take place. For example, the meaning and behaviour of binary operators is influenced by the types of its operands, just as the operands are modified (often through type conversion) before being used in the operation.
+</p>
+
+<p>In C++, type conversion comes in two categories; <i>standard type conversion</i> 
+  and <i>user-defined type conversion</i>. Standard type conversion logic manages 
+  conversions from and to built-in types, as well as object polymorphism and casting. 
+  User-defined conversions are those explicitly defined by conversion functions 
+  or constructors. The logic to implement/support each kind of conversion is different, 
+  but interrelated, and the design reflects this. Two functional classes, <code>StandardConversions</code> 
+  and <code>UserDefinedConversions</code>, embody the logic.</p>
+
+<p>The first phase of type conversion is type comparison, the comparison of source and target type in order to categorize the conversion that needs to take place. During overload resolution (as at other times), this comparison is all that is required; no conversion takes place until the AST representation of the function call is
+built.</p>
+
+<p>The type conversion logic provides the ability to perform a single specific 
+  conversion, such as a <i>cv-qualification conversion</i>, or a <i>boolean</i> 
+  conversion. It can also form and execute complete conversion sequences. </p>
+
+<h4>conversion sequences</h4>
+<p><i>Implicit conversion sequences</i> are represented by <code>ConversionSequence</code>. 
+  This class can represent <i>standard</i>, <i>user-defined</i>, and <i>ellipsis</i> 
+  conversion sequences. For details of each, consult the javadoc and ISO 13.3.3.1. 
+  The conversion sequence construct stores a representation of the conversion 
+  to apply at each step of the sequence. This representation consists of a <i>conversion 
+  code</i>, indicating the type of conversion to perform, the <i>target type</i>, 
+  a <code>Type_node</code> with attributes consistent with the objective of the 
+  conversion, and possibly a <code>FunctionDeclaration</code> (for user-defined 
+  conversions). </p>
+
+<p>Explicit conversion sequences (i.e. those achieved by a series of explicit 
+  casts) are managed by the <code>Eb_Cast</code> expression builder (which makes 
+  heavy use of the type conversion logic).</p>
+
+<h3>extraction and categorization<a name="extraction"></a></h3>
+<p> <code>TypeExtractor</code> provides the ability to determine a type given 
+  a <i>type specifier sequence</i> (represented by a <code>Specifier_set</code>, 
+  see below). It thereby encapsulates the instantiation of many <code>Type_node</code> 
+  instances. This function is performed for both built-in types and user-defined 
+  types (completely defined or otherwise). </p>
+
+<p>The type conversion and comparison logic relies heavily on the <code>Type_node</code> 
+  class hierarchy, as defined in <code>Clc.Ast</code> and <code>Cpp.Ast</code>, 
+  and on the <code>equal_types</code> method that each <code>Type_node</code> 
+  subclass must implement. Knowing the <code>Type_node</code> (or defined <code>TyClass</code> 
+  instance for user-defined types) goes a long way towards categorizing a type. 
+</p>
+
+<p>To alleviate direct reliance on this <code>Type_node</code> hierarchy and permit 
+  a range of language-specific categorizations, <code>TypeExtractor</code> also 
+  flags a type for the compile-time representations of the type or <i>entities</i> 
+  of that type. The various possible “var type” flags are outlined below for C++. 
+  This categorization facilitates many Analysis functions, and is performed for 
+  built-in types, user-defined types, and functions. </p>
+
+<h4>Table 7: C++ type categorizations</h4>
+<table width="75%" border="1">
+  <tr>
+    <td><b>category</b></td>
+    <td><b>members</b></td>
+  </tr>
+  <tr>
+    <td>VTA</td>
+    <td>void</td>
+  </tr>
+  <tr>
+    <td>VTB</td>
+    <td>integral types</td>
+  </tr>
+  <tr>
+    <td>VTC</td>
+    <td>floating types </td>
+  </tr>
+  <tr>
+    <td>VTD</td>
+    <td>enum, pointer, pointer-to-member</td>
+  </tr>
+  <tr>
+    <td>VTE</td>
+    <td>POD array, POD class</td>
+  </tr>
+  <tr>
+    <td>VTF </td>
+    <td>non-POD array, non-POD class without user-defined constructors, non-public 
+      non-static data members, base classes, or virtual functions </td>
+  </tr>
+  <tr>
+    <td>VTG </td>
+    <td>remainder of non-POD classes </td>
+  </tr>
+  <tr>
+    <td>VTH </td>
+    <td>function or reference</td>
+  </tr>
+</table>
+<p>These groupings form equivalence classes in the partitioning of typed entities 
+  according to the following overlapping categorizations: <i>fundamental</i>, 
+  <i>compound</i>, <i>object</i>, <i>integral</i>, <i>floating</i>, <i>arithmetic</i>, 
+  <i>scalar</i>, <i>aggregate</i>, <i>POD</i>, and <i>non-POD</i>. </p>
+<h3>java notes<a name="typeJavaNotes"></a></h3>
+<p>Type comparison and conversion rules will be different for Java - there will be no user-defined conversions, for example; but it will likely still be a good idea to encapsulate the logic in a small number of utility
+classes.</p>
+
+<p>At present there is an interface in <code>Clc.Analysis</code> called <code>ConversionRules</code>, 
+  that may or may not prove to be appropriate for Java type comparison/conversion 
+  to define. There may be opportunity for refactoring also: <code>StandardConversions</code> 
+  uses several internal constructs that might carry over, and the <code>ConversionSequence</code> 
+  may be useful for Java.</p>
+
+<p>The applicability of type extraction and categorization to Java is not known.
+</p> 
+<h2>overload resolution<a name="overload"></a></h2>
+
+<p>During compile-time id resolution involving functions, several matching <code>FunctionDeclarations</code> 
+  can be returned when function overloading exists. It is the job of the front-end 
+  analyzer to then choose the best matching function. The <i>best viable function</i> 
+  is determined via specific rules of comparison, which involve the context in 
+  which the function id was encountered as well as rules for type conversion.</p>
+
+<p>Rules for overload resolution can be organized in three distinct groups, which correspond to distinct phases in the resolution
+process:</p>
+<ol><li>rules dependent on the context in which overload resolution is taking
+place</li>
+  <li>rules concerning the filtering and comparison of candidate functions with 
+    the goal of finding a <i>best viable function</i>, and</li>
+<li>rules concerning conversion of one type to another, used to determine a function’s viability and in comparison with other
+functions</li>
+</ol>
+
+<p>The rules in (1) are covered in this design, but determination of context is assumed to have taken place before the overload resolution logic is called (see expression building, above). The rules in (2) comprise the bulk of the logic implemented by the overload resolution component. The rules in (3) are largely implemented as part of the type conversion
+design.</p>
+
+<p>The rules for finding the <i>best viable function</i> also apply in the case 
+  of a single candidate function for a function call. While no comparisons take 
+  place, this logic determines the viability of the function given the arguments 
+  presented, as well as the conversions required to perform the call with the 
+  arguments.</p>
+
+<p>When function arguments are compared against parameters, the <i>conversion 
+  sequence</i> is recorded (see above). When a function call’s AST representation 
+  is built, these sequences are used to build the corresponding chain of conversion 
+  expressions for each argument.</p>
+
+<h3>interface<a name="interface"></a></h3>
+<p><code>RankedFunction disambiguate (Declaration_set candidates, Vector args, 
+  int context)</code> </p>
+<p>The interface to overload resolution functionality is a single method called 
+  disambiguate. This method requires an optional indicator of the context in which 
+  the function is being resolved, the argument list (a <code>Vector of Expression_nodes</code>), 
+  and the set of candidate functions (a <code>Declaration_set</code>). </p>
+
+<p>The result of a successful overload resolution is a single <code>RankedFunction</code>; 
+  this contains the compile-time representation of the function to call, plus 
+  the conversion sequences required to convert each argument to the corresponding 
+  parameter type. This data structure is also used during overload resolution, 
+  at which time argument-to-parameter rankings are stored and compared here. </p>
+
+<code><pre>FunctionDeclaration findMatch (Declaration_set candidates, TyAbstractFun
+tf)</pre></code>
+<p>In addition, the interface provides the ability to locate the compile-time 
+  representation of a function given a possible runtime representation, in the 
+  method <code>findMatch</code>. Provided are a set of candidate declarations 
+  and the TyFun (AST representation of the “function type” to match). This permits 
+  retrieval of the compile-time representation even when separate declarations 
+  of the function differ in aspects of their top-level type specifiers.</p>
+
+<h4>munging function ids</h4>
+<p>The runtime key for a function is its munged name. This is the fully qualified name of the function, followed by a seperator, the return type, and the parameter types (comma-seperated in parentheses). User-defined types, if part of the key, are themselves fully
+qualified.</p>
+<p>Example. In the following code, the munged name for f1 is
+<code><pre>::N1::f1$int(int,char)</pre></code><p></p>
+<code><pre>---
+namespace N1 {
+	int f1 (int x, char a) { return 0; }
+};
+---
+</pre></code>
+<p>The procedure by which the munged name is constructed relies on the typeId 
+  method provided by <code>Type_nodes</code> for everything except the function 
+  name and the seperator. This is encapsulated in a method, however, in case things 
+  need to change down the road.</p>
+
+ 
+<h4><img src="image017.gif" width="575" height="304"></h4>
+<h4>Figure 10 : Overload Resolution class diagram </h4>
+<h3>java notes<a name="overloadJavaNotes"></a></h3>
+<p>Overload resolution is required in Java. The rules will be different, but the 
+  general idea is the same: compare argument and parameter types to find a match. 
+  The <code>disambiguate</code> interface may prove sufficient for Java, in which 
+  case it may form a common interface in <code>Clc.Analysis</code>. The <code>RankedFunction</code> 
+  construct might also be useful; for this a common base class might be defined.</p>
+ 
+<h2>integration<a name="integration"></a></h2>
+
+<p>The remaining classes in the Analysis packages facilitate or permit communication with the Parser and the “runtime” or back-end.
+</p>
+<h3>representational classes<a name="representaional"></a></h3>
+<p>Objects of these types constitute preliminary representations of various language entities. The parser passes these to the analyzer, which generally dissects them to form compile-time and runtime representations of the entities.
+</p>
+<h4>Table 8: representational classes</h4>
+<table width="75%" border="1">
+  <tr>
+    <td><b>name</b></td>
+    <td><b>description</b></td>
+  </tr>
+  <tr>
+    <td><code>Class_head</code></td>
+    <td>Representation of the head of a class declaration. This includes an identification 
+      of class category (class, struct, union), the name of the class, and its 
+      base class specifiers.</td>
+  </tr>
+  <tr>
+    <td><code>Function_defn</code></td>
+    <td>A representation of a function definition. The <code>Parser</code> provides 
+      the function’s type (a combination of return and parameter types), its name, 
+      and a link to the start of the function body. The Analyser will modify this 
+      object directly, fully qualifying the function name, and adding initialization 
+      and declaration statements to the function body. <code>Function_defn</code> 
+      is used directly as the runtime representation of a function; its runtime 
+      id is the fully-qualified <i>munged name</i> of the function, which <code>Function_defn</code> 
+      can itself generate.</td>
+  </tr>
+  <tr>
+    <td><code>Initializer</code></td>
+    <td>Wraps an <code>Expression_node</code> (or set of) constituting the initialization 
+      portion of a declaration statement. This is used by the Analyser to generate 
+      the initialization <code>StatDo</code>.</td>
+  </tr>
+  <tr>
+    <td><code>Constructor _initializer</code> </td>
+    <td>Represents a <i>ctor-initializer</i> in C++. This is a base class or data 
+      member id followed by an initialization expression. The Analyzer uses this 
+      to generate the constructor code required to perform the initializations. 
+    </td>
+  </tr>
+  <tr>
+    <td><code>Specifier_set</code></td>
+    <td>A representation of the type specifiers and other modifiers encountered 
+      in a declaration statement. This is used to identify and categorize the 
+      type and other aspects of a declaration. The Analyser keeps the <code>Specifier_set</code> 
+      around as a <code>Declaration</code> attribute, where it serves to identify 
+      whether a declaration has certain properties not otherwise represented. 
+    </td>
+  </tr>
+  <tr>
+    <td><code>Scoped_name</code></td>
+    <td>Used to represent an id consisting of one or more components. This can 
+      be an id as encountered in the source, a fully qualified id uniquely identifying 
+      an entity, or the runtime id, which has different properties depending on 
+      the entity being referenced.</td>
+  </tr>
+</table>
+<p>&nbsp; </p>
+<p>&nbsp; </p>
+<h3>utility / support classes<a name="utility"></a></h3>
+<p> In addition to representational classes, the analyzer provides utility classes 
+  for the parser, as outlined in Table 9. </p>
+<h4>Table 9: utility classes</h4>
+<table width="75%" border="1">
+  <tr>
+    <td><b>name</b></td>
+    <td><b>description</b></td>
+  </tr>
+  <tr>
+    <td><code>Line_map</code></td>
+    <td>maintains a mapping between raw source and preprocessed source</td>
+  </tr>
+  <tr>
+    <td><code>Id_table</code></td>
+    <td>stores single representations of ids, to avoid proliferation of <code>Strings</code></td>
+  </tr>
+  <tr>
+    <td><code>Parser_context</code></td>
+    <td>provides access to the <code>Id_table</code> and <code>Line_map</code>, 
+      error messaging, semantic lookahead, and a façade interface to analyzer 
+      functionality</td>
+  </tr>
+</table>
+<h2>examples<a name="examples"></a></h2>
+<h3>parser interaction<a name="parser"></a> </h3>
+<p>This example provides a verbal description of the interaction between the parser and the analyzer given the following source
+code:</p>
+
+<p><i>--- begin example </i></p>
+<code>
+<pre>int f (int x) { return 0; }
+int f () { return 0; }
+ 
+void main () {
+	int a;
+	a = f (‘*’);
+}
+</pre>
+</code> 
+<p><b>The parser’s requests<a href="#footnote17"><sup>17</sup></a> … </b></p>
+
+<p> <i><b>setting the stage </b></i></p>
+<p>Parser indicates that a new translation unit is entered, by calling pc.start_file_scope, passing in the
+filename</p>
+
+<p> <i><b>a function definition</b></i></p>
+<ol>
+  <li>Parser uses lookahead to determine that “int f…” is a function definition, 
+    and calls <code>pc.start_function_prototype_scope</code> for the parameter 
+    list. </li>
+  <li>Parser encounters “int x” and calls <code>pc.parameter_declaration</code>, 
+    providing the line number, the id as encountered in source (“x”), the type 
+    of the parameter (<code>TyInt</code>), and any specifiers (just “int” in this 
+    case).</li>
+  <li>Parser calls <code>pc.end_function_prototype_scope</code> when it reaches 
+    the closing parenthesis.</li>
+  <li>Parser calls <code>pc.new_function_defn</code> for “f”, with a type of <code>TyFun</code> 
+    (<code>Type_node</code> containing return and parameter types), when it sees 
+    the open brace.</li>
+  <li>Parser calls <code>pc.start_local_scope</code> for the open brace.</li>
+  <li>Parser calls <code>pc.make_decimal_const</code> for the “0”, passing in the 
+    raw int value.</li>
+  <li>Parser calls <code>pc.make_return_exp</code>, passing in the <code>Const_int</code> 
+    generated in the previous step.</li>
+  <li>Parser calls <code>pc.end_local_scope</code> for the closing brace</li>
+  <li>Parser calls <code>pc.end_function_defn</code> for “f”</li>
+</ol>
+
+<p>A similar sequence occurs for “int f ()…”, with the following differences: 
+  a different <code>TyFun</code>, and an empty function prototype scope (the parameter 
+  list is empty).</p>
+<p>A similar sequence occurs again for “void main ()…”, up to the function body, which is where we’ll
+continue:</p>
+
+<p> <i><b>a simple declaration</b></i></p>
+<ol>
+  <li>Parser determines that “int a” is a new variable declaration, and calls 
+    <code>pc.simple_declaration</code>. The parser provides the type (<code>TyInt</code>), 
+    the id as encountered in source (“a”), the line number, a list of specifiers 
+    (such as <i>const</i>, <i>unsigned</i>, <i>short</i>, etc. In our case, this 
+    contains “int” only). The Parser also provides the point in the AST representation 
+    of the program in which the declaration was encountered, as a <code>Statement_node_link</code>.</li>
+</ol>
+  
+<p><b><i>an assignment expression</i></b></p>
+<ol><li>In the following line, the Parser begins with “a”. Encountered in an expression like this, the Parser calls pc.make_id_exp, passing the id as encountered in source
+(“a”).</li>
+  <li>The Parser next looks at the right hand side of the assignment, encountering 
+    “f”. This also generates a call to <code>pc.make_id_exp</code>, this time 
+    passing “f”.</li>
+<li>Upon encountering the open parenthesis, the Parser begins building an argument
+list.</li>
+  <li>Parser calls <code>pc.make_char_const</code> for “‘*’”, passing in the char 
+    constant as encountered in the source, as a <code>String</code> (“*”).</li>
+  <li>The closing parenthesis leads to a call from the Parser to <code>pc.make_function_call_exp</code>. 
+    Provided are the <code>Exp_function_name</code> for “f” and a set of <code>Expression_nodes</code> 
+    (the arguments). In this case the set has a single element, the <code>Const_char</code> 
+    generated in the previous step for “*”.</li>
+  <li>Finally, both the lhs and rhs of the assignment operator have been processed. 
+    The Parser then calls <code>pc.make_bin_op</code>, passing in the operator 
+    as encountered in source (“=”), the left operand (<code>Exp_id</code> (“a”)), 
+    and the right operand, generated in the previous step as <code>Op_function_call</code> 
+    (TyFun (for “f”), list of arguments <code>(Op_arithmetic_conversion (Const_char 
+    (‘*’)))</code>.</li>
+</ol>
+
+<p> <i><b>finishing up</b></i></p>
+<p>With the closing brace, the Parser closes off the <code>main</code> function, 
+  calling <code>pc.end_local_scope</code>, followed <code>by pc.end_function_defn</code>.</p>
+<p>Parser indicates that the translation unit has been fully parsed, by calling 
+  <code>pc.end_file_scope</code>.</p>
+
+
+<p><b>The analyzer’s response…</b></p>
+
+<p> <i><b>setting the stage</b></i></p>
+<p>When <code>new_file_scope</code> is called, the Analyzer creates a new global 
+  scope (an unnamed namespace scope), and sets up “initialization chains” for 
+  initialization of variables with static storage duration. Since we don’t have 
+  any such variables in this example, these will remain empty. </p>
+
+<p> <i><b>a function definition</b></i></p>
+<ol><li>Analyzer creates a temporary ‘function prototype scope’ in which to place any parameter declarations. This is a “block” scope, with lookup rules adjusted for the
+context.</li>
+  <li>Analyzer creates a <code>Declaration</code> for “x”, and adds it to the function 
+    prototype scope.</li>
+<li>Analyzer exits the function prototype scope, storing it for later use. Now back in global
+scope.</li>
+  <li>Analyzer creates a new “function” scope, representing the outermost scope 
+    of the function. This scope does normal lookup as well as “function scope” 
+    lookup (i.e. for labels). A “defining declaration” is created for the function 
+    and added to the global scope and set as the function scope’s “own declaration”. 
+    This is a <code>FunctionDeclaration</code>, whose <code>Definition</code> 
+    is the function scope, and whose type is the corresponding <code>TyFun</code>. 
+    It then moves all parameter <code>Declarations</code> in the function prototype 
+    scope (“int x”) into this scope. The function’s outermost scope is entered 
+    at this point to generate the declaration and initialization statements for 
+    any parameters. In this case, a single parameter declaration statement is 
+    created (for “int x”) : <code>StatDecl (TyInt, runtime id for “x”)</code>. 
+    This is followed by a copy initialization of the first argument (<code>StatDo 
+    (Op_assign (Exp_id (runtime id for “x”)</code>, <code>Exp_argument (position 
+    0)).</code> The AST representation of the function body is updated with these 
+    statements.</li>
+<li>Analyzer acknowledges that the actual function body has been entered.</li>
+  <li>Analyzer verifies the value, determines the appropriate type with which to 
+    represent it, and builds the corresponding <code>Const_int</code> AST expression.</li>
+  <li>Analyzer generates a result expression (<code>Exp_result</code>), which 
+    refers to the returned value of the function. The <code>Const_int</code> is 
+    used to copy-initialize the result.</li>
+<li>The function’s outer block is exited. Now in global scope.</li>
+<li>Call does nothing at present.</li>
+</ol>
+
+<p> <i><b>a simple declaration</b></i> </p>
+<ol>
+  <li>Analyzer creates a new <code>Declaration</code> for “int a”, adds it to 
+    the “main” function’s outermost scope. It then generates the AST representation 
+    of the declaration (a <code>StatDecl</code>).</li>
+</ol>
+
+<p> <i><b>an assignment expression</b></i></p>
+<ol>
+  <li>Analyzer performs lookup for the provided id (“a”), which returns the <code>Declaration</code> 
+    created in the previous step. It then makes an id expression (<code>Exp_id</code>) 
+    with the matching <code>Declaration</code>.</li>
+  <li>Analyzer performs lookup for the provided id (“f”). Because this matches 
+    one or more <code>FunctionDeclarations</code> (two in this case), an <code>Exp_function_name</code> 
+    (surrogate expression node) is created.</li>
+<li>Analyzer not involved</li>
+  <li>Analyzer ensures the token (“*”) is a valid char, and generates the corresponding 
+    <code>Const_char</code> expression.</li>
+  <li>Analyzer performs overload resolution on “f” to identify the best match; 
+    this is the <code>FunctionDeclaration</code> for “f (int)”. Analyzer applies 
+    any appropriate conversion sequences on the arguments. In this example, ‘*’ 
+    is converted to an int via two <code>Op_arithmetic_conversions</code>; one 
+    to remove constness, and another to cast the char to an int. The <code>Op_function_call</code> 
+    is then created.</li>
+  <li>Analyzer determines rule sequence to apply given operator and operands. The 
+    rules for assignment of integral to integral are selected. These lead to the 
+    generation of an <code>Op_assign</code>.</li>
+</ol>
+
+<p><b><i>finishing up</i></b></p>
+<p>The call to <code>end_file_scope</code> causes the global scope to be exited, 
+  and initialization chains to be closed off. The symbol table will also set its 
+  global and current scope references to null, and clear its list of all namespaces.</p>
+
+<p><i>--- end example</i></p>
+<p>&nbsp; </p>
+<hr>
+<h4>footnotes</h4>
+<p><font size="-1">1 <a name="Footnote1 "></a>in the C++ implementation, most 
+  "statement nodes" are built directly by the parser, including conditional and 
+  iterative constructs. The parser relies on the analyzer to build the expressions 
+  contained within these statement nodes.</font></p>
+<p><font size="-1">2<a name="Footnote2"></a> additional services, including error 
+  message support and semantic lookahead, are provided directly by <code>Parser_context</code>. 
+  "Type extraction", or determining a type given a <i>type specifier sequence</i>, 
+  is provided directly by the type analysis component</font></p>
+<p><font size="-1"> 3<a name="Footnote3"></a> this is one of the very few circumstances 
+  in which the analysis package is responsible for creation of Datums. The others 
+  involve initialization of char arrays and string constants.</font></p>
+<p><font size="-1">4<a name="Footnote4"></a> there are three such chains, executed 
+  in order: zero-initialization, static-initialization, dynamic-initialization. 
+  <i>Zero-initialization</i> occurs for all static variables prior to any other 
+  initialization. <i>Static-initialization</i> is initialization by a constant, 
+  self-contained expression. Finally, <i>dynamic-initialization</i> is initialization 
+  involving the initialized values of other static variables.</font></p>
+<p><font size="-1">5<a name="Footnote5"></a> <code>CGR_test</code> extends <code>CodeGenRule</code>, 
+  but provides a do-nothing (and never-used) implementation of apply. There are 
+  several reasons for extending <code>CodeGenRule</code>: interface consistency 
+  wrt the <code>RuleBase</code> and <code>CGR_nodes</code>, and shared underlying 
+  functionality, especially during instantiation. </font></p>
+<p><font size="-1">6<a name="Footnote6"></a> it is the implementation's responsibility 
+  to determine what is a "non-typical circumstance" for the particular language. 
+  An alternate approach is to use <code>RuleProxy</code> for every ruleset above 
+  a certain size.</font></p>
+<p><font size="-1">7<a name="Footnote7"></a> <code>CGR_conditional_nodes</code> 
+  are an exception to this "depth-first" rule. They follow a sort of "conditional 
+  in-order" pattern, applying an optional initial child, then applying its own 
+  node as a test, which determines which of two remaining children to apply.</font></p>
+<p><font size="-1">8<a name="Footnote8"></a> although <code>ExpressionBuilders</code> 
+  are normally accessed directly by the expression manager, they occasionally 
+  are used as part of a ruleset; the rule sequences for explicit cast expressions 
+  are one example where this occurs. </font></p>
+<p><font size="-1">9<a name="Footnote9"></a> this last option is for special circumstances 
+  only; a function's arguments should not (generally) be represented as a single 
+  Node_list "operand", but instead enumerated as individual operands. The Node_list 
+  operand is used only when a set of undetermined size of one category of operand 
+  precedes another category of operand. This can occur with new expressions in 
+  C++. Most rules expect a single element per operand.</font></p>
+<p><font size="-1">10<a name="Footnote10"></a> It is important to note that within 
+  functions, 'traditional' scoping rules apply. Once a block within a function 
+  is exited (or the function itself), all names declared within that block can 
+  be discarded</font></p>
+<p><font size="-1">11<a name="Footnote11"></a> Since overloading is not permitted 
+  where methods differ only by return type, return type is not required for this.</font></p>
+<p><font size="-1">12<a name="Footnote12"></a> see the section on <code>OverloadResolver</code>, 
+  below, for a description of what happens once a set of candidate functions is 
+  retrieved from the symbol table</font></p>
+<p><font size="-1">13<a name="Footnote13"></a> see the preceding section covering 
+  scope and declaration management for implementation details. </font></p>
+<p><font size="-1">14<a name="Footnote14"></a> the runtime id attribute differs 
+  depending on the sort of entity being represented. A non-static class data member 
+  will provide a relative path that is regenerated on the fly during each lookup. 
+  A function's runtime id is a munged name. The remaining entities use the fully 
+  qualified name as their runtime id.</font></p>
+<p><font size="-1">15<a name="Footnote15"></a> pure declarations encountered in 
+  code are no exception, <i>defining declarations</i> are specially marked. For 
+  example: </font></p>
+<pre><font size="-1"><code>        class C;       // has a Declaration, with a class Scope_holder
+                       // as its Definition
+        class C { };   // has a separate Declaration (flagged as a defining
+                       // declaration),    with the same class Scope_holder
+                       // Definition as above.</code> </font></pre>
+<p><font size="-1">16<a name="Footnote16"></a> a notable example is in the <code>OperandTable</code>, 
+  described previously</font></p>
+<p><font size="-1">17<a name="Footnote17"></a> Calls to<code> pc.extract_type</code> 
+  are not included in this outline, as they are straightforward identifications 
+  of built-in types in every case. The parser's activities are just approximated 
+  to illustrate the calls to <code>Parser_context</code>.</font></p>
+  
+  </BODY>
+</HTML>
