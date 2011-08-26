@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Implementing polymorphic calls</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" --><!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="dynamicDispatch" id="mutators-and-accessors">Implementing polymorphic calls </a></h1>
+<p>Here we look at how polymorphic calls are actually implemented. The intention is to help cement the concept of polymorphic calls by showing one way to implement it.</p>
+<p>Polymorphic calling is also called &quot;late binding&quot;, &quot;dynamic binding&quot;, and &quot;dynamic dispatch&quot;. In any case, the idea is that the code implementing a call needs to be found at run time.</p>
+<h2>Static dispatch</h2>
+<p>When we call a static method, the method implementation can be inferred at compile time. For example if we have</p>
+<pre class="code"><span class="codeKeyword">class</span> S {
+    <span class="codeKeyword">static void</span> hello() { System.out.println(&quot;hello&quot;) ; }
+
+    <span class="codeKeyword">static void</span> main(String[] args) { A.hello() ; }
+}
+    </pre>
+<p>it is evident exactly what code will be executed. In fact the compiler may in-line the call, i.e. rewrite the code as </p>
+<pre class="code"><span class="codeKeyword">class</span> S {
+    <span class="codeKeyword">static void</span> hello() {
+        System.out.println(&quot;hello&quot;) ; }
+
+    <span class="codeKeyword">static void</span> main(String[] args) { 
+        System.out.println(&quot;hello&quot;) ; }
+}</pre>
+<p>Assuming in-lining does not happen and that the first instruction of <span class="codeInline">A.hello()</span> is compiled at location 12345, the call can be compiled to a machine instruction like this </p>
+<pre>    call 12345</pre>
+<h2>Polymorphic calls </h2>
+<p>Consider calling a method through a polymorphic reference. Here is an example:</p>
+<pre class="code"><span class="codeKeyword">abstract class</span> A {
+    <span class="codeKeyword">abstract void</span> hello() ;
+
+    <span class="codeKeyword">abstract void</span> goodbye() ;
+}
+
+<span class="codeKeyword">class</span> B <span class="codeKeyword">extends</span> A {
+    <span class="codeKeyword">void</span> hello() {
+        System.out.println( &quot;Hello&quot; ) ; }
+
+    <span class="codeKeyword">void</span> goodbye() {
+        System.out.println( &quot;Goodbye&quot; ) ; }
+}<span class="codeKeyword">
+
+class</span> C <span class="codeKeyword">extends</span> A {
+    <span class="codeKeyword">void</span> hello() {
+        System.out.println( &quot;Bonjour&quot; ) ; }
+
+    <span class="codeKeyword">void</span> goodbye() {
+        System.out.println( &quot;Au revoir&quot; ) ; }
+}
+<span class="codeKeyword">
+class</span> D  {
+    A a ;
+
+    D( A a ) { <span class="codeKeyword">this</span>.a = a ; }
+
+    <span class="codeKeyword">void</span> foo() {
+        a.hello() ;
+        a.goodbye() ;
+    }
+}
+ </pre>
+<h2>Dynamic Dispatch</h2>
+<p>The calls <span class="codeInline">a.hello()</span> and <span class="codeInline">a.goodbye()</span> in class <span class="codeInline">D</span> are polymorphic. The compiler can not compile them to call instructions with a constant addresses, nor can it inline them. </p>
+<p>Instead the compiler looks up the address of the subroutine in a table. Which table is used depends on which class the object is a direct instance of. This is called <em>dynamic dispatch</em>. </p>
+<p>The figure below shows <em>one way</em> objects and methods can be represented at run time.</p>
+<p><img src="v-tables.png" width="566" height="521"></p>
+<p>I've assumed that each object is represented by a chunk of memory, of which the first 4 bytes is the address of a structure called a V-table and the subsequent bytes hold the values of the object's fields. We need one V-table for each nonabstract class. The V-table has one entry for each method that the class and its superclasses implement. Each entry has two parts. The first points to an object representing the method's signature. The second is the address of the machine code for the method's implementation.</p>
+<p>A polymorphic call can be implemented with a search through the V-table for the appropriate method signature. For example in the call to <span class="codeInline">a.hello()</span> in class <span class="codeInline">D</span>, the signature is known to be that for <span class="codeInline">A.hello()</span>, so we can search the V-table of the object <span class="codeInline">a</span> refers to for an item whose first field points to the object for signature <span class="codeInline">A.hello()</span>. </p>
+<h2>An optimization</h2>
+<p>However, it turns out that a search is often not needed.</p>
+<p>The compiler can ensure that the items in the V-table are listed in an order so that the methods declared in <span class="codeInline">Object</span> are first, then methods declared in a direct subclass of <span class="codeInline">Object</span>, and so on until we reach the class to which the V-table applies. All classes that inherit the method signature from a common superclass will have the address in the same location of their V-tables. For example <span class="codeInline">A.hello()</span> will be item 11 of the V-table for any class that extends <span class="codeInline">A</span> and <span class="codeInline">A.goodbye()</span> will be item 12. (There are 11 methods declared in class <span class="codeInline">Object</span>, which is the direct superclass of <span class="codeInline">A</span>. These come first in the v-table. <span class="codeInline">hello</span> and <span class="codeInline">goodbye</span> could also be the other way around, as long as we are consistent.)</p>
+<p>In a call <span class="codeInline">x.f(...)</span>, if the static type of the recipient expression (<span class="codeInline">x</span>) is a class, then we can predict the position of the method in the V-table. No search is needed. In the example, the static type of <span class="codeInline">a</span> is <span class="codeInline">A</span>, so the item for the method is in position 11 of the V-table. </p>
+<p>The machine code --for a hypothetical computer-- for calling <span class="codeInline">a.hello()</span> from class <span class="codeInline">D</span> looks something like this. (I'm assuming that <span class="codeInline">r0</span> contains the address of the current active object -- the <span class="codeKeyword">this</span> pointer). </p>
+<pre class="code">   r1 := load r0+4 // The value of <span class="codeKeyword">this</span>.a =: r1
+   ... // check that a is not <span class="codeKeyword">null</span>.
+   r2 := load r1 // The address of the v-table =: r2
+   r3 := r2 + 92 // The address of the implementation =: r3
+   push r0 // Save the value of <span class="codeKeyword">this</span>
+   push ... // Save any other registers that need saving
+   r0 := r1 // Set the <span class="codeKeyword">this</span> pointer.
+   call r3  // Push the PC and jump to the location stored in r3.
+   ... pop // Restore any other registers that need restoring.
+   r0 := pop // Restore the saved <span class="codeKeyword">this</span> pointer.</pre>
+<p align="left">The number 92 here is based the assumption that both object and code addresses take 4 bytes: 92 = 11 * 8 + 4.</p>
+<h2 align="left">Dynamic dispatch through interfaces.</h2>
+<p align="left">When a polymorphic call <span class="codeInline">x.f(...)</span> is made though an interface (i.e., the static type of <span class="codeInline">x</span> is an interface), we can't be sure of where in the V-table the entry for the method can be found. In this case the V-table must be searched. Because of run-time type safety, the method must be somewhere in the table. </p>
+<p align="left">Consider the following example </p>
+<pre class="code" align="left">
+<span class="codeKeyword">interface</span> I {
+    <span class="codeKeyword">void</span> i0() ;
+}
+
+<span class="codeKeyword">class</span> E {
+    <span class="codeKeyword">void</span> e0() {...}
+}
+
+<span class="codeKeyword">class</span> F <span class="codeKeyword">extends</span> E <span class="codeKeyword">implements</span> I { 
+    <span class="codeKeyword">void</span> i0() { ... }
+}
+
+<span class="codeKeyword">class</span> G {
+<span class="codeKeyword">    void</span> g0() { ... }
+
+    <span class="codeKeyword">void</span> g1() { ... }    
+}
+
+<span class="codeKeyword">class</span> H <span class="codeKeyword">extends</span> G <span class="codeKeyword">implements</span> I {
+    <span class="codeKeyword">void</span> i0() { ... }
+}
+
+<span class="codeKeyword">class</span> J {
+    I i ;
+
+    J(I i) { <span class="codeKeyword">this</span>.i = i ; }
+
+    <span class="codeKeyword">void</span> foo( ) { i.i0() ; }
+}</pre>
+<p>As an exercise, draw a diagram with two <span class="codeInline">J</span> objects, one of which points to an <span class="codeInline">F</span> object and the other points to an <span class="codeInline">H</span> object. You will find that in the V-table for class <span class="codeInline">F</span>, method i0 appears as item 11, whereas in the V-table for class <span class="codeInline">H</span>, method i0 appears as item 12.</p>
+<p>By the way, V-tables are so called because in C++, methods that can be called polymorphically are called <em>virtual functions.</em> There are other ways to organize V-tables besides the one I've shown.</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

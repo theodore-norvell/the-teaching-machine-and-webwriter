@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Setting Up the Teaching Machine</title>
+</head>
+<body>
+<H1>Setting Up the Teaching Machine on Your Own Computer </H1>
+<div align="left">
+  <p>The Teaching Machine itself is written in Java.</p>
+  <p>To display our examples on our web pages we also employ JavaScript.</p>
+  <p>Thus you must have both Java and JavaScript enabled in your browser.</p>
+  <p>You must also have Java (specifically the Java Runtime Environment or JRE)
+    installed on your computer.</p>
+  <p>You must also have a recent, supported browser    .</p>
+  <h2>Supported Browsers</h2>
+  <p>We test the Teaching Machine and the web pages on recent versions of </p>
+  <ol>
+    <li>Firefox</li>
+    <li>Internet Explorer</li>
+  </ol>
+  <h3>Derived Browsers</h3>
+  <p>Firefox uses the same codebase as </p>
+  <ol>
+    <li>Netscape</li>
+    <li>Mozilla</li>
+  </ol>
+  <p>so although we don't test these browsers explicitly, we do expect that both
+    the web pages and the Teaching Machine will run on them (as long as they
+    are set up properly and Java is installed). </p>
+  <h3>Planned Support</h3>
+  <p>We plan to add the following browser to our supported list (by May, 2006):</p>
+  <ol>
+    <li>Safari (latest version only)   </li>
+  </ol>
+  <h3>Unsupported Browsers</h3>
+  <p>These browsers are not supported and are not likely to be supported. </p>
+  <ol>
+    <li>Internet Explorer versions earlier than 6</li>
+    <li>Netscape versions earlier than</li>
+    <li>   Other browsers not mentioned above</li>
+  </ol>
+  <h2>Operating Systems Supported</h2>
+  <p>Operating systems are not an issue. <em>per se,</em> except to the degree
+    that they can or cannot run modern browsers or the JRE</p>
+  <p>The Teaching Machine is known to run on Windows XP, Linux and the Mac OS.</p>
+  <h2>Installing the TM on your Machine</h2>
+  <h3>1. Get the JRE </h3>
+  <p>You must get and install the Java Runtime Environment (JRE). This allows
+    Java to run on your computer. Make sure you get the version appropriate for
+  your operating system. Here's Sun's get JRE button. </p>
+  <p><a href="http://java.com/java/download/index.jsp?cid=jdp76697" target="_blank"><img width="100" height="43" border="0" style="margin: 8px;" alt="GetJava Download Button" title="GetJava" src="http://java.com/en/img/everywhere/getjava_med.gif?cid=jdp76697"></a></p>
+  <p>Just follow Sun's download and installation instructions. (Did we mention
+    you should be sure to get the version appropriate for your operating system?)</p>
+  <h3>2. Get a Modern Browser</h3>
+  <p>Firefox is the browser we recommend. Make sure you have a recent version.
+    You can get it here.</p>
+  <p><a href="http://www.spreadfirefox.com" >
+	    <img alt="Get Firefox!" title="Get Firefox!" src="http://sfx-images.mozilla.org/affiliates/Buttons/88x31/get.gif"/>
+    </a></p>
+  <p>Alternatively, you may use a recent version of Internet Explorer which you
+    may get from <a href="http://www.microsoft.com">Microsoft</a> </p>
+  <h3>3. Setting Up Firefox </h3>
+  <p>You must set up Firefox so that it will use both Java and
+        JavaScript.</p>
+  <p>Here's how it is done in Firefox, as of Feb. 15, 2006.</p>
+  <p>Click on <code>Tools</code> and choose <code>Options</code>, as shown below </p>
+  <p><img src="tools_options.gif" width="1072" height="517"> </p>
+  <p>You will get the following screen. Pick the <code>Content</code> tab as shown and make
+    sure</p>
+  <p><code>Block Popup Windows</code> is unchecked</p>
+  <p><code>Enable Java</code> is checked</p>
+  <p><code>Enable Javascript</code> is checked.</p>
+  <p>The others don't matter.   </p>
+  <p><img src="java_and_javascript.gif" width="680" height="618"> </p>
+  <p>Click <code>OK</code> and restart your browser. </p>
+  <h3>3 (alt). Setting Up IE </h3>
+  <p>You must set up IE so that it will use both Java and JavaScript.</p>
+  <p><strong>Warning:</strong> Microsoft has changed setups overnight in the past. If they do
+    so again, and your browser is automatically updated, it may invalidate these
+    instructions.</p>
+  <p>Here's how it is done in IE, as of Feb. 15, 2006 using IE version 6.0.2900.2180.xpsp_sp2_gdr.050301-1519
+    (and thank-you so much, Microsoft, for not allowing me to cut and paste this
+  from my help-about box).</p>
+  <p>Click on <code>Tools</code> and choose <code>Internet Options</code>, as
+    shown below </p>
+  <p><img src="IE_tools_options.gif" width="733" height="429"></p>
+  <p>Click on the <code>Security</code> tab and click <code>Internet</code></p>
+  <p><img src="IE_Security_Custom.gif" width="406" height="469"></p>
+  <p>Now, <code>select Custom Level...</code> to get the window below. Note,
+    there are a lot of settings so you will have to scroll down to find the <code>Java
+    VM</code> settings shown below. You want to make sure that <code>Disable
+    Java</code> is not selected.
+    As you can see here, <code>High safety</code> will work just fine.</p>
+  <p>Before you click <code>OK</code> scroll down again&#8230;</p>
+  <p> <img src="IE_VM.gif" width="353" height="422"></p>
+  <p> &#8230;to find these settings: Make sure that <code>Scripting of Java Applets</code>    is checked <code>Enable</code>.</p>
+  <p><img src="IE_scripting.gif" width="353" height="422"></p>
+  <p>Now you can click <code>OK</code>. That will get you back to the <code>Security</code> tab.
+    Now select the <code>Advanced</code> tab and scroll down until you see these
+    check boxes. Select the <code>Java(Sun) JRE</code> and not the <code>Microsoft
+    VM</code> (although that ought to work for
+    the moment, we expect to leave the Microsoft VM behind soon). </p>
+  <p><img src="IE_Sun.gif" width="406" height="469"></p>
+  <p>Now you can click <code>OK</code>. </p>
+  <p>Close your browser and restart it to make sure all settings take effect. </p>
+  <p>
+    <script language="JavaScript">
+<!--
+dateStamp();
+-->
+    </script>
+</p>
+</div>
+</BODY>
+</HTML>

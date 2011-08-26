@@ -1,0 +1,175 @@
+<HTML>
+<HEAD>
+   <TITLE>Proposal for a source line interface.</TITLE>
+</HEAD>
+
+<BODY>
+
+<h1>Proposal for a source line interface</h1>
+
+<h2>Current state</h2>
+
+<p>Currently the Interfaces.EvaluatorInterface
+specifies the following 3 routines for obtaining
+source line.
+</p>
+<pre>
+    public int getCodeFocus() ;    // Indexed from 0
+    public String getCodeLine(int l); // Indexed from 0.
+    public int getNumCodeLines() ;
+</pre>
+
+<p> Currently the String returned is encoded with a system of special
+characters for colour staining.  The problem with this is that
+if these characters appear in a Java program they will not appear correctly.
+</p>
+
+<p>Other problems:</p>
+<ul>
+  <li>Only supports one file
+  <li>String is not as efficient as char[]
+  <li>The String contains mark-up instructions, this makes
+    it more complicated to deal with tab expansion on the view
+    side (currently tab expansion is handled at parse time)
+    and makes it more complex to deal with files that might happen
+    to use the same characters that we are using for mark-up.
+  <li>no support for selections (invisible lines and characters).
+  <li>no support for other pedagogical mark-up.
+</ul>
+
+<h2>New Proposal</h2>
+
+<P>For multiple files, I propose the following should be
+in the EvaluatorInterface.
+</P>
+
+<pre>  
+    public SourceCoords getCodeFocus() ;
+
+    /** @precond  ch is an ascci letter || ch==DEFAULT_SELECTION || ch==COMPLETE_SELECTION */
+    public void setSelection( char ch ) ;
+    
+    public char getSelection() ; // Default is DEFAULT_SELECTION
+    
+    static final char DEFAULT_SELECTION = (char)123 ;
+    
+    static final char COMPLETE_SELECTION =(char)124 ;
+    
+    public int toSelectedCodeLineIndex( SourceCoords coords ) ;
+    
+    public int getNumSelectedCodeLines( TMFile tmFile ) ;
+    
+    /** @precond 0 &lt;= index &amp;&amp; index &lt; getNumSelectedCodeLines( tmFile ) */
+    public CodeLine getSelectedCodeLine( TMFile tmFile, int index ) ;
+</pre>
+
+<P>getCodeFocus returns the coordinates of the current code focus,
+that is the line the machine is currently being executed or about to execute.
+Ordinarily this line is selected, but it may not be.
+</P>
+
+<P>set- and getSelection set and get the current selection character.
+The special character  DEFAULT_SELECTION  shows all parts of the
+code that are not hidden using /*#H*/. COMPLETE_SELECTION shows
+all code, even if it is hidden using /*#H*/.
+</P>
+
+<P> toSelectedCodeLineIndex(sc) maps a source coordinate to an index
+greater than or equal to 0 and less than <i>or equal</i> to
+getNumSelectedCodeLines( sc.getFile() ).
+If the line corresponding to the source coordinates is selected 
+(that is, any of its text is selected) then the index returned
+is the index of the same line, otherwise it returns the index of
+the next line that is selected, if no such line exists, it
+returns getNumSelectedCodeLines( sc.getFile() ).</P>
+
+<P>getNumSelectedCodeLines returns the number of selected lines in the
+given file. Could be 0.</P>
+
+<P>getSelectedCodeLine returns information about a particular selected line
+in the given file in the form of a CodeLine object.
+</P>
+
+<p>CodeLine is a class that contains methods</p>
+<pre>
+   char [] getChars() ;
+   SourceCoords getCoords() ;
+   MarkUp [] markUp() ;
+</pre>
+
+<p>The getChars routine returns the characters for the line. Tab characters
+are not expanded.  Characters may have any unicode encoding at all, there
+are no restrictions.</P>
+
+<P>The getCoords routine returns the source coordinates for the line.
+This should be used for numbering</P>
+
+<P>The markUp array consists of Objects of type MarkUp with fields</P>
+<pre>
+    short column ;
+    short command ;
+</pre>
+<P>The column numbers are indices into the getChars() array and the
+the command goes into effect when the column is reached.
+Commands are
+</P>
+<UL>
+     <LI>NORMAL = 0       -- change font to normal font
+     <LI>KEYWORD = 1      -- change font to keyword font
+     <LI>COMMENT = 2      -- change font to comment
+     <LI>PREPROCESSOR = 3 -- change font to preprocessor font
+     <LI>CONSTANT = 6     -- change font to constant font
+     <LI>HIDE_ALL = 10     -- hide subsequent characters
+     <LI>DISPLAY_ALL = 11  -- display subsequnent characters
+     <LI>HIDE_SELECTION = 128  -- hide subsequent characters if current selection character is command - HIDE_WINDOW
+     <LI>DISPLAY_SELECTION = 256 -- display subsequent characters if current selection character is is command - DISPLAY_WINDOW
+</UL>
+
+<P>The HIDE and DISPLAY commands can be used to turn on and off a display_flag
+as follows.  At the start of each line, display_flag should be set to true.
+When a command goes into effect, we execute
+</P>
+<pre>
+    if( command == HIDE_ALL )
+        display_flag = commandProcessor.getDisplayAll() ;
+    else if( command == DISPLAY_ALL ) display_flag = true ;
+    else if( HIDE_WINDOW &lt;= command &amp;&amp; command &lt; HIDE_WINDOW+128 ) {
+        char win = commandProcessor.getWindow() ;
+        if( win != '\uffff' &amp;&amp; (char)(command-HIDE_WINDOW) == win )
+            display_flag = commandProcessor.getDisplayAll() ; }
+    else if( DISPLAY_WINDOW &lt;= command &amp;&amp; command &lt; DISPLAY_WINDOW+128 ) {
+        char current = commandProcessor.getWindow() ;
+        if( win != '\uffff' &amp;&amp; (char)(command-DISPLAY_WINDOW) == win )
+            display_flag = true ; }
+</pre>
+
+<p>Each line is self-contained in the sense that its display commands are
+independent of any commands associated with earlier lines.  For example
+if we have</P>
+<pre>
+/*#H*//*#DA*/int main() {
+  cout << "hello world" ; }
+</pre>
+
+<p>Then the second line would have a command array of</P>
+<PRE>
+  (0, HIDE_ALL), (0, DISPLAY_WINDOW+65), (10, CONSTANT), (23, NORMAL)
+</PRE>
+
+<P>Comments on this design.</P>
+<UL>
+  <LI>The knowledge of which windows are visible
+is contained on the interpreter side, not the display side. This
+is appropriate because the interpreter does not stop on lines that
+are entirely invisible.
+  <LI>A cleaner interface would not need to have commands for turning
+on and off display, instead, invisible characters can just be omitted from
+the array of characters.  The more complex interface that I've chosen
+allows the interpreter to build the character and command arrays
+just once.  This is a matter of efficiency.
+</UL>
+</BODY>
+</HTML>
+
+
+

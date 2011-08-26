@@ -1,0 +1,16 @@
+#include <iostream.h>   /* include info from standard library */
+
+double xx = 99 ;
+float yy = 3.14592 ;
+int main()
+
+{
+   
+   double dd = 99e33, ee ;
+   float ff = 10 ;
+   ee = dd * ff ;
+   ee = ee * 10 ;
+   int ii = 9.9 ;
+   ii = 8.8 ;
+   ff = 12 ;
+}

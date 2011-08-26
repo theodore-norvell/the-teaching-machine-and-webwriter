@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Exceptions</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="mutators-and-accessors" id="mutators-and-accessors">Exceptions</a>, throws and catches </h1>
+<h2>Normal and Abrupt Completion</h2>
+<p>Suppose we have statements and declarations <span class="pseudoCode">S<sub>0</sub>, S<sub>1</sub>, ... S<sub>n-1</sub></span> and combine them in a block statement, for example,
+<pre class="code">{ S<sub>0</sub> S<sub>1</sub> ... S<sub>n-1</sub> }</pre>
+<p>Usually after <span class="codeInline">S<sub>0</sub></span> completes executing <span class="codeInline">S<sub>1</sub></span> begins executing and so on.</p>
+<p>In this case we say that <span class="codeInline">S<sub>0</sub></span> has <strong>completed normally</strong>.</p>
+<p>Similarly, suppose we have an if statement</p>
+<pre class="code"><span class="codeKeyword">if</span>( E ) S<sub>0</sub> <span class="codeKeyword">else</span> S<sub>1</sub></pre>
+<p>Usually, after <span class="codeInline">E</span> completes, either <span class="codeInline">S<sub>0</sub></span> or <span class="codeInline">S<sub>1</sub></span> will be executed.</p>
+<p>In this case we say that <span class="codeInline">E<sub></sub></span> has <strong>completed normally</strong>.</p>
+<p>Statements and expressions can also <strong>complete abruptly</strong>.</p>
+<ul>
+  <li>A <span class="codeKeyword">break</span> statement will complete abruptly. The nearest enclosing loop or switch statement will complete normally.</li>
+  <li>A <span class="codeKeyword">continue</span> statement will complete abruptly. The nearest enclosing loop body will complete normally.</li>
+  <li>A <span class="codeKeyword">return</span> statement will complete abruptly. The subroutine call will complete normally.</li>
+</ul>
+<p>Statements and expressions can also complete abruptly with an exception. We usually say that the statement or expression <strong>throws an exception.</strong></p>
+<p>This is generally used to indicate that a method call or other expression could not do its normal job. </p>
+<p>For example the expression</p>
+<pre class="code">	reader.read()</pre>
+<p>where <span class="codeInline">reader</span> refers to an object of type <span class="codeInline">java.io.Reader</span>, normally returns a representation of the next character in an input sequence.</p>
+<p>However, if something goes wrong, it may complete abruptly, throwing an <span class="codeInline">IOException</span>.</p>
+<p>What can go wrong? Suppose you are reading from a file and the file is deleted. Or, suppose you are reading from a network connection and the network becomes unavailable. </p>
+<p>Another example. The same expression </p>
+<pre class="code">	reader.read()</pre>
+<p>will complete abruptly, throwing a <span class="codeInline">NullPointerException</span>, if <span class="codeInline">reader==</span><span class="codeKeyword">null</span>.</p>
+<p>Another example.</p>
+<pre class="code">	a[i]</pre>
+<p>will complete abruptly, throwing a <span class="codeInline">NullPointerException</span>, if <span class="codeInline">a==</span><span class="codeKeyword">null</span>.</p>
+<p>It will complete abruptly, throwing an <span class="codeInline">ArrayIndexOutOfBoundsException</span>, if <span class="codeInline">i</span> is negative or longer than <span class="codeInline">a.length</span>. </p>
+<p>So what can you do?</p>
+<p>For problems such an null pointers and index out of bounds, it is often within the control of the programmers to ensure that they don't happen. So one thing you can do is to code carefully.</p>
+<p>However some things are out of your control. For example I/O exceptions.</p>
+<h2>Try Statements </h2>
+<p>In order to resume normal control flow in the presence of exceptions, we use a try statement.</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeKeyword">try </span><span class="stxNonterminal">Block</span> <span class="stxNonterminal">Catches </span> <br>
+    <span class="stxNonterminal">Catches</span> --&gt; <span class="stxMeta">(</span> <span class="codeKeyword">catch </span><span class="codeInline">(</span> <span class="stxNonterminal">Type</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">) </span><span class="stxNonterminal">Block</span> <span class="stxMeta">)*</span> </p>
+<p></p>
+<p>Here is a typical try-statement</p>
+<pre class="code"><span class="codeKeyword">try</span> {<br>    charCode = reader.read() ;<br>}<br><span class="codeKeyword">catch</span>( IOException e ) {<br>    readFailed = <span class="codeKeyword">true</span> ;
+}
+</pre>
+<p></p>
+<p>If <span class="codeInline">reader.read()</span> completes normally, then <span class="codeInline">readFailed = <span class="codeKeyword">true</span>;</span> is not executed and the try-statement completes normally.</p>
+<p>However, if <span class="codeInline">reader.read()</span> completes abruptly by throwing an <span class="codeInline">IOException</span>, then the execution of the main clause stops at that point. <span class="pseudoCode">The assignment to charCode will not be completed.</span> The try-statement concludes with the execution of <span class="codeInline">readFailed = <span class="codeKeyword">true</span>;</span>. Once <span class="codeInline">readFailed = <span class="codeKeyword">true</span>;</span> has completed normally, the whole try statement is finished and completes normally. </p>
+<h2>Multiple Catch Clauses</h2>
+<p>We can have more than one catch clause:</p>
+<pre class="code"><span class="codeKeyword">try</span> {<br>    a[i] = reader.read() ;<br>}<br><span class="codeKeyword">catch</span>( IOException e ) {<br>    readFailed = <span class="codeKeyword">true</span> ; <br>}<br><span class="codeKeyword">catch</span>( ArrayIndexOutOfBoundsException e ) {<br>    saveImportantData() ;<br>    Log.stream.println(&quot;System crash 1234&quot;);<br>    System.exit(1) ;<br>}</pre>
+<p>If the main clause of (<span class="codeInline">a[i] = reader.read();</span>) completes normally, then both catch clauses will be skipped. </p>
+<p>If the main clause completes by throwing an <span class="codeInline">IOException</span>, then <span class="codeInline">readFailed = <span class="codeKeyword">true</span>;</span> will be executed, the second catch clause will not be executed. </p>
+<p>If the main clause completes by throwing an <span class="codeInline">ArrayIndexOutOfBoundsException</span>, then the second catch clause will be executed. </p>
+<h2>Exceptions are objects </h2>
+<p>In Java, each exception is represented by an object. These objects <strong>must</strong> be instances of the library class <span class="codeInline">java.lang.Throwable</span>.</p>
+<p>Here is the hierarchy (all classes are in <span class="codeInline">java.lang</span> or <span class="codeInline">java.io</span>). </p>
+<ul>
+  <li><span class="codeInline">Throwable</span>
+      <ul>
+        <li><span class="codeInline">Error</span>
+            <ul>
+              <li>Subclasses of <span class="codeInline">Error</span> represent serious problems that user code should not normally try to catch. For example <span class="codeInline">VirtualMachineError</span> indicates that the virtual machine can not carry on. </li>
+            </ul>
+        </li>
+        <li><span class="codeInline">Exception</span>
+            <ul>
+              <li><span class="codeInline">RuntimeException</span>
+                  <ul>
+                    <li>Classes that are subtypes of <span class="codeInline">RuntimeException</span> are usually used to indicate a programmer error (e.g. <span class="codeInline">NullPointerException</span>), but may also result from bad input (e.g. <span class="codeInline">NumberFormatError</span>). Use of null pointer, bad array size, bad array index, calling a method out of sequence. Violations of security policy (e.g. an applet that tries to read a file) are also runtime exceptions</li>
+                    <li>Examples: <span class="codeInline">NegativeArraySizeException</span> , <span class="codeInline">NullPointerException</span>, <span class="codeInline">IllegalStateException</span></li>
+                  </ul>
+              </li>
+              <li>Other exception types
+                  <ul>
+                    <ul>
+                      <li>Generally result from bad input ( <span class="codeInline">ParseException</span> ) or I/O problems (<span class="codeInline">IOException</span>) </li>
+                    </ul>
+                  </ul>
+              </li>
+            </ul>
+        </li>
+      </ul>
+  </li>
+</ul>
+<p>Each catch clause has three parts</p>
+<p class="syntaxDef"><span class="codeKeyword">catch </span><span class="codeInline">(</span> <span class="stxNonterminal">Type</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">) </span><span class="stxNonterminal">Block</span></p>
+<p>The <span class="stxNonterminal">Type</span> must be some subclass or <span class="codeInline">Throwable</span> and indicates whether the clause is applicable. The identifier is a variable name that will refer to the exception throughout the block.</p>
+<p>When there are multiple catch clauses, the first one that is applicable to the exception is used. Thus you can put a catch-all clause as the last one</p>
+<pre class="code"><span class="codeKeyword">try</span> {<br>    a[i] = reader.read() ;<br>}<br><span class="codeKeyword">catch</span>( IOException e ) {<br>    readFailed = <span class="codeKeyword">true</span> ; <br>}<br><span class="codeKeyword">catch</span>( Throwable e ) {<br>    saveImportantData() ;<br>    Log.stream.println(&quot;System crash 1234&quot;);<br>    System.exit(1) ;<br>}</pre>
+<p>For this code an <span class="codeInline">IOException</span> will be dealt with one way and any other exception will cause the program to log the error and then stop immediately. </p>
+<p>We can use the identifier to refer to the exception. This can be useful to extract more information about what went wrong. E.g. </p>
+<pre class="code"><span class="codeKeyword">try</span> {<br>    a[i] = reader.read() ;<br>}<br><span class="codeKeyword">catch</span>( Throwable e ) {<br>    saveImportantData() ;<br>    Log.println(&quot;System crash 1234&quot;);<br>    Log.stream.println(&quot;Exception message is &quot; + e.getMessage() );<br>    e.printStackTrace( Log.stream );<br>    System.exit(1) ;<br>}</pre>
+<h2>Throwing your own exceptions</h2>
+<p>We can also force an exception to be thrown using a throw statement.</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">throw</span> <span class="stxNonterminal">Expression </span> <span class="codeInline">;</span> </p>
+<p>The effect of a <span class="codeKeyword">throw</span> statement is to evaluate the expression (which must evaluate to a reference to an instance of <span class="codeInline">Throwable</span>) and complete abruptly with the exception.</p>
+<p>Typically it is a good idea to create a new exception object, so that the stack-trace is correct. </p>
+<p>For example</p>
+<pre class="code"><span class="codeKeyword">class</span> PrintJob {<br>    <span class="codeKeyword">private boolean</span> hasBeenInitialized = <span class="codeKeyword">false</span> ;<br><br>    <span class="codeKeyword">public void</span> init() {<br>    <span class="codeKeyword">    if</span>( <span class="codeKeyword">this</span>.hasBeenInitialized )<br>            <span class="codeKeyword">throw new</span> IllegalStateException(&quot;Already initialized&quot;) ;<br>        ...<br>    <span class="codeKeyword">    this</span>.hasBeenInitialized = <span class="codeKeyword">true</span> ;<br>    }<br>    ...<br>}
+</pre>
+<p>&nbsp;</p>
+<h2>Programmer defined exception </h2>
+<p>You can also define your own exception classes if you want:</p>
+<pre class="code"><span class="codeKeyword">class</span> TMException <span class="codeKeyword">extends</span> Exception {<br>    <span class="codeKeyword">public</span> TMException(String message) {<br>        <span class="codeKeyword">super</span>(message) ; }<br>}
+</pre>
+<p>In my opinion, it is a good idea to first look around in the library for a suitable exception type. </p>
+<h2>Bubbling of exceptions </h2>
+<p>What happens when an exception is not caught within a try-catch statement?</p>
+<p>It bubbles out to the next level of statement and so on, until it gets caught</p>
+<pre class="code"><span class="codeKeyword">try</span> {<br>    <span class="codeKeyword">if</span>( ... ) {<br>        <span class="codeKeyword">for</span>( ... ) {<br>            <span class="codeKeyword">try</span> {<br>                a[i] = reader.read() ;<br>            }<br>            <span class="codeKeyword">catch</span>(IOException e) {<br>                readFailed = <span class="codeKeyword">true</span> ;<br>            }<br>        }<br>    }
+}<br><span class="codeKeyword">catch</span>( Throwable e) {<br>    Log.println(&quot;System crash 1234&quot;);<br>    Log.stream.println(&quot;Exception message is &quot; + e.getMessage() );<br>    e.printStackTrace( Log.stream );<br>    System.exit(1) ;<br>}</pre>
+<p>Now if <span class="codeInline">a[i] = reader.read() ; </span>throws an <span class="codeInline">IOException</span>, the loop continues.</p>
+<p>But if <span class="codeInline">a[i] = reader.read() ; </span>throws any other exception, it will bubble out: the for loop will complete abruptly; the if statement completes abruptly; and finally the exception will be caught by the catch clause of the outer-try statement.</p>
+<h2>When exceptions terminate calls</h2>
+<p>If a method body completes with an exception, the corresponding call also completes with the exception and the exception continues to bubble. For example </p>
+<pre class="code"><span class="codeKeyword">void</span> printDoc(PrintJob job ) {<br>    job.init() ;<br>    job.print( <span class="codeKeyword">this</span>.doc ) ;<br>}<br><br><span class="codeKeyword">void</span> possiblyPrint() {<br>    <span class="codeKeyword">try</span> {<br>        <span class="codeKeyword">if</span>( askUserAboutPrinting() ) {<br>            PrintJob job = <span class="codeKeyword">new</span> PrintJob() ;<br>            job.init() ;<br>            printDoc( job ) ; } }<br>    <span class="codeKeyword">catch</span>( Exception e) {<br>        informUserOfPrintFailure( e.getMessage() ) ; }<br>}</pre>
+<p>Now what will happen on the call to possiblyPrint?</p>
+<ul>
+  <li>possiblyPrint begins</li>
+  <li>The PrintJob is constructed and initialized. </li>
+  <li>printDoc( job ) is called
+      <ul>
+        <li>printDoc(job) begins</li>
+        <li>printDoc calls job.init() ;
+            <ul>
+              <li>job.init() begins</li>
+              <li>job.init() executes a throw statement</li>
+              <li>The body of job.init() completes with an IllegalStateException</li>
+            </ul>
+        </li>
+        <li>the call of job.init() completes with the IllegalStateException</li>
+        <li>the body of printDoc completes</li>
+      </ul>
+  </li>
+  <li>The call to printDoc completes with the IllegalStateException</li>
+  <li>The if statement completes with the IllegalStateException</li>
+  <li>The exception is caught and informUserOfPrintFailure is called.</li>
+  <li>Assuming that that call completes normally, the body or possiblyPrint completes normally</li>
+</ul>
+<h2>Declaring Exceptions</h2>
+<p>There are two kinds of throwable classes </p>
+<ul>
+  <li>Checked exceptions
+      <ul>
+        <li>Any instance of <span class="codeInline">Exception</span> that is not an instance of <span class="codeInline">RuntimeException</span> is a checked exception.</li>
+      </ul>
+  </li>
+  <li>Unchecked exceptions
+      <ul>
+        <li>Any instance of <span class="codeInline">Throwable</span> that is not an instance of <span class="codeInline">Exception</span> is an unchecked exception.</li>
+        <li>Any instance of <span class="codeInline">RuntimeException</span> is an unchecked exception.</li>
+      </ul>
+  </li>
+</ul>
+<p>Any subroutine that may complete by throwing a checked exception must declare these exceptions in its signature. This ensures that the programmer who calls the subroutine is aware that they should catch the exception.</p>
+<p>Example </p>
+<pre class="code"><span class="codeKeyword">void</span> fillArray(a) <span class="codeKeyword">throws</span> IOException {<br>  <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i=0 ; i &lt; a.length ; ++i) {<br>      a[i] = reader.read() ; } } 
+
+</pre>
+<p>Here is the new syntax</p>
+<p class="syntaxDef"> <span class="stxNonterminal">ConstructorSignature --&gt; Modifiers <span class="stxTerminal">Identifier</span> </span><span class="codeInline">( </span><span class="stxNonterminal">Parameters </span><span class="codeInline">) </span><span class="stxNonterminal">ThrowsClause <br>
+  MethodSignature --&gt; Modifiers ReturnType </span><span class="stxTerminal">Identifier</span> ( <span class="stxNonterminal">Parameters</span> ) <span class="stxNonterminal">ThrowsClause</span><br>
+  <span class="stxNonterminal">ThrowsClause</span> --&gt; <span class="stxMeta">(</span> <span class="codeKeyword">throws </span><span class="stxNonterminal">ClassNames</span><span class="stxMeta"> )</span><sup>?</sup><br>
+  <span class="stxNonterminal">ClassNames</span><span class="stxMeta"></span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> ClassName </span><span class="stxMeta">(</span> <span class="codeInline">, </span><span class="stxNonterminal">ClassName)</span>*<span class="stxMeta"> )</span><sup>?</sup></p>
+<p>&nbsp; </p>
+<h1>Assert statements, why not to use them, and what to use instead</h1>
+<h3>Assert statements </h3>
+<p>Now that we know all about exceptions, we can look at assert statements again.</p>
+<p>Remember that an assert statement looks like this:</p>
+<pre class="code"><span class="codeKeyword">assert</span> <span class="pseudoCode">booleanExpression</span> ;</pre>
+<p>What this really means is</p>
+<pre class="code"><span class="codeKeyword">if</span>( <span class="codeComment">assertion checking is enabled</span> )<br>    <span class="codeKeyword">if</span>( ! <span class="pseudoCode">booleanExpression</span> ) <br>        <span class="codeKeyword">throw new</span> AssertionError() ;</pre>
+<p>There is a second form: </p>
+<pre class="code"><span class="codeKeyword">assert</span> <span class="pseudoCode">booleanExpression</span> : <span class="pseudoCode">expression</span>;</pre>
+<p>which means </p>
+<pre class="code"><span class="codeKeyword">if</span>( <span class="codeComment">assertion checking is enabled</span> )<br>    <span class="codeKeyword">if</span>( ! <span class="pseudoCode">booleanExpression</span> )<br>        <span class="codeKeyword">throw new</span> AssertionError( <span class="pseudoCode">expression</span> ) ;</pre>
+<h3>Why not to use them</h3>
+<p>The problem is that assertion checking is DISABLED by default.</p>
+<p>In order to turn assertion checking on, you can use the jvm parameter &quot;-ea&quot;.</p>
+<p>In bat files you write:</p>
+<pre class="code">java -ea TheMainClass</pre>
+<p>In Eclipse, you need to set the -ea parameter in the &quot;VM arguments&quot; text box of the Run Dialog. You need to do this <span class="pseudoCode">for every run configuration</span>. You can (and should) make assertion checking the default for new run configurations. (Windows --&gt; Preferences --&gt; Java --&gt; Installed JREs; select a JRE; click Edit; set &quot;default VM arguments to &quot;-ea&quot;; repeat for all JREs.)</p>
+<p>It is generally hard to ensure that your deployed application is running with assertion checking enabled.</p>
+<p>Tony Hoare is reputed to have said that turning off assertion checks is like removing the seat belts from a car's design once production begins.</p>
+<h3>What to use instead.</h3>
+<p>What I do is create my own Assert class:</p>
+<pre class="code"><span class="codeKeyword">public class</span> Assert {<br>    <span class="codeKeyword">public static void</span> check( <span class="codeKeyword">boolean</span> b ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> AssertionError( <span class="codeConstant">&quot;Assertion failed&quot;</span> ) ; }<br><br>    <span class="codeKeyword">public static void</span> check( <span class="codeKeyword">boolean</span> b, String message ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> AssertionError( message ) ; }<br><br><span class="codeKeyword">    public static void</span> checkParameter( <span class="codeKeyword">boolean</span> b ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> IllegalArgumentException(  ) ; }<br><br><span class="codeKeyword">    public static void</span> checkParameter( <span class="codeKeyword">boolean</span> b, String message ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> IllegalArgumentException( message ) ; }<br><br><span class="codeKeyword">    public static void</span> checkInitialState( <span class="codeKeyword">boolean</span> b ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> IllegalStateException(  ) ; }<br><br><span class="codeKeyword">    public static void</span> checkInitialState( <span class="codeKeyword">boolean</span> b, String message ) {<br>        <span class="codeKeyword">if</span>( !b ) <span class="codeKeyword">throw new</span> IllegalStateException( message ) ; }<br><br><span class="codeKeyword">    public static void</span> checkNotNull( Object p ) {<br>        <span class="codeKeyword">if</span>( p==<span class="codeKeyword">null</span> ) <span class="codeKeyword">throw new</span> NullPointerException(  ) ; }<br><br><span class="codeKeyword">    public static void</span> checkNotNull( Object p, String message ) {<br>        <span class="codeKeyword">if</span>( p==<span class="codeKeyword">null</span> ) <span class="codeKeyword">throw new</span> NullPointerException( message ) ; }<br><br>    <span class="codeKeyword">public static void</span> toBeDone() {<br>        <span class="codeKeyword">throw new</span> AssertionError(<span class="codeConstant">&quot;To be done.&quot;</span>) ; }<br><br>    <span class="codeKeyword">public static void</span> unreachable() {<br>        <span class="codeKeyword">throw new</span> AssertionError(<span class="codeConstant">&quot;Unreachable code reached.&quot;</span>) ; }<br>}</pre>
+<p>Now we can write</p>
+<pre class="code">Assert.check( <span class="pseudoCode">booleanExpression</span> ) ;</pre>
+<p>to check assertions. </p>
+<h3>When to do assertion checking</h3>
+<h4>Assertions can be used to check class invariants. For example:</h4>
+<pre class="code"><span class="codeKeyword">class</span> DeskTop {<br>    <span class="codeKeyword">private int</span> width ;<br>    <span class="codeKeyword">private int</span> height ;<br>    <span class="codeKeyword">private</span> List&lt;Window&gt; windows = <span class="codeKeyword">new</span> ArrayList&lt;Window&gt;() ;<br><br>    <span class="codeKeyword">private void</span> invariant() {<br>        <span class="codeKeyword">for</span>( Window w : windows ) {<br>            Assert.check( w.getX() &gt;= 0 ) ;<br>            Assert.check( w.getX() &lt; width ) ;<br>            Assert.check( w.getY() &gt;= 0 ) ;<br>            Assert.check( w.getY() &lt; height ) ; }<br>    }<br>    ...<br>}
+</pre>
+<p>We would then call <span class="codeInline">invariant()</span> at the end of each constructor and mutator. </p>
+<p>We might also check the invariant at the start of each method.</p>
+<h4>To check preconditions on arguments and states </h4>
+<p>For example</p>
+<pre class="code"><span class="codeComment">/** Find the floor of the square root<br>* of a nonnegative number. */<br></span><span class="codeKeyword">public int</span> sqroot( <span class="codeKeyword">int</span> x ) {<br>    Assert.checkParameter( x &gt;= 0 ) ;<br>    ... }
+</pre>
+<p>For example </p>
+<pre class="code">    <span class="codeKeyword">public void</span> init() {<br>        Assert.checkInitialState( !hasBeenInitialized ) ;<br>        ... }</pre>
+<h4>To check postconditions </h4>
+<pre class="code"><span class="codeComment">/** Find the floor of the square root<br>* of a nonnegative number. */</span><br><span class="codeKeyword">public int</span> sqroot( <span class="codeKeyword">int</span> x ) {<br>    Assert.checkPrecondition( x &gt;= 0 ) ;<br>    <span class="codeKeyword">int</span> result ;<br>    ... <br>    Assert.check( result*result &lt;= x ) :<br>    Assert.check( (result+1)*(result+1) &gt; x ) ;<br>    <span class="codeKeyword">return</span> result ; }</pre>
+<h4>To check intermediate assertions such as loop invariants</h4>
+<pre class="code">    <span class="codeKeyword">int</span> a = 0 ;<br>    <span class="codeKeyword">while</span>( i != 0 ) {<br>        Assert.check( a*a &lt;= x &amp;&amp; x &lt; (a+1)*(a+1) );<br>        Assert.check( 0 &lt;= p &amp;&amp; p &lt; oneHundredToThe( i ) );<br>        Assert.check( x0 == x*oneHundredToThe( i ) + p ) ;<br>        x = 100*x + p / oneHundredToThe( i-1 ) ;<br>        <span class="codeKeyword">int</span> y = x - 100*a*a ;<br>        <span class="codeKeyword">int</span> b = find_b( a, y ) ;<br>        a = 10*a + b ;<br>        p = p % oneHundredToThe( i-1 ) ;<br>        i -= 1 ; }</pre>
+<h1>Finally</h1>
+<p>[This section is optional. I searched the roughly 700 classes that make up the Teaching Machine and found that we had used a <span class="codeKeyword">finally</span> clause exactly one time. Finally is very useful when you need it, but that isn't often, in well designed code.]</p>
+<p>Sometimes you need to clean things up, even if there is an exception thrown. Consider:</p>
+<pre class="code">Reader r = new FileReader( f ) ;<span class="codeComment"> // This opens the file</span><br><span class="pseudoCode">...use the file...</span><br>r.close() ; <span class="codeComment">// releases resources associated with open the file</span></pre>
+<p>Now what if an exception is thrown while using the reader. We should close the file anyway. </p>
+<p>You can accomplish this with a &quot;try&quot; statement wit a &quot;finally clause&quot; </p>
+<pre class="code">Reader r = new FileReader( f ) ;<br><span class="codeKeyword">try</span> {<span class="pseudoCode"><br>    ...use the reader...</span> }<br><span class="codeKeyword">finally</span> {<br>    r.close() ; } </pre>
+<p></p>
+<p>The <span class="codeInline">r.close()</span> call will be made even if an exception bubbles out from this statement.</p>
+<h3>The details </h3>
+<p>The syntax is </p>
+<h1></h1>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeKeyword">try </span><span class="stxNonterminal">Block</span> <span class="stxNonterminal">Catches Finally </span> <br>
+    <span class="stxNonterminal">Finally</span> --&gt; <span class="stxMeta">(</span> <span class="codeKeyword">finally</span> <span class="stxNonterminal">Block</span> <span class="stxMeta">)<sup>?</sup></span> </p>
+<p>&nbsp;</p>
+<p>The finally block will be executed regardless of how the main body or the catch clauses complete.</p>
+<p>Consider</p>
+<pre class="code"><span class="codeKeyword">try</span> { A } <span class="codeKeyword">finally</span> { B }</pre>
+<p>If A completes normally, then B is executed after A and the whole statement completes with the completion status of B just like</p>
+<pre class="code">{A  B }</pre>
+<p>But, if A completes abruptly with status X, B will be executed and</p>
+<ul>
+  <li>if B completes normally, the whole statement completes with X. I.e. X resumes bubbling.</li>
+  <li>if B completes abruptly with status Y, the whole statement completes with status Y. I.e. X is discarded and replaced with Y. </li>
+</ul>
+<p>The finally clause applies even to abrupt completion by break, return or continue.</p>
+<pre class="code"><span class="codeKeyword">boolean</span> searchFiles( List&lt;File&gt; files ) <span class="codeKeyword">throws</span> IOException {<br>    <span class="codeKeyword">for</span>( File f : files ) {<br>        Reader reader = <span class="codeKeyword">new</span> FileReader( f ) ;<br>        <span class="codeKeyword">try</span> {<br>            <span class="codeKeyword">if</span>( foundIn( reader ) <span class="codeKeyword">return true</span> ; }<br>        <span class="codeKeyword">finally</span> {<br>            reader.close() ; } }<br>    <span class="codeKeyword">return false</span> ; }
+  </pre>
+<p>The close will happen after the <span class="codeKeyword">return true</span>; is executed and before the routine actually returns!</p>
+<h3>Combining catch and finally </h3>
+<p>If there are &quot;catch&quot; clauses, the finally clause applies to them too and it will be executed after any &quot;catch&quot; clause completes. I.e. </p>
+<pre class="code"><span class="codeKeyword">try</span> { A } <span class="codeKeyword">catch</span>( E e ) { C } <span class="codeKeyword">finally</span> { B }</pre>
+<p>is just the same as </p>
+<pre class="code"><span class="codeKeyword">try </span>{<span class="codeKeyword"> try</span> { A } <span class="codeKeyword">catch</span>( E e ) { C } } <span class="codeKeyword">finally</span> { B }</pre>
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

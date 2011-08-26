@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Structures</title>
+</head>
+<body>
+<p>Arrays are compound data in which all the data in the package is homogeneous&#151;that 
+  is, of the same type.</p>
+<p>Also possible to bundle up data of different types in a single package. This 
+  type of compound variable is known as a <em>structure</em>.</p>
+<p>In C++, the template for the structure is generally defined before any variables 
+  of the structure are created. Effectively, programmers get to create a new type 
+  of their own.</p>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("account.cpp", true, "code", "3891lecture.cfg", "A", "");
+//-->
+</script>
+</p>
+<p>In this example, the programmer has created a new date type called <span class="codeInline">account</span> 
+  by declaring account as a structure (the keyword is actually <span class="codeInline">struct</span>). 
+</p>
+<p><span class="codeInline">account</span> bundles up three pieces of data by 
+  enclosing them in a block surrounded by curly brackets. The data in the block 
+  are declared just like normal variables.</p>
+<p>They are not normal variables, however. The only variables in the program are 
+  <span class="codeInline">johnsAccount</span> and <span class="codeInline">myAccount</span>, 
+  two separate bundles of data of type <span class="codeInline">account</span>, 
+  each containing their own three values (plus the <span class="codeInline">bool</span> 
+  <span class="codeInline">allowed</span> in the <span class="codeInline">transaction</span> 
+  function).</p>
+<p>What appear to be variables inside the block structure are actually known as 
+  <em>fields</em>.</p>
+<p>When the transaction function gets called, note we have elected to pass <span class="codeInline">anAccount</span> 
+  in by reference.</p>
+<p>While this is done automatically for arrays (so the ampersand is not required), 
+  structures may be passed-by-value.</p>
+<p>Which of course means that <strong>a copy would have to be made</strong>. That 
+  might or might not be expensive depending on the structure.</p>
+<p>As the programmer, you have to know.</p>
+<h1><a name="declaration">Declaration of Structures</a></h1>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+insertCode("structure2.cpp", false, "code", "3891lecture.cfg", "", "");
+</script>
+</p>
+<p>There are variations permitted on this declaration technique, but we will concentrate 
+  on this one.</p>
+<p>Now we can declare variables of same structure</p>
+<pre> struct complex z; 	/* C Declaration */
+ complex z; 		// C++ Declaration</pre>
+<p>in C, we can also use a typedef&#151;</p>
+<pre>typdef struct {
+	double re,im;
+}complex;
+
+complex x,y,z;</pre>
+<p> Here we have defined the type complex as being an un-named structure. </p>
+<p>Note that, in C, future references to the tag complex must also include the 
+  word struc&#151;</p>
+<p class="codeInline">struct complex z</p>
+<p> So the explicit <span class="codeInline">typedef</span> declaration is preferred.</p>
+<p> In both C &amp; C++, <span class="codeInline">typedef</span> can be used for 
+  other things. e.g.</p>
+<p class="codeInline">typedef int number;</p>
+<p>Here we've defined a new type, <span class="codeInline">number</span>, which 
+  is equivalent to an <span class="codeInline">int</span>.</p>
+<p>Later on, we could quickly change every <span class="codeInline">number</span> 
+  in the program to a <span class="codeInline">long</span> or a <span class="codeInline">double</span> 
+  just by changing the <span class="codeInline">typdef</span>.</p>
+<h2><a name="using">Using Structured Variables</a></h2>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("structure3.cpp", true, "code", "3891lecture.cfg", "A", "");
+//-->
+</script>
+</p>
+<h1><a name="complex">Complex Structures</a></h1>
+<p>a student record might contain a name, a mun no., and a set of courses and 
+  grades organized by term. This can quickly get complex!</p>
+<pre>student record -->
+	name (a string)
+	mun id (a 7 digit string)
+	a list of term records -->
+		date (a date string)
+		term (an integer in [1,8])
+		average (a real on [0.0,100.0]
+		a list of marks -->
+			course no. (a course id string)
+ 			grade (integer [0,5,10,15,...100])
+</pre>
+<p>Note how things are embedded</p>
+<p>We've got arrays inside our structure</p>
+<p>&amp; structures inside the arrays!</p>
+<p class="pagebreak">&nbsp;</p>
+<p>Here's how it is done in C++</p>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("structure4.cpp", true, "code", "3891lecture.cfg", "A", "");
+//-->
+</script>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("account.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+  <p><script language="JavaScript">
+insertCode("structure3.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+  <p><script language="JavaScript">
+insertCode("structure4.cpp", false, "code", "3891lecture.tmcfg", "", "");
+</script></p>
+</div>
+
+
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body></html>

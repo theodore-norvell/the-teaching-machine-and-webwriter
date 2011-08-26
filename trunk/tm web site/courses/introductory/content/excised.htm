@@ -1,0 +1,461 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../";
+</script>
+<script language="JavaScript" src="../content/noteConstants.js"></script>
+<script language="JavaScript" src="../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../webWriter/header.js"></script>
+</script>
+<title>Engineering 2420</title>
+</head>
+<body>
+<H1>Excised content</H1>
+<h2>From Language Elements  </h2>
+<h4>Includes</h4>
+<p>Pre-processor directive&#8212;tells the compiler to insert code from another
+  file (typically declarations of other functions).</p>
+<pre><code>  #include &lt;iostream&gt; </code></pre>
+<p>Code from the iostream file is inserted exactly as if you had typed it in
+  yourself.</p>
+<h4>using namespace</h4>
+<p>tells the compiler where to look for definitions that aren't defined in our
+  program.</p>
+<pre><code>using namespace std;</code></pre>
+<h4>main function definition </h4>
+<p>Every program must have a <code>main</code> function. It is the starting point
+  of program execution. This is what it looks like</p>
+<pre>int main() {
+     // the function body goes here
+  }</pre>
+<p> When execution reaches the end of <code>main</code>, the program terminates.</p>
+<p>We're going to introduce our first syntax definition here:</p>
+<div class="syntaxDef">
+  <h3>Function returning value:</h3>
+  <strong>Form: </strong>
+  <div class="insetClause"><font class="stxTerminal">returnType</font> <font class="stxNonterminal">Identifier </font><font class="stxTerminal">(</font> <font class="stxNonterminal">ParameterList</font> <font class="stxTerminal">)</font> <font class="stxTerminal">{</font> <br>
+      <font class="stxNonterminal">&nbsp;&nbsp;&nbsp;&nbsp;Statement</font> <br>
+      <font class="stxTerminal">}</font></div>
+  <strong>Example:</strong>
+  <div class="insetClause">
+    <pre><code>int square(int num){
+    return num * num;
+}</code></pre>
+  </div>
+  <p><strong>Interpretation:</strong> the square of <code>num</code> is computed
+    and the <code>int</code> result returned.</p>
+</div>
+<p>&nbsp;</p>
+<p><code>main</code> is actually a function returning value, which means it fits
+  this form.</p>
+<p>Both <code>main</code> and <code>square</code> return an integer value (<code>int</code>).
+  In the case of <code>square</code> the value returned (the output) represents
+  the square of <code>num</code>, the value input.</p>
+<p>In the case of <code>main</code>, the return value is actually passed to the
+  operating system after the program is run. Normally it will be zero, meaning
+  your program ran successfully. Other numbers represent codes for various kinds
+  of errors. In this course we will generally return just 0;</p>
+<hr>
+<table width="100%" border="0">
+  <tr>
+    <td ><p class="normal">This drawing looks at just the pre-compile / compile
+        process.</p>
+        <p class="normal">The two work invisibly as a pair. It looks like one
+          process to the programmer.</p>
+        <p class="normal">Any instruction that begins with a hash mark (#) is
+          actually an instruction to the pre-compiler, the programmer's automated
+          administrative assistant.</p>
+        <p class="normal">Here the assistant strips out all the comments and
+          fetches the code from the <code>iostream</code> <em>header file</em> </p>
+        <p class="normal">The resulting code the compiler gets is much reduced <em>except
+            that</em>all code from the header file has been added. We don't show
+            it because it's too complex. </p>
+        <p class="normal">The compiler checks the reultant code for syntax errors.
+          If it finds any it will generate a report</p>
+        <p class="normal">Only if the code is grammatically correct will an output
+          file be generated.</p></td>
+    <td width="500"><img src="compile_process.png" width="491" height="854"></td>
+  </tr>
+</table>
+<hr>
+<h4>Output: Stream Insertion Operator</h4>
+<p> <code>cout &lt;&lt; expression;</code> &#8212;output the value of expression
+  to the <em>standard output </em>(screen) stream. </p>
+<p><code>cout &lt;&lt; &quot;Hello world!&quot; &lt;&lt; endl; </code></p>
+<p><code>&lt;&lt;</code> is a left associative operator -- expressions are ouput
+  left-to-right. </p>
+<p><code>endl</code> causes an newline (<code>'\n'</code>) character to be output. </p>
+<hr>
+<h4>Input: Stream Extraction Operator</h4>
+<p> <code>cin &gt;&gt; x;</code> &#8212;Read a value from the<em> standard input</em> stream
+  (usually the keyboard) and store it in the variable named <code>x</code>. </p>
+<p><code>cin</code> is an <em>identifier</em> for the <em>standard input</em> stream
+  (keyboard) .</p>
+<ol>
+  <li> Assigns to variables left to right order. </li>
+  <li> What can be input depends on the data type of the variable. </li>
+  <li> whitespace (tab, space, newline) is skipped. </li>
+  <li> The reading marker keeps track of the next character to be read. </li>
+</ol>
+<h4>String Expressions</h4>
+<p></p>
+Objects of class string store sequences of characters:
+<p></p>
+<pre><code>string bookTitle;
+bookTitle = <span class="cppconstant">&quot;Programming in C++&quot;</span>;</code></pre>
+<p>Strings can be joined with <code>'+'</code>. </p>
+<hr>
+<h2>from Variables</h2>
+<h2>Input and Output <a name="inputAndOutput"></a></h2>
+<p>C++ treats inputs and outputs as <em>streams</em> of data&#8212;that is piece
+  of data after piece of data after piece of data, flowing one after another
+  as if in a stream.</p>
+<p>There are three standard streams, only two of which we need to be concerned
+  with (the third is an error stream, used for reporting errors, and works just
+  like the output stream). </p>
+<h3>cout</h3>
+<p>The standard output stream. Data is <em>inserted</em> into the standard output
+  stream using the <em>insertion</em> operator, &lt;&lt; , for example,</p>
+<p><code>cout &lt;&lt; &quot;The value of x is &quot; &lt;&lt; x &lt;&lt; endl;</code></p>
+<p>This means that the string literal <code>&quot;The value of x is &quot;</code> is
+  first inserted into <code>cout</code>, then the current value of <code>x</code> is
+  inserted and finally a special token <code>endl</code> is tossed in which tells
+  the <code>cout</code> stream that the line has ended.</p>
+<p>In this course the standard output stream will almost always be attached to
+  the console window. Assuming <code>x</code> is currently <code>3.76</code>,
+  you would see</p>
+<p><code>The value of x is 3.76</code></p>
+<p>displayed on a console window on your computer screen.</p>
+<p><code>cout</code> is a pretty smart object and knows how to display data of
+  almost any type properly.</p>
+<h3>cin</h3>
+<p>The standard input stream. Data is extracted from it using the standard extraction
+  operator, &gt;&gt; , for example</p>
+<pre><code>double x;
+int i;
+cin &gt;&gt; x &gt;&gt; i;</code></pre>
+<p>declares a <code>double</code> variable <code>x</code>, an <code>int</code> variable <code>i</code> and
+  then extracts values for them from the input stream, <code>cin</code>. <code>cin</code> will
+  almost always be connected to the keyboard in this course.</p>
+<h3>Formatting Input</h3>
+<p>It's hard for a user to enter data into a program unless the programmer tells
+  the user what is wanted. That is your program must prompt the user for input.
+  Do this by mixing input and output commands as follows.</p>
+<pre><code>double cost;
+int quantity;
+cout &lt;&lt; &quot;Please input the unit cost: &quot;;
+cin &gt;&gt; cost;
+cout &lt;&lt; endl &lt;&lt; &quot;And now the number of items: &quot;;
+cin &gt;&gt; quantity;
+cout &lt;&lt; endl;</code></pre>
+<p>Note that by not inserting an <code>endl</code> at the end of the first <code>cout</code> statement
+  we leave the cursor at the end of the prompt. Then we start the next <code>cout</code> with
+  an <code>endl</code> moving the second prompt (and input) onto its own line. </p>
+<h2>From pass-by-reference</h2>
+<h2><a name="sideEffects">Side Effects</a></h2>
+<p>Arguments in the original C language were always passed <i>by value</i>. This
+  was done to avoid <i>side effects</i>. Consider a little different version
+  of the factorial function:</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("post_decrement.cpp", true, "code", "","A");
+  </script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Don't forget that, as the expression engine will show you,
+  the line <code>result&nbsp;*=&nbsp;n--</code> is equivalent to <code>result&nbsp;=&nbsp;result&nbsp;*&nbsp;n--</code></p>
+<p class="hang">2. As usual, to evaluate <code>n</code> the TM looks the value
+  of <code>n</code> up in memory. The effect of the post decrement is to decrement <code>n</code> <em>after
+  it has fetched the value</em>. To see it in detail, step through the expression
+  in the expression engine and watch the fetch-execute cycle closely. </p>
+<hr>
+<script language="JavaScript">
+ endNote();
+</script
+  >
+<p>The line</p>
+<blockquote>
+  <pre><code>result *= n--; </code></pre>
+</blockquote>
+<p>actually contains two potential side effects. Let's focus first on the one
+  caused by decrementing in the middle of an expression.</p>
+<p>The line is equivalent to the following two lines</p>
+<blockquote>
+  <pre><code>result *= n;
+ n--;
+</code></pre>
+</blockquote>
+<p>That is the original, in one line, both </p>
+<ol>
+  <li>computes the next value of <code>result</code> (the <em>main effect</em>)
+    as well as</li>
+  <li> decrements <code>n</code> (the <em>side effect</em>).</li>
+</ol>
+<p>But when are we decrementing <code>n</code>? Notice in this second version
+  it is very clear that <code>n</code> is <em>decremented after we used its previous
+  value</em>. </p>
+<h2><a name="increment">Post- and Pre- Increment and Decrement</a></h2>
+<p>When we increment or decrement, there are actually two forms of the operators,
+  known as <em>post-</em>decrement (or post-increment) and <em>pre-</em>decrement
+  (or pre--increment). In the example above the decrement operator is said to
+  be in the post position (it comes after the variable being decremented).</p>
+<p>It is perfectly grammatically correct to put the decrement operator before
+  the variable as:</p>
+<blockquote>
+  <pre><code>result *= --n; </code></pre>
+</blockquote>
+<p>but now it means something different. Again, writing it as two lines we would
+  need to write it this way&#8212;</p>
+<blockquote>
+  <pre><code>n--;
+result *= n;</code>
+</pre>
+</blockquote>
+<p>Putting an increment/decrement operator in the pre- position means that <em>the
+    increment/decrement operation is carried out before the value of the variable
+    is used.</em></p>
+<p>Here is the same program ammended to use pre-decrement. Step through both
+  versions in the teaching machine to see the difference </p>
+<p class="pagebreak">
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("pre_decrement.cpp", true, "code", "","A");
+  </script>
+</p>
+<script language="JavaScript">
+ startNote();
+  </script>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. As usual, to evaluate <code>n</code> the TM looks the value
+  of <code>n</code> up in memory. The effect of the pre-decrement is to decrement <code>n</code> <em>before
+  it fetches the value</em>. Thus the value fetched is the new value. To see
+  it in detail, step through the expression in the expression engine and watch
+  the fetch-execute cycle closely.</p>
+<p class="hang">2. To deal with the differences we had to preset <code>result</code> to <code>n</code> because
+  the very first time we multiply we will actually be using <code>n-1</code> </p>
+<p class="indent">We also changed the test to <code>n &gt; 2</code> because by
+  the time we carry out the test the multiplication has already been done. The
+  answer would still have been correct but we would have passed through the loop
+  an extra time unnecessarily.</p>
+<p class="indent">You might consider how you could re-write the first (post-decrement)
+  version to have one less passes through the loop. </p>
+<hr>
+<script language="JavaScript">
+ endNote();
+</script  
+>
+<p>While this second version works it is far less understandable than the first. </p>
+<p>In fact, in general we regard incorporating incrementing into expressions
+  as a side effect to be quite advanced programming</p>
+<ol>
+  <li> We recommend you not use the technique yourself. Instead, increment separately. </li>
+  <li> However, it is a sufficiently common part of the standard C++ <em>idiom</em> that
+    we do expect you to be able to read and understand code that does use it.</li>
+</ol>
+<h3>Final Caveat</h3>
+<p>increment/decrement operators should never be incorporated into expressions
+  on variables that are used more than once in the expression.</p>
+<p>For example</p>
+<blockquote>
+  <pre><code>y = ++n * log(n);</code></pre>
+</blockquote>
+<p>should never be used. The <code>n</code> is incremented on the memory fetch
+  part of the evaluation cycle and there is no way to predict which <code>n</code> optimizing
+  compilers will decide to fetch first.</p>
+<p><script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("printname.cpp", true, "code", ""); 
+  </script>
+</p>
+<hr>
+<p>From Arrays </p>
+<h3><a name="median">Median Problem</a> </h3>
+<p><strong>Problem: </strong> Find the median grade for a class.</p>
+<p><strong>Analysis:</strong></p>
+<p class="hang">1. We're going to need an array to hold the grades. How big should
+  it be? </p>
+<blockquote>
+  <p>If we want to handle different classes, we won't know the class size until
+    we read the data in from the file (which is when we <em>run</em> the program).
+    But we have to size the array when we <em>build</em> the program.</p>
+  <p>One approach is to create an array large enough to handle any reasonable
+    class size and then only use part of it. We'll also have to watch out for
+    a class bigger than we planned for.</p>
+  <p>So we'll pick a <code>MAX_CLASS_SIZE</code> and declare a <code>float grades[MAX_CLASS_SIZE]</code> </p>
+</blockquote>
+<p class="hang">2. Clearly we're going to have to read the data in from a file.
+  That should probably be done by a function.</p>
+<p class="indent">We should give the function the array and tell it about MAX_CLASS_SIZE
+  and then <em>let it tell us the actual size</em></p>
+<p class="hang">3. In order to find the median we're going to have to <em>sort</em> the
+  file into either ascending or descending order. Another funtion. It will need
+  the grades array and the actual class size. </p>
+<p class="hang">4. compute the median. </p>
+<p class="pagebreak"><strong>Major Data:</strong>
+<blockquote>
+  <p><code>int MAX_CLASS_SIZE<br>
+    float grades[MAX_CLASS_SIZE] </code> </p>
+</blockquote>
+<p><strong>Headers:</strong>
+<blockquote>
+  <p><code>int getGrades(float gradeData[], int maxSize) // return actual size <br>
+    void sort(float gradeData[], int size) </code></p>
+</blockquote>
+<p><strong>Algorithm:</strong>
+<blockquote>
+  <p><strong>Read values into grades[0..N-1]</strong></p>
+  <p><strong>Sort grades in increasing order</strong></p>
+  <p><strong>if N is even</strong></p>
+  <blockquote>
+    <p><strong>median = (vals[N/2-1] + vals[N/2]) / 2</strong></p>
+  </blockquote>
+  <p><strong>else</strong></p>
+  <blockquote>
+    <p><strong>median = vals[N/2]</strong></p>
+  </blockquote>
+</blockquote>
+<p><strong>Final Comment:</strong></p>
+<blockquote>
+  <p>Why N/2 in the last line?</p>
+  <p>If N is odd, for example 5 </p>
+  <ul>
+    <li>There are 5 elements in the array</li>
+    <li>They are <em>numbered</em> from 0 to 4 </li>
+    <li>The middle one is no 2 (0, 1, <strong>2</strong>, 3, 4)</li>
+    <li>N/2 is of course 2</li>
+  </ul>
+  <p>&nbsp;</p>
+  <p>Here is the example we worked out in class, recut for the Teaching Machine.
+    The sort routine is shown here.</p>
+  <p class="pagebreak">
+    <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("sort.cpp", true, "code", "", "B");
+    </script>
+  </p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+  <hr>
+  <p align="center"><strong>Code Notes</strong> </p>
+  <p class="hang">1. This sort function is a classic example of a <em>double
+      loop</em>. The way to understand it is to focus on the <em>inner loop</em>. </p>
+  <p class="hang">2. What the inner loop does is to compare the <code>i</code>'th
+    element of the array with <em>every element that comes after it</em>. If
+    any element is bigger than the <code>i</code>'th one it is swapped with it.
+    Thus, at the end of a pass through the inner loop, the largest element after
+    the <code>i</code>'th one has replaced it, like the largest bubble floating
+    to the top. </p>
+  <p class="hang">3. The function of the outer loop, then, is to pick<code> i</code>.
+    Start with element <code>0</code> (<code>theTable[0]</code>) and use the
+    inner loop to &quot;bubble&quot; the largest element in the whole array to
+    position <code>0</code>. Then go to position <code>1</code> and &quot;bubble&quot; the
+    next largest element into that position. And so on, to the third largest
+    in the position <code>2</code>, 4'th largest in <code>3</code>, until we
+    finally reach the second last position in the array. </p>
+  <p class="hang">4. When the outer loop gets <code>i</code> to the second last
+    position, the inner loop only has to check the last position. Either the
+    last element is bigger than the second last (in which case they are swapped)
+    or it isn't. Either way, we're done. There's no reason to set <code>i</code> to
+    the last postion because there's nothing that comes after it for the inner
+    loop to work on. </p>
+  <hr>
+  <script language="JavaScript">
+ endNote();
+</script  
+  >
+  <p>Of course it uses the swap routine we developed earlier.</p>
+  <p class="pagebreak">
+    <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("sort.cpp", true, "code", "", "C");
+    </script>
+  </p>
+  <p>Then the median is computed by putting it all together as shown here.</p>
+</blockquote>
+<h2>From Strings </h2>
+<h3><a name="constRefs">Const References</a></h3>
+<p><em>(Copied in from pass-by-reference) </em></p>
+<p>The display above doesn't actually show the <code>getFloat</code> function implementation or declaration. If you've run the example in the TM already you may have noticed something strange about them. Here's the implementation.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("triangle_area.cpp", true, "code", "", "B");
+  </script>
+</p>
+<p>What's up with the const keyword in the function prototype</p>
+<p> <code>double getDouble( const string&amp; what)</code></p>
+<p>In the first place why not just pass the string by value as we would normally do? After all we don't want to change it. It's just input for the function.</p>
+<p>Remember that pass-by-value means a copy gets made. In this case a full copy of the string object (although you won't see it reflected in your simple memory model on the TM&#8212;it's done behind the scenes in another part of memory called the heap that we won't talk about until the advanced course). Making such a copy is potentially very expensive because strings can be very large.</p>
+<ol>
+  <li>It's expensive because it takes <em>time</em> to make the full copy.</li>
+  <li>It's expensive because it takes <em>extra memory to hold</em> the copy. </li>
+</ol>
+<p>Passing-by-reference suppresses copying. The only thing passed into the function is the reference to the original object (which is about the size of an <code>int</code> or <code>long</code>).</p>
+<p>However, there is an implication when we pass by reference that the variable will be modified.</p>
+<p>The <code>const</code> tells the compiler (and more importantly, any clients who are going to use our function) that although <code>prompt</code> is being passed by reference <em>it will not be modified</em>. In other words, it is read-only. </p>
+<hr>
+<h3>From Files and Streams</h3>
+<h3>Class Examples</h3>
+<p>Here are the examples shown in class;</p>
+<dl>
+  <dt><a href="../postings/gradeEntry.cpp">gradeEntry.cpp</a></dt>
+  <dd>the original gradeEntry program, with no arrays or files</dd>
+  <dt><a href="../postings/studentGradeArray.cpp">studentGradeArray.cpp</a></dt>
+  <dd>the program with parallel data arrays added, as developed by Li Cheng in class</dd>
+  <dt><a href="../postings/studentGradeArray2.cpp">studentGradeArray2.cpp</a></dt>
+  <dd>an ammended version with an additional parallel data array to handle the names of the course components. Partially developed in class then finished off properly. </dd>
+  <dt><a href="../postings/studentGradeFileSimple.cpp">studentGradeFileSimple.cpp</a></dt>
+  <dd>student marks are now read in from an input file, courses.txt and results written to an output file, results.txt.</dd>
+  <dt><a href="../postings/studentGradeFileFull.cpp">studentGradeFileFull.cpp</a></dt>
+  <dd>student data and course data are read in from the input file. The output file also includes course statistics.</dd>
+  <dt><a href="../postings/courses.txt">courses.txt</a></dt>
+  <dd>a simple input data file for studentGradeFileSimple</dd>
+  <dt><a href="../postings/coursesFull.txt">coursesFull.txt</a></dt>
+  <dd>a simple input data file for studentGradeFileFull</dd>
+  <dt><a href="../postings/matrices.cpp">matrices.cpp</a></dt>
+  <dd>The last example done, whereby a pair of 2-D matrices are read in from a file and then some simple calculations performed on them</dd>
+  <dt><a href="../postings/arrays.xls">arrays.xls</a></dt>
+  <dd>the excel file used to generate data for the matrices example</dd>
+  <dt><a href="../postings/arrays.txt">arrays.txt</a></dt>
+  <dd>the tab separated text file generated form the above excel file (using File-SaveAs) used as the actual input to the matrices program. </dd>
+</dl>
+<h2><a name="BuildProcess">The Build Process</a></h2>
+<p>Computer programs have to be <em>built</em>. We use a number of processes
+  (computer programs) to build a program</p>
+<table width="100%" border="0">
+  <tr>
+    <td><p class="normal">An <strong>editor</strong> is a specialized word processor
+        used to prepare source modules in the language of choice (e.g. C++, Java,
+        Fortran, Basic)</p>
+        <p class="normal">The <strong>precompiler</strong> adds in standard pre-written
+          code (boilerplate) from include files you specify to produce a complete
+          source module.</p>
+        <p class="normal">The precompiler is like a secretary that helps you
+          pull together a full source document.</p>
+        <p class="normal">The <strong>compiler</strong> produces object code
+          for the target computer/operating system.</p>
+        <p class="normal">The compiler is like a translator that converts your
+          module from the language of your choice (C++) to language the computer
+          (PC, MAC, Sun) understands.</p>
+        <p class="normal">The <strong>linker</strong> ties multiple modules together
+          into a complete program</p>
+        <ol>
+          <li class="normal">Your module</li>
+          <li class="normal">Other modules from the same project</li>
+          <li class="normal">Modules from the library</li>
+      </ol></td>
+    <td><img src="build_process.png" width="515" height="672"></td>
+  </tr>
+</table>
+<p>An <em>executable</em> is a program that will run on the computer. The editor,
+  precompiler, compiler and linker are all <em>executables</em>.</p>
+<p>So is your program!</p>
+</BODY>
+</HTML>

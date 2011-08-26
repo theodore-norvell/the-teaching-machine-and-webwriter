@@ -1,0 +1,398 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Immutable Objects</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="fields" id="fields"></a>Fields</h1>
+<p>The primitive data types <span class="codeKeyword">byte</span>, <span class="codeKeyword">short</span>, <span class="codeKeyword">int</span>, <span class="codeKeyword">long</span>, <span class="codeKeyword">float</span>, <span class="codeKeyword">double</span>, <span class="codeKeyword">char</span> and <span class="codeKeyword">boolean</span> are very useful for representing many things, such as weights, distances, times, cardinalities, characters, and of course truth values.</p>
+<p>However, Java gives you a very powerful capability, which is to define your own data types.</p>
+<p>Consider a program that deals with a database of book information </p>
+<p>For each book we need a data value that represents the information we have about the book. This is</p>
+<ul>
+  <li>Its author's name --- a <span class="codeInline">String</span></li>
+  <li>Its title --- a <span class="codeInline">String</span></li>
+  <li>Its publisher's name --- a <span class="codeInline">String</span></li>
+  <li>It's year of publication --- an <span class="codeKeyword">int</span></li>
+</ul>
+<p>To declare a type where each value has each of these attributes, we write a class. Here is part of the class.</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Book.java", true, "code", "default.cfg", "A");
+    
+</script>
+</p>
+<p>You can see that for each attribute of a book, we have declared a variable.</p>
+<ul>
+  <li>The scope of each of these variables is the entire class.</li>
+  <li>The modifier <span class="codeKeyword">private</span> restricts access to the variables to code within the class.</li>
+  <li>Variables declared as class members are called fields </li>
+</ul>
+<h2>Syntax </h2>
+<p>Recall the syntax for classes is </p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* }<br>
+    <span class="stxNonterminal">ClassMember</span><span class="stxMeta"></span> --&gt; <span class="stxNonterminal">MethodDeclaration<br>
+    </span><span class="stxNonterminal">Modifiers</span> --&gt; <span class="stxMeta">(</span> <span class="stxNonterminal">Modifier</span> <span class="stxMeta">)*</span><br>
+    <span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">private</span><br>
+    <span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">public</span></p>
+<p>We now we need to allow variable declarations as class members too</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassMember</span> --&gt; <span class="stxNonterminal">VariableDeclaration</span></p>
+<p>And we need to allow variable declarations to have modifiers (in particular <span class="codeKeyword">private</span>), so we change the definition of variable declarations to</p>
+<p class="syntaxDef"> <span class="stxNonterminal"> VariableDeclaration --&gt; Modifiers Type</span> <span class="stxMeta">(</span> <span class="codeInline">[]</span> <span class="stxMeta">)*</span> <span class="stxTerminal">Identifier</span> <span class="stxMeta">(</span> <span class="style6"><span class="codeInline">= </span></span><span class="stxNonterminal">Expression</span> <span class="stxMeta">)<sup>?</sup></span><span class="style6"><span class="codeInline"> ;</span></span></p>
+<h1><a name="constructors">Allocating and Constructing Objects</a></h1>
+<p>Now we need some way to create data values that belong to the type we have declared.</p>
+<p>Such data values are called <strong>objects</strong>. </p>
+<p>To do this we declare a special kind of subroutine called a <strong>constructor</strong> . </p>
+<h3>Constructor Declarations</h3>
+<p>Constructors are typically responsible for initializing the fields. Here is the class with the constructor. </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Book.java", true, "code", "default.cfg", "B");
+    
+  
+    </script>
+</p>
+<p>When this constructor is executed, it assigns the values of its parameters to the fields.</p>
+<p>To refer to each field, we made use of a special keyword <span class="codeKeyword">this</span> and a notation for accessing fields.</p>
+<p>Within a constructor the keyword <span class="codeKeyword">this</span> refers to &quot;the object being constructed&quot;.</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline"><span class="codeKeyword">this</span></span></p>
+<p>The dot (.) operator is used to indicate a field within an object. The syntax is </p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">.</span> <span class="stxTerminal">Identifier</span> </p>
+<p>The expression should refer to an object and the identifier should be the name of a variable declared within that objects class. </p>
+<p>The syntax of constructors is</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassMember --&gt; ConstructorDeclaration <br>
+  ConstructorDeclaration --&gt; ConstructorSignature</span> <span class="stxNonterminal">Block</span><br>
+  <span class="stxNonterminal">ConstructorSignature --&gt; Modifiers </span><span class="stxTerminal">Identifier</span> ( <span class="stxNonterminal">Parameters</span> )</p>
+<p>You can see that constructors differ from methods in that they don't have a return type.</p>
+<p>The name of a constructor (its Identifier) must be the same as the class it is declared in. </p>
+<h3>Allocating an object </h3>
+<p></p>
+<p>Having declared our Book class, we can use it as a type.</p>
+<p class="syntaxDef"><span class="stxNonterminal">Type</span> --&gt; <span class="stxNonterminal">ClassName</span><br>
+    <span class="stxNonterminal">ClassName</span> --&gt; <span class="stxTerminal">Identifier</span> </p>
+<p>(The identifier here should be the name of a class declared somewhere in our program.) </p>
+<p>Since we can use the name of a class as a type, we can declare a variable of the type. </p>
+<p class="code">Book b ; </p>
+<p>or even an array </p>
+<p class="code">Book[] bs = <span class="codeKeyword">new</span> Book[10] ; </p>
+<p>You might think that the first declaration will create a book object and that the second will create 10 book objects.</p>
+<p>However, this is not the case.</p>
+<p>After the above declarations have executed, <span class="codeInline">b</span> will be a variable whose value can &quot;refer&quot; to a book object and <span class="codeInline">bs</span> will be an array of 10 such variables.</p>
+<p>Neither of these local variable declarations creates any Book objects. </p>
+<div class="breakoutBox">
+  <p> <strong>C++ Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    In C++, the declaration </p>
+  <pre class="code">Book b ;</pre>
+  <p> in a block would create a Book object on the program stack. In Java, it creates a reference, but not an actual object. The Java declaration  
+  <pre class="code">Book b ;</pre>
+    <p>Is roughly equivalent to the C++ declaration</p>
+    <pre class="code">Book *b ;
+  </pre>
+    <p>So don't be fooled: the declaration
+    <pre class="code">Book b ;</pre>
+    <p> looks the same in the two languages, but has radically different meanings. 
+    <p><strong>End of Note.</strong>
+        <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<p>To create an object we use a form of allocation expression such as</p>
+<pre class="code"><span class="codeKeyword">new</span> Book( &quot;Davis Martin&quot;,<br>          &quot;Engines of Logic&quot;,<br>          &quot;Norton&quot;,<br>          2000 )</pre>
+<p>The effect of this expression is to allocate a new object of class <span class="codeInline">Book</span> by</p>
+<ol>
+  <li>Finding space for the object in a region of memory called the <strong>heap</strong>.</li>
+  <li>Creating an object at that place in memory. </li>
+  <li>Executing the constructor, using the arguments provided.</li>
+</ol>
+<p>The newly allocated object is said to be a <strong>direct instance</strong> of its class, in this case it is a direct instance of <span class="codeInline">Book</span>. </p>
+<p>The result of the expression is a <strong>reference</strong> to the newly allocated object. We can assign such a reference to any variable of type <span class="codeInline">Book</span>. </p>
+<pre class="code">Book b = <span class="codeKeyword">new</span> Book( &quot;Davis Martin&quot;,<br>                   &quot;Engines of Logic&quot;,<br>                   &quot;Norton&quot;,<br>                   2000 ) ;</pre>
+<p>The syntax for this form of allocation expression is </p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="codeKeyword">new</span> <span class="stxNonterminal">ClassName</span> <span class="codeInline">(</span> <span class="stxNonterminal">Arguments</span> <span class="codeInline">)<br>
+      <span class="stxNonterminal">Arguments</span></span> --&gt; <span class="codeInline"><span class="stxMeta">(</span><span class="stxNonterminal"> Expression </span><span class="stxMeta">(</span> ,<span class="stxNonterminal">Expression</span><span class="stxMeta">)</span>*<span class="stxMeta"> )</span><sup>?</sup></span></p>
+<p>Let's see in the Teaching Machine, what the effect of allocation is.</p>
+<p>&nbsp;</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("BookExample.java", true, "code", "linked.cfg");
+    
+</script>
+</p>
+<p>The linked view in the Teaching Machine shows you the &quot;stack&quot; on the left and the &quot;heap&quot; on the right. </p>
+<p><span class="pseudoCode">[Note: Currently the TM may not display the references exactly right. The key point is that b and c are on the stack and refer to different objects. All objects and arrays are on the heap.]</span></p>
+<p>The
+    <script>insertDefLink("stack","stack")</script>
+  contains local variables, which means variables declared within blocks and also parameters. In the example the local variables are the parameters and also <span class="codeInline">b</span>. </p>
+<p>The
+    <script>insertDefLink("heap","heap")</script>
+  contains objects and arrays allocated by allocation expressions.</p>
+<p>Arrows show which variables are references to which objects.</p>
+<p>So you can see that after executing the declaration of <span class="codeInline">b</span>, <span class="codeInline">b</span> refers to a <span class="codeInline">Book</span> object. This object has four fields. Three of these refer to String objects. </p>
+<p>After executing the declaration of <span class="codeInline">c</span>, <span class="codeInline">c</span> refers to a different instance of <span class="codeInline">Book</span>.</p>
+<p>Each class can be realized by 0, 1, or more objects. I.e. 0 or more objects are the direct instances of each class. </p>
+<h1><a name="references">References</a></h1>
+<p>You can see that variables of type Book, refer to objects. We call such variables &quot;reference variables&quot;. And we call the values of such variables &quot;reference values&quot;.</p>
+<p>A reference variable can hold the address at which an object is located.</p>
+<p>A reference value is such an address.</p>
+<p>There is nothing wrong with copying the address of an object from one variable to another.</p>
+<p>In the following example, we initialize <span class="style7"><span class="codeInline">c</span></span> to have the same value as <span class="codeInline">b</span><span class="codeInline"></span>. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("BookExample1.java", true, "code", "linked.cfg");
+    
+    
+    </script>
+</p>
+<p><span class="pseudoCode">[Note: Currently the TM may not display the references exactly right. The key point is that b and c are on the stack and refer to the same <span class="codeInline">Book</span> object on the heap.]</span></p>
+<div class="principle">
+  <p><strong>Principle:</strong> Separation of references from objects. Objects and the variables that refer to them are quite separate. Each object may be referred to by one or more references. </p>
+</div>
+<div class="breakoutBox">
+  <p> <strong>C++ Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    C++ programmers will recognize that Java's &quot;reference variables&quot; are the same idea as C++'s &quot;pointer variables&quot;.
+    <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+  </p>
+</div>
+<h2>Objects, arrays, and the heap </h2>
+<p>As mentioned above, objects are allocated space in the heap. This is the same as arrays. In fact each array in Java is considered to be an object.</p>
+<p class="principle"><strong>Principle</strong>: Objects (including arrays) in Java are always in the heap. Objects can not be local variables, static variables, fields of other objects, nor items of arrays. </p>
+<div class="breakoutBox">
+  <p> <strong>C++ Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    In C++, objects can also exist as local variables, as static variables, as fields of other objects, and as items of an array. In Java, objects can only appear as members of the heap. If you've programmed in C++, you may at first find this limiting, but one soon gets used to the limitations of Java, and finds that they help keep programs simple.
+    <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+  </p>
+</div>
+<p class="principle"><strong>Principle</strong>: Objects (including arrays) continue to exist even after the block in which they were allocated is complete. They continue to exist until they are no longer accessible.</p>
+<h1><a name="methods">Messages and Methods</a></h1>
+<p>So far we've seen how to create objects, but not how to use them.</p>
+<p>Objects are basically stores of information.</p>
+<p>Typically to use an object we send it messages.</p>
+<p>Messages may</p>
+<ul>
+  <li>request the object to send back some information,</li>
+  <li>request the object to change the information it is storing, </li>
+  <li>request the object to act on other objects,</li>
+  <li>some combination of the above. </li>
+</ul>
+<p>Here is an example of sending a message of the first kind to a Book object that b refers to; the result is Stored in a local variable.</p>
+<pre class="code"><span class="codeKeyword">int</span> y = b.getYear() ;</pre>
+<p></p>
+The syntax for sending a message is
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">.</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">(</span> <span class="stxNonterminal">Arguments</span> <span class="codeInline">)</span></p>
+<p></p>
+<p>The expression is typically the name of a variable, but it doesn't have to be.</p>
+<p>It does have to be a reference to an object.</p>
+<p>The identifier must be the name of a <b>
+  <script language="">
+insertDefLink("method","method")
+  </script>
+</b>declared within an appropriate class.</p>
+<p>Methods as we've seen are declared using the following syntax</p>
+<p></p>
+<p class="syntaxDef"><span class="stxNonterminal">MethodDeclaration --&gt; MethodSignature</span> <span class="stxNonterminal">Block</span><br>
+    <span class="stxNonterminal">MethodSignature --&gt; Modifiers ReturnType </span><span class="stxTerminal">Identifier</span> ( <span class="stxNonterminal">Parameters</span> )<br>
+    <span class="stxNonterminal">ReturnType</span> --&gt; <span class="codeKeyword">void</span><br>
+    <span class="stxNonterminal">ReturnType</span> --&gt; <span class="stxNonterminal">Type</span><br>
+    <span class="stxNonterminal">Parameters</span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> ParameterDecl </span><span class="stxMeta">(</span> <span class="codeInline">,</span><span class="stxNonterminal">ParameterDecl</span><span class="stxMeta">)</span>*<span class="stxMeta"> )</span><sup>?</sup><br>
+    <span class="stxNonterminal">ParameterDecl<span class="stxMeta"></span> --&gt; Type </span><span class="stxMeta">(</span> <span class="codeInline">[]</span><span class="stxNonterminal"></span> <span class="stxMeta">)</span>*<span class="stxTerminal"> Identifier</span></p>
+<p></p>
+<p>For any methods that need to access the value of the fields, it is important that we do not use the modifier <span class="codeKeyword">static</span>. Such methods are called &quot;nonstatic methods&quot;.</p>
+<p>Typically fields are declared nonstatic and private, while methods are public and either static or nonstatic. Later we'll look at why these are usually good choices and when to make different choices.</p>
+<p>Let's declare the <span class="codeInline">getYear</span> method. The declaration looks like this</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Book.java", true, "code", "default.cfg", "C");
+    
+  
+    
+</script>
+</p>
+<p>The return statement specifies the result of the message. In this case the result of the message </p>
+<pre class="code">b.getYear()</pre>
+<p></p>
+is the value of the <span class="codeInline">year</span> field of the object referred to by <span class="codeInline">b</span>.
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">return</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">;</span> </p>
+<p>I could have written <span class="codeKeyword">this</span><span class="codeInline">.year</span> rather than <span class="codeInline">year</span> . The scope of a field name is typically the entire class.</p>
+<p>The reason that I used <span class="codeKeyword">this</span><span class="codeInline">.year</span> rather than <span class="codeInline">year</span> in the constructor is that there is a parameter in the constructor named <span class="codeInline">year</span>, which &quot;shadowed&quot; the field.</p>
+<p>We could write &quot;get&quot; methods for all the other fields and we would then have a complete and usable class.</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Book.java", true, "code", "default.cfg");
+    
+  
+    
+</script>
+</p>
+<p>Note that the values of the fields of each object of this class never change after the object has been constructed. Such an object is called immutable.</p>
+<p>Immutable act like primitive data values, in the following sense</p>
+<ul>
+  <li>Two int variables might have the same value, say 13.
+      <pre class="code">int a = 13 ; int b = a ;</pre>
+    Now there is nothing I can do to variable <span class="codeInline">a</span> that will change the value of variable <span class="codeInline">b</span>.</li>
+  <li>Similarly, I might have two reference variables that refer to the same Book object
+      <pre class="code">Book a = <span class="codeKeyword">new</span> Book(...) ; Book b = a ;</pre>
+    Now there is nothing I can do to variable <span class="codeInline">a</span> that will change the object that <span class="codeInline">b</span> refers to. </li>
+</ul>
+<h1><a name="polynomials">A second example: big integers </a></h1>
+<p>As a second example we will create a type that represents arbitrary precision integers. In a sense we will extent the set of primitive integer types with a new integer type that has no limit on the size. For simplicity we'll restrict ourselves to nonnegative numbers. We will call the new type</p>
+<pre class="code">BigNat</pre>
+<p>First let's decide how other code might create and use our <span class="codeInline">BigNat</span> class.</p>
+<h2>The Signature</h2>
+<p>This means we must specify the signatures of the public constructors and methods of the class. We call this collection, the <strong>signature</strong> of the class. </p>
+<pre class="code">/** Construct a BigNat from an int.
+ * Precondition: value &gt;= 0 */<br><span class="codeKeyword">public</span> BigNat( <span class="codeKeyword">int</span> value )<br><br>/** Add to another BigNat. */<br><span class="codeKeyword">public</span> BigNat add( BigNat other )<br><br>/** Multiply by another BigNat. */<br><span class="codeKeyword">public</span> BigNat multiply( BigNat other )<br><br>/** Represent as a String in decimal notation. */<br><span class="codeKeyword">public</span> String toString( )
+</pre>
+<h2>The representation</h2>
+<p>There are a number of ways we could represent big natural numbers in a computer.</p>
+<p>Significantly, the method we choose does not affect signature and consequently does not affect any code that uses the class, nor any other code outside the class.</p>
+<p>This is the key benefit of object oriented programming. We can design classes such that design decisions that affect the code inside the class to not affect code outside of the class.</p>
+<div class="principle">
+  <p><strong>The Principle of Information Hiding:</strong> We can simplify the design, construction, and maintenance of software by ensuring that each design decision affects an isolated and small set of classes. </p>
+</div>
+<p>Now it is time to make the decision of how to represent large numbers in a computer.</p>
+<p>I will use an array of <span class="codeKeyword">int</span>s to represent each number. Thus we need a field</p>
+<pre class="code"><span class="codeKeyword">private int</span>[] digits ;
+</pre>
+<p>The modifier private restricts access to this field to only code within the <span class="codeInline">BigNat</span> class itself. This allows the compiler to check that we are adhering to the information hiding principle.</p>
+<p>But how can an array of <span class="codeInline">int</span>s represent a number? There is more than one way and I should decide which one I will use.</p>
+<p>Partly to simplify conversion to a decimal string, I will limit each int to a value from 0 to 999,999,999.</p>
+<p>Any limitation on the fields of a class is called a &quot;class invariant&quot;. I should document any class invariants carefully, thus we have.</p>
+<pre class="code">/* Class Invariant:<br> *    (FORALL i in {0, 1, ..., digits.length-1} :<br> *     0 &lt;= digits[i] &amp;&amp; digits[i] &lt; BASE)<br> */<br><span class="codeKeyword">private int</span>[] digits ;
+<span class="codeKeyword">private static final int</span> BASE = 1000000000 ;</pre>
+<p>The value actually represented will be calculated by treating each member of the array as a digit in a base 10<sup>9</sup> number. We should document this fact as well.</p>
+<pre class="code">/* Class Invariant:<br> *    (FORALL i in {0, 1, ..., digits.length-1} :<br> *        0 &lt;= digits[i] &amp;&amp; digits[i] &lt; BASE)<br> * Representation: The value represented is<br> *     (SUM i in {0, 1, ..., digits.length-1} :<br> *         digit[i] * BASE ^ i )<br> */<br><span class="codeKeyword">private int</span>[] digits ; </pre>
+<p>Our class so far is</p>
+<p>
+  <script language="JavaScript">
+setButtons( false, false, false,"","");
+insertCode("BigNat.java", true, "code", "default.cfg", "A");
+  
+</script>
+</p>
+<h2>The constructor </h2>
+<p>Now we need to implement the constructor and the methods of the class.</p>
+<p>We can start with the constructor.</p>
+<p>The constructor takes any nonnegative int and so its value might take up to 0 ints to represent.</p>
+<pre class="code"><span class="codeKeyword">assert</span> value &gt;= 0 ; <br>digits = new int[2] ;</pre>
+<p>The <span class="codeKeyword">assert</span> statement is used to check that the value is in fact nonnegative. </p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">assert</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">;</span> </p>
+<p>Now we can fill the array</p>
+<pre class="code">digits[ 0 ] = value % BASE ;<br>digits[ 1 ] = value / BASE ;</pre>
+<h2>The add routine</h2>
+<p>Now how about the other routines? Let's start with add.</p>
+<p>We need to create a new BigNat object that represents the sum. Neither the recipient object nor the other object will be changed.</p>
+<p>The first question is how many digits will be in the representation of the sum. In order to leave enough room, we allocate one more than the length of the longer representation. It may be that not this many digits is really needed. In that case the most significant digit will be 0.</p>
+<p>Here is the code to allocate the array for the new object.</p>
+<pre class="code"><span class="codeKeyword">int</span> thisLength = <span class="codeKeyword">this</span>.digits.length ;<br><span class="codeKeyword">int</span> otherLength = other.digits.length ;<br><span class="codeKeyword">int</span> newLength = 1+ Math.max( thisLength, otherLength );<br><span class="codeKeyword">int</span>[] newDigits = <span class="codeKeyword">new int</span>[ newLength ] ;</pre>
+<p></p>
+<p>Now we need to fill in the array. We do this from the least significant digit (position 0) to the most significant digit.</p>
+<pre class="code">int carry = 0 ;<br>// Invariant: newDigits represents the<br>// sum of the of the first i digits minus carry * 10^(9*i).<br>// The carry is always 0 or 1.<br><span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; newLength ; ++i ) {<br>    <span class="codeKeyword">int</span> thisDigit ;<br>    <span class="codeKeyword">if</span>( i &lt; thisLength ) thisDigit = this.digits[i] ;<br>    <span class="codeKeyword">else</span> thisDigit = 0 ;<br>    <span class="codeKeyword">int</span> otherDigit  ;<br>    <span class="codeKeyword">if</span>( i &lt; otherLength ) otherDigit = other.digits[i] ;<br>    <span class="codeKeyword">else</span> otherDigit = 0 ;<br>    <span class="codeKeyword">int</span> sum = thisDigit + otherDigit + carry ;<br>    newDigits[i] = sum % BASE ;<br>    carry = sum / BASE ;<br>    <span class="codeKeyword">assert</span> carry == 0 || carry == 1 ; }<br><span class="codeKeyword">assert</span> carry == 0 ;
+</pre>
+<p>At this point we have the digits for the new object, but no new object has been created. To create the object, we will use a private constructor.</p>
+<pre class="code"><span class="codeKeyword">private</span> BigNat(<span class="codeKeyword">int</span>[] digits) {<br>    <span class="codeKeyword">this</span>.digits = digits ;<br>}</pre>
+<p>Because the caller of this constructor must use information about how we are representing the natural numbers, it follows that it should be a private constructor, only useable from inside this class.</p>
+<p>Having defined this private constructor, we can use it to finish off the add routine with</p>
+<pre class="code"><span class="codeKeyword">return new</span> BigNat( newDigits ) ;</pre>
+<p>The completed private constructor and <span class="codeInline">add</span> method are </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("BigNat.java", false, "code", "default.cfg", "Bs");
+  
+</script>
+</p>
+<p>The multiply method is similar to the add method (but a bit more complex).</p>
+<p>The toString method builds up a string by converting each integer in the array to a String and sticking the results together.</p>
+<p>Here is the whole class </p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("BigNat.java", false, "code", "default.cfg");
+</script>
+</p>
+<h2>Space efficiency</h2>
+<p>Our implementation has a minor efficiency problem, it can create arrays that are bigger than they need to be. As an exercise modify the class to enforce the following added invariant.</p>
+<pre class="code">// Invariant: digits.length == 0
+//         || digits[ digits.length-1 ] != 0</pre>
+<h1><a name="immutable">Immutable objects.</a></h1>
+<p>The objects of the BigNat class, like those of the Book class are &quot;immutable&quot; objects. </p>
+<p>Once an immutable object is created, it represents the same value throughout its life. It represents a value rather than a variable.</p>
+<p>A reference to one immutable object is essentially interchangeable with a reference to another immutable object that represents the same value.</p>
+<p>For example there is very little difference between</p>
+<pre class="code">BigNat a = new BigNat( 123456 ) ;<br>BigNat b = new BigNat( 123456 ) ;<br>...
+</pre>
+<p></p>
+and
+<pre class="code">BigNat a = new BigNat( 123456 ) ;<br>BigNat b = a ;<br>...
+</pre>
+<p></p>
+<p>In the first example two objects are created and in the second only one. However as the two objects created in the first example behave identically and will continue to do so forever, there is almost no difference between the two pieces of code. </p>
+<p>Earlier we saw arrays which are objects that are not immutable. We say that arrays are mutable objects. </p>
+<p>In the next section we will look at using classes to define objects that are mutable.</p>
+<h2>&nbsp;</h2>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,175 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>First Program</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p><span class="pagebreak">Here is your very first program, a traditional one, almost always shown in C++ courses.</span> It's been placed inside a special container, on which more later. You can read about what's in the container after it, or you can push the video button to see a flash video (or both). </p>
+<p><span class="pagebreak">
+<script language="JavaScript">
+setButtons(false, true,false,"introduction/programAnatomy.htm","");
+insertCode("hello_world.cpp", true, "code", "");
+  </script>
+</span></p>
+<h2>What the Heck Does It All Mean?</h2>
+<p>What you are seeing inside the code container is a computer program. It consists of a series of 
+  <script language="JavaScript">
+startDefLink("statement",50,50);
+  </script>
+statements
+<script language="JavaScript">endLink();</script>
+ (or 
+  <script language="JavaScript">
+startDefLink("instruction",50,50);
+  </script>
+  instructions<script language="JavaScript">endLink();</script>
+) which the programmer gives to the machine to tell it what to do.</p>
+<p>It's anatomy is as follows:</p>
+<p><span class="codeKeyword"><code>int</code></span><code> main() {</code></p>
+<blockquote>
+    <p> a special 
+      <script language="JavaScript">
+startDefLink("function",50,50);
+      </script>
+function
+<script language="JavaScript">endLink();</script>
+ that tells the computer where to start. All C++ programs contain exactly one <code>main</code> function. They usually contain a lot of other functions as well but the first instruction in <code>main</code> will always be the starting point. The code for <code>main</code> appears in the curly brackets <code>{ } </code>right after <code>main</code>. The <code class="codeKeyword">int</code> in front of it says <code>main</code> will send an integer back to the 
+ <script language="JavaScript">
+startDefLink("operatingSystem",50,50);
+      </script>
+operating system
+<script language="JavaScript">endLink();</script>
+ when the program has done. We'll always send <code class="codeConstant">0</code> back. </p>
+  </blockquote>
+<p><code>cout &lt;&lt; <span class="codeConstant">&quot;Hello world!\n&quot;</span>;</code></p>
+<blockquote>
+    <p><code>cout</code> is known as the ouput stream and it will normally be attached to your computer screen. <code class="codeConstant">&quot;Hello world!\n&quot; </code>is a <em>string literal</em>. A <em>literal</em> is a constant that's typed right into your code and a <em>string</em> is computerese for a bunch of characters together (a name, a word, a sentence, even a whole book). The &lt;&lt; is known as an insertion operator, so the instruction says: <em>insert &quot;Hello world!\n&quot; into the output stream</em> (which normally means it will show up on your screeen).</p>
+    <p>Oh yes, the <code>'\n' </code>represents what we call a non-printing character. This one is known as the newline character and it means end the line and start a new one.</p>
+  </blockquote>
+<p><span class="codeKeyword"><code>return</code></span><code> 0;</code></p>
+<blockquote>
+    <p> is the last instruction in our <code>main</code> function. It both marks an exit point as well as fulfilling our promise to send an integer back, in the case of <code>main</code>, to the operating system. As we said we'd always do, we return a <code class="codeConstant">0</code> (which basically means <em>all is well!</em>). </p>
+  </blockquote>
+<p><code>#include &lt;iostream&gt;</code> </p>
+<blockquote>
+  <p>The programmer is letting the machine know that the <code>iostream</code> <em>library</em> is going to be used. C++ has many libraries for handling specialized tasks, such as math or calendar dates. The <code>iostream</code> library handles inputs and outputs to the program.</p>
+  </blockquote>
+<p><span class="codeKeyword"><code>using namespace</code></span><code> std;</code></p>
+<blockquote>
+  <p>The full name of the output stream is actually <code>std::cout</code>. Programmers find this a little cumbersome so they usually place this command right after the<code> #include &lt;iostream&gt;</code>. In essence it says to the machine, <em>if you find a name you're unsure of, check the standard (std) namespace to see if it's there</em>. <code>cout</code> (along with a lot of other standard names) is in the standard namespace.</p>
+  </blockquote>
+<pre class="codeComment">/** main **********************************************************
+*
+* @params: none
+*
+* @modifies: cout -- outputs a message
+*
+* @returns: 0
+*******************************************************************/</pre>
+<blockquote>
+  <p>This is one of two <em>multiline comments</em>. Any text (including newlines) found between the open comment (<code>/*</code>) and close comment (<code>*/</code>) operators is a comment. Comments are designed for people, mostly to make program maintenance easier. They are ignored by the machine.</p>
+  <p>This comment is in the form of a standard <em>header</em> which we use before a function to tell what the  function (in this case main) does. Since more money gets spent maintaining code than writing it in the first place we will stress the importance of writing such headers and almost all our examples have them. Nevertheless, they sometimes interrupt the flow of the code so they are automatically equipped with contractors (<img src="../../webWriter/images/contracter.gif" width="15" height="13"> ) that will collapse them down.</p>
+  <p>Try clicking on the contractor and you should see the comment collapse and the contracter replaced by an expander(<img src="../../webWriter/images/expander.gif" width="15" height="13">) which will expand it back out at another click.</p>
+  <h3>A Word on the Appearance</h3>
+  </blockquote>
+<p>All the code in code containers has been automatically  marked. Your instructor has control of the marking and probably has set it up to mimic the marking used by the 
+    <script language="JavaScript">
+startDefLink("ide",100,50);
+    </script>
+IDE
+    <script language="JavaScript">endLink();</script>
+you will be using to write your own code. Here is a brief rundown of what the marking means. To make it easier to refer to, the code is repeated here. Try collapsing the comments before reading this.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"","");
+insertCode("hello_world.cpp", false, "code", "");
+  </script>
+ </p>
+<p class="codeKeyword">keywords</p>
+<blockquote>
+  <p><span class="codeKeyword">int</span>, <span class="codeKeyword">using</span>, <span class="codeKeyword">namespace</span> and <span class="codeKeyword">return</span> are all keywords, that is they are the vocabulary of the language of C++. They have very precise meanings and may not be used by programmers for other things (such as naming their functions).</p>
+  </blockquote>
+<p class="codeConstant">literals</p>
+<blockquote>
+  <p>literals are constants that appear directly in the code such as <span class="codeConstant">&quot;Hello world!\n&quot;</span> (a string literal) and <span class="codeConstant">0</span> (an integer literal).</p>
+  </blockquote>
+<p class="codeComment">comments</p>
+<blockquote>
+  <p >As we said earlier <code><span class="codeComment">/* Comments are made for people and ignored by the machine */</span> </code></p>
+</blockquote>
+<h2><a name="TeachingMachine">The Teaching Machine</a></h2>
+<p>We are going to use two distinct pieces of software in this course.</p>
+<p>The first is called an IDE (for Integrated Development Environment). You will use it for creating and building and debugging your programs. We will introduce it shortly.</p>
+<p>The second is the Teaching Machine (TM) which is a tool for demonstrating how computers work.</p>
+<ul>
+  <li>It is <em>not intended for creating, testing or debugging</em> your programs.</li>
+  <li>It <em>is</em> intended to show you in much more detail than an IDE how a computer processes programs.</li>
+</ul>
+<p>The code containers you've seen so far are actually TM containers. Most of the examples in the course are embedded inside a Teaching Machine container and they will usually have a run button  on them. We repeat the example once more with a run button. And this time the video will show you a bit about running the TM. Once you've seen the video try running the TM yourself. Hit the run button, wait for the applet to come up (in might take a few seconds) then go for it!</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, false,"introduction/programTM.htm","");
+insertCode("hello_world.cpp", true, "code", "");
+  </script>
+</p>
+<p>We actually have one more button for the code container. The edit button lets you edit the code in the container. Students often ask, <em>&quot;What if that little piece of code were different? What if I were to ....&quot; . </em>Now you can find out for yourself.</p>
+<p>This time the video will show you how to edit the code in the container. Only temporarily. You can't modify it permanently.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"introduction/editProgram.htm","");
+insertCode("hello_world.cpp", true, "code", "");
+  </script>
+</p>
+<p>Once you've run the video, try modifying the code yourself to say hello to your cat or your dad or whoever.</p>
+<h2>Button Review</h2>
+<p> Here's a review of what the all the buttons do:</p>
+<table width="863" border="1">
+  <tr>
+    <td width="113" bgcolor="#000066"><img src="../../webWriter/images/runButtonNormal.gif" width="109" height="28"></td>
+    <td width="734">This button invokes the Teaching Machine applet and passes the example over to it so that you can run the example yourself in the Teaching Machine to see how it works. </td>
+  </tr>
+  <tr>
+    <td bgcolor="#000066"><img src="../../webWriter/images/videoButtonNormal.gif" width="109" height="28"></td>
+    <td>Starts a video if one is available. Videos will normally be screen captures of the Teaching Machine being run on this particular example with a voiceover from the instructor explaining what you are seeing. </td>
+  </tr>
+  <tr>
+    <td bgcolor="#000066"><img src="../../webWriter/images/editButtonNormal.gif" width="110" height="28"></td>
+    <td>Allows you to temporarily change the example. This lets students check out &quot;what-if&quot; questions. You can't hurt the original example so feel free to experiment. The downside is there's no way to save your work.</td>
+  </tr>
+</table>
+<p>So, if  the container has a run button, clicking it will bring up the example in question inside the Teaching Machine itself (which is actually an applet as far as your browser is concerned).</p>
+<p>It may also have a video button which will bring up a video capture of your instructor going through the example on the Teaching Machine and explaining what is happening.</p>
+<p>Experience shows that students get more out of going through an example themselves (<em>active learning</em>) than simply watching someone else do it. For this reason, many of the examples do <em>not</em> have videos associated with them. Even for the ones that do, you are encouraged to run them for yourself and make sure you understand what is happening. You can even use the edit button to change the example (temporarily) if you want. </p>
+<p>Please note: not all buttons will be available for every example.</p>
+<h3>Things You Should Have Done</h3>
+<ol>
+  <li>Run the video to see how we use the Teaching Machine. Not all features will be explained yet.</li>
+  <li>Run the example yourself.</li>
+  <li>Edit the example to say hi to your dog or someone you like. Please remember, this isn't permanent.  Not the place to spend a couple of hours creating a masterpiece.</li>
+  </ol>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+&nbsp;
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

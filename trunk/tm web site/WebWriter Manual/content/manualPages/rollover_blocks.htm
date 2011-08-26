@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Rollover Blocks</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>These are similar to <a href="popups.htm">pop-ups</a> in that they have links. Rolling over the links however, changes the background colour of a section (or sections) of the page.</p>
+<h2>Rollover Block Styles</h2>
+<p>No special styles are used. Indeed, rollover blocks are chameleons that take on the background of wherever they are currently living on the page. It is only when their links are rolled over that they reveal themselves.</p>
+<h2>Known Deficiencies</h2>
+<ol>
+  <li>All rollover blocks go to the same colour when their links are rolled over,
+    regardless of what their current background is.</li>
+  <li>Rollover blocks are not argued in the stylesheet.</li>
+  <li>While one link can illuminate multiple rollover blocks, multiple links
+    cannot easily illuminate the same block. This facility would be useful for
+    constructing review quizzes. </li>
+</ol>
+<p> See the <a href="wish_list.htm">wish
+      list</a>.</p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>startBlock(name)</strong><br>
+<h3>Arguments</h3>
+<dl><dt>name</dt>
+<dd>a <strong>string</strong> giving a name to the block to be illuminated. Multiple blocks may have the same name in which case all will be illuminated at once when their links are rolled over.</dd>
+<dt>Optional Arguments</dt><dd>No extra arguments are recognized.</dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The start of the block is written dynamically into the document at the point of invocation.</p>
+<hr>
+<strong>endBlock()</strong><br>
+<h3>Arguments</h3>
+<dt>Optional Arguments</dt><dd>No arguments are recognized.</dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+
+<strong>Action</strong><br>
+<p>The end of the block is written dynamically into the document at the point of invocation.</p>
+<strong>Comment</strong><br>
+<p>The fact that the block being ended is not named implies that it must be the nearest block. That is blocks <em>may not overlap</em>. This conforms with standard HTML usage.</p>
+<hr>
+<strong>insertBlockLink(name, link)</strong><br>
+<h3>Arguments</h3>
+<dl><dt>name</dt>
+<dd>a <strong>string</strong> giving the name of the block(s) to be illuminated.</dd>
+<dt>link</dt>
+<dd>a <strong>string</strong>containing the text for the link itself. This is exactly how conventional links work.</dd>
+<dt>Optional Arguments</dt><dd>No extra arguments are recognized.</dd>
+<dt>Return</dt><dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The block link is written dynamically into the document at the point of invocation.</p>
+<hr>
+<strong>startBlockLink(name)<br>
+endLink()</strong><br>
+<strong>Comment</strong><br>
+<p>These two routines are an alternative to the <strong>insertBlockLink</strong> routine. The only difference is that the <strong>startBlockLink</strong> function is invoked before the link text and the <strong>endLink</strong> after it. No <strong>link</strong> argument is used because the link text is already on the page between the two calls marking the beginning and ending of the link.</p>
+<hr>
+
+<h2>Usage</h2>
+Rollover blocks were originally conceived of to mark the scope of variables in
+a piece of code. See the section on <a href="../markup.htm">pedagogical markup</a> for an example how that
+would work. However, there are plenty of other uses. Consider a self test unit.
+<p></p>
+<div><strong>Question 5</strong><br>
+<p>C++ can be characterized as a </p>
+<ol>
+<li>weakly typed language</li>
+<li>functional language</li>
+<li><script language="Javascript" type="text/javascript">
+<!--
+startBlock("question5");
+//-->
+</script>
+strongly typed language<script language="Javascript" type="text/javascript">
+<!--
+endBlock();
+//-->
+</script></li>
+<li>none of the above</li></ol>
+<p>The 
+  <script language="Javascript" type="text/javascript">
+<!--
+insertBlockLink("question5","answer");
+//-->
+  </script>
+    is. The rollover block is the third choice, strongly typed language. The
+      link  is &quot;answer is&quot;. Rolling over the link makes the block illuminate
+       against its background.</p>
+<p>The blocks appear in a span of class <code>rolloverBlock</code> which is not argued in the style sheet as it is a matter of highlighting any span rolled over. </p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+  </p>
+</div> 
+</body>
+</html>
+

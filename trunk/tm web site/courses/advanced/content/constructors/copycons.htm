@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Copy Constructors</title>
+</head>
+<body>
+<p> It is often the case that we would like to make an exact copy of an object</p>
+<p>This is often called <i>cloning the object</i></p>
+<p>Making a copy means basically requires&#151;</p>
+<ol>
+  <li>we construct a new object (the clone)</li>
+  <li>we set its initial state to the current state of the object being copied.</li>
+</ol>
+<p>For this purpose we use a special form of constructor called a Copy Constructor</p>
+<p>We have already seen that C++ often makes copies automatically (pass-by-value)</p>
+<p>Copy constructors are <i>automatically invoked</i> three places</p>
+<ol>
+  <li>Initialization</li>
+  <li>Passing arguments in to a function by value</li>
+  <li>Returning values from functions.</li>
+</ol>
+<p>The latter two are implicit calls, hidden from the unwary user. </p>
+<h2><a name="format">Format</a></h2>
+<p>recognized by its unique signature </p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons1.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<ul>
+  <li>The above is a <i>declaration</i> for class <span class="codeInline">X</span>, 
+    stripped to its bare essentials. </li>
+  <li>The copy constructor has as argument a <i>reference to an object of its 
+    own class</i></li>
+</ul>
+<p>(Remember - a normal constructor may not take an object of its own class as 
+  argument.) </p>
+<p>Question: Why a <i>reference</i> to an object of its own class? Why not just 
+  an object of its own class?</p>
+<h2><a name="def">Definition</a></h2>
+<p>Here are the definitions for class X as they might be found in a separately 
+  compiled file:</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons1.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<ul>
+  <li> The null constructor (no arguments) sets the <span class="codeInline">f</span> 
+    and <span class="codeInline">g</span> members of the object to <span class="codeInline">0</span></li>
+  <li>The two argument constructor sets the <span class="codeInline">f </span>member 
+    to the first argument and the <span class="codeInline">g</span> member to 
+    the second one</li>
+  <li>The copy constructor <i>copies</i><span class="codeInline"> f</span> and 
+    <span class="codeInline">g</span> from the <i>corresponding</i> <span class="codeInline">f</span> 
+    and <span class="codeInline">g</span> of the object passed in. </li>
+</ul>
+<h2><a name="using">Using the Constructors</a> (C++ by Committee!)</h2>
+(at declaration)
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons1.cpp", true, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<ul>
+  <li>In declaring object <span class="codeInline">four</span>, we used an object 
+    of class <span class="codeInline">X</span> as argument. 
+    <ul>
+      <li>The compiler calls the copy constructor as the only one allowed to have 
+        an object of its own class as argument.</li>
+    </ul>
+  </li>
+  <li>In declaring object <span class="codeInline">five</span> we <i>initialized</i> 
+    it to be the same as object <span class="codeInline">three</span>. 
+    <ul>
+      <li>The compiler calls the copy constructor for this initialization .</li>
+      <li>In order to utilize the <span class="codeInline">=</span> sign for <i>assignment</i> 
+        the <span class="codeInline">=</span> operator must be formally overloaded 
+        (see later).</li>
+    </ul>
+  </li>
+</ul>
+<h2><a name="implicit">Implicit Copy Constructor Calls</a></h2>
+<p>Let's ammend our code to add a <i>static</i> count variable.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons2.cpp", false, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p>In a class, a static variable means there is only one count for the entire 
+  class, instead of one for each object of the class.</p>
+<p>static variables are used for things such as object counting, as here</p>
+<p>Here is the implementation code for the class:</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons2.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>The static variable has to be defined (implemented) just like a function of 
+  the class. Here we set it to 0.</p>
+<p>Each constructor adds one to the count</p>
+<p>The destructor decrements the count.</p>
+<p>Voila! Object counting.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copycons2.cpp", true, "code", "3891lecture.cfg", "C", "");
+  </script>
+</p>
+<p>In this case we've gotten rid of our copy constructor and let the compiler 
+  build one</p>
+<p>Notice, when we call our silly fuction <span class="codeInline">foo</span>, 
+  <span class="codeInline">count</span> gets fowled up. </p>
+<p>The problem is that the compiler doesn't know about our counting objects, so 
+  it doesn't increment <span class="codeInline">count</span>.</p>
+<p>However, there is no copy destructor. The normal destructor gets used.</p>
+<h3>Another Example</h3>
+<p>As another example of implicit calling we put a (rather poorly designed) <span class="codeInline">add</span> 
+  function in the class <span class="codeInline">Array</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copyConsArray.cpp", false, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p>When I write in my code</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copyConsArray.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p> The call <span class="codeInline">smallArray.add(otherArray)</span> is a request 
+  to add the elements of <span class="codeInline">otherArray</span> to those of 
+  <span class="codeInline">smallArray</span> and return a sum array</p>
+<p>The implementation code for <span class="codeInline">add</span> is relatively 
+  straightforward</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("copyConsArray.cpp", true, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p>How many times is copying invoked?</p>
+<ul>
+  <li>Because <span class="codeInline">other</span> is passed by value, it is 
+    actually a <b>copy</b> of the original object <span class="codeInline">otherArray</span></li>
+  <li>Because <span class="codeInline">sum</span> is destructed at the end of 
+    the <span class="codeInline">add</span> function and only its value is returned, 
+    the return object is actually made by <b>copying</b> <span class="codeInline">sum</span></li>
+</ul>
+<p> If the designer doesn't provide a copy constructor, the compiler creates one 
+  automatically.</p>
+<p>The compiler's copy constructor is of the form</p>
+<pre>Array::Array(const Array&amp; original){
+
+	mpData = original.mpData;
+	mSize = original.mSize;
+
+}
+</pre>
+<p>In other words, the default copy constructor just copies the member data fields</p>
+<p>In the <span class="TM">Teaching Machine</span> you can see this somewhat indirectly. 
+  Since there is no actual function to call, it doesn't step into a copy constructor 
+  function, <i>per se</i>. Instead, if you step through the expression engine 
+  at the calling point you will see the member fields being copied.</p>
+<p>There is <i>no copy destructor.</i> Instead the regular destructor is called. 
+</p>
+<h2><a name="shallow">Shallow vs Deep Copy</a></h2>
+<p>The problem with the default copy constructor in the Array case is that it 
+  creates no actual array.</p>
+<p>Recall that the constructor goes to the heap to get the memory required to 
+  restore the array.</p>
+<p>In the next example, we mimic the compiler's behaviour by providing a copy 
+  constructor that is the same as the default constructor the compiler would provide 
+  if we didn't.</p>
+<p> Here is the declaration of <span class="codeInline">Array</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("shallowCopy.cpp", false, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p>And here is the implementation of the copy constructor</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("shallowCopy.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p>Now let's check out what happens when we try to use it.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("shallowCopy.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>We've created an array <span class="codeInline">A</span> then set all it's 
+  elements to <span class="codeInline">3</span></p>
+<p>Then we cloned <span class="codeInline">A</span> to create <span class="codeInline">B</span> 
+  and set all <span class="codeInline">B</span>'s elements to <span class="codeInline">0</span></p>
+<p>Look what happens when we output <span class="codeInline">A</span></p>
+<p>Be sure to check it in the linked view.</p>
+<p>The difficulty is that our objects of <span class="codeInline">Array</span> 
+  class has two kinds of storage.</p>
+<ol>
+  <li>The member data, which is compiler controlled.</li>
+  <li>The actual array storage (which is on the heap) which is constructor and 
+    destructor controlled.</li>
+</ol>
+<p>In building the default copy constructor, the compiler only knows about the 
+  first kind of memory, so that's all it clones.</p>
+<p>In copying the pointer into the heap exactly, both objects end up sharing the 
+  same heap space.</p>
+<p>It's not a true clone. It's more like a pair of siamese twins with a single 
+  heart or head.</p>
+<p>We call such a copy a <i>shallow copy</i>.</p>
+<h3><a name="deep">Deep Copy</a></h3>
+<p>In order to clone an array properly we need to give the clone it's own heap 
+  space.</p>
+<p>Then the clone is completely independent of the original.</p>
+<p>We call such a copy a <i>deep copy</i>.</p>
+<p>Here's a copy constructor for <span class="codeInline">Array</span> that does 
+  a <i>deep copy</i>.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("deepCopy.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Note both the similarities to and differences from the regular constructor. 
+</p>
+<p>The compiler takes care of duplicating the member fields (although not the 
+  data in them) before the copy constructor is called.</p>
+<p>The copy constructor</p>
+<ol>
+  <li>requests new storage from the heap (same size as the original)</li>
+  <li>copies the data from the original's heap area to the clone's heap area.</li>
+</ol>
+<p>In running the example below make sure to look at both the linked view as well 
+  as the heap and stack.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("deepCopy.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Do you see some unexpected behaviour? The set function, which worked fine before 
+  does not seem to be working.</p>
+<p>Here is the corrected version. What's the difference? Why did the &quot;incorrect&quot; 
+  version work before, but not now?</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("deepCopyFixed.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+Scroll down for the answer.
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>The incorrect version of <span class="codeInline">set</span> passes in an <span class="codeInline">Array</span> 
+  object by value. This means that a copy of the object gets made and the value 
+  gets set in that copy.</p>
+<p>This worked in the case of a shallow copy because the copy and the original 
+  <span class="codeInline">Array</span> shared the same data in the heap.</p>
+<p>So when that data area got set in the copy, it was set in the original as well.</p>
+<p>Once we created a true deep copy, the data area was set in the copy but not 
+  in the original and the <span class="codeInline">set</span> data was lost once 
+  the <span class="codeInline">set</span> function was ended.</p>
+<p>Passing the <span class="codeInline">Array</span> object to <span class="codeInline">set</span> 
+  by reference solves the problem.</p>
+<h2><a name="running">Running Classes</a></h2>
+<p>We need to ammend our running classes to take copy constructors into account.</p>
+<p>We've already taken care of the <span class="codeInline">Array</span> class.</p>
+<p>The <span class="codeInline">Account</span> class doesn't need a copy constructor 
+  because it just uses standard memeory so the compiler (default) version works 
+  fine.</p>
+<p>This leaves the <span class="codeInline">MyString</span> class. Like <span class="codeInline">Array</span>, 
+  it gets it's actual storage from the heap.</p>
+<p>Actually, there's a simple test for the need to build your own copy constructor. 
+  Did you need a destructor?</p>
+<p>If so, you virtually always require a copy constructor.</p>
+<p><span class="codeInline">Array</span> and <span class="codeInline">MyString</span> 
+  needed a destructor to clean up the heap and our <span class="codeInline">X</span> 
+  class required one when we added a <span class="codeInline">static</span> Object 
+  <span class="codeInline">count</span> (to decrement the <span class="codeInline">count</span> 
+  whenever an object was destroyed). All of them need copy constructors.</p>
+<p><span class="codeInline">Account</span> didn't need a destructor and it doesn't 
+  need a copy constructor. The defaults work fine.</p>
+<p>So, without more ado, here is the declaration for a <span class="codeInline">MyString</span> 
+  class with a proper copy constructor.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Another feature has been added as well. The function <span class="codeInline">changeTo( 
+  )</span> allows a whole string to be changed (even if the new string is a different 
+  length)</p>
+<p>Note there are two different versions of <span class="codeInline">changeTo</span></p>
+<pre>	void changeTo(const char* newString);
+	void changeTo(const MyString newString);
+</pre>
+<p>The first one lets us provide a conventional C string</p>
+<p>The second version lets us use a <span class="codeInline">MyString</span> object 
+  to effect the change.</p>
+<p><i>We can overload conventional functions as well as constructors</i>.<br>
+</p>
+<h3>Implementation code</h3>
+<p>Here are the constructor implementations</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Notice again how similar the constructor and the copy constructor are. That 
+  is not a surprise since they fundamentally have to do the same thing&#151;build 
+  a valid <span class="codeInline">MyString</span> object.</p>
+<p>However there are subtle differences&#151;these stem from the fact that the 
+  <i>source</i> of the information required to build the object is different.</p>
+<p>Finally, although we could have used array notation (after all, conventional 
+  C strings are arrays of characters) pointer notation has been used, just to 
+  keep you in touch with it.</p>
+<p>Notice that <span class="codeInline">mPtr</span> is never actually moved (pointer 
+  + offset notation is used).</p>
+<p><span class="codeInline">mPtr</span> marks the beginning of our heap storage 
+  and we never move it because our <span class="codeInline">MyString</span> objects 
+  could be destructed at any time.</p>
+<p>Here is the destructor </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p>When delete is called on <span class="codeInline">mPtr</span>, we want it pointing 
+  at the beginning of our storage or we will confuse the heap manager. </p>
+<h3><a name="compare">A Compare Function</a></h3>
+<p>We also added a function to allow us to compare two <span class="codeInline">MyString</span> 
+  objects</p>
+<p>(If you invoke the TM here, just step into the <span class="codeInline">compare</span> 
+  function for now)</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", true, "code", "3891lecture.cfg", "D", "");
+</script>
+</p>
+<p>This one only tells us if the objects are the same or not (later on we'll tackle 
+  the problem of which one is &quot;greater&quot;)</p>
+<p>Notice we do a cheap test first. If the strings have different lengths they 
+  <i>can't</i> be the same.</p>
+<h3><a name="conventional">Conventional Function Overloads</a></h3>
+<p>C++ allows any function to be overloaded. We already saw it for constructors.</p>
+<p>In a future chapter, we'll study overloads more formally.</p>
+<p>In the meantime, here is the implementation of the first version of <span class="codeInline">changeTo</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.cfg", "E", "");
+  </script>
+</p>
+<p>It takes a conventional string as argument.</p>
+<p>Since that string might be of a different length than our existing string we 
+  have to take care of that.</p>
+<p>The code looks similar to the copy constructor (look back and see). There is 
+  one crucial difference</p>
+<p>We have to deal with the fact that our object owns a pre-existing string. If 
+  we're going to create new space on the heap (because the length is different) 
+  we <i>must make sure we release the old storage properly!</i></p>
+<p>Notice how careful we are. We first create a temporary pointer, <span class="codeInline">pTemp</span>, 
+  and ask the heap manager for space (by invoking <span class="codeInline">new</span>)</p>
+<p>Only if we succeed do we release the old space and reset <span class="codeInline">mPtr</span> 
+  to the new space.</p>
+<p>Here's the version of <span class="codeInline">changeTo</span> overloaded to 
+  accept a <span class="codeInline">MyString</span> object as the source of its 
+  new string.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.cfg", "F", "");
+  </script>
+</p>
+<p>Notice how simple it is. All it does is call the first version, passing it 
+  the internal <span class="codeInline">mPtr</span> of the source object.</p>
+<p>Why did we bother?</p>
+<p>In our test code we have the following:</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myStringCopyCon.cpp", true, "code", "3891lecture.cfg", "G", "");
+</script>
+</p>
+<p>When we wanted to use the <span class="codeInline">unlucky</span> <span class="codeInline">MyString</span> 
+  object to change our password why not just give it the pointer directly?</p>
+<pre>password.changeTo(unlucky.mPtr); // Heck with it, I'll never remember it!</pre>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>The answer, of course is that we can't.<i> <span class="codeInline">mPtr</span> 
+  is private!</i> We're not allowed to manipulate it from code outside the class 
+  code.</p>
+<p>But the class code can. So we provide a simple overload that passes the pointer 
+  in for us.</p>
+<h2><a name="embedding">Embedding Classes into Classes</a></h2>
+<p>We have been using variables as object attributes.</p>
+<p>We can also use other objects.</p>
+<p>In the <span class="codeInline">User</span> class below (which represents a 
+  user in a computer system) we are using <span class="codeInline">MyString</span> 
+  objects for <span class="codeInline">mName</span>,<span class="codeInline">mUname</span> 
+  and <span class="codeInline">mPassword</span>.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("user.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Notice there is only a constructor.</p>
+<p>We haven't supplied either a destructor or a copy constructor. (Remember, if 
+  we need one, we need the other. Conversely, if we don't need one, we don't the 
+  other.) </p>
+<p>But do we need them? </p>
+<p>First let's focus on the constructor. We introduce a new format&#151;the <i>initialization 
+  list.</i></p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("user.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>the list is in the form<span class="codeInline"> : mName(n), mUname(u),mPassword(p)</span></p>
+<p>and it precedes the body of the constructor (which is empty in this case although 
+  it doesn't have to be)</p>
+<p>Remember, the compiler allocates space for the object's attributes <i>before 
+  it calls the constructor</i></p>
+<p>That gives us a problem because the attributes are objects. <i>Allocating space 
+  for them means calling their constructors!</i></p>
+<p>C++ gets around the problem by setting up the initializer list.</p>
+<p>It's meaning is simple. The arguments passed into the <span class="codeInline">User</span> 
+  constructor, <span class="codeInline">n</span>, <span class="codeInline">u</span>, 
+  and <span class="codeInline">p</span> (which are pointers to conventional C 
+  strings) are passed straight to the <span class="codeInline">mName</span>, <span class="codeInline">mUname</span> 
+  and <span class="codeInline">mPassword</span> constructors.</p>
+<p>Since they are all <span class="codeInline">MyString</span> objects, it's actually 
+  three calls to the <span class="codeInline">MyString</span> constructor, applied 
+  to the three different objects.</p>
+<p>Why don't we just step into the <span class="codeInline">User</span> constructor 
+  once or twice and watch this work. </p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("user.cpp", true, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<h3><a name="automated">Automated Copy Construction</a></h3>
+<p>Why don't we need a copy constructor? All the attribute objects need space 
+  from the heap.</p>
+<p>The answer is that it is the <span class="codeInline">MyString</span> class 
+  which have to go to the heap and<i> <span class="codeInline">MyString</span> 
+  does have a copy constructor</i>.</p>
+<p>We don't need one for <span class="codeInline">User</span>, because <span class="codeInline">User</span> 
+  objects just have plain, non-static attributes.</p>
+<p>The compiler knows how to take care of them. Step in and see.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("user.cpp", true, "code", "3891lecture.cfg", "D", "");
+</script>
+</p>
+<h3><a name="anonymous">Constructing Anonymous Objects</a></h3>
+<p>Finally, consider setting the password in <span class="codeInline">User</span>. 
+  The function</p>
+<pre> bool setPassword(const MyString& p1, const MyString& p2); </pre>
+<p>requires a pair of <span class="codeInline">MyString</span> objects as arguements. 
+  But what if we don't have any handy? What if we want to use simple C string 
+  constants?</p>
+<p>We could declare a couple of <span class="codeInline">MyString</span> objects 
+  from the strings, then use them, like this.</p>
+<pre> MyString pass1(&quot;unlucky&quot;);
+ MyString pass2(pass1);
+ mpblClone.setPassword(pass1, pass2); </pre>
+<p>but it's inelegant. <span class="codeInline">pass1</span> and <span class="codeInline">pass2</span> 
+  will be hanging around long after we need them.</p>
+<p>Instead of naming a couple of objects we can construct anonymous (unnamed) 
+  objects on the fly, like this.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("user.cpp", true, "code", "3891lecture.cfg", "E", "");
+</script>
+</p>
+<p>Now they are built just at the point we need them (the call to <span class="codeInline">setPassword</span>) 
+  and disappear like smoke when we're done with them.</p>
+<h2><a name="summary">Summary</a></h2>
+<p>Copy constructors are used to create new objects by cloning an existing object</p>
+<p>Their signature is the same as a constructors except they take a <i>reference 
+  to an object of the same class</i> as their argument.</p>
+<p>Pass-by-value (either when entering a function or returning a value) both involve 
+  copying and therefore call the copy constructor.</p>
+<p>If you don't provide a copy constructor, the compiler will build one for you 
+  (it will simply copy the attributes of the original object).</p>
+<p>If a constructor allocates extra memory on the heap and the copy constructor 
+  only copies the original object's attributes, it is called a <i>shallow copy</i>.</p>
+<p>Copying both the extra heap space as well as the original attributes is known 
+  as making a <i>deep copy</i>.</p>
+<p>If you need a destructor, you need a copy constructor (and vice versa).</p>
+<p>A static class variable means there is only a single copy of the variable for 
+  the whole class (objects don't get their own copy).</p>
+<p>Static variables are used for class maintenance (like object counting).</p>
+<p>The presence of static variables or the need to go to the heap for extra space 
+  are strong indicators that a destructor and copy constructor are required.</p>
+<p><i>Any</i> function in C++ can be overloaded.</p>
+<p>Classes may use objects of other classes as attributes.</p>
+<p>It is possible to create anonymous objects on the fly.</p>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("copycons1.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("copycons2.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("copyConsArray.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("shallowCopy.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("deepCopy.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("deepCopyFixed.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("myStringCopyCon.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("user.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+
+</div>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

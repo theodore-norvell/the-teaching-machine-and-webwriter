@@ -1,0 +1,447 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Using Variables</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>What we've done so far</p>
+<blockquote>
+  <p>Variables have attributes: 
+    <script language="JavaScript">
+startDefLink("name");
+      </script>
+name
+<script language="JavaScript">
+endLink();
+  </script>
+, 
+<script language="JavaScript">
+startDefLink("type");
+      </script>
+type
+<script language="JavaScript">
+endLink();
+  </script>
+, size and 
+<script language="JavaScript">
+startDefLink("location");
+      </script>
+location
+<script language="JavaScript">
+endLink();
+  </script>
+.</p>
+  <p>Variables, like functions, have to be declared before they can be used, as follows:</p>
+  <blockquote>
+    <p><code>type name = expression; </code></p>
+    </blockquote>
+  <p>where the <code>= expression</code> is an optional initialization.</p>
+  <p>Examples of legal declarations are</p>
+  <blockquote>
+    <pre><span class="codeKeyword">int</span> n = <span class="codeConstant">3</span>;
+<span class="codeKeyword">double</span> z;
+<span class="codeKeyword">float</span> PI = <span class="codeConstant">3.14159</span>;</pre>
+  </blockquote>
+</blockquote>
+<h1><a name="assignment">The Assignment Statement</a></h1>
+<p> Here's a typical assignment statement.</p>
+<blockquote>
+  <p><code>x = 2 * y + 17.3; </code></p>
+</blockquote>
+<p>It looks like an algebraic equation (the * is computerese for multiply) but <strong>it is not</strong>! For example the following is a legal (and equivalent) algebraic equation</p>
+<blockquote>
+  <p><code>x - 2 * y = 17.3;</code></p>
+  </blockquote>
+<p>but it is <strong>not a legal assignment statement</strong>. An assignment statement always has the form </p>
+<blockquote>
+  <p> <code>variable = expression; </code></p>
+</blockquote>
+<p>We will study expressions in the next section but, in essence, an expression is similar to a mathemetical expresson and it can always be evaluated&#8212;that is, systematically reduced to a value. So effectively what an assignment statement really does is</p>
+<ol>
+  <li>compute a value for the expression on the right</li>
+  <li>Store the value in the variable on the left </li>
+</ol>
+<p>One consequence is that the expression on the right may contain <code>x</code> &#8212;the 'old' value is used. The following does not correspond to a legal mathematical equation: </p>
+<blockquote>
+  <p><code>x = x + <span class="codeConstant">1</span>;</code></p>
+  </blockquote>
+<p>but <strong>it is a legal assignment statement</strong>&#8212;it says, <em>look up the current value for x, add 1 to it, then store the result back into x. </em> Its net effect is to increase the value in <code>x</code> by 1. </p>
+<p>Always think of the <code>=</code> as a replacement operator <code><img src="../../webWriter/images/LeftArrow.gif" width="39" height="11"></code></p>
+<p><code>x  <img src="../../webWriter/images/LeftArrow.gif" width="39" height="11"> x+<span class="codeConstant">1</span>;</code></p>
+<p>For example, here's a simple function that accepts any value,<code> n </code>, increments it and then returns it.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/assignment.htm");
+insertCode("replacement.cpp", false, "code", "", "A", "all");
+  
+  </script>
+</p>
+<p>Here's a little bit of test code for our example</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/assignment.htm");
+insertCode("replacement.cpp", true, "code", "", "B", "all");
+  
+  </script>
+</p>
+<h1><a name="parameters"></a>Parameters as Variables</h1>
+<p>As you saw if you ran the previous video, <script language="JavaScript">
+startDefLink("parameter");
+      </script>
+  parameters
+    <script language="JavaScript">
+endLink();
+  </script>
+  are effectively variables.</p>
+<ol>
+  <li>They are declared in the parameter list just like variables, by specifying their type and their name.</li>
+  <li>Their declaration causes space to be set aside in memory for them. </li>
+  <li>Thereafter, they can be referred to in the code just by their name (don't use the type again!). </li>
+</ol>
+<p>Here's an  example with a two-parameter function. There's no video for this one. It is for you to run yourself. Make sure you execute the function call from the Expression Engine. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("speed.cpp", true, "code", "", "A", "all");
+  
+  </script>
+</p>
+<h1><a name="asArguments">Using Variables as Function Arguments</a></h1>
+<p>When we call a function we can use variables as function 
+  <script language="JavaScript">
+startDefLink("argument");
+      </script>
+arguments
+<script language="JavaScript">
+endLink();
+  </script>
+ instead of values. We're going to explore this a bit. A prevalent view of a function is that it provides a service. Thus those who use the service are its clients. We adapt the previous example by creating four clients for our <code>speed </code> function, each with a different calling style, as follows:</p>
+<dl>
+  <dt>constantClient()</dt>
+  <dd>always calls the function its using with constants, actually
+  <script language="JavaScript">
+startDefLink("literal");
+  </script>
+  literals
+  <script language="JavaScript">
+endLink();
+  </script>
+  .</dd>
+  <dt>anxiousClient()</dt>
+  <dd>always calls the function its using with variables that have the same name as the function 
+    <script language="JavaScript">
+startDefLink("parameter");
+    </script>
+parameters
+<script language="JavaScript">
+endLink();
+  </script>
+.</dd>
+  <dt>independentClient()</dt>
+  <dd>always calls the function its using with variables that have  names different from  the function
+      
+  parameters.</dd>
+  <dt>confusedClient()</dt>
+  <dd>always calls the function its using with variables that have the same names as  the function parameters, but in a different order.</dd>
+  </dl>
+    <p>These clients are really just models for the different ways in which functions get called and we will use them repeatedly. Remember, functions are written once, called many times. Three of these four clients will call the speed function using variables as 
+      <script language="JavaScript">
+startDefLink("argument");
+      </script>
+arguments
+<script language="JavaScript">
+endLink();
+  </script>
+. </p>
+    <p>Since this example is bigger than any created so far, lets just break it down into steps. First of all, lets just look at <code>main</code>.</p>
+    <p>
+      <script language="JavaScript">
+	setButtons(true, true, true,"");
+	insertCode("speedClients.cpp", false, "code", "", "M");
+      </script>
+</p>
+    <p>All <code>main</code> does is call the four clients, each in turn.</p>
+    <p>Here is the <code>constantClient</code>. Separate videos are available for each client. You can run it all yourself at the end if you like. </p>
+    <p>
+      <script language="JavaScript">
+	setButtons(false, true, false,"variables/constantClient.htm");
+	insertCode("speedClients.cpp", true, "code", "", "B");
+      </script>
+</p>
+    <p>As you can see, all we did was to take the code we had in <code>main</code> previously and move it to this client.</p>
+    <p>Here is the <code>anxiousClient</code>. It <code></code> duplicates what the <code>constantClient</code> does but uses variables instead of a literal constants for its function arguments. However it did what many students do, looked at the function declaration and saw that it uses the names <code>distance </code>and<code> time </code> for its
+      <script language="JavaScript">
+startDefLink("parameter");
+      </script>
+parameters
+<script language="JavaScript">
+endLink();
+  </script>
+. The <code>anxiousClient</code> believes names are important, so carefully uses the same names when creating local variables. As we shall see with our next client, this care is wasted.</p>
+    <p>
+      <script language="JavaScript">
+	setButtons(false, true, false,"variables/anxiousClient.htm");
+	insertCode("speedClients.cpp", true, "code", "", "C");
+      </script>
+    </p>
+    <p>The <code>independentClient</code> uses variables as well but it always uses its own names. As you'll see, that is just fine. Here it is.</p>
+    <p>
+      <script language="JavaScript">
+	setButtons(false, true, false,"variables/independentClient.htm");
+	insertCode("speedClients.cpp", true, "code", "", "D");
+      </script>
+    </p>
+    <p>Like the <code>anxiousClient</code>, the <code>confusedClient</code> believes that function call 
+      <script language="JavaScript">
+startDefLink("argument");
+      </script>
+arguments
+<script language="JavaScript">
+endLink();
+  </script> 
+are matched with function definition 
+      <script language="JavaScript">
+startDefLink("parameter");
+      </script>
+parameters
+<script language="JavaScript">
+endLink();
+  </script> 
+by name. Since it believes matching is done by name,  order doesn't matter and it gets the 
+      <script language="JavaScript">
+startDefLink("parameter");
+      </script>
+parameters
+<script language="JavaScript">
+endLink();
+  </script> 
+out of order. </p>
+    <p>Here's the code with all the buttons. Run, the video, run the code. You'll see the <code>independentClient</code> is just fine. The name doesn't matter!</p>
+    <p>
+      <script language="JavaScript">
+	setButtons(true, true, true,"variables/confusedClient.htm");
+	insertCode("speedClients.cpp", true, "code", "", "E", "all");
+      </script>
+</p>
+    <h2>What's In a Name? </h2>
+    <p>Shakespeare had it just right: <em>A rose by any other name would smell as sweet</em>. The speed function is called a total of eight times by four different clients, each of which wants the speed for the world record 100 metre dash and the world record marathon. Here is a summary of the calls made to calculate the speed for the 100.0 metre dash by the four clients. </p>
+    <table width="100%"  border="1">
+      <t>
+        <th>client</th>
+        <th>call</th>
+        <th>distance in speed </th>
+        <th>time in speed </th>
+      </tr>
+      <tr>
+        <th>constantClient</th>
+        <td>speed(100., 9.77) </td>
+        <td>100.0</td>
+        <td>9.77</td>
+      </tr>
+      <tr>
+        <th>anxiousClient</th>
+        <td>speed(distance, time)&nbsp;&nbsp; (distance:100.0, time:9.77) </td>
+        <td>100.0</td>
+        <td>9.77</td>
+      </tr>
+      <tr>
+        <th>independentClient</th>
+        <td>speed(length, elapsed) &nbsp;&nbsp;(length: 100.0, time: 9.77) </td>
+        <td>100.0</td>
+        <td>9.77</td>
+      </tr>
+      <tr>
+        <th>confusedClient</th>
+        <td>speed(time, distance) &nbsp;&nbsp;&nbsp;(distance: 100.0, time: 9.77) </td>
+        <td>9.77</td>
+        <td>100.0</td>
+      </tr>
+    </table>
+    <p>When a variable is used as an 
+      <script language="JavaScript">
+startDefLink("argument");
+      </script>
+argument
+<script language="JavaScript">
+endLink();
+  </script> 
+in a function call, the current value of the variable is read from memory and used in the call in place of the variable. Thus <code>anxiousClient</code>'s <code>speed(distance, time)</code> becomes <code>speed(100.0, 9.77)</code> and <code>independentClient</code>'s call, <code>speed(length, elapsed)</code> also becomes <code>speed(100.0, 9.77)</code>. Thus&#8212;</p>
+    <blockquote>
+      <p><strong>the names used by the clients don't matter since only the values of the variables are passed to speed anyway. </strong></p>
+    </blockquote>
+    <p>From<code> speed</code>'s point-of-view the all the calls might just as well have been made by the <code>constantClient</code>. All <code>speed</code> see is the values, anyway. It knows nothing about the names of original variables, or even if there are variables.</p>
+    <p><code>ConfusedClient</code>'s call goes badly awry because <code>speed(time, distance)</code> becomes <code>speed(9.77, 100.0)</code> and <code>speed</code>'s <code>distance</code> becomes 9,77 and<code> speed</code>'s <code>time</code> becomes 100.0. The resulting computation is completely wrong.</p>
+    <blockquote>
+      <p><strong>The function calling argument values are matched with the function definition parameters purely by  order.</strong></p>
+    </blockquote>
+    <p>The first value is matched to the first parameter, which is <code>distance</code> in this case. The second is matched with the second, in this case <code>time</code>.</p>
+    <h1><a name="Constants">Symbolic Constants</a></h1>
+<p>There are actually two kinds of constants. Constants can be either  <aa/p>
+<ul>
+<li>a
+  <script language="JavaScript">
+startDefLink("literal");
+  </script>
+  literal
+  <script language="JavaScript">
+endLink();
+  </script>
+  value (e.g.,<span class="codeConstant"> 5</span>, <code class="codeConstant">&quot;A message.&quot;</code>), or</li>
+<li>a symbolic constant: a
+  named
+  <script language="JavaScript">
+startDefLink("memory");
+  </script>
+memory<b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b> cell whose value never changes (for the duration of the program).</li>
+</ul>
+<p>A symbolic constant is created by declaring an intialized variable with the keyword <code class="codeKeyword">const</code> in front of it. It is conventional to use all capitals for constant names. For example</p>
+<blockquote>
+  <pre><span class="codeKeyword">const</span> <span class="codeKeyword">int</span> MONTHS = <span class="codeConstant">12</span>;
+<span class="codeKeyword">const</span> <span class="codeKeyword">double</span> PI = <span class="codeConstant">4</span> * atan(<span class="codeConstant">1.0</span>);
+<span class="codeKeyword">const</span> <span class="codeKeyword">char</span> YES = <span class="codeConstant">'Y'</span>;
+<span class="codeKeyword">const</span> <span class="codeKeyword">int</span> LONG_CONSTANT_NAME = <span class="codeConstant">17</span>;</pre>
+</blockquote>
+  <p>Notice that where we would use capital letters to make individual words stand out in long names for variables, we use underscores in the all cap constants. </p>
+  <p>If a constant is to be used more than once always use the symbolic constant form. It's easier to maintain than a 
+  <script language="JavaScript">
+startDefLink("literal");
+  </script>
+literal<b><em>
+<script language="JavaScript">
+endLink();
+  </script>
+</em></b>.</p>
+  <h1>Exercises</h1>
+  <ol>
+    <li>Write a declaration for each of the following. Make sure you use a mnemonic (self-descriptive) name:
+      <ol type="i">
+        <li>A variable to count the number of students in a class.</li>
+        <li> A variable to represent the slope of a roof.</li>
+        <li>A variable to represent the response to a multiple choice exam question, the answer for which is a, b, c, d or e.</li>
+        <li>A variable to represent the speed of a car. </li>
+        <li>A constant to represent Avagadro's number (which if you don't know, you can Google). </li>
+      </ol>
+    </li>
+	<li>Rework the ageProblem from the last topic so that it is a separate function and has a <code>constantClient</code>, an <code>anxiousClient</code>, an <code>independentClient</code> and a <code>confusedClient</code>. </li>
+  </ol>
+
+<script language="JavaScript">
+	startHiddenAnswer("1i");
+</script>
+<blockquote>
+  <span class="codeKeyword"><code>int</code></span><code> count;</code>
+</blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1ii");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>double</code></span><code> slope;</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">float</span> slope;</code> </blockquote>
+  <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1iii");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>char</code></span><code> answer;</code> </blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1iv");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>float</code></span><code> speed;</code>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">double</span> speed;</code></blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1v");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>const float </code></span><code> N = <span class="codeConstant">6.022e23</span>;</code>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">const double</span> N = <span class="codeConstant">6.022e23</span>;</code></blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("2");
+    </script>
+</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true);
+	insertCode("ageClients.cpp", true, "code", "", "ALL", "all");
+      </script>
+  </p>
+  <p>      <script language="JavaScript">
+	endHiddenAnswer();
+      </script>
+  </p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full </h1>
+   <script language="JavaScript">
+insertCode("replacement.cpp", false, "code", "", "all", "all");
+  </script>
+<p class="pagebreak">
+   <script language="JavaScript">
+insertCode("speed.cpp", false, "code", "", "all", "all");
+  </script>
+<p class="pagebreak">
+
+<script language="JavaScript">
+insertCode("speed.cpp", false, "code", "default.tmcfg", "all", "all");
+</script>
+<p class="pagebreak">
+ <script language="JavaScript">
+	insertCode("speedClients.cpp", false, "code", "", "all", "all");
+</script></p>
+<p class="pagebreak">
+  <script language="JavaScript">
+	insertCode("getMark.cpp", false, "code", "", "all", "all");
+</script>
+</p>
+<!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

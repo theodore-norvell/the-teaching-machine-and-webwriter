@@ -1,0 +1,6 @@
+// suffix is wrong for a test file
+//! compile this file
+
+int main() {
+    return 0 ;
+}

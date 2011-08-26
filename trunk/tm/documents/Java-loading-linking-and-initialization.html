@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+     <title>Java: Loading, linking, and initialization.</title>
+</head>
+<body>
+<h1>Java: Loading, linking, and initialization.</h1>
+
+<h2>Overview</h2>
+<p>Before a java class or interface can be used for certain things,
+it must be loaded, linked, and initialized.
+</p>
+<dl>
+  <dt>Loaded</dt><dd>In a normal java environment this would mean
+  reading the .class file and constructing an object of class <kbd>Class</kbd>
+  to represent it internally.
+  </dd>
+  <dt>Linked</dt><dd>Linking consist of two or three steps
+    <dl>
+      <dt>Verify</dt><dd>Verification checks the JVM code to ensure that
+          it does not violate security restriction.  Verification is not
+          relevant to the Teaching Machine.
+      </dd>
+      <dt>Prepare</dt><dd>Preparation consists of allocating space for
+          static fields and initializing them to default values.
+      </dd>
+      <dt>Resolve (optional)</dt><dd>Resolving consists of replacing
+      symbolic references for things (e.g. methods or static fields in other
+      classes) with direct references (addresses). This step is
+      considered optional and resolution may be delayed until the
+      the reference is used.
+      </dd>
+    </dl>
+  </dd>
+  <dt>Initialized</dt><dd>Initialization consists of executing
+  static variable initializations and code blocks marked static in the
+  the class.
+  </dd>
+</dl>
+
+<p>For example. Consider
+</p>
+<pre>
+    class SomeClass {
+        static int i = 13;
+        static int j ;
+        static {
+            j = 0 ;
+            for(int k=0 ; k &lt; i ; k++ ) {
+                    j += k ;}
+        }
+    }
+</pre>
+<p>During Preparation i and j are initialized to their default value (zero).
+   During Initialization, i is initialized to 13 and j is initialized to 78.
+</p>
+
+<h2>Sequencing</h2>
+<h3>When initialization takes place</h3>
+<p>Initialization of a class or interface T takes place immediately before the
+   first occurrence of any of the following:
+</p>
+<ul>
+    <li>An instance of class T is created.
+    <li>A static method of class T is invoked.
+    <li>A static field of a class or interface T is assigned.
+    <li>A static field of a class or interface T is used (unless the
+        field access is a compile time constant expression).
+    <li>Certain operations from class <kbd>java.lang.Class</kbd>
+        and package <kbd>java.lang.relflect</kbd> cause classes to
+        be initialized.
+    <li>A direct subclass of a class T is about to be initialized.
+</ul>
+<p>For example: Consider the following code
+</p>
+<pre>
+    package initialize;
+    
+    public class Initialize1 extends Super1 implements SomeInterface1 {
+        static {
+            System.out.println("one"); }
+        public static void main(String[] args) {
+            int one = SomeInterface1.one ;
+            System.out.println("two");
+            SomeClass1.x = SomeInterface1.a ;
+            System.out.println("five");
+        }
+        static int init() { System.out.println("three") ; return 0 ; }
+    }
+    
+    class Super1 {
+        static {
+            System.out.println("zero"); }
+    }
+        
+    
+    class SomeClass1 {
+        static int x ;
+        static {
+            System.out.println("four"); }
+    }
+    
+    interface SomeInterface1 {
+        static final int one = 1 ;
+        static final int a = Initialize1.init() ;
+    }
+</pre>
+<p>It should print out</p>
+<pre>
+    zero
+    one
+    two
+    three
+    four
+    five
+</pre>
+<p>The initialization of <kbd>Initialize1</kbd> is prompted by the call
+   to main, but before that can happen <kbd>Super1</kbd> (but not
+   <kbd>SomeIterface1</kbd>) is initialized.
+   The initialization of <kbd>one</kbd> in main does not cause SomeInterface1 to
+   be initialized because <kbd>SomeIterface1.one</kbd> is a compile time constant
+   expression.  The reference to <kbd>SomeIterface1.a</kbd> is not a compile time
+   constant expression and so it prompts the initialization of <kbd>SomeInterface1</kbd>,
+   resulting in <kbd>three</kbd> being printed. The assignment to <kbd>SomeClass1.x</kbd>
+   prompts the initialization of <kbd>SomeClass1</kbd>, causing <kbd>four</kbd>
+   to be printed.
+</p>
+<p><em>Aside: The JDK 1.3.1 implementation, at least, also initializes when the
+       <kbd>.class</kbd> construct is called. For example
+       <kbd>SomeClass1.class</kbd> causes the initialization of <kbd>SomeClass1</kbd>.
+       I can't reconcile this behaviour with the standard.
+   </em>
+</p>
+
+<h3>Loading and Linking</h3>
+
+<p>Loading must precede Linking and Linking must precede Initialization.
+   Exactly when loading and linking take place is visible to the
+   user in terms of when certain exceptions may be thrown. For example a
+   NoClassDefFoundError exception should only occur during loading
+   of the class and a VerifyError exception should only be thrown
+   during linking.  The system is welcome to actually load and
+   link a class earlier than required by the standard as long as
+   these exceptions are not thrown until the time when the loading
+   or linking "ought" to take place.
+</p>
+<p>As to exactly when loading and linking ought to take place, I found
+   the exact answer to this question difficult to ascertain from either
+   the standard or from the jdk compiler.  The following is clear
+</p>
+   <ul>
+       <li>A superclass or superinterface should be loaded before a
+           subclass is initialized [loaded?].
+       </li>
+       <li>A class need not be loaded (and hence linked) until it is
+           needed in the code.
+       </li>
+   </ul>
+<p>To illustrate the second point, consider deleting (or corrupting) the
+   <kbd>SomeClass1.class</kbd> file before executing the above
+   program.  The program prints
+</p>
+<pre>
+    zero
+    one
+    two
+    three
+</pre>
+<p>before throwing a NoClassDefFoundError (or VerifyError) exception.
+</p>
+
+<h2>What to do in the TM</h2>
+
+<p>If we ignore (for now, at least) the exceptions generated
+   by loading and linking, we can effectively load and link
+   all classes during the fourth pass. (And it should be noted
+   that probably none of these exceptions are relevant to the
+   Teaching Machine. Most of them are guard against corruption
+   of .class files or use of library files incompatible with the
+   interfaces that were used during compilation.)
+   This means that the static variables can be placed in
+   static memory during the fourth pass and initialized
+   to default values during the fourth pass.
+</p>
+<p>For the time being we'll punt on the issue of creating Class 
+   objects.  These are really only needed for reflection and
+   aren't much good until we support libraries better.
+</p>
+<p>This means that static variables (datums) can be added into the static
+   area of memory and added to the run-time symbol table
+   during the fourth pass.
+</p>
+<p>In C++ chains of initialization statements are added registered with
+   the run-time symbol table during compilation and are executed prior
+   to calling main (see Cpp.CplusPlusLang.executeInitializations). Each
+   chain is in effect a subroutine, ending with a StatReturn node.
+   For example a file
+</p>
+<pre>
+        static int i = 12 ;
+        static int j = foo() ;
+        static int k = 42 ;
+</pre>
+<p>would result in two initialization chains being created, one for i
+   and k and another for initializing j. This is because the C++ standard says that
+   the any initialization by a compiler time constant should take place first before
+   any other initialization.
+</p>
+<p>In Java, static variables are initialized to their default values during
+   preparation. There are a number of ways to accomplish this.
+</p>
+<ul>
+    <li>One is that whenever a primitive
+        Datum is constructed, it is initialized
+        to its default value.  This is the approach currently taken.
+        It has one major problem: It applies equally to local variables,
+        temporary datums (i.e. those in the scratch region),
+        instance variables (nonstatic fields), array members, and static variables.
+        In reality, we don't want this to happen for local variables
+        and it doesn't matter much for temporary variables.
+    </li>
+    <li>Use static initialization chains, as in C++. These would be executed
+        before execution of Main.  This doesn't address the issue of
+        default initialization of instance variables and array members.
+    </li>
+    <li>Define a new method on Datums <kbd>void defaultInitialize()</kbd>.
+        This method can be called
+        <ul>
+            <li>from fourth pass right after the datum is created.
+            </li>
+            <li>from <kbd>makeMemberDatum</kbd> for in <kbd>TyAbstractClass</kbd>
+            </li>
+            <li>when datums are added to arrays.
+            </li>
+        </ul>
+     </li>
+</ul>
+<p>Of these choices, my preference is for the last.
+</p>
+<p>Initialization of a class has to take place at very specific points
+   in the code. These points will be coded into the AST code using a new
+   node <kbd>ExpEnsureClassInit</kbd>.  For example an expression
+   <kbd>SomeClass.x = 1</kbd> would be coded as
+</p>
+<pre>
+     OpAssign[
+         ExpEnsureClassInit[ ExpId( SomeClass.x ) ],
+         ConstInt(1) ]
+</pre>
+<p>The constructor for <kbd>ExpEnsureClassInit</kbd> will include 
+   the <kbd>TyObject</kbd> object representing the class.
+</p>
+<p>Each <kbd>TyObject</kbd> object will have an associated initialization
+   subroutine which will contain the static initialization code for the
+   class.
+</p>
+<p>Stepping of <kbd>ExpEnsureClassInit</kbd> will check a flag
+   associated with the class. If the flag is false, it is set and
+   then the initialization subroutine is entered.
+   If the flag is false, stepping is a no-op.
+   Since the
+   flag is set before the routine is started, code within the
+   routine may safely contain <kbd>ExpEnsureClassInit</kbd>
+   for the same class.
+</p>
+</body>
+</html>

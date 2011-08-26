@@ -1,0 +1,13 @@
+#include whatever
+// a line comment
+/* another
+comment */int main(){while(1/*hello*/) {
+    // a comment
+    abcde ; }
+abcdefghij ;
+	/* a tab */
+ 	/* 1 space tab */
+  	/* 2 space tab */
+   	/* 3 space tab */
+    	/* 4 space tab */
+}

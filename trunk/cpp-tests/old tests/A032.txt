@@ -1,0 +1,25 @@
+
+double foo( double x, double &r ) ;
+char bar () ;
+int &baz (int &i ) ;
+
+int main() {
+	double pi = 3.141592 ;
+	double z = 2 ;
+	double q ;
+	q = foo( pi, z ) ;
+	q = bar() ;
+	int j ;
+	baz( j ) = 0 ; // Is this legal?
+	j = baz(j)+10 ;
+	return 0 ;
+}
+
+double foo( double y, double & w ) {
+	w = w * y ;
+	return w ;
+}
+
+char bar() { return 65.5 ; }
+
+int &baz( int &i ) { return i ; }

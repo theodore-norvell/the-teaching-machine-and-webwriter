@@ -1,0 +1,79 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>do while</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3>Syntax</h3>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> do</span></p>
+  <p class="code"> &nbsp;&nbsp;&nbsp;<span class="stxNonterminal">statement</span></p>
+  <p class="code"><span class="codeKeyword">while</span> <span class="codeRequired">(</span><em>condition</em><span class="codeRequired">)</span></p>
+</div>
+<p>where <em>statement</em> is any single <em>statement</em>, including an <code>if</code> statement or a loop</p>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> do</span><span class="codeRequired">{</span></p>
+<p class="code"> &nbsp;&nbsp;&nbsp;<span class="stxNonterminal">statement1</span></p>
+<p class="code"> &nbsp;&nbsp;&nbsp;<span class="stxNonterminal">statement2</span></p>
+<p class="code">&nbsp;&nbsp;&nbsp;...</p>
+<p class="code"><span class="codeRequired">}</span> <span class="codeKeyword">while </span><span class="codeRequired">(</span><em>condition</em><span class="codeRequired">)</span></span></p>
+</div>
+<p>where any number of <em>statements</em> may be included in the block (including just one, making it equivalent to the first form).</p>
+<p>For both forms,  the <span class="stxNonterminal">body</span> of the loop (the single <em>statement</em> following the <span class="codeRequired">()</span> in the first form, the block in  <span class="codeRequired">{ }</span> in the second form) is executed as long as the <span class="stxNonterminal">condition</span> is <code>true</code>.</p>
+<p>if the  <em>condition</em>  is <code>false</code> the first time it gets executed, the <em>body</em> will never be executed. </p>
+<h3>Examples</h3>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> do</span> </p>
+  <p class="code"> &nbsp;&nbsp;&nbsp;i++;</p>
+  <p class="code"><span class="codeKeyword">while</span> <span class="codeRequired">(</span>i &lt; 10<span class="codeRequired">)</span> </p>
+</div>
+<p>increments <code>i</code> until it gets to <code>10</code>. Even if<code> i</code> is <code>10</code> or more at the beginning, it will be incremented once. </p>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword">do</span><span class="codeRequired"> {</span></p>
+  <p class="code"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cout &lt;&lt; x &lt;&lt; ' ';</p>
+  <p class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x--;</p>
+  <p class="code"><span class="codeRequired">}</span><span class="codeKeyword"> while</span> <span class="codeRequired">(</span>x &gt; 15<span class="codeRequired">)</span></p>
+</div>
+<p>If <code>x</code> was <code>20</code> initially, the output would be as below (and <code>x</code> would be <code>15</code> afterwards). </p>
+<p class="syntaxDef">20 19 18 17 16</p>
+<p>On the other hand, if  <code>x</code> was less than <code>16</code> to start with, its initial value would be output and it would be decremented once. The  <em>condition</em>  occurring after the <em>body</em> of the loop ensures the <em>body</em> is always executed once.</p>
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

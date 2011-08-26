@@ -1,0 +1,16 @@
+void main() {
+	int k = 0 ;
+	if( k ) {}
+	else {
+		bool b = false ;
+		if( b ) {} 
+		else {
+			char c = '\0' ;
+			if( c ) {}
+			else {
+				if( 0==1 ) {
+					1; }
+				else {
+					2 ; } } } }
+	return ;
+}

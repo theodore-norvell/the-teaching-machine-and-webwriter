@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Dynamic Memory Allocation</title>
+</head>
+<body>
+<p> So far, we have two types of memory allocation</p>
+<ol>
+  <li>Static memory has permanent lifetime and is allocated from the long-term 
+    memory store.</li>
+  <li>Temporary memory exists only for the duration of a function and is allocated 
+    on the <b>stack</b> (scratch pad).</li>
+</ol>
+<p>Both types of allocation are done by the compiler.</p>
+<p>Request is made when the program is written. However, there is a need for memory 
+  allocation to be made at run time. e.g.</p>
+<ol>
+  <li>Computer graphics</li>
+  <li>Strings </li>
+</ol>
+<div align=left> 
+  <h2> <a name="static">Static Memory</a></h2>
+<p><img src="Static.gif" width="62" height="155" align="left">Allocated when code 
+  is initialized (Main started up)</p>
+<p>Lifetime is <i>permanent</i>.</p>
+<p>Addresses are all known-pointers aren't required. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p></div>
+<div align=left> 
+  <h2><a name="stack">The Stack</a></h2>
+<p><img src="Stack.gif" width="157" height="155" align="left"> Allocation is controlled 
+  by scope&#151;data created when function called</p>
+<p>Temporary lifetime</p>
+<p>Stack builds downwards-only a single pointer required </p>
+  <p class="pagebreak">&nbsp;</p>
+</div>
+<div align=left> 
+  <h2><a name="heap">The Heap</a></h2>
+<p></p>
+  <p><img src="heap1.gif" width="157" height="211" align="left">Allocation is 
+    on the fly&#151;whenever the program requests it.</p>
+  <p>Allocation is random&#151;memory is allocated wherever a large enough chunk 
+    is available.</p>
+  <p>Lifetime is still temporary, but completely under program control.</p>
+  <p> A pointer is required for every chunk of memory granted. </p>
+</div>
+<h2>&nbsp;</h2>
+<div align=left> 
+  <p><img src="heap2.gif" width="157" height="211" align="left">As more memory 
+    is requested it will be allocated the next available space</p>
+  <p></p>
+  <p></p>
+  <p></p>
+</div>
+<h2>&nbsp;</h2>
+<div align=left> 
+  <p><img src="heap3.gif" width="157" height="211">When memory is relinqueshed it leaves a hole</p>
+  <p></p>
+  <p></p>
+  <p></p>
+</div>
+<h2>&nbsp;</h2>
+<div align=left> 
+  <p><img src="heap4.gif" width="157" height="211">Now when Memory is allocated, 
+    it may not be able to use the hole because its too big</p>
+  <p><img src="heap5.gif" width="157" height="211">Eventually, as memory is allocated 
+    and released, the heap becomes <i>fragmented</i>.</p>
+  <p>Lots of hidden management problems&#151;requires a Heap Manager.</p>
+</div>
+<ul>
+  <li> 
+    How does heap manager know memory is allocated or free?
+  </li>
+  <li> 
+    How does heap manager know the size of a chunk?
+  </li>
+  <li> 
+    What does it do about fragmentation? 
+  </li>
+</ul>
+<p>C++ provides two operators for run-time memory management.</p>
+<p> <span class="codeInline">new</span>&#151;allocates memory</p>
+<p><span class="codeInline">delete</span>&#151;releases memory</p>
+<p>Syntax is </p>
+<p><span class="codeInline">new(nothrow) object</span></p>
+<p>or</p>
+<p> <span class="codeInline">new(nothrow) object [size]</span></p>
+<p> where the second syntax is for declaring an array of objects. e.g.</p>
+<p><span class="codeInline"><span class="codeInline">int* p;</span></span></p>
+<p><span class="codeInline"><span class="codeInline"> p = new(nothrow) int [20];</span></span></p>
+<p>allocates an array of 20 integers. </p>
+<p><span class="codeInline">new</span> returns a pointer to the chunk allocated 
+  on the heap</p>
+<p>If no chunk large enough is available it returns a <span class="codeInline">null</span> 
+  pointer. </p>
+<p>The <span class="codeInline">nothrow</span> that appears in parentheses after 
+  the <span class="codeInline">new</span> operator is technically called an <i>allocator</i>. 
+  Its function is to prevent the <span class="codeInline">new</span> operator 
+  from throwing an <span class="codeInline">exception</span> (which we haven't 
+  studied) if no memory is available. </p>
+<p>To release the memory back to the heap the syntax is </p>
+<p class="codeInline">delete pointer;</p>
+<p> or </p>
+<p class="codeInline">delete [] pointer; // for arrays </p>
+<p>(Be sure the pointer you delete still points into the heap) </p>
+<h3><a name="typical">Typical Allocation of 3 Kinds of Memory</a></h3>
+<h3><img src="allMemory.gif" width="226" height="211"></h3>
+<h3>nothrow and the ANSI C++ Standard</h3>
+<p>There are many places in a program where there is a potential for error at
+  <em>runtime</em>. For example</p>
+<ul>
+  <li> incorrect entry of data by a user</li>
+  <li>division by 0 or of a very large number by a very small one such that <em>overflow</em>    occurs</li>
+  <li>being unable to supply memory when requested.</li>
+</ul>
+<p>Programs can't ignore these problems. They have to deal with them.</p>
+<p>One solution is to <em>throw an exception</em> when a problem occurs. It is
+  then up to the programmer to detect the exception (which is called <em>catching</em> it)
+  and do something about it.</p>
+<p>The standard defines two ways of dealing with a failure of new to allocate
+  the memory.</p>
+<ol>
+  <li>Throw an exception.</li>
+  <li>return null.</em></li>
+</ol>
+<p>It is compiler-dependent as to which technique is the default. We will use
+  null returning in this course, which happens to be the default for the Microsoft
+  compiler.</p>
+<p>Unhappily, this can be done in two ways</p>
+<p><code><pre>
+    int* p;
+     p = new int [20];</pre></code></p>
+	 <p> as well as </p>
+<p><code>
+<pre>
+    #include &#8249;new&#8250;
+    using namespace std;
+
+    int* p;
+    p = new(nothrow) int [20];</pre>
+</code>
+<p><code>  </code>
+</p>
+  The top case invokes the default model of our particular compiler. Unhappily
+it is compiler dependent and will work differently under, say, the gnu compiler.</p>
+<p>The second case will work with any compiler.</p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>

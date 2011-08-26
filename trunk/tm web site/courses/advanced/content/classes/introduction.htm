@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Introduction to Classes</title>
+</head>
+<body>
+
+<h1>Introduction</h1>
+<p>You may have heard it said that C++ is an <i>Object Oriented Language. </i>Classes 
+  are the means by which we create the objects that are so central to the language.</p>
+<p>But what is a class? And what is an object? As you learn more and more about 
+  OOPS (<i>Object Oriented Programming Style) </i>you will hear a number of different 
+  definitions of classes and their relationship to objects. At bottom, however, 
+  the fundamental ideas are these:</p>
+<blockquote>
+  <p><b>A Class</b> is a <i>category</i>.</p>
+  <p><b>An Object</b> is a particular <i>instance</i> of a class.</p>
+</blockquote>
+<p>For example</p>
+<table width="100%" border="2">
+  <tr>
+    <td width="23%"><b>Category</b></td>
+    <td width="77%"><b>Instance</b></td>
+  </tr>
+  <tr>
+    <td width="23%">Person</td>
+    <td width="77%">me, you, John, Mary, mom, my doctor, the weather man</td>
+  </tr>
+  <tr>
+    <td width="23%">Bank Account</td>
+    <td width="77%">my account, your account, IBM's account</td>
+  </tr>
+  <tr>
+    <td width="23%">Building</td>
+    <td width="77%">General Hospital, my house, 1412 Main St., Wal-Mart</td>
+  </tr>
+  <tr>
+    <td width="23%">Window</td>
+    <td width="77%">this window, Word window, C++ window, debug window</td>
+  </tr>
+</table>
+<p>Categorization is fundamental to our understanding of the world.</p>
+<p>A category is a <i>generalization</i>, &#151;an observation that, at some level, 
+  there is a sameness about a group of things.</p>
+<p>For example,all bank accounts</p>
+<ol>
+  <li>can have money deposited into them</li>
+  <li> or withdrawn from them</li>
+  <li> will carry a balance (summarizing the total past history of our transactions 
+    to and from the account).</li>
+</ol>
+<p>Yet each account is different. Your account might have a thousand dollars in 
+  it while mine might be overdrawn.</p>
+<p>You certainly wouldn't want the bank to mix them up!</p>
+<p>Thus we say that </p>
+<ol>
+  <li>the <i>behaviour</i> of all accounts is the same (if you deposit money the 
+    balance increases)</li>
+  <li>but their individual <i>states</i> are different (your account currently 
+    has more money in it than mine).</li>
+</ol>
+<p>Similarity of <i>behaviour</i> is what defines a <i>category</i> or <i>class</i></p>
+<p>Individuality of <i>state</i> defines an <i>instance</i> or <i>object</i>.</p>
+<h2><a name="modeling">Modeling</a></h2>
+<p>While classes and objects represent the central <i>mechanism</i> of OOPS programming,
+   its central <i>objective</i> is really modeling.</p>
+<p>That might seem strange and way too passive for something like, say, controlling 
+  a nuclear reactor. But think about it. You don't want just anybody controlling 
+  a nuclear reactor. Homer Simpson notwithstanding, control room operators have 
+  to be highly trained. They have to, at least at some level, have an understanding 
+  of the process they are controlling, or disaster ensues.</p>
+<p>That understanding does not have to be absolute.</p>
+<p>The physicist who conceives of a new type of reactor,</p>
+<p>The engineer who designs it and</p>
+<p>The operator who controls it,</p>
+<p>all work at a different level of understanding.</p>
+<p>Each of them carries around in their head a view of the reactor that, while 
+  it is particular, is nonetheless necessary for them to do their jobs.</p>
+<p>In other words, each of them carries a <i>model </i>of the reactor in their 
+  heads.</p>
+<p>If we want to build software to control a reactor we will also have to build 
+  into it some model of how the reactor works.</p>
+<p>In the OOPS methodology, classes are the mechanism we use to build models.</p>
+<p>If we were building a reactor control program we would probably uses classes 
+  to represent the reactor, the cooling rods, the piping, and a whole host of 
+  other things that I don't know about because I know very little about reactors.</p>
+<p>I lack, what is known as <i>domain expertise.</i></p>
+<p>Without domain expertise it is impossible to build good programs. So let's 
+  switch our attention to things we do all know about.</p>
+<h2><a name="specific">Modeling is Specific</a></h2>
+<p>Modeling is not an absolute. For example, consider a car. You could probably 
+  list off all kinds of <i>attributes</i> of cars. Here are some examples:</p>
+<p><b>Car attributes:</b> wheels (four), steering wheel, engine, transmission, 
+  serial no., make, model, year, upholstery, condition.</p>
+<p>What others can you think of?</p>
+<p>If I were to write a program that involved cars, these could all be useful 
+  things to know. But notice, <i>their usefulness depends upon the type of program 
+  I'm writing.</i></p>
+<p>For example, if I'm writing a program to track parking permits (say at a large
+   company or university) then I will want to know information such the co lour,
+   make, model, year and license number of each car. But I won't care about the
+   fact that it has a spare tire or what its odometer setting is.</p>
+<p>On the other hand, if we're building a sort of Janes Guide to Automobiles,
+   we'll care about model and make and engine specifications but we won't see
+  a  red 1938 Bugatti as being any different from a green one.</p>
+<p>A program to manage the inventory of a used car dealership would need different 
+  information again. Now we definitely want the odometer setting!</p>
+<p>So each of these programs would undoubtedly have a class <i>Car</i>. But the 
+  classes would be quite different. We're making different models.</p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

@@ -1,0 +1,404 @@
+body {
+	font-family: futura, helvetica, sans-serif;
+	margin: 1cm;
+	color:#000080;
+	font-size: 16pt;
+	padding: 0;
+}
+
+.content	{
+	border: 0;
+	padding: 0;
+	color:#000080;
+	font-family: futura;
+	margin: 2cm;
+	line-height: 120%;
+}
+
+H1{
+	color:#000080;
+	font-family:futura, helvetica, sans-serif;
+	font-size: 18pt;
+	line-height : normal;
+	margin-top: 0px;
+	margin-bottom: .3cm;
+	padding-top: .15cm;
+	padding-bottom: .15cm;
+    text-decoration: underline
+}
+
+H2 {
+	color: #000080;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 18pt;
+	line-height : normal;
+	margin-left: .66cm;
+}
+
+H3 {
+	color: #000080;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 16pt;
+	font-weight: bold;
+	line-height : normal;
+	margin-left: 2cm;
+}
+
+H4 {
+	color: #000080;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 14pt;
+	line-height : normal;
+	text-decoration: underline;
+}
+
+/* The division at the bottom of a web page
+	Designed to include one or both of dateStamp and copyright.*/
+.bottomStamp {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: x-small;
+	border-top: thin solid #993333;
+	border-right: 0 none #993333;
+	border-bottom: 0 none #993333;
+	border-left: 0 none #993333;
+}
+
+.copyright {
+	padding: 5px 0 0;
+	color:#000000;
+	margin-top: 10px;
+}
+.dateStamp {
+	padding: 5px 0 0;
+	color:#000000;
+	margin-top: 10px;
+	float:right;
+}
+
+/*Over-ride browser to get back to body text */
+.normal {font-family: arial, helvetica, sans-serif;
+	background: #e9e9dc url(../site_resources/images/mypaper.jpg);
+	color:#000080;
+	border-color: #e9e9dc;
+	font-size: 16pt;
+	margin:.4in;
+    font-weight: normal
+}
+
+
+DT{
+   font-weight: bold;
+}
+
+/* Quotes*/
+Q{
+	font-style: italic;
+}
+
+EM{
+	font-style:italic; font-weight: normal;
+}
+dfn{font-weight: bold;
+}
+
+/* Running heads */
+.header{
+	padding-top: 0px;
+	margin-top: 0px;
+	font-family: "comic sans ms", arial, helvetica, sans-serif;
+	font-size: 24pt;
+	background-color: yellow;
+	text-align: right;
+
+}
+
+/*Trademarks*/
+.TM{
+	color: green;
+}
+
+.WW{
+	color: red;
+}
+
+/* Built in HTML style */
+code {
+	font-family: "Courier New", Courier, mono;
+	font-size: larger;
+}
+/* deprecated. Use built in HTML style */
+.codeInline {
+	color: #000000;
+	font-size: 100%;
+	font-family: "courier new", monospace;
+	border: #ffcc99 none
+}
+/* div used to hold entire tm example including header bar */
+.tmContainer {
+	position: relative;
+	border: thick solid #000080;
+	background-color: #FFFFCC;
+	margin-right: 40px;
+}
+/* The titleBar for a TMContainer*/
+.tmBar {
+	color: #CCCCCC;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-width: 0px;
+	background-color: #000080;
+}
+
+
+/* code class, used for TM examples */
+.code {
+	margin-right: .3in;
+	margin-left: .3in;
+	color: #000000;
+	font-family: "courier new", monospace;
+	background-color: #FFFFCC;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+/* Styles used to color stain code */
+.codeComment{
+		 color: #0000FF;
+		 font-style: italic;
+}
+
+.codeKeyword{
+	color: #0000FF;
+	font-weight: bold;
+}
+.codeConstant{
+	font-weight: bold;
+/*	color: #FF00FF; */
+}
+.codeHighlight{
+	text-decoration: underline;
+}
+
+/* Class used for error reporting - added 2006.03.06 */
+.error {
+	font-size:12px;
+	margin-right: .3in;
+	margin-left: .3in;
+	color: #000000;
+	font-family: "courier new", monospace;
+	background-color: #FFFFCC;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.pseudoCode{
+    font-style: italic;
+}
+
+/* Styles used for hidden notes. indent and hang are quirky and may be safely removed */
+.hiddenNote p.hang{text-indent: -3em; margin-left: 3em;}
+
+p.indent{margin-left: 3em;}
+
+
+
+/* Define the look of the popups. */
+
+.popup {
+  background-color: #ffffcc;
+  border-color: #000000;
+  border-style:solid;
+  border-width: 1px;
+  font-family: arial, sans-serif;
+  font-size: smaller;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: absolute;
+  visibility: hidden;
+  z-Index: -1;
+}
+
+/* Define the look of the definition popups. */
+
+.definition {
+  background-color: #ffffff;
+  border-color: #000000;
+  border-style:solid;
+  border-width: 1px;
+  font-family: arial, sans-serif;
+  font-size: 11pt;
+  color: #0000FF;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: absolute;
+  visibility: hidden;
+  z-Index: -1;
+}
+/* Define the look of a link that has a popup  #4682b4*/
+.poplink, .deflink, .blocklink {
+   color: green;
+   background-color: transparent;
+   text-decoration: none;
+}
+
+
+/* Define the look of graphics text */
+.graphicsText{
+	color: red;
+	font-size: 10pt;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/* Define the look of hidden answers */
+
+.hideAnswerContainer{
+	border: 1px;
+	border-style: inset;
+	border-color:#000066;
+	background-color:#CCCCCC;
+}
+
+.hideAnswer{
+	font-size: 14px;
+	visibility: hidden;
+}
+
+/* Define the look of a slide show */
+.slideShow {
+	background-color: yellow;
+	float: right;
+	border-color: #000000;
+	border-style: ridge;
+	border-width: 2px;
+}
+
+.slideTitleBar {
+	background-color: #ffd700;
+	border-width: 0px;
+	padding: 0px;
+	margin: 0px;
+}
+.slideTitle {
+	color: black;
+	font-weight: bold;
+}
+
+/* Define the look of slides*/
+.slide {
+	padding-left: 3%;
+	padding-right: 3%;
+	font-size: 11pt;
+}
+.hint {
+	color: #000066;
+	background-color: #FFFF00;
+	border-style: solid;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium
+}
+pre {font-family: "Courier New", Courier, mono;
+	color: #000000;
+	font-size: 100%
+}
+.redBox {
+	background-color: #FF0000;
+	margin-right: 10%;
+	margin-left: 10%
+}
+.yellowBox {
+	background-color: #FFFF00;
+	margin-right: 10%;
+	margin-left: 10%
+}
+
+
+.windowShade {
+	background-color: #0000FF;
+	position: relative;
+	visibility: visible;
+	z-index: 10;
+	height: 100%;
+	width: 100%;
+	margin-left: -1cm;
+	padding: 0px;
+}
+.breakoutBox {
+	background-color: #FF0000;
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	border: #000000;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium
+}
+.pagebreak {  }
+/* Sidebars */
+.sideBarRight {
+	color: #FF3333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: right;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+
+.sideBarLeft {
+	color: #FF3333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: left;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+/* These styles together define syntax definitions. Use with syntax def code snippet*/
+.syntaxDef {
+	background-color: #FFCC66;
+	border: thin solid #FF0000;
+	position: relative;
+	left: .5in;
+	right: .5in;
+	padding: 5px;
+	width: 75%;
+}
+.stxTerminal {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.stxNonterminal {
+	font-style: italic;
+}
+.stxMeta {
+	font-weight: bold;
+}
+.insetClause {
+	margin-left: 1in;
+}
+.principle {
+	font-size: x-large;
+	background-color: #FF0000;
+	text-align: center;
+	border: thin ridge #FF0000;
+}
+
+#allExamples {
+	display:none;
+}
+

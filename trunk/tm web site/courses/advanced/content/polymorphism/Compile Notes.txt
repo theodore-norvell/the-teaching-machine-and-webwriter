@@ -1,0 +1,14 @@
+ArrayAssignment.cpp
+related problem to below? Copy constructor not being called on initialization
+
+
+
+
+complex1.cpp
+I'm getting compiler error C2659: '=' : overloaded function as left operand
+on these two lines
+	z = x + y;
+	z = x - y;
+Compiler is supposed to build default overload
+
+

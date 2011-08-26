@@ -1,0 +1,228 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Interfaces and polymorphism</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+.style8 {font-family: georgia, palatino, "Times New Roman", times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="interfaces" id="mutators-and-accessors">Interfaces</a></h1>
+<p>[<strong>Note on the term &quot;direct instance of &quot;:</strong> In these notes, when I say that an object is a <strong>direct instance</strong> of a type T, I mean that T is the class that was used to construct the object: <span class="codeKeyword">new</span><span class="codeInline"> T(...)</span> . ] </p>
+<h2>A Banking Example </h2>
+<p>Suppose we have a banking system.</p>
+<p>Each client has a number of accounts.</p>
+<p>Accounts come in a number of forms. Thus we have classes</p>
+<pre class="code"><span class="codeKeyword">public class</span> SavingsAccount {<br>    <span class="codeKeyword">private</span> <span class="codeKeyword">long</span> balance ;<br>    <span class="codeKeyword">private</span> <span class="codeKeyword">double</span> interestRate ;<br>    ...<br>    <span class="codeKeyword">public</span> <span class="codeKeyword">long</span> getBalance() { <span class="codeKeyword">return</span> balance }<br>    ...<br>}</pre>
+<p>and</p>
+<pre class="code"><span class="codeKeyword">public class</span> CreditCardAccount {<br>    <span class="codeKeyword">private</span> <span class="codeKeyword">long</span> balanceOnLastStatement ;<br>    <span class="codeKeyword">private</span> CCTransactions[] transactionsSinceLastStatement ;<br>    ...<br>    <span class="codeKeyword">public</span> <span class="codeKeyword">long</span> getBalance() {<br>        <span class="codeKeyword">long</span> balance = balanceOnLastStatement ;<br>        <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i =0 ; i &lt;= transactionsSinceLastStatement.length ; ++ i )<br>            balance +=  transactionsSinceLastStatement[i].getAmount() ; }<br>        <span class="codeKeyword">return</span> balance ;<br>    }<br>    ...<br>}</pre>
+<p>and so on.</p>
+<p>Now we want to write a class representing a Client. Each client has one or more accounts. We could do the following.</p>
+<pre class="code"><span class="codeKeyword">public class</span> Client {<br>    <span class="codeKeyword">private</span> SavingsAccount[] savingsAccounts ;<br>    <span class="codeKeyword">private</span> CreditCardAccount[] creditCardAccounts ;<br>    ...<br><br>    <span class="codeKeyword">public long</span> getBalanceTotal() {<br>        <span class="codeKeyword">long</span> balance ;<br>        <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt;= savingsAccounts.length ; ++i ) {<br>            SavingsAccount account = savingsAccounts[i] ;<br>            balance += account.getBalance() ; }<br>        <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt;= creditCardAccounts.length ; ++i ) {
+            CreditCardAccount account = creditCardAccounts[i] ;<br>            balance += account.getBalance() ; }<br>        ...<br>        <span class="codeKeyword">return</span> balance ; }<br>    ...<br>}</pre>
+<p>However, this code is repetitious and must be modified whenever a new kind of account is created. </p>
+<p>It would be better to have one array in the Client class that can hold all kinds of account objects regardless of their class. </p>
+<p>To do that we would need that the each SavingsAccount object and each CreditCardAccount object, are members of a common type.</p>
+<p>Java allows one to define such common types. They are called <span class="pseudoCode">interface types</span>. Here is an interface type for accounts. </p>
+<pre class="code"><span class="codeKeyword">public interface</span> Account {<br>    <span class="codeKeyword">public long</span> getBalance() ;<br>}</pre>
+<p></p>
+<p>The interface declares methods, but does not provide any implementations for the methods. The implementation must be declared in classes that <span class="pseudoCode">implement</span> the interface. </p>
+<p>Interfaces do not have constructors. Construction is left to the classes.</p>
+<p>&nbsp;</p>
+<p class="syntaxDef"><span class="stxNonterminal">InterfaceDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">interface</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">{</span><span class="stxMeta"><span class="codeInline"> </span>(</span><span class="stxNonterminal">InterfaceMember</span><span class="stxMeta">)</span>*<span class="codeInline"> }</span><br>
+    <span class="stxNonterminal">InterfaceMember</span><span class="stxMeta"></span> --&gt; <span class="stxNonterminal">AbstractMethodDeclaration<br>
+  AbstractMethodDeclaration --&gt; MethodSignature</span> <span class="stxTerminal">;</span> </p>
+<p>We need to declare that each of the account classes implements this interface. To do that we make a small change to each of these classes</p>
+<pre class="code"><span class="codeKeyword">public class</span> SavingsAccount <span class="codeKeyword">implements</span> Account {<br>    ...as before ...<br>}
+</pre>
+<p></p>
+and
+<pre class="code"><span class="codeKeyword">public class</span> CreditCardAccount <span class="codeKeyword">implements</span> Account {<br>    ...as before ...<br>}</pre>
+<p>The syntax is</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="stxNonterminal">ImplementsClause </span><span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* <span class="codeInline">}</span><br>
+    <span class="stxNonterminal">ImplementsClause</span> --&gt; <span class="style8"><span class="stxMeta">(</span> </span><span class="codeKeyword">implements</span> <span class="stxNonterminal">InterfaceNames</span><span class="style8"> <span class="stxMeta">)<sup>?</sup></span></span><span class="stxNonterminal"><br>
+  </span><span class="stxNonterminal">InterfaceNames</span><span class="stxMeta"></span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> InterfaceName </span><span class="stxMeta">(</span> <span class="codeInline">, </span><span class="stxNonterminal">InterfaceName)</span>*<span class="stxMeta"> )</span><sup>?</sup></p>
+<p>&nbsp;</p>
+<p>In order for a class to implement an interface it must declare all the methods that the interface declares. This is the case for <span class="codeInline">SavingsAccount</span> and <span class="codeInline">CreditCardAccount</span>.</p>
+<p>Each direct instance of type <span class="codeInline">CreditCardAccount</span> or <span class="codeInline">SavingsAccount</span> is also <strong>indirect instance of</strong> type <span class="codeInline">Account</span>.</p>
+<p>Any variable declared to hold a reference to an <span class="codeInline">Account</span> object may (and may only) refer to objects that are direct instances of a class that implements the <span class="codeInline">Account</span> interface.</p>
+<p>More generally, if <span class="codeInline">I</span> is an interface, any variable declared to hold a reference to an <span class="codeInline">I</span> object may (and may only) point to direct instances of a class that implements <span class="codeInline">I</span>. </p>
+<p>If <span class="codeInline">C</span> is a class that implements <span class="codeInline">I</span>, we say that the direct instances of <span class="codeInline">C</span> are <strong>indirect instances of</strong> <span class="codeInline">I</span>. </p>
+<p>Now can declare the Client class as follows</p>
+<pre class="code"><span class="codeKeyword">public class</span> Client {<br>    <span class="codeKeyword">private</span> Account[] accounts ;<br>    ...<br>}</pre>
+<p>Each member of the <span class="codeInline">accounts</span> array is a reference to an object that implements the <span class="codeInline">Account</span> interface.</p>
+<p>The compiler will check that any value assigned to an item of <span class="codeInline">accounts</span> is either <span class="codeKeyword">null</span> or a reference to an object that is an instance of the <span class="codeInline">Account</span> interface.</p>
+<p>We can implement the <span class="codeInline">getBalanceTotal</span> routine as follows.</p>
+<pre class="code"><span class="codeKeyword">public class</span> Client {<br>    <span class="codeKeyword">private</span> Account[] accounts ;<br>...<br><br>    <span class="codeKeyword">public long</span> getBalanceTotal() {<br>        <span class="codeKeyword">long</span> balance ;<br>        <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt;= accounts.length ; ++i ) {<br>            Account account = accounts[i] ;<br>            balance += account.getBalance() ; }<br>        <span class="codeKeyword">return</span> balance ; }<br>    ...<br>}</pre>
+<p>Each item in the <span class="codeInline">accounts</span> array</p>
+<ul>
+  <li>might point to a direct instance of <span class="codeInline">SavingsAccount</span> or it</li>
+  <li>might point to a direct instance of <span class="codeInline">CreditCardAccount</span> or it</li>
+  <li>might point to a direct instance of some other class that implements the<span class="codeInline"> Account</span> interface.</li>
+</ul>
+<p>The <span class="codeInline">account</span> variable is a <span class="pseudoCode">polymorphic reference.</span></p>
+<ul>
+  <li>This means that we can not tell from the code exactly what class the object it refers to will be a direct instance of. We only know that, if the reference is not null, it will refer to some instance of <span class="codeInline">Account</span>. </li>
+</ul>
+<p>The call to <span class="codeInline">account.getBalance()</span></p>
+<ul>
+  <li>might result in a message going to an object that is a direct instance of class <span class="codeInline">SavingsAccount</span> or it</li>
+  <li>might result in a message going to an object that is a direct instance of class <span class="codeInline">CreditCardAccount</span> or it</li>
+  <li>might result in a message going to an object that is a direct instance of some other class that implements the <span class="codeInline">Account</span> interface.</li>
+</ul>
+<p>How the object responds to the message depends on the class it is a direct instance of, i.e. on how the method signature is implemented in that class. Different objects that receive this message may answer it in a different way.</p>
+<p>A call sent to a <span class="pseudoCode">polymorphic reference</span> is a <span class="pseudoCode">polymorphic call</span>.</p>
+<p>Because it is only at run-time that the implementation of the subroutine is decided, this kind of call is called <span class="pseudoCode">dynamic binding</span> or <span class="pseudoCode">dynamic dispatch</span>. </p>
+<p>The importance of polymorphic code is that is <span class="pseudoCode">reusable</span>.</p>
+<blockquote>
+  <p>The <span class="codeInline">Client</span> class makes no mention of either <span class="codeInline">SavingsAccount</span> or <span class="codeInline">CreditCardAccount</span> or any other class that implements the <span class="codeInline">Account</span> interface. The person who writes the <span class="codeInline">Client</span> class does not need to know the full list of classes that implement the <span class="codeInline">Account</span> interface and the <span class="codeInline">Client</span> class <span class="pseudoCode">need not be modified at all</span> when new classes of Account are added to the program. The <span class="codeInline">Client</span> class is said to be <span class="pseudoCode">reusable</span>. </p>
+</blockquote>
+<div class="principle">
+  <p><strong>Principle:</strong> Use polymorphism to make your classes reusable.</p>
+</div>
+<p>&nbsp;</p>
+<div class="breakoutBox">
+  <p> <strong>C++ Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    Students of C++ might recognize that in effect all nonstatic methods in Java are, in C++ terminology, <span class="pseudoCode">virtual</span>. C++ also allows nonvirtual, nonstatic methods; there is no equivalent concept in Java and hence no need for a keyword equivalent to C++'s <span class="codeKeyword">virtual</span>. A Java interface is much the same as a C++ abstract base class that has no nonstatic fields, no constructors, and in which all methods are both virtual and pure.</p>
+  <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<h2>A density example</h2>
+<p>Suppose we have a type representing physical objects. Each object has a mass and a volume.</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("density/PhysicalObject.java", true, "code", "default.cfg");
+    </script>
+</p>
+<p><span class="codeInline">Cube</span> is a class that implements this interface</p>
+<script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("density/Cube.java", true, "code", "default.cfg");
+</script>
+<p>So is <span class="codeInline">Sphere</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("density/Sphere.java", true, "code", "linked.cfg");
+  </script>
+</p>
+<p>Now suppose we want to calculate the density of some physical objects.</p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("density/Density.java", true, "code", "default.cfg", "A");
+</script>
+<h2>A simulation example. </h2>
+<p>Consider a time driven simulation.</p>
+<p>There are a number of real world objects being simulated.</p>
+<p>Each simulated object is capable of updating its state. This is done in two steps. First the new state is calculated and then the state is updated.</p>
+<pre class="code"><span class="codeKeyword">public interface</span> SimulationObject {
+    <span class="codeKeyword">public void</span> computeNextState( double deltaT ) ;<br>    <span class="codeKeyword">public void</span> enterNextState() ;<br>    <span class="codeKeyword">public void</span> outputState( PrintWriter w ) ;<br>}</pre>
+<p></p>
+Then we can run the simulation as follows
+<pre class="code">SimulationObject [] simulationList ;
+... initialize the simulationList ...<br><span class="codeKeyword">double</span> time = 0 ;<br><span class="codeKeyword">while</span>( <span class="codeKeyword">true</span> ) {<br>    <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; simulationList.length ; ++i ) {<br>        simulationList[i].outputState( writer ) ; }<br>    <span class="codeKeyword">if</span>( time &gt;= STOPPING_TIME ) <span class="codeKeyword">break</span> ;<br>    <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; simulationList.length ; ++i ) {<br>        simulationList[i].computeNextState( DELTA_T ) ; }<br>    <span class="codeKeyword">for</span>( <span class="codeKeyword">int</span> i = 0 ; i &lt; simulationList.length ; ++i ) {<br>        simulationList[i].enterNextState( ) ; }<br>    time += DELTA_T ; }</pre>
+<p>Each class implementing <span class="codeKeyword"></span><span class="codeInline">SimulationObject</span> can implement the various methods in its own way. </p>
+<h2>Lists and Genericity </h2>
+<p>In the bank's <span class="codeInline">Client</span> class and the simulation code, we've used <span class="pseudoCode">arrays</span> to represent <span class="pseudoCode">sequences of objects</span> known to implement a given interface. </p>
+<p>Arrays can be a bit awkward to use for some applications because they always have the same size. One can not shorten or lengthen an array.</p>
+<p>Also it is awkward to insert into the middle of an array.</p>
+<p>The List interface in the library package java.util can help solve these problems. </p>
+<p>Let's look at the <span class="codeInline">Client</span> class again and re-implement it using a <span class="codeInline">List</span>.</p>
+<pre class="code"><span class="codeKeyword">public class</span> Client {<br>    <span class="codeKeyword">private</span> List accounts = <span class="codeKeyword">new</span> ArrayList() ;<br>    ...<br>    <span class="codeKeyword">public void</span> addAccount( Account account ) {<br>        <span class="codeKeyword">assert</span> ! accounts.contains( account ) ;<br>        accounts.add( account ) }<br>    <br>    <span class="codeKeyword">public void</span> deleteAccount( Account account ) {<br>        <span class="codeKeyword">assert</span> accounts.contains( account ) ;<br>        <span class="codeKeyword">assert</span> account.getBalance() == 0 ;<br>        accounts.remove( account ) ; }<br><br>    <span class="codeKeyword">public long</span> getBalanceTotal() {<br>        <span class="codeKeyword">long</span> balance ;<br>        <span class="codeKeyword">for</span>( int i = 0 ; i &lt;= accounts.size() ; ++i ) {<br>            Account account = accounts.get(i) ; <br>            balance += account.getBalance() ; }<br>        <span class="codeKeyword">return</span> balance ; }<br>    ...<br>}</pre>
+<p></p>
+<p>Let's look at the various methods from the <span class="codeInline">List</span> interface used here.</p>
+<ul>
+  <li><span class="codeKeyword">public void</span> <span class="codeInline">add( Object obj ) ;</span> --- adds the reference to the right end of the list.</li>
+  <li><span class="codeKeyword">public void</span> <span class="codeInline">remove( Object obj ) ;</span> --- removes the reference from the list</li>
+  <li><span class="codeKeyword">public boolean</span> <span class="codeInline">contains( Object obj ) ;</span> --- returns <span class="codeKeyword">true</span> if a reference to the object is in the list</li>
+  <li><span class="codeKeyword">public int</span> <span class="codeInline">size( ) ;</span> --- returns the number of items in the list</li>
+  <li><span class="codeKeyword">public</span> <span class="codeInline">Object get(</span><span class="codeKeyword">int</span><span class="codeInline"> i) ;</span> --- returns item <span class="codeInline">i</span> of the list (counting from 0)</li>
+</ul>
+<p>The class <span class="codeInline">Object</span> is a type that all objects are members of. Since every <span class="codeInline">Account</span> object is also an <span class="codeInline">Object</span> object, there is no problem with using objects known to be accounts as arguments to the <span class="codeInline">Object</span> parameters. </p>
+<p>However there is a problem! </p>
+<p>In the declaration </p>
+<p><span class="code">Account account = accounts.get(i);</span></p>
+<p>the call accounts.get(i) is only known (by the compiler) to return a reference to an object of type Object. The compiler will not be able to figure out that this object actually implements the Account interface. Therefore the compiler will complain of an error. </p>
+<p>If we rewrite the declaration as</p>
+<p><span class="code">Object account = accounts.get(i);</span></p>
+<p>Then there is a problem with the call</p>
+<p><span class="code">account.getBalance()</span></p>
+<p>Not all objects that implement Object support the getBalance method.</p>
+<p>We can fix this problem in one of two ways.</p>
+<h3>First solution: Casting</h3>
+<p>First we can convert the result of get to a reference to an Account.</p>
+<p>The syntax for such a conversion is</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline">(</span><span class="stxNonterminal">TypeName</span><span class="codeInline">)</span><span class="stxNonterminal">Expression</span></p>
+<p>So we can write </p>
+<p><span class="code">Account account = (Account) (accounts.get(i));</span> </p>
+<p></p>
+<p>At <span class="pseudoCode">run-time</span> such a conversion will cause a problem (technically an &quot;exception&quot;) if the actual object does not implement the Account interface.</p>
+<ul>
+  <li>We must check that a new object is added to the <span class="codeInline">accounts</span> list does in fact implement the <span class="codeInline">Account</span> interface. Such checking by the engineer can be time-consuming and error prone.</li>
+  <li>the compiler will give us no help. </li>
+</ul>
+<h3>Second solution: Genericity</h3>
+<p>The second solution is to use a modified version of the <span class="codeInline">List</span> interface. We write the modified version as <span class="codeInline">List&lt;Account&gt;</span>. The methods of the modified interface are: </p>
+<ul>
+  <li><span class="codeKeyword">public void</span> <span class="codeInline">add( <u>Account</u> obj ) ;</span> --- adds the reference to the right end of the list.</li>
+  <li><span class="codeKeyword">public void</span> <span class="codeInline">remove( Object obj ) ;</span> --- removes the reference from the list</li>
+  <li><span class="codeKeyword">public boolean</span> <span class="codeInline">contains( Object obj ) ;</span> --- returns <span class="codeKeyword">true</span> if a reference to the object is in the list</li>
+  <li><span class="codeKeyword">public int</span> <span class="codeInline">size( ) ;</span> --- returns the number of items in the list</li>
+  <li><span class="codeKeyword">public</span> <span class="codeInline"><u>Account</u> get(</span><span class="codeKeyword">int</span><span class="codeInline"> i) ;</span> --- returns item <span class="codeInline">i</span> of the list (counting from 0)</li>
+</ul>
+<p>The compiler will check that only references to <span class="codeInline">Account</span> objects are added to the list and it will know that only <span class="codeInline">Account</span> objects can be got from the list.</p>
+<p>The modified class is:</p>
+<pre class="code"><span class="codeKeyword">public class</span> Client {<br>    <span class="codeKeyword">private</span> List&lt;Account&gt; accounts = <span class="codeKeyword">new</span> ArrayList&lt;Account&gt;() ;<br>...<br>    <span class="codeKeyword">public void</span> addAccount( Account account ) {<br>        <span class="codeKeyword">assert</span> ! accounts.contains( account ) ;<br>        accounts.add( account ) }<br>    <br>    <span class="codeKeyword">public void</span> deleteAccount( Account account ) {<br>        <span class="codeKeyword">assert</span> accounts.contains( account ) ;<br>        <span class="codeKeyword">assert</span> account.getBalance() == 0 ;<br>        accounts.remove( account ) ; }<br><br>    <span class="codeKeyword">public long</span> getBalanceTotal() {<br>        <span class="codeKeyword">long</span> balance ;<br>        <span class="codeKeyword">for</span>( int i = 0 ; i &lt;= accounts.size() ; ++i ) {<br>            Account account = accounts.get(i) ; <br>            balance += account.getBalance() ; }<br>        <span class="codeKeyword">return</span> balance ; }<br>    ...<br>}</pre>
+<p>The second solution is more satisfactory because it puts the compiler to work to check that only <span class="codeInline">Account</span> objects are placed on the list. </p>
+<p>Interfaces like <span class="codeInline">List</span> and classes like <span class="codeInline">ArrayList</span> that can be modified in such a way are called <span class="pseudoCode">generic interfaces</span> and <span class="pseudoCode">generic classes</span>. </p>
+<p>&nbsp; </p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Classes</title>
+</head>
+<body>
+<ul>
+  <li>
+    <p>C++ is an Object-Oriented Language.</p>
+  </li>
+  <li> 
+    <p>Classes are the means by which we create objects.</p>
+  </li>
+  <li> 
+    <p>Classes are central to the true <i>OOPS</i>.</p>
+    <ol>
+      <li> 
+        <p>many programmers who claim to program in C++ don't. </p>
+      </li>
+      <li> 
+        <p>true C++ programming is programming classes </p>
+      </li>
+    </ol>
+  </li>
+  <li> 
+    <p>OOPS represents a genuine paradigm shift.</p>
+  </li>
+</ul>
+<p> Because classes are so important you will hear many views of what they are:-</p>
+<p> Classes are object factories</p>
+<p>Classes are the means of encapsulating data and functions</p>
+<p>Classes are categories</p>
+<p>Classes are types (not true)</p>
+<p>For example</p>
+<p> 
+ <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes1.cpp", false, "code", "", "","");
+//-->
+</script> 
+</p>
+<p>declares a class <span class="codeInline">Complex</span> that encapsulates 
+  both the real variables <span class="codeInline">re</span> and <span class="codeInline">im</span> 
+  as well as three function declarations&#151;two accessors: <span class="codeInline">getReal()</span> 
+  and <span class="codeInline">getImag()</span> which read data and one modifier: 
+  <span class="codeInline">set(.)</span> which changes data</p>
+<h1><a name="access">Access Control</a></h1>
+<ul>
+  <li>Members of a class (both data and functions) may be <span class="codeInline">public</span> 
+    or <span class="codeInline">private</span></li>
+  <li>default for classes is <span class="codeInline">private</span></li>
+  <li>Access may be switched back & forth-e.g. </li>
+</ul>
+<p>
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes2.cpp", false, "code", "", "", "");
+//-->
+  </script>
+</p>
+<p>However, this is not very good style, particularly for small classes.</p>
+<p> Without a very good over-riding reason, stick to one <span class="codeInline">private</span> 
+  section and one <span class="codeInline">public</span> in each class.</p>
+<p>Normally, data is <span class="codeInline">private</span>, functions are <span class="codeInline">public</span>.</p>
+<p> 
+ <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes3.cpp", false, "code", "", "", "");
+//-->
+</script> 
+</p>
+<p>This is the embodiment of encapsulation. Data is hidden. Only the class functions 
+  are allowed access to it.</p>
+<h1><a name="definition"></a>Definition of Class Functions </h1>
+<p>1. Short functions may be declared in line.</p>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes4.cpp", false, "code", "", "", "");
+//-->
+</script> 
+</p>
+<p>2. Alternatively, functions may be defined in the normal way except that they 
+  need a <i>scope resolution operator. </i>In such a case we first declare the 
+  class</p>
+<p> 
+   <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes5.cpp", false, "code", "", "A","");
+//-->
+</script> 
+
+</p>
+<p>And then we implement it (usually in a separate file)</p>
+<p> 
+  <script language="JavaScript" type="text/javascript">
+<!--
+setButtons(true, false, true,"","");
+insertCode("classes5.cpp", false, "code", "", "B", "");
+//-->
+  </script>
+</p>
+<p>Note that functions defined outside the class operate normally, whereas inline 
+  functions are really more like macros.</p>
+<p>A call doesn't actually generate a call. Instead-</p>
+<p>The code for the function is written in at every point it is used.</p>
+<p> Efficient for small functions since function calls take a lot of time.</p>
+<h2><a name="using">Using Classes</a></h2>
+<p>Given the declaration above</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("classes5.cpp", true, "code", "", "C", "");
+</script>
+</p>
+<p>Scope rules work just as for variables-e.g.</p>
+<p> 
+  <script language="JavaScript">
+insertCode("classes7.cpp", false, "code", "", "", "");
+</script>
+</p>
+<ul>
+  <li><span class="codeInline">x</span> is a global object</li>
+  <li><span class="codeInline">f1</span> and main both have their own objects 
+    <span class="codeInline">y</span></li>
+  <li><span class="codeInline">f1</span> has its own object<span class="codeInline"> 
+    x</span> </li>
+</ul>
+<p>However, C++ allows <span class="codeInline">f1</span> to access global <span class="codeInline">x</span> 
+  as follows:</p>
+<p> 
+  <script language="JavaScript">
+insertCode("classes8.cpp", false, "code", "", "", "");
+</script>
+</p>
+<p>This use of the scope resolution operator <span class="codeInline">::</span> 
+  to access globals works in C++ for variables as well as objects</p>
+<h1><a name="shouldnt">Shouldn't X Have Access to it's Own Data?</a></h1>
+<p>Consider the line</p>
+<p class="codeInline"> cout << x.getReal() << " + j" << x.getImag();</p>
+<p><span class="codeInline">x</span> is an object of class <span class="codeInline">Complex</span>.
+   Surely it should know about it's own data.</p>
+<p>Why can't I write <span class="codeInline">cout << x.re << " + j" << x.im;</span></p>
+<p> <span class="codeInline">x</span> does know about <span class="codeInline">re</span> 
+  and <span class="codeInline">im</span>&#151;but it's not going to let you know 
+  about it.</p>
+<p>If it did, you could write <span class="codeInline">x.re = 3.2;</span> </p>
+<p>When you declare an object of class <span class="codeInline">Complex</span>, it's like buying a hard disk
+  for  your computer.</p>
+<p>You get the object, but it's sealed up&#151;no tampering! </p>
+<p>The only way to get data from your hard disk is through the interface.</p>
+<p>The only way to get data from an object of class <span class="codeInline">Complex</span> is via the public 
+  functions provided. In fact the class declaration plus the set of public functions 
+  is often known as the <i>interface of the class.</i></p>
+<p> 
+  <script language="JavaScript">
+insertCode("classes9.cpp", false, "code", "", "", "");
+</script>
+</p>
+<h1><a name="why">Why Encapsulate?</a></h1>
+<p>Consider a case where a complex no. is not changed often but both kinds of 
+  co-ordinates are requested frequently.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("classes10.cpp", true, "code", "", "", "");
+</script>
+</p>
+<p>Designer has opted to carry the overhead of remembering (instead of recalculating) 
+  magnitude and phase.</p>
+<p>Why is the user not allowed to tamper with the data?</p>
+<p>What does the code for set have to do?</p>
+<p>Designer can later change design of private part without affecting how the 
+  public part works. </p>
+<h1><a name="queue">Making a Class Out of Queue</a></h1>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("classes11.cpp", false, "code", "", "", "");
+</script>
+</p>
+<p>We haven't shown the code for the functions, yet, because it is quite straightforward.</p>
+<p>Notice an immediate difference between the C module approach and the C++ approach.</p>
+<p>I can declare more than 1 queue in C++. Once the class is declared, I can declare 
+  as many Objects of the class as I like.</p>
+<p class="codeInline">Queue q1, q2, q3; // 3 queues of 100 integers.</p>
+<h3>Queue Class Problems & Issues</h3>
+<ol>
+  <li>How do we initialize <span class="codeInline">pHead</span> and <span class="codeInline">pTail</span> 
+    pointers?</li>
+  <li>Why should the queue alway be 100 elements long?</li>
+  <li>Why should a queue just be for integers? Isn't a queue of printer jobs managed 
+    exactly the same way? </li>
+</ol>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("classes5.cpp", false, "code", "", "", "");
+  </script></p>
+</div>
+
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

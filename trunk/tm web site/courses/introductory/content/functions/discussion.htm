@@ -1,0 +1,67 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Scope Discussion</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p><script language="JavaScript" type="text/javascript">
+<!--
+insertDefLink("scope","Scope",-50,-100);
+// -->
+</script> is a property (or an attribute) of <b>names</b>. It is all about <em>context</em>.</p>
+<img src="../../content/functions/john_who.gif" width="200" height="146" border="0" align="left">
+<p> Consider the little group at a party on the left. Now 'John' is a very common name but
+the woman clearly understands who is being spoken about. However, the person eavesdropping behind
+doesn't have a clue. He doesn't have the <em>context.</em></p>
+<p> It's quite likely the other two know a bunch of John's as well&mdash;after all, there are probably several million in North America alone. However, they both have a context that allows them to <em>resolve</em> which John they are discussing.</p>
+<p>People use all kinds of contexts. A common one would be the family. Even though the Dad at right has a brother John it is clear to both he and his wife <img src="../../content/functions/john_where.gif" width="200" height="86" border="0" align="right">that they are talking about their own son, who is the closest John to the two of them. If she wanted to talk about her husband's brother she would say, "your brother, John" or, if the kids were present, "Uncle John".</p>
+<p>Thus we have two ways of resolving a much-used name. We can </p>
+<ul><li>do it by context
+<li>qualify it</li></ul>
+<h2><a name="Qualified">Qualified Names and Namespaces</a></h2>
+<p> There are even more Michael's than John's in North America but when someone says <q>that fella on the left <img src="../../content/functions/mpbl.gif" width="100" height="177" border="0" alt="Michael Bruce-Lockhart Cartoon" align="left">is Michael Bruce-Lockhart, Professor of Electrical & Computer Engineering at Memorial University of Newfoundland</q>  it's pretty unambiguous as to just which one of those Michael's is meant. We would refer to this as a <dfn>fully qualified name</dfn>.
+<p>Although we can qualify names it's something we largely do within classes, a topic far too advanced for this section. There is one exception to that we can cover right now, however. The fully qualified name of the standard ouput stream is <em>std::cout</em>. A good way to think of the <em>std</em> in front of the double colon is as if it were a family name&mdash;except that in computing we usually call it a <em>namespace</em>.</p>
+<p>Of course, we don't normally refer to <em>cout</em> as <em>std::cout</em>. Instead you have been told to put at the beginning of any file that is going to use the standard streams the following line of code</p>
+<code><pre>using namespace std;</pre></code>
+<p>Now you can understand what that means. It's as if we were writing a letter and started out by saying <q>I'm talking about the Bruce-Lockhart family here</q>. Then every reference in the letter to <em>Michael</em> would be understood to mean to <em>Michael Bruce-Lockhart</em>. In the same way, every reference to <em>cout</em> in your file will be taken to refer to <em>std::cout</em>. Namespaces are a new feature of C/C++ so they are not used a great deal yet; even so there are a number of such namespaces available in the C/C++ libraries.</p>
+<h2><a name="Context">Context</a></h2>
+<p>On to context! People are pretty sharp about using contexts to resolve names. For example<img src="../../content/functions/bald_john.gif" width="200" height="106" border="0" alt="Talking about bald John" align="right"> our little family usually mean their son when they just talk about <em>John</em> with no qualifications. However, John is only seven years old, so the father at right knows both from the past tense as well as from the fact that the word <em>handsome</em> is usually only applied to grown men that his wife is <em>not</em> talking about their son, John, but rather his brother, John. It's hard to make computers that clever. We don't even try.</p>
+<p>One last point, however, before we go on to its C++ equivalent. In the examples
+  above, <em>context</em> has really meant something like <em>the context in
+  which the name John is understood unambiguously</em>. Notice that it was always
+  really a property of the name <em>John</em> itself. If that doesn't make sense
+  to you, consider my son's name, <em>Cullam</em>. Because it is such an unusual
+  name, I can say <em>Cullam</em> and be unambiguously understood in a much wider
+  context than I can say <em>John</em>. In other words, context is a <em>property</em> of
+  my son's name <em>Cullam</em>. </p>
+<p>So, although we need something a little more definitive than our very broad,
+  human notion of context, we would like it to be attached to particular names.
+  The limited, C++ version of context is known as <dfn>scope</dfn>.
+<p>
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

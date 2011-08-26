@@ -1,0 +1,301 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>First Tutorial</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>We're going to consider a simple integer division function similar to what was on the midterm.</p>
+<script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("intDivision.cpp", false, "code", "", "C", "C");
+</script>
+<p>Remember a function is a service, offered to many clients. So we're going to build some standard clients:</p>
+<blockquote><code>void constantClient(); </code>always calls the service using constants  </blockquote>
+  <blockquote>
+    <p><code>void anxiousClient(); </code>always calls the service using the same names </p>
+  </blockquote>
+  <blockquote>
+    <p><code>    void independentClient(); </code>always calls the service using  different names</p>
+  </blockquote>
+  <blockquote>
+    <p><code>void expressiveClient(); </code>always calls the service using expressions </p>
+  </blockquote>
+  <blockquote>
+    <p><code>    void confusedClient(); </code>always calls the service out of order</p>
+  </blockquote>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("intDivision.cpp", false, "code", "", "B", "B");
+    </script>
+  </p>
+  <p>All <code>main</code> is going to do is call each of our test clients.</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("intDivision.cpp", false, "code", "", "A", "A");
+    </script>
+  </p>
+  <p>They will run the actual tests on our service function, <code>foo</code>.</p>
+  <p>Now let's run it, using the <code>stepInto</code> button( <img src="../../webWriter/images/stepInto.gif" width="24" height="24"> ) so we can trace into each function </p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("intDivision.cpp", true, "code", "", "A", "ALL");
+  </script>
+</p>
+<h2>Exercises</h2>
+<ol>
+  <li>Use the Teaching Machine to run the  examples in the lectures on if statement and loops. Make sure you get to the point where you can predict what will happen before you click on a control.</li>
+  <li>Here's a problem from my very first physics class. It doesn't involve programming. It does involve problem solving. Estimate (to the nearest factor of 10) how many oxygen molecules there are above Memorial University. </li>
+</ol>
+<p>&nbsp; </p>
+<p>For each of the following we would like a function (possibly calling other functions). We want you to
+  </p>
+<ol>
+    <ol type="a">
+      <li>Write the contract (header and prototype).</li>
+      <li>Write the pseudo-code (algorithm for the function)</li>
+      <li>write the code.</li>
+    </ol>
+  </ol>
+<blockquote>
+  <p>Note: if you are having trouble coming up with an approach get together with a friend or two and discuss it. Make sure you both (or all) contribute to the discussion. Then break apart and do the question on your own. </p>
+</blockquote>
+<ol>
+  <li> George and Mary bought a stick of candy and George broke it in half and gave Mary the shorter piece. We want a function to tell George what <em>percentage of his own piece</em> he should give Mary so they both have the same amount.</li>
+  <li>The Weather service has data  for the average daily temperature every day for any year and any city in Canada. Write a function that uses that data to estimate the number of degree days for a particular city in a particular year. (a degree day is the number of days times the number of degrees spent below 20 degrees C and is a measure of heating requirements). </li>
+  <li>We would like a function to find the number of failures in a class. The marks for a class will be kept in an array of marks that range from 0 to 100 (integer). A failure is any mark less than 50.    </li>
+  <li>We would like a function to find the location of the median value of a set of values in an unsorted array of doubles. It is acceptable to modify the array itself. (If you don't know what a median is, google it.)</li>
+  <li>We would like a function to insert a single double into a sorted array of doubles  so that the array has one more value after the
+  insertion, and is still sorted. You are guaranteed the array is large enough to hold the value.</li>
+  </ol>
+<h2>Solutions</h2>
+<script language="JavaScript">
+	startHiddenAnswer("1a");
+</script>
+
+<pre>/** daddy ***************************************************************
+*
+* @params: longer - the length of the longer stick @pre: > 0
+*          shorter - the length of the shorter stick @pre: >= 0, < longer
+*
+* @returns: the percentage of the longer stick that should be broken off
+*              in order to make the two the same.
+*************************************************************************/</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1c");
+</script>
+<pre>double daddy(double longer, double shorter) {
+       double breakOff = (longer - shorter) / 2.0;
+       return 100 * breakOff /longer;
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2a");
+</script>
+<pre>/** degreeDays ***************************************************
+*
+* @params: averages- an array of daily average temps
+*          days - the number of days represented by the array
+*
+* @returns: the number of degree-days represented by the array
+*****************************************************************/
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2b");
+</script>
+<pre>degreeDays = 0
+for each day of the year
+    if average temp < 20
+          add 20-average to degreeDays</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2c");
+</script>
+<pre>double degreeDays(double averages[], int days) {
+       double dDays=0;
+       for(int d = 0; d < days; d++)
+           if (averages[d] < 20)
+              dDays += (20-averages[d]);
+       return dDays; 
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3a");
+</script>
+<pre>/** failures ***************************************************
+*
+* @params: marks- an array of marks @pre: each mark on [0,100]
+*          size - the class size @pre: > 0
+*
+* @returns: the number of marks < 50
+*****************************************************************/</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3b");
+</script>
+<pre>failures = 0
+for each mark
+    if < 50
+        failures ++</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("3c");
+</script>
+<pre>int failures(int marks[], int classSize) {
+       int countF = 0;
+       for(int m = 0; m < classSize; m++)
+           if (marks[m] < 50)
+              countF++;
+       return countF; 
+}
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("4a");
+</script>
+<pre>/** median ***************************************************
+*
+* @params: unsorted - an unsorted array of doubles
+*          size - the size of the array @pre: > 0
+*
+* @modifies: the array will be sorted
+*
+* @returns: the position of the median value
+*****************************************************************/</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("4b");
+</script>
+<pre>sort the array
+if size is odd (e.g. 9) return middle (e.g. 5th). Position run from
+0..size-1 (e.g. 0..8) so middle (e.g 4) is (size-1)/2
+if even return either of 2 middle of 0..size-1 i.e. (size-1)/2 or (size-1)/2 +1
+
+So the answer is almost trivial
+sort the array
+return (size-1)/2
+
+You can figure out the code yourself
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("5a");
+</script>
+<pre>/** insert ***************************************************
+*
+* @params: value - ane value
+*          sorted - a sorted array of doubles
+*          size - the current size of the array @pre: >= 0
+*
+* @modifies: the size of the array will increase by 1
+*            the array will contain value
+*            the array will still be sorted
+*
+* @returns: nothing
+*****************************************************************/
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("5b");
+</script>
+<pre>The basic idea is to find where in the array we should insert the value
+then shift all the values above that point up by one
+then insert the value.
+Note, however
+1. the array could be empty in which case we just put the value in
+2. It could be less than every value in which case it goes in front.
+3. it could be larger than every value in which case it goes at back
+
+if size is 0
+    sorted[0] = value
+otherwise
+    for each position in the array, starting at 0
+        if  value less than the one at the position
+            insert it at position and QUIT
+    if no insertion was made, add the value to the end
+    
+How do we insert at position?
+insertAt(int position, double val, double array[], int size) --->
+
+starting with the last element and working down until we get to position
+    move element up by one
+insert new value at position/pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("5c");
+</script>
+<script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("insert.cpp", true, "code", "", "A", "ALL");
+</script>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

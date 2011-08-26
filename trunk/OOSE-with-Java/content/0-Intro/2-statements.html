@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Statements</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="statements">Statements</a></h1>
+<p>Commands in Java are called statements. We've already seen one form of statement, which is called an expression statement.</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">;</span> </p>
+<div class="breakoutBox"> <strong>Note</strong>
+    <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+  Not every kind of expression can be used in an expression statement, but the kinds that make sense can. <strong>End of Note.</strong>
+  <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<h2><a name="expressionStatements">Expression Statements</a></h2>
+<p>Expression statements are executed simply by evaluating the expression, presumably because the expression has some side effect.</p>
+<h2><a name="skipStatements">Skip Statements</a></h2>
+<p>A skip statement consists of only a semi-colon and does nothing at all </p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline">;</span> </p>
+<p>Another way to write a statement that does nothing at all is</p>
+<pre class="code"> {}</pre>
+<p>I prefer <span class="codeInline">{}</span> to ; </p>
+<h2><a name="ifStatements">If Statements</a></h2>
+<p>If statements allow a choice between two alternative statements based on a boolean value. A two-tailed if statement has the form </p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"><span class="codeKeyword">if</span>(</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">)</span> <span class="stxNonterminal">Statement</span> <span class="codeInline"></span><span class="codeKeyword">else</span><span class="stxNonterminal"> Statement</span></p>
+<p>The expression must be boolean and if it evaluates to true, then the first statement is executed, otherwise the second statement is evaluated.</p>
+<p>We can also write a one-tailed if-statement</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"><span class="codeKeyword">if</span>(</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">)</span> <span class="stxNonterminal">Statement</span></p>
+<p>In this case, if the expression evaluates to false, nothing is done, as in the skip-statement.</p>
+<p>In effect a statement</p>
+<p class="code"><span class="codeKeyword">if</span>( <span class="stxNonterminal">E</span> ) <span class="stxNonterminal">S</span></p>
+<p>means</p>
+<p class="code"><span class="codeKeyword">if</span>( <span class="stxNonterminal">E</span> ) <span class="stxNonterminal">S</span> <span class="codeKeyword">else</span> ;</p>
+<p></p>
+<div class="breakoutBox">
+  <p><strong>Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+         startNote();
+      </script>
+    Because Java has both one-tailed and two-tailed if statements there is a question of associativity. A statement</p>
+  <p class="code"><span class="codeKeyword">if</span>( E0 ) <span class="codeKeyword">if</span>( E1 ) S0 <span class="codeKeyword">else</span> S1</p>
+  <p>Could be understood in two ways. The rule is that each &quot;else part&quot; is attached to the most recent &quot;if&quot; possible. In the example S1 will be executed only if E0 evaluates to true and E1 to false. </p>
+  <p> <strong>End of Note.</strong>
+      <script language="JavaScript" type="text/JavaScript">
+          endNote();    
+    </script>
+  </p>
+</div>
+<h2><a name="blocks">Blocks</a></h2>
+<p>In some cases we want to execute a sequence of statements.</p>
+<p>In such a case we can use a block</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="stxNonterminal">Block</span><span class="codeInline"><br>
+  </span><span class="stxNonterminal">Block</span> --&gt; <span class="codeInline">{</span> <span class="stxMeta">( </span><span class="stxNonterminal">BlockMember </span><span class="stxMeta">)*</span> <span class="codeInline">}</span> <br>
+  <span class="stxNonterminal"> BlockMember</span>--&gt;<span class="stxNonterminal"> Statement </span></p>
+<p>[Here I'm using some new meta-notation to describe the syntax. When I put something between the symbols <span class="stxMeta">(</span> and <span class="stxMeta">)*</span> that means that there can be zero or more repetitions of that something. </p>
+<p>So the above definition says that</p>
+<ul>
+  <li>a <span class="stxNonterminal">Statement</span> can consist of a <span class="stxNonterminal">Block</span>,</li>
+  <li>a <span class="stxNonterminal">Block</span> can consist of a &quot;{&quot; followed by zero or more <span class="stxNonterminal">BlockMember</span>s, followed by a &quot;}&quot;, and that</li>
+  <li>a <span class="stxNonterminal">BlockMember</span> can be a <span class="stxNonterminal">Statement</span>.]</li>
+</ul>
+<p>Here are some examples of statements that are blocks</p>
+<ul>
+  <li class="codeInline">{ }</li>
+  <li class="codeInline">{ c = 3 ; } </li>
+  <li class="codeInline">{ c = 3 ; d = 4 ; } </li>
+</ul>
+<p>Usually, a block is executed by executing each of the statements in it, starting with the first and ending with the last. </p>
+<ul>
+  <li>Thus it is the <em>sequential composition</em> of the statements in it. </li>
+  <li>However, that is assuming that each of the statements completes <span class="pseudoCode">normally</span>. It is also possible for statements to complete <span class="pseudoCode">abruptly</span>. We'll address abrupt completion later in this course. </li>
+</ul>
+<p>The following is a reasonable if-statement. Each tail is a block </p>
+<pre class="code"><span class="codeKeyword">if</span>( a == b )
+{
+    c = 3 ;
+    d = 4 ;
+}
+<span class="codeKeyword">else
+</span>{
+    c = 4 ;
+    d = 5 ;
+}</pre>
+<h2><a name="indentation">Aside on indentation</a></h2>
+<p>By the way, in Java, newline characters and blank characters are equivalent in most contexts and, in fact, optional in most cases. So a completely equivalent statement is this: </p>
+<p class="code"><span class="codeKeyword">if</span>(a==b){c=3;d<br>
+  =4;}<span class="codeKeyword">else</span>{c=4;d<br>
+  =5;}</p>
+<p>However, it is good style to use blanks and newlines to highlight the structure of your programs by indenting nested elements more than outer elements.</p>
+<h2><a name="localVariableDeclarations">Local variable declarations</a></h2>
+<p>Besides statements, another thing you can put in blocks is <strong>local variable declarations</strong>.</p>
+<p>Simplifying slightly, the syntax is </p>
+<p class="syntaxDef"> <span class="stxNonterminal">BlockMember</span> --&gt; <span class="stxNonterminal">VariableDeclaration <br>
+  VariableDeclaration --&gt; Type Identifier</span> <span class="style6"><span class="codeInline">= </span></span><span class="stxNonterminal">Expression</span> <span class="style6"><span class="codeInline">;</span></span></p>
+<p>So for example </p>
+<p class="code"><span class="codeKeyword">int</span> balance = 0 ; </p>
+<p>is a local variable declaration and can appear within a block.</p>
+<p>The meaning of a local variable declaration is that it declares a new variable for use within a block.</p>
+<p>The <em>scope</em> of the variable starts at its declaration and ends at the end of the enclosing block. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("../src/Scope.java", true, "code", "default.cfg");
+  
+</script>
+</p>
+<p>The meaning of a local variable declaration is that</p>
+<ul>
+  <li>the variable is created on the stack </li>
+  <li>the expression is evaluated </li>
+  <li>the value of the expression is assigned to the variable</li>
+</ul>
+<p>The variable is then available for use or reassignment throughout the remainder of the block.</p>
+<p>At the end of the block, the local variable ceases to exist.</p>
+<p class="principle"><strong>Principle</strong>: Local variables cease to exist after the block in which they were declared is complete. </p>
+<p>&nbsp;</p>
+<p>The assignment sign and the expression in the local variable declaration can be left out. To express this, I'll introduce some new meta-notation.</p>
+<p>When I enclose something between <span class="stxMeta">(</span> and <span class="stxMeta">)<sup>?</sup></span> in grammar rule, it means that that something is optional. So we have: </p>
+<p class="syntaxDef"> <span class="stxNonterminal"> VariableDeclaration --&gt; Type Identifier</span> <span class="stxMeta">(</span> <span class="style6"><span class="codeInline">= </span></span><span class="stxNonterminal">Expression</span> <span class="stxMeta">)<sup>?</sup></span><span class="style6"><span class="codeInline"> ;</span></span></p>
+<p>Here is an example </p>
+<p></p>
+<p class="code"><span class="codeKeyword">double</span> distance ; </p>
+<p>However, my style recommendation is to make the scope of each local variable no bigger than needed and usually this means that you can initialize the variable as part of its declaration. </p>
+<h2><a name="loops">Iteration</a></h2>
+<p>Of course computers are only really useful because the can do the same thing over and over, with different data. </p>
+<h3><a name="whileLoops">while statement </a> </h3>
+<p>The syntax of the <span class="codeKeyword">while</span> statement (or &quot;while loop&quot;) is</p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">while</span><span class="codeInline">( </span><span class="stxNonterminal">Expression</span> <span class="codeInline">) </span><span class="stxNonterminal">Statement</span> </p>
+<p>The execution of a <span class="codeKeyword">while</span> statement</p>
+<p class="code">while( <span class="pseudoCode">B</span> ) <span class="pseudoCode">S</span> </p>
+<p>is as follows</p>
+<ul>
+  <li>(0) B is evaluated. </li>
+  <li>(1) If B evaluates to false, then nothing is done.</li>
+  <li>(2) If B evaluates to true, then S is executed and then we return to step (0)</li>
+</ul>
+<p>For example, here is a statement that calculates (in a rather inefficient way) the triangular number n: 0, 1, 3, 6, 10, 15, 21, 28 </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("../src/While0.java", true, "code", "default.cfg", "A");
+  
+</script>
+</p>
+<p>Here is a statement that counts the number of words in the input stream</p>
+<p>
+  <script language="JavaScript">
+setButtons( false, false, false,"","");
+insertCode("../src/While1.java", true, "code", "default.cfg", "A");
+  
+</script>
+</p>
+<p>This example uses a few expressions and a type we haven't seen yet.</p>
+<ul>
+  <li><span class="codeInline">Scanner</span> is a type defined in the standard library</li>
+  <li><span class="codeKeyword">new</span><span class="codeInline"> Scanner( System.in )</span> produces a scanner &quot;object&quot; that reads from the standard input stream</li>
+  <li><span class="codeInline">scanner.hasNext()</span> is a boolean expression that is true if there are more words in the input.</li>
+  <li><span class="codeInline">scanner.next()</span> removes one word from the input stream.</li>
+</ul>
+<p>[Note: For the above statement to compile, we will need to import java.util.Scanner. See the text for details of how to import.] </p>
+<h3><a name="forLoops">for statements</a></h3>
+<p><span class="codeKeyword">for</span> statements (or for loops) are essentially an abbreviation. The last two examples had the same general form of:</p>
+<p class="code">{ <span class="pseudoCode">D</span> <span class="codeKeyword">while</span>( <span class="pseudoCode">B</span> ) { <span class="pseudoCode">S</span> <span class="pseudoCode">E</span>; } }</p>
+<p>where D declares a variable, B tests it, and E updates it.</p>
+<p><span class="codeKeyword">for</span> loops give us a slightly more compact way to write the same thing. Using a <span class="codeKeyword">for</span> loop, we would write </p>
+<p class="code"><span class="codeKeyword">for</span>( <span class="pseudoCode">D</span> <span class="pseudoCode">B</span> ; <span class="pseudoCode">E</span> ) { <span class="pseudoCode">S</span> } </p>
+<p>The syntax is as follows </p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">for</span><span class="codeInline">( </span><span class="stxNonterminal">VariableDeclaration Expression ; Expression</span> <span class="codeInline">) </span><span class="stxNonterminal">Statement</span> </p>
+<p>When the variable is an integer, the update is often to increment it by one, e.g.</p>
+<p class="code">i = i + 1</p>
+<p>There is a convenient abbreviation for this, which is</p>
+<p class="code">++i</p>
+<p>Sometimes, however we decrement by one:</p>
+<p class="code">i = i - 1</p>
+<p>This can be abbreviated by</p>
+<p class="code">--i</p>
+<p>Using this abbreviation and a for loop, our triangular number computation becomes</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("../src/For0.java", true, "code", "default.cfg", "A");
+  
+</script>
+</p>
+<p>The word counter example can be written </p>
+<pre class="code"><span class="codeKeyword">int</span> count = 0 ;<br><span class="codeKeyword">for</span>( Scanner scanner = <span class="codeKeyword">new</span> Scanner( System.in ) ;<br>             scanner.hasNext() ;<br>             scanner.next() )<br>    count = count + 1 ;</pre>
+<h3>Other Statements</h3>
+<p>There are some other forms of statements which can be looked up in the text book.</p>
+<ul>
+  <li><span class="codeKeyword">switch</span> statements</li>
+  <li><span class="codeKeyword">break</span> statements</li>
+  <li><span class="codeKeyword">continue</span> statements</li>
+  <li>labeled statements</li>
+  <li>other forms of <span class="codeKeyword">for</span> statement</li>
+</ul>
+<p>Also there are some statements that we'll get to later</p>
+<ul>
+  <li><span class="codeKeyword">return</span> statements</li>
+  <li><span class="codeKeyword">assert</span> statements</li>
+  <li><span class="codeKeyword">try</span> statements</li>
+</ul>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

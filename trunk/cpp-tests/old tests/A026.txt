@@ -1,0 +1,42 @@
+struct Strc { int a[9] ; } ;
+
+ int main() {
+
+    // Array Indexing
+    
+    int a[10] ;
+    int b[3][2] ;
+
+    int *x[10] ;
+    int (*y)[10] ;
+    
+    b[1][1] = (a[0]) ;
+    
+	a[0] = 1 ;
+	a[1+2] = a[0] ;
+	
+	x[0] = & a[0] ;    
+	
+	y = &a ;
+	(*y)[2] = 13 ;
+	
+	int *p = & a[3] ;
+	
+	*p = 15 ;
+	p[0] = 16 ;
+	p[-3] = 4 ;
+	
+	(p) = a ;
+	p[2] = 32 ;
+	
+	p = (a) ;
+	
+	int *q = a ;
+	
+	
+	p = b[1];
+	
+	Strc x ;
+	
+	p = x.a ;
+}

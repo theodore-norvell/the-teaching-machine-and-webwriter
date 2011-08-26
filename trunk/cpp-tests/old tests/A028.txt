@@ -1,0 +1,11 @@
+ int main() {
+
+    // Builtin put and get functions.
+    
+    cout.put( 'a' ) ; cout.put( 66 ) ; cout.put( '\n' ) ; cout.put( '\t' ) ;
+    cout.put( 'x' ) ;
+    
+    char c ;
+    cin.get( c ) ;
+    while( true ) { cin.get( c ) ; }
+}

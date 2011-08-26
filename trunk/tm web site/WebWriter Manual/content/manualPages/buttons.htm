@@ -1,0 +1,216 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Buttons</title>
+</head>
+<body>
+<h2><a name="purpose">Purpose</a></h2>
+<p>To create nice  buttons for effective user interfaces. Buttons can be of various
+  types as follows:</p>
+<dl>
+  <dt>rollover</dt>
+  <dd>the button &quot;illuminates&quot; when a mouse rolls over it.</dd>
+  <dt>toggle</dt>
+  <dd>the button stays down when it is clicked and must be clicked again to clear
+    it. Toggles can have separate up and down state actions and tooltips.</dd>
+  <dt>grayable</dt>
+  <dd>the button can be grayed out.  </dd>
+</dl>
+<p>Buttons can be created with any combination of these properties. Their properties
+  may not be changed once they are created.</p>
+<p>The author must provide gifs for each possible button state. The possible
+  button states depend upon the properties chosen as shown in  Table
+  1. gifs must be labelled as shown in the table and must be stored in the <code>site_resources/images</code>  directory.</p>
+<p>xx
+  simply refers to  the Base gif. For example,  the TeachingMachine run button
+  has the base gif <code>&quot;runButton&quot;</code>. Since the   TeachingMachine
+  run button is a non-grayable, non-toggle, rollover button the required
+  button gifs would be <code>&quot;runButtonNormal.gif&quot;</code>, <code>&quot;runButtonDown.gif&quot;</code> and <code>&quot;runButtonOver.gif&quot;</code>.  </p>
+<table width="100%"  border="0">
+  <thead>
+  <td><div align="center"><strong>isRollover</strong></div></td>
+      <td><div align="center"><strong>isToggle</strong></div></td>
+      <td><div align="center"><strong>isGrayable</strong></div></td>
+      <td><div align="center"><strong>States</strong></div></td>
+      <td><strong>gifs needed </strong></td>
+  <tr>
+    <td><div align="center">false</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">2</div></td>
+    <td>xxNormal xxDown </td>
+  </tr>
+  <tr>
+    <td><div align="center">false</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">3</div></td>
+    <td>xxNormal xxDown xxGray </td>
+  </tr>
+  <tr>
+    <td><div align="center">false</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">2</div></td>
+    <td>xxNormal xxDown </td>
+  </tr>
+  <tr>
+    <td><div align="center">false</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">4</div></td>
+    <td>xxNormal xxDown xxGray xxGrayDown </td>
+  </tr>
+  <tr>
+    <td><div align="center">true</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">3</div></td>
+    <td>xxNormal xxDown xxOver</td>
+  </tr>
+  <tr>
+    <td><div align="center">true</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">4</div></td>
+    <td>xxNormal xxDown xxOver xxGray</td>
+  </tr>
+  <tr>
+    <td><div align="center">true</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">false</div></td>
+    <td><div align="center">4</div></td>
+    <td>xxNormal xxDown xxOver xxOverDown </td>
+  </tr>
+  <tr>
+    <td><div align="center">true</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">true</div></td>
+    <td><div align="center">6</div></td>
+    <td>xxNormal xxDown xxOver xxOverDown xxGray xxGrayDown </td>
+  </tr>
+</table>
+<strong>Table 1: Buttons states and gifs required by button type.
+</strong>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>createButton(gifBase, isRollover, isToggle, isGrayable, actionString, tooltip, downActionString,
+downtip) <br>
+</strong>
+<h3>Arguments</h3>
+<dl>
+  <dt>gifBase</dt>
+  <dd>a <strong>string</strong> giving a unique base name for the button gifs.
+    Actual gifs must be stored in the <code>/site_resources/images</code> directory and must
+    be named <code>gifBaseNormal.gif</code>, <code>gifBaseOver.gif</code>, etc. according Table 1. </dd>
+  <dt>isRollover</dt>
+  <dd>a <strong>boolean: </strong><code>true</code> makes a  button that exhibits
+    rollover behaviour.</dd>
+  <dt>isToggle</dt>
+  <dd>a <strong>boolean: </strong><code>true</code> makes a  button that
+    toggles&#8212;stays down when it is pressed and must be pressed again to
+    release it. </dd>
+  <dt>isGrayable</dt>
+  <dd>a <strong>boolean: </strong><code>true</code> makes a button that can be
+    grayed out.</dd>
+  <dt>actionString</dt>
+  <dd>a <strong>string</strong> defining the action that will be taken when the
+    mouse goes up. The <code>onMouseUp</code> handler. </dd>
+  <dt>tooltip</dt>
+  <dd>a <strong>string</strong> giving a tooltip that will come up when the button
+    is rolled over. </dd>
+  <dt>downActionString</dt>
+  <dd>a <strong>string</strong> defining the action that will be taken when the
+    mouse goes up and the button is in the down state.   The <code>onMouseUp</code> handler
+    when the button starts in the down position. Only valid for toggle
+    buttons.</dd>
+  <dt>downtip</dt>
+  <dd>a <strong>string</strong> giving a tooltip that will come up when a toggle
+    button in the down position is rolled over. Only valid for toggle
+    buttons.</dd>
+  <dt>&nbsp;</dt><dt>Return</dt>
+  <dd>a reference to the button that is created  is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>The button is written dynamically into the document at the point of invocation.</p>
+<hr>
+<strong>grayOut(gray)<br>
+</strong>
+<h3>Arguments</h3>
+<dl>
+  <dt>gray</dt>
+  <dd>a <strong>boolean: </strong><code>true</code> grays out the button, false
+    enables it. Only works for buttons that have been created as grayable.</dd>
+</dl>
+<h3>Comment</h3>
+<p>This is a member function of class <code>Button</code> and so must be invoked
+  with respect to a particular <code>Button</code> object.</p>
+<hr>
+<h2><a name="examples">Examples</a></h2>
+<p class="pagebreak">Here is a hard-coded mockup of what <code>insertCode</code> creates
+  (only the second last button  is  functional)</p>
+<div class="tmContainer">
+  <table class="tmBar" width = "100%">
+    <tr>
+      <td width="120px" align="left"> <img src="../../webWriter/images/greenBoard.gif" alt="greenboard"></td>
+      <td align="left"><script language="JavaScript">
+			Button.createButton("runButton", true, false, true, "", "This is still a dummy button");
+			Button.createButton("runButton", true, true, true, "", "Dummy button", "", "Toggle down");
+			Button.createButton("videoButton", true, false, true, "", "This is still a dummy button");
+			var grayButton = Button.createButton("runButton", true, true, true, "", "Dummy button", "" , "Dummy toggled down");
+			grayButton.grayOut(true);
+			var actionButton = Button.createButton("videoButton", true, true, true,
+				"Button.get(" + grayButton.ref + ").grayOut(true)", "gray out next button",
+				"Button.get(" + grayButton.ref + ").grayOut(false)","un-grayout next button");
+			Button.createButton("runButton", true, false, true, "", "This is still a dummy button");
+            </script>
+      </td>
+      <td align="right">dummy_mockup.cpp</td>
+    </tr>
+  </table>
+  <div class="code" style="position:relative;">
+    <pre>
+/*******  Simple Variables Demonstration ********
+To demonstrate on the teaching machine the four
+fundamental attributes of simple C variables
+name, type, value, location
+
+*******************************************/
+
+#include <iostream>
+using namespace std;
+
+int main(){
+    int i = 110;
+    char letter;
+    bool flag;
+    double pi;
+    
+    letter = 'n';
+    flag = false;
+    pi = 3.14159;
+    
+    
+    cout << "i = " << i << '\n';
+    cout << "flag = " << flag << '\n';
+    cout << "letter = " << letter << '\n';
+    cout << "pi = " << pi << '\n';
+    return 0;
+}
+</pre>
+  </div>
+</div>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

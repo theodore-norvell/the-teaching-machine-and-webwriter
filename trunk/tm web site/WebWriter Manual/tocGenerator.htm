@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "";
+</script>
+<script language="JavaScript" src="content/noteConstants.js"></script>
+<script language="JavaScript" src="webWriter/parser.js"></script>
+<script language="JavaScript" src="webWriter/web_writer.js"></script>
+<script language="JavaScript" src="webWriter/tocNavigator.js"></script>
+<script language="JavaScript" src="content/nav-map.js"></script>
+<script language="JavaScript" src="webWriter/header.js"></script>
+<title>Table of Contents</title>
+</head>
+<body>
+<script language="JavaScript">
+
+var tocWalker = new Walker(root);
+var level = 0;
+var entry = 1;
+
+document.write('<ul>');
+while (tocWalker.current != null) {
+	if (tocWalker.current.level > level) 
+		document.write('<ul>');
+	else if (tocWalker.current.level < level)
+		document.write('</ul>');
+	level = tocWalker.current.level;
+	writeTopicEntry(tocWalker, entry);
+	entry++;
+	tocWalker.walk();
+}
+document.write('</ul>');
+// <img src="', getToImages() + "expander.gif" + '"
+
+function writeTopicEntry(tocWalker, entry){
+	var thePage = new HtmlDoc(fileToString(tocWalker.current.doc));
+	setAnchors(thePage);
+	document.write('<li>');
+	if (thePage.anchors.length > 0) 
+		document.write('<img src="', getToImages() + "expander.gif" + '" onclick="toggleExpand(this);">');
+	document.write('&nbsp;&nbsp;<a href="', tocWalker.current.doc, '">');
+//	alert("thePage is " + thePage);
+	document.write(thePage.title);
+	document.write('</a>');
+	if (thePage.anchors.length > 0) {
+		document.write('<ol class="tocSubEntry" style="display:none;">');
+		for (var i = 0; i < thePage.anchors.length; i++) {
+			document.write('<li><a href="', tocWalker.current.doc, '#', thePage.anchors[i].name, '">');
+			document.write(thePage.anchors[i].entry);
+			document.write('</a> </li>');
+		}
+		document.write('</ol>');
+	}
+	document.write('</li>');
+}
+
+/****** HtmlDoc Class *******************************************/
+
+function HtmlDoc(docString){
+//alert ("docString is " + docString);
+	this.docString = docString;
+	this.title = getTitle(docString);
+	this.anchors = new Array();
+}
+
+function getTitle(docString){
+	if (docString == null) return "";
+//	alert("The length of the string is " + docString.length);
+//	alert ("docString is " + docString);
+// IE is getting error on next line with SUN plugged in put not ms.
+	var p = docString.search(/\<\s*title\s*\>/i);
+	if (p == -1) return "";
+	var truncated = docString.substr(p);
+	truncated = truncated.substr(truncated.search(/\>/) + 1);
+//	alert("truncated is " + truncated);
+	p = truncated.search(/\</);
+	if (p == -1) return "";  // malformed document
+	return truncated.slice(0,p);
+}
+
+function setAnchors(page){
+	//alert("setting anchors on page " + page.title);
+	if (!page || !page.docString) return;
+	var anchorStart = /\<\s*a\s+name\s*\=/;
+	var anchorNo = 0;
+	var pos = page.docString.search(anchorStart);
+	var theRest = page.docString.substr(pos);
+	while (pos > -1) {
+		theRest = theRest.substr(theRest.search(/"/) +1);	// move to the anchor name
+		pos = theRest.search(/"/);		// Find end of name
+		var name = theRest.slice(0,pos);
+		theRest = theRest.substr(theRest.search(/\>/) + 1);	// move to after the anchor
+		pos = theRest.search(/\</);
+		var entry = theRest.slice(0,pos);  // extract the entry
+		if (entry != "") {
+			page.anchors[anchorNo] = new Anchor();
+			page.anchors[anchorNo].name = name;
+			page.anchors[anchorNo++].entry = entry;
+		}
+		pos = theRest.search(anchorStart); // move to the next anchor
+		theRest = theRest.substr(pos);
+//		alert(theRest);
+	}
+}
+
+function Anchor(){
+	this.name = null;
+	this.entry = null;
+}
+
+function toggleExpand(thisElement){
+	//alert("this element's source is " + thisElement.src);
+	if (thisElement.src.substr(-12) == "expander.gif")
+		thisElement.src = getToImages() + "contracter.gif";
+	else
+		thisElement.src = getToImages() + "expander.gif";
+	
+	var expandElement = moveToSubsidiaryList(thisElement);
+	if (expandElement != null){
+		if (expandElement.style.display == "none")
+			expandElement.style.display = "block";
+		else
+			expandElement.style.display = "none";
+	}
+}
+
+function moveToSubsidiaryList(thisElement){
+	var expandElement = thisElement;
+	while (expandElement != null && expandElement.nodeName != "OL")
+		expandElement = expandElement.nextSibling;
+	//alert("moved through siblings to" + expandElement);
+	return expandElement;
+}
+
+</script>
+  <p>
+  <script language="JavaScript">
+<!--
+bottomStamp(true, true);
+//retrieveSource();
+-->
+  </script>
+</p>
+</body>
+</html>

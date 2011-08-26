@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../";
+  </script>
+  <script language="JavaScript" src="noteConstants.js"></script>
+  <script language="JavaScript" src="../webWriter/parser.js"></script>
+  <script language="JavaScript" src="../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../webWriter/header.js"></script>
+  <title>Internal Script Manager</title>
+
+
+</head>
+
+
+<body>
+
+<h2><a name="description">Description</a></h2>
+
+<p>A ScriptManager is being developed for the TM to allow its
+behaviour to be controlled by script calls from within the code files it is running (<em>internal</em> scripting).
+To date <code>relayCall</code>, which relays
+calls to methods within plugins, has been developed as well as a number of other internal scripting calls. As well, the DisplayAdapter provides a
+number of sevice&nbsp;methods designed to work with <code>relayCall</code>,
+effectively multiplying the number of script calls already available.
+These include capabilities to clear the plugins selection (the set of
+datums it is displaying), and to add datums to the selection. A
+snapshot capability is to be developed to render a standard (e.g. jpeg,
+png and/or gif) visualization file which can be dropped for insertion
+into the quiz.</p>
+
+<p>A primary objective of the project is to develop, <span style="font-style: italic;">as early in the design cycle as
+possible</span>, a set of needed scripting calls.</p>
+
+<h2><a name="capabilities">Internal Scripting Capabilities</a></h2>
+
+<p>A ScriptManager is to be&nbsp;developed for the TM (mpbl,
+tsn)</p>
+
+<p>All calls to the ScriptManager will be in the form
+  <code>ScriptManager.someCall(arguments)</code> where <code>someCall</code> is a static function
+of ScriptManager. All script calls are to be compiled in the Teaching
+Machineas as part of the original
+source program. They will be exposed to the compilers as part of a
+ScriptManager library. </p>
+
+<h2><a name="functions">Scripting Functions</a></h2>
+
+ Internal scripting calls developed so far:&nbsp;
+ <pre style="margin-left: 40px;">relayCall("plugInID", "methodName", arg1, arg2, arg3....);</pre>
+
+<div style="margin-left: 80px;"><p>relayCall finds the plugin
+with
+id "plugInID" and calls methodName(arg1Datum, arg2Datum, arg3Datum) in
+that plugin (thus relaying the call to the plugin). An exception is
+thrown if the plugin doesn't exist or the
+method can't be matched.&nbsp; </p>
+
+<p>There can be any no. of
+arguments (including none). The calling arguments are from the model
+program (be it in C++ or Java) and must be valid at the point of
+calling. In relaying them to the plugin, the arguments are converted
+into the TM's native datums. </p>
+
+<p>Although scripting functions
+must compile properly in model space, there is no a priori way for the
+compiler to know about the plugin method. Thus, in this one case, the
+compiler restrictions are relaxed to the extent that the arguments are
+not matched at compile time against the target methods.</p>
+
+<p><code>relayCall</code> has been
+implemented for Java
+and has been tested with several target methods, including some which
+are provided as a service to visualization plugIn developers by theTM's
+<a href="displayAdapter.htm">DisplayAdapter</a>
+class.</p></div>
+<pre style="margin-left: 40px;">autoRun()</pre>
+<div style="margin-left: 80px;"><p>runs the TM automatically. It stops
+    <ol>
+      <li>for input (must be restarted after the input is given).</li>
+      <li>if an exception occurs</li>
+      <li>when it encounters  an <code>autoStop</code> scripted into the code</li>
+      <li>otherwise, at the end of the code. </li>
+    </ol>
+	<p>Although, <code>autorun</code> has been included for completeness, it is really better suited as an <em>external</em> scripting call (see <a href="webWriterChanges.htm">WebWriter++ changes</a>). That is, the quiz html page invokes the TM on an example and then runs it. This can work hand in hand with <em>internal</em> scripting by, for example, running the example from the web page but stopping it internally with the internal  <code>autoStop</code> call once some key objective (such as 10 sort cycles) has been met. </p>
+	</div>
+<p style="margin-left: 40px;"><code>boolean isInAuto()</code></p>
+<div style="margin-left: 80px;">
+  <p>returns true if the TM is autorunning (or autoStepping, which is similar, but designed for animation).</p>
+</div>
+<p style="margin-left: 40px;"><code>showTM(boolean visible)</code></p>
+<div style="margin-left: 80px;">
+  <p>renders the TM invisible (<code>visible = false</code>) which is useful in the quiz environment as we don't want students to see it running. Setting with <code>visible = true</code> makes it visible again, although it is unnecessary to call that initially since visible is the default condition. Visibility should not affect the dropping of snapshots.</p>
+  <p>Although, <code>showTM</code> has been included for completeness, it is probably better suited as an <em>external</em> scripting call.</p>
+</div>
+<p style="margin-left: 40px;"><code>boolean isTMShowing()</code></p>
+<div style="margin-left: 80px;">
+  <p>returns true if the TM is visible, false otherwise. </p>
+</div>
+<p style="margin-left: 40px;"><code> stopAuto()</code></p>
+<div style="margin-left: 80px;">
+  <p>halts the TM at the nearest natural stopping point, when it is either autoRunning or autoStepping. </p>
+</div>
+<h3><a name="desirable">Desirable Scripting Functions</a></h3>
+<p style="margin-left: 40px;">An <span style="font-style: italic;">immediate goal</span> is
+to develop a list of any other desirable scripting
+functions.</p>
+
+<p style="margin-left: 40px;">For example, TM display controls such as
+giving a
+particular display the focus or maximizing it. Alternatively, in
+autoRunning, we might want to exhibit control over the sizing of snapshots (which can be
+handled using the ever useful relayCall in conjunction with
+someDisplayAdapter service methods). </p>
+
+<h2><a name="hiding">Script Hiding</a></h2>
+
+<p>We will have to&nbsp;use a variant on the standard
+TM/Webwriter++
+markup to hide scripts. Calls to the ScriptManager will appear <span style="font-style: italic;">inside the Teaching
+Machine&nbsp;</span>as standard Java (or C++) function calls
+and will be marked something as follows </p>
+
+<pre>/*#Script<br>Script code goes here<br>#endScript*/<br></pre>
+
+<p>This approach has two big advantages</p>
+
+<ol>
+
+  <li>it is basically already implemented</li>
+
+  <li>it allows the instructor to use any standard code allowable
+in the model space (e.g., ifs and loops)&nbsp; for scripting </li>
+
+</ol>
+
+<p>This gives us access to very powerful scripting without having
+to generate a special scripting language. It does mean that the
+instructor is limited to the constructs of the model space but since
+that is the instruction space, that should be no problem. It also means
+that scripts written for a course in C++ may have to be rewritten for a
+course in Java. However, the level of coding likely to be used for
+scripting should not differ greatly between the two languages.</p>
+
+<p>Why markup at all? Scripting is going to be used for
+applications
+other than the quizGenerator and may well appear in code you want to
+show to students. Instructors need to have the option of hiding the
+scripting from students. Moreover, you would like to be able to compile
+and run code in standard compilers, so the TM-specific script code will
+have to be transparent to them.</p>
+
+<p>The script-endscript syntax is not yet developed in either
+webWriter
+or the TM. Instead we have been using the existing /*#HS*/ /*#DS*/
+syntax. While it works fine within the TM/WebWriter++ environment, it
+does not hide scripting calls from conventional compilers. </p>
+
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+
+</body>
+</html>

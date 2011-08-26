@@ -1,0 +1,26 @@
+/*#H*/
+package Viewer;
+/*
+ * Created on 4-Apr-2005
+ *
+ * TODO To change the template for this generated file go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+
+/**
+ * @author mpbl
+ *
+ * TODO To change the template for this generated type comment go to
+ * Window - Preferences - Java - Code Style - Code Templates
+ */
+public class ImageServer {
+//	public static final double PI = java.lang.Math.PI;
+//	public static final double E = java.lang.Math.E;
+	
+	public native static int getImageWidth();
+	public native static int getImageHeight();
+	public native static int getPixelAt(int row, int col);
+	public native static void createOutputImage(int height, int width);
+	public native static void putPixelAt(int pixel, int row, int col);
+	public native static void closeOutputImage();
+}

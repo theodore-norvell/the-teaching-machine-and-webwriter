@@ -1,0 +1,442 @@
+Starting test account1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes\account1.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "my Balance is 1395.495625\nyour Balance is 6.934730404021638E182\n"
+   Expected any
+
+Starting test classes10.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes\classes10.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test classes5.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\classes\classes5.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "1.0 + j1.0"
+   Expected any
+
+Starting test account.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound\account.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "Sorry. Not enough money, John!\n\nYes! You withdrew $100.00 more than you put in!\n"
+   Expected any
+
+Starting test structure2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound\structure2.cpp is not a test
+
+Starting test structure3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound\structure3.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"structure3.cpp\". Near or on line 20. Apology: no suitable overloaded function definition found for the operator (Test did not pass)"
+   Expected none
+Fail
+
+Starting test structure4.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\compound\structure4.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test account2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\account2.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "my Balance is 1395.495625\nyour Balance is 1597.75\n"
+   Expected any
+
+Starting test account3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\account3.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"unknown\". Near or on line 0. Compilation error: Can not find include file <process.h>"
+   Expected none
+Fail
+
+Starting test constructors1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\constructors1.cpp is not a test
+
+Starting test constructors2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\constructors2.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "The real part of z is 1.0"
+   Expected any
+
+Starting test constructors3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\constructors3.cpp is not a test
+
+Starting test constructorsArray.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\constructorsArray.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "{0.0, 1.0, 4.0}\n{0.0, 1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0}\n"
+   Expected any
+
+Starting test constructorsArrayDec.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\constructorsArrayDec.cpp is not a test
+
+Starting test copycons1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\copycons1.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test copycons2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\copycons2.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"copycons2.cpp\". Near or on line 32. Assertion failed "
+   Expected none
+Fail
+
+Starting test copycons4.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\copycons4.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"copycons4.cpp\". Near or on line 112. Assertion failed "
+   Expected none
+Fail
+
+Starting test copyConsArray.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\copyConsArray.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"copyConsArray.cpp\". Near or on line 68. Assertion failed "
+   Expected none
+Fail
+
+Starting test deepCopy.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\deepCopy.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"deepCopy.cpp\". Near or on line 79. Assertion failed "
+   Expected none
+Fail
+
+Starting test deepCopyFixed.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\deepCopyFixed.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "A: {3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0}\n"
+   Expected any
+
+Starting test myString.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\myString.cpp.
+   Fail on execution.
+   Input    equals ""
+   Error    equals "C++ (TNG) Error: File \"myString.cpp\". Near or on line 27. Compilation error: Definition for function or method not found. Key is ::MyString::MyString$(const char*)"
+   Expected none
+Fail
+
+Starting test myStringCopyCon.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\myStringCopyCon.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"myStringCopyCon.cpp\". Near or on line 114. Assertion failed "
+   Expected none
+Fail
+
+Starting test shallowCopy.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\shallowCopy.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"shallowCopy.cpp\". Near or on line 75. Assertion failed "
+   Expected none
+Fail
+
+Starting test user.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\constructors\user.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"user.cpp\". Near or on line 57. Compilation error: const_cast is not a recognized cast expression identifier for the operands"
+   Expected none
+Fail
+
+Starting test access.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance\access.cpp is not a test
+
+Starting test accountInherit.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance\accountInherit.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "my Balance is 1600.0\nmy Savings Balance is 1598.0\nmy Savings Balance is 3498.995\nmy Checking Balance is 1396.25\nyour Balance is 1600.0\n"
+   Expected any
+
+Starting test simpleInherit.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance\simpleInherit.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test user.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance\user.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"user.cpp\". Near or on line 55. Apology: No entity found matching id mpblClone."
+   Expected none
+Fail
+
+Starting test userInherit.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\inheritance\userInherit.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test queueDemo.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\otherStuff
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\otherStuff\queueDemo.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "Your Queue class works|\n"
+   Expected any
+
+Starting test blindfolded.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\blindfolded.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals null
+   Expected none
+
+Starting test dangling.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\dangling.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test more1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\more1.cpp.
+   Pass on execution.
+   Input    equals "This\nis\ndone\n"
+   Output   equals "0, 1, 1, "
+   Expected equals "0, 1, 1, "
+
+Starting test more2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\more2.cpp is not a test
+
+Starting test oneBullet.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\oneBullet.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals null
+   Expected none
+
+Starting test pntrToEndBad.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pntrToEndBad.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "\nHello world!\n"
+   Expected any
+
+Starting test pntrToEndGood.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pntrToEndGood.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "!\n"
+   Expected any
+
+Starting test pointers1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointers1.cpp is not a test
+
+Starting test pointers2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointers2.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test pointers3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointers3.cpp is not a test
+
+Starting test pointers4.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointers4.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"pointers4.cpp\". Near or on line 7. Apology: Integral constant required."
+   Expected none
+Fail
+
+Starting test pointersIntSwap.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointersIntSwap.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"unknown\". Near or on line 0. Compilation error: Can not find include file <iostream >"
+   Expected none
+Fail
+
+Starting test pointersIntSwapTM.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\pointersIntSwapTM.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "8\t4\n4\t8\n8\t4\n"
+   Expected any
+
+Starting test strLenArray.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\strLenArray.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test strLenPointer.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\pointers\strLenPointer.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test array.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\array.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"array.cpp\". Near or on line 25. Compilation error: [] is not a recognized operator expression identifier for the operands"
+   Expected none
+Fail
+
+Starting test arrayAssignment.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\arrayAssignment.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"arrayAssignment.cpp\". Near or on line 27. Compilation error: [] is not a recognized operator expression identifier for the operands"
+   Expected none
+Fail
+
+Starting test assignFrags.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\assignFrags.cpp is not a test
+
+Starting test binaryForms.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\binaryForms.cpp is not a test
+
+Starting test C++SwapOverload.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\C++SwapOverload.cpp is not a test
+
+Starting test complex1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\complex1.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"complex1.cpp\". Near or on line 20. Apology: no suitable overloaded function definition found for the operator (Test did not pass)"
+   Expected none
+Fail
+
+Starting test complexFriend.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\complexFriend.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"complexFriend.cpp\". Near or on line 25. Apology: no suitable overloaded function definition found for the operator (Test did not pass)"
+   Expected none
+Fail
+
+Starting test complexFull.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\complexFull.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"complexFull.cpp\". Near or on line 33. Apology: no suitable overloaded function definition found for the operator (Test did not pass)"
+   Expected none
+Fail
+
+Starting test complexTypeConv.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\complexTypeConv.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"complexTypeConv.cpp\". Near or on line 18. Apology: Sorry, Conversion function identifiers is not implemented"
+   Expected none
+Fail
+
+Starting test cswapfrag.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\cswapfrag.cpp is not a test
+
+Starting test overload1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\overload1.cpp is not a test
+
+Starting test overloadSwap.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\overloadSwap.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test stringSwap.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\stringSwap.cpp is not a test
+
+Starting test swapTemplate.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\polymorphism\swapTemplate.cpp.
+   Pass on compilation.
+   Error    equals "C++ (TNG)Error: File \"swapTemplate.cpp\". Near or on line 2. Apology: Sorry, templates is not implemented"
+   Expected matches /.*Near or on line 2.*Apology: Sorry, templates is not implemented.*/
+
+Starting test arrays7.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\arrays7.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "The length of the string is 13"
+   Expected any
+
+Starting test functions1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\functions1.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test functions2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\functions2.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test functions3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\functions3.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test functions4.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\functions4.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "a is 2 and b is 3\n"
+   Expected any
+
+Starting test functions5.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\functions5.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "a is 3 and b is 2\n"
+   Expected any
+
+Starting test simple_variables.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\simple_variables.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: Encountered \"using\" in file \"unknown\" near or on line 0, column 1.\r\nWas expecting one of:\r\n    <KEEP_SPACE> ...\r\n    \"/*\" ...\r\n    <NEWLINE> ...\r\n    \"//\" ...\r\n    "
+   Expected none
+Fail
+
+Starting test stringClass.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\stringClass.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"iostream\". Near or on line 2. Assertion failed "
+   Expected none
+Fail
+
+Starting test Variables1.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\Variables1.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "The factorial of 3 is 6\n"
+   Expected any
+
+Starting test Variables2.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\Variables2.cpp.
+   Fail on compilation.
+   Error    equals "C++ (TNG)Error: File \"Variables2.cpp\". Near or on line 6. Apology: No entity found matching id cout."
+   Expected none
+Fail
+
+Starting test Variables3.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\Variables3.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals ""
+   Expected any
+
+Starting test Variables4.cpp in C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review
+File      C:\TeachingMachine\tmWorkSpace\cpp-tests\3891-content\review\Variables4.cpp.
+   Pass on execution.
+   Input    equals ""
+   Output   equals "The factorial of 3 is 6\n"
+   Expected any
+
+Totals: Passes 35. Mismatches: 0 Failures 22.

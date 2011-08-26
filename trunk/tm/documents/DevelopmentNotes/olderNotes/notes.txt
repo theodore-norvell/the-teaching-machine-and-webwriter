@@ -1,0 +1,14 @@
+Button bug is repaired
+
+codeDisplay
+
+1. Backup button is no longer greyed out
+2. highlight, cursor block have been adjusted
+
+3. now includes a method called
+
+void setLineNumbers(boolean on)
+
+which switches line numbering on and off
+(I did NOT add a button for this because title
+bar is already full. Suggest it be added to the main menu.)

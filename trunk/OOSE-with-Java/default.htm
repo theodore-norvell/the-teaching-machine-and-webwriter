@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<script language="JavaScript" src="content/noteConstants.js"></script>
+<script language="JavaScript" src="webWriter/header.js"></script>
+</head>
+<script language="javascript">
+<!--
+/* This is a webWriter page and has no user editable content. It MUST be located in the site root.
+
+It is a frameset page. As a consequence it CANNOT have a body
+ The fundamental frameset divides the screen vertically into a narrow navigation bar at top with
+ the content area taking up the rest of the page.
+ 
+ The navigation bar is itslf a frameset with a 1 pixel wide frame at the extreme right which holds
+ (invisibly) the dictionary. The rest of it is the navigation bar frame.
+ 
+ Similarly, the contents area is a frameset with a narrow left frame for the window shade scroller
+ while the rest holds the actual contents frame.
+ 
+ Applets are loaded into the document in the navBar frame (navBar.htm)
+ */
+document.write('<frameset "border="0px" spacing="0px" framespacing="0px" frameborder="0px" noresize rows = "',48,',*">');
+	document.write('<frameset id="webWriterFrameset" border="0px" spacing="0px" framespacing="0px" frameborder = "0px" cols="*,1" noresize>');
+	/* In the case where site page was loaded directly, without frames, the location of this page
+	should actually be .....default.htm?originalPageURL. This is designed to pass the original URL on
+	so the one_time javaScript picks it up to reload original page once all frames are in place.
+	Unhappily, browser tries to use information to load the page so this doesn't work.
+	*/
+		//alert("window.location.href is " + window.location.href);
+		document.write('<frame src="navBar.htm' + (location.search ? "?" + location.search.substring(1) : "")
+						+ '" name="navBarFrame" scrolling="no" marginwidth="0px" marginheight="0px" border="0px" '
+						+ 'spacing="0px" framespacing="0px" frameborder="0px" noresize noscroll>');
+		document.write('<frame src="', contentFolder, 'dictionary.htm" name="dictionaryFrame" scrolling="no" marginwidth="0px" marginheight="0px" border="0px" spacing="0px" framespacing="0px" frameborder="0px" noresize>');
+	document.write('</frameset>');
+	document.write('<frameset id="contentFrameset" border="0px" spacing="0px" framespacing="0px" frameborder = "0px" cols="20,*" noresize>');
+		document.write('<frame src="', wwFolder, 'slider.htm" name="sliderFrame" scrolling="no" marginwidth="0px" marginheight="0px" border="0px" spacing="0px" framespacing="0px" frameborder="0px" noresize noscroll>');
+		document.write('<frame src="', wwFolder, 'wait_for_applets.htm" name="contents" border="0px" spacing="0px" framespacing="0px" frameborder="0px" noresize>');
+	document.write('</frameset>');
+document.write('</frameset><noframes></noframes>');
+//-->
+</script>
+</html>

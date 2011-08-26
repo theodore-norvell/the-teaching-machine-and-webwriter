@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>ElasticArray</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script></head>
+<body id="bodyRef">
+<div id="contents">
+
+<p>&nbsp;</p>
+<h1><a name="elastic">Elastic Array</a></h1>
+<p>An elastic array is an array which is automatically resized as needed. In the example below the array is either grown or shrunk by a factor of 2 as needed. Here is the code as it would be presented to a student.</p>
+<p>
+  <script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("ElasticArray.java", true, "code", "full1200x800withPDV");
+</script>
+</p>
+<p>Push the run button <img src="../../webWriter/images/runButtonNormal.gif" alt="red rounded run button"> to run the example in the TM for yourself.</p>
+<p>Use the stepOver button <img src="../../webWriter/images/stepOver.gif" alt="red arrow points past blue parentheses" width="12" height="12"> in the code window of the TM to step through the java code for the example.</p>
+<p>Use the stepInto <img src="../../webWriter/images/stepInto.gif" alt="red arrow terminates inside blue parentheses" width="12" height="12"> button instead to step into  the <code>grow()</code> and <code>shrink()</code> subroutines to watch the details of how the algorithm works.</p>
+<p>Notice that the undo <img src="../../webWriter/images/Backup.gif" alt="left pointing solid yellow arrow" width="12" height="12"> button allows the user to back up in the code. The TM permits unlimited undos of both its virtual machine state and the visualization.</p>
+<p>In the TM <strong>View</strong> menu, notice that line numbering may be turned off. The view can also be changed from <strong>Select default</strong> to <strong>Select all</strong> to see the visualization code that has been supressed so as to not clutter up the example for students.</p>
+<h2><a name="instrumenting">Instrumenting the Example</a></h2>
+<h3>Setup</h3>
+<p>The first requirement is to setup the pdv window. In this case, a configuration file called <code>&quot;full1200x800withPDV&quot;</code> is being used which sets up the TeachingMachine for full screen window of 1200 x 600 pixels, containing only 3 displays</p>
+<ol>
+  <li>code display</li>
+  <li>console (for examples which provide output)</li>
+  <li>the pdv display</li>
+  </ol>
+<p>While it would be nice to specify all this by scripting from inside the code, that feature is not currently available. Instead, one or more configuration files are created as needed for a course. They are then referenced from the setup scripting code as below where a special <code>setup()</code> function has been created inside of which has been sequestered all the <code>ScriptManager.relay</code> calls needed to setup the visualization of the <code>elasticArray</code> example.</p>
+<p>
+  <script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("ElasticArray.java", true, "code", "full1200x800withPDV", "setup&S");
+</script>
+</p>
+<p> Note that the first argument in every call is &quot;<code>HigraphManager</code>&quot;.  PDV scripting calls are <strong>always</strong> routed to <code>HigraphManager</code>. The second argument is the name of the PDV function in <code>HigraphManager</code> being called. The third and subsequent arguments, if any, are the first and subsequent arguments for the function being called.</p>
+<p>The <code>makeView</code> function creates a view named &quot;<code>mainView</code>&quot; of the <code>wholeGraph</code> (a reserved name for the entire higraph model), to be displayed in the visualizer window called &quot;<code>Higraph.PDV</code>&quot; (which <strong>must</strong> be specified in the configuration file being used for the TM) using the layout manager called &quot;<code>placedNode</code>&quot;. The <code>placedNode</code> layout manager allows nodes to be placed while taking care of the rest of the layout (labels, edges, branches, etc.). Instrumenting an example will always require a call to <code>makeView</code>.</p>
+<p>The second line simply sets the title of the &quot;<code>mainView</code>&quot;.</p>
+<p>The third line directs that, by default, values of nodes should be shown and they should be placed in the center of the node.</p>
+<p>The fourth and fifth lines specify the default node value color and  node shape.</p>
+<p>&nbsp;</p>
+</div>
+<div id="allExamples">
+ 
+
+</div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

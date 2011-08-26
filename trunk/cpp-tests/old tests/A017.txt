@@ -1,0 +1,16 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+        int i ;
+        int &j = i ;
+        int &k = j ;
+        i = 9 ;
+        j = 10 ;
+        k = j + i ;
+
+        int *p = & i ;
+        int *&q = p ;
+        *q = *p + 1 ;
+}

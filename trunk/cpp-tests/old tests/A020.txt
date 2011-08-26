@@ -1,0 +1,20 @@
+struct Node {
+     int data ;
+     char moreData ;
+     Node *next ; } ;
+
+struct Foo {
+        Node a ;
+        Node b ;
+} ;
+
+ int main() {
+    Foo f ;
+    f.a.data = 0 ;
+    f.a.moreData = 'a' ;
+    f.a.next = & f.b ;
+
+    f.b.data = 1 ;
+    f.b.moreData = 'b' ;
+    f.a.next = & f.a ;
+ }

@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Wish List</title>
+</head>
+<body>
+<h1>Tutoring System Wish/Bug List</h1>
+<ol>
+  <li>It might be nice if rollover markings changed colour in such a way as to 
+    contrast best with their original background.</li>
+
+  <li>The objective of moving all webWriter files into the webWriter folder is
+    a long way from being met. Currently there are a number of files in the site
+    root, vis
+    <ol>
+      <li>default.htm (or index.htm) has to be there. This is unlikely to change. </li>
+      <li>Applets (class and jar
+          files) have to be there. Also unlikely to change.</li>
+      <li>tocGenerator.htm
+          is there. Moving it will affect entire toc generation scheme which
+        currently assumes the tocGenerator page is in the root. Difficulty at
+        least moderate.</li>
+      <li> navBar.htm is there. The ww_one_time script runs off this page and
+        that script assumes it's in the root. Changing that may be possible but
+        it's complex because content pages contain the webWriter script which
+        constantly calls back to the one_time script for navigation information.
+        Current approach. Leave it where it is. </li>
+    </ol>
+  </li>
+</ol>
+<h3>June 2006: Changes</h3>
+<p>webWriter.js, oneTime navBar.htm, 3 main style sheets </p>
+<p>Study mode changed to notes mode. No longer turns on hiddenNotes automatically. lecture mode turns them off automatically. DO</p>
+<p>note div now called hiddenNote - added to style sheet</p>
+<p>&nbsp; </p>
+</body>
+</html>
+

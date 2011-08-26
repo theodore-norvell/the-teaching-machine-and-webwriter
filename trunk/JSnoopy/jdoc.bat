@@ -1,0 +1,1 @@
+javadoc -d doc -sourcepath src jsnoopy jsnoopy.swingui jsnoopy.parser

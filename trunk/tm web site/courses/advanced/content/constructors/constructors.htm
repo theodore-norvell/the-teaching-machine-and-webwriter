@@ -1,0 +1,212 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Constructors</title>
+</head>
+<body>
+<h1><a name="creating">Creating Objects</a></h1>
+
+<p><b>Automatic Storage: </b>Requires that objects declared internally within 
+  a scope block must be <i>created</i> and <i>destroyed</i> each time the block 
+  is entered and left.</p>
+<p> That creation and destruction is effected by functions, called respectively, 
+  <b>constructors</b> & <b>destructors</b>. </p>
+<h2><a name="constructors">Constructors</a></h2>
+<ul>
+  <li>Have the same name as the Class</li>
+  <li>May take arguments of any type <i>except</i> of their own class. </li>
+  <li><i>Never</i> have a return type, not even <span class="codeInline">void</span>.</li>
+</ul>
+<p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("constructors1.cpp", false, "code", "3891lecture.tmcfg");
+  </script>
+</p>
+<ul>
+  <li><span class="codeInline">Complex</span> is the constructor</li>
+  <li>Note the use of default arguments. <span class="codeInline">Complex</span> 
+    may be created with zero, one or two arguments. </li>
+</ul>
+<p>Using the constructor</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("constructors2.cpp", false, "code", "3891lecture.tmcfg");
+  </script>
+</p>
+<p><span class="codeInline">x</span> gets intialized to <span class="codeInline">(0. 
+  + j0.)</span></p>
+<p><span class="codeInline">y</span> gets intialized to<span class="codeInline"> 
+  (3.4 + j0.)</span></p>
+<p><span class="codeInline">z</span> gets intialized to <span class="codeInline">(1.0 
+  - j1.0)</span></p>
+<p>Take care to avoid ambiguity</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("constructors3.cpp", false, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>This is legal, but the constructor takes one or two arguments. Thus</p>
+<pre class="codeInline">Complex x();
+Complex y(3.4),z(1.,-1.); </pre>
+<p>the declaration of<span class="codeInline"> x</span> is now illegal.</p>
+<h3><a name="default">Default Constructors</a></h3>
+<p>Note that we have been able to make plain declarations like <span class="codeInline">Complex 
+  z</span> before constructors were ever mentioned. What changed?</p>
+<p>1. In the absence of a user defined constructor the compiler will create a 
+  <i>default constructor</i> of the form </p>
+<p class="codeInline">classname ()</p>
+<p> i.e., the default constructor takes no arguments. </p>
+<p>2. Once a programmer-defined constructor is created for a class, <i>no default 
+  constructor will be created by the compiler</i> even if the class has not been 
+  equipped with a constructor for no arguments. </p>
+<p>3. The no argument constructor (often, confusingly, referred to as the default 
+  constructor whether created by compiler or programmer) is needed to create arrays 
+  of objects and new objects from the heap. </p>
+<h3>Final Thought</h3>
+<blockquote>
+  <p><b><font color="#FF0000">Note that the programmer provides the code for the 
+    constructor(s) and the compiler takes care of calling them.</font></b></p>
+</blockquote>
+<h2><a name="destructors">Destructors</a></h2>
+<p>Are always called by the class name preceded by a <span class="codeInline">~</span> 
+  e.g. <span class="codeInline">~Window()</span> is the destructor for a class 
+  <span class="codeInline">Window</span> </p>
+<p>Never have a return type or any arguments.</p>
+<p>Called automatically when an object goes out of scope</p>
+<h2> <a name="running">Running Examples</a></h2>
+<p> Now that we have contructors we can create reasonable versions of all our 
+  running examples.</p>
+<p>First we improve the Account class. Here is the declaration of the original
+  class&#151;</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../classes/account1.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p> And here is how we had to use it. Recall that before we actually could do
+  anything with an Account object, we had to remember to initialize it.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../classes/account1.cpp", true, "code", "3891lecture.cfg", "B", "");
+  </script>
+</p>
+<p>Now we
+    replace our <span class="codeInline">initialize()</span> function
+    with  a constructor</p>
+<p>Unlike the <span class="codeInline">initialize() </span>function the constructor 
+  is called <i>automatically</i> when we declare an account object</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("account2.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>One small problem with this is that if you examine the implementation code 
+  for the two constructors it is virtually identical</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("account2.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>This is a maintenance problem. It would be better to make it common.</p>
+<p>We re-introduce <span class="codeInline">initialize()</span> but as a <i>private 
+  function&#151;</i></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("account3.cpp", false, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p><span class="codeInline">initialize</span> can <i>only be called</i> by the 
+  implementation code of the other functions in the class</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("account3.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<h2><a name="array">The Array Class</a></h2>
+<p>C style arrays are awkward and error prone. Let's build a better Array class.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("constructorsArray.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>So far, pretty simple minded <span class="codeInline">Array</span> class. However, 
+  <span class="codeInline">Array</span> objects now know their own size.</p>
+<p><span class="codeInline">Array</span> objects only have 2 pieces of data, the 
+  <span class="codeInline">mpData</span> pointer and <span class="codeInline">mSize.</span></p>
+<p>The constructor requests an allocation of space from the heap for the actual 
+  array data.</p>
+<p>the <span class="codeInline">const</span> keyword placed after a member function 
+  declaration says that the <i>function is read-only.</i> It will not alter the 
+  state of any object to which it is applied.</p>
+<p class="pagebreak"> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("constructorsArray.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Implementation of the class.</p>
+<p>How could we get the index to run from <span class="codeInline">1</span> to 
+  <span class="codeInline">mSize</span> instead of <span class="codeInline">0</span> 
+  to <span class="codeInline">mSize-1?</span></p>
+<h2><a name="string">A String Class</a></h2>
+<p>Again, C style strings are pretty primitive so we will roll our own.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myString.cpp", true, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Let's look at the implementation for the constructors</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("myString.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Now we have a string class with some power!</p>
+<p>By going to the heap, we can create a string of any size at run time.</p>
+<p>There are only two actual data members of each string object, taking up very 
+  few bytes.</p>
+<p>The constructors take care of finding the actual space for a string object.</p>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("account2.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("account3.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("constructorsArray.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("myString.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+
+</div>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

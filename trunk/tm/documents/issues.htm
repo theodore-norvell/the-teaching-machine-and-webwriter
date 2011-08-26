@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>Development Issues</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body bgcolor="#FFFFFF">
+<h2>Immediate ToDo Queue (Java)</h2>
+<h3>Theo</h3>
+<ol>
+  <li>while loops, break, and continue <b>done</b></li>
+  <li>labelled statements & labelled break <b>done</b></li>
+  <li>do loops  <b>done</b></li>
+  <li>for loops <b>done</b></li>
+  <li>return from void <b>done</b></li>
+  <li>return with value <b>needs testing</b></li>
+  <li>try-finally  <b>done</b> <b> needs testing vis-a-vis exceptions</b> </li>
+  <li>switch statements <b>done</b></li>
+  <li>try-catch <b>testing</b></li>
+  <li>throw<b>testing</b> </li>
+  <li>OpInstanceOf <b>needs testing</b></li>
+  <li>Down casts need an operator that might throw an exception </li>
+  <li>Objects of size 0 are not found on dereference.
+</ol>
+<h3>Michael</h3>
+<ol>
+  <li>lng null pointer bug <b>done</b></li>
+  <li>convert System.outs to proper debug <b>done</b></li>
+  <li>add uninteresting to CGRArithmeticConversion <b>done</b></li>
+  <li>postfix increment &amp; decrement <b>done</b></li>
+  <li>short-hand assignment <strong>done</strong></li>
+  <li>parentheses <strong>done</strong></li>
+  <li>basic new <strong>done</strong></li>
+  <li>function calls <strong>done</strong></li>
+  <li><strong>CGRIdExp </strong>for field variables <strong>done</strong> except
+    is this where the odd case foo().x where x is static is handled??</li>
+  <li>variations on methodCalls such as super and this</li>
+  <li>Arrays</li>
+</ol>
+
+<h2>Immediate ToDo List (C++)</h2>
+<h3>Theo</h3>
+<ol>
+  <li>Comments on preprocessor lines don't work</li>
+  <li>Check-out typedef</li>
+  <li>Fix += etc.</li>
+  <li>Implement comma operator and perhaps ?: as well</li>
+  <li>Finish initialization of references.</li>
+  <li>User defined conversions. E.g. char* to string.
+  <li>Destructors  
+<li>Fix break and continue <strong>done</strong> 
+</ol>
+
+<h2>Immediate ToDo List (Any language)</h2>
+<h3>Theo</h3>
+<ol>
+  <li>Selections
+      <ol><li>Fix named selections<b>done</b></li>
+          <li>Don't stop on unselected lines<b>done</b></li>
+          <li>It should be detected when a non-void function returns with no value.</li>
+      </ol>
+  </li>
+  <li>Stop prior to declarations. <b>done</b></li>
+  <li>Create a testing system. </li>
+</ol>
+
+<h2>Intermediate Term ToDo List (Java)</h2>
+
+<h3>Unassigned</h3>
+<ul>
+  <li>reference assignment.  E.g. p = new C()</li>
+  <li>variables as constant expressions</li>
+</ul>
+
+<h2>Intermediate Term ToDo List (C++)</h2>
+
+<h3>Unassigned</h3>
+<ul>
+</ul>
+
+<h2>Intermediate Term ToDo List (Any language)</h2>
+
+<h3>Unassigned</h3>
+<ul>
+  <li>Make help work the same in both the applet and the application.
+    <ul>
+      <li>When the system runs as an applet, the help files should be looked for locally and if they are not local, only then should the TM look for them on the web.</li>
+      <li>When the system runs as an application, if local help files are not available, then it should look on the web. </li>
+      <li>If the JRE is sufficiently recent, launch the help file in a Swing based HTML viewer. </li>
+    </ul>
+  </li>
+</ul>
+<ul>
+</ul>
+
+<h2>Long Term Issues</h2>
+<ul>
+  <li>Unicode should be handled (&amp; displayed) properly [I think this is at least partly done at least as far as the source window is concerned. All the other windows should be reviewed for Unicode.]</li>
+  <li>Expression engine blanks out</li>
+</ul>
+
+<h2>Immediate Bugs</h2>
+<h3>Theo</h3>
+<ol>
+  <li>null pointer crash when "this" is used in non member function (C++)
+  </li>
+  <li>Stop prior to declarations.<b>done</b></li>
+</ol>
+
+<h2>Style Fix-Ups</h2>
+<p>These are mostly predicated on the availability of global editing tools. Also, 
+  they should probably not be attempted until we have a stable, testable TM version.</p>
+<ul>
+  <li>convert underscore_notation to camelCase</li>
+  <li>TyRef should become TyVariable (or TyLValue, although I dislike the term) 
+    and TyPointer should become TyAddress</li>
+  <li>DefaultExpressionNode should have its name changed. It's abstract. While 
+    it might contain a number of common (default) properties, it cannot be instantiated 
+    and thus cannot be a default.</li>
+  <li>Java ScopeHolders, CommonSH, TypeSH, etc should have their name changed
+    to SHCommon, SHType, etc., to make them easier to find</li>
+</ul>
+
+</body>
+</html>

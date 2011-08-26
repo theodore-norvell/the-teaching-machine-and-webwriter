@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><script language="JavaScript" src="../../webWriter/mathSymbols.js"></script>
+<title>Symbols</title>
+</head>
+<body>
+<p>Insert a symbol into the text. If the browser is Internet Explorer and if there is an entry in Microsoft's symbol font, that will be used, otherwise unicode is used. </p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>setSymbolsToLatex(set)</strong><br>
+<h3>Arguments</h3>
+<dl>
+  <dt>set</dt>
+  <dd>a <strong>bool</strong>, <strong>true</strong> to use Latex symbols to , <strong>false</strong> to use HTML .</dd>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<strong>insertSymbol(symbolName)</strong><br>
+<h3>Arguments</h3>
+<blockquote>
+  <dl>
+    <dt>symbolName</dt>
+    <dd>a <strong>string</strong>,  LATex or HTML label for the symbol.</dd>
+  </dl>
+</blockquote>
+<dl>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<h3>Action</h3>
+<p>The actual symbol is inserted using Microsoft's symbol font and code if the browser is IE and if the symbol is available. Otherwise inserts unicode. The symbol name is interpreted as a LATex name if <code>setSymbolsToLatex(set)</code> was last called with <code>set = true</code> and as HTML if there was no call or <code>set=false</code> on the last call.</p>
+<hr>
+<h2>Example</h2>
+    <td><script language="JavaScript">
+    setSymbolsToLATex(true);
+	</script>
+<p>Inserting some symbols</p>
+<table width="100%"  border="1">
+  <tr>
+    <td>HTML label </td>
+    <td>LATex Label </td>
+    <td>IE Symbol </td>
+    <td>Unicode</td>
+    <td>Symbol</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>alpha</td>
+    <td>a</td>
+    <td>&amp;#945;</td>
+    <td><script language="JavaScript">
+    insertSymbol("alpha");
+	</script>
+</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>beta</td>
+    <td>b</td>
+    <td>&amp;#946;</td>
+    <td><script language="JavaScript">
+    insertSymbol("beta");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>gamma</td>
+    <td>g</td>
+    <td>&amp;#947;</td>
+    <td><script language="JavaScript">
+    insertSymbol("gamma");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>pi</td>
+    <td>p</td>
+    <td>&amp;#960;</td>
+    <td><script language="JavaScript">
+    insertSymbol("pi");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Gamma</td>
+    <td>G</td>
+    <td>&amp;#915;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Gamma");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Delta</td>
+    <td>D</td>
+    <td>&amp;#8710;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Delta");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Theta</td>
+    <td>Q</td>
+    <td>&amp;#920;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Theta");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Sigma</td>
+    <td>S</td>
+    <td>&amp;#931;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Sigma");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Pi</td>
+    <td>P</td>
+    <td>&amp;#928;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Pi");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Omega</td>
+    <td>W</td>
+    <td>&amp;#8486;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Omega");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>leftarrow</td>
+    <td>&not;</td>
+    <td>&amp;#8592;</td>
+    <td><script language="JavaScript">
+    insertSymbol("leftarrow");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>rightarrow</td>
+    <td>&reg;</td>
+    <td>&amp;#8594;</td>
+    <td><script language="JavaScript">
+    insertSymbol("rightarrow");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Leftarrow</td>
+    <td>&Uuml;</td>
+    <td>&amp;#8656;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Leftarrow");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Rightarrow</td>
+    <td>&THORN;</td>
+    <td>&amp;#8658;</td>
+    <td><script language="JavaScript">
+    insertSymbol("Rightarrow");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>forall</td>
+    <td>&quot;</td>
+    <td>&amp;#8704; </td>
+    <td><script language="JavaScript">
+    insertSymbol("forall");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>exists</td>
+    <td>$</td>
+    <td>&amp;#8707;</td>
+    <td><script language="JavaScript">
+    insertSymbol("exists");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>pm</td>
+    <td>&plusmn;</td>
+    <td>&amp;#177;</td>
+    <td><script language="JavaScript">
+    insertSymbol("pm");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>cup</td>
+    <td>&Egrave;</td>
+    <td>&amp;#8746;</td>
+    <td><script language="JavaScript">
+    insertSymbol("cup");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>times</td>
+    <td>&nbsp;</td>
+    <td>&amp;#215;</td>
+    <td><script language="JavaScript">
+    insertSymbol("times");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>cdot</td>
+    <td>&nbsp;</td>
+    <td>&amp;#183;</td>
+    <td><script language="JavaScript">
+    insertSymbol("cdot");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>bullet</td>
+    <td>&middot;</td>
+    <td>&amp;#8226;</td>
+    <td><script language="JavaScript">
+    insertSymbol("bullet");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>div</td>
+    <td>&cedil;</td>
+    <td>&amp;#247;</td>
+    <td><script language="JavaScript">
+    insertSymbol("div");
+	</script></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>parallel</td>
+    <td>||</td>
+    <td>&amp;#124;&amp;#124;</td>
+    <td><script language="JavaScript">
+    insertSymbol("parallel");
+	</script></td>
+  </tr>
+</table>
+
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>
+

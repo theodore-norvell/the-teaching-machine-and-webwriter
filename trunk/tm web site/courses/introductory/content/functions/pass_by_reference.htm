@@ -1,0 +1,574 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Pass-By-Reference</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h2><a name="review">Functions Reviewed </a></h2>
+<p>
+  <script language="JavaScript">
+startDefLink("function",50,50);
+  </script>
+Functions
+<script language="JavaScript">endLink();</script>
+ appear in programs in three ways:</p>
+<ol>
+  <li>Functions have to be <em>implemented</em> (or in C++ we say <em>defined</em>).</li>
+  <li>Functions have to be <em>invoked</em> or <em>called</em>.</li>
+  <li>Just like variables, functions have be declared before the can be used (called).</li>
+</ol>
+<p>Implementation is just what you have been doing for most of your assignments. Writing code for functions.</p>
+<p>Let's create code to work out the largest common divisor of a pair of integer's,
+  using the oldest known algorithm, called Euclid's algorithm (although there
+  is good historical evidence it was known 200 years before Euclid wrote it down). </p>
+<blockquote>
+  <p class="pseudoCode">int euclid(int larger, int smaller)&rarr;</p>
+  <blockquote>
+  <p class="pseudoCode">while smaller != 0</p>
+  <blockquote>
+    <p class="pseudoCode">remainder = larger mod smaller</p>
+    <p class="pseudoCode">larger = smaller</p>
+    <p class="pseudoCode">smaller = remainder</p>
+    </blockquote>
+  <p class="pseudoCode">result = larger </p>
+  </blockquote>
+</blockquote>
+
+<h2><a name="passByValue">Pass-By-Value</a></h2>
+<p>So here is the C++ version of the function implementation. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("euclid.cpp", true, "code", "","B", "all");
+  </script>
+</p>
+<p>Now in the <code>main</code> function we have placed a whole lot of function 
+  <script language="JavaScript">
+startDefLink("call",50,50);
+  </script>
+calls
+<script language="JavaScript">endLink();</script>
+ to our <code>euclid</code> funtion, using different kinds of 
+ <script language="JavaScript">
+startDefLink("argument",50,50);
+  </script>
+arguments
+<script language="JavaScript">endLink();</script>
+. In order to do that, we placed a 
+<script language="JavaScript">
+startDefLink("functionDeclaration",50,50);
+  </script>
+function declaration
+<script language="JavaScript">endLink();</script>
+ for <code>euclid</code> before <code>main</code> </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("euclid.cpp", true, "code", "","A", "all");
+  </script>
+</p>
+<p>Use the Teaching Machine to examine exactly what is passed into the <code>euclid</code> function
+  during each call. </p>
+  <!-- Commented out until TM can handle empty initialization in a for loop 
+<h2>What's in a Name?</h2>
+<p>Note that the pass-by-value is <em>not</em> because the two functions use
+  different names for the data. 
+  Consider the following version of the factorial function: </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("factorial.cpp", true, "code", "","B", "all");
+  </script>
+</p>
+<p>It looks a little strange for a couple of reasons.</p>
+<ol>
+  <li>The <span class="codeKeyword">for</span> loop has an empty initialization expression</li>
+  <li>the function parameter, <code>r</code>, is being changed </li>
+</ol>
+<p>The empty initialization is precisely because we are using <code>r</code> to decrement through the loop. Since <code>r</code> is already declared as the function parameter we don't need to declare another counting variable.</p>
+<p>Notice, however, when we run the example in the TM, even though we count <code>r</code> down inside the loop, we don't change the original number. That's because <code>r</code> is not the original variable <code>num</code> at all. Instead it is a different variable whose value was initially set to the value of the original variable. Changing the value of this new variable thus cannot affect the original variable.</p>
+<p>Pass-by-value <em>always implies copying data</em>. It is this copy
+of the original variable which is decremented to <code>1</code> inside the factorial
+loop. </p>-->
+<h3><a name="swap">A Swap Function</a> </h3>
+<p>Consider the following highly desirable swap function:</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("non_swap.cpp", false, "code", "", "A", "all");
+</script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Since variables are basically data containers that can only
+  hold one piece of data at a time we can't just swap <code>arg1</code> and <code>arg2</code> directly.</p>
+<p class="hang">2. Instead, we create a 3rd container <code>hold</code>, then
+  copy the piece of data from one of our two variables to it(in this case <code>arg1</code> but
+  it wouldn't matter which we started with).</p>
+<p class="hang">3. Then we copy the data from <code>arg2</code> to <code><code>arg</code>1</code>, <em>over-writing <code><code>arg</code>1</code>'s
+    original data!</em></p>
+<p class="hang">4. Fortunately, we preserved its data in <code>hold</code> so
+  now we copy that data back into <code>arg2</code>, completing the exchange.</p>
+<script language="JavaScript">
+ endNote();
+</script>
+<p>The idea behind this swap function is that it swaps the 
+  <script language="JavaScript">
+startDefLink("value",50,50);
+  </script>
+values
+<script language="JavaScript">endLink();</script>
+ of a pair of
+  <script language="JavaScript">
+startDefLink("variable",50,50);
+  </script>
+variables
+<script language="JavaScript">endLink();</script>
+ around. Swap functions are widely used. As we will find out,
+  all functions to sort data into some sort of order work by comparing two pieces
+  of data and, if they are out of order, swapping them.</p>
+<p>If you were to run  the function in the TM you will find the swapping works
+  just fine.</p>
+<p>The only problem is, nothing happens from the calling function's perspective.
+  Here it is. Let's run it.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("non_swap.cpp", true, "code", "", "B","all");
+  </script>
+</p>
+<p>C passes by value so <code>arg1</code> and <code>arg2</code> are a copy of
+  the original variables. As soon as we leave the <code>intSwap</code> routine <code>arg1</code> and <code>arg2</code> disappear
+  and the original <code>x1</code> and <code>x2</code> are unchanged.As we saw,
+  the <code>intSwap</code> function merrily swaps <code>arg1</code> and <code>arg2,</code> but <code>x1</code> and <code>x2</code> are
+  untouched because <code><em>arg1</em></code><em> is a copy of <code>x1</code> and <code>arg2</code> is
+  a copy of <code>x2</code>!</em></p>
+<p>
+  <!--Undo when TM fixed and factorial restored
+   In the case of the <code>factorial</code> function, -->
+  Originally this behaviour was a desirable security
+  feature.</p>
+<p>Now suddenly its a bug. How can we get around it?</p>
+<h2><a name="reference">Pass-by-Reference</a></h2>
+<p>C++ inherited C's pass-by-value design. But C++ added a new operator <code>&amp;</code> called
+  the <em>reference operator</em> to take care of occasions when we really would like
+  to use the original variables in a function and not just the values.</p>
+<p>Here's a new version of the <code>intSwap</code> function that uses this <em>pass-by-reference</em>  technique.</p>
+<p class="pagebreak">
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("int_swap.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<p>The only thing that has changed is the declaration of the two function arguments.</p>
+<p>Now, instead of <code>arg1</code> and <code>arg2</code> being <code>int</code>s,
+  they are formally called <code>reference</code>s<code> to int</code>s. In the
+  syntax of C++ a <code>reference to int</code> (or <code>reference
+  to double</code> or <code>reference to char </code>) is <em>a
+  distinctly different type</em> from an <code>int</code> (or <code>double</code> or <code>char</code>).</p>
+<p>The variables are the
+    function 
+  <script language="JavaScript">
+startDefLink("parameter",50,50);
+  </script>
+  parameters<script language="JavaScript">endLink();</script>
+ and they are references to the original variables.</p>
+<p>Note that the call to the pass-by-reference (useful) version of the <code>intSwap</code>  function
+  is identical to the (useless) pass-by-value version.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("int_swap.cpp", true, "code", "", "B", "all");
+  </script>
+</p>
+<p>Notice, there is <em>no way you can tell by looking at a call</em> whether the 
+  <script language="JavaScript">
+startDefLink("argument",50,50);
+  </script>
+arguments
+<script language="JavaScript">endLink();</script>
+  are being passed 
+  <script language="JavaScript">
+startDefLink("passByValue",50,50);
+  </script>
+by value
+<script language="JavaScript">endLink();</script>
+ or 
+<script language="JavaScript">
+startDefLink("passByReference",50,50);
+  </script>
+by reference
+<script language="JavaScript">endLink();</script>
+. You <em>have</em> to look at the function
+  declaration to know.</p>
+<p><code>void intSwap(int&amp; x1, int&amp; x2);</code></p>
+<p>is the declaration for a function that passes its arguments by reference
+   while</p>
+<p><code>int factorial(int n);</code></p>
+<p>is the declaration for a function that passes its arguments by value.</p>
+<p>If you run the last example to completion you will see the test program is
+  not working. The output purports to to print the variables in ascending order
+  but fails to do so. Why not?</p>
+<p>The answer, of course, is that <code>intOrder</code> should also pass-by-reference.
+  As it stands, <code>x1</code> and <code>x2</code> are just copies of the original
+  variables in the test program (which can actually be seen in the Teaching Machine
+  memory). So, we re-order the copies, which then disappear after <code>intOrder</code> has
+  finished its work. Here is the corrected version.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("in_order.cpp", true, "code", "", "B", "all");
+  </script>
+</p>
+<p>As you can see for yourself, this one runs properly. </p>
+<h2><a name="multipleReturn">Pass-by-Reference for Multiple &quot;Returns&quot; </a></h2>
+<p>We have said that  arguments represent the <em>inputs</em> to a function while
+  its return value (if there is one) represents its <em>output</em>.</p>
+<p>You have already discovered that there are times when the limitation of a
+  single output can be awkward.</p>
+<p>However, by-reference parameters   can be both inputs and outputs.</p>
+<p>Remember when we first introduced <a href="../../content/variables/expressions.htm#Library">library
+    functions</a> were converting between
+  polar and rectangular co-ordinates we had to write two functions for each conversion?
+  Here's that code again</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../variables/libfunc.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<p>Each conversion actually requires two conversions since there are two co-ordinates.
+  Because return only allows us to return a single value, we had to write two
+  functions. It would be much nicer to have just a single function for each conversion.</p>
+<p>Here's a version that does just that. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("conversion.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<p> 
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Notice that when you step into the <code>toPolar</code> function,
+  the original two variables from the test code, <code>x</code> and <code>y,</code> are
+  already in memory</p>
+<p class="hang">2. Stepping into the function adds two more variables to memory,
+  the function parameters <code>xMag</code> and <code>yAngle</code> just as happens
+  in pass-by-value.</p>
+<p class="indent"> Now
+    however, <code>xMag</code> contains a reference to <code>x</code> (which
+    the TM shows by giving the name of the original variable referred to) and
+    <code>yAngle</code> to <code>y</code>. </p>
+<p class="hang">3. The effect is that when you  values read from or written to
+  the local variables
+  <code>xMag</code> and <code>yAngle</code> they actually get read from or written
+  to  the
+  original variables <code>x</code>  and <code>y</code>. </p>
+<hr>
+<script language="JavaScript">
+ endNote();
+</script>
+<p>How often have we  said or thought
+  how nice it would be to return multiple 
+  <script language="JavaScript">
+startDefLink("value",50,50);
+  </script>
+values
+<script language="JavaScript">endLink();</script>
+ at once?</p>
+<p>Well we can't actually return multiple values. But we do use pass-by-reference
+  to have the <code>toPolar</code> function convert <code>xMag</code> and <code>yAngle</code> <em>in
+  place</em>  for us. </p>
+<h3>A Drawback </h3>
+<p>Pass-by-reference means <em>we have to make sure the function call uses 
+    variable</em>s for
+  arguments  and not just values.</p>
+<p>With pass-by-value there is little difference between</p>
+<blockquote>
+  <p><code>y = sin(0.);</code></p>
+</blockquote>
+<p>and</p>
+<blockquote>
+  <code><pre>double x = 0.;
+y = sin (x);</pre></code>
+</blockquote>
+<p>since both end up passing the value 0. into the sin function. However, with
+  our toPolar function</p>
+<blockquote>
+  <p><code>void toPolar(double&amp; xMag, double&amp; yAngle);</code></p>
+</blockquote>
+<p>the call</p>
+<blockquote>
+  <p><code>toPolar(1.0,2.0);</code></p>
+</blockquote>
+<p>isn't valid because we must pass variables into the function, not just values.</p>
+<h2><a name="outputOnly">Output Only</a></h2>
+<p>In the examples so far, we have used our pass-by-reference variables for both
+  input and output. It is possible to use them for output only. Let's revisit
+  our quadratic equation example.</p>
+<p>The problem was to return the largest root of a quadratic equation. We did
+  this because we couldn't return two roots. Now we can. Consider the function </p>
+<blockquote>
+  <p><code>void quadraticRoots(double a, double b, double c,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    double&amp; bigRoot,
+      double&amp; smallRoot);</code></p>
+</blockquote>
+<p>There are so many parameters we have written the function declaration across
+  two lines, which is perfectly legal!</p>
+<p>Although we haven't shown you the function header comment, the basic shape
+  of it the contract is pretty clear.</p>
+<p>Clients (programmers who call our function) will provide three double values
+  corresponding to the three standard co-efficients of a quadratic equation.
+  These three values are the <em>inputs</em> to our function.</p>
+<p>The client will also provide two (effectively empty) variables (that is memory
+  locations) called <code>bigRoot</code> and <code>smallRoot</code>. It is our
+  function's job to fill these two memory locations up. That is to <em>write
+  values into</em> the two variables. Thus
+  <code>bigRoot</code> and <code>smallRoot</code> are <em>outputs </em>from our
+  function.</p>
+<p>Here is the actual code.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("quadratic.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. There's a lot going on here. As you are doing on you're homework,
+  we have created a couple of subsidiary functions for our <code>quadraticRoots</code> function
+  to use.</p>
+<p class="indent">The first one,</p>
+<blockquote>
+  <blockquote>
+    <p><code>bool pathological (double a, double b, double c, double&amp; root);</code></p>
+  </blockquote>
+</blockquote>
+<p class="indent">checks for the pathological case of a linear equation (that is, coefficient <code>a</code> is
+  zero). It only needs a to decide if the case is pathological but we also have
+  it set the root of the linear equation <code>bx + c</code> if it is. Thus it
+  needs <code>b</code> and <code>c</code> as inputs as well. However, since a
+  linear equation has only a single root, we just give it one <code>root</code> variable
+to set.</p>
+<p class="hang">2. The problem of calling <code>pathological</code> we often refer to as a &quot;dealing&quot; problem.
+  The function we are implementing has five arguments. In turn it calls two other
+  functions and a big part of the issue is to deal its data out to its subsidiary
+  functions correctly.</p>
+<p class="indent">Thus it passes <code>a</code>, <code>b</code> and <code>c</code> on directly
+  to <code>pathological</code>, for its own calculations. But it only gives it
+  one of the required two roots as <code>pathological</code> computes only one
+  root.</p>
+<p class="hang">3. Why <code>bigRoot</code>? It doesn't matter. <code>quadraticRoots</code> must
+  set both roots to be the same if it is a linear equation. So we choose to give <code>pathological</code> <code>bigRoot</code> and
+  then set <code>smallRoot</code> equal to it if we find it actually was a linear
+  equation. We could just as well have done it the other way around. </p>
+<p class="hang">4. Again the way we deal values out to <code>pathological</code> doesn't sepend
+  on the names used in <code>pathological, </code>We used the same names <code>a</code>, <code>b</code> and <code>c</code> because
+  they are traditional ones used for the coefficients of a quadratic equation.</p>
+<hr>
+<p>
+  <script language="JavaScript">
+ endNote();
+</script>
+</p>
+<p>One consequence of having functions that return a <span class="codeConstant">bool</span> is we can put a call
+  to them in a test. The statement</p>
+<blockquote>
+  <p><code>if (pathological(a,b,c,bigRoot)) { ...</code></p>
+</blockquote>
+<p>does just that. In carrying out the <span class="codeKeyword">if</span> test a call to <code>pathological</code> is
+  made and the return value is used to determine whether the then clause or the
+  <span class="codeKeyword">else</span> clause is carried out. </p>
+<h2><a name="void">Functions Returning <code>void</code></a></h2>
+<p>Students often ask, &quot;Why do we have functions returning <code>void</code>? That doesn't
+  make any sense!&quot;</p>
+<p>Actually it does. There are times when we just want a 
+  <script language="JavaScript">
+startDefLink("function",50,50);
+  </script>
+function
+<script language="JavaScript">endLink();</script>
+ to do something
+  and not report back to us. For example, we might have a function</p>
+<blockquote>
+  <p><code>void printBalance(double amount);</code></p>
+</blockquote>
+<p>We don't actually know how to write such a function yet but if we did, pretty
+  clearly we would just like it to go off and print the balance for us and not
+  bug us.</p>
+<p>Other computer languages actually distinguish functions that don't return
+  anything by calling them procedures or subroutines. C, C++ and Java just put
+  the keyword <code>void</code> in as the return type.</p>
+<h2><a name="voidPassByRef"><code>void</code> and Pass-By-Reference</a> </h2>
+<p>This is a test</p>
+<p>Students sometimes also think you must use <code>void</code> if
+    you are going to pass-by-reference. Not true. The issues are independent
+  as the function <code>pathological</code> shows
+    in the last example. We used pass-by-refernce to set the value of <code>root</code>,
+    then returned a <code>bool</code> to say whether the coefficients represented
+    a pathological case or not.</p>
+<p>We're just giving you more tools for your tool chest. Use the appropriate
+  tools for your particular situation.</p>
+<p>As a second illustration, we generalize
+    the <code>quadraticRoots</code> function so it can handle negative radicals
+    as well. Now we pass a <code>bool</code> back which says if the roots are
+    real or not.</p>
+<p>If they are, the first root is the larger one and the second the smaller real
+  root (unless both are the same).</p>
+<p>If the return value is false, the first root represents the real part and
+  the second root the imaginary part. The two actual roots are then</p>
+<p><code>root1 + j root2</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <code>root1
+- j root2</code></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("quadratic_2.cpp", true, "code", "", "A", "all");
+  </script> 
+</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. The first subsidiary function,</p>
+<blockquote>
+  <blockquote>
+    <p><code>bool pathological (double a, double b, double c, double&amp; root);</code></p>
+  </blockquote>
+</blockquote>
+<p class="indent">is the same as before </p>
+<p class="hang">2. We had to change the radical function to use the following
+  prototype</p>
+<blockquote>
+  <blockquote>
+    <p class="hang"><code>bool radical(double a, double b, double c, double&amp;
+    rad); </code> </p>
+  </blockquote>
+</blockquote>
+<p class="indent">The return value is now a <code>bool</code> and is used to
+  distinguish between the case of real and imaginary radicals. Thus we had to
+  add  a new pass-by-reference variable <code>rad</code> to output the value
+  of the radical back to the client. </p>
+<hr>
+<p>
+  <script language="JavaScript">
+ endNote();
+</script>
+</p>
+<p>Now every function in our program uses both a return value and a pass-by-reference
+  parameter as outputs. </p>
+<p><a name="summary">Summary</a></p>
+<ol>
+  <li>pass-by-value means a copy is made of the original data.</li>
+  <li>copying the original data means that any original variables &quot;passed&quot; to
+    a function <em>cannot</em> be modified.</li>
+  <li>pass-by-value parameters are input only. </li>
+  <li>pass-by-reference allows variables passed to a function as arguments to
+    be modified by the function.</li>
+  <li>pass-by-reference gives us a way for a function to &quot;return&quot; multiple
+    values.</li>
+  <li>pass-by-reference suppresses copying</li>
+  <li>pass-by-reference parameters can act as inputs to the function, outputs
+    from it, or both at once. </li>
+  <li>For primitive parameters (e.g. <code>double</code>, <code>int</code>, <code>char</code>) always use pass-by-value
+    unless a parameter is to be modified.</li>
+</ol>
+<h3><a name="exercises">Exercises</a></h3>
+<p>Here we summarize the declaration of many of the working functions used in
+  this topic. From your knowledge of the functions as well as whether the parameters
+  are pass-by-value or pass-by-reference, state whether each parameter is for
+  input, for output or both.</p>
+<pre><span class="codeKeyword">void</span> intSwap(<span class="codeKeyword">int</span>&amp; arg1, <span class="codeKeyword">int</span>&amp; arg2);
+<span class="codeKeyword">void</span> intOrder(<span class="codeKeyword">int</span>&amp; x1, <span class="codeKeyword">int</span>&amp; x2);
+<span class="codeKeyword">double</span> polarMag(<span class="codeKeyword">double</span> x, <span class="codeKeyword">double</span> y);
+<span class="codeKeyword">void</span> toPolar(<span class="codeKeyword">double</span>&amp; xMag, <span class="codeKeyword">double</span>&amp; yAngle);
+<span class="codeKeyword">void</span> quadraticRoots(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; bigRoot, <span class="codeKeyword">double</span>&amp; smallRoot);
+<span class="codeKeyword">bool</span> pathological(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; root);
+<span class="codeKeyword">double</span> radical(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c);
+<span class="codeKeyword">double</span> radical(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; rad);</pre>
+<p>In the answer box below we've used comments to fill in the answers. Try to work them out yourself first. </p>
+		<script language="JavaScript">
+			startHiddenAnswer("answer");
+		</script>
+<pre><span class="codeKeyword">void</span> intSwap(<span class="codeKeyword">int</span>&amp; arg1, <span class="codeKeyword">int</span>&amp; arg2); // both are both
+<span class="codeKeyword">void</span> intOrder(<span class="codeKeyword">int</span>&amp; x1, <span class="codeKeyword">int</span>&amp; x2);    // both are both
+<span class="codeKeyword">double</span> polarMag(<span class="codeKeyword">double</span> x, <span class="codeKeyword">double</span> y);   // both input
+<span class="codeKeyword">void</span> toPolar(<span class="codeKeyword">double</span>&amp; xMag, <span class="codeKeyword">double</span>&amp; yAngle);  // both are both
+<span class="codeKeyword">void</span> quadraticRoots(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; bigRoot, <span class="codeKeyword">double</span>&amp; smallRoot);
+<span class="codeKeyword">a, b &amp; c are inputs. bigRoot and smallRoot are outputs
+
+bool</span> pathological(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; root);
+<span class="codeKeyword">a, b &amp; c are inputs. root is an output
+</span>
+<span class="codeKeyword">double</span> radical(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c);   // all inputs
+<span class="codeKeyword">double</span> radical(<span class="codeKeyword">double</span> a, <span class="codeKeyword">double</span> b, <span class="codeKeyword">double</span> c, <span class="codeKeyword">double</span>&amp; rad);
+<span class="codeKeyword">a, b &amp; c are inputs. rad is an output</span></pre>
+		        <script language="JavaScript">
+			endHiddenAnswer();
+		</script>
+
+
+
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  <p> <script language="JavaScript">
+insertCode("passByValue.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("non_swap.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("int_swap.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("in_order.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("../variables/libfunc.cpp", true, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("conversion.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("quadratic.cpp", false, "code", "","all");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("quadratic_2.cpp", false, "code", "","all");
+  </script></p>
+<!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

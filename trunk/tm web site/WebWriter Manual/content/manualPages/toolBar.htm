@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Tool Bar</title>
+</head>
+<body>
+<h2><a name="siteLogo">Site Logo</a></h2>
+<p>The right side of the webWriter navigation bar is reserved for site branding.
+  The recommended procedure is to create a site logo in the form of a gif (up
+  to 120 pixels wide by 50 pixels high) in the content folder and set the <code>siteLogo</code>  variable in <code>constants.js</code> to the name of the image file. Authors can optionally
+  provide more information in the form of a tooltip which will come up when the
+  mouse hovers over the logo. Set your tooltip by setiing the <code>siteTooltip</code> variable
+  to it.</p>
+<p>Alternatively, branding can be done by using two lines of text. Set the <code>organization</code>  variable to the first line and the <code>course</code> variable to the second line. In order
+  for these to be used, the <code>siteLogo</code> variable must be set to the null string
+  (&quot;&quot;). </p>
+<h2><a name="buttons">WebWriter Buttons</a></h2>
+<h3><a name="navButtons">Navigation Bar Buttons</a></h3>
+<p>
+<button type="button" onClick="" title="generate Table of Contents">TOC</button>  
+Generates dynamically a table of contents for the whole site  using the map hard-coded
+in <code>nav-map.js</code> as well as <a href="#anchors">properly marked anchors</a> </p>
+<p><button type="button" onClick="" title="Go to previous topic">
+	<img src="../../webWriter/images/purpleBack.gif" width="19" height="16" ></button>&nbsp;&nbsp;
+	go to the previous topic as defined in <code>nav-map.js</code></p>
+
+<p><button type="button" onClick="" title="Go to parent page">
+  <img src="../../webWriter/images/purpleUp.gif" width="16" height="19"></button>&nbsp;&nbsp;
+  go to the parent topic as defined in <code>nav-map.js</code></p>
+
+<p><button type="button" onClick="" title="Go to next topic">
+  <img src="../../webWriter/images/purpleNext.gif" width="19" height="16"></button>&nbsp;&nbsp;go
+    to the next topic as defined in <code>nav-map.js</code></p>
+
+<p><img src="../../webWriter/images/noteButtonNormal.gif" alt="note button" width="35" height="34">
+   Switch to notes mode which is designed for studying the website
+at a computer. At the moment switches style sheets.</p>
+
+<p><img src="../../webWriter/images/lectureButtonNormal.gif" alt="lecture button">&nbsp;&nbsp;Alternate to&nbsp;&nbsp;<img src="../../webWriter/images/noteButtonNormal.gif" alt="note button" width="35" height="34">
+  Switch to lecture mode which is designed for projection
+to a class. At the moment switches style sheets and turns off hidden notes </p>
+
+<p><img src="../../webWriter/images/shadeButtonNormal.gif" alt="shade button">&nbsp;&nbsp; Turns on the window shade used in lecture mode to cover up part of the screen. Not available in notes mode.</p>
+ 
+<p><img src="../../webWriter/images/printButtonNormal.gif" alt="print button">&nbsp;&nbsp;Invokes a frameless print window, copies only the contents frame document to it, turns the hidden container <code>allExamples</code> on, and attaches the print stylesheet so users can see what the printed version will look like. See printing. </p>
+
+<p><img src="../../webWriter/images/homeButtonNormal.gif" alt="home button" width="35" height="34">&nbsp;&nbsp;Return to the home site for the teaching pages, usually a course administration site, as defined by the <code>homeUrl</code> variable in the<code> noteConstants.js</code> file.. </p>
+<p><img src="../../webWriter/images/helpButtonNormal.gif" alt="help button">&nbsp;&nbsp;Bring up the help system. Still a twinkle in my eye.</p>
+<h3><a name="pageButtons">Page Buttons</a></h3>
+<p>These appear in the middle of content pages</p>
+<p><img src="../../webWriter/images/extraNoteNormal.gif" alt="hitten note button"> &nbsp;&nbsp;Displays auxiliary, hidden notes, often associated with Teaching Machine examples.</p>
+<p>There are also simple html buttons for displaying hidden answers.</p>
+<h2><a name="navMap">Navigation Map</a></h2>
+<p>The hard-coded map of site navigation found in <code>site_resources/javascripts/nav-map.js</code>.
+  Here is a partial map for this site:</p>
+<blockquote>
+  <pre>var root = new Node("pages/coverPage.htm");
+var treeWalker = new Walker(root);
+var siteTitle = "WebWriter++ Manual";
+
+// Site Navigation map 
+
+// define the directories for convenience
+var pages = "pages/";
+
+// Now define the navigation map
+root.addChild(new Node(pages + "introduction.htm"));
+root.addChild(new Node(pages + "structure.htm"));
+root.addChild(new Node(pages + "navigation.htm")); </pre>
+</blockquote>
+
+<dl>
+  <dt>root</dt>
+  <dd>is the root document for the whole site. A present limitation is it can
+    have no siblings, that is, there is one and only one root node for the site.</dd>
+  <dt>treeWalker</dt>
+  <dd>the iterator object used by the automatic table of contents generator to
+    walk the navigation map.</dd>
+  <dt>siteTitle</dt>
+  <dd>the title used when the site is first loaded. This will be displayed in
+    the navigation bar while applets are loaded so it it probably best to use
+    the same title as on your root page to prevent ugly title switching during
+    slow loads.</dd>
+  <dt>pages</dt>
+  <dd>a convenience variable for the pages directory, of marginal utility in
+    this example. More useful if directories get deeply nested.</dd>
+  <dt>addChild</dt>
+  <dd>a method of the node class for adding a child to any node, here used to
+    add the page nodes to the root node.</dd>
+</dl>
+<p>Note that this example is for a flat hierarchy. In a deeper hierarchy, if
+  you want to add nodes to an internal node , you can do the following:</p>
+<blockquote>
+  <pre>root.addChild(new Node(pages + "introduction.htm"));
+var structNode = new Node(pages + "structure.htm");
+root.addChild(structNode);
+structNode.addChild(new Node(pages + "navigation.htm"));</pre>
+</blockquote>
+<p>Which has the effect of adding the navigation page in under the structure
+  page.</p>
+<h2><a name="printing">Printing Notes</a></h2>
+<p>The standard browers print command won't do a very good job of printing. Instead use the print button which creates a frameless print window. It copies only the contents frame document to it and attaches the notesPrint stylesheet so users can see what the printed version will look like. Some considerations: </p>
+<ul>
+  <li>Even in lecture mode, the print utility will use the notes version of the stylesheet for printing.</li>
+  <li>There is a hidden container called <code>allExamples</code> for holding
+    full length versions of examples. If you only select a portion of an example
+    for display on the web page, consider dropping the same example into this
+    section. Use the same <a href="insert_code.htm">insertCode</a> command as
+    the example except turn the <span class="WW">webWriter</span> selection to <code>&quot;~S&quot;</code>(supress
+    scripts) . Full examples will then turn up in the printed versions of the
+    notes at the end.</li>
+  <li><a href="answerBoxes.htm">Answer boxes</a> will reflect the their state on the page when the button is pushed. If users want to see them, they will have to reveal the answers before they hit the print button.</li>
+  <li>The print button doesn't actually print. This is to allow the user to review the page as it will appear when printed. To actually print, invoke the browser's normal print command <strong>from within the print window</strong>. </li>
+</ul>
+<h2><a name="anchors">Table of Content Entries</a></h2>
+<p>The <em>tocGenerator</em> walks the navigation map generating an entry for
+  every node in the map. The entry is the title of the document.</p>
+<p>In addition, it automatically
+    picks up anchors from inside pages to make sub-entries for each page. Only
+  named anchors with text between the <code>&lt;a&gt;</code> and <code>&lt;/a&gt;</code> tags
+    are picked up. The name is used to qualify the url to take the user directly
+    to the anchor. The text between the opening and closing tags is used as the
+    TOC entry.</p>
+<p>If an anchor is needed on a page that is not to be included in the table of
+  contents, simply mark the anchor as a point. For example here is how to include
+  a second level heading&#8212;</p>
+<pre>&lt;h2&gt;&lt;a name=&quot;tocEntries&quot;&gt;Table of Content Entries&lt;/a&gt;&lt;/h2&gt;</pre>
+<p>and how to leave it out&#8212; </p>
+<pre>&lt;h2&gt;&lt;a name=&quot;tocEntries&quot;&gt;&lt;/a&gt;Table of Content Entries&lt;/h2&gt;</pre>
+<p>The second form is perfectly legal since an anchor merely marks a point in
+  a document.</p>
+<p>If it is included, the url generated will be <code>pages/navigation#tocEntries</code> while
+  the sub-entry under  <code>Navigation &amp; Controls</code> (the title for this page) will be
+  <code>Table of Content Entries</code> </p>
+<p>The tocGenerator pays no attention to heading levels.   </p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

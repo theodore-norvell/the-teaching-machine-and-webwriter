@@ -1,0 +1,12 @@
+
+int xxx( float f, char c, int i, int &j ) {
+	return 3.1415 ;
+}
+
+
+void main() {
+	int k ;
+	int &m = k ;
+	xxx( 10, 65.5, 2.719, m ) ;
+	return ;
+}

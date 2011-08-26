@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<HTML>
+  <HEAD>
+    <TITLE></TITLE>
+  </HEAD>
+  <BODY>
+<h1>Notes on TM Java Development</h1>
+<p>5.10.2005: These are old notes (2003 &amp; 2004) that contained information on
+  a wide variety of topics. I've split most of it off into separate pages for
+  easier access.</p>
+<h2>Notes on IDE</h2>
+<p>The NoClassDefFoundError that stopped the debugger dead in its tracks was caused 
+  because there was no tm.jar file. Add new jar file to top level and you get 
+  a jarRecipe wizard that tells how you want your jar files built. Then built 
+  automaticallly every time yoy build. Must mount that jar file in file system.</p>
+<p>Start the jar recipe file from Files-New - it will appear listed in the Explorer 
+  under the Project tab but will only have the specifications for jar generation 
+  in it. Specify the directory containing all the class files in it. When you 
+  want a new archive generated, right click on the recipe file in Explorer and 
+  than select Compile - voila!</p>
+<p>Then mount archive produced in filesystem so debugger can use it.</p>
+<h2>Fix-Up List</h2>
+<p>In FourthPass, at case JJTMETHODDECLARATION, check for main argument list</p>
+<p>Changed local scopeHolder so Variable Declaration that fires it is it's declaration. 
+  This is to allow scope to be entered in SymbolTable given just the declaration. 
+  Before, I was creating an anonymous declaration for the local scope and adding 
+  the variable to it. In 3rd and 4th pass, no way to find anonymous local scopeHolder 
+  as enterScope routine wants declaration and all I have is variable Declaration. 
+  If this works out, will have to fix up createLocalType in CommonSH.</p>
+<p>In the <code>CGRIdExp</code> class, in the <code>apply (ExpressionPtr exp)</code> 
+  routine I have a line</p>
+<p> <code>if (candidates == null || candidates.isEmpty ()) .... </code>candidates 
+  should not be null. Workaround on the lack of debugging</p>
+<p>Access checking is now being done after lookup but hooks are still in lookup 
+  for access checking, particularly local lookup. If testing proves out our current 
+  approach, remove hooks.</p>
+<p>CGRAssignmentNarrowing hasn't got all checks installed.</p>
+<h3>Style Fix-Ups</h3>
+<p>These are mostly predicated on the availability of global editing tools. Yeah, 
+  ok. I'm fussy.</p>
+<ul>
+  <li>convert underscore_notation to camelCase</li>
+  <li>TyRef should become TyVariable (or TyLValue, although I dislike the term) 
+    and TyPointer should become TyAddress</li>
+  <li>DefaultExpressionNode should have its name changed. It's abstract. While 
+    it might contain a number of common (default) properties, it cannot be instantiated 
+    and thus cannot be a default.</li>
+</ul>
+<p>&nbsp;</p>
+<h2>For Theo</h2>
+<p>VarNode constructor asserts Scoped Name should be absolute (I commented it 
+  out)</p>
+<h2>Immediate ToDo</h2>
+<h3>Theo</h3>
+<ol>
+  <li>RunTime SymTab needs to be redesigned for Virtual Functions. In fact Theo 
+    will handle RTST assume same interface for now</li>
+</ol>
+<h3>Michael</h3>
+<ol>
+  <li>Solve compound assignment bug in While1 example</li>
+  <li>Solve notNarrowinf reference assignment bug in return1 example</li>
+  <li>Qualified function name (put in rule, not lookup)</li>
+  <li>Convert CLC documentation to html.</li>
+</ol>
+<h3>Paths</h3>
+<p>The more I look at Path the more I see Derek's problem. It seems to have been 
+  an add-on. Given that I am in some scope I need to lookup a reference so call 
+  th CT_SytmbolTable lookup routine, passing it the ScopedName and category. The 
+  routine returns with the Declaration. But we need to know at runtime where that 
+  declaration will be in the RTSymTab, relative to where we are.</p>
+<p>So we require (a) a path and (b) a means to compute it. It's computation requires 
+  going through the same steps we follow when we lookup (although not quite so 
+  generallyas its a type to type issue). Nevertheless, the process must follow 
+  the steps of the TypeSH lookup. So, why write (and maintain) two separate algorithms? 
+  Can lookup build the path as it goes? To what do we attach the path? Don't want 
+  to pass it as an arguement in lookup - too many changes. The Declaration's not 
+  great both because it doesn't make a lot of senses and because you don't get 
+  it on lookup untl the end of the recursion. The SymbolTable seems obvious but 
+  that means the scopholders will have to call it back in order to build the path.</p>
+<p>It turns out there are times we need to generate paths when we haven't done 
+  the equivalent lookup, although we have a declaration. In C++ multiple inheritance 
+  can mean there are two paths to a declaration. Not so in Java, but P.c can mean 
+  there is a path to P and one to c. At any rate, we decided independent path 
+  generation was preferred. However, we don't lookup the name again (as is done 
+  in C++). Rather we take advantage of the fact we have the Declaration and just 
+  look for the TypeSH that is holding it.</p>
+<p>There are still a couple of issues: Namely the argument to main is always "null". 
+  And the TM currently insists that there should only be one possible main function.</p>
+
+<h2>Current Issues</h2>
+<p>I am working on the assumption that all ScopedNames for Declarations should 
+  be fully qualified as defined by JLS 6.7. How's this for a u-turn? They probably 
+  don't need to be qualified at all.</p>
+<p>In lookups, so far I am using flags strictly to check for intersects. I think 
+  Java has so much context inherent in the ScopeHolder that we may not need many 
+  of the context flags. And then again, we may have to distinguish between look 
+  <i>in</i> and look <i>around</i>.</p>
+<p>There is still non_camel case in Clc and it's working its way into JavaLang. 
+  e.g. Scoped.Name.is_qualified(). Solve later</p>
+<p>Are Blocks scopes?</p>
+<p>Let's see now. First, let's treat a Scope and a ScopeHolder as a single entity 
+  for this discussion.</p>
+<p>Fundamentally, a Scope is something that holds declarations which represent 
+  the declaration &quot;in scope&quot;. In turn a Declaration has a Definition 
+  which we are always treating as a Scope. This model maps well onto Functions, 
+  Types, Programs, Packages and Compilation units. Each of them represents a scope 
+  that holds Declarations. A Program holds Packages, A Package holds CompilationUnits 
+  and so on.</p>
+<p>The model breaks down at the local level. Consider LocalSH, the most problematic. 
+  It represents the idea that a locally declared variable (or type) has a scope 
+  that extends from point of declaration to the end of the nearest enclosing block. 
+  If we have</p>
+<pre>foo(int a, Mary m){
+
+   int i;
+
+   int j;
+
+   class Fred{
+}
+
+}</pre>
+<p>a and m are available throughout the entire funtion while i, j and Fred only 
+  through portions of it. i,j &amp; Fred each has its own local Scopeholder. At 
+  first blush, i is the Declaration for its Scopeholder and it holds just j. (which 
+  in turn holds Fred).</p>
+<p>If I make a reference in foo() below Fred, I should be able to find Fred, j 
+  and i. Since the reference is inside Fred's local scopeholder, it gets searched 
+  first. If the reference is to Fred, it should find it.</p>
+<p>Thus if we use the standard model , the Declaration for i would have the LocalSH 
+  as its definition. That means Fred has two definitions.</p>
+<p>The answer is to treat blocks and localSH's differently. They have no Declaration. 
+  The import of that is they can't be added to a scopeHolder, but that doesn't 
+  matter as we should never have to look for them. We<i> don't look into Blocks 
+  and LocalSHs, we look up from them. </i>Thus in LocalSH, we add our own declaration 
+  as the only declaration.</p>
+<p>If I declare a class, it consists of a Declaration and a definition block, 
+  which is a scopeholder So is</p>
+<p>A Program holds Packages.</p>
+<p>A Package holds CompilationUnits</p>
+<p>A Compilation Unit holds Types and imports (which are pointers to other scopes)</p>
+<p>A Type holds Variables, Methods and other Types</p>
+<p>A Method holds Parameters, Local Variables and Local Types and Blocks</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Arrays in Java are objects so int[][][] is an object of a class called int[][][] 
+  (but this is not a name issue)</p>
+<h2>Java language</h2>
+<p>Object class does not implement the clonable interface so a clone call on an object will throw an exception but it does implement the clone method so that subclasses may call super.clone and get a general clone. This clone is a shallow copy. (Fodder for a good Java TM
+example?)</p>
+<p><b>Object.equals( ):</b> worth reading the conditions on equals</p>
+<h2>Background</h2>
+<p>Taken from JavaParserDocumentation.txt</p>
+<p>This document describes the "compile time syntax trees," that is the output of the pass 1 (parsing pass) and the input to passes 2 and 4. 
+Pass 1 parses the input string and produces two kinds of output. A marked up representation of the source (the codelines) and a tree—the "compile time syntax tree".  The tree is passed on to passes 2 and 4  for further processing. Pass 2 populates the compile time symbol table and pass 4 generates the so-called AST code. (Technically the compile time syntax tree is an "abstract syntax tree", however, I’ll avoid  calling them such to prevent confusion with the AST code interpreted  during run time.) Between pass 2 and pass 4, there is a pass 3, which is actually a pass over the compile time symbol table that produces all the type nodes for the user declared types. 
+When we start supporting multiple source files there will actually be one compile time syntax tree for each source file. In that case we must compute all the compile time syntax trees (and execute pass 2 on them) prior to the start of pass 3. 
+Each compilation unit is represented as a tree of SimpleNodes. SimpleNodes have been augmented with the attributes of types int, bool, string, ScopedName, and Java_SpecifierSet. By default, these are 0, false, null, null, and null respectively. 
+The roughly 60 kinds of nodes are described, an example of which appears
+below:</p>
+<p>an "expression node" is a node of kind:</p>
+<code><pre>        JJTBINOP,
+        JJTCONDITIONAL,
+        JJTINSTANCEOF,
+        JJTUNARY_PREFIX,
+        JJTUNARY_POSTFIX,
+        JJTCASTEXPRESSION,
+        JJTCASTEXPRESSION,
+        JJTDOT,
+        JJTPARENS,
+        JJTTHISEXP,
+        JJTCLASSEXP,
+        JJTNAMEEXP,
+        JJTSUBSCRIPT,
+        JJTCALL,
+        JJTLITERAL, or
+        JJTALLOCATIONEXPRESSION.
+
+</pre></code>
+
+<h2>The Parser</h2>
+<p>The parser—and a bunch of other files—are generated automatically </p>
+<p><b>generated by JavaCC</b></p>
+<p><code>JavaCharStream</code> a final class<br>
+  <code>ParseException</code> a fairly extensive class extenting the standard 
+  <code>Exception</code> class<br>
+  <code>Token</code> a class representing a token<br>
+  <code>TokenManagerError</code> a class extending the standard <code>Error</code> 
+  class<br>
+</p>
+<p><b>generated by JJTree</b></p>
+<p><code>JJTJavaParserState</code> class<br>
+  the <code>Node</code> interface &amp; its <code>SimpleNode</code> implementation<br>
+  <code>JavaParserVisitor</code> a simple vistor interface</p>
+<p><b>generated by both</b></p>
+<p><code>JavaParserConstants</code> in interface containing constants for Java 
+  tokens<br>
+  <code>JavaParserTreeConstants</code> an interface containing constants for parser 
+  tree nodes<br>
+  <code>JavaParserTokenManager</code> which implements <code>JavaParserConstants</code><br>
+  <code>JavaParser</code> a class which implements <code>JavaParserTreeConstants</code> 
+  and <code>JavaParserConstants</code></p>
+<p>Only <code>SimpleVisitor</code>, which implements <code>JavaParserVisito</code> 
+  (and seems largely pro forma) and <code>SecondPass</code> are created from scratch. 
+  In addition some of the generated files are edited after the fact (<code>JavaCC</code> 
+  does not rederive them if they already exist so it can be run safely to update 
+  other, non-edited files). The primary modifications are to <code>SimpleNode</code>. 
+  The following information can be attached to a node.</p>
+<p>a <code>boolean</code>, an <code>int</code>, a <code>String</code>, a <code>ScopedName</code> 
+  and/or a <code>SpecifierSet</code>. There are <code>get</code> and <code>set</code> 
+  methods for all of them.</p>
+<p>Their meaning depends upon what the node to which they are attached represents<br>
+</p>
+<p>April 3, 2003: Theo has ammended the parser so that every node for which a 
+  name exists now has a <code>ScopedName</code> attached (before it was sometimes 
+  a name and sometimes a <code>String</code>)</p>
+</BODY>
+</HTML>

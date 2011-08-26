@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script><title>Answer Boxes</title>
+</head>
+<body>
+<p>Simple box with a button to hold and hide an answer. The button reveals the answer and may be labelled by the author.</p>
+<h2><a name="functions">Available Functions</a></h2>
+<hr>
+<strong>startHiddenAnswer(buttonLabel)</strong><br>
+<h3>Arguments</h3>
+<dl>
+  <dt>buttonLabel</dt>
+  <dd>a <strong>string</strong> giving the label for the button.</dd>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<strong>endHiddenAnswer()</strong><br>
+<h3>Arguments</h3>
+<blockquote>
+  <p>none</p>
+</blockquote>
+<dl>
+  <dt>Return</dt>
+  <dd>Nothing is returned</dd>
+</dl>
+<strong>Action</strong><br>
+<p>A <code>hiddenAnswer</code> container div is created  with a button carrying the label. All html within the container is hidden until the button is pressed. The button's a toggle so pressing it a second time  hides the answer again. </p>
+<strong>Comment</strong><br>
+<p>Even TM containers may be put in the container. The container is in the flow when hidden so shows at full side. Notes printed using the print button to generate a separate printing window will reflect the state of the hiddenAnswer containers on the original page. </p>
+<hr>
+<h2>Example</h2>
+<p>&nbsp;</p>
+  <h1>Exercises</h1>
+  <ol>
+    <li>Write a declaration for each of the following. Make sure you use a mnemonic (self-descriptive) name:
+      <ol type="i">
+        <li>A variable to count the number of students in a class.</li>
+        <li> A variable to represent the slope of a roof.</li>
+        <li>A variable to represent the response to a multiple choice exam question, the answer for which is a, b, c, d or e.</li>
+        <li>A variable to represent the speed of a car. </li>
+        <li>A constant to represent Avagadro's number (which if you don't know, you can Google). </li>
+      </ol>
+    </li>
+	<li>Rework the ageProblem from the last topic so that it is a separate function and has a <code>constantClient</code>, an <code>anxiousClient</code>, an <code>independentClient</code> and a <code>confusedClient</code>. </li>
+  </ol>
+
+<script language="JavaScript">
+	startHiddenAnswer("1i");
+</script>
+<blockquote>
+  <span class="codeKeyword"><code>int</code></span><code> count;</code>
+</blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1ii");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>double</code></span><code> slope;</code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">float</span> slope;</code> </blockquote>
+  <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1iii");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>char</code></span><code> answer;</code> </blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1iv");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>float</code></span><code> speed;</code>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">double</span> speed;</code></blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("1v");
+    </script>
+</p>
+  <blockquote> <span class="codeKeyword"><code>const float </code></span><code> N = <span class="codeConstant">6.022e23</span>;</code>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code><span class="codeKeyword">const double</span> N = <span class="codeConstant">6.022e23</span>;</code></blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+  </p>
+
+  <p>
+    <script language="JavaScript">
+	startHiddenAnswer("2");
+    </script>
+</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true);
+	insertCode("ageClients.cpp", true, "code", "default.cfg", "ALL", "all");
+      </script>
+  </p>
+  <p>      <script language="JavaScript">
+	endHiddenAnswer();
+      </script>
+  </p>
+
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>
+

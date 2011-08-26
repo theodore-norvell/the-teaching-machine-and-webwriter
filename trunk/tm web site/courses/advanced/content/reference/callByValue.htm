@@ -1,0 +1,71 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>call by value</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3>Syntax</h3>
+<div class="syntaxDef">
+  <p class="code"><em>functionName</em><span class="codeRequired"> (</span><em>expressionList</em><span class="codeRequired">);</span></p>
+  </div>
+<p><em>expressionList</em> is a comma-separated list of zero or more <em>expressions</em>. The number of expressions must equal the number of parameters in the <a href="functionDeclaration.htm">function declaration</a> and the type of each expression result must be the same as (or unambiguously convertible to) the type of the equivalent parameter in the function declaration. The function call can be emebedded in an expression.</p>
+<p>Functions must be declared in a file before they can be called. </p>
+<h3>Examples</h3>
+<p>For the following declarations </p>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> double </span>sin<span class="codeRequired">(</span><span class="codeKeyword">double</span> x<span class="codeRequired">);</span></p>
+  <p class="code"><span class="codeKeyword">double </span>cos<span class="codeRequired">(</span><span class="codeKeyword">double</span><span class="codeRequired">);</span></p>
+  <p class="code"><span class="codeKeyword">void </span>printComplex<span class="codeRequired">(</span><span class="codeKeyword">double</span> real, <span class="codeKeyword">double</span> imag<span class="codeRequired">);</span></p>
+  <p class="code"> </span></p>
+</div>
+<p>the following are valid calls (assuming <code>voltage</code>, <code>PI</code> and <code>freq</code> have all been properly declared and that <code>PI</code> and <code>freq</code> have been set to valid values). </p>
+<div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> </span>printComplex<span class="codeRequired">(</span>1.0,1,0<span class="codeRequired">);</span></p>
+  <p class="code">voltage = sin<span class="codeRequired">(</span>2*PI*freq + .12<span class="codeRequired">);</span></p>
+  <p class="code">cout &lt;&lt; &quot;cos(0) = &quot; &lt;&lt; cos<span class="codeRequired">(</span>0.<span class="codeRequired">);</span> </p>
+</div>
+<p>The first call requests that the complex number (1 + j) be printed, the second computes the voltage from the sin of an expression and the third embeds the call to cos(0) in a cout statement.</p>
+<p>The following are wrong for one reason or another(assuming once again that variables have been declared and set as required). </p>
+<p class="code">printComplex<span class="codeRequired">(</span>imag,real<span class="codeRequired">);</span></p>
+<p class="code">voltage = sin<span class="codeRequired">(</span>2*PI*freq,.12<span class="codeRequired">);</span></p>
+<p class="code">cout &lt;&lt; &quot;cos(0) = &quot; &lt;&lt; cos<span class="codeRequired">(</span>&quot;0.&quot;<span class="codeRequired">);</span> </p>
+<p>The call <code>printComplex(imag, real)</code> is syntactically correct but logically wrong since arguments are matched in a call by order not by name. So <code>imag</code> and <code>real</code> are mixed up. The call to the <code>sin</code> is syntactically wrong because the <code>sin</code> function only takes one argument. The call to the <code>cos</code> is syntactically wrong because the <code>cos</code> function takes a <span class="codeKeyword">double</span> argument and a <code>string</code> is not a <span class="codeKeyword">double</span>, nor can it be converted to one. </p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

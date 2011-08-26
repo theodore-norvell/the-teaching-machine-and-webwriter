@@ -1,0 +1,382 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta NAME="Generator" CONTENT="DreamWeaver MX2004">
+<meta NAME="Author" CONTENT="Michael Bruce-Lockhart & Dennis Peters">
+<meta NAME="copyright" CONTENT="&copy; 2004, Michael Bruce-Lockhart & Dennis Peters">
+<meta NAME="resource-type" CONTENT="document">
+<meta NAME="distribution" CONTENT="global">
+<link rel="STYLESHEET" type="text/css" media="screen" href="../style/stylesheets/clecture.css" title="C tutoring Screen stylesheet">
+<link rel="STYLESHEET" type="text/css" media="print" href="../style/stylesheets/clectureprint.css" title="C tutoring Print stylesheet">
+<meta content=
+"This web site is primarily directed at students in the Faculty of Engineering at Memorial University who are either taking a programming course or using C/C++ in one of their other courses or projects. It is new and skeletal at the moment. It will include a number of different tutorial styles including interactive examples, sample code with pop-up comments, videos, code dissection and FAQs.">
+<meta content="C C++ programming tutor tutoring teaching machine code">
+<meta name="copyright" content="&copy; 2000, Michael Bruce-Lockhart">
+<title>C++ Dictionary</title>
+</head>
+<body>
+<h1>C/C++ Dictionary</h1>
+
+
+<a name="address"></a> 
+<div class = "dictionary"><p class="entry">address</p>
+  <p>A number which denotes the location of a piece of data within memory.</p>
+</div>
+  
+<a name="argument"></a>
+<div class = "dictionary">
+  <p class="entry">argument</p>
+  <p>Sometimes called  the <em>actual argument</em> [Kernighan1988]. A value or variable provided to a function when it is called. A list of arguments appears between the parentheses in the function call. See also <a href="#parameter">parameter</a>. </p>
+</div>
+<a name="array"></a>
+<div class = "dictionary"><p class="entry">array</p>
+<p>A package of data, which goes by a single name, every value of which is of 
+  the same type Individual elements are accessed using an index which runs from 
+  0 to size-1 of the array. All the data in an array is stored contiguously. An 
+  array does not know its own size, requiring programmers to keep track of it 
+  separately.</p>
+</div>
+
+<a name="assignment"></a> 
+<div class = "dictionary"><p class="entry">assignment</p>
+<p>A statement of the form <code>variable = expression</code> whereby the expression on the right is first evaluated then the value
+that results is written into the variable on the left, overwriting its previous value.</p>
+</div>
+
+
+
+ <a name="bit"></a> 
+<div class = "dictionary"><p class="entry">bit</p>
+<p>The smallest unit of information (and therefore of computer memory). A bit 
+  must take on one of the two values, one or zero.</p>
+</div>
+
+<a name="blockScope"></a> 
+<div class = "dictionary"><p class="entry">block scope</p>
+<p>A name declared at the internal level is said to have block scope. Specifically, 
+  its scope is from the point of declaration of the name to the end of nearest 
+  enclosing block within which the name was declared.</p>
+</div>
+
+<a name="bool"></a> 
+<div class = "dictionary"><p class="entry">bool</p>
+<p>A <a href="#primitiveType">primitive type</a> in C++. Variables of type <code>bool</code>  may have only one of two values: true (1) or false (0). <i>Usage note:</i> when
+    any integer type is converted to type bool, any non-zero value is converted
+    to true.</p>
+</div>
+
+<a name="boolean operator"></a>
+<div class = "dictionary"><p class="entry">boolean operator</p>
+<p>An operator which compares two boolean operands and returns a boolean (<code>true</code> or <code>false</code>) result.</p>
+</div>
+
+<a name="byte"></a> 
+<div class = "dictionary"><p class="entry">byte</p>
+<p>An assemblage of 8 bits, usually the smallest practical unit of memory. Computer 
+  data is generally an integer (usually a power of 2) number of bytes.</p>
+</div>
+
+<a name="call"></a> 
+<div class = "dictionary"><p class="entry">call</p>
+<p><b>(v)</b> invoking a function <b>(n)</b> the invocation of a function. When 
+  a function is called the flow of control switches to the first line in the function 
+  and continues until a return is encountered. If the function returns a value, 
+  it <em>evaluates</em> to that value. </p>
+</div>
+
+<a name="char"></a> 
+<div class = "dictionary"><p class="entry">char</p>
+<p>A <a href="#primitiveType">primitive type</a> in C++. One of the integer types.
+  Variables of type <code>char</code> hold a binary code (typically either 1 byte ASCII or
+  2 byte Unicode) representing particular characters.</p>
+</div>
+
+<a name="class"></a> 
+<div class = "dictionary"><p class="entry">class</p>
+<p><b>(n)</b> <b>a.</b> A fundamental programming module in C++ which bundles 
+  data (called attributes) with functions (called methods).<b> b. </b>The means 
+  in C++ by which programmers control the specification and declaration of objects. 
+</p>
+</div>
+
+<a name="constant"></a> 
+<div class = "dictionary"><p class="entry">constant</p>
+<ol>
+  <li>A <a href="#variable">variable</a> whose <a href="#value">value</a> doesn't change while a program is running. Also called a <em>named</em> constant or a <em>symbolic</em> constant.</li>
+  <li> A <a href="#literal">literal</a> constant written directly into  code. </li>
+</ol>
+</div>
+
+<a name="condition"></a> 
+<div class = "dictionary"><p class="entry">condition</p>
+<p><b>(n) </b>A logical expression, that is one that evaluates ultimately to <code>true</code> or <code>false</code>.</p>
+</div>
+
+<a name="constructor"></a> 
+<div class = "dictionary"><p class="entry">constructor</p>
+<p><b>(n) </b>A special member function of a class which is called whenever an 
+  object of the class is created. Constructors never have a return type and always 
+  have the name of the class as their name.</p>
+</div>
+
+<a name="cpu"></a>
+<div class = "dictionary"><p class="entry">cpu</p>
+<p><b>(n) </b>The Central Processing Unit of a computer, typically a single chip. The CPU carries out the basic
+fetch-execute-store cycle that is the heart of all computer operations: <em>fetch an instruction from memory</em>&#8212;<em>fetch
+ the data for the instruction from memory</em>&#8212;<em>execute the instruction on the data</em>&#8212;<em>store the result in
+  memory</em>.</p>
+</div>
+
+<a name="data"></a>  
+<div class = "dictionary"><p class="entry">data</p>
+<p>(from <i>the American Heritage Dictionary)</i> Numerical or other information represented in a form suitable for processing by a computer.</p>
+</div>
+
+<a name="destructor"></a>  
+<div class = "dictionary"><p class="entry">destructor</p>
+<p><b>(n) </b>A special member function of a class which is called whenever an 
+  object of the class is destroyed (as,for example, when it goes out of scope). 
+  Destructors never have a return type or any arguments and always have the name 
+  of the class preceded by a ~ as their name. e.g. the destructor for class <span class="codeInline">George</span> 
+  is <span class="codeInline">~George()</span>.</p>
+</div>
+
+<a name="double"></a>  
+<div class = "dictionary"><p class="entry">double</p>
+<p>A <a href="#primitiveType">primitive type</a> in C++. Variables of type double represent real numbers (called floating point numbers) and typically take more space and are slower to process than integer types.</p>
+</div>
+
+<a name="downcast"> </a>
+<div class = "dictionary"><p class="entry">downcast</p>
+<ol><li>A cast that can potentially lose precision as from <code>double</code> to <code>int</code>.</li>
+<li>A cast where the result is potentially unrepresentable because the target set of values is smaller than the original set.</li>
+<li>A cast from an object of a base class to an obect of a derived class.</li></ol>
+</div>
+
+<a name="expression"></a>  
+<div class = "dictionary"><p class="entry">expression</p>
+<p>A combination of variables, constants, operators and functions which is progressively evaluated an operation at a time until it is reduced to a final value.</p>
+</div>
+
+<a name="externalLevel"></a>  
+<div class = "dictionary"><p class="entry">external level</p>
+<p>Outside of any function.</p>
+</div>
+
+<a name="fileScope"></a>  
+<div class = "dictionary"><p class="entry">file scope</p>
+<p>See also scope, block scope. A name declared at the external level is said 
+  to have file scope. Specifically, its scope is from the point of declaration 
+  of the name to the end of the file.</p>
+</div>
+
+<a name="function"></a>  
+<div class = "dictionary"><p class="entry">function</p>
+<p>The fundamental module of code. All code must appear inside some function, 
+  even if it's only <code>main</code>. Functions may return a value or <code>void</code>.</p>
+</div>
+
+<a name="header"></a> 
+<div class = "dictionary"><p class="entry">header file</p>
+<p>A file typically containing type, class and/or standalone function declarations, 
+  as well as constants, with little or no active code, designed to be included 
+  in code files that are clients of the declared types, classes or functions.</p>
+</div>
+
+<a name="ide"></a> 
+<div class = "dictionary"><p class="entry">ide</p>
+<p><strong>Integrated Development Environment:</strong> A suite of tools used for program development integrated into a single framework.
+Typically includes an editor (for preparing the source code), a compiler (for converting source files to object files), a linker for hooking
+multiple object files together into a program, a make utility, for deciding which files are out of date and need to be recompiled, and a
+debugger, for viewing the state of the machine as the code runs.</p>
+</div>
+
+<a name="instruction"></a> 
+<div class = "dictionary"><p class="entry">instruction</p>
+<p>The smallest increment of computer code which can carry out a task. A function body normally contains one or more instructions.
+Instructions are usually issued to an underlying machine. Also called a <em>statement</em>. </p>
+</div>
+
+<a name="int"></a>  
+<div class = "dictionary"><p class="entry">int</p>
+<p>A <a href="#primitiveType">primitive type</a> in C++. Variables of type int 
+  represent mathematical integers over a limited range that varies from computer 
+  to computer.</p>
+</div>
+
+<a name="internalLevel"></a>  
+<div class = "dictionary"><p class="entry">internal level</p>
+<p>Inside the body of a function.</p>
+</div>
+
+<a name="keyword"></a>  
+<div class = "dictionary"><p class="entry">keyword</p>
+<p>A word which is part of the built-in vocabulary of a computer language and thus may not be used by programmers
+to name variables, functions or objects.</p>
+</div>
+
+<a name="library"></a>  
+<div class = "dictionary"><p class="entry">library</p>
+<p>A large body of standard code which may be included piecemeal into programs 
+  as needed.</p>
+</div>
+
+<a name="literal"></a>  
+<div class = "dictionary"><p class="entry">literal</p>
+<p>A constant which is typed directly into the code as <code>3</code>, <code>3.14159</code> or <code>"hello world"</code>.</p>
+</div>
+
+<a name="logicalExpression"></a>  
+<div class = "dictionary"><p class="entry">expression</p>
+<p>A combination of variables, constants and functions which can be progressively 
+  reduced to a single boolean value.</p>
+</div>
+
+<a name="main"></a> 
+<div class = "dictionary"><p class="entry">main</p>
+<p>The top level file in a program. All programs must contain one and one only 
+  main function. Program execution always starts at the beginning of the main 
+  function. </p>
+</div>
+
+<a name="memory"></a> 
+<div class = "dictionary"><p class="entry">memory</p>
+<p>A part of the physical computer where both data and instructions are held, connected to the central processor by a data bus. Often referred to as RAM.</p>
+</div>
+
+<a name="message"></a> 
+<div class = "dictionary"><p class="entry">message</p>
+<p><b>1.</b> A function which is a member of a class. <b>2.</b> Specifically, 
+  the invocation (calling) of a class member function.</p>
+</div>
+
+<a name="method"></a> 
+<div class = "dictionary"><p class="entry">method</p>
+<p><b>1.</b> A function which is a member of a class. <b>2.</b> Specifically, 
+  the implementation of a class member function.</p>
+</div>
+
+<a name="mnemonic"></a>  
+<div class = "dictionary"><p class="entry">mnemonic</p>
+<p>Self-descriptive. Generally applied to <a href="#name">names</a> that give a reader a good idea 
+  of what the named entity is or does.</p>
+</div>
+
+<a name="name"></a>  
+<div class = "dictionary"><p class="entry">name</p>
+<p>An identifier used to designate entities such as <a href="#variable">variables</a>, <a href="#function">functions</a>, <a href="#class">classes</a> 
+  or <a href="#object">objects</a>. Should follow the standard <a href="#namingRules">naming rules</a>.</p>
+</div>
+
+<a name="namingRules"></a>  
+<div class = "dictionary"><p class="entry">naming rules</p>
+<p>Names consist of a sequence of letters, digits and underscore('_') characters 
+  with no spaces. May not start with an digit and may not be a keyword. Should 
+  not start with underscore as compilers do that. While any length is technically 
+  allowable, almost all compilers will distinguish names of up to 31 characters. 
+</p>
+</div>
+
+<a name="object"></a> 
+<div class = "dictionary"><p class="entry">object</p>
+<p>A particular instantiation of a class. An object has its own data (exactly 
+  like a structure variable) but shares the methods of the class. </p>
+</div>
+
+<a name="operation"></a> 
+<div class = "dictionary"><p class="entry">operation</p>
+<p><b>1. (fundamental)</b> An action carried out by an operator, on one or more operands, that produces a result, normally a  value. <span class="codeRequired">2.(advanced)</span> A function which is a member of a class. <b>3</b><span class="codeRequired">.(advanced)</span>
+Specifically, 
+  the declaration of (and therefore the interface for) a class member function.</p>
+</div>
+
+<a name="operator"></a> 
+<div class = "dictionary"><p class="entry">operator</p>
+<p> A fundamental building block of expressions which signals that an operation is to be carried out on (usually) either one or two operands. Operands must be evaluated before the operation can be carried out. Operators usually return a single value known as the <em>result</em> of the operation. </p>
+</div>
+
+<a name="parameter"></a>  
+<div class = "dictionary"><p class="entry">parameter</p>
+<p>Short for <em>formal parameter. </em>The name given to  an argument <em>in a function implementation</em>. Parameters appear both
+  in the function prototype and the function body and are effectively local variable
+  declarations for the function. Parameters are used to receive <a href="#data">data</a> passed into the function
+  when it is called</p>
+</div>
+
+<a name="passByReference"></a>
+<div class = "dictionary">
+  <p class="entry">pass-by-refernce</p>
+  <p>An alternative   calling mechanism available only in C++ whereby a refence to a calling argument is passed when a function is called. Effectively, the parameter in the function implementation is an <em>alias</em> for the calling argument (which must be a variable), allowing  the calling argument to be changed from within the function. </p>
+</div>
+<a name="passByValue"></a>
+<div class = "dictionary">
+  <p class="entry">pass-by-value</p>
+  <p>The default calling mechanism in C++ and C whereby only the value of an argument is passed when a function is called. Effectively, the parameter in the function implementation is a copy of the calling argument and can be changed with impunity without affecting the calling argument. </p>
+</div>
+<a name="pointer"></a> 
+<div class = "dictionary"><p class="entry">pointer</p>
+<p>A <a href="#variable">variable</a> whose <a href="#value">value</a> is the <a href="#address">address</a> of the desired <a href="#value">value</a>.</p>
+</div>
+
+<a name="precedence"></a> 
+<div class = "dictionary"><p class="entry">precedence</p>
+<p>A set of rules to govern the order of operations based on the types of operators being used.</p>
+</div>
+
+<a name="primitiveType"></a>  
+<div class = "dictionary"><p class="entry">primitive type</p>
+<p>A <a href="#type">type</a> predefined by the language, for example <code>int</code> or <code>bool</code>.</p>
+</div>
+
+<a name="pseudoCode"></a>
+<div class = "dictionary"><p class="entry">pseudo-code</p>
+  <p>A language independent form which uses the structure of computer code (e.g ifs and loops) but not the grammar. May include standard english and equations in place of code. Used for working out algorithms. </p>
+</div>
+
+<a name="relationalOperator"></a>  
+<div class = "dictionary"><p class="entry">relational operator</p>
+<p>An operator which compares two operands and returns a boolean (<code>true</code> or <code>false</code>) result.</p>
+</div>
+
+<a name="scope"></a>
+<div class = "dictionary"><p class="entry">scope</p>
+<p>An attribute of a <a href="#name">name</a>. The range within a program over which a <a href="#name">name</a> is known.</p>
+</div>
+
+<a name="statement"></a> 
+<div class = "dictionary"><p class="entry">statement</p>
+<p>The smallest increment of computer code which can carry out a task. A function body normally contains one or more statements.
+Also called an <em>instruction</em>. </p>
+</div>
+
+<a name="structure"></a> 
+<div class = "dictionary"><p class="entry">structure</p>
+<p>A compound <a href="#data">data</a> <a href="#type">type</a> the individual components of which are accessed as named 
+  fields.</p>
+</div>
+
+<a name="type"></a>  
+<div class = "dictionary"><p class="entry">type</p>
+<p>The category to which a piece of computer <a href="#data">data</a> is assigned. All <a href="#data">data</a> of a particular 
+  type will conform to a set of properties determined by that type, for example 
+  the amount of storage required to hold a piece of <a href="#data">data</a> or a range of acceptable 
+  <a href="#value">values</a>.</p>
+</div>
+
+<a name="variable"></a>  
+<div class = "dictionary"><p class="entry">variable</p>
+<p><i>Mathematics.</i> <b>a.</b> A named quantity capable of assuming any of a set of 
+  values. <b>b.</b> A symbol representing such a quantity. <i>Computing. </i><b>a. 
+  </b>A named <a href="#location">location</a> for holding a piece of computer <a href="#data">data</a> taken from a  set of <a href="#value">values</a>. <b>b. </b>The name representing 
+  the <a href="#location">location</a></p>
+</div>
+
+<a name="value"></a> 
+<div class = "dictionary"><p class="entry">value</p>
+<p>The specific piece of computer <a href="#data">data</a> held in a <a href="#variable">variable</a>.</p>
+</div>
+ 
+</body>
+</html>
+

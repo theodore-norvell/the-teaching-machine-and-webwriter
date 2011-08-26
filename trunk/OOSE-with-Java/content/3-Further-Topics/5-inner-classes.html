@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Inner Classes</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style7 {color: #000099; font-family: "courier new", monospace;}
+.style8 {font-family: georgia, palatino, "Times New Roman", times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="innerClasses" id="innerClasses">Inner classes </a></h1>
+<h2> <a name="Objectives">Classes inside classes </a></h2>
+<p>Java allows classes to be declared within classes.</p>
+<p>This has the interesting effect of allowing us to create objects that have access to the (non-public) parts of other objects.</p>
+<p>Here is an example</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Outer.java", true, "code", "default.cfg");
+    
+</script>
+</p>
+<p>(<span class="codeInline">Runnable</span> is a library interface that simply declares the <span class="codeInline">run</span> method.)</p>
+<p>Each call to <span class="codeInline">run</span> increments the <span class="codeInline">x</span> field in some object of class <span class="codeInline">Outer</span>.</p>
+<pre class="code">Outer a = <span class="codeKeyword">new</span> Outer() ;
+Outer b = <span class="codeKeyword">new</span> Outer() ;
+Runnable p = a.getIncrementer() ;
+Runnable q = b.getIncrementer() ;</pre>
+<p>Now calling <span class="codeInline">p.run()</span> increments <span class="codeInline">a.x</span> whereas calling <span class="codeInline">q.run()</span> increments <span class="codeInline">b.x</span> .</p>
+<p>A nonstatic class declared inside or another class is an <strong>inner class</strong>. </p>
+<p>Each instance of an inner class is implicitly associated with a single instance of its outer class and has access to <span class="pseudoCode">all</span> the fields and methods of that object.</p>
+<p>In the example, each instance of <span class="codeInline">Inner</span> is implicitly associated with the instance of <span class="codeInline">Outer</span> that allocates it. </p>
+<p><span class="codeInline">p</span> is associated with <span class="codeInline">a</span> and, when <span class="codeInline">p.run()</span> executes, the expression <span class="codeInline">x+=1</span> refers to the <span class="pseudoCode">private</span> field <span class="codeInline">a.x</span>. </p>
+<h2> <a name="Anonymous" id="Anonymous">Anonymous inner classes</a></h2>
+<p>Note that <span class="codeInline">Inner</span> is used exactly once and in an allocation (<span class="codeKeyword">new</span>) expression.</p>
+<p>In this case there is an abbreviation that allows us to combine the class declaration with the allocation (<span class="codeKeyword">new</span>) expression.</p>
+<p>Since the class is never used anywhere else, it will not need a name</p>
+<p>It will be an <strong>anonymous inner class</strong></p>
+<p>Syntax: We write </p>
+<pre class="code"><span class="codeKeyword">new</span> Runnable() {
+        <span class="codeKeyword">public void</span> run() {
+            x += 1 ;
+        }
+    }</pre>
+<p>instead of </p>
+<pre class="code"><span class="codeKeyword">new</span> Inner()</pre>
+<p>and can omit the declaration of Inner now</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("Outer1.java", true, "code", "default.cfg");
+    
+    
+</script>
+</p>
+<p>Syntax for anonymous inner classes: </p>
+<p class="syntaxDef"> <span class="stxNonterminal"> Expression --&gt; </span> <span class="codeKeyword">new</span><span class="codeInline"> <span class="stxNonterminal">ClassName</span> (<span class="stxNonterminal">Arguments</span>) { </span><span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>*<span class="codeInline"> }</span></p>
+<p>The <span class="stxNonterminal">ClassName</span> is either</p>
+<ul>
+  <li>the name of a class, in which case the anonymous class directly extends this class, or </li>
+  <li>the name of an interface, in which case the anonymous class directly implements this interface and directly extends <span class="codeInline">Object</span>. </li>
+</ul>
+<p>The new object is a direct instance of the anonymous class and an indirect instance of the class (or interface) that is named. </p>
+<p>The <span class="stxNonterminal">Arguments</span> are arguments to the superclass's constructor.</p>
+<h2><a name="innerClassesAndSwing" id="innerClassesAndSwing">Action listeners </a></h2>
+<p>One of the most common uses of inner classes is to tell Swing components how to react to &quot;events&quot;.</p>
+<p>Events are key presses, mouse actions, button clicks, etc etc </p>
+<p>When you use Swing, your program follows the following &quot;event loop&quot;</p>
+<pre class="pseudoCode">while true
+    wait for an event to occur
+    find event handling code
+    execute event handling code</pre>
+<p>This loop needs to execute event handling code written by <span class="pseudoCode">you</span>!</p>
+<p>Note the <span class="pseudoCode">inversion of control:</span> library code has to call programmer defined code. </p>
+<p>How can <span class="pseudoCode">Sun's</span> event loop call <span class="pseudoCode">your</span> event handling code? </p>
+<p>You communicate your event handling code by creating and registering objects implementing interface <span class="codeInline">ActionListener</span>, which is similar to <span class="codeInline">Runnable</span>. These objects are often instances of inner classes. </p>
+<p>Here is an example</p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("ClickExample.java", true, "code", "default.cfg");
+    
+</script>
+</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>Th-th-th-that's it folk. </p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

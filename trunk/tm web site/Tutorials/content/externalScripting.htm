@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../";
+  </script>
+  <script language="JavaScript" src="noteConstants.js"></script>
+  <script language="JavaScript" src="../webWriter/parser.js"></script>
+  <script language="JavaScript" src="../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../webWriter/header.js"></script>
+  <title>External Scripting</title></head>
+
+
+<body>
+
+<h2><a name="description">Description</a></h2>
+
+<p><em>External scripting</em>  allows the Teaching Machine to be controlled from outside (in our case from <a href="quizWriter.htm">quizWriter</a>). This is as opposed to <em><a href="internalScripting.htm">internal scripting</a></em> which allows it to be controlled from within the code it is running (model code).</p>
+<h2><a name="functions">External Scripting Functions</a></h2>
+
+ Note that some of these external scripting calls had alread been developed to allow animation of visualizers. As such they may not be directly applicable to quizGen
+ <p><code>public void autoRun();</code></p>
+<div style="margin-left: 80px;"><p>runs the TM automatically. It stops
+    <ol>
+      <li>for input (must be restarted after the input is given).</li>
+      <li>if an exception occurs</li>
+      <li>when it encounters  an <code>autoStop</code> scripted into the code</li>
+      <li>otherwise, at the end of the code. </li>
+    </ol>
+</div>
+<p><code>public boolean isInAuto();</code></p>
+<div style="margin-left: 80px;">
+  <p>returns true if the TM is autorunning (or <code>autoStepping</code>, which is similar, but designed for animation).</p>
+</div>
+<p><code>public void showTM(boolean visible);</code></p>
+<div style="margin-left: 80px;">
+  <p>renders the TM invisible <code>(visible = false) </code>which is useful in the quiz environment as we don't want students to see it running. Setting with <code>visible = true</code> makes it visible again, although it is unnecessary to call that initially since visible is the default condition. Visibility should not affect the dropping of snapshots.</p>
+</div>
+<p><code>public boolean isTMShowing();</code></p>
+<div style="margin-left: 80px;">
+  <p>returns <code>true</code> if the TM is visible, <code>false</code> otherwise. </p>
+</div>
+<p><code>public void autoStep();</code></p>
+<div style="margin-left: 80px;">
+  <p>Start automatic stepping and step until the end of the program or until a stop event occurs. The stepping rate is controlled by a rate control 
+(see <code>setAutoStepRate()</code>)</p>
+</div>
+<p><code>public void autoStep( String fileName, int lineNo );</code></p>
+<div style="margin-left: 80px;">
+  <p>Start automatic stepping and step to the specified line number, unless a <code>stopAuto</code> event or the end of the program occurs first. See also <code>toCursor(String, int)</code></p>
+  <p> <strong>param</strong> lineNo the line number counted from 1<br>
+    <strong>param</strong> fileName the file name as reported by</p>
+</div>
+<p><code>public void setAutoStepRate(int rateConstant);</code></p>
+<div style="margin-left: 80px;">
+  <p>Set the rate at which autostepping occurs where the rate is defined on a arbitrary scale of 0 to 100 where 0 denotes the slowest rate and 100 the fastest.<br>
+  </p>
+  <p> <strong>param</strong> rateConstant 0 &lt;= the rate constant &lt;=100<br>
+  </p>
+</div>
+<p><code>public void stopAuto();</code></p>
+<div style="margin-left: 80px;">
+  <p>halts the TM at the nearest natural stopping point, when it is either autoRunning or autoStepping. </p>
+</div>
+<p><code>public Image getSnap(String plugIn, String id);</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>. Retrieves the snapshot labelled id from the named <code>plugin</code>. The intention is that the id label actually is the id of the porthole in which the snapshot is to be displayed. The TM should have run to completion before this method is called. See <code>isRunDone()</code>.</p>
+</div>
+<p><code>public int getLastSnapWidth();</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>. What was the width of the last snap requested? Effectively returns the width of the whole TM display used to make the snap image.</p>
+</div>
+<p><code>public int getLastSnapHeight();</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>. What was the height of the last snap requested? Effectively returns the height of the whole TM display used to make the snap image.</p>
+</div>
+<p><code>public boolean getComparison(int n);</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>. Retrieve the value of the n'th comparison (see <code>compareReference</code> in <a href="internalScripting.htm">internalScripting</a>). The TM should have run to completion before this method is called. See <code>isRunDone()</code>.</p>
+</div>
+<p><code>public long getLocalInt(String datumName);</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>.Retrieve the value of the local <code>int</code> called <code>datumName</code>. <code>int</code> can in fact be of any integer type. Local means that <code>datumName</code> must be on the stack. The TM should have run to completion before this method is called. See<code> isRunDone()</code>.</p>
+</div>
+<p><code>public boolean isRunDone();</code></p>
+<div style="margin-left: 80px;">
+  <p><strong>quizGen specific</strong>.Has the Teaching Machine run to completion? </p>
+</div>
+<script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</body>
+</html>

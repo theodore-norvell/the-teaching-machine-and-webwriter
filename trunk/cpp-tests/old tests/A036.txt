@@ -1,0 +1,11 @@
+
+int doub( int i, int &j ) {
+	j = i + i ;
+}
+
+
+void main() {
+	int k ;
+	doub( 10, k ) ;
+	return ;
+}

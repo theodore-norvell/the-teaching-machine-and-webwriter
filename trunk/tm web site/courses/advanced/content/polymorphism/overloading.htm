@@ -1,0 +1,555 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Ad Hoc Polymorphism</title>
+</head>
+<body>
+<blockquote> 
+  <p><b> Polymorphism:</b> n. 1. Biology. The occurrence of different forms, stages 
+    or colour types in individual organisms. &nbsp;2. Chemistry. Chrystallization 
+    of a compound in at least two different forms.</p>
+</blockquote>
+<p> To which we add-</p>
+<blockquote> 
+  <p> 3. <b>OOPS.</b> The ability to give different meanings to the same message.</p>
+</blockquote>
+<p>For example a + b could result in addition when applied to integers but concatenation 
+  when applied to strings.</p>
+<p> How the message is to be interpreted depends upon the <i>type</i> of the data 
+  it is being applied to. </p>
+<blockquote> 
+  <p><b>ad hoc: </b>Latin. With respect to this (particular thing); <u>for a specific 
+    purpose, case or situation</u>. </p>
+</blockquote>
+<h2><a name="signature">The Signature Matching Algorithm</a></h2>
+<p>The argument type list of a function forms its signature.</p>
+<ul>
+  <li>The signature does not include the return type </li>
+  <li>Order of arguments does matter.</li>
+</ul>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("overload1.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<h3>Overloaded Function Selection Algorithm</h3>
+<hr>
+<ol>
+  <li>Use an exact match if found</li>
+  <li> Try standard type promotions.</li>
+  <li>Try standard type conversions.</li>
+  <li>Try user-defined conversions</li>
+  <li><s>Use a match to ellipsis if found</s> (we won't even talk about this one)</li>
+</ol>
+<hr>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("overload1.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<h2><a name="swap">Example: Overloading the Swap Function</a></h2>
+<p>Here we declare a whole bunch of different versions of the swap function</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("overloadSwap.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>Here are a couple of the implementations</p>
+<p>Look how similar they are!</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("overloadSwap.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Finally, here are some calls.</p>
+<p>Which one gets called?</p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("overloadSwap.cpp", true, "code", "3891lecture.cfg", "C", "");
+</script>
+<p>You might consider what would happen to the last call if we hadn't defined 
+  a version of swap for the rarely used float type.</p>
+<h2><a name="operator">Operator Overloading</a></h2>
+<p>In order to overload operators you must be allowed to write your own operator 
+  functions.</p>
+<p>the names of such functions always consist of the word 'operator' immediately 
+  followed by the actual operator, for example&#151;</p>
+<pre>operator+     operator-     operator&amp;     operator[]
+</pre>
+<p>All C++ operators except the member operator <span class="codeInline">.</span>, 
+  the member object selector operator <span class="codeInline">.*</span> (not 
+  covered yet), the conditional operator <span class="codeInline">? :</span>, 
+  the <span class="codeInline">sizeof</span> operator and the scope resolution 
+  operator <span class="codeInline">::</span> may be overloaded.</p>
+<p>Some operators are unary (take one operand): <span class="codeInline">operator++</span></p>
+<p>Some operators are binary (take two operands): <span class="codeInline">operator&amp;&amp;</span></p>
+<p>Some operators can be unary or binary, depending upon the context: <span class="codeInline">operator-, 
+  operator* </span></p>
+<p>we consider binary & unary operators separately </p>
+<h2><a name="binary">Binary Operators</a></h2>
+<p>We'll start by overloading the + and - operators for class Complex.</p>
+<p>As with any function there are three contexts in which a function can appear. 
+  Declaration, definition (implementation) and call. </p>
+<p>These three contexts are sufficiently important that member functions are sometimes 
+  given distinct names depending upon the context, as follows:</p>
+<blockquote>
+  <p><b>operation: </b>the name given to a member function in a class declaration 
+    (or interface). <i>Operation</i> suggests <i>what</i> we want done</p>
+  <p><b>method:</b> the name fiven to a member function when it is being implemented. 
+    <i>Method</i> suggests <i>how</i> we do it.</p>
+  <p><b>message: </b>the name being given to a member function when it is being 
+    called. <i>Message </i>suggests we are telling the object to do it.</p>
+</blockquote>
+<p>Unfortunately, not all authors observe these distinctions. Sometimes the names 
+  get used interchangeably.</p>
+<p>Here is class Complex with a couple of operator operations declared.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complex1.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>The declaration <span class="codeInline">Complex operator+(Complex&amp; rhs) 
+  </span>says that we want a plus operation that will add rhs to the calling object 
+  and return a sum object</p>
+<p>Of course, we infer that the object returned is the sum, but it makes sense 
+  given the name.</p>
+<p>Use comments to clarify and define.</p>
+<p>The operators only take one argument because, as member functions, there is 
+  an implicit <span class="codeInline">this</span> argument in the form of the 
+  object attached to the method when it is invoked.</p>
+<p>Now let's look at the implementation of the operator methods.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complex1.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>The implicit argument is taken to be the left operand of the operator and the 
+  explicit argument, the right operand.</p>
+<p>Notice we are required to return a <span class="codeInline">Complex</span> 
+  object. Since that is returning a value it would normally invoke the copy constructor.</p>
+<p>This is supressed here, however, because we are constructing (anonymously) 
+  the new sum (or difference) object right in the return statement.</p>
+<p>The interesting issue is how do the calls work? (How do we send the add and 
+  subtract messages?)</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complex1.cpp", true, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p>The crucial statements are <span class="codeInline">z = x + y;</span> and <span class="codeInline">z 
+  = x - y;</span></p>
+<p>They are conventional add and subtract operations. What does that have to do 
+  with our operations?</p>
+<p>The compiler automatically maps the expression <span class="codeInline">x + 
+  y</span> &#8594; <span class="codeInline">x.operation+(y)</span> and <span class="codeInline">x 
+  - y</span> &#8594; <span class="codeInline">x.operation-(y)</span></p>
+<p>That is, the general form</p>
+<p><font size="+4"><span class="codeInline"><font size="+3">leftOperand &yen; 
+  rightOperand</font></span></font></p>
+<p>is <b>mapped</b> by the compiler to</p>
+<p><font size="+3"><span class="codeInline">leftOperand.operator</span></font><font size="+4"><span class="codeInline"><font size="+3">&yen;</font></span></font><font size="+3"><span class="codeInline">(rightOperand)</span></font></p>
+<p>Where <font size="+4"><span class="codeInline"><font size="+2">&yen;</font></span></font> 
+  is any binary C++ operator for which overloading is permitted.</p>
+<p>Step into the code above with the TM and watch what happens when you step through 
+  the expression and reach the plus sign.</p>
+<h2><a name="friend">friend functions</a></h2>
+<p>Unfortunately, the mapping above has a fairly serious limitation.</p>
+<p>Sometimes, you want to do operations between types. For example, it makes sense 
+  to scale a Complex number by a real no.</p>
+<p>This we could do as follows:</p>
+<pre>Complex operator*(double rhs)</pre>
+<p>Thus in a set of statements like</p>
+<pre>Complex x(2., -3.4);
+
+Complex z;
+
+double a;
+
+z = x*a;</pre>
+<p>The term <span class="codeInline">x*a</span> would get mapped to <span class="codeInline">x.operator*(a)</span> 
+  as expected.</p>
+<p>Expectations is the problem, though.</p>
+<p>A user of your class, not as familiar with the intricacies of overloading as 
+  all of you are, might reasonably expect to be able to write</p>
+<pre>z = a*x;</pre>
+<p>However the standard mapping would produce <span class="codeInline">a.operator*(x)</span> 
+  which doesn't work at all.</p>
+<p>Not only is that form not declared, but it can't be declared. <span class="codeInline">a</span> 
+  is a double, not an object, so we can't define operations or methods for it.</p>
+<p>Enter <span class="codeInline">friend</span> functions</p>
+<p>It is possible to declare a function to be a <span class="codeInline">friend</span> 
+  of a class. <br>
+</p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexFriend.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+<blockquote>
+  <p><span class="codeInline">friend</span> functions are not members of a class 
+    but they do have access to the private members of a class (just as normal 
+    member functions do)</p>
+  <p>a function which is to be a <span class="codeInline">friend</span> of the 
+    class must be declared as such within the class.</p>
+  <p>binary <span class="codeInline">friend</span> functions require two arguments 
+    because, as a non-member function of the class, <i>there is no implicit argument</i>. 
+  </p>
+</blockquote>
+<p>Here is the implementation of the functions</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexFriend.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Because they are not members of the class, <span class="codeInline">friend</span> 
+  functions are implemented just like normal functions. <span class="codeInline">Complex::</span> 
+  is <i>not</i> in the header</p>
+<p>Notice that the moment we start mixing types, we generate a lot of possible 
+  operations. </p>
+<h3>Why two forms?</h3>
+<p>The first form is purer. The operator is a member of the class & there is no 
+  need of friends.</p>
+<p>The second form is more flexible, vis&#151; </p>
+<ul>
+  <li>Explicit arguments permit mixed operations. </li>
+  <li>Operators can be declared friends of more than one class (again supporting 
+    mixed ops) </li>
+</ul>
+<h2><a name="iterator">Iterator Overload</a></h2>
+<p>Remember our <span class="codeInline">Array</span> class?</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("../constructors/copyConsArray.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>The <span class="codeInline">read</span> and <span class="codeInline">write</span> 
+  functions are clumsy. Wouldn't it be nice to use standard <span class="codeInline">[]</span> 
+  array notation with it?</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("array.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<blockquote> 
+  <p>We've replaced the <span class="codeInline">add</span> function with an overload 
+    of <span class="codeInline">operator+.</span> </p>
+  <p>We've declared an overload of <span class="codeInline">operator[]</span> 
+    (known as the iterator). It replaces both <span class="codeInline">read</span> 
+    and <span class="codeInline">write</span>.</p>
+</blockquote>
+<p>First consider the overload of the <span class="codeInline">operator+</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("array.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Note the <b>design</b></p>
+<blockquote>
+  <p>Returns a value&#151;i.e. a temporary object</p>
+  <p>Only works if <span class="codeInline">a</span> and implicit object are the 
+    same size.</p>
+</blockquote>
+<p>Note the <b>implementation</b> (Code)</p>
+<blockquote>
+  <p> Returns a null <span class="codeInline">Array</span> if there is a size 
+    mismatch (i.e., something sensible must be done with errors)</p>
+  <p><span class="codeInline">sum.size</span> is used as the bound in the <span class="codeInline">for</span> 
+    loop in case there was not enough space in the heap to create the needed temporary 
+    object.</p>
+  <p>Utilizes the <i>existing code of the copy constructor to do half the work! 
+    </i></p>
+</blockquote>
+<p>On to the iterator overload!</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("array.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<blockquote> 
+  <p>If <span class="codeInline">i</span> is an illegal index, an error should 
+    be thrown. Because of <span class="TM">TM</span> limitations, a dummy variable 
+    is returned, fulfilling the contract and doing no further harm</p>
+  <p>If it's legal the <span class="codeInline">i</span>'th element of the <span class="codeInline">Array</span> 
+    is returned.</p>
+  <p>Because it's returned as a reference, it can be used to write to</p>
+</blockquote>
+<p>Thus, the code below is all legal.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("array.cpp", true, "code", "3891lecture.cfg", "D", "");
+  </script>
+</p>
+<p>When writing to <span class="codeInline">smallArray</span>, all that is done 
+  is</p>
+<pre>smallArray[i] = i*i;</pre>
+<p>in other words, put <span class="codeInline">i*i</span> into location<span class="codeInline"> 
+  i </span>of <span class="codeInline">smallArray</span>.</p>
+<p>When reading it, </p>
+<pre> cout << smallArray[j]<< " "; </pre>
+<p>or read the <span class="codeInline">i</span>th location of <span class="codeInline">smallArray</span> 
+  and output it.</p>
+<p>Notice the special mapping</p>
+<blockquote>
+  <p>The compiler maps <span class="codeInline">smallArray[i]</span> &#8594; <span class="codeInline">smallArray.operator[](i)</span></p>
+  <p>The <span class="codeInline">i</span> goes between the square brackets in 
+    the standard expression but gets mapped to the parenthesis in the <span class="codeInline">operator[] 
+    </span>function.</p>
+</blockquote>
+<p>You were told this stuff was ad hoc!</p>
+<h2><a name="assignment">Assignment Overload</a></h2>
+<p>For objects of class <span class="codeInline">Complex</span> we would think 
+  nothing of writing the following:</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("assignFrags.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p><span class="codeInline">A</span> and <span class="codeInline">B</span> are 
+  initialized to specific values but we don't bother for <span class="codeInline">D</span>, 
+  because we're going to set <span class="codeInline">C</span> to the sum.</p>
+<p>It happens in our design that <span class="codeInline">D</span> will be initialized 
+  for us by the no-argument constructor to {0.,0.} but even if it weren't, it 
+  would make no difference since we're going to reset it at once.</p>
+<p>It would be nice to be able to assign arrays in the same way.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("assignFrags.cpp", false, "code", "3891lecture.cfg", "B", "");
+  </script>
+</p>
+<p>Whoops! The meaning is different. <span class="codeInline">A</span> and <span class="codeInline">B</span> 
+  are arrays of 10 elements. A <span class="codeInline">set</span> function is 
+  being called to initialise them somehow.</p>
+<p>We don't bother with <span class="codeInline">D</span> because we're going 
+  to set <span class="codeInline">D</span> to the sum of <span class="codeInline">A</span> 
+  &amp; <span class="codeInline">B</span></p>
+<p>But this means <span class="codeInline">D</span> will have to change size</p>
+<p>Enter the Assignment overload</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrayAssignment.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p><span class="codeInline">operator=</span> is a binary operator</p>
+<p>A reference to an <span class="codeInline">Array</span> is returned to let 
+  the left side operand get written into. Remember</p>
+<p><span class="codeInline">D = sum</span> gets mapped by the compiler to <span class="codeInline">D.operator=(sum)</span></p>
+<p>Here is the implementation</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrayAssignment.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>It's actually quite like the copy constructor. </p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrayAssignment.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p><b>Notice</b></p>
+<p><b>DESIGN</b>: Assignment of unequal Arrays is not an error. Instead the old 
+  destination <span class="codeInline">Array</span> is destroyed and a new one 
+  created the same length as the source.</p>
+<p>How assignment differs from initialization. There is a <i>pre-existing</i> 
+  <span class="codeInline">Array</span> while in initialization, you are constructing 
+  the <span class="codeInline">Array</span> for the first time</p>
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("arrayAssignment.cpp", true, "code", "3891lecture.cfg", "D", "");
+</script>
+<p>Thus the line </p>
+<pre>Array C = A + B</pre>
+<p>is initialization (so the Copy Constructor gets called)</p>
+<p>while the lines</p>
+<pre>Array D;
+D = A+B;</pre>
+<p>constitute assignment, so the assignment overload is called.</p>
+<h2><a name="three">The Big Three</a></h2>
+<p>Assignment overload constitutes the third member of what is sometimes known 
+  as the big three &#151;</p>
+<ol>
+  <li>The destructor</li>
+  <li>The copy constructor</li>
+  <li>The assignment operator overload 
+    <p>If the designer/programmer of a class does not provide any or all of these, 
+      the compiler will provide a default version. (This is why assignment worked 
+      with Class Complex)</p>
+    <p>If class designers find they have to write their own version of any one 
+      of the three of these, they should carefully consider writing all three! 
+    </p>
+  </li>
+</ol>
+<p> (One exception would be automatic counting or referencing of objects. If the 
+  only reason you need a copy constructor & destructor is to properly handle the 
+  updating of a static variable, the assignment overload will not be required, 
+  since assignment does not change the no. of objects in existence, it merely 
+  reassigns the value of a pre-existing object.)</p>
+<h2><a name="io">I/O of User Defined Data Types</a></h2>
+<p>A relatively fully overloaded version of class <span class="codeInline">Complex</span></p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexFull.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>You haven't seen all the overloads before but most of them are fairly straightforward.</p>
+<p>Not so the insertion and extraction operators.</p>
+<p>Nevertheless, we just show them here with no comment or explanation. When I 
+  want to use them I just look up an example like this and use it as a template.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexFull.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<h2><a name="type">Type Conversion</a></h2>
+<p>Users can define their own type conversions </p>
+<blockquote> 
+  <p><i>Single argument constructors are inherently considered type conversions.</i></p>
+  <pre> Complex z(3.); // declares/constructs Complex {3. + j0}
+ Array a(5); // declares/constructs 5 element Array </pre>
+  <p>The first example is clearly a type conversion.</p>
+  <p>The second example doesn't look anything like a sensible type conversion. 
+  </p>
+  <p>The two examples are <i>semantically equivalent</i>. The compiler cannot 
+    distinguish them & must either treat both or neither as type conversions. 
+  </p>
+</blockquote>
+<p>Consider the following version of class <span class="codeInline">Complex</span> 
+  which is overloaded for <span class="codeInline">+</span>,<span class="codeInline"> 
+  -</span>, <span class="codeInline">double()</span> and <span class="codeInline">&lt;&lt;</span></p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexTypeConv.cpp", false, "code", "3891lecture.cfg", "A", "");
+  </script>
+</p>
+<p>Now we define a bunch of overloads on an ordinary <span class="codeInline">max</span> 
+  function</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexTypeConv.cpp", true, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>First two are clear but why does the third work? We haven't overloaded the 
+  <span class="codeInline">></span> operator for class <span class="codeInline">Complex</span>.</p>
+<p>We <i>have</i> provided an overload for the <span class="codeInline">(double)</span> 
+  typecast. In evaluating expressions the compiler invokes type conversions automatically 
+  and so casts <span class="codeInline">a>b</span> to <span class="codeInline">(double)a>(double)b</span>. 
+  This conversion does <i>not</i> apply to the second pair, so a <span class="codeInline">Complex</span> 
+  is returned.</p>
+<h2><a name="vsMixed">Type Conversion Instead of Mixed Operator Overloading</a></h2>
+<p>Consider the following expressions for our class <span class="codeInline">Complex</span> 
+  above:</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("complexTypeConv2.cpp", true, "code", "3891lecture.cfg", "C", "");
+  </script>
+</p>
+<p>(It has no assignmemt overload but, as one of the Big Three, the compiler builds 
+  a perfectly adequate one for us).</p>
+<p>The first assignment gets mapped by the compiler to&#151;</p>
+<pre> z = x + y &#8594; <span class="codeInline"></span>z.operator=(x.operator+(y));</pre>
+<p>The second case is quite tricky. The <span class="codeInline">+</span> operator 
+  is actual an <i>overloaded function</i>. </p>
+<blockquote> 
+  <p>1. The compiler cannot find the explicit signature <span class="codeInline">operator+(double,Complex&)</span></p>
+  <p> 2. It can find no built-in <i>promotion</i> from <span class="codeInline">double</span> 
+    to <span class="codeInline">Complex</span> </p>
+  <p>3. It can find no built-in <i>conversion</i> from <span class="codeInline">double</span> 
+    to <span class="codeInline">Complex</span> </p>
+  <p>4. It <i>can</i> find a user defined conversion&#151;the constructor with 
+    one real argument (semantically equivalent to a conversion)</p>
+  <pre>z = a + y &#8594; <span class="codeInline"></span>z.operator=((Complex(a)).operator+(y))
+</pre>
+</blockquote>
+<p>The third case is like the second except that the compiler has to convert<span class="codeInline"> 
+  i </span>from <span class="codeInline">int</span> to <span class="codeInline">double</span> 
+  before it can convert to <span class="codeInline">Complex</span></p>
+<h2><a name="caveats">Caveats</a></h2>
+<blockquote> 
+  <p>Operator overloading is very powerful, very tempting & very difficult to 
+    get right.</p>
+  <p>It is obviously very subtle (remember</p>
+  <blockquote> 
+    <p> <span class="codeInline">Complex max(Complex a,Complex b){return a>b:a?b:}</span></p>
+    <p>as well as addition examples just previous).</p>
+  </blockquote>
+  <p>You can do nothing to alter operator precedence</p>
+  <blockquote> 
+    <p>e.g. If the C++ exclusive OR operator, <span class="codeInline">^</span>, 
+      is overloaded for exponentiation, <span class="codeInline">a^b</span> evaluates 
+      as expected but <span class="codeInline">a^b+c</span> does not because, 
+      in C++, <span class="codeInline">+</span> has higher precedence than <span class="codeInline">^</span>. 
+    </p>
+  </blockquote>
+</blockquote>
+<h2><a name="style">Some Style Rules</a></h2>
+<p> The meaning of an overloaded operator should be natural, not clever. The exponentiation 
+  overload above violates this rule because it does not follow the rules of normal 
+  arithmetic.</p>
+<p> Overload operators consistently&#151;for example, in most domains <span class="codeInline">a&#155;b</span> is
+  equivalent to <span class="codeInline">b &#139; a</span> and <span class="codeInline">a+-b</span> 
+  is
+  equivalent to <span class="codeInline"></span><span class="codeInline">a-b</span>. </p>
+<p>A set of overloaded operators should be complete&#151;overload unary <span class="codeInline">+</span> 
+  and most users would expect <span class="codeInline">-</span></p>
+<p>When defining <span class="codeInline">operator=</span> remember <span class="codeInline">x=x</span>. 
+  It is legal and can occur (inside loops, dealing with lots cases, for example)</p>
+<p>If overloading + and = don't forget += </p>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("overloadSwap.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+<p><script language="JavaScript">
+insertCode("complex1.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("array.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("arrayAssignment.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("complexFull.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+ <p><script language="JavaScript">
+insertCode("complexTypeConv.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+
+</div>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</html>

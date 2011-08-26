@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<!--  -->
+<project name="tmImagePlugin" default="compile">
+      <description>
+            Build the image PlugIn for the TeachingMachine
+      </description>
+	  <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+      <property name="src" location="src"/>
+	  <property name="build" location="build"/>
+	  <property name="dist"  location="dist"/>
+	  <property name="tmProject" location="../tm"/>
+
+      <target name="init">
+	    <!-- Create the time stamp -->
+	    <tstamp/>
+	    <!-- Create the build directory structure used by compile -->
+	    <delete dir="${build}" quiet="true"/>
+	    <mkdir dir="${build}"/>
+	  	<delete dir="${dist}" quiet="true"/>
+	    <mkdir dir="${dist}"/>
+      	<!-- Modify the properties file -->
+      	<propertyfile file="${src}/tmImagePlugIn.properties" comment="Property file generated from build.xml.">
+      	  <entry  key="build.date" type="date" value="now" pattern="yyyy.MMMM.dd"/>
+      	</propertyfile>
+      	<!-- Fetch latest version of tm.jar to dist directory where it will be needed to run our jar file -->
+	  	<copy file="${tmProject}/tm-dist/tm.jar" tofile="${dist}/tm.jar"/>
+	  </target>
+
+	  <target name="compile" depends="init"
+	        description="compile the source " >
+	    <!-- Compile the java code from ${src} into ${build} -->
+	    <!-- Should have fork=true if compiler is javac -->
+	  	<javac srcdir="${src}" destdir="${build}"  source="1.5" target="1.5" classpath ="${dist}/tm.jar">
+	    	<compilerarg  value="-g:lines"/>
+	    	<compilerarg  value="-nowarn"/>
+	    	<compilerarg  value="-deprecation"/>
+	    </javac>
+	  </target>
+	
+	
+	  <target name="tmImagePlugIn.jar" depends="compile"
+	        description="generate the distribution" >
+
+	  	<copy todir="${build}/tmImagePlugIn">
+	  	    <fileset file="${src}/tmImagePlugIn.properties"/>
+	    </copy>
+	  	<copy todir="${build}/tmImagePlugIn">
+	  	    <fileset file="${src}/initial.tmcfg"/>
+	    </copy>
+<!--	  	<unjar src="./tm.jar" 
+	  	       dest="${build}">
+	  	</unjar> -->
+	  	<copy file="./default.tmcfg" tofile="${build}/tm/default.tmcfg"/>
+
+	  	<manifest file="MANIFEST.MF">
+	  	    <attribute name="Built-By" value="${user.name}"/>
+	  	    <attribute name="Built-On" value="${TODAY}"/>
+	  	    <attribute name="Main-Class" value="tm.TMMainFrame"/>
+	  	</manifest>
+	  	<!-- Put everything in ${build} into the tmImagePlugIn.jar file -->
+	    <jar jarfile="${dist}/tmImagePlugIn.jar"
+	    	 basedir="${build}"
+	         manifest="MANIFEST.MF"
+	    />
+	  	<delete dir="${build}"/> 
+	  </target>
+
+	  <target name="clean"
+	        description="clean up" >
+	    <!-- Delete the ${build} and ${dist} directory trees -->
+	    <delete dir="${build}"/>
+	    <delete dir="${dist}"/>
+	  </target>
+</project>

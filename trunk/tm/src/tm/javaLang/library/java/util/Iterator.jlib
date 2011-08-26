@@ -1,0 +1,14 @@
+/*#TS*/
+package java.util ;
+
+/** Iterator for Teaching Machine
+*/
+public class Iterator {
+	public native boolean hasNext(); 
+        // Returns true if the iteration has more elements. 
+	public native Object next(); 
+        // Returns the next element in the iteration. 
+	public native void remove(); 
+        // Removes from the underlying collection the last element returned by the iterator (optional operation). 
+
+}

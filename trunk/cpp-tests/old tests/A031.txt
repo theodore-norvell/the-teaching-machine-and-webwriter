@@ -1,0 +1,45 @@
+struct sss {
+	int x ;
+	char a[10] ;
+} ;
+
+int main() {
+
+	char c, b[10], *p ;
+	sss s, *q ;
+	float f ;
+	int i ;
+	
+	c = 'a' ;
+	p = & c ;
+	*p = 'b' ;
+	p = b ;
+	p[2] = ' ' ;
+	c = p[2] ;
+	
+	s.x = -65 ;
+	c = s.x ;
+	p = s.a ;
+	p[2] = 66 ;
+	c = s.a[2] ;
+	
+	q = & s ;
+	q->x = 0 ;
+	i = q->x ;
+	
+	++c ;
+	c-- ;
+	c += 5 ;
+	s.x *= 2 ;
+	
+	i = 65 ;
+	f = i ;
+	f *= 2 ;
+	--f ;
+	f++ ;
+	
+	(i) = (f) ;
+	
+	int &r = i ;
+	r = r + 1 ;
+}

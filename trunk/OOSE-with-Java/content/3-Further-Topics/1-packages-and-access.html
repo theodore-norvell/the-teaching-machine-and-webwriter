@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Packages and Access</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+.style11 {font-family: Arial, Helvetica, sans-serif}
+.style12 {font-family: georgia, palatino, "Times New Roman", times, serif}
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="packages" id="mutators-and-accessors">Packages and Compilation Units </a></h1>
+<p>Java has a number of concepts to help in construction of modular programs.</p>
+<ul>
+  <li>Packages</li>
+  <li>Compilation Units (files) </li>
+  <li>Classes and Interfaces </li>
+</ul>
+<p>Packages and compilation units form a tree.</p>
+<p>In Unix and Windows (at least), packages are represented by directories and compilation units by files.</p>
+<p>Compilation units contain declarations of classes and interfaces:</p>
+<p class="syntaxDef"><span class="stxNonterminal">CompilationUnit</span> --&gt; <span class="stxMeta">( </span><span class="stxNonterminal">PackageDeclaration </span><span class="stxMeta">)<sup>?</sup></span> <span class="stxMeta">( </span><span class="stxNonterminal">Import </span><span class="stxMeta">)*</span><span class="stxNonterminal"> CompilationUnitDeclarations<br>
+  PackageDeclaration</span><span class="style6"> --&gt; <span class="codeKeyword">package</span></span><span class="stxNonterminal"> PackageName</span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
+  Import</span><span class="style6"> --&gt; <span class="codeKeyword">import</span></span><span class="stxNonterminal"> ClassName</span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
+  Import</span><span class="style6"> --&gt; <span class="codeKeyword">import</span></span><span class="stxNonterminal"> PackageName<span class="codeInline"> . *</span></span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
+  Import<span class="style6"> --&gt; </span></span><span class="style12"><span class="style6"><span class="codeKeyword">import</span></span></span><span class="stxNonterminal"> ClassName</span><span class="style12"><span class="style6"><span class="codeInline"> . * ;</span></span></span><span class="stxNonterminal"><br>
+  <span class="style6">PackageName </span></span><span class="style6">--&gt;</span> <span class="stxTerminal">Identifier</span> <span class="stxMeta">(</span><span class="stxTerminal"><span class="codeInline"> . </span>Identifier</span> <span class="stxMeta">)*</span> <span class="stxNonterminal"><br>
+  CompilationUnitDeclarations </span><span class="style6">--&gt; </span><span class="stxNonterminal">CompilationUnitDeclaration </span><span class="stxMeta">(</span> <span class="stxNonterminal">CompilationUnitDeclaration</span><span class="stxMeta">)*<br>
+  </span><span class="style11"><span class="pseudoCode style8">CompilationUnitDeclaration</span></span> --&gt; <span class="stxNonterminal">ClassDeclaration<br>
+  <span class="style11"><span class="pseudoCode style8">CompilationUnitDeclaration</span></span> --&gt; InterfaceDeclaration</span></p>
+<p>It is a good idea for each compilation unit to contain only one class or interface declaration.</p>
+<p>(In any case only one class or interface declaration per compilation unit can have the modifier <span class="codeKeyword">public</span>. ) </p>
+<p>Classes and interfaces declared in compilation units are called top-level types</p>
+<ul>
+  <li>Classes can also be declared inside of classes and even methods as we'll see later. These are not &quot;top-level&quot;. </li>
+</ul>
+<p>The default package has no name.</p>
+<p>Other packages are in directories relative to the default package.</p>
+<p>E.g., if the default package is in C:\workspace\simproj\src\ then package <span class="codeInline">simulator.network</span> would be in C:\workspace\simproj\src\simulator\network . </p>
+<p>Compilation units in the default package don't have a <span class="stxNonterminal">PackageDeclaration</span> . </p>
+<p>Compilation units in other packages have a <span class="stxNonterminal">PackageDeclaration</span> .</p>
+<p>For example, a compilation unit in package <span class="codeInline">simulator.network</span> would start with</p>
+<pre class="code"><span class="codeKeyword">package</span> simulator.network ;</pre>
+<p>Identifiers in package names traditionally start with a lower case letter.</p>
+<p>Files containing compilation units should have the same name as the top-level class or interface, concatenated with the suffix &quot;.java&quot;. So class <span class="codeInline">Network</span> in package <span class="codeInline">simulator.network</span> would be in file C:\workspace\simproj\src\simulator\network\Network.java . </p>
+<p>Identifiers for classes and interfaces traditionally start with an upper case letter and use MixedCaseLettersRunTogetherLikeThis and should be a noun phrase such as</p>
+<pre class="code">BufferedInputStream</pre>
+<h1><a name="packages" id="mutators-and-accessors">Access Control</a></h1>
+<h3>Top-level classes and interfaces </h3>
+<p>Top-level types are either public or not. Public classes have the <span class="codeKeyword">public</span> modifier.</p>
+<p>Here is a public class declaration </p>
+<pre class="code"><span class="codeKeyword">public class</span> P { ... }</pre>
+<p></p>
+And here is a nonpublic class declaration
+<pre class="code"><span class="codeKeyword">class</span> Q { ... }</pre>
+<p>Public top-level types may be used from any package in the program.</p>
+<p>Nonpublic top-level types may only be used from within the same package.</p>
+<ul>
+  <li>Thus we use nonpublic classes for internal implementation matters</li>
+  <li>We use public classes and interfaces to represent the interface to the package</li>
+</ul>
+<h3>Members and constructors of classes and interfaces</h3>
+<p>A member of a top-level class or interface is a</p>
+<ul>
+  <li>Field,</li>
+  <li>Constructor,</li>
+  <li>Method, or </li>
+  <li>Class</li>
+</ul>
+<p>Members can be declared with one of the modifiers <span class="codeKeyword">public</span>, <span class="codeKeyword">private</span>, and <span class="codeKeyword">protected</span></p>
+<ul>
+  <li><span class="codeKeyword">public</span>: Can be used anywhere in the program. Note that all members of an interface are implicitly considered public, whether or not the modifier is present. </li>
+  <li>Default (no modifier in a class): Can be used anywhere in the same package.</li>
+  <li><span class="codeKeyword">protected</span>: Can be used anywhere in the same package or from within a class that extends <span class="pseudoCode">T</span>. </li>
+  <li><span class="codeKeyword">private</span>: Can be used anywhere within the top-level class that encloses the declaration.</li>
+</ul>
+<div class="breakoutBox">
+  <p> <strong>Note</strong>
+      <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    In truth, the rules for protected are more complicated. However, for most purposes the above simplification is good enough. </p>
+  <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<div class="principle">
+  <p><strong>Principle:</strong> <span class="pseudoCode">Use access control to simplify your code.</span> By using the most stringent modifier possible, you limit the portion of the program where you have to worry about an entity. </p>
+  <p>For example.</p>
+  <ul>
+    <li>If a field is public, then any invariant involving the field could be violated by any part of the program.</li>
+    <li>If the same field can be declared private, then only code within the same class can violate its invariants.</li>
+  </ul>
+</div>
+<p>&nbsp;</p>
+<h1>Imports and Names</h1>
+<p>Top-level classes and interfaces can be referred to in one of two ways </p>
+<p class="syntaxDef"><span class="stxNonterminal">TypeName</span> --&gt; <span class="stxNonterminal"><span class="stxTerminal">Identifier</span><br>
+  TypeName --&gt; PackageName</span><span class="style6"><span class="stxNonterminal"><span class="stxTerminal"><span class="codeInline"></span><span class="codeInline"> . </span>Identifier</span></span></span></p>
+<p>The short form is used within the same package.</p>
+<p>The short form can be used for classes and interfaces in package <span class="codeInline">java.lang</span></p>
+<ul>
+  <li>Such classes include <span class="codeInline">Object</span>, <span class="codeInline">String</span>, <span class="codeInline">StringBuffer</span>, <span class="codeInline">Math</span>, and <span class="codeInline">System</span></li>
+</ul>
+<p>When a public class or interface from another package needs to be referred to:</p>
+<ul>
+  <li>The long form can be used for example
+      <pre class="code">java.io.Reader r = <span class="codeKeyword">new</span> java.io.FileReader( fileName ) ;</pre>
+  </li>
+  <li>The short form can be used, provided the compilation unit has the appropriate import declarations.
+      <ul>
+        <li>Import declarations can import a single class or interface
+            <pre class="code"><span class="codeKeyword">import</span> java.io.Reader ;<br><span class="codeKeyword">import</span> java.io.FileReader ;<br>...<br>    Reader r = <span class="codeKeyword">new</span> FileReader( fileName ) ;</pre>
+        </li>
+        <li>Import declarations can import every public class from a package
+            <pre class="code"><span class="codeKeyword">import</span> java.io.*;<br>...<br>    Reader r = <span class="codeKeyword">new</span> FileReader( fileName )</pre>
+        </li>
+      </ul>
+  </li>
+</ul>
+<p>Import declarations affect how we refer to a type, not whether we can refer to a type.</p>
+<p>&nbsp;</p>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

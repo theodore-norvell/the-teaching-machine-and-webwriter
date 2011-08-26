@@ -1,0 +1,80 @@
+<!-- InstanceBegin template="/Templates/reference.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>string find function</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/defHeader.js"></script>
+</head>
+<body>
+
+<script language="javascript">
+	document.write('<div id="navBar">');
+		document.write('<div id="refContainer"><span class="navText">' + courseNo + ' Reference Pages </span></div>');
+		document.write('<div id="titleContainer"><span class="navText">');
+			document.write(document.title);
+		document.write('</span></div>');
+		document.write('<div id="buttonContainer">');
+			document.write('<button id = "TOC" type="button" onClick="loadTOC();" title="load Table of Contents">TOC</button>');
+			document.write('<button id = "help" type="button" onClick="getHelp();" title="Help not yet hooked in.">help</button>');
+		document.write('</div>');
+		document.write('<div id="siteContainer"><span class="navText">' + organization + '</span></div>');
+	document.write('</div>');
+	
+function loadTOC(){
+	location = "languageRef.htm";
+}
+
+function getHelp(){
+	document.defaultView.open("helpReference.htm");
+}
+
+
+	</script>
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+
+<h3> Library Declaration</h3>
+<div class="syntaxDef">
+  <p class="code"> #include  &lt;string&gt;</p>
+  </div>
+  <p>must be typed into any file in which <code>string</code> objects are to
+    be used. The
+    <code>find</code> function
+    can only be called with respect to an object of the <code>string</code> class,
+    using the member-of <code>.</code> operator.</p>
+  <div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> int </span><span class="codeRequired"> find(</span>string
+    someString<span class="codeRequired">);</span></p>
+  </div>
+<p>returns the position of the first character of the first occurrence of <code>someString</code>  in
+  the invoking <code>string</code> object. If <code>someString</code> is not found, <code>find</code> returns
+  the <code>string</code> class constant <code>string::npos</code>. </p>
+  <div class="syntaxDef">
+  <p class="code"><span class="codeKeyword"> int </span><span class="codeRequired"> find(</span>string
+    someString<span class="codeRequired">,</span> <span class="codeKeyword">int</span> start<span class="codeRequired">);</span></p>
+  </div>
+<p>returns the position of the first character of the first occurrence of <code>someString</code>  starting
+  from position <code>start</code> instead of the beginning of the invoking <code>string</code> object.
+  If <code>someString</code> is not found, <code>find</code> returns the <code>string</code> class
+  constant <code>string::npos</code>. </p>
+<h3>Examples</h3>
+<div class="syntaxRef">
+  <p class="code"><span class="codeKeyword"> string </span>hi = &quot;hello world!\n&quot;;</p>
+  <p class="code"><span class="codeKeyword">int</span> pos = hi.find(&quot;o&quot;);</p>
+  <p class="code">cout &lt;&lt; &quot;Found an 'o' at positions &quot;; </p>
+  <p class="code">while (pos != string::npos) {   <span class="codeRequired"></span> </p>
+  <p class="code">&nbsp;&nbsp;&nbsp;cout &lt;&lt; pos &lt;&lt; &quot; &quot;;</p>
+  <p class="code">&nbsp;&nbsp;&nbsp;pos = hi.find(&quot;o&quot;, pos + 1);</p>
+  <p class="code">}</p>
+</div>
+<p>results in the output <span class="code">Found an 'o' at positions 4 7</span>.</p>
+<!-- InstanceEndEditable -->
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

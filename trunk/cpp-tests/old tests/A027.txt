@@ -1,0 +1,14 @@
+struct Strc { int a[9] ; } ;
+
+ int main() {
+
+    // Conversion on initialization.
+    
+    int a = 9.9 ;
+    float pi = 3 ;
+    
+    int a[9] ;
+    int *p = a ; 
+    
+    return 0 ;
+}

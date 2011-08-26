@@ -1,0 +1,561 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>Look-up notes</title></head><body>
+<h1>Unqualified lookup.</h1>
+
+
+
+
+
+<p>Un-qualified lookup of a simple name in a given scopeholder should return 
+the set of all declarations that have that simple name as their terminal-id
+that are "visible" (6.3.1) in that scope-holder. that is to say the declaration
+is "in scope" (6.3) in that scopeholder, but that are not "shadowed" (6.3.1).
+This may include some declarations that are "inherited" (6.4) from a supertype.<br>
+</p>
+
+
+
+
+<p>Names are classified as one of the following syntactic categories [Note.
+I think I need to rewrite the parser to make names easier to extract. Currently
+names come from the parser in three forms:<br>
+</p>
+
+
+
+
+<ul>
+
+
+
+
+  <li>As the ScopedName attribute of a. node. These are all easily classified and the classification is now proberly documented.</li>
+  <li>As the type name in the SpecifierSet attribute of a node. These are all TypeNames.</li>
+  <li>Using the JJTDOT node. These I want to look-at again. Maybe I can can
+get these all to change to one of the other two forms. This is a fourth pass
+issue.<br>
+  </li>
+</ul>
+
+
+
+
+] We should probably have a lookup flag (or set of flags) for each of these categories
+<ul>
+
+
+
+
+  <li>PackageName</li>
+  <li>TypeName</li>
+  <li>ExpressionName [I think
+this one should actually correspond to a set of flags encompasing all variables,
+be they fields, parameters, or local variables]</li>
+  <li>MethodName</li>
+  <li>PackageOrTypeName</li>
+  <li>AmbiguousName</li>
+</ul>
+
+
+
+<p>In addition, there are some other things that have to be looked up<br>
+</p>
+
+
+
+<ul>
+
+
+
+  <li>labels</li>
+  <li>fields</li>
+  <li>parameters</li>
+  <li>local variables</li><li>[others?]<br>
+  </li>
+
+</ul>
+
+
+
+
+<h2>PackageName</h2>
+
+
+
+
+<p>The JLS assumes a non-flat model for packages. This creates a bit of a
+problem for package names. We can either work around the problem, or go to
+a non-flat model for representing packages. [TBD]<br>
+</p>
+
+
+
+
+<h2>TypeName</h2>
+
+
+
+
+<p>Inherited type names can be shadowed by noninherited scope names.<br>
+</p>
+
+
+<p>The following is based on (6.5.5).<br>
+</p>
+
+
+
+
+<p>Default lookup implementation:</p>
+
+
+
+
+<ul>
+
+
+
+
+  <li>Look in the current scope for a type with this name</li>
+  
+  <ul>
+    <li>If &nbsp;one is found return it</li>
+  </ul>
+
+  
+  <ul>
+    <li>If more than one found, return error.<br>
+  </li>
+  </ul>
+
+  <li>Look in the enclosing scope (if there is one)</li>
+  
+  <ul>
+    <li>If one is found, return it</li>
+    <li>otherwise return error.</li>
+  </ul>
+
+</ul>
+
+
+
+For TypeSH this is modified to account for inheritence and hiding.<br>
+
+
+
+<ul>
+
+
+
+  <li>Look in the current scope for a type with this name</li>
+<ul><li>If &nbsp;one is found return it</li></ul><ul><li>If more than one found, return error.<br>
+  </li></ul><li>Look in all supertypes unioning the results.</li><ul><li>If one is found return it</li></ul><ul><li>If more than one found, return error</li></ul><li>Look in the enclosing scope</li><ul><li>If one is found, return it</li><li>otherwise return error.</li></ul>
+</ul>
+
+
+
+
+
+    
+For compilation unit scope holders, the basic algorithm is modified to handle imports<br>
+
+
+<ul>
+
+
+<li>Look in the current scope for the a type with this name</li><ul><li>If &nbsp;one is found return it</li></ul><ul><li>If more than one found, return error.<br>
+  </li></ul><li>If there is an "single-type-import" declaration for the type</li><ul><li>return the declaration of the imported class<br>
+</li></ul><li>Look in the enclosing scope (which will be the package)</li>
+  <ul>
+<li>If one is found, return it</li>
+  </ul>
+  <li>Look in all packages and classes that are mentioned in "import-on-demand" declarations</li>
+  <ul>
+    <li>If one is found, return it</li>
+    <li>If more than one is found, return error</li>
+    <li>If none are found, return&nbsp; error<br>
+    </li>
+  </ul>
+</ul>
+
+
+
+
+    
+<h2>ExpressionName</h2>
+
+
+
+
+
+    
+<p>ExpressionNames are used for a number of things. &nbsp;Typical use is
+to access variables. Thus when the name is "simple" it usually referres to
+some field, parameter, or local variable. The look up rules are quite similar
+to those for types. The difference is that for variables, we don't chase
+imports, so there are no special considerations rule for compilation units.<br>
+</p>
+
+
+<p>This is based on (6.5.6)<br>
+</p>
+
+
+<p>
+    </p>
+
+
+
+
+
+    
+<p>Default lookup implementation:</p>
+
+
+
+
+
+<ul>
+
+
+<li>Look in the current scope for a local variable, parameter, or field with this name</li><ul><li>If &nbsp;one is found return it</li></ul><ul><li>If more than one found, return error.<br>
+  </li></ul><li>Look in the enclosing scope (if there is one)</li><ul><li>If one is found, return it</li><li>otherwise return error.</li></ul>
+</ul>
+
+
+
+
+For TypeSH this is modified to account for inheritence and hiding.<br>
+
+
+
+
+<ul>
+
+
+<li>Look in the current scope for a local variable, parameter, or field with this name</li><ul><li>If &nbsp;one is found return it</li></ul><ul><li>If more than one found, return error.<br>
+  </li></ul><li>Look in all supertypes unioning the results.</li><ul><li>If one is found return it</li></ul><ul><li>If more than one found, return error</li></ul><li>Look in the enclosing scope</li><ul><li>If one is found, return it</li><li>otherwise return error.</li></ul>
+</ul>
+
+
+
+
+
+    
+<ul>
+
+
+<ul>
+  </ul>
+
+</ul>
+
+
+
+
+<h2>MethodName</h2>
+
+
+Method names are similar to field names except: It is not an error to find
+multiple names, methods declared in subclasses do not shadow methods found
+in super classes<br>
+
+
+<p>Default lookup implementation:</p>
+
+
+
+
+
+
+<ul>
+
+
+<li>Look in the current scope for a method with this name</li><ul><li>if 1 or more were found, return them<br>
+</li></ul><li>Look in the enclosing scope (if there is one)</li><ul><li>If one is found, return it</li><li>otherwise return error.</li></ul>
+</ul>
+
+
+
+
+
+For TypeSH this is modified to account for inheritence<br>
+
+
+
+
+
+<ul>
+
+
+<li>Create a declaration set ds, initially empty<br>
+</li><li>Look in the current scope for a method with this name</li>
+<ul><li>Add all found to ds</li></ul><li>Look in all supertypes unioning the results.</li><ul><li>Add all found to ds</li><li>If ds is now nonempty, return it</li>
+</ul><li>Look in the enclosing scope</li>
+  <ul>
+    <li>If one is found, return it</li>
+    <li>otherwise return error.</li>
+  </ul>
+</ul>
+
+
+<h2>PackageOrTypeName</h2>
+
+
+<p>The TypeName interpretation is preferred. See (6.5.4)</p>
+
+
+<p>Lookup for PackageOrTypeName<br>
+</p>
+
+
+<ul>
+
+
+  <li>Recursively look for the name as a TypeName</li>
+  <ul>
+    <li>If result is not error, then return it</li>
+  </ul>
+  <li>Recursively look for the name as a PackageName</li>
+  <ul>
+    <li>If any found, return it</li>
+    <li>Otherwise, return error</li>
+  </ul>
+</ul>
+
+
+<h2>AmbiguousName</h2>
+
+
+<p>Basically the disambiguation rules say that fields, types, and packages
+are preferred in that order. The rules are rather complicated, but I think
+that this is all they add up to.<br>
+</p>
+
+
+<p>Lookup for AmbiguousName<br>
+</p>
+
+
+
+<ul>
+
+
+<li>Recursively look for the name as an ExpressionName</li>
+  <ul>
+    <li>If result is not error, then return it<br>
+    </li>
+  </ul>
+  <li>Recursively look for the name as a TypeName</li>
+<ul><li>If result is not error, then return it</li></ul><li>Recursively look for the name as a PackageName</li><ul><li>If any found, return it</li><li>Otherwise, return error</li></ul>
+</ul>
+
+
+<h2>Labels<br>
+</h2>
+
+
+The basic lookup algorithm should suffice<br>
+
+
+<p>Default lookup implementation:</p>
+
+
+
+
+
+
+
+<ul>
+
+
+<li>Look in the current scope for a label with this name</li><ul><li>if 1 or more were found, return them<br>
+</li></ul><li>Look in the enclosing scope (if there is one)</li><ul><li>If one is found, return it</li><li>otherwise error</li></ul>
+</ul>
+
+
+<h2>Member lookup</h2>
+
+
+<p>I'm not sure how this fits into the CLC scheme of lookup routines, but
+sometimes you want to look for something you know is a member. That is you
+don't want to look in the enclosing scopes of a class. For example:
+</p>
+
+<pre>class A {<br>   class B {<br>   }<br>   class C {<br>   }<br>   void m() {<br>      C.B x; // Not allowed<br>   }<br>}<br></pre>
+
+
+<p>Doing a regular lookup of B in the scope-holder for C would find B, but in fact it should not be found.<br>
+</p>
+
+
+<p>However, member lookup must find members that are inherited and not shadowed.<br>
+</p>
+
+<p>Similarly we need a member lookup on packages and perhaps compilation units.<br>
+</p>
+
+
+<h1>Qualified Lookup</h1>
+
+
+In the following I'll assume that the qualified name is of the form Q.I where I is a simple name.<br>
+
+
+<h2>PackageName</h2>
+<p>Q must be a package name<br>
+</p>
+
+<ul>
+
+  <li>Lookup a package named Q</li>
+  <ul>
+    <li>If result is error then return error</li>
+  </ul>
+
+  <li>Do a member lookup on the package for I
+
+  </li>
+</ul>
+
+<ul>
+
+</ul>
+<h2>TypeName</h2>
+<ul>
+<li>Lookup a PackageOrTypeName named Q</li>
+  <ul>
+    <li>Result is error, return error</li>
+    <li>If type found, search for a member type named I</li>
+    <li>If a package found, search for a member type named I</li>
+  </ul>
+</ul>
+<h2>TypeOrPackageName</h2>
+
+<ul>
+<li>Lookup a PackageOrTypeName named Q</li><ul><li>If result is error, return error</li><li>If type found, search it for a member type named I</li><li>If a package found, search it for a member type named I</li>
+    <ul>
+      <li>If none found, search it for a member package named I<br>
+      </li>
+    </ul>
+</ul>
+</ul>
+
+<h2>ExpressionName</h2>
+[This is a tough one and you are right, accessabilty come into play here.
+Yikes. I'm out of time, so I'm going to leave this one for later]
+<ul>
+  <ul>
+<ul><li><br>
+</li></ul>
+  </ul>
+</ul>
+
+<h2>MethodName</h2>
+<p>Q can be assumed to be an AmbiguousName<br>
+</p>
+<ul>
+  <li>Lookup an AmbiguousName Q</li>
+  <li>If error returned, return error</li>
+  <li>If a package found, return error</li>
+  <li>If a type found, search the type for a member method I</li>
+  <ul>
+    <li>If none found, return error</li>
+    <li>If the method is nonstatic, then return error</li>
+    <li>Else return the method(s)</li>
+  </ul>
+  <li>If an ExpressionName found, let T be the type of the expression</li>
+  <ul>
+    <li>Search T for a member method I</li>
+    <ul>
+      <li>If none found, return error</li>
+      <li>Else return the method(s)</li>
+    </ul>
+  </ul>
+</ul>
+<h2>AmbiguousName</h2>
+<ul>
+  <li>Lookup Q as an AmbiguousName</li>
+  <li>If error returned, return error</li>
+  <li>If a package returned</li>
+  <ul>
+    <li>Look for a member type I in the package</li>
+    <ul>
+      <li>If one found, return it</li>
+      <li>Else lookup Q.I as a PackageName; return the result</li>
+    </ul>
+  </ul>
+  <li>Else if a type found</li>
+  <ul>
+    <li>Look for a member method (!) or field I in the type</li>
+    <ul>
+      <li>If any found, lookup Q.I as an ExpressionName; return the result</li>
+    </ul>
+    <ul>
+      <li>Else</li>
+      <ul>
+        <li>Look for a member type I of &nbsp;the type</li>
+        <li>If one found, return that type</li>
+        <li>Else return error<br>
+        </li>
+      </ul>
+    </ul>
+  </ul>
+  <li>Else if an ExpressionName found</li>
+  <ul>
+    <li>Let T be the type of the ExpressionName.</li>
+    <li>Look for a member method (!) or field I in the type</li>
+    <ul>
+<li>If any found, lookup Q.I as an ExpressionName; return the result</li>
+    </ul>
+    <ul>
+<li>Else</li><ul><li>Look for a member type I of &nbsp;the type</li><li>If one found, return that type</li><li>Else return error<br>
+      </li></ul>
+    </ul>
+  </ul>
+</ul>
+
+
+
+
+
+
+<h1>Glossary</h1>
+
+
+
+
+
+<ul>
+
+
+
+
+
+  <li>"in scope" (6.3) A declarataion is in scope if it can be referred to by a simple name, or would be if it weren't shadowed.</li>
+  <li>"shadowed" (6.3.1) A declaration is shadowed if there is a conflicting declaration in an enclosed scope. For example
+    <pre>class A {<br>   interface T { }<br>   void m() {}<br>   int f<br>   class B { <br>      class T {<br>         void m(int i) {<br>            float f ;<br>            // at this point the outer declarations of<br>            // T, f, and m are shadowed by the enclosed<br>            // declarations.<br>         } } } }</pre>
+  </li>
+  <ul>
+    <li>"shadowed" is distinct from "obscured" and "hidden".</li>
+  </ul>
+  <ul>
+    <li>Only types can shadow types, only fields can shodow fields, only methods can shadow methods.</li>
+  </ul>
+  <ul>
+    <li>While types and fields shadow types and fields declared in supertypes, methods do not.<br>
+    </li>
+  </ul>
+<li>"inherited" (6.4). Members other than private members, "overridden" members 
+and "implemented" members are inherited. This means that protected members 
+are inhertited even if there are weird rules that make them inaccessible.
+Knowing whether a method is overridden or implemented, might be a bit tricky.</li><li>"simple name". A name with no dots.<br>
+</li>
+
+</ul>
+
+
+
+
+
+<br>
+</body></html>

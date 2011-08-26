@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>PDV Higraph Command Reference</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<p>This is a complete list of the scripting commands available in the higraphManager. See the page on <a href="scripting.htm">scripting</a> for an overview of how scripting works in the TeachingMachine.</p>
+<h2><a name = "modelling">Modelling Commands</a></h2>
+<p>These commands are used to create a <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("higraphModel","Higraph model");
+//-->
+  </script>. A <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("datum","datum");
+//-->
+  </script> is the internal class the TeachingMachine uses to model all data. For example an Array of <code>ints</code> would have a datum to represent the array, datums for each of the <code>int</code> values as well as a datum for each reference to the array. Basically the modelling commands allow you to make or delete <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("higraphModel","Higraph model");
+  //-->
+  </script>
+  . A <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("node","nodes");
+//-->
+  </script>, link a node as the <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("child","child");
+  //-->
+  </script> of another node, make an <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("edge","edge");
+  //-->
+  </script> or create a <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("subGraph","subGraph");
+  //-->
+  </script>. By definition, all nodes and edges are part of the <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("wholeGraph","wholeGraph");
+  //-->
+  </script>
+  . </p>
+<p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphModellingInterface.java", true, "code", "");
+</script>
+</p>
+<h2><a name = "visualizer">Visualizer Commands</a></h2>
+<p>The Teaching Machine provides windows for visualization and any such window is referred to as a <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("visualizer","Visualizer");
+  //-->
+  </script>
+  . Each Visualizer will contain a visualization of either the 
+  <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("wholeGraph","wholeGraph");
+  //-->
+  </script> or a <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("subGraph","subGraph");
+  //-->
+  </script>. Visualizer commands are concerned with setting up visualizer windows as well as maintaining the <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("activeViewSet","ActiveViewSet");
+  //-->
+  </script>. </p>
+  <p>The most important visualizer command is</p>
+  <p><code>public void makeView(String viewId, String hgId, String visualizerPlugIn);
+ </code></p>
+  <p>Which instructs the TeachingMachine to create a view with the name <code>viewId</code>, for the <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("subGraph","subGraph");
+  //-->
+  </script> called <code>hgId</code>, using the TeachingMachine window <code>visualizerPlugIn</code> (which currently has to be defined in the configuration file the TM is using).</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphVisualizerInterface.java", true, "code", "");
+</script>
+</p>
+<h2><a name = "view">View Commands</a></h2>
+<p>View commands are used to control the appearance of a <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("subGraph","subGraph");
+  //-->
+  </script> in one or more <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("visualizer","Visualizers");
+  //-->
+  </script>. View commands are shipped  to all Visualizers on the 
+  <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("activeViewSet","ActiveViewSet");
+  //-->
+  </script> and none which are not.</p>
+  <p>View commands are divided up into a number of categories
+  <h3> <a name = "defaultNode">Default Node Commands</a></h3>
+  <p>Default commands control the properties of <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("visualizer","visualizer");
+  //-->
+  </script> elements (in this case, <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("node","nodes");
+  //-->
+  </script>) which are not individually specified.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "defN");
+</script>
+</p>
+  <h3> <a name = "defaultEdge">Default Edge Commands</a></h3>
+  <p>Control the default properties of <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("edge","edge");
+  //-->
+  </script> elements which are not individually specified.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "defE");
+</script>
+</p>
+  <h3> <a name = "defaultBranch">Default Branch Commands</a></h3>
+  <p>Control the default properties of <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("branch","branch");
+  //-->
+  </script> elements which are not individually specified.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "defB");
+</script>
+</p>
+  <h3> <a name = "defaultZone">Default Zone and Label Commands</a></h3>
+  <p>Control the default properties of <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("zone","zone");
+  //-->
+  </script> elements which are not individually specified.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "defZ");
+</script>
+</p>
+  <h3> <a name = "node">Specified Node Commands</a></h3>
+  <p>Control the properties of specified <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("node","node");
+  //-->
+  </script>. Nodes are specified by using the name of the variable used to create the node in the first place.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "Node");
+</script>
+</p>
+  <h3> <a name = "node">Specified Edge Commands</a></h3>
+  <p>Control the properties of specified <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("edge","edge");
+  //-->
+  </script>. Edges are specified by using the names of the variables used to create the nodes at either end of the edge.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "Edge");
+</script>
+</p>
+  <h3> <a name = "branch">Specified Branch Commands</a></h3>
+  <p>Control the properties of specified <script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("branch","branch");
+  //-->
+  </script>. Branchs are specified by using the names of the child variable associated with the branch.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "Branch");
+</script>
+</p>
+<h2> <a name="deref">Deref Versions of View Commands</a></h2>
+<p>There are deref versions of any routine which uses datums as arguments. Simple put, an optional boolean can appear after any pointer datum argument to specify that the node is associated with the target of the pointer rather than the pointer itself.</p>
+
+
+  <h3> <a name = "derefNode">Deref versions of Specified Node Commands</a></h3>
+  <p>Control the properties of specified<script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("node","node");
+  //-->
+  </script>. Nodes are specified by using a reference to the object originally used to create the node. Will not work with primitives, such as int, double or boolean since Java passes these by value.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "derefN");
+</script>
+</p>
+
+  <h3> <a name = "derefEdge">Deref versions of Specified Edge Commands</a></h3>
+  <p>Control the properties of specified<script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("edge","edge");
+  //-->
+  </script>. Edges are always specified by the nodes which define their endpoints (the target node and source node). Commands that specify edges have been overloaded so that either or both end nodes may be defined by a reference to the object originally used to create the end node. Will not work with primitives, such as int, double or boolean since Java passes these by value.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "derefE");
+</script>
+</p>
+
+  <h3> <a name = "derefBranch">Deref versions of Specified Branch Commands</a></h3>
+  <p>Control the properties of specified<script type="text/javascript" language="Javascript">
+  <!--
+  insertDefLink("branch","branch");
+  //-->
+  </script>. Branchs are specified by using a reference to the object originally used to create the child node. Will not work with primitives, such as int, double or boolean since Java passes these by value.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "derefN");
+</script>
+</p>
+
+<h2><a name="string">String Commands</a></h2>
+<p>These allow visualizations to be annotated with arbitrary strings.</p>
+  <p>
+  <script language="JavaScript">
+   setButtons(false, false, false,"","");
+   insertCode("HigraphViewCommandInterface.java", true, "code", "", "str");
+</script>
+</p>
+
+
+
+<div id="allExamples">
+<p>&nbsp;</p> 
+</div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,587 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Arrays</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Up to now,  <em>
+  <script language="JavaScript">
+startDefLink("variable");
+  </script>
+</em>variables
+<script language="JavaScript">
+endLink();
+  </script>
+ have only held a single <em>
+  <script language="JavaScript">
+startDefLink("value");
+  </script>
+</em>value
+<script language="JavaScript">
+endLink();
+  </script>
+  .  Single valued variables
+  are said to be <em>scalar</em>.</p>
+<p>Now we introduce one of the two kinds of <em>compound variables</em>, that
+  is variables which can hold multiple values.</p>
+<p>An <em>array</em> is designed to hold <em>homogeneous</em> values. That is, every value
+  in an array is of the same <em>
+  <script language="JavaScript">
+startDefLink("type");
+  </script>
+  </em>type
+  <script language="JavaScript">
+endLink();
+  </script>
+  . For example&#8212; </p>
+<blockquote>
+  <pre><span class="codeKeyword"><code>int</code></span><code> a;
+<span class="codeKeyword">int</span> c[<span class="codeConstant">10</span>];
+<span class="codeKeyword">double</span> x[<span class="codeConstant">22</span>];
+<span class="codeKeyword">char</span> letters[<span class="codeConstant">30</span>];</code>
+</pre>
+</blockquote>
+<p>While <code>a</code> is a conventional (scalar) integer, we would say</p>
+<blockquote>
+  <p><code>c</code> is an array of 10 integers.</p>
+  <p><code>x</code> is an array of 22 doubles</p>
+  <p><code>letters</code> is an array of 30 characters </p>
+</blockquote>
+<p>The size, or <em>dimensionality</em>, of the array  must be declared so that
+  <em>
+  <script language="JavaScript">
+startDefLink("compiler");
+  </script>
+  </em>compiler
+  <script language="JavaScript">
+endLink();
+  </script>
+  knows how much storage to set aside.</p>
+<h2><a name="elements">Element Reference</a></h2>
+<p>We can access individual elements of an array via an <em>index</em>, like so&#8212;</p>
+<blockquote>
+  <pre><code>c[3] = 13;
+x[20] = x[17] - x[3];
+upperCase = letters[0] - 'a' + 'A';</code></pre>
+</blockquote>
+<p>Notice that the &quot;first&quot; element of the array actually has index <code>0</code>.
+  The implication is that there is no such thing as <code>c[10]</code>, <code>x[22]</code> or <code>letters[30]</code>.</p>
+<p class="principle">The indices of an array of size n run from 0 to n-1.  </p>
+<h2><a name="initialize">Initialization of Arrays</a></h2>
+<p> 
+Arrays are initialized using an <em>initialization block</em></p>
+<blockquote>
+  <pre><code>int a = 3;
+int fib[10] = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55};
+int daysInMonth[12] = {31,28,31,30,31,30,31,31,30,31,30,31};</code></pre>
+</blockquote>
+<p>It is often easier to represent irregular data such as the number of days
+  in a month in a table like this than to write an algorithm to try to generate
+  the data (of course we'll still need an algorithm to handle leap years).</p>
+<p>Note that it is not necessary to initialize every element of an array.</p>
+<blockquote>
+  <p><code>int a[10] = {4, -5, 7, -11, 9};</code></p>
+</blockquote>
+<p>initializes <code>a[0]</code> through <code>a[4]</code> while leaving <code>a[5]</code> through <code>a[9]</code> uninitialized.</p>
+<p>As you might expect, specifying too many elements (overspecifying) is a compile-time
+  error.</p>
+<h2><a name="storage">Array Storage</a></h2>
+<p>Here is a  diagram of how an array get's stored in memory.</p>
+<p><img src="array.png" width="800" height="92"></p>
+<p>The elements in an array are stored <em>adjacent to one another</em>. The
+  diagram shows a series of <em>contiguous</em> memory locations, each holding
+  a piece of integer data.</p>
+<p>Underneath each location we show, in square brackets, the <em>index</em> of
+  the piece of data within the array.</p>
+<p>Don't confuse the two. The <em>index</em> gives the <em>position</em> within
+  the array. It is
+  <em>always an integer!</em></p>
+<p>The data in the boxes represent the <em>value</em> of each <em>element</em> of
+  the array. Their type depends on the type of the array. This is an array of
+  integers, so the values are integers, but we could have an array of doubles
+  or characters just as well.</p>
+<p>In the figure the element at index <code>6</code> is <code>7</code>,
+while that at <code>11</code> is <code>17</code>.</p>
+<p>An array is accessed directly,
+    simply by specifying the <em>index</em> of
+      the desired element (this is actually what is meant by the term <em>random
+  access</em>). </p>
+
+<h2><a name="syntax">Passing Arrays to Functions </a></h2>
+<p>An array can be passed into a function as an <em>
+  <script language="JavaScript">
+startDefLink("argument");
+  </script>
+</em>argument
+<script language="JavaScript">
+endLink();
+  </script>
+. For example, in the
+  <script language="JavaScript">
+startDefLink("functionPrototype");
+  </script>
+  function prototype
+  <script language="JavaScript">
+endLink();
+  </script>
+   below an array of grades is passed in as input and the function
+  returns the average of the grades.</p>
+<blockquote>
+  <p><code>double average(int grades[], int size) </code></p>
+</blockquote>
+<p>Because arrays do not know their own size, the size must be passed in as a
+  separate parameter.</p>
+<p>Obviously the programmer who originally created the array (outside our function)
+  must know how big the array she created is. But our function has to be able
+  to work with classes of any size. So, as part of our contract, we get  clients
+  to tell us how big their array is. </p>
+<p>Passing arrays <em>by value</em> is problematic because passing by value <em>always </em>implies
+  making a copy and copying large arrays</p>
+<ol>
+  <ol>
+    <li>is slow</li>
+    <li> doubles the memory usage </li>
+  </ol>
+</ol>
+<p> Thus we would like to pass arrays by reference. </p>
+<p>Actually, they are technically passed by address because arrays are an original
+  feature of C and C didn't have pass-by-reference. The difference at your stage
+  is not worth worrying about</p>
+<p>Let's see arrays in action</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("average.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<p align="center"><strong>Code Notes</strong> </p>
+<p class="hang">1. Run the Teaching Machine at look at how the <code>grades</code> array
+  is displayed as a single entity in the memory. There is an <em>expander</em> inside
+  the cell representing the array.</p>
+<p class="indent">Click on the expander and you will see the array expanded into
+  twenty individual <code>int</code> cells.</p>
+<p class="indent">Notice that arrays get big fast. In the TM (as in current PCs)
+  each <code>int</code> requires four bytes to store so the whole array takes
+  80 bytes. <code>Double</code>s would take twice as much.</p>
+<p class="hang">2. Step into the <code>average</code> function and you will see that the <code>grades</code>  array is not strictly a reference. Instead of displaying the name of the original
+  <code>marks</code> array it actually displays its address. </p>
+<p class="indent">This is more a matter of the way the TM chooses to display
+  the concept. In both cases, the value held in the <code>grades</code> variable
+  is actually
+<code>8192</code>, the address of the original <code>marks</code> variable. </p>
+<hr>
+
+<p>
+  <script language="JavaScript">
+ endNote();
+  </script
+>
+</p>
+<h3><a name="withForLoops">Arrays and <span class="codeKeyword">for</span> Loops </a> </h3>
+<p>Arrays and for loops go together hand in hand.</p>
+<p>Here is the mathematical expression for the average function above.</p>
+<p> <img src="averageFormula.gif"> </p>
+<p>The i'th grade is the i'th element in the array, <code>grades[i]</code>.</p>
+<p>Sometimes students have trouble with the idea of the summation being done as a loop since the formula is written in one place whereas the loop unfolds in time.</p>
+<p>However, if you were to use the formula above to compute the average of 20 grades using a calculator you would quickly find yourself entering grade<sub>0</sub>, then adding grade<sub>1</sub>, then adding grade<sub>2</sub> and so on. As you did so, your calculator would hold the <em>running sum</em> after each addition.</p>
+<p>So, in code, create a <code>sum</code> variable to hold the running sum, initialize it to zero, then loop through the array adding each element in turn, before finally computing the average by dividing the final <code>sum</code> by <code>n</code>. </p>
+<h3>Array Size Revisited </h3>
+<p>The compiler knows the size of an array when it is created, but that information is not stored with the array.</p>
+<p>Consider a program where we want test an average function
+  with  two different arrays:</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("average_two.cpp", true, "code", "", "A", "all");
+  </script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<p align="center"><strong>Code Notes</strong> </p>
+<p class="hang">1. Run the Teaching Machine and look at how the compiler creates
+  two arrays in memory, one of <code>SIZE_S</code> doubles and one of <code>SIZE_C</code> doubles.</p>
+<p class="hang">2. When you step into the average function you will see the <code>data</code>  variable
+  is actually a reference back to one of the two original arrays (for reasons
+  that are beyond the scope of our present discussion, the TM represents array
+  references not as the name of the array but as the <em>address of the
+  0'th element of the array</em>).</p>
+<p class="hang">3. The reference to the array contains no information about the
+  size of the array, nor is any such information stored with the array. So we
+  have to pass the size of the array into the function as a separate argument. </p>
+<hr>
+
+<script language="JavaScript">
+ endNote();
+</script
+><p>Although this example is somewhat artificial, it serves to make the point</p>
+<p>Two
+    different arrays <code>sines</code> and <code>cosines</code> have been created
+    each with its own size. Since the sizes <code>SIZE_S</code> and <code>SIZE_C</code> are constants,
+    the compiler knows how much space to allocate in memory for each of the two
+    arrays.</p>
+<p>Averaging, however is carried out <em>at run time</em>. The <code>average</code> function
+  gets called twice, once for each array. It <em>has</em> to be able to accommodate
+  both sizes, thus the <code>size</code> argument is variable.</p>
+<h2><a name="searching">Searching</a></h2>
+<p>Arrays are commonly used to store large amounts of homogenous data, for example
+  telephone directories, corporate sales figures or meteorological readings for
+  all of Canada.</p>
+<p>Thus a common task is to search an array for a particular piece of data or
+  a data with a particular characteristic.</p>
+<hr>
+<p><strong>Problem: </strong> build a  function to find the <em>position</em> of
+  the largest piece of data in an array of doubles.</p>
+<p><strong>Analysis:</strong> </p>
+<p class="indent">Clearly a loop is involved since I'll have to search
+  the entire array&#8212;and <code>for</code> loops are a good match for arrays </p>
+<p class="indent">concentrate on the body of the loop, assume I know the
+position of the largest piece of data so far</p>
+<p class="indent">We'll hold that in a variable called <code>position,</code> so
+  we should get something like </p>
+<blockquote>
+  <p class="pseudoCode"><strong>for i = 0, i &lt; arraysize</strong></p>
+  <blockquote>
+    <p class="pseudoCode"><strong>if data[i] &gt; data[position]</strong></p>
+    <blockquote>
+      <p class="pseudoCode"><strong>position = i </strong></p>
+    </blockquote>
+  </blockquote>
+</blockquote>
+<p class="indent">Now all we have to do is get it started&#8212;how about we
+set position to 0? </p>
+<p><strong>Prototype: </strong><code>int getLargest(double data[], int size) </code></p>
+<p><strong>Algorithm:</strong> </p>
+<blockquote>
+  <p class="pseudoCode"><strong>set position to 0</strong></p>
+  <p class="pseudoCode"><strong>for i = 1, i &lt; size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em>// Notice adjustment
+      to get started </em></strong></p>
+  <blockquote>
+    <p class="pseudoCode"><strong>if data[i] &gt; data[position]</strong></p>
+      <blockquote>
+        <p class="pseudoCode"><strong>position = i </strong></p>
+        <p>&nbsp;</p>
+      </blockquote>
+  </blockquote>
+  <p><strong>Question:</strong> What happens if there are two or more largest pieces of data?
+    Where will <code>position</code> end up? Is this sensible? </p>
+  <p><strong>Final Comment:</strong> in working with problems like this we have
+    to be careful to distinguish between the <em>position in the array</em> and
+    the <em>data
+    at the position</em>.
+    That is, between the <em>location of the data</em> and the <em>actual data</em>.
+    Here we <em>compare</em> the data, but we <em>track</em> the position.</p>
+  <p>So here is the code&#8212;</p>
+  <p><script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("largest.cpp", true, "code", "", "A", "all");
+    </script>
+    
+ </p>
+  <p>Notice that the header contract says quite specifically that in the event
+    there is more than one occurrence of the largest number in the array, the
+    position of the first occurrence will be returned.</p>
+  <p>What would we change if we wanted the last occurrence?</p>
+  <script language="JavaScript">
+	startHiddenAnswer("answer");
+  </script>
+  <p>change the test line in the <code>getLargest</code> function to</p>
+  <blockquote>
+    <p>
+    <pre><span class="codeKeyword"><code>if</code></span><code> (data[i] &gt;= data[position])
+    position = i; </code></pre>
+    <p>since <code>data[position]</code> holds the largest value yet found, using <code>&gt;=</code> instead of just <code>&gt;</code> in the test means that in the case of equality, <code>position</code> will be reset to the later <code>position</code>.
+</p>
+    </blockquote>
+  <p>
+    <script language="JavaScript">
+	endHiddenAnswer();
+    </script>
+</p>
+  <p>A more  challenging question is how could we facilitate the finding of every
+    occurrence? That is, suppose there are multiple occurrences of the largest
+    entry. How could we find how many such values there are? </p>
+  <hr>
+  <p><strong>Problem: </strong> build a function to find the <em>how many occurrences
+      there are </em> of
+    the largest piece of data in an array of doubles.</p>
+  <p><strong>Analysis:</strong> </p>
+  <p class="indent">Assume we have a function to find the position of the first
+    occurrence of the largest value</p>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <p><code>int getLargest(double data[], int size) </code></p>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+  <p class="indent">Once we've found the position of the biggest value we could
+    start from the next position and see if the value occurs again. That is,
+    we need a function like this</p>
+  <blockquote>
+    <p><code>int getNext(double data[], int size, int startPos, double value)</code></p>
+    <p>which returns the next position, starting from <code>startPos</code>, and returns
+        <code>-1</code> if there is no other occurrence </p>
+  </blockquote>
+  <p class="indent">Then we could do the following:</p>
+  <p><strong>Algorithm:</strong> </p>
+  <p class="pseudoCode"><strong>position = getLargest(data[ ], size)</strong></p>
+  <p class="pseudoCode"><strong>count = 1 // because there has to be at least one
+      largest value</strong></p>
+  <p class="pseudoCode"><strong>largest = data[position] // the value of the biggest
+      piece of data </strong></p>
+  <p class="pseudoCode"><strong>while (position &gt; -1) </strong></p>
+  <blockquote>
+    <p class="pseudoCode"><strong>position = getNext(data, size, position + 1, largest) </strong></p>
+    <p class="pseudoCode"><strong>if (position &gt; -1)
+      count ++</strong></p>
+  </blockquote>
+</blockquote>
+<p class="indent">There is an ugliness here. The test for position &gt; -1 occurs
+  twice in the final loop. Can we do better than that?</p>
+<p class="indent">Of course we can. Try this</p>
+<p><strong>Algorithm:</strong> </p>
+<blockquote>
+  <p class="pseudoCode"><strong>position = getLargest(data[ ], size)</strong></p>
+  <p class="pseudoCode"><strong>count = 0 </strong></p>
+  <p class="pseudoCode"><strong>largest = data[position] // the value of the biggest
+        piece of data </strong></p>
+  <p class="pseudoCode"><strong>while (position &gt; -1) //
+          it should always be true the first time as there is at least one largest
+        value </strong></p>
+  <blockquote>
+    <p class="pseudoCode"><strong>count ++ // so count will always be one or more </strong></p>
+    <p class="pseudoCode"><strong>position = getNext(data, size, position + 1, largest) </strong></p>
+  </blockquote>
+</blockquote>
+<p class="indent">This is slightly more obscure (so the comments become
+really important) but it is more efficient. </p>
+<hr>
+<p>Here's the actual code</p>
+<p>
+    <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("largest_count_2.cpp", true, "code", "", "A", "all");
+    </script>
+</p>
+<p>
+  <script language="JavaScript">
+ startNote();
+  </script>
+</p>
+<hr>
+<p align="center"><strong>Code Notes</strong> </p>
+<p class="hang">1. Run the Teaching Machine and look at the call</p>
+<blockquote>
+  <p><code>position = <span class="pagebreak">getPositionOf(data, size, position
+          + 1, largest);</span></code></p>
+</blockquote>
+<p class="indent">in the <code>howManyLargest</code> function. You might find this a little
+  strange since we are sending <code>position</code> into the function and also using the
+  return value to reset <code>position</code>.</p>
+<p class="indent">However this is just a generalization of our old <code>x =
+    x + 1</code>  trick. In evaluating an assignment statement, we evaluate all
+    the stuff on the right, then we use the final value obtained to write into
+    the left variable. </p>
+<hr>
+<p>
+  <script language="JavaScript">
+ endNote();
+</script
+>
+</p>
+<h2>Things You Can't Do with Arrays</h2>
+<p>You cannot return an array from a function</p>
+<blockquote>
+  <pre><code>foo(){
+   <span class="codeKeyword">double</span> myArray[<span class="codeConstant">3</span>]={<span class="codeConstant">4.2</span>, <span class="codeConstant">3.1</span>,<span class="codeConstant">12.6</span>};
+   <span class="codeKeyword">return</span> myArray;
+}</code></pre>
+</blockquote>
+<p>is not legal.</p>
+<p>You cannot assign arrays.</p>
+<blockquote>
+  <pre><code>
+   <span class="codeKeyword">double</span> A[<span class="codeConstant">3</span>]={<span class="codeConstant">4.2</span>, <span class="codeConstant">3.1</span>,<span class="codeConstant">12.6</span>};
+   <span class="codeKeyword">double</span> B[<span class="codeConstant">3</span>];
+   B = A;</code></pre>
+</blockquote>
+<p>The third line is not legal. Instead, write a loop</p>
+<blockquote>
+  <pre><span class="codeKeyword">for</span> (<span class="codeKeyword">int</span> i = <span class="codeConstant">0</span>; i &lt; <span class="codeConstant">3</span>; i++)
+    B[i] = A[i];<code>     </code></pre>
+  <p>When declaring arrays, you must know their size at compile time.</p>
+  <blockquote>
+    <pre>foo(<span class="codeKeyword">int</span> size){
+   <span class="codeKeyword">double</span> A[size];
+   ....
+</pre>
+  </blockquote>
+  <p>is not legal since arguments to functions are only known at run time, when
+    the function actually gets called. Another way to think of this is that arrays
+    should be declared with constant sizes. Either of these is legal</p>
+  <blockquote>
+    <pre><span class="codeKeyword">double</span> A[<span class="codeConstant">20</span>];
+<span class="codeKeyword">const</span> <span class="codeKeyword">int</span> SIZE = <span class="codeConstant">30</span>;
+<span class="codeKeyword">double</span> B[SIZE];</pre>
+  </blockquote>
+  <p>Although the second is preferred since, if you need to use the array size
+    in several places, only one change has to be made to change <code>SIZE</code>. </p>
+  <h2><a name="exercises"></a>Exercises</h2>
+  <p>For each of the following we would like a function (possibly calling other functions). We want you to </p>
+
+    <ol type="a">
+      <li>Write the contract (header and prototype).</li>
+      <li>Write the pseudo-code (algorithm for the function)</li>
+      <li>write the code.</li>
+    </ol>
+	<ol>
+  <li>The Weather service has data  for the average daily temperature every day for any year and any city in Canada.
+  Write a function that uses that data to estimate the number of degree days for a particular city in a particular year
+   (a degree day is the number of days times the number of degrees spent below 20 degrees C and is a measure of heating requirements).
+   </li>
+  <li>We would like a function to find the number of failures in a class. The
+    marks for a class will be kept in an array of marks that range from 0 to
+    100 (integer). A failure is any mark less than 50.</li>
+</ol>
+
+<script language="JavaScript">
+	startHiddenAnswer("1a");
+</script>
+<pre>/** degreeDays ***************************************************
+*
+* @params: averages- an array of daily average temps
+*          days - the number of days represented by the array
+*
+* @returns: the number of degree-days represented by the array
+*****************************************************************/
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1b");
+</script>
+<pre>degreeDays = 0
+for each day of the year
+    if average temp < 20
+          add 20-average to degreeDays</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1c");
+</script>
+<pre>double degreeDays(double averages[], int days) {
+       double dDays=0;
+       for(int d = 0; d < days; d++)
+           if (averages[d] < 20)
+              dDays += (20-averages[d]);
+       return dDays; 
+}</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2a");
+</script>
+<pre>/** failures ***************************************************
+*
+* @params: marks- an array of marks @pre: each mark on [0,100]
+*          size - the class size @pre: > 0
+*
+* @returns: the number of marks < 50
+*****************************************************************/</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2b");
+</script>
+<pre>failures = 0
+for each mark
+    if < 50
+        failures ++</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("2c");
+</script>
+<pre>int failures(int marks[], int classSize) {
+       int countF = 0;
+       for(int m = 0; m < classSize; m++)
+           if (marks[m] < 50)
+              countF++;
+       return countF; 
+}
+</pre>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<p>Here is an <a href="../../../postings/assign7/2007/assign7.htm">assignment
+  we did last year</a>. Try coding the <code>two functions</code></p>
+<p><code>int fuzzBox(int snd[], int
+    size, int clip);</code></p>
+<p><code>and</code></p>
+<p><code>void echoBox(int snd[], int size, int delay)</code></p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h2>Examples in Full</h2>
+ <p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("average.cpp", true, "code", "", "all", "all");
+  </script></p>
+<p>
+  <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("average_two.cpp", true, "code", "", "all", "all");
+  </script>
+</p>
+
+<p><script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("largest.cpp", true, "code", "", "all", "all");
+    </script>
+    
+ </p> 
+<p>
+    <script language="JavaScript">
+setButtons(false, false, false,"","");
+insertCode("largest_count_2.cpp", true, "code", "", "all", "all");
+    </script>
+</p>    
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

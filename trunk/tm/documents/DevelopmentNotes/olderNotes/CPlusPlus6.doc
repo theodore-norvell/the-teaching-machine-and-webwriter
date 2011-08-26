@@ -1,0 +1,963 @@
+{\rtf1\ansi\ansicpg1252\uc1 \deff1\deflang1033\deflangfe1033{\fonttbl{\f0\froman\fcharset0\fprq2{\*\panose 02020603050405020304}Times New Roman;}{\f1\fswiss\fcharset0\fprq2{\*\panose 020b0604020202020204}Arial;}
+{\f3\froman\fcharset2\fprq2{\*\panose 05050102010706020507}Symbol;}{\f14\fnil\fcharset2\fprq2{\*\panose 05000000000000000000}Wingdings;}{\f15\fswiss\fcharset0\fprq2{\*\panose 020b0604030504040204}Tahoma;}{\f16\froman\fcharset238\fprq2 Times New Roman CE;}
+{\f17\froman\fcharset204\fprq2 Times New Roman Cyr;}{\f19\froman\fcharset161\fprq2 Times New Roman Greek;}{\f20\froman\fcharset162\fprq2 Times New Roman Tur;}{\f21\froman\fcharset186\fprq2 Times New Roman Baltic;}{\f22\fswiss\fcharset238\fprq2 Arial CE;}
+{\f23\fswiss\fcharset204\fprq2 Arial Cyr;}{\f25\fswiss\fcharset161\fprq2 Arial Greek;}{\f26\fswiss\fcharset162\fprq2 Arial Tur;}{\f27\fswiss\fcharset186\fprq2 Arial Baltic;}{\f106\fswiss\fcharset238\fprq2 Tahoma CE;}
+{\f107\fswiss\fcharset204\fprq2 Tahoma Cyr;}{\f109\fswiss\fcharset161\fprq2 Tahoma Greek;}{\f110\fswiss\fcharset162\fprq2 Tahoma Tur;}{\f111\fswiss\fcharset186\fprq2 Tahoma Baltic;}}{\colortbl;\red0\green0\blue0;\red0\green0\blue255;
+\red0\green255\blue255;\red0\green255\blue0;\red255\green0\blue255;\red255\green0\blue0;\red255\green255\blue0;\red255\green255\blue255;\red0\green0\blue128;\red0\green128\blue128;\red0\green128\blue0;\red128\green0\blue128;\red128\green0\blue0;
+\red128\green128\blue0;\red128\green128\blue128;\red192\green192\blue192;}{\stylesheet{\widctlpar\adjustright \f1\fs22\cgrid \snext0 Normal;}{\s1\sb240\sa60\keepn\widctlpar\adjustright \f1\fs28\kerning28\cgrid \sbasedon0 \snext0 heading 1;}{
+\s2\sb240\sa120\keepn\widctlpar\adjustright \b\f1\ul\cgrid \sbasedon0 \snext0 heading 2;}{\s3\sb240\sa60\keepn\widctlpar\adjustright \b\f1\cgrid \sbasedon0 \snext0 heading 3;}{\*\cs10 \additive Default Paragraph Font;}{\s15\widctlpar\brdrt
+\brdrs\brdrw30\brsp20 \tx810\adjustright \b\f1\fs22\cgrid \sbasedon0 \snext15 EndOfBlock;}{\s16\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \f1\fs22\cgrid \sbasedon0 \snext16 header;}{\s17\fi-1800\li2520\widctlpar\adjustright \f1\fs22\cgrid 
+\sbasedon0 \snext17 List;}{\s18\widctlpar\tx810\adjustright \b\f1\fs22\cgrid \sbasedon0 \snext18 Code;}{\s19\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \f1\fs22\cgrid \sbasedon0 \snext19 footer;}{\*\cs20 \additive \sbasedon10 page number;}{
+\s21\widctlpar\adjustright \cbpat9 \f15\fs22\cgrid \sbasedon0 \snext21 Document Map;}{\s22\li720\widctlpar\adjustright \b\f1\fs22\cgrid \sbasedon0 \snext22 Body Text 2;}{\s23\li1440\widctlpar\adjustright \b\f1\fs22\cgrid \sbasedon0 \snext23 
+Body Text Indent 2;}{\s24\widctlpar\adjustright \i\f1\fs22\cgrid \sbasedon0 \snext24 Body Text;}{\s25\sb120\sa120\widctlpar\adjustright \b\f1\fs22\cgrid \sbasedon0 \snext0 caption;}{\*\cs26 \additive \ul\cf2 \sbasedon10 Hyperlink;}{\*\cs27 \additive 
+\ul\cf12 \sbasedon10 FollowedHyperlink;}}{\*\listtable{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360
+\jclisttab\tx360 }{\listname ;}\listid81877455}{\list\listtemplateid67698703\listsimple{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }{\listname 
+;}\listid350881870}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid379979601
+}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid390276266}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid589894532}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid693653437}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid709771249}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid821700124}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid833909111}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid912081806}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1071467634}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1105540128}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1296176605}
+{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1301768746}
+{\list\listtemplateid67698703\listsimple{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }{\listname ;}\listid1360426627}{\list\listtemplateid67698689
+\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1373385034}{\list\listtemplateid67698703\listsimple
+{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1394230266}{\list\listtemplateid67698703\listsimple{\listlevel\levelnfc0
+\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }{\listname ;}\listid1498569690}{\list\listtemplateid67698703\listsimple{\listlevel\levelnfc0\leveljc0\levelfollow0
+\levelstartat1\levelspace0\levelindent0{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1567834063}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0
+\levelindent0{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1657028008}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1763800814}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1852797130}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1953900629}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid1957902702}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid2018574611}{\list\listtemplateid67698689\listsimple{\listlevel\levelnfc23\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0{\leveltext
+\'01\u-3913 ?;}{\levelnumbers;}\f3\fbias0 \fi-360\li360\jclisttab\tx360 }{\listname ;}\listid2106149149}}{\*\listoverridetable{\listoverride\listid1498569690\listoverridecount0\ls1}{\listoverride\listid1498569690\listoverridecount1{\lfolevel
+\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls2}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat
+{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls3}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel
+\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls4}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0
+\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls5}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0
+\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls6}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1
+\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls7}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold
+\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls8}{\listoverride\listid1498569690\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelspace0\levelindent0
+{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360\jclisttab\tx360 }}\ls9}{\listoverride\listid350881870\listoverridecount0\ls10}{\listoverride\listid350881870\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0
+\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls11}{\listoverride\listid350881870\listoverridecount1{\lfolevel\listoverrideformat{\listlevel\levelnfc0\leveljc0\levelfollow0\levelstartat1
+\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls12}{\listoverride\listid1360426627\listoverridecount0\ls13}{\listoverride\listid1360426627\listoverridecount1{\lfolevel\listoverrideformat{\listlevel
+\levelnfc0\leveljc0\levelfollow0\levelstartat1\levelold\levelspace0\levelindent360{\leveltext\'02\'00.;}{\levelnumbers\'01;}\fi-360\li360 }}\ls14}{\listoverride\listid1296176605\listoverridecount0\ls15}{\listoverride\listid2018574611
+\listoverridecount0\ls16}{\listoverride\listid1957902702\listoverridecount0\ls17}{\listoverride\listid1763800814\listoverridecount0\ls18}{\listoverride\listid912081806\listoverridecount0\ls19}{\listoverride\listid1657028008\listoverridecount0\ls20}
+{\listoverride\listid390276266\listoverridecount0\ls21}{\listoverride\listid1394230266\listoverridecount0\ls22}{\listoverride\listid81877455\listoverridecount0\ls23}{\listoverride\listid379979601\listoverridecount0\ls24}{\listoverride\listid709771249
+\listoverridecount0\ls25}{\listoverride\listid821700124\listoverridecount0\ls26}{\listoverride\listid833909111\listoverridecount0\ls27}{\listoverride\listid1105540128\listoverridecount0\ls28}{\listoverride\listid2106149149\listoverridecount0\ls29}
+{\listoverride\listid693653437\listoverridecount0\ls30}{\listoverride\listid1071467634\listoverridecount0\ls31}{\listoverride\listid1852797130\listoverridecount0\ls32}{\listoverride\listid1301768746\listoverridecount0\ls33}{\listoverride\listid589894532
+\listoverridecount0\ls34}{\listoverride\listid1953900629\listoverridecount0\ls35}{\listoverride\listid1373385034\listoverridecount0\ls36}{\listoverride\listid1567834063\listoverridecount0\ls37}}{\info{\title class StoreDisplay  }{\author MPBL}
+{\operator Theodore S. Norvell}{\creatim\yr1999\mo10\dy19\hr20\min9}{\revtim\yr2001\mo7\dy17\hr17\min40}{\printim\yr2001\mo6\dy27\hr17\min35}{\version5}{\edmins63}{\nofpages11}{\nofwords2965}{\nofchars16902}{\*\company Faculty of Engineering}
+{\nofcharsws0}{\vern113}}\margl2160\margr1440\margt1152\margb1152 \widowctrl\ftnbj\aenddoc\lytprtmet\hyphcaps0\formshade\viewkind4\viewscale110\pgbrdrhead\pgbrdrfoot \fet0\sectd 
+\binfsxn7\binsxn7\psz1\linex0\headery709\footery709\colsx709\endnhere\titlepg\sectdefaultcl {\header \pard\plain \s16\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \f1\fs22\cgrid {The C++ Language Layer for The Teaching Machine 
+\par 
+\par }}{\footer \pard\plain \s19\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \f1\fs22\cgrid {\tab }{\field{\*\fldinst {\cs20  PAGE }}{\fldrslt {\cs20\lang1024 2}}}{\cs20 \tab Version as of }{\field{\*\fldinst {\cs20  DATE }}{\fldrslt {\cs20\lang1024 06/27/01}
+}}{
+\par }}{\footerf \pard\plain \s19\widctlpar\tqc\tx4320\tqr\tx8640\adjustright \f1\fs22\cgrid {{\field{\*\fldinst SYMBOL 211 \\f "Symbol" \\s 11}{\fldrslt\f3\fs22}}}{ 1997}{\v F}{ & 1998 }{\v _}{by Michael Bruce-Lockhart and Theodore Norvell
+.  The associated software is released to students for educational purposes only and only for the duration of the course in which it is handed out. No other use of the software, either commercial or non-commercial, may be made without the express permissi
+on of the authors.
+\par }}{\*\pnseclvl1\pnucrm\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl2\pnucltr\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl3\pndec\pnstart1\pnindent720\pnhang{\pntxta .}}{\*\pnseclvl4\pnlcltr\pnstart1\pnindent720\pnhang{\pntxta )}}
+{\*\pnseclvl5\pndec\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl6\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl7\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl8
+\pnlcltr\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}{\*\pnseclvl9\pnlcrm\pnstart1\pnindent720\pnhang{\pntxtb (}{\pntxta )}}\pard\plain \s1\sb240\sa60\keepn\widctlpar\outlinelevel0\adjustright \f1\fs28\kerning28\cgrid {
+The C++ Language Layer for The Teaching Machine}{\up6 {\field{\*\fldinst SYMBOL 211 \\f "Symbol" \\s 14}{\fldrslt\f3\fs28}}}{ 
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {Revisions
+\par {\pntext\pard\plain\f1\fs22\cgrid \hich\af1\dbch\af0\loch\f1 1.\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls37\pnrnot0\pndec\pnstart1\pnindent360\pnhang{\pntxta .}}\ls37\adjustright {Original December 1997
+\par {\pntext\pard\plain\f1\fs22\cgrid \hich\af1\dbch\af0\loch\f1 2.\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls37\pnrnot0\pndec\pnstart1\pnindent360\pnhang{\pntxta .}}\ls37\adjustright {
+Updated symbol table interface. Jan 13, 1998.
+\par {\pntext\pard\plain\f1\fs22\cgrid \hich\af1\dbch\af0\loch\f1 3.\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls37\pnrnot0\pndec\pnstart1\pnindent360\pnhang{\pntxta .}}\ls37\adjustright {Changes for JavaCC 0.7 (1998 Jan 22)
+
+\par {\pntext\pard\plain\f1\fs22\cgrid \hich\af1\dbch\af0\loch\f1 4.\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlbody\ilvl0\ls37\pnrnot0\pndec\pnstart1\pnindent360\pnhang{\pntxta .}}\ls37\adjustright {Major rewrite for Winter 2001.
+\par }\pard\plain \s1\sb240\sa60\keepn\widctlpar\outlinelevel0\adjustright \f1\fs28\kerning28\cgrid {\i Note
+\par }\pard\plain \s24\widctlpar\adjustright \i\f1\fs22\cgrid {This document describes the original implementation of C++, which has been superceded by a new implementation. See document cpp.doc for documentation of the new implementation.
+\par }\pard\plain \s1\sb240\sa60\keepn\widctlpar\outlinelevel0\adjustright \f1\fs28\kerning28\cgrid {Packages
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \s17\fi-1800\li2520\widctlpar\adjustright \f1\fs22\cgrid {The C++ language layer consists of the following packages.
+\par {\pntext\pard\plain\s17 \f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s17\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls28\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls28\adjustright {
+CPlusPlus. Implements the fa\'e7ade class for the C++ subsystem. 
+\par {\pntext\pard\plain\s17 \f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s17\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls28\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls28\adjustright {
+CPlusPlus.Datum.  Contains representations of the data objects of the subject program.
+\par {\pntext\pard\plain\s17 \f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s17\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls28\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls28\adjustright {CPlusPlu
+s.AST.  Contains representations of the subject program. The behaviour associated with the representations constitutes the interpretation of the subject program. Thus this package also contains bulk of the interpreter,
+\par {\pntext\pard\plain\s17 \f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s17\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls28\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls28\adjustright {
+CPlusPlus.Parser. Contains code to create an AST representation from an input string.
+\par {\pntext\pard\plain\s17 \f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \s17\fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls28\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls28\adjustright {
+CPlusPlus.Symtab. Representation of the symbol table.
+\par }\pard\plain \s24\widctlpar\adjustright \i\f1\fs22\cgrid {
+\par Warning: As this is being written the C++ layer is still incomplete and the documentation will inevitably be incomplete as well.
+\par }\pard\plain \s2\sb240\sa120\keepn\widctlpar\outlinelevel1\adjustright \b\f1\ul\cgrid {The CPlusPlus Package
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Class CPlusPlusLang
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {This class implements the `language\rquote 
+ interface (see the virtual machine layer interface document) and thus represents the interface to the entire C++ subsystem. All calls to the subsystem begin with this class.
+\par }\pard\plain \s2\sb240\sa120\keepn\widctlpar\outlinelevel1\adjustright \b\f1\ul\cgrid {The CPlusPlus.Datum Package
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {
+This package contains a hierarchy of types implementing data objects of various types. Each primitive C++ type and each C++ type constructor has a corresponding class in this package. The hierarchy so far is
+\par }\pard\plain \s16\widctlpar\adjustright \f1\fs22\cgrid {AbstractDatum \endash  implements Interfaces.Datum
+\par }\pard\plain \li720\widctlpar\adjustright \f1\fs22\cgrid {AbstractScalar
+\par }\pard \li1440\widctlpar\adjustright {AbstractInt
+\par }\pard \li2160\widctlpar\adjustright {BoolDatum
+\par CharDatum
+\par IntDatum
+\par LongDatum
+\par }\pard \li1440\widctlpar\adjustright {AbstractFloat
+\par }\pard \li2160\widctlpar\adjustright {FloatDatum
+\par DoubleDatum
+\par }\pard \li1440\widctlpar\adjustright {DoubleDatum
+\par CinDatum
+\par CoutDatum
+\par AbstractPointer
+\par }\pard \li2160\widctlpar\adjustright {PointerDatum
+\par RefDatum
+\par }\pard \li720\widctlpar\adjustright {ArrayDatum
+\par StructDatum
+\par }\pard \widctlpar\adjustright {
+\par Datums are essentially immutable objects. They are initialized with attributes that do not change over the lifetime of a data-object, such as address and parent. The actual value of the data object (e.g., after executing }{\b i=13}{
+ the value of the data object named by }{\b i}{ is 13) is }{\i not}{ stored with 
+in a Datum object. Instead, it is stored in the Memory object that constitutes a part of the VMState object. In a sense, the Datum objects provide interpretations to the Memory object.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Class AbstractDatum
+\par }\pard\plain \s18\li720\widctlpar\tx810\adjustright \b\f1\fs22\cgrid {public abstract class AbstractDatum implements Interfaces.Datum \{
+\par \tab 
+\par \tab protected AbstractDatum(int add, int s, Datum p, Memory m, TypeNd tp) ;
+\par 
+\par /** Return the # of bytes storage required */\tab 
+\par public int getSize() ;
+\par 
+\par /** Return the enclosing datum, or null, if none */
+\par \tab public Datum getParent() ;
+\par 
+\par /** Return the address of the first byte */
+\par \tab public int getAddress() ;
+\par 
+\par /** Return the byte value 0..255 of a byte (indexed from 0) */
+\par \tab public int getByte(int i) ;
+\par 
+\par /** Return the type of the datum */
+\par \tab public TypeInterface getType() ;
+\par 
+\par /* Write the value of the datum to the output window */
+\par \tab public void output( VMState vms ) ;
+\par 
+\par \tab /** copyDatum --- requires that source has the same type as
+\par \tab                   this. Thus any conversions should already have taken place. */
+\par \tab public abstract void          copyDatum( AbstractDatum source ) ;
+\par 
+\par \tab /** getValueString --- Return a string suitable for display in the expression
+\par \tab                        window, memory window, or output window. */
+\par \tab public abstract String        getValueString();
+\par 
+\par \tab /** getTypeString --- Return a string suitable for display representing the type */
+\par \tab public abstract String        getTypeString();
+\par 
+\par \tab /** See GUI interface documentation */
+\par \tab public abstract Datum         getChildDatum(int add);
+\par 
+\par \tab /** Create a new datum at location addr which is a copy.*/
+\par \tab public abstract AbstractDatum copyTo(int addr) ;
+\par \}
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard \fi720\widctlpar\adjustright {In addition scalar datum classes have }{\b getValue}{ and }{\b putValue}{ methods. These are declared farther down class the hierarchy because there is not a single type suitable for these methods.
+\par 
+\par Pointers and references have a method
+\par \tab }{\b public Datum deref() ;
+\par }\pard \widctlpar\adjustright {to dereference them. This method returns }{\b null}{ if no datum of the right type can be found at the current address of the datum. }{\b putValue}{ and }{\b getValue}{ are provided, respectively taking and returning an }{
+\b int}{.  NULL pointers have a value of 0.
+\par 
+\par \tab Arrays are represented by members of }{\b ArrayDatum}{. After an object of this class is created, its members should be created and added using
+\par \tab \tab }{\b public void putDatumAt(int i, Datum d ) ;
+\par }{A similar mechanism exists for Structures.
+\par }\pard\plain \s2\sb240\sa120\keepn\widctlpar\outlinelevel1\adjustright \b\f1\ul\cgrid {Package CPlusPlus.AST
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {This package is by far the most diverse. Its classes have two responsibilities: representing the structure of a C++ program and interpreting the C++ program.
+\par 
+\par \tab }{\i Aside. AST stands for Abstract Syntax Tree, but a better name would be Abstract Syntax Representation, as the representation of function bodies in particular is not a tree, but a graph.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Class ASTUtilies
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {This is a collection of }{\b static}{ methods of common use in interpretation.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Class Node
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {\i \tab }{Almost all classes of the package descended from class }{\b Node }{are in a hierarchy as follows
+\par }\pard\plain \s18\widctlpar\adjustright \b\f1\fs22\cgrid {Node
+\par }\pard\plain \li720\widctlpar\adjustright \f1\fs22\cgrid {\b ExpressionNd}{ --- Represents expression trees
+\par }{\b FunDfnNd }{--- Represents function definitions
+\par }{\b VarNd}{ --- Represents global variable definitions
+\par }{\b TypeNd}{ --- Represents types.
+\par }{\b StatementNd}{ --- Represents statements 
+\par }\pard \widctlpar\adjustright {
+\par All nodes contain a sequence of 0 or more children. This allows the nodes to easily be formed into trees. The interface is as follows:
+\par }\pard \li720\widctlpar\adjustright {\b public void addFirstChild( Node xx ) ;
+\par public void addLastChild( Node xx ) ;
+\par }\pard \fi720\widctlpar\adjustright {\b public NodeList children() ;
+\par }\pard \li720\widctlpar\adjustright {\b public Node child(int i) ; /* }{\b\i Indexed from 0 }{\b */
+\par }\pard \widctlpar\adjustright {However, not all sorts of nodes take advantage of this general mechanism. Those that do can be formatted using a call to }{\b toString}{.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Expression Nodes
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {Expression Nodes represent expressions in a normal tree-like fashion. They support }{\b LanguageInterfaces.ExpressionInterface}{ (see the Virtual Machine Layer Interface). Thus they can be }{\b step}{
+ped, }{\b select}{ed, and converted }{\b toString}{. After an expression node has been ste
+pped to produce a value, it records this value in the top evaluation of the evaluation stack. See the Virtual Machine Layer Interface for a more detailed discussion of how expressio evaluation works.
+\par 
+\par \tab Expression node classes are arranged in a heirarchy according to how many children they have and how  they are evaluated.
+\par 
+\par \tab Here is a look at how one sort of }{\b ExpressionNd}{ behaves.   }{\b OpAbsBinBup}{ is used to represent operations like addition that require full evaluation of both operands. 
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls33\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls33\adjustright {Selecting: Each ope
+rand must be evaluated to a value (not just a reference), but it doesn\rquote t matter which is evaluated first.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlblt\ilvl0\ls33\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls33\adjustright {
+If both operands have been evaluated to values, then the current node (the }{\b OpAbsBinBup}{) is selected. I.e., the current node is made the selected node of the current top }{\b Evaluation}{.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlblt\ilvl0\ls33\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls33\adjustright {
+If one operand has been evaluated to a value, then the select is delegated to the other operand.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlblt\ilvl0\ls33\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls33\adjustright {
+Otherwise one operand is selected to be evaluated first, and the select is delegated to that operand.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls34\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls34\adjustright {Stepping: By the time the }{\b 
+OpAbsBinBup}{ is selected to be stepped, both its operands will have values (Datums) in the current top }{\b Evaluation}{. But they may have incompatible types. If either operand needs conversion, this is done in one step. Otherwise the appropriate oper
+ation is applied to their values, and a new datum is created representing the result. The result datum is mapped to the current (}{\b OpAbsBinBup}{) node.
+\par }\pard \widctlpar\adjustright {
+\par }\pard \fi720\widctlpar\adjustright {Variables are also interesting to consider as they are prototypical of lvalues (i.e. expressions that can occur on the left-hand-side of an assignment operator). Variable expressions are represeted in the AST by }{\b 
+IdNd}{s. These behave in the following way.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls35\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls35\adjustright {
+Selecting: As these node have no children, they always select themselves.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls35\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls35\adjustright {Stepping: For }{\b IdNds}{
+ representing variables, stepping is done in the following way:
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlblt\ilvl0\ls35\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls35\adjustright {
+If the node is mapped to null in the current top }{\b Evaluation}{, then a reference datum (class }{\b RefDatum}{) is created and the mapping is changed in the current top }{\b Evaluation}{, so that the }{\b IdNd}{ maps to the new reference datum. 
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1440\widctlpar\jclisttab\tx1440{\*\pn \pnlvlblt\ilvl0\ls35\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls35\adjustright {
+If the node is mapped to a reference datum, then this means the node has already been stepped once and has been reselected. This happens because the node\rquote s parent was not sati
+sfied with the reference datum; required a real value. In this case, the reference datum is replaced with a copy of the datum to which it refers.
+\par }\pard \widctlpar\adjustright {Example: Suppose we have }{\b int i ; i = 0 ; j = i ;}{ the }{\b IdNd}{ in the first assignment expression is selected and stepped producing a reference to the actual datum in the stack memory named }{\b i}{
+ . The parent node (the assignment operator), then uses this reference to find and change the original datum.  In the second assignment the }{\b IdNd}{ for }{\b i}{ is selected and stepped as be
+fore to create a reference datum. But the parent, this time requires a real value (an rvalue), so it selects the }{\b IdNd}{ a second time and it is stepped a second time, producing a datum of class }{\b IntDatum,}{
+ which is a temporary copy of the original.
+\par 
+\par \tab The question arises: Why bother with these reference datums? Why not just map the }{\b IdNd}{s to the corresponding Datum in the memory? The answer is that when we are through with a temporary datum, we must destroy it. For example in }{\b 1+2*3}{
+ the datum representing the product is destroyed as the addition is being done. In }{\b 1+i}{ it would be wrong to destroy the datum representing the value of }{\b i}{ unless it were are copy. }{\i 
+However, I am left wondering if there might not be a better way.
+\par }\pard\plain \s16\widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {\tab Temporary datums (those created as part of the evaluation process are currently kept on the top of the stack. This has a big problem.  Consider }{\b \lquote a\rquote +1}{. Suppose the }{\b \lquote a
+\rquote }{ was evaluated first and the }{\b 1}{ second. As the }{\b +}{ node is being stepped, we notice that the character must be converted to an
+ int. We actually want this to be a separate step, as the conversion should be displayed in the Expression Window, if we are single stepping. But to convert a character to an int where characters take 1 byte and ints take 4, is hard to do in place on the 
+stack, especially when there is another datum (the 1) sitting above the character. A second reason is the we don\rquote 
+t want all these temporaries showing up in the Stack Window. That is what the Expression Window is for. From the point of view of realism, we co
+uld go either way. Some compilers put all temporaries on the main stack, others use a separate stack, or registers. Anyway, for the above reasons the temporaries will likely be stored in a fourth memory region called the scratch pad which will be managed 
+as a heap. The scratch pad corresponds to the registers of the machine.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Function Definition Nodes
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {A function definition node (class FunDfnNd) represents a function definition like
+\par }\pard \li720\widctlpar\adjustright {\b int foo(char c) \{return c+1 ;\}
+\par }\pard \widctlpar\adjustright {It consists of a name (}{\b foo}{), a type (}{\b function taking one char and returning int}{) a list of parameters (}{\b char c}{), and a body which is represented by the first statement.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Variable Definition Nodes
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {These represent variable definitions. Each variable definition consists of a name, a type, and an initializing expression. There is a special class NoExpNd for expressions that aren\rquote 
+t there, which is used for uninitialized variables.
+\par 
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Type Nodes
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {Type nodes represent types found in the program. Either primitive, or compound. For example if a declaration }{\b int *i[10];}{ is encountered a type tree is built consiting of three nodes:
+\par \tab }{\b array(10) of }{\b\lang1024 {\field{\*\fldinst SYMBOL 224 \\f "Wingdings" \\s 11}{\fldrslt\f14\fs22}}}{\b  pointer to }{\b\lang1024 {\field{\*\fldinst SYMBOL 224 \\f "Wingdings" \\s 11}{\fldrslt\f14\fs22}}}{\b  int
+\par 
+\par }\pard \fi720\widctlpar\adjustright {Type nodes do not use the generic child mechanism of the }{\b Node}{ class. Instead type constructors contain members of type }{\b TypeNdLink}{. A }{\b TypeNdLink}{ is simply a `mutable reference\rquote 
+ (i.e. a pointer) to a }{\b TypeNd}{.
+\par }\pard \widctlpar\adjustright {
+\par \tab One important behaviour for type nodes is creating datums of corresponding type. For example a node representing the type `array of 10 pointers to int\rquote  can actually create an array of 10 pointers to int. The method is
+\par \tab }{\b public abstract AbstractDatum makeDatum(
+\par }\pard \fi720\li720\widctlpar\adjustright {\b VMState vms,
+\par MemRegion mr,
+\par AbstractDatum parent) ;
+\par }\pard \widctlpar\adjustright {This is an example of Gamma et. al.\rquote s Factory Method design pattern.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Statement Nodes
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {C++ supports many different kinds of statements. During parsing the statements of each function are converted to a c
+ontrol flow graph (essentially a flowchart) constructed out of various kinds of statement nodes.  All these statement nodes implement the }{\b LanguageInterfaces.StatementInterface}{ and thus can be }{\b step}{ped and }{\b select}{ed.
+\par }\pard \fi720\widctlpar\adjustright {
+\par Local variables are removed from the stack and the symbol table on the first step of the first Statement Node encountered that is outside of the variable\rquote s scope. For example in the code
+\par }\pard\plain \s18\widctlpar\tx810\adjustright \b\f1\fs22\cgrid {\tab \tab \{int i = 2*j+10 ;
+\par \tab \tab  j = j-i ; \}
+\par \tab \tab k = j ;
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {The  local integer }{\b i}{ is removed from the stack and the symbol table when the }{\b StatDo}{ (a kind of }{\b StatementNd}{ representing the }{\b k=j;}{
+ statement is first stepped. To accomplish this, each }{\b StatementNd}{ contains the number of local variables that should exist when it is encountered. Any excess variables are removed.
+\par 
+\par }\pard \fi720\widctlpar\adjustright {The selected statement node uses the current top }{\b Evaluation}{
+ to store a record of how far it has progressed in its exection. This value is null if the statement node is in its initial (just selected state) and is a small integer for other states of evaluation. For example a }{\b StatDo}{
+ (repsonsible for executing expressions whose value is to ignored) has 2 states of execution.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls32\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls32\adjustright {null \endash 
+ when stepped it pushes a Evaluation for the expression on the evaluation stack and changes to state 1.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls32\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls32\adjustright {1 \endash 
+ when stepped, it removes the expression\rquote s value from the memory stack, selects the next node and changes the state back to null (ready for next time).
+\par }\pard \widctlpar\adjustright {This technique is a little weird. It is killing a fly with a sledgehammer (Evaluations), but the sledgehammer was lying around anyway for expression evaluation.
+\par \tab 
+\par \tab Statement nodes are linked together using }{\b StatementNdLink}{s, which are simply mutable references to }{\b StatementNd}{s.
+\par 
+\par }\pard\plain \s2\sb240\sa120\keepn\widctlpar\outlinelevel1\adjustright \b\f1\ul\cgrid {CPlusPlus.Parser
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Parser source code generation
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {The parser is produced using the Java Compiler Compiler (JavaCC) version 0.7.1 from Metamata (formerly from Sun). The JavaCC specification is in file }{\b cplusplus.jj}{
+. The specification describes the lexical structure of C++ and a recursive descent parser for a subset of C++. The output of JavaCC is a number of java source files:
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {
+ASCII_CharStream.java --- standard class
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {
+ParserException.java --- standard class
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {TokenMgrError.java \endash 
+ standard class
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {Token.java --- standard class
+
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {
+cppparserConstants.java --- used behind the scenes
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls30\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls30\adjustright {
+cppparserTokenManager.java --- lexical analyzer
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li1080\widctlpar\jclisttab\tx1080{\*\pn \pnlvlblt\ilvl0\ls31\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls31\adjustright {cppparser.java --- parser 
+\par }\pard \widctlpar\adjustright {The last two are the interesting ones.  Their public classes are used in }{\b CPlusPlusLang.parse}{ to provide a lexer and a parser respectively.
+\par }\pard\plain \s16\widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \s16\widctlpar\adjustright \f1\fs22\cgrid {The generated files are created by the DOS command }{\b javacc}{. So one has to install the }{\b javacc}{ program before modifying the cplusplus.jj file.}{\lang1024  }{\b\i\fs18 
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Parser creation.
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {When a file needs to be parsed the following steps are taken (in the }{\b CPlusPlusLanguage}{ class, method }{\b parse}{)
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlblt\ilvl0\ls36\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls36\adjustright {A new }{\b cppparserTokenManager }{
+is created. It is initialized with the string consisting of the file\rquote s contents.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlblt\ilvl0\ls36\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls36\adjustright {A new }{\b cpparser}{
+ is created. It is initialized with the }{\b cppparserTokenManager}{ created in the last step.
+\par {\pntext\pard\plain\f3\fs22\cgrid \loch\af3\dbch\af0\hich\f3 \'b7\tab}}\pard \fi-360\li360\widctlpar\jclisttab\tx360{\*\pn \pnlvlblt\ilvl0\ls36\pnrnot0\pnf3\pnstart1\pnindent360\pnhang{\pntxtb \'b7}}\ls36\adjustright {The parser\rquote 
+s main entry point (method }{\b translation_unit}{) is then called with a freshly created }{\b VMState}{ object to parse the file.
+\par }\pard \widctlpar\adjustright {
+\par \tab During the parsing process, the symbol table is initialized with all the global declarations. This is the only effect of parsing.
+\par 
+\par 
+\par 
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {File Sources
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {A FileSource is a source of input files. This might represent a directory on the host computer or it might represent a directory accessed over the internet by http. Include
+\par files will be searched for in a FileSource.
+\par 
+\par }\pard\plain \s18\widctlpar\tx810\adjustright \b\f1\fs22\cgrid {  interface FileSource \{
+\par        /* Finds and opens the file of the 
+\par        InputStream getInputStream( String filename) throws IOException ;
+\par   \}
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Preprocessing
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {The preprocessing step has not yet been designed.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Multiple Translation units
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Parser design.
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {The parser is a recursive descent parser. This means that each nonterminal of the
+ context free grammar is represented by a method that is responsible for consuming an example of that nonterminal in the input, or reporting an error by raising an exception. For information on recursive descent parsing see Aho, Sethi, and Ullman, }{\i 
+Compilers, Principles, Techniques, and Tools}{, Addison Wesley, 1986. For information on and documentation of JavaCC, see }{\field\fldedit{\*\fldinst { HYPERLINK "http://www.suntest.com/Jack/" }{\fs20 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b0200000003000000e0c9ea79f9bace118c8200aa004ba90b3a00000068007400740070003a002f002f007700770077002e00730075006e0074006500730074002e0063006f006d002f004a00610063006b002f000000000000000000}}}{\fldrslt {\cs26\ul\cf2 http://www
+{\*\bkmkstart _Hlt505758967}{\*\bkmkstart _Hlt407037305}{\*\bkmkend _Hlt505758967}.metamata.{\*\bkmkend _Hlt407037305}c{\*\bkmkstart _Hlt505758969}o{\*\bkmkend _Hlt505758969}m}}}{.
+\par 
+\par }\pard \fi720\widctlpar\adjustright {Most nonterminal methods return some kind of AST }{\b Node}{. For example, the method }{\b expression}{, which parses statements, returns a }{\b ExpressionNd.
+\par 
+\par }{In other cases, other techniques are used. For statements, the method }{\b statement}{ is passed in a }{\b StatementNdLink}{
+, which must be set to point to the first statement node of the control flow graph generated for the parsed statement. Furthermore, the method returns a }{\b StatmentNdLink}{
+ which should be set to the node representing the node to go-to after the parsed statement completes normally (i.e by control falling out of the bottom).
+\par }\pard \widctlpar\adjustright {
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Expression Parsing
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {Expressions are parsed using an algorithm of Keith Clarke\rquote s. }{\i Until this is better documented, here is a description of the idea }{\field{\*\fldinst {
+ HYPERLINK "http://www.metamata.com/JavaCC/FAQ/june-augmail/237.html" }{\fs20 {\*\datafield 
+00d0c9ea79f9bace118c8200aa004ba90b0200000003000000e0c9ea79f9bace118c8200aa004ba90b7200000068007400740070003a002f002f007700770077002e006d006500740061006d006100740061002e0063006f006d002f004a00610076006100430043002f004600410051002f006a0075006e0065002d006100
+750067006d00610069006c002f003200330037002e00680074006d006c000000000000000000}}}{\fldrslt {\cs26\ul\cf2 http://www.metamata.com/JavaCC/FAQ/june-augmail/237.html}}}{. }{\i See also the comments in the code.
+\par }\pard\plain \s16\widctlpar\adjustright \f1\fs22\cgrid {
+\par }\pard\plain \s2\sb240\sa120\keepn\widctlpar\outlinelevel1\adjustright \b\f1\ul\cgrid {CPlusPlus.SymbolTable
+\par }\pard\plain \s24\widctlpar\adjustright \i\f1\fs22\cgrid {The symbol table is the least developed package in the program at the moment. The following documents its current features, but is subject to change and will be extended.
+\par }{\i0 
+\par By rights, the symbol table should be part of the Virtual Machine Layer. But as it is hard to create a symbol table interface suitable for all conceivable languages, it is instead part of the language layer. }{
+Someday, it would be nice to make the symbol table machine independent.
+\par }{\i0 
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Representing variable bindings
+\par }\pard\plain \s24\widctlpar\adjustright \i\f1\fs22\cgrid {\i0 The run-time association of variable names to datums is perhaps the most important
+\par function of the symbol table. All variables belonging to a single subroutine invocation are grouped together in a structure called a frame. The frames in turn are grouped as a stack. Each frame consists of a `static link\rquote 
+ and a stack of associations between names and references to datums.
+\par 
+\par For example, consider the following code.
+\par }\pard\plain \s18\li720\widctlpar\tx810\adjustright \b\f1\fs22\cgrid {int i ;
+\par 
+\par int main() \{     }{\lang1024 {\field{\*\fldinst SYMBOL 223 \\f "Wingdings" \\s 11}{\fldrslt\f14\fs22}}}{ A
+\par }\pard \s18\li1440\widctlpar\tx810\adjustright {int i ;    }{\lang1024 {\field{\*\fldinst SYMBOL 223 \\f "Wingdings" \\s 11}{\fldrslt\f14\fs22}}}{ B
+\par f(10) ; \}
+\par }\pard \s18\li720\widctlpar\tx810\adjustright {void f(int j) \{
+\par }\pard \s18\li1440\widctlpar\tx810\adjustright {int k ;     }{\lang1024 {\field{\*\fldinst SYMBOL 223 \\f "Wingdings" \\s 11}{\fldrslt\f14\fs22}}}{ C
+\par return ; \}
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {As execution begins at point A there is one frame (representing all the global variables).
+\par }\pard \keepn\widctlpar\adjustright {\pard\plain \keepn\widctlpar\adjustright \f1\fs22\cgrid {\object\objemb\objw6086\objh1450{\*\objclass }{\*\objdata 010500000200000013000000436f72656c464c4f572e446f63756d656e7400000000000000000000140000
+d0cf11e0a1b11ae1000000000000000000000000000000003e000300feff0900060000000000000000000000010000000100000000000000001000000200000001000000feffffff0000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+fffffffffffffffffdffffff04000000feffffff06000000050000000800000007000000fefffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffff52006f006f007400200045006e00740072007900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016000500ffffffffffffffff040000004168de93a3211b10bf4f04021c009402000000000000000000000000b0f5
+248afc0ec10103000000000600000000000001004f006c00650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000201ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000
+000000000000000000000000140000000000000041007500740068006f007200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e0002010100000003000000ffffffff0000000000000000000000000000000000000000000000000000
+0000000000000000000001000000050000000000000043006f006d00700061006e007900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000201ffffffffffffffffffffffff000000000000000000000000000000000000000000000000
+000000000000000000000000020000000500000000000000fefffffffefffffffefffffffefffffffeffffff06000000fefffffffeffffff090000000a0000000b0000000c0000000d0000000e0000000f00000010000000110000001200000013000000fefffffffefffffffefffffffefffffffeffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff010000020000000000000000000000000000000040181e0030e81a000000000038e81a000000000040e81a000000000048e81a000000000050e81a00000000004e6f6e650000000060e81a000000000068e81a000000000070e81a000000
+000078e81a000000000080e81a000000000088e81a000000000090e81a00000000004e6f6e6500000000a0e81a0000000000a8e81a0000000000b0e81a0000000000b8e81a0000000000c0e81a0000000000c8e81a0000000000d0e81a000000000000e81a0000000000e0e81a0000000000e8e81a0000000000f0e81a00
+00000000f8e81a000000000000e91a000000000008e91a000000000010e91a0000000000436f72656c464c4f572056657273696f6e20322e30303120446f63756d656e7400e91a000000000040e91a000000000048e91a000000000050e91a00000000000100feff030a0000ffffffff4168de93a3211b10bf4f04021c00
+940213000000436f72656c464c4f5720446f63756d656e740013000000436f72656c464c4f572e446f63756d656e740013000000436f72656c464c4f572e446f63756d656e7400f439b271000000000000000000000000e91a0000000000d0e91a00000000000000030000000000e0e91a0000000000e8e91a0000000000
+f0e91a0000000000f8e91a000000000000ea1a000000000008ea1a000000000010ea1a0000000000500072006f006a006500630074000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100002010200000008000000ffffffff000000000000
+000000000000000000000000000000000000000000000000000000000000030000000100000000000000560065007200730069006f006e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000201ffffffffffffffffffffffff00000000
+0000000000000000000000000000000000000000000000000000000000000000040000002100000000000000010043006f006d0070004f0062006a00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000120002000500000007000000ffffffff0000
+0000000000000000000000000000000000000000000000000000000000000000000005000000710000000000000003004f0062006a0049006e0066006f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffffffffffff
+00000000000000000000000000000000000000000000000000000000000000000000000007000000040000000000000043006f006e00740065006e007400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201060000000a000000ffff
+ffff00000000000000000000000000000000000000000000000000000000000000000000000008000000e7020000000000004b006500790057006f0072006400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffff
+ffffffff0000000000000000000000000000000000000000000000000000000000000000000000001400000005000000000000005400680075006d0062006e00610069006c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000014000200090000000b00
+0000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000150000000a000000000000004400650073006300720069007000740069006f006e0000000000000000000000000000000000000000000000000000000000000000000000000000000000000018000201ffffffff
+0c000000ffffffff0000000000000000000000000000000000000000000000000000000000000000000000001600000005000000000000000080000020010000000000000000f03f9a9999999999a93f00000000000000000000000021400000000000002640320032003200320001000100000000000000000000000000
+0000000000000302310264000000000000000000000000000000000000000000050009000200050005000100010007000100d4ff00000000000090010000000007000022417269616c000000000000000000000000000000000000000000000000000000000001000200eb030000050000000000b1ffffff0a009000b001
+b4025c020300020002000000000500040100000000ffffff00020000000000000000000000000000000001012000ac00f8010f005374617469634c696e6b0d6e756c6c0200030002000000000500b1ffffff0000020000000200d007d0070e00aaffb9ff5600000300b001b00101000000000a00b0015c0201000000000a
+005b015c0201000000000a000300040003000000000500040100000000ffffff00020000000000000000000000000000000001012000e901e9010100690200050003000000000500b1ffffff0001000000010000d007010000000000000000000002000602140201000000000a00fb02140201000000000a000200070004
+000000000500b1ffffff0001000000010000d007010000000000000000000002004800400201000000000a004800840101000000000a000300090005000000000500040100000000ffffff00020000000000000000000000000000000001012000390079011900446972656374696f6e206f6620737461636b2067726f77
+74680300060004000000000500040100000000ffffff00020000000000450000000000000000000001012000110322021400546f20646174756d20666f7220676f62616c20690600010002000000010500000000000001000000010000d007d0070000000000000000000500deffeeff01000000000a0002000000010000
+00000a00deff120001000000000a00e7ff000001000000000a00deffeeff01000000000a000c0000000000000000000000000000000000000000000000000000000000004e6f6e65000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000077140000a4afd415df270000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004e6f6e6500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000436f72656c464c4f57000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004100700070006c00690063006100740069006f006e004e0061006d006500000000000000000000000000000000000000000000000000
+0000000000000000000020000200ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000170000000a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001050000050000000d0000004d45544146494c455049435400ed29000002f6ffffb40a00000800ed29fe090000
+010009000003560500000600dd01000000000400000003010800050000000b0247011900050000000c022201c104dd010000f7000003ec00000000040000330400006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066
+ff04009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff990400ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff0433660004
+3366330433666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff0433ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633
+6604663399046633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc330466cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff0499000004990033049900660499009904
+9900cc049900ff04993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff04999900049999330499996604999999049999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ff
+ff04cc000004cc003304cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004
+ccff3304ccff6604ccff9904ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc
+6604ffcc9904ffcccc04ffccff04ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b04787878048686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff040400000034020000
+0300000035000500000004010d00000008000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b045d02b502b001900008000000fa0205000100000000000000040000002d01030004000000f001010008000000fa020000
+0100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0104000500000004010d000000070000001b043f028b01cd01a500040000002d010300040000002d01020004000000f00104000500
+00002e01180000001c000000fb02d4ff00000000000090010000000000000022417269616c000000db0b0a53627eed776b7eed77c057ef77db0b0a5300000a00040000002d01040016000000320af801ac000a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a2d02ac00
+040000006e756c6c1b001b000d000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a00000025030300b001b001b0015c025b015c02040000002d01030004000000f001010008000000
+fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04fa01f801be01e301040000002d010300040000002d01020004000000f001
+0500050000002e0118000000040000002d01040009000000320ae901e9010100000069090c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000080000002503020006021402fb0214020400
+00002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500d9020202fd021402d9022602e2021402d9020202040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa020000
+0400000000000000040000002d0101000500000004010d0000000e00000025030500d9020202fd021402d9022602e2021402d9020202040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000080000002503020048004002
+48008401040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305003600a601480082015a00a60148009d013600a601040000002d01020004000000f00105000500000002010100000004000000f00101000800
+0000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305003600a601480082015a00a60148009d013600a601040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d01
+03000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b048a0167024e013400040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d0104002d000000320a7901390019000000446972656374696f6e206f66
+20737461636b2067726f7774680122000d0011001c0019000f000d001b001b000f001c000f000f0019000f001c001800190010001b0011001c0023000f001b0005000000020102000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902000000000500
+0000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b043302d304f7010903040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a220211031400
+0000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d010300030000000000}{\result {\fs20\lang1024 
+{\pict{\*\picprop\shplid1025{\sp{\sn shapeType}{\sv 75}}{\sp{\sn fFlipH}{\sv 0}}{\sp{\sn fFlipV}{\sv 0}}{\sp{\sn pictureGray}{\sv 0}}{\sp{\sn pictureBiLevel}{\sv 0}}{\sp{\sn fillColor}{\sv 268435473}}{\sp{\sn fFilled}{\sv 0}}{\sp{\sn fHitTestFill}{\sv 1}}
+{\sp{\sn fillShape}{\sv 1}}{\sp{\sn fillUseRect}{\sv 0}}{\sp{\sn fNoFillHitTest}{\sv 0}}{\sp{\sn fLine}{\sv 0}}}\picscalex100\picscaley100\piccropl0\piccropr0\piccropt0\piccropb0
+\picw10733\pich2558\picwgoal6085\pichgoal1450\wmetafile8\bliptag508142017\blipupi287{\*\blipuid 1e49a1c19b563c4b649528807768102e}
+010009000003560500000600dd01000000000400000003010800050000000b0247011900050000000c022201c104dd010000f7000003ec000000000400003304
+00006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066ff04
+009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff9904
+00ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff043366000433663304
+33666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff04
+33ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633660466339904
+6633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc3304
+66cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff04990000049900330499006604990099049900cc049900ff04
+993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff0499990004999933049999660499999904
+9999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ffff04cc000004cc003304
+cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04
+cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004ccff3304ccff6604ccff9904
+ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304
+ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc6604ffcc9904ffcccc04ffccff04
+ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b0478787804
+8686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff0404000000340200000300000035000500000004010d000000
+08000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b045d02
+b502b001900008000000fa0205000100000000000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500
+000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d010400050000000401
+0d000000070000001b043f028b01cd01a500040000002d010300040000002d01020004000000f0010400050000002e01180000001c000000fb02d4ff00000000
+000090010000000000000022417269616c000000db0b0a53627eed776b7eed77c057ef77db0b0a5300000a00040000002d01040016000000320af801ac000a00
+00005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a2d02ac00040000006e756c6c1b001b000d000d00050000000201
+02000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000
+0a00000025030300b001b001b0015c025b015c02040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000
+09020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00
+0000070000001b04fa01f801be01e301040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a
+e901e9010100000069090c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d000000080000002503020006021402fb021402040000002d010300040000002d0103000500000002010100000007000000
+fc020000000000000000040000002d0105000500000004010d0000000e00000024030500d9020202fd021402d9022602e2021402d9020202040000002d010200
+04000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000
+25030500d9020202fd021402d9022602e2021402d9020202040000002d0103000500000002010100000004000000f001010008000000fa020000040000000000
+0000040000002d0101000500000004010d00000008000000250302004800400248008401040000002d010300040000002d010300050000000201010000000700
+0000fc020000000000000000040000002d0105000500000004010d0000000e000000240305003600a601480082015a00a60148009d013600a601040000002d01
+020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00
+0000250305003600a601480082015a00a60148009d013600a601040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01
+01000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500
+000004010d000000070000001b048a0167024e013400040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d010400
+2d000000320a7901390019000000446972656374696f6e206f6620737461636b2067726f7774680122000d0011001c0019000f000d001b001b000f001c000f00
+0f0019000f001c001800190010001b0011001c0023000f001b0005000000020102000000040000002d01030004000000f001010008000000fa02000001000000
+00000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000
+040000002d0105000500000004010d000000070000001b043302d304f7010903040000002d010300040000002d01020004000000f0010500050000002e011800
+0000040000002d01040025000000320a2202110314000000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d010300030000000000000000000000}}}}}{
+\par }\pard\plain \s25\sb120\sa120\widctlpar\adjustright \b\f1\fs22\cgrid {Figure }{\field{\*\fldinst { SEQ Figure \\* ARABIC }}{\fldrslt {\lang1024 1}}}{\lang1024  As execution begins
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {As the main function starts a new frame is pushed for the local variables of main. As once the declaration of the local variable i is processed the situation looks like this.
+\par }\pard \keepn\widctlpar\adjustright {\pard\plain \keepn\widctlpar\adjustright \f1\fs22\cgrid {\object\objemb\objw6481\objh2769{\*\objclass }{\*\objdata 010500000200000013000000436f72656c464c4f572e446f63756d656e7400000000000000000000260000
+d0cf11e0a1b11ae1000000000000000000000000000000003e000300feff0900060000000000000000000000010000000100000000000000001000000200000001000000feffffff0000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+fffffffffffffffffdffffff0b000000feffffff0400000005000000060000000700000008000000090000000a0000000c0000000d0000000e000000100000000f00000011000000fefffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffff52006f006f007400200045006e00740072007900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016000500ffffffffffffffff040000004168de93a3211b10bf4f04021c009402000000000000000000000000d096
+2c8afc0ec10103000000401600000000000001004f006c00650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000201ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000
+000000000000000000000000140000000000000003005000520049004e005400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e0002010100000003000000ffffffff0000000000000000000000000000000000000000000000000000
+0000000000000000000001000000d80e00000000000041007500740068006f007200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000201ffffffffffffffffffffffff000000000000000000000000000000000000000000000000
+0000000000000000000000003d0000000500000000000000feffffff02000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a00
+00001b0000001c0000001d0000001e0000001f000000200000002100000022000000230000002400000025000000260000002700000028000000290000002a0000002b0000002c0000002d0000002e0000002f00000030000000310000003200000033000000340000003500000036000000370000003800000039000000
+3a0000003b0000003c000000fefffffffefffffffefffffffefffffffeffffff42000000fefffffffeffffff45000000460000004700000048000000490000004a0000004b0000004c0000004d0000004e0000004f0000005000000051000000520000005300000054000000fefffffffefffffffefffffffefffffffeff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff010000020000000000000000000000000000000070171b0004010d0000000e000000240305003600a601480082015a00a60148009d013600a601040000002d010800a62c15130000010009000003680700000600dd010000000004000000
+03010800050000000b028b04f101050000000c022a021005dd010000f7000003ec00000000040000330400006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066ff04009900040099330400996604009999040099cc04
+0099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff990400ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff04336600043366330433666604336699043366cc043366ff043399
+00043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff0433ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff04663300046633330466336604663399046633cc046633ff046666000466663304
+66666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc330466cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff04990000049900330499006604990099049900cc049900ff049933000499333304993366049933
+99049933cc049933ff04996600049966330499666604996699049966cc049966ff04999900049999330499996604999999049999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ffff04cc000004cc003304cc006604cc009904cc00cc04
+cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004ccff3304ccff6604ccff9904ccffcc04ccffff04ff00
+0004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc6604ffcc9904ffcccc04ffccff04ffff0004ffff3304
+ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b04787878048686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff0404000000340200000300000035000500000004010d00000008000000fa02
+00000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b043f06aa049205850208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902
+0000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0104000500000004010d000000070000001b0421068003af059a02040000002d010300040000002d01020004000000f0010400050000002e01180000001c000000fb02d4ff000000000000
+90010000000000000022417269616c00000078090afc627eed776b7eed77c057ef7778090afc00000a00040000002d01040016000000320ada05a1020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f06a102040000006e756c6c1b001b000d000d00050000000201
+02000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a00000025030300a5039205a5033e0650033e06040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500
+000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04dc05ed03a005d803040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d0104000900
+0000320acb05de030100000069060c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200fb03f6057d048606040000002d010300040000002d0103000500000002010100
+000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500740461067e048706590479066c04730674046106040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d010100050000000401
+0d0000000e00000025030500740461067e048706590479066c04730674046106040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff0000000400
+00002d0105000500000004010d000000070000001b04a6065b066a069104040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a9506990414000000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f00
+1b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200200222062002ba04040000002d010300040000002d01030005000000
+02010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305000e02dc042002b8043202dc042002d3040e02dc04040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500
+000004010d0000000e000000250305000e02dc042002b8043202dc042002d3040e02dc04040000002d0103000500000004010d000000040000002d01010005000000020101000000040000002d010200070000001b047505ab04c8048602040000002d01030004000000f001010008000000fa0200000100000000000000
+040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b0421058103e5049b02040000002d010300040000002d01020004000000f0010500050000002e0118000000
+040000002d01040016000000320a1005a2020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000
+25030300a603c804a603740551037405040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000
+070000001b041205ee03d604d903040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a0105df030100000069050c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d0000000c00000025030400a40258055c0258055c02bc058502bc05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305006302aa058702bc056302ce056c02bc056302
+aa05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305006302aa058702bc056302ce056c02bc056302aa05040000002d0103000500000002010100000004000000f00101000800
+0000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200f0032c0501052c05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500df041a0503052c05df043e05
+e8042c05df041a05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500df041a0503052c05df043e05e8042c05df041a05040000002d01030004000000f001010008000000fa02
+00000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05fa06f3044105040000002d010300040000002d01020004000000f0010500
+050000002e0118000000040000002d01040025000000320a1e05490514000000546f20646174756d20666f72206c6f63616c20691d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d01030003000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000004e6f6e650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004e6f6e6500000000000000000000000000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000043006f006d00700061006e00790000000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000100002010200000008000000ffffffff0000000000000000000000000000000000000000000000000000000000000000000000003e0000000500000000000000500072006f006a006500630074000000000000000000000000000000
+00000000000000000000000000000000000000000000000000000000000000000000000010000201ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000003f0000000100000000000000560065007200730069006f006e00000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000100002010500000007000000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000400000002100000000000000010043006f006d0070004f0062006a000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000410000007100000000000000436f72656c464c4f572056657273696f6e20322e3030
+3120446f63756d656e7400000000000000000000000000000000000000000000000000000000000000000100feff030a0000ffffffff4168de93a3211b10bf4f04021c00940213000000436f72656c464c4f5720446f63756d656e740013000000436f72656c464c4f572e446f63756d656e740013000000436f72656c46
+4c4f572e446f63756d656e7400f439b271000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080000020010000000000000000f03f9a99
+99999999a93f000000000000000000000000214000000000000026403200320032003200010001000000000000000000000000000000000000003305f50564000000000000000000000000000000000000000000050010000300070007000100010007000100d4ff00000000000090010000000007000022417269616c00
+0000000000000000000000000000000000000000000000000000000002000200eb030000050000000000b1ffffff0a0085029205a9043e060300060002000000000500040100000000ffffff00020000000000000000000000000000000001012000a102da050f005374617469634c6903004f0062006a0049006e006600
+6f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000200060000000a000000ffffffff00000000000000000000000000000000000000000000000000000000000000000000000043000000040000000000000043006f006e00740065006e00
+7400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000004400000040040000000000004b006500790057006f00
+72006400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201090000000c000000ffffffff0000000000000000000000000000000000000000000000000000000000000000000000005500000005000000000000005400680075006d00
+62006e00610069006c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000014000200ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000560000000a000000000000006e6b0d6e756c
+6c0200030002000000000500b1ffffff0000020000000200d007d0070e00aaffb9ff5600000300a503920501000000000a00a5033e0601000000000a0050033e0601000000000a000300070003000000000500040100000000ffffff00020000000000000000000000000000000001012000de03cb050100690200040003
+000000000500b1ffffff0001000000010000d00701000000000000000000000200fb03f60501000000000a007d04860601000000000a000300080004000000000500040100000000ffffff00020000000000450000000000000000000001012000990495061400546f20646174756d20666f7220676f62616c2069020005
+0004000000000500b1ffffff0001000000010000d007010000000000000000000002002002220601000000000a002002ba0401000000000a0000000a000300eb030000050000000000b1ffffff0a008602c804aa04740503000c0005000000000500040100000000ffffff00020000000000000000000000000000000001
+012000a20210050a005374617469634c696e6b02000b0005000000000500b1ffffff0000030000000300d007d0070e00aaffb9ff5600000300a603c80401000000000a00a603740501000000000a005103740501000000000a0003000d0006000000000500040100000000ffffff00020000000000000000000000000000
+000001012000df03010501006902000e0006000000000500b1ffffff00010000000002000000010000000000f1fed4ff000400a402580501000000000a005c02580501000000000a005c02bc0501000000000a008502bc0501000000000a0002000f0007000000000500b1ffffff00010000000100000000010000000000
+00000000000200f0032c0501000000000a0001052c0501000000000a000300100007000000000500040100000000ffffff0002000000000008000000000000000000000101200049051e051400546f20646174756d20666f72206c6f63616c20690600010002000000010500000000000001000000010000d007d0070000
+000000000000000500deffeeff01000000000a000200000001000000000a00deff120001000000000a00e7ff000001000000000a00deffeeff01000000000a000c00000000004e6f6e6500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000bf150000a4afd4159f1d0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004e6f6e650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000004400650073006300720069007000740069006f006e00000000000000000000000000000000000000000000000000000000000000000000000000000000000000180002010b0000000d000000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000
+5700000005000000000000004100700070006c00690063006100740069006f006e004e0061006d0065000000000000000000000000000000000000000000000000000000000000000000000020000200ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000
+0000580000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000436f72656c464c4f5700820400100000b8001300c0f61d00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000001050000050000000d0000004d45544146494c455049435400a62c0000ececffffd80e00000800a62c14130000
+010009000003680700000600dd01000000000400000003010800050000000b028b04f101050000000c022a021005dd010000f7000003ec00000000040000330400006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066
+ff04009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff990400ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff0433660004
+3366330433666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff0433ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633
+6604663399046633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc330466cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff0499000004990033049900660499009904
+9900cc049900ff04993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff04999900049999330499996604999999049999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ff
+ff04cc000004cc003304cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004
+ccff3304ccff6604ccff9904ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc
+6604ffcc9904ffcccc04ffccff04ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b04787878048686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff040400000034020000
+0300000035000500000004010d00000008000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b043f06aa049205850208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa020000
+0100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0104000500000004010d000000070000001b0421068003af059a02040000002d010300040000002d01020004000000f00104000500
+00002e01180000001c000000fb02d4ff00000000000090010000000000000022417269616c00000078090afc627eed776b7eed77c057ef7778090afc00000a00040000002d01040016000000320ada05a1020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f06a102
+040000006e756c6c1b001b000d000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a00000025030300a5039205a5033e0650033e06040000002d01030004000000f001010008000000
+fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04dc05ed03a005d803040000002d010300040000002d01020004000000f001
+0500050000002e0118000000040000002d01040009000000320acb05de030100000069080c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200fb03f6057d0486060400
+00002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500740461067e048706590479066c04730674046106040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa020000
+0400000000000000040000002d0101000500000004010d0000000e00000025030500740461067e048706590479066c04730674046106040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d01030005000000
+02010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04a6065b066a069104040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a9506990414000000546f20646174756d20666f7220676f62616c
+20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200200222062002
+ba04040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305000e02dc042002b8043202dc042002d3040e02dc04040000002d01020004000000f00105000500000002010100000004000000f001010008000000
+fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305000e02dc042002b8043202dc042002d3040e02dc04040000002d0103000500000004010d000000040000002d01010005000000020101000000040000002d010200070000001b047505ab04c8048602040000002d0103000400
+0000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b0421058103e5049b02040000002d01030004000000
+2d01020004000000f0010500050000002e0118000000040000002d01040016000000320a1005a2020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d0000000a00000025030300a603c804a603740551037405040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffff
+ff000000040000002d0105000500000004010d000000070000001b041205ee03d604d903040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a0105df030100000069080c0005000000020102000000040000002d010300050000000201010000000400
+0000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c00000025030400a40258055c0258055c02bc058502bc05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000
+240305006302aa058702bc056302ce056c02bc056302aa05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305006302aa058702bc056302ce056c02bc056302aa05040000002d01
+03000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200f0032c0501052c05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d00
+00000e00000024030500df041a0503052c05df043e05e8042c05df041a05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500df041a0503052c05df043e05e8042c05df041a05
+040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05fa06f30441050400
+00002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a1e05490514000000546f20646174756d20666f72206c6f63616c20691d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d00050000000201020000000400
+00002d010300030000000000}{\result {\fs20\lang1024 {\pict{\*\picprop\shplid1026{\sp{\sn shapeType}{\sv 75}}{\sp{\sn fFlipH}{\sv 0}}{\sp{\sn fFlipV}{\sv 0}}{\sp{\sn pictureGray}{\sv 0}}{\sp{\sn pictureBiLevel}{\sv 0}}
+{\sp{\sn fillColor}{\sv 268435473}}{\sp{\sn fFilled}{\sv 0}}{\sp{\sn fHitTestFill}{\sv 1}}{\sp{\sn fillShape}{\sv 1}}{\sp{\sn fillUseRect}{\sv 0}}{\sp{\sn fNoFillHitTest}{\sv 0}}{\sp{\sn fLine}{\sv 0}}}
+\picscalex100\picscaley100\piccropl0\piccropr0\piccropt0\piccropb0\picw11430\pich4884\picwgoal6480\pichgoal2769\wmetafile8\bliptag-1344109100\blipupi288{\*\blipuid afe285d42afa9ab31b73ad26c48dd834}
+010009000003680700000600dd01000000000400000003010800050000000b028b04f101050000000c022a021005dd010000f7000003ec000000000400003304
+00006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066ff04
+009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff9904
+00ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff043366000433663304
+33666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff04
+33ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633660466339904
+6633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc3304
+66cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff04990000049900330499006604990099049900cc049900ff04
+993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff0499990004999933049999660499999904
+9999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ffff04cc000004cc003304
+cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04
+cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004ccff3304ccff6604ccff9904
+ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304
+ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc6604ffcc9904ffcccc04ffccff04
+ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b0478787804
+8686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff0404000000340200000300000035000500000004010d000000
+08000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b043f06
+aa049205850208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500
+000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d010400050000000401
+0d000000070000001b0421068003af059a02040000002d010300040000002d01020004000000f0010400050000002e01180000001c000000fb02d4ff00000000
+000090010000000000000022417269616c00000078090afc627eed776b7eed77c057ef7778090afc00000a00040000002d01040016000000320ada05a1020a00
+00005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f06a102040000006e756c6c1b001b000d000d00050000000201
+02000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000
+0a00000025030300a5039205a5033e0650033e06040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000
+09020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00
+0000070000001b04dc05ed03a005d803040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a
+cb05de030100000069080c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d0000000800000025030200fb03f6057d048606040000002d010300040000002d0103000500000002010100000007000000
+fc020000000000000000040000002d0105000500000004010d0000000e00000024030500740461067e048706590479066c04730674046106040000002d010200
+04000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000
+25030500740461067e048706590479066c04730674046106040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100
+0500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d01050005000000
+04010d000000070000001b04a6065b066a069104040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d0104002500
+0000320a9506990414000000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b00
+1c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa020000040000000000000004000000
+2d0101000500000004010d0000000800000025030200200222062002ba04040000002d010300040000002d0103000500000002010100000007000000fc020000
+000000000000040000002d0105000500000004010d0000000e000000240305000e02dc042002b8043202dc042002d3040e02dc04040000002d01020004000000
+f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500
+0e02dc042002b8043202dc042002d3040e02dc04040000002d0103000500000004010d000000040000002d01010005000000020101000000040000002d010200
+070000001b047505ab04c8048602040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000090200000000
+05000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00000007000000
+1b0421058103e5049b02040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a1005a2020a00
+00005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000
+f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a00000025030300a603c804a603740551037405040000002d01
+030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500
+000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b041205ee03d604d903040000002d0103000400
+00002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a0105df030100000069080c000500000002010200000004000000
+2d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c00000025030400
+a40258055c0258055c02bc058502bc05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d010500
+0500000004010d0000000e000000240305006302aa058702bc056302ce056c02bc056302aa05040000002d01020004000000f001050005000000020101000000
+04000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305006302aa058702bc056302ce056c02
+bc056302aa05040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d00
+00000800000025030200f0032c0501052c05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d01
+05000500000004010d0000000e00000024030500df041a0503052c05df043e05e8042c05df041a05040000002d01020004000000f00105000500000002010100
+000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500df041a0503052c05df043e05
+e8042c05df041a05040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000090200000000050000000201
+01000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05fa06
+f3044105040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a1e05490514000000546f2064
+6174756d20666f72206c6f63616c20691d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d010300030000000000000000000000}}}}}{
+\par }\pard\plain \s25\sb120\sa120\widctlpar\adjustright \b\f1\fs22\cgrid {Figure }{\field{\*\fldinst { SEQ Figure \\* ARABIC }}{\fldrslt {\lang1024 2}}}{ At point B
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {As the call to subroutine f is executed, a new frame is pushed and one entry is pushed onto the frame for each parameter. After the declaration of k. The symbol table looks like this.
+\par }\pard \keepn\widctlpar\adjustright {\pard\plain \keepn\widctlpar\adjustright \f1\fs22\cgrid {\object\objemb\objw7035\objh3925{\*\objclass }{\*\objdata 010500000200000013000000436f72656c464c4f572e446f63756d656e7400000000000000000000320000
+d0cf11e0a1b11ae1000000000000000000000000000000003e000300feff0900060000000000000000000000010000000100000000000000001000000200000001000000feffffff0000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+fffffffffffffffffdffffff10000000feffffff1200000005000000060000000700000008000000090000000a0000000b0000000c0000000d0000000e0000000f000000feffffff110000001700000013000000140000001500000016000000fefffffffeffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffff52006f006f007400200045006e00740072007900000000000000000000000000000000000000000000000000000000000000000000000000000000000000000016000500ffffffffffffffff040000004168de93a3211b10bf4f04021c00940200000000000000000000000050b1
+328afc0ec10103000000c00a00000000000001004f006c00650000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a000201ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000
+000000000000000000000000140000000000000003005000520049004e005400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e0002010100000003000000ffffffff0000000000000000000000000000000000000000000000000000
+0000000000000000000004000000d41700000000000041007500740068006f007200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000e000201ffffffffffffffffffffffff000000000000000000000000000000000000000000000000
+000000000000000000000000010000000500000000000000fefffffffefffffffefffffffefffffffeffffff06000000fefffffffeffffff090000000a0000000b0000000c0000000d0000000e0000000f000000100000001100000012000000130000001400000015000000160000001700000018000000190000001a00
+00001b0000001c0000001d0000001e0000001f00000020000000210000002200000023000000240000002500000026000000fefffffffefffffffefffffffefffffffeffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff010000020000000000000000000000000000000070171b0004010d0000000e000000240305003600a601480082015a00a60148009d013600a601040000002d014e6f6e650000f00105000500000002010100000004000000f00101000800
+0000fa0200000400000000000000040000002d0101000500000004010d0000000e004e6f6e6500003600a601480082015a00a60148009d013600a601040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0100000500000009020000000005000000020101000000040000002d01
+03000500000002010100000007000000fc020000ffffff000000040000002d0105000500436f72656c464c4f572056657273696f6e20322e30303120446f63756d656e7400002d01020004000000f0010500050000002e0118000000040000002d0104000100feff030a0000ffffffff4168de93a3211b10bf4f04021c00
+940213000000436f72656c464c4f5720446f63756d656e740013000000436f72656c464c4f572e446f63756d656e740013000000436f72656c464c4f572e446f63756d656e7400f439b27100000000000000000000000001010008000000fa0200000100000000000300040000002d010100050000000902000000000500
+0000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000080078300b1b0000010009000003e60b00000600dd01000000000400000003010800050000000b02a403ac01050000000c0211037f05dd010000f7000003ec00000000040000330400006604000099040000cc040000
+ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066ff04009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff990400ffcc0400ffff0433000004
+3300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff04336600043366330433666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff0433ff000433ff330433ff
+660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff04663300046633330466336604663399046633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc330466cc660466cc9904
+66cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff04990000049900330499006604990099049900cc049900ff04993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff04999900049999330499996604999999049999cc049999
+ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ffff04cc000004cc003304cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04cc990004
+cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004ccff3304ccff6604ccff9904ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304ff66
+6604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc6604ffcc9904ffcccc04ffccff04ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b0478787804
+8686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff0404000000340200000300000035000500000004010d00000008000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b04
+3f0669049205440208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0104000500
+000004010d000000070000001b0421063f03af055902040000002d010300040000002d01020004000000f0010400050000002e01180000001c000000fb02d4ff00000000000090010000000000000022417269616c000000cd090adb627eed776b7eed77c057ef77cd090adb00000a00040000002d01040016000000320a
+da0560020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f066002040000006e756c6c1b001b000d000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500
+000004010d0000000a000000250303006403920564033e060f033e06040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d01
+05000500000004010d000000070000001b04dc05ac03a0059703040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320acb059d030100000069060c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000
+fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200ba03f6053c048606040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500330461063d048706180479062b04
+730633046106040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500330461063d048706180479062b04730633046106040000002d01030004000000f001010008000000fa020000
+0100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04a6061a066a065004040000002d010300040000002d01020004000000f00105000500
+00002e0118000000040000002d01040025000000320a9506580414000000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f0010100
+08000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200db012106db01fe03040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500c9012004db01fc03ed01
+2004db011704c9012004040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500c9012004db01fc03ed012004db011704c9012004040000002d0103000500000004010d0000000400
+00002d01010005000000020101000000040000002d010200070000001b0475056a04c8044502040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffff
+ff000000040000002d0105000500000004010d000000070000001b0421054003e5045a02040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a100561020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000
+020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006503c8046503740510037405040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100
+0500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b041205ad03d6049803040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d010400
+09000000320a01059e030100000069050c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c00000025030400630258051b0258051b02bc054402bc05040000002d010300040000002d01
+03000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305002202aa054602bc052202ce052b02bc052202aa05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa020000040000000000000004000000
+2d0101000500000004010d0000000e000000250305002202aa054602bc052202ce052b02bc052202aa05040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200af032c05c0042c05040000002d010300
+040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305009e041a05c2042c059e043e05a7042c059e041a05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa020000040000000000
+0000040000002d0101000500000004010d0000000e000000250305009e041a05c2042c059e043e05a7042c059e041a05040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d01030005000000020101000000
+07000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05b906f3040005040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a1e05080514000000546f20646174756d20666f72206c6f63616c20691d001c00
+0f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d0103000500000004010d00000004000000f001010008000000fa0200000400000000000000040000002d01010005000000020101000000040000002d010200070000001b04b9043d050c04
+4e02040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04580444031c045e02
+040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a470465020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000f001010008000000
+fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006e030c046e039c046e03b904040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100
+000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904ac030d049703040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a3804a203010000006a040c0005000000020102000000040000002d010300
+0500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200b30363044604d303040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d000000
+0e000000240305002104de034704d2033a04f8033404e4032104de03040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305002104de034704d2033a04f8033404e4032104de030400
+00002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c000000250304006b027104f8017104f801f6054002f605040000002d010300040000002d0103000500000002010100000007000000fc02000000000000000004000000
+2d0105000500000004010d0000000e000000240305001e02e4054202f6051e0208062702f6051e02e405040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305001e02e4054202f605
+1e0208062702f6051e02e405040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d00000008000000250302005404b8045404b904040000002d01030005000000020101000000040000002d0101000500000004010d0000000800
+0000250302005404b9045404b804040000002d01030005000000020101000000040000002d0101000500000004010d00000008000000250302005404b9045404b804040000002d01030005000000020101000000040000002d0101000500000004010d0000000a0000002503030063040d0463049d046304ba0404000000
+2d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904b9040d049604040000002d01
+0300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a38049c04010000006b04180005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800
+000025030200ab046304cb056304040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500a9055104cd056304a9057504b2056304a9055104040000002d01020004000000f001050005000000020101000000
+04000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500a9055104cd056304a9057504b2056304a9055104040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000090200000000050000000201
+01000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b049b0424072904fc05040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040019000000320a540404060c000000546f
+20646174756d20666f721d001c000f001b001c000f001b0028000f000f001b00120012000000320a89040406070000006c6f63616c206b6d0c001c0018001c000d000f00190005000000020102000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902
+0000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04eb031b06af036204040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a
+da036a0414000000546f20646174756d20666f72206c6f63616c206a1d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d01030003000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000043006f006d00700061006e0079000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100002010200000008000000ffffffff000000000000000000000000000000000000000000000000000000000000000000000000
+020000000500000000000000500072006f006a00650063007400000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000201ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000
+0000030000000100000000000000560065007200730069006f006e000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100002010500000007000000ffffffff0000000000000000000000000000000000000000000000000000000000000000
+00000000040000002100000000000000010043006f006d0070004f0062006a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000
+00000000000005000000710000000000000003004f0062006a0049006e0066006f0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000200060000000a000000ffffffff00000000000000000000000000000000000000000000000000000000
+000000000000000007000000040000000000000043006f006e00740065006e007400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000
+00000000000000000000080000008e070000000000004b006500790057006f0072006400730000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000012000201090000000c000000ffffffff000000000000000000000000000000000000000000000000
+0000000000000000000000002700000005000000000000005400680075006d0062006e00610069006c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000014000200ffffffffffffffffffffffff00000000000000000000000000000000000000000000
+0000000000000000000000000000280000000a000000000000000080000020010000000000000000f03f9a9999999999a93f00000000000000000000000021400000000000002640320032003200320001000100000000000000000000000000000000000000b10359056400000000000000000000000000000000000000
+000005002900050015000e000100010007000100d4ff00000000000090010000000007000022417269616c000000000000000000000000000000000000000000000000000000000002000200eb030000050000000000b1ffffff0a004402920568043e0603000a0002000000000500040100000000ffffff000200000000
+000000000000000000000000010120006002da050f005374617469634c696e6b0d6e756c6c0200040002000000000500b1ffffff0000020000000200d007d0070e00aaffb9ff56000003006403920501000000000a0064033e0601000000000a000f033e0601000000000a0003000b0003000000000500040100000000ff
+ffff000200000000000000000000000000000000010120009d03cb050100690200050003000000000500b1ffffff0001000000010000d00701000000000000000000000200ba03f60501000000000a003c04860601000000000a0003000c0004000000000500040100000000ffffff000200000000004500000000000000
+00000001012000580495061400546f20646174756d20666f7220676f62616c20690200060004000000000500b1ffffff0001000000010000d00701000000000000000000000200db01210601000000000a00db01fe0301000000000a00000003000300eb030000050000000000b1ffffff0a004502c8046904740503000d
+0005000000000500040100000000ffffff00020000000000000000000000000000000001012000610210050a005374617469634c696e6b0200070005000000000500b1ffffff0000030000000300d007d0070e00aaffb9ff56000003006503c80401000000000a006503740501000000000a001003740501000000000a00
+03000e0006000000000500040100000000ffffff000200000000000000000000000000000000010120009e0301050100690200080006000000000500b1ffffff0001000000000200d007010000000000f1fed4ff0004006302580501000000000a001b02580501000000000a001b02bc0501000000000a004402bc050100
+0000000a000200090007000000000500b1ffffff0001000000010000d00701000000000000000000000200af032c0501000000000a00c0042c0501000000000a0003000f0007000000000500040100000000ffffff0002000000000008000000000000000000000101200008051e051400546f20646174756d20666f7220
+6c6f63616c2069000017000500eb030000050000000000b1ffffff0a004e020c043c05b80403001a000a000000000500040100000000ffffff00020000000000000000000000000000000001012000650247040a005374617469634c696e6b020018000a000000000500b1ffffff0000050000000500d007d007a9ffaaff
+a9ff57000003006e030c0401000000000a006e039c0401000000000a006e03b90401000000000a0003001b000b000000000500040100000000ffffff00020000000000000000000000000000000001012000a203380401006a020019000b000000000500b1ffffff0001000000010000d007010000000000000000000002
+00b303630401000000000a004604d30301000000000a0002001d000c000000000500b1ffffff00010000000002000000010000000000eafe0e000004006b02710401000000000a00f801710401000000000a00f801f60501000000000a004002f60501000000000a00020020000f000000000500b1ffffff000005000000
+0500000000008f00aaff8f0057000002005404b80401000000000a005404b90401000000000a000200210010000000000500b1ffffff0000050000000500000000008f0057008f00aaff0002005404b90401000000000a005404b80401000000000a000200220011000000000500b1ffffff000005000000050000000000
+8f0057008f00aaff0002005404b90401000000000a005404b80401000000000a000200260014000000000500b1ffffff0001050000010500d007d007a9ffaaffa9ff570000030063040d0401000000000a0063049d0401000000000a006304ba0401000000000a00030027000d000000000500040100000000ffffff0002
+00000000001000000000000000000000010120009c04380401006b0200280015000000000500b1ffffff0001000000010000000001000000000000000000000200ab04630401000000000a00cb05630401000000000a00030029000e000000000500040100000000ffffff00020000000000220000000000000000000001
+012000040654041400546f20646174756d20666f720d6c6f63616c206b03001c000c000000000500040100000000ffffff000200000000000800000000000000000000010120006a04da031400546f20646174756d20666f72206c6f63616c206a0600010002000000010500000000000001000000010000d007d0070000
+000000000000000500deffeeff01000000000a000200000001000000000a00deff120001000000000a00e7ff000001000000000a00deffeeff01000000000a000c000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004e6f6e650000
+00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000c71c0000a4afd415df11c2050010000008e01d0040181e00000000000000000000000000000000000000000000000000000000000000000000000000000000004e6f6e65
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000436f72656c464c4f57000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004400650073006300720069007000740069006f006e000000000000000000000000000000000000000000000000000000000000000000000000000000
+00000000180002010b0000000d000000ffffffff0000000000000000000000000000000000000000000000000000000000000000000000002900000005000000000000004100700070006c00690063006100740069006f006e004e0061006d00650000000000000000000000000000000000000000000000000000000000
+00000000000020000200ffffffffffffffffffffffff0000000000000000000000000000000000000000000000000000000000000000000000002a0000000a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000ffffffffffffffffffffffff000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+0000000000000000000000000000ffffffffffffffffffffffff00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001050000050000000d0000004d45544146494c45504943540077300000f5e4ffffd4170000080077300b1b0000
+010009000003e60b00000600dd01000000000400000003010800050000000b02a403ac01050000000c0211037f05dd010000f7000003ec00000000040000330400006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066
+ff04009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff990400ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff0433660004
+3366330433666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff0433ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633
+6604663399046633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc330466cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff0499000004990033049900660499009904
+9900cc049900ff04993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff04999900049999330499996604999999049999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ff
+ff04cc000004cc003304cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004
+ccff3304ccff6604ccff9904ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc
+6604ffcc9904ffcccc04ffccff04ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b04787878048686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff040400000034020000
+0300000035000500000004010d00000008000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b043f0669049205440208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa020000
+0100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0104000500000004010d000000070000001b0421063f03af055902040000002d010300040000002d01020004000000f00104000500
+00002e01180000001c000000fb02d4ff00000000000090010000000000000022417269616c000000cd090adb627eed776b7eed77c057ef77cd090adb00000a00040000002d01040016000000320ada0560020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f066002
+040000006e756c6c1b001b000d000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006403920564033e060f033e06040000002d01030004000000f001010008000000
+fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04dc05ac03a0059703040000002d010300040000002d01020004000000f001
+0500050000002e0118000000040000002d01040009000000320acb059d030100000069040c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200ba03f6053c0486060400
+00002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500330461063d048706180479062b04730633046106040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa020000
+0400000000000000040000002d0101000500000004010d0000000e00000025030500330461063d048706180479062b04730633046106040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d01030005000000
+02010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04a6061a066a065004040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a9506580414000000546f20646174756d20666f7220676f62616c
+20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b001c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200db012106db01
+fe03040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e00000024030500c9012004db01fc03ed012004db011704c9012004040000002d01020004000000f00105000500000002010100000004000000f001010008000000
+fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500c9012004db01fc03ed012004db011704c9012004040000002d0103000500000004010d000000040000002d01010005000000020101000000040000002d010200070000001b0475056a04c8044502040000002d0103000400
+0000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b0421054003e5045a02040000002d01030004000000
+2d01020004000000f0010500050000002e0118000000040000002d01040016000000320a100561020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d0000000a000000250303006503c8046503740510037405040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffff
+ff000000040000002d0105000500000004010d000000070000001b041205ad03d6049803040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a01059e030100000069040c0005000000020102000000040000002d010300050000000201010000000400
+0000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c00000025030400630258051b0258051b02bc054402bc05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000
+240305002202aa054602bc052202ce052b02bc052202aa05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305002202aa054602bc052202ce052b02bc052202aa05040000002d01
+03000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200af032c05c0042c05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d00
+00000e000000240305009e041a05c2042c059e043e05a7042c059e041a05040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305009e041a05c2042c059e043e05a7042c059e041a05
+040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05b906f30400050400
+00002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a1e05080514000000546f20646174756d20666f72206c6f63616c20691d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d00050000000201020000000400
+00002d0103000500000004010d00000004000000f001010008000000fa0200000400000000000000040000002d01010005000000020101000000040000002d010200070000001b04b9043d050c044e02040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902
+0000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04580444031c045e02040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a
+470465020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006e030c046e039c046e03
+b904040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904ac030d049703
+040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a3804a203010000006a040c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d010100050000000401
+0d0000000800000025030200b30363044604d303040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305002104de034704d2033a04f8033404e4032104de03040000002d01020004000000f001050005000000
+02010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305002104de034704d2033a04f8033404e4032104de03040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d010100
+0500000004010d0000000c000000250304006b027104f8017104f801f6054002f605040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d0000000e000000240305001e02e4054202f6051e0208062702f6051e02e405040000002d01
+020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305001e02e4054202f6051e0208062702f6051e02e405040000002d0103000500000002010100000004000000f001010008000000fa0200000400
+000000000000040000002d0101000500000004010d00000008000000250302005404b8045404b904040000002d01030005000000020101000000040000002d0101000500000004010d00000008000000250302005404b9045404b804040000002d01030005000000020101000000040000002d0101000500000004010d00
+000008000000250302005404b9045404b804040000002d01030005000000020101000000040000002d0101000500000004010d0000000a0000002503030063040d0463049d046304ba04040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902000000000500
+0000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904b9040d049604040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a38049c040100
+00006b04180005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200ab046304cb056304040000002d010300040000002d0103000500000002010100000007000000fc020000
+000000000000040000002d0105000500000004010d0000000e00000024030500a9055104cd056304a9057504b2056304a9055104040000002d01020004000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e0000002503
+0500a9055104cd056304a9057504b2056304a9055104040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d01050005000000
+04010d000000070000001b049b0424072904fc05040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040019000000320a540404060c000000546f20646174756d20666f721d001c000f001b001c000f001b0028000f000f001b00120012000000320a8904040607000000
+6c6f63616c206b000c001c0018001c000d000f00190005000000020102000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff0000000400
+00002d0105000500000004010d000000070000001b04eb031b06af036204040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320ada036a0414000000546f20646174756d20666f72206c6f63616c206a1d001c000f001b001c000f001b0028000f000f00
+1b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d010300030000000000}{\result {\fs20\lang1024 {\pict{\*\picprop\shplid1027{\sp{\sn shapeType}{\sv 75}}{\sp{\sn fFlipH}{\sv 0}}
+{\sp{\sn fFlipV}{\sv 0}}{\sp{\sn pictureGray}{\sv 0}}{\sp{\sn pictureBiLevel}{\sv 0}}{\sp{\sn fillColor}{\sv 268435473}}{\sp{\sn fFilled}{\sv 0}}{\sp{\sn fHitTestFill}{\sv 1}}
+{\sp{\sn fillShape}{\sv 1}}{\sp{\sn fillUseRect}{\sv 0}}{\sp{\sn fNoFillHitTest}{\sv 0}}{\sp{\sn fLine}{\sv 0}}}\picscalex100\picscaley100\piccropl0\piccropr0\piccropt0\piccropb0
+\picw12407\pich6923\picwgoal7034\pichgoal3925\wmetafile8\bliptag2085966825\blipupi288{\*\blipuid 7c5553e9fbb351c050563f042bff3ba2}
+010009000003e60b00000600dd01000000000400000003010800050000000b02a403ac01050000000c0211037f05dd010000f7000003ec000000000400003304
+00006604000099040000cc040000ff04003300040033330400336604003399040033cc040033ff04006600040066330400666604006699040066cc040066ff04
+009900040099330400996604009999040099cc040099ff0400cc000400cc330400cc660400cc990400cccc0400ccff0400ff000400ff330400ff660400ff9904
+00ffcc0400ffff04330000043300330433006604330099043300cc043300ff04333300043333330433336604333399043333cc043333ff043366000433663304
+33666604336699043366cc043366ff04339900043399330433996604339999043399cc043399ff0433cc000433cc330433cc660433cc990433cccc0433ccff04
+33ff000433ff330433ff660433ff990433ffcc0433ffff04660000046600330466006604660099046600cc046600ff0466330004663333046633660466339904
+6633cc046633ff04666600046666330466666604666699046666cc046666ff04669900046699330466996604669999046699cc046699ff0466cc000466cc3304
+66cc660466cc990466cccc0466ccff0466ff000466ff330466ff660466ff990466ffcc0466ffff04990000049900330499006604990099049900cc049900ff04
+993300049933330499336604993399049933cc049933ff04996600049966330499666604996699049966cc049966ff0499990004999933049999660499999904
+9999cc049999ff0499cc000499cc330499cc660499cc990499cccc0499ccff0499ff000499ff330499ff660499ff990499ffcc0499ffff04cc000004cc003304
+cc006604cc009904cc00cc04cc00ff04cc330004cc333304cc336604cc339904cc33cc04cc33ff04cc660004cc663304cc666604cc669904cc66cc04cc66ff04
+cc990004cc993304cc996604cc999904cc99cc04cc99ff04cccc0004cccc3304cccc6604cccc9904cccccc04ccccff04ccff0004ccff3304ccff6604ccff9904
+ccffcc04ccffff04ff000004ff003304ff006604ff009904ff00cc04ff00ff04ff330004ff333304ff336604ff339904ff33cc04ff33ff04ff660004ff663304
+ff666604ff669904ff66cc04ff66ff04ff990004ff993304ff996604ff999904ff99cc04ff99ff04ffcc0004ffcc3304ffcc6604ffcc9904ffcccc04ffccff04
+ffff0004ffff3304ffff6604ffff9904ffffcc04ffffff04000000040d0d0d041a1a1a04282828043535350443434304505050045d5d5d046b6b6b0478787804
+8686860493939304a1a1a104aeaeae04bbbbbb04c9c9c904d6d6d604e4e4e404f1f1f104ffffff0404000000340200000300000035000500000004010d000000
+08000000fa0200000400000000000000040000002d0101000500000002010100000007000000fc020100000000000000040000002d010200070000001b043f06
+69049205440208000000fa0205000100000000000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500
+000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d010400050000000401
+0d000000070000001b0421063f03af055902040000002d010300040000002d01020004000000f0010400050000002e01180000001c000000fb02d4ff00000000
+000090010000000000000022417269616c000000cd090adb627eed776b7eed77c057ef77cd090adb00000a00040000002d01040016000000320ada0560020a00
+00005374617469634c696e6b20000f001b000f000d0019001b000d001b0019000d000000320a0f066002040000006e756c6c1b001b000d000d00050000000201
+02000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000
+0a000000250303006403920564033e060f033e06040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000
+09020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00
+0000070000001b04dc05ac03a0059703040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a
+cb059d030100000069040c0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000
+040000002d0101000500000004010d0000000800000025030200ba03f6053c048606040000002d010300040000002d0103000500000002010100000007000000
+fc020000000000000000040000002d0105000500000004010d0000000e00000024030500330461063d048706180479062b04730633046106040000002d010200
+04000000f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000
+25030500330461063d048706180479062b04730633046106040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100
+0500000009020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d01050005000000
+04010d000000070000001b04a6061a066a065004040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d0104002500
+0000320a9506580414000000546f20646174756d20666f7220676f62616c20691d001c000f001b001c000f001b0028000f000f001b0012000f001b001c001b00
+1c000c000f000d0005000000020102000000040000002d0103000500000002010100000004000000f001010008000000fa020000040000000000000004000000
+2d0101000500000004010d0000000800000025030200db012106db01fe03040000002d010300040000002d0103000500000002010100000007000000fc020000
+000000000000040000002d0105000500000004010d0000000e00000024030500c9012004db01fc03ed012004db011704c9012004040000002d01020004000000
+f00105000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500
+c9012004db01fc03ed012004db011704c9012004040000002d0103000500000004010d000000040000002d01010005000000020101000000040000002d010200
+070000001b0475056a04c8044502040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000090200000000
+05000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00000007000000
+1b0421054003e5045a02040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a100561020a00
+00005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100000004000000
+f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006503c8046503740510037405040000002d01
+030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500
+000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b041205ad03d6049803040000002d0103000400
+00002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a01059e030100000069040c000500000002010200000004000000
+2d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000c00000025030400
+630258051b0258051b02bc054402bc05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d010500
+0500000004010d0000000e000000240305002202aa054602bc052202ce052b02bc052202aa05040000002d01020004000000f001050005000000020101000000
+04000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305002202aa054602bc052202ce052b02
+bc052202aa05040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d00
+00000800000025030200af032c05c0042c05040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d01
+05000500000004010d0000000e000000240305009e041a05c2042c059e043e05a7042c059e041a05040000002d01020004000000f00105000500000002010100
+000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305009e041a05c2042c059e043e05
+a7042c059e041a05040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000090200000000050000000201
+01000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b042f05b906
+f3040005040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320a1e05080514000000546f2064
+6174756d20666f72206c6f63616c20691d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d000500000002010200
+0000040000002d0103000500000004010d00000004000000f001010008000000fa0200000400000000000000040000002d010100050000000201010000000400
+00002d010200070000001b04b9043d050c044e02040000002d01030004000000f001010008000000fa0200000100000000000000040000002d01010005000000
+09020000000005000000020101000000040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d00
+0000070000001b04580444031c045e02040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040016000000320a
+470465020a0000005374617469634c696e6b20000f001b000f000d0019001b000d001b00190005000000020102000000040000002d0103000500000002010100
+000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000a000000250303006e030c046e039c046e03b904
+040000002d01030004000000f001010008000000fa0200000100000000000000040000002d010100050000000902000000000500000002010100000004000000
+2d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904ac030d04970304000000
+2d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a3804a203010000006a040c000500000002010200
+0000040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800
+000025030200b30363044604d303040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500
+000004010d0000000e000000240305002104de034704d2033a04f8033404e4032104de03040000002d01020004000000f0010500050000000201010000000400
+0000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305002104de034704d2033a04f8033404e403
+2104de03040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d000000
+0c000000250304006b027104f8017104f801f6054002f605040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000
+040000002d0105000500000004010d0000000e000000240305001e02e4054202f6051e0208062702f6051e02e405040000002d01020004000000f00105000500
+000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000e000000250305001e02e4054202
+f6051e0208062702f6051e02e405040000002d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d010100
+0500000004010d00000008000000250302005404b8045404b904040000002d01030005000000020101000000040000002d0101000500000004010d0000000800
+0000250302005404b9045404b804040000002d01030005000000020101000000040000002d0101000500000004010d00000008000000250302005404b9045404
+b804040000002d01030005000000020101000000040000002d0101000500000004010d0000000a0000002503030063040d0463049d046304ba04040000002d01
+030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d0103000500
+000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b044904b9040d049604040000002d0103000400
+00002d01020004000000f0010500050000002e0118000000040000002d01040009000000320a38049c04010000006b0418000500000002010200000004000000
+2d0103000500000002010100000004000000f001010008000000fa0200000400000000000000040000002d0101000500000004010d0000000800000025030200
+ab046304cb056304040000002d010300040000002d0103000500000002010100000007000000fc020000000000000000040000002d0105000500000004010d00
+00000e00000024030500a9055104cd056304a9057504b2056304a9055104040000002d01020004000000f00105000500000002010100000004000000f0010100
+08000000fa0200000400000000000000040000002d0101000500000004010d0000000e00000025030500a9055104cd056304a9057504b2056304a90551040400
+00002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000040000002d01
+03000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b049b0424072904fc05040000002d01
+0300040000002d01020004000000f0010500050000002e0118000000040000002d01040019000000320a540404060c000000546f20646174756d20666f721d00
+1c000f001b001c000f001b0028000f000f001b00120012000000320a89040406070000006c6f63616c206b000c001c0018001c000d000f001900050000000201
+02000000040000002d01030004000000f001010008000000fa0200000100000000000000040000002d0101000500000009020000000005000000020101000000
+040000002d0103000500000002010100000007000000fc020000ffffff000000040000002d0105000500000004010d000000070000001b04eb031b06af036204
+040000002d010300040000002d01020004000000f0010500050000002e0118000000040000002d01040025000000320ada036a0414000000546f20646174756d
+20666f72206c6f63616c206a1d001c000f001b001c000f001b0028000f000f001b0012000f000d001b0019001b000d000f000d0005000000020102000000040000002d010300030000000000000000000000}}}}}{
+\par }\pard\plain \s25\sb120\sa120\widctlpar\adjustright \b\f1\fs22\cgrid {{\*\bkmkstart _Ref409345987}Figure }{\field{\*\fldinst { SEQ Figure \\* ARABIC }}{\fldrslt {\lang1024 3}}}{{\*\bkmkend _Ref409345987} At point C
+\par }\pard\plain \widctlpar\adjustright \f1\fs22\cgrid {Searching for a variable of a given name (variable lookup) begins with the top variable in the top frame. If the variable is not found in the top frame, then the static link is followed to find
+ the next frame to search. Notice that in  }{\field{\*\fldinst { REF _Ref409345987 \\h }{\fs20 {\*\datafield 08d0c9ea79f9bace118c8200aa004ba90b02000000080000000e0000005f00520065006600340030003900330034003500390038003700000000}}}{\fldrslt {Figure }{
+\lang1024 3}}}{ the middle frame (corresponding to the invocation of main) is skipped. Thus a refernce to i will refer to the global variable i.
+\par }\pard\plain \s3\sb240\sa60\keepn\widctlpar\outlinelevel2\adjustright \b\f1\cgrid {Class SymbolTable
+\par }\pard\plain \s18\widctlpar\tx810\adjustright \b\f1\fs22\cgrid {\b0 
+\par The symbol table object is used during both parsing and interpretation to keep track of which names are known at each point and of what they represent. The symbol table must be backtrackable.
+\par 
+\par }\pard \s18\li720\widctlpar\tx810\adjustright {public class SymbolTable implements backtrack, ViewableST \{
+\par 
+\par \tab /** Constructor */
+\par \tab public SymbolTable() 
+\par 
+\par \tab /** COMPILE-TIME FUNCTIONS */
+\par 
+\par \tab /** Add function definitions */
+\par \tab public void newFunctionDefn( FunDfnNd def ) 
+\par 
+\par \tab /** Static global variables */
+\par \tab public void addStaticGlobal( String name, AbstractDatum d)  
+\par 
+\par \tab /** RUN-TIME FUNCTIONS */
+\par 
+\par \tab /** Retrieve function definition */
+\par \tab public FunDfnNd getFunctionDefn( String name ) 
+\par 
+\par \tab /** Enter function -- push a scope */
+\par \tab public void enterFunction() 
+\par 
+\par \tab /** Exit function -- pop a scope */
+\par \tab public void exitFunction() 
+\par 
+\par \tab /** Add a new auto variable to the current stack */
+\par \tab public void newVar(String name, AbstractDatum d ) 
+\par 
+\par \tab /** How many vars are in the current top frame */
+\par \tab public int varsInCurrentFrame() 
+\par 
+\par \tab /** Delete one variable */
+\par \tab public void deleteVar() 
+\par 
+\par \tab /** Get a variable by name. Returns null if not found */
+\par \tab public VarEntry lookupVar( String name ) 
+\par 
+\par \tab /** Checkpoint -- see the backtrack interface */
+\par \tab public void checkpoint()
+\par 
+\par \tab /** Undo -- see the backtrack interface */
+\par \tab public void undo()
+\par 
+\par \tab /** getEntry -- see the ViewableST interface. */
+\par \tab public STEntry getEntry(int index) 
+\par 
+\par \tab /** getEntryAt --- see the ViewableST interface */
+\par \tab public STEntry getEntryAt(int address
+\par 
+\par \tab /** size --- the number of entries that getEntry can return */
+\par \tab public int size() 
+\par 
+\par }\pard \s18\widctlpar\tx810\adjustright {\tab \}
+\par }}

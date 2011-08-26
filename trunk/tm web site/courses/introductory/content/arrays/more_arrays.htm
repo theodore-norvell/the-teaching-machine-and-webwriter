@@ -1,0 +1,57 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Matrices</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p class="pagebreak">Much of the data we take from the world around us stores quite naturally into one-dimensional arrays. For example, computer sound files really just contain arrays of numbers representing the strength of the sound signal at various times. A waveform file contains about 44,000 data points for each second of sound (twice that much if it's recorded in stereo). mp3 files are similar except that compression techniques are used to make the amount of data smaller.</p>
+<p class="pagebreak">Other kinds of data, however, require more dimensions. Picture files (gifs, bitmaps or jpegs) all contain data arranged into two-dimensional arrays of pixels. Weather models require three dimensional arrays of cells (2D location + altitude), as do many engineering models (stress in a solid object such as an automotive casting).</p>
+<p class="pagebreak">Can we do multi-dimensional arrays in C?</p>
+<p class="pagebreak">The answer is yes and no. C has a way to declare multi-dimensional arrays, but, except in very limited circumstances, there is no useful way to pass multi-dimensional arrays to functions.</p>
+<p class="pagebreak">So we'll show you how to do it using single dimensional arrays.</p>
+<h2 class="pagebreak"><a name="mapping">Mapping 1D to 2D</a></h2>
+<p class="pagebreak">Matrices are two dimensional arrays of numbers. We can build a one dimensional array out of a two dimensional one as follows: </p>
+<p class="pagebreak"><img src="4x3.png" width="650" height="275">  </p>
+<p class="pagebreak">The matrix is 4 rows of 3 columns each. By simply slicing the matrix into rows and arranging them one after the other in a long row, we have a oneD array again.</p>
+<p class="pagebreak">As the arrows show, given any position <code>(r,c) </code>in the matrix, we can calculate the position<code> i</code> in the array as<code> i = r * cols + c</code> where <code>cols</code> is the number of columns per row (thus the number of items in a row). We can also go the other way. Given<code> i</code>, a position in the 1D array, we can compute <code>(r,c)</code> as</p>
+<blockquote>
+  <p class="pagebreak"><code>r = i / cols;<br>
+      c = i % cols; </code> </p>
+</blockquote>
+<p class="pagebreak">as this picture illustrates (this time we use the same array to represent a 3 x 4 matrix).</p>
+<p class="pagebreak"><img src="3x4.png" width="600" height="233"> </p>
+<p class="pagebreak">Here's a couple of simple  functions that work with 2D matrices</p>
+<p class="pagebreak">The first one scales every element of a matrix by a constant,
+  while the second one adds elements of <code>m2</code> to the equivalent elements of <code>m1</code>. </p>
+<p class="pagebreak">
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("matrices.cpp", false, "code", "", "B", "C");
+  </script>
+</p>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

@@ -1,0 +1,323 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Variables</title>
+</head>
+<body>
+<h2><a name="attributes">Attributes of Variables</a></h2>
+<dl> 
+  <dt>1. 
+    
+Name</dt>
+  <dd>What the <i>programmer</i> uses to refer to the variable. Associated with the name are the following sub-attributes:
+	<dl><dt>Scope</dt>
+  		<dd>The range of the progam over which the name of the variable is known</dd>
+  		<dt>Visibility</dt>
+  		
+      <dd>Whether a variable name is known at a particular point in a program. 
+        Subtly different from scope because of <i>occlusion</i></dd>
+	</dl></dd>
+  <dt>2. 
+    
+Type</dt>
+  <dd>The category to which a piece of computer data is assigned. All data of a particular type will conform to a set of properties determined by that type, for example the amount of storage required to hold a piece of data or a range of acceptable values. Types may be categorized as&#8212;  <dd>
+    <dl> 
+      <dt>Built-in</dt>
+      <dd>
+        <dl> 
+          <dt>Scalar</dt>
+          <dd> single-valued. e.g. int, double, char</dd>
+          <dt>Compound</dt>
+          <dd>multiple-valued, either array or structure</dd>
+        </dl>
+      </dd>
+      <dt>User-Defined</dt>
+      <dd>In C++ we use classes to build user defined or <i>Abstract Data Types</i> 
+        (referred to as <i>ADT</i>'s)</dd>
+    </dl>
+  </dd>
+  <dt>3. Value</dt>
+  <dd>the actual piece of data currently stored in the variable</dd>
+  <dt>4. Location</dt>
+  <dd>A physical place in memory where data is stored. There are sub attributes, 
+    vis&#151; 
+    <dl> 
+      <dt>Reference</dt>
+      <dd>The way the location is referred to</dd>
+      <dt>Amount</dt>
+      <dd>The quantity of the storage used at the location for the data</dd>
+      <dt>Storage Class</dt>
+      <dd>Where the storage gets allocated.</dd>
+    </dl>
+  </dd>
+    
+  <dt>5. Lifetime</dt>
+  <dd>How long a piece of data exists, generally 
+    <ol>
+      <li>temporary </li>
+      <li> permanent (or static)</li>
+    </ol>
+  </dd>
+</dl>
+<h1>The Fundamental Attributes</h1>
+<p>These are the top-level (numbered) attributes in the preceding list. They are: 
+  <b>name</b>, <b>type</b>, <b>location</b>, <b>value</b>, and <b>lifetime</b>. 
+  They are illustrated in the following example:</p>
+<p> 
+  <script language="JavaScript1.1">
+<!--
+setButtons(true, false, true,"","");
+insertCode("Variables1.cpp", true,"code", "3891lecture.tmcfg");
+//-->
+</script>
+</p>
+ <script language="JavaScript">
+ startNote();
+ </script>
+ <hr>
+<h3 align="center">Code Notes</h3>
+<p class="indent">Since it's the first time we  are using the Teaching
+  Machine this term, these are more extensive than we will normally provide.</p>
+<p class="hang">1. If you look carefully, you will see that we have declared
+  five variables and one parameter.</p>
+<blockquote>
+  <p class="hang">the <code>double</code> <code>x</code> and the <code>int</code> <code>count</code> are declared at the external
+    level. <code>count</code> has been initialized to <code>3</code> while <code>x</code> is unitialized.</p>
+  <p class="hang"><code>myCount</code> and <code>fact</code> are internal&#8212;that is, local&#8212;variables
+    of the <code>main</code> function. Again, <code>myCount</code> is unitialized and <code>fact</code> is initialized
+    using a function call.</p>
+  <p class="hang">the <code>factorial</code> function also has an internal <code>int</code> variable called
+    <code>fact</code>. As this variable is local to <code>factorial</code> it is a different variable from
+    <code>main</code>'s <code>fact</code>.</p>
+  <p class="hang"><code>factorial</code> also contains the sole parameter, <code>c</code>, an <code>int</code>. Effectively,
+  it is a local variable of <code>factorial</code> just like <code>fact</code>. </p>
+</blockquote>
+<p class="hang">2. Click once
+  on the
+  <code>stepOver</code> button (<img src="../../webWriter/images/stepOver.gif" width="12" height="12">) to
+  get the Teaching Machine started. The line </p>
+<blockquote>
+  <blockquote style="background-color:#FFFF00 ">
+    <p class="hang"> <code>int myCount;</code> </p>
+  </blockquote>
+</blockquote>
+<p class="indent"> should be highlighted as shown. All programs start in <code>main</code>  so the Teaching Machine has proceeded to the first line in <code>main</code>, the declaration
+  of the variable <code>myCount</code>. What about the external variables, though? Don't external
+  variables exist for the whole program?</p>
+<p class="indent">Click once more and we see <code>myCount</code> appear in memory at location
+  8192. Notice however, that we have relabelled the memory window, calling it
+  <code>STACK</code>. Notice also, there is a whole cascade of windows underneath the stack
+  that didn't appear in your 2420 course.</p>
+<p class="indent">What is happening is that different kinds of variables are
+  being stored in different parts of memory. These parts are managed differently.
+  We supressed that fact in 2420, just talking about memory. </p>
+<p class="indent">The memory of 2420 is actually called the stack (we'll see
+  why later). The stack is used for storing local variables. We got away with
+  that because we didn't allow external variables in 2420 (unless they were constant).</p>
+<p class="hang">3. Behind the stack window is one called <em>Static Store</em>.
+  Click on that and you will see the two external variables have been stored
+  there (along with a whole bunch of other stuff). The static store exists for
+  the whole program and is built even before <code>main</code> is entered. You
+  can see it contains the two string literals as well as references to the <code>cin</code> and <code>cout</code> stream
+  objects. All these things are static, that is they have a lifetime that is
+  equal to the lifetime of the program. External variables are always static.
+  As a result they are often called <em>global variables</em>. </p>
+<p class="hang">4. Click <span class="hang">the <code>stepOver</code> button
+(<img src="../../webWriter/images/stepOver.gif" width="12" height="12">)</span> again
+to load <code>3.14159</code> into <code>x</code> in the static store. As an external variable <code>x</code> has a scope
+that extends from its point of declaration to the end of the file, so it is accessible
+from both <code>main</code> and <code>factorial</code>.</p>
+<p class="hang">5. You should now have the following line highlighted</p>
+  <blockquote style="background-color:#FFFF00 ">
+    <blockquote>
+      <p class="hang"> <code>myCount = count++;</code> </p>
+    </blockquote>
+  </blockquote>
+  <p class="indent">You will also see the assignment expression has been loaded
+    into the Expression Engine. Step through the expression as you did in 2420
+    and you'll see things work pretty much as before except that the value for
+    count has to be read from the static store and written to the stack. If you
+    look at the symbol table you'll see that both have locations in memory. However,
+    different areas of memory are managed differently. Why all the fuss? </p>
+  <p class="hang">6. Once you've stepped through the expression above you should
+    be on the next line which calls <code>factorial</code>, passing it <code>myCount</code> as
+    an argument. Bring the stack to the forefront of the memory blocks by clicking
+    on it (its the second block) then use the <em>stepInto</em> button (<img src="../../webWriter/images/stepInto.gif" width="12" height="12">)
+    to enter the <code>factorial</code> function.</p>
+  <p class="indent">The first click will simply put the <code>fact</code> variable into the
+    stack, the second click causes us to enter the function. Keeping clicking
+    until you have advanced the highlight to the beginning of the <code>for</code> loop.</p>
+  <p class="indent">Notice now that <code>myCount</code> and the first occorrence of <code>fact</code>    are on the stack but they are greyed out. This is because they belong to
+    <code>main</code> (the function from which <code>factorial</code> was called) but they are not available
+    to <code>factorial</code>.</p>
+  <p class="indent">Instead, <code>factorial</code> has its own local data, the paramater
+    <code>c</code> and its own version of <code>fact</code>.</p>
+  <p class="hang">7. As you step through the <code>for</code> loop you will see <code>i</code> get added
+    to the list of local variables and the factorial get calculated. When you
+    finish up the <code>for</code> loop and land on the <code>return</code> statement, <code>i</code> disappears. This
+    is because it has gone out of scope once you leave the <code>for</code> loop.</p>
+  <p class="hang">8. When you execute the <code>return</code> statement, you
+    leave the <code>factorial</code>    function and return to <code>main</code>.
+    The value you calculated is returned and put into <code>main</code>'s version
+    of <code>fact</code>. Notice that <code>main</code>'s variables are no longer
+    greyed out and that <code>factorial'</code>s variables have disappeared.</p>
+  <p class="indent">Once you leave a function its local variables go out of scope
+    and effectively disappear for ever. This is managed automatically by the
+    stack. We'll show you how later in the course. </p>
+  <hr>
+<script language="JavaScript">
+ endNote();
+</script>
+
+<h1><a name="scope">Scope</a></h1>
+<p>Scope is a sub-attribute of name. It is the <i>range of the program</i> over 
+  which the name is known.</p>
+<p>The scope of a variable is controlled by <i>where</i> it is declared. Scope 
+  always starts at the point of declaration.</p>
+<p><b>Variables declared inside of functions (<i>internal variables</i>)</b></p>
+<p><b>In C:</b> must be declared at the beginning of the function and extend to 
+  the end of the function. </p>
+<p><b>In C++:</b> may be declared anywhere in a function and are known until the 
+  end of the smallest block enclosing the declaration.</p>
+<p>
+  <script language="JavaScript1.1">
+insertCode("Variables2.cpp",false,"code");
+</script>
+</p>
+<p>The scope of q is throughout main</p>
+<p>The scope of i the for statement only (includes block).</p>
+<p> The scope of p is exactly 1 line! </p>
+<p> <b>Variables declared outside all functions <i>(external variables)</i></b> 
+  Scope extends from point of declaration to the end of the file.</p>
+<h1><a name="visibility">Visibility</a></h1>
+<p>Refers to where in a program a name (of a variable) is available to the code.</p>
+<p>Generally, variables in scope are visible.</p>
+<p>Unless two variables with the same name are both in scope In which case only 
+  the variable with the innermost scope is visible.</p>
+  <script language="JavaScript">
+insertCode("Variables3.cpp", false, "code");
+</script>
+<p class="pagebreak">&nbsp;</p>
+<p>As an exercise, try filling in the folowing table, putting checkmarks in each 
+  column where a variable is visible. (If you're viewing this in the screen version, 
+  you can check the visibility of each variable by running the cursor over it.)</p>
+<table width="100%" border="2">
+  <tr>
+    <td>
+      <div align="center"><b>Variables</b></div>
+    </td>
+    <td>
+      <div align="center"><span class="codeInline">main</span></div>
+    </td>
+    <td>
+      <div align="center"><span class="codeInline">sub1</span></div>
+    </td>
+    <td>
+      <div align="center"><span class="codeInline">sub2</span></div>
+    </td>
+    <td>
+      <div align="center"><span class="codeInline">sub3</span></div>
+    </td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">x1</span> (outer)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">a</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">x1</span> (inner)</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">i</span>, <span class="codeInline">x2</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">s1</span>, <span class="codeInline">s2</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">locl1</span>, <span class="codeInline">locl2</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">s21</span>, <span class="codeInline">s22</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><span class="codeInline">s31</span>, <span class="codeInline">s32</span></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<h2><a name="lifetime">Lifetime</a></h2>
+<p>The length of time a variable lasts.</p>
+<p>Permanent variables last the lifetime of the program</p>
+<p>Temporary variables last only for the duration of a function.</p>
+<h2><a name="storageClass">Storage Class</a></h2>
+<p>Characterizes the type of storage where the variable is allocated.</p>
+<p>Closely related to lifetime.</p>
+<p><b>Automatic: </b>variables that are stored on the stack and are temporary 
+  by definition. This is the default for internal variables.</p>
+<p><b>Static: </b>variables that are stored in long term memory (the data store). 
+  Static is the usual term but means many other things in C++ so we will refer 
+  to these as allocations in the data store.</p>
+<p class="pagebreak">&nbsp;</p>
+  <script language="JavaScript1.1">
+setButtons(true, false, true,"","");
+insertCode("Variables4.cpp", true,"code", "3891lecture.tmcfg");
+</script>
+<p>All external variables are put in the data store. Internal variables can be 
+  put in by preceding the declaration with static.</p>
+<h3><a name="rukes">Basic Rules</a></h3>
+<ol>
+  <li>Internal (declared inside a function) variables are automatic unless declared 
+    static.</li>
+  <li>External variables are always static.</li>
+  <li>Static variables are permanent</li>
+  <li>Automatic variables are temporary</li>
+  <li>Internal variables should normally be used </li>
+</ol>
+
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>
+

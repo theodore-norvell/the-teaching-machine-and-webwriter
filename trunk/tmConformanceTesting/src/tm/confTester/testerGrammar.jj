@@ -1,0 +1,331 @@
+options {
+        STATIC = false ;
+        ERROR_REPORTING = true ;
+        // DEBUG_PARSER = true ;
+}
+
+PARSER_BEGIN(ConfTesterParser)
+
+package tm.confTester ;
+
+import tm.utilities.Assert ;
+
+public class ConfTesterParser {
+    
+
+    static private String unformatString( String str, char escapeChar ) {
+        StringBuffer buf = new StringBuffer() ;
+
+        int i = 1 ;
+        int sz = str.length() - 1 ;
+        while( i < sz ) {
+            char[] charResult = new char[1] ;
+            int[]  lenResult = new int[1] ;
+            charToAscii( str, i, charResult, lenResult, escapeChar ) ;
+            buf.append( charResult[0] ) ;
+            i += lenResult[0] ; }
+        return buf.toString() ;
+    }
+    
+    static String formatString( String str, char delimiter, char escapeChar ) {
+        StringBuffer buf = new StringBuffer() ;
+		for( int i = 0 ; i < str.length() ; ++ i ) {
+			char ch = str.charAt(i) ;
+			switch( ch ) {
+				case '\n' : buf.append( escapeChar) ; buf.append( "n" ) ; break ;
+				case '\r' : buf.append( escapeChar) ; buf.append( "r" ) ; break ;
+				case '\t' : buf.append( escapeChar) ; buf.append( "t" ) ; break ;
+				default :
+				    if( ch == escapeChar ) {
+				    	buf.append( escapeChar) ; buf.append( escapeChar ) ; }
+				    else if( ch == delimiter ) {
+				    	buf.append( escapeChar) ; buf.append( delimiter ) ; }
+				    else if( ' ' <= ch && ch <= '~' ) {
+				    	buf.append( ch ) ; }
+				    else {
+				    	buf.append( escapeChar) ; buf.append( 'u' ) ; 
+				    	int j = (int) ch ;
+				    	int hd0 = j % 16 ;
+				    	j = j / 16 ;
+				    	int hd1 = j % 16 ;
+				    	j = j / 16 ;
+				    	int hd2 = j % 16 ;
+				    	j = j / 16 ;
+				    	int hd3 = j ;
+				    	Assert.check( hd3 < 16 ) ;
+				    	char hch0 = (char)( hd0 < 10 ? '0'+hd0 : 'A'+hd0-10 ) ;
+				    	char hch1 = (char)( hd1 < 10 ? '0'+hd1 : 'A'+hd1-10 ) ;
+				    	char hch2 = (char)( hd2 < 10 ? '0'+hd2 : 'A'+hd2-10 ) ;
+				    	char hch3 = (char)( hd3 < 10 ? '0'+hd3 : 'A'+hd3-10 ) ;
+				    	buf.append( hch3 ) ;
+				    	buf.append( hch2 ) ;
+				    	buf.append( hch1 ) ;
+				    	buf.append( hch0 ) ; } } }
+        return buf.toString() ;
+    }
+
+    static private void charToAscii( String image,
+                                     int start,
+                                     char[] charResult,
+                                     int[] lenResult, 
+                                     char escapeChar ) {
+        int ascii ;
+        int len ;
+        if( image.charAt(start) != escapeChar ) {
+            ascii = (int) image.charAt( start ) ;
+            len = 1 ; }
+        else {
+            switch( image.charAt(start+1) ) {
+            case 'n' :
+                ascii = 10 ;
+                len = 2 ;
+                break ;
+            case 'r' :
+                ascii = 13 ;
+                len = 2 ;
+                break ;
+            case 't' :
+                ascii = 9 ;
+                len = 2 ;
+                break ;
+            case '\\' :
+                ascii = 92 ;
+                len = 2 ;
+                break ;
+            case '"' :
+                ascii = 34 ;
+                len = 2 ;
+                break ;
+            case '/' :
+                ascii = 47 ; ;
+                len = 2 ;
+                break ;
+            case '%' :
+                ascii = 37 ;
+                len = 2 ;
+                break ;
+            case 'u' : case 'U' :
+                // Unicode
+                ascii = 0 ;
+                len = 2 ;
+                for( int i=0 ; i < 4 && start+len < image.length(); ++i ) {
+                    int ch = (int) image.charAt( start+len ) ;
+                    if( (int)'0' <= ch && ch <= (int) '9' ) {
+                        ascii *= 16 ;
+                        ascii += ch - (int)'0' ;
+                        len += 1 ;}
+                    else if( (int) 'A' <= ch && ch <= (int) 'F' ) {
+                        ascii *= 16 ;
+                        ascii += ch - (int)'A' + 10 ;
+                        len += 1 ; }
+                    else if( (int) 'a' <= ch && ch <= (int) 'f' ) {
+                        ascii *= 16 ;
+                        ascii += ch - (int)'a' + 10 ;
+                        len += 1 ; }
+                    else break ; }
+                break ;
+                default :
+                        // Anything else is a lexical error.
+                        // and should already have been caught.
+                        len = ascii = 0 ; /*Make compiler happy*/} }
+
+        charResult[0] = (char) ascii ;
+        lenResult[0] = len ; }
+}
+
+PARSER_END(ConfTesterParser)
+
+<DEFAULT> SKIP :
+{
+  < ~[] >             // Skip single characters.
+| 
+  "/*!"             
+  : IN_C_COMMENT
+|
+  "//!"
+  : IN_LINE_COMMENT
+}
+
+<IN_LINE_COMMENT> SKIP:
+{
+    "\n" : DEFAULT
+|
+    "\r" : DEFAULT
+}
+<IN_C_COMMENT> SKIP:
+{
+   "*/" : DEFAULT
+}
+
+<IN_LINE_COMMENT, IN_C_COMMENT> TOKEN [IGNORE_CASE] :
+{
+  < ANY     : "any" >  
+| < COMPILE : "compile" >
+| < ENDL    : "endl" >
+| < ERROR   : "error" | "errors" >
+| < EXPECT  : "expect" | "expecting" >
+| < EQUALS  : "=" | "==" | "equals" | "equal" | "equaling">
+| < EXECUTE : "execute" | "run" >
+| < FILE    : "file" >
+| < THIS    : "this" >
+| < MATCHES : "~" | "match" | "matches" | "matching">
+| < NO      : "no" >
+| < WITH    : "with" >
+| < INPUT   : "input" | "inputs" >
+| < OUTPUT  : "output" | "outputs" >
+| < STRING : "\""
+                ( [ " ", "!", "#"-"[", "]"-"~"] // Any ascii char from 32 to 126
+                                                // excluding backslash and double quote.
+                  | "\\" <SIMPLEESCAPESEQ>
+                  | "\\" <UCODENAME>
+                )*
+              "\"" >
+| <SLASHSTRING : "/"
+                  ( [ " "-"$", "&"-".", "0"-"~"] // Any ascii char from 32 to 126
+                                                 // excluding % and /
+                  | "%" <SIMPLEESCAPESEQ>
+                  | "%" <UCODENAME>
+                  )*
+                  "/" >
+|  < #SIMPLEESCAPESEQ : ["r", "n", "t","\\","\"", "%", "|"] >
+|  < #UCODENAME :       "\\" ["u","U"] <HEXQUAD> >
+|  < #HEXQUAD :         <HEXDIG> <HEXDIG> <HEXDIG> <HEXDIG> >
+|  < #HEXDIG :          ["0"-"9","a"-"f","A"-"F"] >
+|  <UNKNOWN_WORD : (["a"-"z","'"])+ >
+}
+
+<IN_LINE_COMMENT, IN_C_COMMENT> SKIP:
+{
+  < [ " ", "\t", "\r", "\f", ",", ".", ";", "!", ":", "?" ] >
+}
+
+<IN_C_COMMENT> SKIP:
+{
+  < ["\n"] >
+}
+
+void start(TestDescription description) :
+{}
+{
+    compile(description)
+    <EOF>
+}
+
+void compile(TestDescription description) :
+{}
+{   
+    
+    <COMPILE> [ <THIS> <FILE> ]
+	{description.setDoCompile( true ) ;}
+	error(description)
+|
+    {description.setDoCompile( true ) ;}
+    {description.setExpectedCompileError( TestDescription.NONE, "" ) ;}
+	execute( description )
+	executes( description )
+|
+    {description.setDoCompile( false ) ;}  
+}
+
+void error(TestDescription description) :
+{
+	String str ;
+	int equalsOrMatches ;
+}
+{
+	( <EXPECT> ( <ANY> <ERROR>
+	             {description.setExpectedCompileError( TestDescription.ANY, "" ) ;}
+               |
+                 <ERROR>
+                 {equalsOrMatches = TestDescription.EQUALS ; }
+                 [  <EQUALS> 
+                 |  <MATCHES> {equalsOrMatches = TestDescription.MATCHES ; }
+                 ]
+                 str=string()
+                 {description.setExpectedCompileError( equalsOrMatches, str ) ;}
+               |
+                 [ <NO> <ERROR> ]
+                 {description.setExpectedCompileError( TestDescription.NONE, "" ) ;}
+                 executes( description ) 
+               )
+    |
+      {description.setExpectedCompileError( TestDescription.NONE, "" ) ;}
+      executes( description ) 
+	)
+}
+
+void executes( TestDescription description ) :
+{}
+{
+    (execute( description ))*
+}
+
+void execute(TestDescription description) :
+{}
+{
+	<EXECUTE> 
+	{description.addExecutionCase( ) ;}
+    input(description)
+    output(description)
+}
+
+void input(TestDescription description) :
+{
+    String str = "" ;
+}
+{
+	[[<WITH>] <INPUT> [<EQUALS>] str=string() ]
+	{ description.setInputString( str ) ; }
+}
+
+void output(TestDescription description) :
+{
+    String str = "" ;
+    int equalsOrMatches ;
+}
+{
+	[ <EXPECT> ] (  <NO> <OUTPUT>
+	              {description.setExpectedExecuteError( TestDescription.NONE, "" ) ;}
+	              {description.setExpectedExecuteOutput( TestDescription.EQUALS, "" ) ;}
+               |
+                  <OUTPUT>
+                  {description.setExpectedExecuteError( TestDescription.NONE, "" ) ;}
+                  { equalsOrMatches = TestDescription.EQUALS ; }
+                  [ <EQUALS>  
+                  | <MATCHES> { equalsOrMatches = TestDescription.MATCHES ; }
+                  ]
+                  str=string()
+                  {description.setExpectedExecuteOutput( equalsOrMatches, str ) ;}
+                  
+                |
+                  LOOKAHEAD( <ANY> <ERROR> ) <ANY> <ERROR>
+                  {description.setExpectedExecuteError( TestDescription.ANY, "" ) ;}
+                |
+                  <ERROR>
+                  { equalsOrMatches = TestDescription.EQUALS ; }
+                  [ <EQUALS>  
+                  | <MATCHES> { equalsOrMatches = TestDescription.MATCHES ; }
+                  ]
+                  str=string()
+                  {description.setExpectedExecuteError( equalsOrMatches, str ) ;}
+               |
+                  [ <ANY> <OUTPUT> ]
+                  {description.setExpectedExecuteError( TestDescription.NONE, "" ) ;}
+	              {description.setExpectedExecuteOutput( TestDescription.ANY, "" ) ;}
+                )
+}
+
+String string() : {
+    Token t ;
+    String s = "" ; }
+{
+    ( t=<STRING>
+      { s += unformatString( t.image, '\\' ) ; }
+    | t=<SLASHSTRING>
+      { s += unformatString( t.image, '%' ) ; }  
+    |
+      <ENDL>
+      { s += '\n' ; }
+    )+
+    { return s ; }
+}

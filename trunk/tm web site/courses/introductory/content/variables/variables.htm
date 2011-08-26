@@ -1,0 +1,416 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Variables</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>An individual <script language="JavaScript">
+startDefLink("function",50,50);
+</script> 
+function<script language="JavaScript">endLink();</script>  consist of nothing more than a set of instructions
+  for manipulating data. At bottom, it is very like a recipe. </p>
+<div class="sideBarRight" style="position:relative; width: 500px; ">
+  <div align="center"><strong>Charlie's
+    Asparagus</strong>  </div>
+  <p></p>
+    <table>
+      <tr>
+        <td><table>
+            <tr>
+              <td><p>1/2 lb asparagus </p>
+                  <p>2 tbs water or lemon juice </p>
+                  <p>1/4 cup non-fat sour cream </p></td>
+              <td valign="top"><p>1 tbs. soy sauce </p>
+                  <p>5 drops Sesame oil </p></td>
+            </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td><p><strong>Directions </strong></p>
+            <ol>
+              <li>Put asparagus spears in a microwavable dish with a tight fitting
+                  lid.</li>
+              <li>Add water or lemon juice. </li>
+              <li>Fit lid &amp; microwave on high
+                  for about four minutes. </li>
+              <li>Put non-fat sour-cream in a small bowl. Add other ingredients
+                  and mix well. </li>
+              <li>Drizzle onto hot asparagus. Serve </li>
+            </ol></td>
+      </tr>
+    </table>
+</div>
+
+<p>The list of ingredients in Charlie's Asparagus corresponds to the 
+  <script language="JavaScript">
+startDefLink("data",50,50);
+  </script>
+  data
+  <script language="JavaScript">endLink();</script> 
+  in
+  a function</p>
+<p> The directions are like &nbsp;instructions. In particular, they proceed <em>sequentially</em> in
+steps. </p>
+<p>Almost
+  all cookbooks list recipes in the format you see at right-and C++ uses the
+  same format. Data must be listed&#8212;we would say declared&#8212;before the instructions
+can refer to it. </p>
+<p>So we have two aspects of a function:</p>
+<ol>
+  <li>Its
+    <script language="JavaScript">
+startDefLink("data",50,50);
+    </script>
+data
+<script language="JavaScript">endLink();</script>
+  </li>
+  <li>Its
+    <script language="JavaScript">
+startDefLink("instruction",50,50);
+    </script>
+    instructions
+    <script language="JavaScript">endLink();</script>
+</li>
+</ol>
+<p>Here we focus on the data </p>
+<p>Variables are a mechanism C++ uses to store data.</p>
+<p>They are similar to the ingredients in a recipe <strong>except
+      that</strong> variables generally change throughout the program whereas
+      ingredients are always the same for a recipe. Remember those old age problems, you know, <em>George is twice as old as Samantha...</em> Although we can write computer programs to solve such problems, they're a little beyond you just now. But writing a program to create such a problem isn't hard. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, true, true,"variables/ageProblem.htm","");
+insertCode("ageProblem.cpp", true, "code","","","");
+  
+  </script>
+</p>
+<p>If you compare the structure of the main  function above to the structure of the recipe for Charlie's Asparagus, you'll see the similarity. So, the first rule of variables is like the first rule of recipes. Instead of declaring all your ingredients before telling someone how to use them&#8212;</p>
+<blockquote>
+  <p><strong>Variables must be declared before they can be used. </strong></p>
+</blockquote>
+<p>The name 
+<script language="JavaScript">
+startDefLink("variable",50,70);
+</script> 
+variable <script language="JavaScript">endLink();</script>
+ is taken from Mathematics. </p>
+<p>We get two things from these definitions that are fundamental to variables</p>
+<ol>
+  <li>a variable can take on
+
+
+ any <em>value</em> from a set
+
+of values.</li>
+  <li>a variable <em>holds</em> data</li>
+</ol>
+<h1><a name="Type">Type</a></h1>
+<p>Point 1 implies that different variables may take on values from different 
+  sets. This is the notion of <script language="JavaScript">
+startDefLink("type");
+</script> type 
+  <script language="JavaScript">
+endLink();
+</script>.</p>
+<p> C++ supports all kinds of different types, in particular:</p>
+<dl>
+  <dt>int</dt>
+  <dd>integer variables can hold any integer between -MAX_INT and +MAX_INT where
+    MAX_INT is a constant which depends upon the operating system and compiler
+    you are using. In the Teaching Machine MAXINT is <span class="codeConstant">2,147,483,648</span></dd>
+  <dt><b>char</b></dt>
+  <dd><b></b>character variables hold any character in C++'s alphabet. Includes
+  <ul><li>all the upper and lower-case letters (A-Z and a-z)</li> 
+    <li>the digits (0-9)</li>     
+    <li>standard punction characters (.,&lt;&gt;?&quot;:}{} etc.)</li>      
+    <li>some special characters ('\n'
+            - a newline, '\t' a tab, etc.)</li>     
+    </ul></dd>
+	<dt>float<br>
+    double</dt>
+    <dd>
+ <span class="codeKeyword"><strong>float</strong></span> stands for <em>floating point number</em>, the name used in computing for  real numbers. <code><span class="codeKeyword">double</span></code> stands for <em>double-precision floating point number</em>. The double precision simply means that it may carry more digits of precision. Even here the range of values is finite 
+  (although it is very large). We will normally use <code class="codeKeyword">double</code> for real numbers because the internal floating point (real) arithmetic unit in most modern computer chips works at double (or slightly better) precision. doubles usually bigger than floats. </dd>
+    <dt>long</dt>
+    <dd>a long integer. On most computers a long is bigger (requires more storage space) than an <span class="codeKeyword">int</span> but has a larger range of values. </dd>
+</dl>
+<h1><a name="BinModel">The Bin Model of Data</a></h1>
+<div class="sideBarRight" style="position:relative; width: 561px; height: 526px;"><img src="../../content/variables/IM001208.jpg" width="561" height="526"></div>
+<p>&nbsp;</p>
+<p>The notion that a variable <em>holds</em> data  implies that the data has to be held <em>somewhere</em>. In fact,
+  computer  data (and therefore variables) are held in different kinds of computer
+  memory. 
+</p>
+<p>Don't worry about the kinds. Just think of a 
+  <script language="JavaScript">
+startDefLink("variable");
+</script>
+  variable 
+  <script language="JavaScript">
+endLink();
+</script>
+  as a kind of box or bin.</p>
+<ol>
+  <li>There's one bin for every variable.</li>
+  <li>The bin is sized to fit the type of data exactly. </li>
+</ol>
+<p>If you imagine millions of bins stacked up, you have a pretty good idea of
+   what computer memory looks like.</p>
+<h2>Finding the Right Bin</h2>
+<p>With millions of bins, how do we find where we put something? Well, we could</p>
+<ol>
+  <li>put a label on the bin .</li>
+  <li>remember the number of the bin we put it in.</li>
+</ol>
+<p>The label we put on a bin is called its <em> 
+  <script language="JavaScript">
+startDefLink("name");
+</script>
+  name 
+  <script language="JavaScript">
+endLink();
+</script>
+  </em>. The number is known as its <em>
+  <script language="JavaScript">
+startDefLink("address");
+  </script>
+  address</em> 
+  <script language="JavaScript">
+endLink();
+</script>
+  (just like a street address which let you find the right house on a long street).</p>
+<p>Names are for people (programmers). The computer uses the number.</p>
+<h1><a name="VariableAttributes">Variable Attributes</a></h1>
+<p>If you've done any word processing at all you know there's lots of things
+  that define a font.</p>
+<p>There's the name of the font, for example the standard HTML fonts</p>
+<p><font face="Arial, Helvetica, sans-serif">Arial (sans serif)</font> <font face="Times New Roman, Times, serif">&nbsp;&nbsp;&nbsp;&nbsp;Times
+New Roman (serif)</font> <font face="Courier New, Courier, mono">&nbsp;&nbsp;&nbsp;Courier
+New (mono)</font> </p>
+<p>There's the style of the font: &nbsp;&nbsp;&nbsp;normal&nbsp;&nbsp;&nbsp;&nbsp;<strong>bold</strong>&nbsp;&nbsp;&nbsp;&nbsp;<em>italic</em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<em><strong>bold
+  italic</strong></em></p>
+<p>We can colour the font: &nbsp;&nbsp;&nbsp;&nbsp;<font color="#FF0000">red</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF">blue</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font color="#00FF00">green</font> </p>
+<p>Or we can change its size: &nbsp;&nbsp;&nbsp;&nbsp;normal &nbsp;&nbsp;&nbsp;<font size="+1">bigger</font>&nbsp;&nbsp;&nbsp;<font size="+3">even
+  bigger</font> &nbsp;&nbsp;&nbsp;<font size="-1">smaller</font></p>
+<p>And we can do all this good stuff at once: &nbsp;&nbsp;<font color="#FF0000" size="+1" face="Arial, Helvetica, sans-serif"><strong>bigger
+  bold red arial</strong></font>  &nbsp;&nbsp;&nbsp;&nbsp;<font color="#0000FF" size="-1"><em>smaller
+  italic blue Times New Roman</em></font></p>
+<p>name,  style,  colour and  size are all <em>attributes</em> of
+  a font.</p>
+<p>Variables have attributes as well. so far we have learned about four of them:</p>
+<p><b>
+  <script language="JavaScript">
+startDefLink("type");
+  </script>
+  type<em>
+  <script language="JavaScript">
+endLink();
+  </script>
+  </em></b> which determines the size of the bin and the kind and range of
+   values it can store.</p>
+<p><b><em>
+  <script language="JavaScript">
+startDefLink("address");
+  </script>
+</em>address<em>
+<script language="JavaScript">
+endLink();
+</script>
+</em> </b> which the computer uses to determine the location of the bin in memory.</p>
+<p><b><em>
+  <script language="JavaScript">
+startDefLink("name");
+  </script>
+</em>name<em>
+<script language="JavaScript">
+endLink();
+</script>
+</em></b> which gives programmers a convenient way to find/refer to the bin.</p>
+<p><b><em>
+  <script language="JavaScript">
+startDefLink("value");
+  </script>
+</em>value<em>
+<script language="JavaScript">
+endLink();
+</script>
+</em></b> which is the actual piece of data contained in the bin.</p>
+<p>There are others, but these will do for now.</p>
+<h1><a name="Declaring">Declaring Variables</a></h1>
+<p>Repeating our rule</p>
+<blockquote>
+  <p><strong>Variables must be declared before they can be used. </strong></p>
+</blockquote>
+<p>The form of a declaration is</p>
+<p><code>type name = expression ;</code></p>
+<p>where type will be a C++ type like <code class="codeKeyword">int</code>, <code class="codeKeyword">char</code>,or <code class="codeKeyword">double</code>. The name is decided by the programmer, according to the 
+  <script language="JavaScript">
+startDefLink("namingRules");
+  </script>
+naming rules
+<script language="JavaScript">
+endLink();
+</script>
+. The = expression is optional and is for giving the variable an initial value (<em>initialization</em>). </p>
+<p>So,</p>
+<ul>
+  <li>the type <strong>must</strong> be declared</li>
+  <li>the variable <strong>must</strong> be given a name (preferably a meaningful one)</li>
+  <li>The variable <strong>may</strong> be initialized  </li>
+</ul>
+<p>We give each variable declaration a line of its own (although not required
+   by the language it <em>is</em> good style).</p>
+<p>Lets see some of this in action</p>
+<p>
+  <script language="JavaScript">
+   setButtons(true, true, true,"variables/attributes.htm","");
+   insertCode("simple_variables.cpp", true, "code", "", "", "");
+  </script>
+  <h2><a name="parameters">Function Parameters</a></h2>
+  <p>Function parameters are very similar to variables. Recall the triangleArea
+    function</p>
+	  <script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("../introduction/triangleArea.cpp", true, "code", "", "A", "A");
+  </script>
+
+  <p>The implementation of the function consists of the function prototype</p>
+  <p class="code">double triangleArea(double base, double height)</p>
+  <p>followed by the body of the function which contains the actual code. The
+    prototype contains two double parameters, <code>base</code> and <code>height</code>.
+    Effectively, they act as the first two (and in this case only two) local
+    variables in the function.</p>
+  <p>Let's consider a slightly more difficult problem. In third year electrical
+    engineering students may learn to calculate the gain of a standard four resistor
+    differential amplifer as</p>
+  <p><img src="amplifierEquation.png" width="285" height="99"></p>
+  <p>where the A<sub>d</sub> represents the gain and the four different R's represent
+    the four resistor values. It's not really important where this equation comes
+    from or what it means. Such relatively complex equations are common to all
+    engineering disciplines. How would we write a function to compute A<sub>d</sub>?</p>
+  <p>First of all, what would the prototype look like?</p>
+<script language="JavaScript">
+	startHiddenAnswer("gain");
+</script>
+<p><code>double ampGain(double rF, double rG, double r1, double r2)</code></p>
+<script language="JavaScript">
+	endHiddenAnswer();
+</script>
+<p>Of course we can't create variable names with subscripts but we have a usable
+  approximation in the names above. Writing the code to implement this is not
+  terribly complicated. Just return the computer equivalent of the expression
+  on the right side of the equation. </p>
+<p>
+  <script language="JavaScript">
+	startHiddenAnswer("implementation");
+  </script>
+</p>
+<code>
+<pre>double ampGain(double rF, double rG, double r1, double r2){
+     return (rF/r2)*(2*rG*rF + rG*r1 + rF*r2)/(rG*rF + rF*r2);
+}</pre></code>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+  </script>
+</p>
+<p>There is an efficiency problem, however. Multiplication of reals is quite
+  expensive so it seems a pity to repeat them un-necessarily. Here is an alternative.</p>
+<p>	  <script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("ampGain.cpp", true, "code", "", "A","all");
+  </script></p>
+  <ol><li>What's the advantage?</li>
+  <li>Do you think it matters?</li></ol>
+<h1><a name="exercises">Exercises</a></h1>
+<ol>
+  <li>Run the following example in the Teaching Machine and use it to answer the questions underneath.</li>
+</ol>
+<p>
+<script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("variablesQ1.cpp", true, "code", "");
+</script>
+</p>
+
+<ol type="a">
+  <li>First step through the variable declarations. To what memory location is each variable assigned and how many bytes long is it?</li>
+  <li>Which variables have been initialized and which have not?</li>
+  <li>Step through the first two assignments.  Can you explain why k is not equal to j?</li>
+  <li>Which variables have valid values replaced by assignment?</li>
+</ol>
+<script language="JavaScript">
+	startHiddenAnswer("1a");
+</script>
+<blockquote>
+  <p><code>i</code>: at 8192, 4 bytes.&nbsp;&nbsp;&nbsp;<code>j</code>: at 8196, 8 bytes.&nbsp;&nbsp;<code>&nbsp;k</code>: at 8204, 4 bytes.&nbsp;&nbsp;&nbsp; <code>y</code>: at 8208, 8 bytes. &nbsp;&nbsp;<code>x</code>: at 8216, 4 bytes. &nbsp;&nbsp;&nbsp;<code>character</code>: at 8220, 1 byte. </p>
+</blockquote>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+
+  <script language="JavaScript">
+	startHiddenAnswer("1b");
+  </script>
+<blockquote>
+  <p><code>i, &nbsp;j, &nbsp;x</code> and <code>character</code> have been initialized. <code>k</code> and <code>y</code> have not been initialized. </p>
+</blockquote>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1c");
+</script>
+<blockquote>
+  <p><code>j</code> is a <code>long</code> integer with a very large value of 98,765,432,199. This is bigger than the <code>MAXINT</code>, the largest possible <code>int</code> value (which is <span class="codeConstant">2,147,483,648</span> for the Teaching Machine). If you switch to binary view you will see that <code>k</code> (which is an <code>int</code>) was created from <code>j</code> simply by copying the bit pattern for the first 4 bytes (or first 32 bits). The very highest bit is the sign bit. Since it was a 1, the value for k is interpreted as being negative. Converting a <code>long</code> to an <code>int</code> is always dangerous. </p>
+</blockquote>
+<p>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+
+<script language="JavaScript">
+	startHiddenAnswer("1c");
+</script>
+<blockquote>
+  <p><code>x</code> is changed from <span class="codeConstant">7.3</span> to <span class="codeConstant">88.0</span> and <code>y</code> is changed from <span class="codeConstant">44.0</span> to <span class="codeConstant">1.60217646e-19</span> </p>
+</blockquote>
+  <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+ 
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+<p><script language="JavaScript">
+     insertCode("ageProblem.cpp", false, "code", "default.tmcfg");
+</script></p>
+<p><script language="JavaScript">
+     insertCode("simple_variables.cpp", false, "code", "default.tmcfg");
+</script></p>
+
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

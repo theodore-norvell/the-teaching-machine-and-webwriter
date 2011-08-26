@@ -1,0 +1,149 @@
+0>>>"obj1"."a"(
+   "3",
+   "\"abc\"")
+"\"a\"<int,java.lang.String>"(
+      "3",
+      "\"abc\"")
+0>>"obj2"."c"(
+   "true",
+   "false")
+0>>"obj3"."e"()
+0<<throw "obj3"."e" == "Obj\"java.lang.refle\"+..+\"TargetException\"2e1f02a4"
+0<<return "obj2"."c" == "b"
+0>>"obj2"."c"(
+   "true",
+   "false")
+0>>"obj3"."e"()
+0<<throw "obj3"."e" == "Obj\"java.lang.refle\"+..+\"TargetException\"2e1f02a4"
+0<<return "obj2"."c" == "b"
+0>>"obj2"."c"(
+   "true",
+   "false")
+0>>"obj3"."e"()
+0<<throw "obj3"."e" == "Obj\"java.lang.refle\"+..+\"TargetException\"2e1f02a4"
+0<<return "obj2"."c" == "b"
+0>>"obj2"."b"(
+   "{\"abc\",\"abc\",\"abc\"}")
+0>>"obj3"."d"(
+   "{\"abc\",\"abc\",\"abc\"}")
+0<<return "obj3"."d" == "null"
+0<<return "obj2"."b" == "3"
+0<<return "obj1"."a" == "null"
+0>>>"obj1"."b"(
+   "null",
+   "true",
+   "false",
+   "-56",
+   "A",
+   "\u2710")
+"\"b\"<java.lang.String,boolean,boolean,byte,char,char>"(
+      "null",
+      "true",
+      "false",
+      "byte -56",
+      "char \"A\"",
+      "char \"\\u2710\"")
+0<<return "obj1"."b" == "null"
+0>>>"obj1"."c"(
+   "0.0",
+   "1.2346789E103",
+   "-1.234598765E-96",
+   "1.7976931348623157E308",
+   "4.9E-324",
+   "NaN",
+   "-Infinity",
+   "Infinity")
+"\"c\"<double,double,double,double,double,double,double,double>"(
+      "double 0.0",
+      "double 1.2346789E103",
+      "double -1.234598765E-96",
+      "double 1.7976931348623157E308",
+      "double 4.9E-324",
+      "double NaN",
+      "double -Infinity",
+      "double Infinity")
+0<<return "obj1"."c" == "null"
+0>>>"obj1"."d"(
+   "0.0",
+   "1.2346789E23",
+   "-1.2345988E-16",
+   "3.4028235E38",
+   "1.4E-45",
+   "NaN",
+   "-Infinity",
+   "Infinity")
+"\"d\"<float,float,float,float,float,float,float,float>"(
+      "float 0.0",
+      "float 1.2346789E23",
+      "float -1.2345988E-16",
+      "float 3.4028235E38",
+      "float 1.4E-45",
+      "float NaN",
+      "float -Infinity",
+      "float Infinity")
+0<<return "obj1"."d" == "null"
+0>>>"obj1"."e"(
+   "0",
+   "2147483647",
+   "-2147483648",
+   "-123456",
+   "0",
+   "9223372036854775807",
+   "-9223372036854775808",
+   "-123456789",
+   "0",
+   "32767",
+   "-32768",
+   "-12345")
+"\"e\"<int,int,int,int,long,long,long,long,short,short,short,short>"(
+      "0",
+      "2147483647",
+      "-2147483648",
+      "-123456",
+      "long 0",
+      "long 9223372036854775807",
+      "long -9223372036854775808",
+      "long -123456789",
+      "short 0",
+      "short 32767",
+      "short -32768",
+      "short -12345")
+0<<return "obj1"."e" == "null"
+0>>>"obj1"."f"(
+   "\"\"",
+   "\"\\t\\n\\\"\\\\\\uabcd\"",
+   "\"abcdefghijklmno\"+..+\"6789,!@#$%^&*()\"f0110ad9")
+"\"f\"<java.lang.String,java.lang.String,java.lang.String>"(
+      "\"\"",
+      "\"\\t\\n\\\"\\\\\\uabcd\"",
+      "\"abcdefghijklmnopqrstuvwxyz0123456789,!@#$%^&*()\"")
+0<<return "obj1"."f" == "null"
+0>>>"obj1"."g"(
+   "{}",
+   "{1,2,3}",
+   "{0,0,0,..}")
+"\"g\"<[I,[I,[I>"(
+      "{}int",
+      "{1,2,3}int",
+      "{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}int")
+0<<return "obj1"."g" == "null"
+0>>>"obj1"."h"(
+   "{0,-1,1}",
+   "{{},{0,-1,1},{0,-1,1}}",
+   "{\"abcdefghijklmnop\",\"\\\\\\\"\\n\\t\\u000c\"}")
+"\"h\"<[S,[[S,[Ljava.lang.String;>"(
+      "{short 0,short -1,short 1}short",
+      "{{}short,{short 0,short -1,short 1}short,{short 0,short -1,short 1}short}[S",
+      "{\"abcdefghijklmnop\",\"\\\\\\\"\\n\\t\\u000c\"}java.lang.String")
+0<<return "obj1"."h" == "null"
+0>>>"obj1"."i"(
+   "123")
+"\"i\"<java.lang.Integer>"(
+      "123")
+0>>"obj2"."d"(
+   "\"a\"")
+0<<return "obj2"."d" == "null"
+0>>"obj2"."d"(
+   "\"b\"")
+0<<return "obj2"."d" == "null"
+0<<return "obj1"."i" == "null"

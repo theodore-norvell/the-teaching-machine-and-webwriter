@@ -1,0 +1,201 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>The Site Scaffold</title>
+</head>
+<body>
+<p>Broadly speaking the scaffold refers to the <em>structure</em> (or <em>layout</em> )
+  of the site. Some effort has gone into reducing the scaffolding restrictions.</p>
+<p>Here is an images of the site layout for this manual as it appears in WindowsXP.
+  (The .svn folders as well as the special icons overlaying the folders are artifacts
+  of the subversion control system we use for all software development projects.)</p>
+<p> <img src="siteStructure.png"></p>
+<p> Although the layout has designed to be quite flexible there are some basics
+  which authors must respect. Fundamentally, the site is designed as a <em>tree</em>.
+  The root node can be any directory on your web site but the rest of the tree
+  must branch down from that node. There are three webWriter subdirectories under
+  the root&#8212;<code>webWriter</code>, <code>style</code> and <code>content</code>.</p>
+<p>The <code>Templates</code> folder contains Dreamweaver templates and has been
+  left in as a convenience for Dreamweaver authors that use templates. Others
+  may delete it. The <code>TMSetup</code> contains instructions for setting up
+  FireFox or InternetExplorer for use with WebWriter++ and the Teaching Machine.
+  It is not part of the site, <em>per se</em>, but again has been included for
+  convenience (although it is not likely to age gracefully). The <code>help</code> folder
+  contains the (very limited) help files for the TM itself. </p>
+<dl> 
+  <dt><a name="siteRoot">Site Root Node</a></dt>
+  <dd>This node contains a few files to help define the basic structure of the
+     sites pages, as follows:        <dl>
+          <dt><code>default.htm</code></dt>
+          <dd>The frameset for the site. This should not normally need to be
+            edited. </dd>
+          <dt><code>navBar.htm</code></dt>
+          <dd>the  navigation bar (also often referred to as the WebWriter bar)
+            containing
+            <a href="toolBar.htm">control buttons</a> for the site. Its appearance
+            is governed by its own style sheet in the style folder </dd>
+          <dt><code>tocGenerator.htm</code></dt>
+          <dd>The base page for the dynamically generated table of contents.
+            See <a href="toolBar.htm#anchors">manual entry</a>.</dd>
+          <dt>printForm.htm</dt>
+          <dd>A base page for setting up a printed version of any site pages
+            in the root folder. printForm must be included in every folder which
+            contains pages a student may want to <a href="toolBar.htm">print</a>. </dd>
+          <dt><code>tm.jar</code></dt>
+          <dd>the java jar file containing the Teaching Machine.</dd>
+          <dt><code>markUp.jar</code></dt>
+          <dd>the java jar file containing the markUp routines for inserting
+            code into web pages.</dd>
+          <dt><code>URL2String.class</code></dt>
+          <dd>A Java class for converting URLs to strings <span class="WW"></span>.   </dd>
+          <dt><a name="webWriterFolder">webWriter Folder</a></dt>
+  <dd>this directory contains the rest of webWriter (the files in the root node
+    are also considered part of webWriter). It includes some special pages plus
+    the JavaScripts that make up WebWriter as well as graphical resources.
+    <dl> 
+      <dt><code>buttonClass.js</code></dt>
+      <dd>A class for buttons used on webWriter navigation bar. </dd>
+      <dt><code>header.js</code></dt>
+      <dd>A tool to write the bulk of the <code>&#8249;head&#8250;</code> section
+        for content pages. </dd>
+      <dt><code>inputForm.htm</code></dt>
+      <dd>An html form used when the edit button is pushed on examples in the Teaching Machine container.</dd>
+      <dt><code>navBarheader.js</code></dt>
+      <dd>A tool to write the bulk of the <code>&#8249;head&#8250;</code> section
+        for the navigation bar which tops most pages. </dd>
+<dt><code>parser.js</code></dt>
+      <dd>A tool for parsing tags in the <code>insertCode</code> snippet used to insert code into webWriter++ code containers.</dd>
+      <dt><code>printForm.htm</code></dt>
+      <dd>An html template used for creating print versions of content web pages. As of this writing, must be copied into any content folder containing  pages on which the <a href="toolBar.htm">print button</a> is to be used.</dd>
+       <dt><code>printHeader.js</code></dt>
+      <dd>A tool to write the bulk of the <code>&#8249;head&#8250;</code> section for printed pages. </dd>        
+       <dt><code>slider.htm</code></dt><dd> the slider for the window shade  that covers up part of the document in lecture
+        mode.</dd>
+       <dt><code>tocNavigator.js</code></dt>
+      <dd>A toolset for navigation, linked by both the navigation bar and the
+        toc generator. </dd>
+        <dt><code>standardButtons.js</code></dt>
+      <dd>Standard buttons
+        for the navigation bar which tops most pages. </dd>
+      <dt><code>wait_for_applets.htm</code></dt>
+      <dd>The page loaded in place of contents while the site frameset (which
+        contains all the applets) loads.</dd>
+      <dt><code>web_writer.js</code></dt>
+      <dd>The bulk of the main toolset. It is designed to be linked into (and
+        thus part of) every content page.</dd>
+      <dt><code>ww_one_time.js</code></dt>
+      <dd>The rest of the main toolset loaded only once with the navigation bar.
+        Works hand-in-hand with <code>web_writer.js</code>. </dd>
+          <dt><strong>images folder</strong> </dt>
+      <dd>common gifs and jpegs, for example buttons. For your convenience you
+        will find most of the gifs used in the Teaching Machine here as well.</dd>
+	</dl>
+  </dd>
+  <dt><a name="styleFolder">style folder</a></dt>
+  <dd>stylesheets for the site. Currently these include
+      <dl>
+        <dt><code>lectureScreen.css</code></dt>
+        <dd>The sheet used for lecturing, designed for projection. Almost all
+          content pages use this (or one of its alternates). Sheet used in lecture mode. </dd>
+        <dt><code>notesScreen.css</code></dt>
+        <dd>an alternate content page style sheet, used for looking at the site on an individual screen. Sheet used in notes mode. </dd>
+        <dt><code>notesPrint.css</code></dt>
+        <dd>The sheet used for printing notes</dd>
+        <dt><code>navBar.css</code></dt>
+        <dd>the style sheet for the navigation bar which is implemented as a
+          frame containing a separate document</dd>
+        <dt><code>slider.css</code></dt>
+        <dd>the style sheet used for the window shade slider that covers up part
+          of the document in lecture mode.</dd>
+        <dt><code>toc.css</code></dt>
+        <dd>a style sheet used to control the appearance of the auto generated
+          Table of Contents page. Barely argued at all at the moment. </dd>
+  <dt><code>configurations folder </code></dt>
+  <dd>Contains the default TM configuration file as well as any other configuration
+    files desired by authors. Which configuration file
+    to use is specified in the <code><a href="insert_code.htm">insertCode</a></code> command.
+    TM configuration files control such things as the overall size and layout
+    of TM windows, as well as which ones will appear, the font sizes and the
+    title of the windows. </dd>     
+</dl>
+  </dd>
+  <dt><a name="contentFolder">content folder</a> </dt>
+  <dd>This is the root for all content pages. WebWriter expects a number of files
+    in the root of the content folder. These are designed to be edited by authors
+    to fit the needs of their own project.
+It is suggested that actual site content be organized in a set of folders located
+    in the content folder.
+    <dl>
+          <dt><code>dictionary.htm</code></dt>
+            <dd>A site-wide dictionary. See <a href="definitions.htm">manual entry</a>. </dd>
+          <dt><code>nav-map.js</code></dt>
+          <dd>A hard-coded map laying out the site navigation. Every page which
+            is to be included in the table of contents must be defined as a node
+            in this file.</dd>
+          <dt><code>noteConstants.js</code></dt>
+          <dd>A set of constants used by the webWriter javaScripts. Some are
+            editable while others should be left alone. The non-editable ones
+            are clearly delineated in the file. </dd>
+      <dt>videos folder </dt>
+      <dd>Videos linked to the Teaching Machine are stored here. This organization
+        is not mandatory (it can be changed using editable constants in the <code>constants.js</code>        file). It is used to allow the very large  video files to be grouped
+        together making them easier to manage. </dd>
+</dl>
+  </dd>
+</dl>
+<p>This much of the layout should be respected. A <span class="WW">WebWriter++</span> skeleton
+  in the form of a <a href="../../WebWriter%20Skeleton.zip">zip file</a> is contained
+  in the root of this site.
+<p>The schema was suggested by Theo Norvell and is designed to isolate content,
+  style and tools from each other.
+<ol>
+  <li> It allows a new version of webWriter to be
+      dropped in relatively painlessly. Only the root files and the WebWriter folder
+    have to be replaced.</li>
+  <li>Content pages are isolated in their own directory, making it easier to
+    create multiple sites.</li>
+  <li>Style pages (stylesheets and TM configurations) are also isolated as they
+    affect the entire site and  are managed separaely from content. </li>
+</ol>
+<h2><a name="header">Content Pages Head</a></h2>
+<p>This is the   head for this page and should be used as a template for each content page:</p>
+<pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html401/sgml/dtd.html&quot;&gt;&lt;head&gt;<br>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot;&gt;<br>&lt;title&gt;The Site Scaffold&lt;/title&gt;<br>&lt;script language=&quot;JavaScript&quot;&gt;<br>nestingDepth = &quot;../../&quot;;<br>&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../noteConstants.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../../webWriter/header.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;JavaScript&quot; src=&quot;../../webWriter/buttonClass.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../../webWriter/parser.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../../webWriter/web_writer.js&quot;&gt;&lt;/script&gt;<br>&lt;/head&gt;<br>
+</pre>
+<p>The <code>header.js</code> javaScript writes most of the standard head information
+  including <code>generator</code>, <code>author(s)</code> and <code>copyright
+  </code>meta tags,
+  using variables set in <code>contants.js</code> (in
+  the <code>content</code> folder root). It also automatically links in the stylesheets
+  (whose names must be preserved but which may be otherwise edited).</p>
+<p>The crucial issue is the <code>nestingDepth</code> which defines the path
+  of the page relative to the root as well as the the leading part of the three
+  javaScript references. This must be correct. Those to <code>web_writer.js</code> and <code>header.js</code>  use
+  the same string as the
+  <code>nestingDepth</code> because the <code>webWriter</code> folder is located
+  in the root. The <code>noteConstants.js</code>,
+  however, backs up one less because the <code>noteConstants.js</code> javascript,
+  which is designed to be author-editable, is located in the root of the <code>content</code> folder.</p>
+<p>The <code>title</code> tag should always be present as it will be used to
+  generate the title that appears in the tool bar.</p>
+<p>Pages at different depths from the root will have to change all relative references
+  in this head including nestingDepth</p>
+<h2>Dreamweaver Template <a name="template"></a></h2>
+<p>Authors using Dreamweaver may use a Dreamweaver template as an alternative to propagating the above head to every page in the site by hand. All references in the Dreamweaver template are relative to the template. Dreamweaver will automatically adjust them when creating template based pages. However, <code>nestingDepth</code> is a JavaScript variable and will not be altered by Dreamweaver so <strong>must be adjusted by hand</strong>. Thus it has been included with title in an editable section of the template. </p>
+<pre>&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD HTML 4.01//EN&quot; &quot;http://www.w3.org/TR/html401/sgml/dtd.html&quot;&gt;&lt;head&gt;<br>&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=iso-8859-1&quot;&gt;<br>&lt;!-- TemplateBeginEditable name=&quot;doctitle&quot; --&gt;<br>&lt;title&gt;Unnamed Page&lt;/title&gt;<br>&lt;script language=&quot;JavaScript&quot;&gt;<br>nestingDepth = &quot;../../&quot;;<br>&lt;/script&gt;<br>&lt;!-- TemplateEndEditable --&gt;<br>&lt;!-- these are relative to template --&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../content/noteConstants.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../webWriter/header.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;JavaScript&quot; src=&quot;../webWriter/buttonClass.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../webWriter/parser.js&quot;&gt;&lt;/script&gt;<br>&lt;script language=&quot;JavaScript&quot; src=&quot;../webWriter/web_writer.js&quot;&gt;&lt;/script&gt;<br>&lt;/head&gt;<br>&lt;body id=&quot;bodyRef&quot;&gt;<br>&lt;div id=&quot;content&quot;&gt;<br>&lt;!-- TemplateBeginEditable name=&quot;contents&quot; --&gt;<br>&amp;nbsp;<br>&lt;!-- TemplateEndEditable --&gt;<br>&lt;div id=&quot;allExamples&quot;&gt;<br> &lt;!-- TemplateBeginEditable name=&quot;allExamples&quot; --&gt;<br>&lt;h1&gt;Examples Shown in Full &lt;/h1&gt;<br> &lt;!-- TemplateEndEditable --&gt;&lt;/div&gt;<br>&lt;p&gt;<br>&lt;script language=&quot;JavaScript&quot;&gt;<br>	bottomStamp(true, true);<br>&lt;/script&gt;<br>&lt;/p&gt;<br>&lt;/div&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;</pre>
+<p><script language="JavaScript">
+bottomStamp(true, true);
+</script>
+</p>
+</body>
+
+</html>
+

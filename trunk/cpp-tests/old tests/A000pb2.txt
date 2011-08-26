@@ -1,0 +1,23 @@
+#include <iostream.h>   /* include info from standard library */
+
+int a =9;
+int b=3;
+struct link {
+	link* next;
+	int value;
+};
+
+link c;
+int main()
+{
+link a;
+//a.value=10;
+link b;
+int var;
+//b.value= 5;
+//b.next=&a;
+//c.value=178;
+a.next=&c;
+a.value=209;
+
+}

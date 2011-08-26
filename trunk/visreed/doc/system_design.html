@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <link href="./style.css" type="text/css" rel="stylesheet" />
+        
+        <title>Project VISREED: System Design</title>
+    </head>
+    <body>
+        <h1>Project visreed: System Design</h1>
+        <h3 id="h3_regular_expression_nodes">Regular Expression Nodes</h3>
+        <p>Regular Expression Nodes are designed as <span class="name">Payload</span>s in JHigraph. There are two kinds of nodes (SEQ and non-SEQs, see <a href="./specification.html#h3_regular_expression_nodes">specification</a>). The difference of nodes are dealed in <span class="name">Payload</span>s.</p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_regular_expression_node_class_diagram" width="600" height="370"></canvas>
+            <pre id="canvas_regular_expression_node_class_diagramSource" class="uml">
+Diagram RegularExpressionNodeClass{
+    [@28,0]
+    interface Node {
+    }
+    [@18,80]
+    +abstract class AbstractNode : Node{
+        Attribute payload : Payload +protected;
+    }
+    [@0,180]
+    class RegexNode : AbstractNode{
+        +public operation appendChild{
+            Argument child : RegexNode;
+        }
+    }
+    [@266,0]
+    interface Payload{
+    }
+    [@266,70]
+    interface TaggedPayload : Payload {
+        Operation getTag;
+    }
+    [@251,160]
+    +abstract class RegexPayload : TaggedPayload{
+        +protected attribute tag : RegexTag;
+        +abstract operation constructView;
+        +abstract operation format{
+            Argument currentNode : RegexNode;
+        }
+    }
+    [@0,300]
+    class AlternationanPayload : RegexPayload{
+        operation AlternationanPayload;
+    }
+    [@130,300]
+    class KleenePlusPayload : RegexPayload{
+        operation KleenePlusPayload;
+    }
+    [@250,300]
+    class KleeneStarPayload : RegexPayload{
+        operation KleeneStarPayload;
+    }
+    [@370,300]
+    class SequencePayload : RegexPayload{
+        operation SequencePayload;
+    }
+    [@485,300]
+    class TerminalPayload : RegexPayload{
+        operation TerminalPayload{
+            Argument terminal;
+        }
+    }
+    [@horizontal]
+    association payload{
+        role one : AbstractNode +composite;
+        role one : Payload;
+    }    
+}
+            </pre>
+        </div>
+        <p>Although JHigraph provides <span class="name">TaggedPayload</span> interface for handling tree normalization, it is not used in visreed. The main reason is that the Tagged version of JHigraph requires strict match with the tag system, which can not be assured during editing. This problem may be solved later.</p>
+        
+        <h3 id="h3_regular_expression_node_views">Regular Expression Node Views</h3>
+        <p>Similarly, a set of node views are designed for all the payloads. </p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_regular_expression_node_view_class_diagram" width="700" height="400" ></canvas>
+            <pre id="canvas_regular_expression_node_view_class_diagramSource" class="uml">
+Diagram RegularExpressionNodeView{
+    [@303,0]
+    interface Layable{
+    }
+    [@301,80]
+    +abstract class ComponentView : Layable{
+    }
+    [@315,150]
+    class NodeView : ComponentView{
+    }
+    [@301,250]
+    +abstract class RegexNodeView : NodeView{
+    }
+    [@0,350]
+    class AlternationNodeView : RegexNodeView{
+    }
+    [@120,350]
+    class KleenePlusNodeView : RegexNodeView{
+    }
+    [@240,350]
+    class KleeneStarNodeView : RegexNodeView{
+    }
+    [@360,350]
+    class SequenceNodeView : RegexNodeView{
+    }
+    [@472,350]
+    class TerminalNodeView : RegexNodeView{
+    }
+    [@580,350]
+    class SyntaxNodeView : RegexNodeView{
+    }
+    [@490,200]
+    class RegexViewFactory{
+        operation makeNodeView{
+        }
+    }
+    [@horizontal]
+    association makeNodeView{
+        role one : RegexViewFactory;
+        role one : RegexNodeView;
+    }
+}
+            </pre>
+        </div>
+        <p>All instances of the <span class="name">RegexNode</span> should be created by the factory.</p>
+        <p>Note that a specific <span class="name">SyntaxNodeView</span> is designed for handling the lexical tree diagram.</p>
+        
+        <h3 id="h3_interactions">Interactions</h3>
+        <p>The interactions are implemented through these interfaces:</p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_interaction_class_diagram" width="540" height="270" ></canvas>
+            <pre id="canvas_interaction_class_diagramSource" class="uml">
+Diagram InteractionClassDiagram{
+    interface ISelectable{
+        operation isSelected{
+        }
+        operation select{
+        }
+        operation deSelect{
+        }
+        operation setSelected{
+            argument selected : boolean;
+        }
+    }
+    [@127,12]
+    interface IHoverable{
+        operation setHoverOn{
+        }
+        operation setHoverOff{
+        }
+        operation isHoverOn{
+        }
+    }
+    [@220,12]
+    interface IRotatable{
+        operation getCurrentDirection{
+        }
+        operation setDirection{
+            argument newDirection : Direction;
+        }
+        operation reverseDirection{
+        }
+    }
+    [@355,1]
+    interface IInteractable{
+        operation isDropAccepted{
+        }
+        operation handleDrop{
+            argument nodes : List&lt;RegexNode>;
+        }
+        operation handleClick{
+            argument e : MouseEvent;
+        }
+        operation handleDoubleClick{
+            argument e : MouseEvent;
+        }
+    }
+    [@365,227]
+    +abstract class RegexNodeView: ISelectable : IHoverable : IRotatable : IInteractable{
+    }
+    [@80,200]
+    class RegexNode : ISelectable : IHoverable{
+        attribute isSelected : boolean;
+        attribute isHoverOn : boolean;
+    }
+    [@horizontal]
+    association node{
+        role one : RegexNodeView;
+        role one : RegexNode +composite;
+    }
+}
+            </pre>
+        </div>
+        <p>Note that both the <span class="name">RegexNode</span> and the <span class="name">RegexNodeView</span> implements <span class="name">ISelectable</span> and <span class="name">IHoverable</span>. This design enables selection and hovering effect be reflected in multiple higraph views.</p>
+        <p>The selection and hovering is handled in <span class="name">RegexNode</span> only, and the <span class="name">RegexNodeView</span> just sends these values to its node.</p>
+        <p>The mouse interaction is built on top of JHigraph event layer.</p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_mouse_interaction_class_diagram" width="550" height="400" ></canvas>
+            <pre id="canvas_mouse_interaction_class_diagramSource" class="uml">
+Diagram MouseInteractionClassDiagram +dynamic{
+    interface MouseListener{
+        operation mouseClicked{}
+        operation mousePressed{}
+        operation mouseReleased{}
+        operation mouseEntered{}
+        operation mouseExited{}
+    }
+    [@120,0]
+    interface MouseMotionListener{
+        operation mouseDragged{}
+        operation mouseMoved{}
+    }
+    [@10,160]
+    +public class SubgraphMouseAdapter : MouseListener : MouseMotionListener{
+        +protected attribute theView : HigraphView;
+        +protected attribute observer : SubgraphEventObserver;
+        +protected operation findComponentsUnder{
+            
+        }
+        +public operation installIn{
+            argument comp : JComponent;
+        }
+        +public operation getObserver : SubgraphEventObserver{}
+        +public operation setObserver{
+            argument observer : SubgraphEventObserver;
+        }
+    }
+    [@39,320]
+    +public class RegexSubgraphMouseAdapter : SubgraphMouseAdapter{}
+    [@300,100]
+    +public +abstract class SubgraphEventObserver{
+        +public operation movedOver{}
+        +public operation dragged{}
+        +public operation clickedOn{}
+        +public operation pressedOn{}
+        +public operation releasedOn{}
+        +public operation getSourceActions : int{}
+        +public operation createTransferable : Transferable{}
+        +public operation canDropHere : boolean {}
+        +public operation importData : boolean {}
+        +public operation getVisualRepresentation : Icon {
+            argument t :Transferable;
+        }
+    }
+    [@303,300]
+    +public class RegexSGEventObserver : SubgraphEventObserver{
+        +private operation getTopNodeView : RegexNodeView{}
+        +private operation getNumSelection : int{}
+        +private operation getSelectedView : RegexNodeView{}
+        +private operation getSelectedViews : List&lt;RegexNodeView>{}
+    }
+    association _{
+        role one : SubgraphMouseAdapter;
+        role one : SubgraphEventObserver +composite;
+    }
+}
+            </pre>
+        </div>
+        <p>Once installed on the specified container, the <span class="name">SubgraphMouseAdapter</span> will forward all the mouse events to the corresponding <span class="name">SubgraphEventObserver</span>, and the detailed operation is forwarded to the related <span class="name">IInteractable</span>.</p>
+        
+        <h3 id="h3_helper_classes">Common Helper Classes</h3>
+        <p>Several commonly used functions are implemented in separate static classes, including <span class="name">GraphicsHelper</span> and <span class="name">SwingHelper</span>.</p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_graphics_helper_class_diagram" width="600" height="200" ></canvas>
+            <pre id="canvas_graphics_helper_class_diagramSource" class="uml">
+Diagram GraphicsHelperClassDiagram +dynamic{
+    +static +public class GraphicsHelper{
+        +private +static attribute CONNECTION_CURVE_RADIUS_PIXEL : double;
+        +private +static attribute ARROWHEAD_LENGTH_PIXEL : double;
+        +private +static operation CreateArrow : Path2D.Double{
+            argument style : ArrowStyle;
+        }
+        +public +static operation getAntiAliasingGraphic : Graphics2D{
+            argument g : Graphics2D;
+        }
+        +public +static operation paintCenteredString{
+            argument g : Graphics2D;
+            argument text : String;
+            argument centerX : double;
+            argument centerY : double;
+        }
+        +public +static operation fillOval{
+            argument g : Graphics2D;
+            argument center : Point2D;
+            argument radius : double;
+        }
+        +public +static operation getGradientColor : Color{
+            argument baseColor : Color;
+        }
+        +public +static operation paintStringOnTopLeft{
+            argument g : Graphics2D;
+            argument text : String;
+            argument leftX : double;
+            argument topY : double;
+        }
+        +public +static operation drawArrow{
+            argument g : Graphics2D;
+            argument style : ArrowStyle;
+            argument direction : ArrowDirection;
+            argument endPoint : Point2D;
+        }
+        +public +static operation drawHorizontalConnectionCurve{
+            argument g : Graphics2D;
+            argument startX : double;
+            argument startY : double;
+            argument endX : double;
+            argument endY: double;
+        }
+        +public +static operation drawVerticalConnectionCurve{
+            argument g : Graphics2D;
+            argument startX : double;
+            argument startY : double;
+            argument endX : double;
+            argument endY: double;
+        }
+        +public +static operation getOffsetPoint : Point{
+            argument src : Point2D;
+            argument offsetX : double;
+            argument offsetY : double;
+        }
+    }
+    [@390,0]
+    +public +static class SwingHelper{
+        +public +static operation setSystemLookAndFeel{
+        }
+        +public +static operation loadIcon : ImageIcon{
+            argument filename : String;
+        }
+        +public +static operation loadIcon : ImageIcon{
+            argument filename : String;
+            argument desc : String;
+        }
+    }
+}
+            </pre>
+        </div>
+        <p><span class="name">GraphicsHelper</span> mainly deals with graphics in awt. </p>
+        
+        <hr />
+        <textarea id="umlcanvas_errors" style="width: 100%; height: 160px"></textarea>
+        <footer>
+            Last update: <pre>$Id: system_design.html 656 2011-08-15 16:03:11Z xiaoyu $</pre>
+        </footer>
+        
+        <script type="text/javascript" src="./js/UmlCanvas/UmlCanvas.standalone.min.js"></script>
+        <script type="text/javascript" src="./js/AutoToc.js"></script>
+        <script>
+        UmlCanvas.on("ready", function(){
+            /*/
+            var canvasId = 'canvas_graphics_helper_class_diagram';
+            /*/
+            var canvasId = '';
+            //*/
+            
+            if(canvasId.length > 0){
+                document.getElementById(canvasId).className += 'Tabbed withSource';
+                myManager = new UmlCanvas.Manager();
+                myModel = myManager.setupModel(canvasId);
+                //myModel.makeTabbed(['source']);
+                //myModel.makeDynamic();
+                myModel.load(document.getElementById(canvasId + 'Source').textContent);
+                document.getElementById('umlcanvas_errors').value = myModel.errors;
+                myManager.startAll();
+            }
+        });
+        </script>
+    </body>
+</html>

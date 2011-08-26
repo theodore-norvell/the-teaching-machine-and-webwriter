@@ -1,0 +1,636 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PLAY Program Object Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<style type="text/css">
+<!--
+.style1 {color: #FF0000}
+-->
+</style>
+</head>
+
+<body>
+<h1 class="style1">DISCLAIMER</h1>
+<p>This document was written back when PLAY was based on Flex and ActionScript. A lot has changed since then. </p>
+<h1>The PLAY Program Object Model</h1>
+<h2>Scope</h2>
+<p>This document describes the API for the representation of programs, data, and execution states for the PLAY programming language.</p>
+<p>We follow a strict model/view split. The API described here is strictly for the model. No GUI issues are addressed at all. Most of the objects implementing the interfaces described here will be presented to the user visually and the user can interact with those objects through keyboard and mouse actions. However these are matters for the view and are not described here. </p>
+<h2>Relation to views</h2>
+<p>All structure is primarily in the program object model. Some of this structure may have to be duplicated in particular views. For example if we use a boxes-in-boxes view of abstract syntax trees, then the view of a parent may of necessity be directly related to the views of the child. In particular the Actionscript Component representing a parent node may need to have the Component elements representing the parent node's children as its own children in the tree of visual Component objects. The Component tree in this example is what is known as a &quot;presentation model&quot;. It is up to each view system to maintain the consistency of its presentation model with the  program object model. Events indicating changes to the model will alert the view as to the need to check and restore consistency.</p>
+<h2>Models</h2>
+<p>Object implementing the Model interface represent parts of the program state. For example a method, class or object might be represented by an actionscript object implementing the Model interface. The Model object then acts as facade various objects that comprise the model. </p>
+<pre>interface UndoableI {
+    function  canUndo() : boolean
+
+    function  canRedo() : boolean
+	
+    function  undo() : void
+    // Has no effect, if canUndo() is false.
+	// Note that canUndo() is NOT a precondition.)
+    // Otherwise attempts to undo the last change that was done or redone.
+    // Returns true if a change was successfully undone.
+
+    function  redo() : void
+    // Has no effect, if canRedo() is false.
+	// Note that canRedo() is NOT a precondition.)
+    // Otherwise attempts to redo the last change that was undone.
+    // Returns true if a change was successfully redone.
+</pre>
+<pre>interface ModelI extends Undoable
+    method addEventListener( Function listener  )
+    method removeEventListener( Function listener )
+</pre>
+<p>The change-listeners are void functions that take an Event as a parameter. [TBD elaborate on Events].</p>
+<h2>Program</h2>
+<p>A Program object models a complete program. It serves as a facade for all changes to and accesses to the program. Rather than sending messages to the nodes of the abstract syntax tree, clients send messages to the Program object.</p>
+<pre>interface ProgramI extends ModelI
+    
+    method ASTNodeI getRoot()
+    
+    ...
+</pre>
+<h2>Abstract syntax trees</h2>
+<p>Abstract syntax trees provide the representation of commands and expressions. An abstract syntax tree is a tree composed of node objects. Each of these objects implements at least the ASTNode interface.</p>
+<h3>Interface ASTNode</h3>
+<p>The interface itself is opaque. Clients sends messages to the ProgramI object that contains the node. </p>
+<pre>interface ASTNode {
+
+}</pre>
+<p>An ASTNode holds a number of children, but does not itself, necessarily, have a parent. </p>
+<pre>interface ProgramI
+   ...
+  // Structure
+
+
+    function getNumberOfChildren(nh : ASTNodeI) : int 
+        // Returns number of nodes nh has as children
+
+
+    function getChild(nh : ASTNodeI, index : int) : ASTNodeI
+        // Pre: 0 _&lt; index &lt; getNumberOfChildren(nh)
+        // Returns the specified child.  The first child is of course at index 0.
+
+    function canDelete(nh : ASTNodeI, index : int) : boolean
+        // Returns true if it is legitimate to call delete.
+        // This is abstract, but you can be sure that the result will
+        // be false unless 0 _&lt; index &lt; this.getNumberOfChildren(nh).
+
+        // A particular implementation of the interface might further refuse
+        // deletion of some of or all its children.
+
+    function deleteNode(nh : ASTNodeI, in int index ) : ASTNodeI
+        // Pre: this.canDelete( nh,  index )
+        // Semantics are abstract. The specified child will be deleted and the child
+        // will become an orphan.
+        // However, in some cases the deleted child will be replaced by a new child,
+        // so you can not rely on getNumberOfChildren decreasing.
+        // Returns: The deleted child.
+
+    function canInsert(nh : ASTNodeI, index ; int, node : ASTNodeI, copy : boolean ) : boolean 
+        // Returns: true if the node can be inserted at the given position.
+        // Semantics are abstract. Certainly this will be false unless
+        // 0 _&lt; index _&lt; this.getNumberOfChildren(nh)
+
+        // If copy is false and the node has a parent, then the node must be
+        // deleted as part of the move.
+        // Several cases must be considered.
+        // * The parent of the node is nh. Then we are permuting the
+        //   children of the node.  Generally this will be allowed.
+        // * The node is an ancestor of nh or is nh.
+        //   Then the insert must not be allowed.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   and so m.canDelete( m.getParent( node ), m.getIndex(node) ) should be true
+        //   where m is node.getProgram().
+
+        // A particular implementation of the interface might further refuse
+        // insertions.
+
+     function insert(nh : ASTNodeI, index : int, node : ASTNodeI, copy : boolean )
+        // Pre: this.canInsert( nh, index, node )
+        // Semantics are abstract, but follow the outline below.
+
+        // The copy flag indicates whether the node should first be cloned.
+        // If copy is true, the node is copied. If copy is false,
+        // the node is deleted from its original location.  Either
+        // way we have a node that is an orphan.
+        // This orphan is then inserted at the appropriate spot in nh.
+
+        // If copy is false and the node has a parent, then the node is
+        // to be moved into nh.
+
+        // If copy is false and the node has a parent, then the node must be
+        // deleted as part of the move. Several cases must be considered.
+        // * The parent of the node is nh. Then we are permuting the
+        //   children of nh.  In this case the final index of the
+        //   moved node may not be the value of the index parameter.
+        // For example, suppose the children are [a,b,c] and we move b.  Moving to
+        //      -- position 0 results in [b,a,c]
+        //      -- position 1 results in [a,b,c]
+        //      -- position 2 results in [a,b,c]
+        //      -- position 3 results in [a,c,b]
+        // * The node is an ancestor of nh or is nh.
+        //   By the precondition, this case can not arise.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   (however no extra event is generated by the delete) and
+        //   then inserted at the appropriate spot.
+
+        // As a side effect, certain other nodes then be removed
+        // (e.g. placeholders) so that the final index may not be the index parameter
+        // and the number of children may not increase.
+
+    function canReplace(nh : ASTNodeI, index : int, node : ASTNodeI, copy : boolean ) : boolean
+        // Returns: true if the node can replace the node at the given index
+        // Semantics are abstract: Certainly it will return false unless
+        // 0 _&lt; index &lt; this.getNumberOfChildren()
+
+        // If copy is false and the node has a parent, then the node must first
+        // be deleted. Several cases must be considered.
+        // * The parent of the node is nh. Then we replacing one
+        //   child with another. E.g. [a,b,c,d] might become [d,b,c] if child d
+        //   is moved to position 0.  This will generally not be allowed.  More than
+        //   likely the user meant to permute, but missed the drop target.
+        // * The node is nh or an ancestor of nh.
+        //   Then the replacement must not be allowed.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   and so m.canDelete( m.getParent( node ), m.getIndex(node) ) should be true
+        //   where m is node.getProgram().
+
+        // A particular implementation of the interface might further refuse
+        // replacement of some or all of its children.
+
+    method ASTNode  replace(nh : ASTNodeI, index : int, node : ASTNodeI, copy : boolean )
+        // Pre: this.canReplace( nh, index, node, copy )
+
+        // Semantics are abstract, but follow the outline below.
+
+        // This is basically a combination of delete and insert.
+        //
+        // The copy flag indicates whether the node should first be cloned.
+        // If copy is true, the node is copied. If copy is false,
+        // the node is deleted from its original location.  Either
+        // way we have a node that is an orphan.
+        // This orphan then replaces the child specified by the index.
+        //
+        // If copy is false and the node has a parent, then the node must first
+        // be deleted. Several cases must be considered.
+        // * The parent of the node is nh. Then we are replacing one
+        //   child with another. E.g. [a,b,c,d] might become [d,b,c] if child d
+        //   is moved to position 0.
+        // * The node is nh or an ancestor of nh.
+        //   By the precondition, this case can not arise.
+        // * In all other cases, the node will be deleted as per the delete method.
+        //   (However there is no extra event associated with the delete.)</pre>
+
+<p>Note on drag and drop: The above interface is intended to support drag and drop as follows </p>
+<ul>
+  <li>A drag to the trash or a selection followed by a delete action will be supported by canDelete and deleteNode.</li>
+  <li>A drag from a palette to an ASTNode may result in an insert or a replace depending on exactly where the drop happens. (See below) </li>
+  <li>Dragging a node from one part of a tree (or even between trees) may result in an insert or a replace depending on exactly where the drop happens.  (See below.) The drag might copy (e.g. if the CNTL button is held down) or not. </li>
+</ul>
+<p>Drops within the view of a node: An operation or command might be visually represented by a box containing a label and a number of other boxes representing its children. The area of the box is divided into several parts. A drop on top of the label would mean replace this node with the dropped node. A drop between two children or just before the first child or just after the last child would mean insert. A drop on an area representing a child would be be deferred to that child recursively.</p>
+<p>An ASTNodeI has:</p>
+<ul>
+  <li> a number of children</li>
+  <li>a program </li>
+  <li>a tag indicating the sort of node it is,</li>
+  <li>a parent -- optionally,</li>
+  <li>additional information in the form of an object -- optionally </li>
+</ul>
+<p>A node that does not have a parent is an orphan.</p>
+<p>These attributes are accessed via the ProgramI object itself.</p>
+<pre>interface ProgramI
+  ...
+  // Tags
+    
+    function getTag(n : ASTNodeI) : Tag
+        // Get the current tag value [TBD enumerate the tag values or figure out a
+        // good way to avoid tag values altogether.]
+    
+    function canChangeTag(n : ASTNodeI, newTag : Tag) : boolean
+        // Can the tag value be changed? 
+    
+    function changeTag(n : ASTNodeI, newTag : Tag)
+        // Pre: this.canChangeTag( newTag )
+        // Change the tag value
+    
+  // Additional information
+    
+    function getAdditionalInformation(n : ASTNodeI, ) : Object
+        // Retrieve a dditional information. For example the value of a constant.
+   
+    function setAdditionalInformation(n : ASTNodeI,  inf : Object )
+        // Set the additional information
+    
+  // Structure
+    
+    function hasParent(n : ASTNodeI) : boolean
+        // Return true if the node has a parent.  This returns false for orphans.
+    
+    function ASTNodeI  getParent(n : ASTNodeI) : ASTNodeI
+        // Pre: this.hasParent()
+        // Return the parent
+    
+    function getIndex(n : ASTNodeI) : int
+        // Pre: hasParent(n) 
+        // Return the index of this node within its parent.
+        // It is guaranteed that this.getParent().getChild( this.getIndex() ) === this
+    
+    function clone(n : ASTNodeI) : ASTNodeI
+        // The node may or may not belong to this method. However, the
+        // clones will belong to this program.
+        // Create a deep copy of this node. I.e. this node and all its
+        // descendants will be copied. The clone of this node will be
+        // an orphan, i.e.: not clone().hasParent()
+</pre>
+<h3>Creating nodes</h3>
+<p>ProgramI objects serve as factories for nodes.</p>
+<pre></pre>
+<pre>interface ProgramI
+  ...
+  // Tags
+    
+    function makeNode(tag : Tag, inf : Object = null ) : ASTNodeI
+        // The node will be an orphan belonging to this program.</pre>
+<h3>Examples</h3>
+<p>[Note: I've assumed in these examples that commands and expressions are distinct (although possibly overlapping categories) of nodes. This is consistent with the current language overview (2006 Aug 26), but this aspect of design may change.] </p>
+<p><strong>Constants</strong>: A string or numeric constant will be represented by a node with no children (canDelete, canInsert, and canReplace all return false). The additional information will  hold the value of the string as a String object. </p>
+<p><strong>Binary operators</strong>. A binary operator such as + will usually have 2 children.</p>
+<p>[Comment : It is tempting to fix the number of children at 2. However this causes two problems when editing. First is that it might be useful to temporarily have excess children when editing, so that you have a place to stash items. Consider reassociating -[x, +[y,z]]. We can do that in the following steps</p>
+<blockquote>
+  <p>-[x, +[y,z]] ---&gt; -[ +[x,y,z] ] ---&gt; -[ +[x,y], z] ---&gt; +[ +[x,y], z] ---&gt; +[ -[x,y], z] </p>
+</blockquote>
+<p>The second is that the tag might get changed. For example a unary tag might get changed to a binary tag. What I have attempted to do instead is to try to maintain the number of children at 2 where possible by the addition and deletion of place-holders. Therefore the current design is to encourage the number of children to be 2. Note that type checking will check that operators have the right number of children, thus the user will be warned of the wrong number of arguments to an operation before execution.]</p>
+<ul>
+  <li>When created, a binary operator would have 2 children, which would be place-holders.</li>
+  <li>Insertion at any position <em>p</em>, provided 0 _&lt; <em>p</em> _&lt; getNumberOfChldren() and the node to be inserted is an expression node. If there are 2 or more children to start with and at least one is a place-holder, then inserting a child will result in the deletion of one place-holder. [TBD: Which one?]</li>
+  <li>Children can be replaced by other nodes (provided they are expression nodes or place-holders)</li>
+  <li>Children can be deleted. If the number of children is 2 or 1, a child that is not a place-holder will be replaced by a place-holder. </li>
+  <li>The tag can be changed to the tag of another  operator. The number of children may then have to be adjusted</li>
+</ul>
+<p><strong>Blocks</strong>. A block is a node that represents a sequence of commands, each represented by a child. </p>
+<ul>
+  <li>When created, a block has one child, which is a place-holder.</li>
+  <li>Insertion is  possible at any position <em>p</em>, provided 0 _&lt; <em>p</em> _&lt; getNumberOfChldren(), the node to be inserted is a command node, and the node to be inserted is not this node itself or an ancestor.</li>
+  <li>Children can be deleted. Deleting the last child, if it is not a place-holder replaces, that child with a place-holder. Deleting the last child, if it is a place-holder, results in deleting the child.</li>
+  <li>Children can be replaced if the replacement is another statement node</li>
+  <li>The tag can not be changed.</li>
+</ul>
+<p><strong>If-then-else commands</strong>. An if-then-else command has three children.</p>
+<ul>
+  <li>When created the first child is a place-holder and the second and third children are newly created blocks (see above).</li>
+  <li>Insertion is not possible.</li>
+  <li>The first child can be replaced by an expression node (or a place-holder)</li>
+  <li>The first child can be deleted. However, if it is deleted it is immediately replaced by a place-holder.</li>
+  <li>The second and third children may not be deleted. (Although, as they are blocks, their children can be deleted.) </li>
+  <li> Thus the number of children is always 3.</li>
+  <li>The tag can not be changed. </li>
+</ul>
+<p>[Comment: In the case of if-then-else commands, it is tempting to allow the third child to be deleted to create an if-then command. However this then raises the question of how to convert an if-then an if-then-else. The simple solution is to not have if-then commands.] </p>
+<h3>Tags</h3>
+<p>There is a fixed set of tag values for tree nodes. This is similar to HTML where there is a fixed set of element tags.</p>
+<p>The Tag class is a closed enumeration type. It contains a definitive list of node tags. </p>
+<p>All the tag values are readonly attributes of the class Tag.</p>
+<p>Place-holder tags represent missing parts of a program.</p>
+<ul>
+  <li>E_PLACE_HOLDER -- a place holder node represents missing expression or command.</li>
+</ul>
+<p>Expression and command tags. [For the moment I am going to ignore the distinction between expressions and commands. This distinction can be made by type checking. As far as editing is concerned an expression can appear where a command appears and the other way around. </p>
+<ul>
+  <li>SEQ -- a sequence of commands. A sequence may have 0 or more children. Initially the only child is a placeholder.</li>
+  <li>IF_THEN_ELSE -- an if command. If command always have 3 children. The first is an expression or a placeholder (initially a placeholder). The other two are sequences.</li>
+  <li>WHILE_DO_ELSE -- a while command. While commands always have 3 children.  The first is an expression or a placeholder (initially a placeholder). The other two are sequences.</li>
+  <li>ASSIGN -- an assignment command. Assignment commands have two children. Both are expressions.</li>
+  <li>LOCAL_VAR -- a local variable reference. The &quot;additional information&quot; is the name of the variable.</li>
+  <li>WORLD_VAR -- a world variable reference. The &quot;additional information&quot; is the name of the variable.</li>
+  <li>INSTANCE_VAR -- a variable that is an instance of this object.</li>
+  <li>STRING -- a literal value. The additional information is a String that is the value.</li>
+  <li>THIS -- Represents the top of the recipient stack.</li>
+  <li>DOT -- Has 1 child. The child refers to an object. The additional information is the field name.</li>
+  <li>NULL -- Has 0 children.  </li>
+  <li>METHOD_CALL -- A method call has 1 or more children. The additional information is a String representing the method name. The first child is the recipient, the remaining children are the arguments.</li>
+  <li>WORLD_METHOD_CALL -- a method call to the world. 0 or more children represent the arguments.  The additional information is a String representing the method name. WORLD_METHOD_CALLs include built-in operations like + and *.</li>
+  <li>ROOT -- this node is at the root of the program tree. There is only one ROOT. For now root will contain all the methods.</li>
+  <li>[Others are to be added, but this should be almost all.] </li>
+</ul>
+<h3>Selection in trees </h3>
+<h2>Objects</h2>
+<h2>Classes</h2>
+<p>&nbsp;</p>
+</body>
+</html>
+=======
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>PLAY Program Object Model</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body>
+<h1>The PLAY Program Object Model</h1>
+<h2>Scope</h2>
+<p>This document describes the API for the representation of programs, data, and execution states for the PLAY programming language.</p>
+<p>We follow a strict model/view split. The API described here is strictly for the model. No GUI issues are addressed at all. Most of the objects implementing the interfaces described here will be presented to the user visually and the user can interact with those objects through keyboard and mouse actions. However these are matters for the view and are not described here. </p>
+<h2>Relation to views</h2>
+<p>All structure is primarily in the program object model. Some of this structure may have to be duplicated in particular views. For example if we use a boxes-in-boxes view of abstract syntax trees, then the view of a parent may of necessity be directly related to the views of the child. In particular the Actionscript Component representing a parent node may need to have the Component elements representing the parent node's children as its own children in the tree of visual Component objects. The Component tree in this example is what is known as a &quot;presentation model&quot;. It is up to each view system to maintain the consistency of its presentation model with the  program object model. Events indicating changes to the model will alert the view as to the need to check and restore consistency.</p>
+<h2>Models</h2>
+<p>Object implementing the Model interface represent parts of the program state. For example a method, class or object might be represented by an actionscript object implementing the Model interface. The Model object then acts as facade various objects that comprise the model. </p>
+<pre>interface UndoableI {
+    function  canUndo() : boolean
+
+    function  canRedo() : boolean
+	
+    function  undo() : boolean
+    // Has no effect and returns false if canUndo() is false.
+    // Otherwise attempts to undo the last change that was done or redone.
+    // Returns true if a change was successfully undone.
+
+    function  redo() : boolean
+    // Has no effect and returns false if canRedo() is false.
+    // Otherwise attempts to redo the last change that was undone.
+    // Returns true if a change was successfully redone.
+</pre>
+<pre>interface ModelI extends Undoable
+    method registerChangeListener( Function listener  )
+    method removeChangeListener( Function listener )
+</pre>
+<p>The change-listeners are void functions that take an Event as a parameter. [TBD elaborate on Events].</p>
+<h2>Program</h2>
+<p>A Program object models a complete program. It serves as a facade for all changes to and accesses to the program. Rather than sending messages to the nodes of the abstract syntax tree, clients send messages to the Program object.</p>
+<pre>interface ProgramI extends ModelI
+    
+    method ASTNodeI getRoot()
+    
+    ...
+</pre>
+<h2>Abstract syntax trees</h2>
+<p>Abstract syntax trees provide the representation of commands and expressions. An abstract syntax tree is a tree composed of node objects. Each of these objects implements at least the ASTNode interface.</p>
+<h3>Interface ASTNode</h3>
+<p>The interface itself is opaque. Clients sends messages to the ProgramI object that contains the node. </p>
+<pre>interface ASTNode {
+
+}</pre>
+<p>An ASTNode holds a number of children, but does not itself, necessarily, have a parent. </p>
+<pre>interface ProgramI
+   ...
+  // Structure
+
+
+    function getNumberOfChildren(nh : ASTNodeI) : int 
+        // Returns number of nodes nh has as children
+
+
+    function getChild(nh : ASTNodeI, index : int) : ASTNodeI
+        // Pre: 0 _&lt; index &lt; getNumberOfChildren(nh)
+        // Returns the specified child.  The first child is of course at index 0.
+
+    function canDelete(nh : ASTNodeI, index : int) : boolean
+        // Returns true if it is legitimate to call delete.
+        // This is abstract, but you can be sure that the result will
+        // be false unless 0 _&lt; index &lt; this.getNumberOfChildren(nh).
+
+        // A particular implementation of the interface might further refuse
+        // deletion of some of or all its children.
+
+    function deleteNode(nh : ASTNodeI, in int index ) : ASTNodeI
+        // Pre: this.canDelete( nh,  index )
+        // Semantics are abstract. The specified child will be deleted and the child
+        // will become an orphan.
+        // However, in some cases the deleted child will be replaced by a new child,
+        // so you can not rely on getNumberOfChildren decreasing.
+        // Returns: The deleted child.
+
+    function canInsert(nh : ASTNodeI, index ; int, node : ASTNodeI, copy : boolean ) : boolean 
+        // Returns: true if the node can be inserted at the given position.
+        // Semantics are abstract. Certainly this will be false unless
+        // 0 _&lt; index _&lt; this.getNumberOfChildren(nh)
+
+        // If copy is false and the node has a parent, then the node must be
+        // deleted as part of the move.
+        // Several cases must be considered.
+        // * The parent of the node is nh. Then we are permuting the
+        //   children of the node.  Generally this will be allowed.
+        // * The node is an ancestor of nh or is nh.
+        //   Then the insert must not be allowed.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   and so m.canDelete( m.getParent( node ), m.getIndex(node) ) should be true
+        //   where m is node.getProgram().
+
+        // A particular implementation of the interface might further refuse
+        // insertions.
+
+     function insert(nh : ASTNodeI, index : int, node : ASTNodeI, copy : boolean )
+        // Pre: this.canInsert( nh, index, node )
+        // Semantics are abstract, but follow the outline below.
+
+        // The copy flag indicates whether the node should first be cloned.
+        // If copy is true, the node is copied. If copy is false,
+        // the node is deleted from its original location.  Either
+        // way we have a node that is an orphan.
+        // This orphan is then inserted at the appropriate spot in nh.
+
+        // If copy is false and the node has a parent, then the node is
+        // to be moved into nh.
+
+        // If copy is false and the node has a parent, then the node must be
+        // deleted as part of the move. Several cases must be considered.
+        // * The parent of the node is nh. Then we are permuting the
+        //   children of nh.  In this case the final index of the
+        //   moved node may not be the value of the index parameter.
+        // For example, suppose the children are [a,b,c] and we move b.  Moving to
+        //      -- position 0 results in [b,a,c]
+        //      -- position 1 results in [a,b,c]
+        //      -- position 2 results in [a,b,c]
+        //      -- position 3 results in [a,c,b]
+        // * The node is an ancestor of nh or is nh.
+        //   By the precondition, this case can not arise.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   (however no extra event is generated by the delete) and
+        //   then inserted at the appropriate spot.
+
+        // As a side effect, certain other nodes then be removed
+        // (e.g. placeholders) so that the final index may not be the index parameter
+        // and the number of children may not increase.
+
+    function canReplace(nh : ASTNodeI, index : int, node : ASTNodeI ) : boolean
+        // Returns: true if the node can replace the node at the given index
+        // Semantics are abstract: Certainly it will return false unless
+        // 0 _&lt; index &lt; this.getNumberOfChildren()
+
+        // If copy is false and the node has a parent, then the node must first
+        // be deleted. Several cases must be considered.
+        // * The parent of the node is nh. Then we replacing one
+        //   child with another. E.g. [a,b,c,d] might become [d,b,c] if child d
+        //   is moved to position 0.  This will generally not be allowed.  More than
+        //   likely the user meant to permute, but missed the drop target.
+        // * The node is nh or an ancestor of nh.
+        //   Then the replacement must not be allowed.
+        // * In all other cases, the node will be deleted as per the delete method
+        //   and so m.canDelete( m.getParent( node ), m.getIndex(node) ) should be true
+        //   where m is node.getProgram().
+
+        // A particular implementation of the interface might further refuse
+        // replacement of some or all of its children.
+
+    method ASTNode  replace(nh : ASTNodeI, index : int, node : ASTNodeI, copy : boolean )
+        // Pre: this.canReplace( nh, index, node, copy )
+
+        // Semantics are abstract, but follow the outline below.
+
+        // This is basically a combination of delete and insert.
+        //
+        // The copy flag indicates whether the node should first be cloned.
+        // If copy is true, the node is copied. If copy is false,
+        // the node is deleted from its original location.  Either
+        // way we have a node that is an orphan.
+        // This orphan then replaces the child specified by the index.
+        //
+        // If copy is false and the node has a parent, then the node must first
+        // be deleted. Several cases must be considered.
+        // * The parent of the node is nh. Then we are replacing one
+        //   child with another. E.g. [a,b,c,d] might become [d,b,c] if child d
+        //   is moved to position 0.
+        // * The node is nh or an ancestor of nh.
+        //   By the precondition, this case can not arise.
+        // * In all other cases, the node will be deleted as per the delete method.
+        //   (However there is no extra event associated with the delete.)</pre>
+
+<p>Note on drag and drop: The above interface is intended to support drag and drop as follows </p>
+<ul>
+  <li>A drag to the trash or a selection followed by a delete action will be supported by canDelete and deleteNode.</li>
+  <li>A drag from a palette to an ASTNode may result in an insert or a replace depending on exactly where the drop happens. (See below) </li>
+  <li>Dragging a node from one part of a tree (or even between trees) may result in an insert or a replace depending on exactly where the drop happens.  (See below.) The drag might copy (e.g. if the CNTL button is held down) or not. </li>
+</ul>
+<p>Drops within the view of a node: An operation or command might be visually represented by a box containing a label and a number of other boxes representing its children. The area of the box is divided into several parts. A drop on top of the label would mean replace this node with the dropped node. A drop between two children or just before the first child or just after the last child would mean insert. A drop on an area representing a child would be be deferred to that child recursively.</p>
+<p>An ASTNodeI has:</p>
+<ul>
+  <li> a number of children</li>
+  <li>a program </li>
+  <li>a tag indicating the sort of node it is,</li>
+  <li>a parent -- optionally,</li>
+  <li>additional information in the form of an object -- optionally </li>
+</ul>
+<p>A node that does not have a parent is an orphan.</p>
+<p>These attributes are accessed via the ProgramI object itself.</p>
+<pre>interface ProgramI
+  ...
+  // Tags
+    
+    function getTag(n : ASTNodeI) : String
+        // Get the current tag value [TBD enumerate the tag values or figure out a
+        // good way to avoid tag values altogether.]
+    
+    function canChangeTag(n : ASTNodeI, newTag : String) : boolean
+        // Can the tag value be changed? 
+    
+    function changeTag(n : ASTNodeI, newTag : String)
+        // Pre: this.canChangeTag( newTag )
+        // Change the tag value
+    
+  // Additional information
+    
+    function getAdditionalInformation(n : ASTNodeI, ) : Object
+        // Retrieve additional information. For example the value of a constant.
+   
+    function setAdditionalInformation(n : ASTNodeI,  inf : Object )
+        // Set the additional information
+    
+  // Structure
+    
+    function hasParent(n : ASTNodeI) : boolean
+        // Return true if the node has a parent.  This returns false for orphans.
+    
+    function ASTNodeI  getParent(n : ASTNodeI) : ASTNodeI
+        // Pre: this.hasParent()
+        // Return the parent
+    
+    function getIndex(n : ASTNodeI) : int
+        // Pre: hasParent(n) 
+        // Return the index of this node within its parent.
+        // It is guaranteed that this.getParent().getChild( this.getIndex() ) === this
+    
+    function clone(n : ASTNodeI) : ASTNodeI
+        // The node may or may not belong to this method. However, the
+        // clones will belong to this program.
+        // Create a deep copy of this node. I.e. this node and all its
+        // descendants will be copied. The clone of this node will be
+        // an orphan, i.e.: not clone().hasParent()
+</pre>
+<h3>Creating nodes</h3>
+<p>ProgramI objects serve as factories for nodes.</p>
+<pre></pre>
+<pre>interface ProgramI
+  ...
+  // Tags
+    
+    function makeNode(tag : String, inf : Object = null ) : ASTNodeI
+        // The node will be an orphan belonging to this program.</pre>
+<h3>Examples</h3>
+<p>[Note: I've assumed in these examples that commands and expressions are distinct (although possibly overlapping categories) of nodes. This is consistent with the current language overview (2006 Aug 26), but this aspect of design may change.] </p>
+<p><strong>Constants</strong>: A string or numeric constant will be represented by a node with no children (canDelete, canInsert, and canReplace all return false). The additional information will  hold the value of the string as a String object. </p>
+<p><strong>Binary operators</strong>. A binary operator such as + will usually have 2 children.</p>
+<p>[Comment : It is tempting to fix the number of children at 2. However this causes two problems when editing. First is that it might be useful to temporarily have excess children when editing, so that you have a place to stash items. Consider reassociating -[x, +[y,z]]. We can do that in the following steps</p>
+<blockquote>
+  <p>-[x, +[y,z]] ---&gt; -[ +[x,y,z] ] ---&gt; -[ +[x,y], z] ---&gt; +[ +[x,y], z] ---&gt; +[ -[x,y], z] </p>
+</blockquote>
+<p>The second is that the tag might get changed. For example a unary tag might get changed to a binary tag. What I have attempted to do instead is to try to maintain the number of children at 2 where possible by the addition and deletion of place-holders. Therefore the current design is to encourage the number of children to be 2. Note that type checking will check that operators have the right number of children, thus the user will be warned of the wrong number of arguments to an operation before execution.]</p>
+<ul>
+  <li>When created, a binary operator would have 2 children, which would be place-holders.</li>
+  <li>Insertion at any position <em>p</em>, provided 0 _&lt; <em>p</em> _&lt; getNumberOfChldren() and the node to be inserted is an expression node. If there are 2 or more children to start with and at least one is a place-holder, then inserting a child will result in the deletion of one place-holder. [TBD: Which one?]</li>
+  <li>Children can be replaced by other nodes (provided they are expression nodes or place-holders)</li>
+  <li>Children can be deleted. If the number of children is 2 or 1, a child that is not a place-holder will be replaced by a place-holder. </li>
+  <li>The tag can be changed to the tag of another  operator. The number of children may then have to be adjusted</li>
+</ul>
+<p><strong>Blocks</strong>. A block is a node that represents a sequence of commands, each represented by a child. </p>
+<ul>
+  <li>When created, a block has one child, which is a place-holder.</li>
+  <li>Insertion is  possible at any position <em>p</em>, provided 0 _&lt; <em>p</em> _&lt; getNumberOfChldren(), the node to be inserted is a command node, and the node to be inserted is not this node itself or an ancestor.</li>
+  <li>Children can be deleted. Deleting the last child, if it is not a place-holder replaces, that child with a place-holder. Deleting the last child, if it is a place-holder, results in deleting the child.</li>
+  <li>Children can be replaced if the replacement is another statement node</li>
+  <li>The tag can not be changed.</li>
+</ul>
+<p><strong>If-then-else commands</strong>. An if-then-else command has three children.</p>
+<ul>
+  <li>When created the first child is a place-holder and the second and third children are newly created blocks (see above).</li>
+  <li>Insertion is not possible.</li>
+  <li>The first child can be replaced by an expression node (or a place-holder)</li>
+  <li>The first child can be deleted. However, if it is deleted it is immediately replaced by a place-holder.</li>
+  <li>The second and third children may not be deleted. (Although, as they are blocks, their children can be deleted.) </li>
+  <li> Thus the number of children is always 3.</li>
+  <li>The tag can not be changed. </li>
+</ul>
+<p>[Comment: In the case of if-then-else commands, it is tempting to allow the third child to be deleted to create an if-then command. However this then raises the question of how to convert an if-then an if-then-else. The simple solution is to not have if-then commands.] </p>
+<h3>Tags</h3>
+<p>There is a fixed set of tag values for tree nodes. This is similar to HTML where there is a fixed set of element tags.</p>
+<p>All the tag values are readonly attributes of the interface Tag</p>
+<p>Place-holder tags represent missing parts of a program.</p>
+<ul>
+  <li>E_PLACE_HOLDER -- a place holder node represents missing expression or command.</li>
+</ul>
+<p>Expression and command tags. [For the moment I am going to ignore the distinction between expressions and commands. This distinction can be made by type checking. As far as editing is concerned an expression can appear where a command appears and the other way around. </p>
+<ul>
+  <li>SEQ -- a sequence of commands. A sequence may have 0 or more children. Initially the only child is a placeholder.</li>
+  <li>IF_THEN_ELSE -- an if command. If command always have 3 children. The first is an expression or a placeholder (initially a placeholder). The other two are sequences.</li>
+  <li>WHILE_DO_ELSE -- a while command. While commands always have 3 children.  The first is an expression or a placeholder (initially a placeholder). The other two are sequences.</li>
+  <li>ASSIGN -- an assignment command. Assignment commands have two children. Both are expressions.</li>
+  <li>LOCAL_VAR -- a local variable reference. The &quot;additional information&quot; is the name of the variable.</li>
+  <li>WORLD_VAR -- a world variable reference. The &quot;additional information&quot; is the name of the variable.</li>
+  <li>INSTANCE_VAR -- a variable that is an instance of this object.</li>
+  <li>STRING -- a literal value. The additional information is a String that is the value.</li>
+  <li>THIS -- Represents the top of the recipient stack.</li>
+  <li>DOT -- Has 1 child. The child refers to an object. The additional information is the field name.</li>
+  <li>NULL -- Has 0 children.  </li>
+  <li>METHOD_CALL -- A method call has 1 or more children. The additional information is a String representing the method name. The first child is the recipient, the remaining children are the arguments.</li>
+  <li>WORLD_METHOD_CALL -- a method call to the world. 0 or more children represent the arguments.  The additional information is a String representing the method name. WORLD_METHOD_CALLs include built-in operations like + and *.</li>
+  <li>[Others are to be added, but this should be almost all.] </li>
+</ul>
+<h3>Selection in trees </h3>
+<h2>Objects</h2>
+<h2>Classes</h2>
+<p>&nbsp;</p>
+</body>
+</html>

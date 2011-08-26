@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Primitive types</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="primitiveTypes">Primitive data types, values, and operations</a></h1>
+<p>In Java, values are either</p>
+<ul>
+  <li>Primitive values, or</li>
+  <li>References to objects.</li>
+</ul>
+<p>We'll look at reference types later.</p>
+<p>Primitive types represent numbers, Boolean values, and characters.</p>
+<p>The following are the primitive data types in Java</p>
+<ul>
+  <li><span class="codeKeyword">byte</span> 8 bit integers from -128 to +127</li>
+  <li><span class="codeKeyword">short</span> 16 bit integers from &minus;2<sup>15</sup> to +2<sup>15</sup>&minus;1
+      <ul>
+        <li>&minus;32,768 to +32,767</li>
+      </ul>
+  </li>
+  <li><span class="codeKeyword">int</span> 32 bit integers from &minus;2<sup>31</sup> to +2<sup>31</sup>&minus;1
+      <ul>
+        <li>-2,147,483,648 to 2,147,483,647</li>
+      </ul>
+  </li>
+  <li><span class="codeKeyword">long</span> 64 bit integers from &minus;2<sup>63</sup> to +2<sup>63</sup>&minus;1
+      <ul>
+        <li>-9,223,372,036,854,775,808 to 9,223,372,036,854,775,807</li>
+      </ul>
+  </li>
+  <li><span class="codeKeyword">float</span> Rational numbers using a 32 bit floating point IEEE representation
+      <ul>
+        <li>6 to 7 significant decimal digits, </li>
+        <li>range of about -3.4 &middot; 10<sup>34</sup> to +3.4 &middot; 10<sup>34</sup>.</li>
+      </ul>
+  </li>
+  <li><span class="codeKeyword">double</span> Rational numbers using a 64 bit floating point IEEE representation
+    <ul>
+        <li>15 significant decimal digits</li>
+        <li>range of about -1.7 &middot; 10<sup>308</sup> to +1.7 &middot; 10<sup>308</sup></li>
+      </ul>
+  </li>
+  <li><span class="codeKeyword">boolean</span> Boolean values written as <span class="codeKeyword">true</span> and <span class="codeKeyword">false</span>. </li>
+  <li><span class="codeKeyword">char</span> Characters using a 16 bit representation (UTF-16).</li>
+</ul>
+<h2><a name="integers">Integers</a></h2>
+<p>The integer types are <span class="codeKeyword">byte</span>, <span class="codeKeyword">short</span>, <span class="codeKeyword">int</span>, and <span class="codeKeyword">long</span>.</p>
+<p>Integers are encoded using 2's complement encoding.</p>
+<p>For most purposes, the 32 bit <span class="codeKeyword">int</span> type is sufficient.</p>
+<p>Arithmetic operations on integers <span class="codeInline">i</span> and <span class="codeInline">j</span> include</p>
+<ul>
+  <li><span class="codeInline">i + j</span> The sum.</li>
+  <li><span class="codeInline">i - j</span> The difference.</li>
+  <li><span class="codeInline">- j</span> Negation.</li>
+  <li><span class="codeInline">i * j </span>The product. </li>
+  <li><span class="codeInline">i / j </span>The integer quotient. Thus <span class="codeInline">20 / 6 </span> is <span class="codeInline">3</span>. </li>
+  <li><span class="codeInline">i % j </span>The remainder. Thus <span class="codeInline">20 % 6 </span> is <span class="codeInline">2</span>. </li>
+</ul>
+<p>Overflow is not detected! <span class="codeInline">2147483647 + 1 == &minus;2,147,483,648</span></p>
+<h3>Literals</h3>
+<p>Integer literals can be written in decimal notation (base 10), hexadecimal (base 16), or octal (base 8).</p>
+<ul>
+  <li><span class="codeInline">65</span> Decimal </li>
+  <li><span class="codeInline">0101</span> Octal literals start with digit <span class="codeInline">0</span> (please avoid octal literals)</li>
+  <li><span class="codeInline">0x41</span> Hexadecimal literals start with <span class="codeInline">0x</span> </li>
+</ul>
+<p>Normally literal integers have a type of int. If you want a literal of type long, append an L to the literal </p>
+<ul>
+  <li><span class="codeInline">1234</span> is of type <span class="codeKeyword">int</span>.</li>
+  <li><span class="codeInline">1234L</span> is of type <span class="codeKeyword">long</span>.</li>
+</ul>
+<p>Don't use the decimal point, since that will change the type to double.</p>
+<ul>
+  <li><span class="codeInline">1234.</span> is of type <span class="codeKeyword">double</span>!</li>
+</ul>
+<h2><a name="assignments">Assignment</a></h2>
+<p>If <span class="codeInline stxNonterminal">v</span> is an integer variable and <span class="codeInline stxNonterminal">E</span> is an integer expression then we can write an <strong>assignment statement</strong></p>
+<p class="code"><span class="stxNonterminal">v</span> = <span class="stxNonterminal">E</span> ;</p>
+<p>Execution of this statement ensures the final value of the variable <span class="codeInline stxNonterminal">v</span> equals the initial value of the expression <span class="codeInline stxNonterminal">E</span> and all other variables are unchanged (assuming the expression does not change their value).</p>
+<p>For example, if <span class="codeInline">v</span> has value <span class="codeInline">20</span> in the initial state then after executing the statement</p>
+<p class="code">v = v + 6 ;</p>
+<p>the value of <span class="codeInline">v</span> in the final state is <span class="codeInline">26</span>. </p>
+<p>[By the way, you should <strong>never</strong> pronounce the symbol = as &quot;equals&quot; if it is used to represent assignment, for the simple reason that <em>assignment and equality are distinct concepts.</em> Instead you can say </p>
+<ul>
+  <li>&quot;Vee <em>is assigned</em> vee plus six,&quot; or </li>
+  <li>&quot;Vee <em>becomes</em> vee plus six.&quot; ]</li>
+</ul>
+<p>In an assignment statement </p>
+<p class="code"><span class="stxNonterminal">v</span> = <span class="stxNonterminal">E</span> ;</p>
+<p>The type of the expression <span class="stxNonterminal">v</span> must be <em>equal or wider than</em> the type of the expression <span class="stxNonterminal">E</span><span class="codeInline">.</span></p>
+<p>For integer types we have the following &quot;widening&quot; relationships</p>
+<p><span class="codeKeyword">byte</span> =W=&gt; <span class="codeKeyword">short</span> =W=&gt; <span class="codeKeyword">int</span> =W=&gt; <span class="codeKeyword">long</span></p>
+<p>For example, if <span class="codeInline"> i</span> is an <span class="codeKeyword">int</span> variable and <span class="codeInline">j</span> is a <span class="codeKeyword">long</span> variable, then </p>
+<p class="code">i = j ;</p>
+<p>will result in a compile-time error. </p>
+<p>The reason is, of course, that an assignment of a value that is not in the range of a variable's type is likely not what the programmer intended. </p>
+<p>If you really want to assign a value of a wider type to a variable of a narrower type, you must make an explicit type conversion. </p>
+<p>The notation for explicit type conversions is</p>
+<p class="code">(<span class="stxNonterminal">T</span>) <span class="stxNonterminal">E</span></p>
+<p>where <span class="codeInline stxNonterminal">T</span> is the name of a type and <span class="codeInline stxNonterminal">E</span> is an expression. </p>
+<p>Suppose that <span class="codeInline"> i</span> is an <span class="codeKeyword">int</span> variable and <span class="codeInline">j</span> is a <span class="codeKeyword">long</span> variable. We can write</p>
+<p class="code">i = (<span class="codeKeyword">int</span>) j ; </p>
+<p>But, what if the value that <span class="codeInline">j</span> holds can not be represented by 32 bits, 2's complement? </p>
+<ul>
+  <li>All but the least significant 32 bits will be discarded!</li>
+  <li>Therefore, you should only make explicit type conversions between <span class="stxNonterminal">primitive</span> types, when you are sure that the value of the expression can be converted with no loss of information (or you intend to lose information). </li>
+  <li>In the example, if I can not prove that <span class="codeInline">j</span> holds a value from -2,147,483,648 to 2,147,483,647, I would be slightly better off writing</li>
+</ul>
+<p class="code"><span class="codeKeyword">assert</span> -2147483648 &lt;= j &amp;&amp; j &lt;= 2147483647 ; <br>
+  i = (<span class="codeKeyword">int</span>) j ;</p>
+<ul>
+  <li>since this will detect the error should it arise in testing. </li>
+</ul>
+<h2><a name="floatingPoint">Floating Point Numbers</a></h2>
+<p>Floating point numbers are stored and operated on according to the IEEE standard. (See <a href="http://en.wikipedia.org/wiki/IEEE_754-2008">http://en.wikipedia.org/wiki/IEEE_754-2008</a>)</p>
+<p>The floating point types are <span class="codeKeyword">float</span> and <span class="codeKeyword">double</span>, with <span class="codeKeyword">double</span> wider than <span class="codeKeyword">float</span>.</p>
+<p>For most purposes double is suitable.</p>
+<h3>Operations</h3>
+<p>Arithmetic operations on floating point numbers <span class="codeInline">x</span> and <span class="codeInline">y</span> include</p>
+<ul>
+  <li><span class="codeInline">x + y </span> The sum.</li>
+  <li><span class="codeInline">x - y </span> The difference.</li>
+  <li><span class="codeInline">x * y </span>The product. </li>
+  <li><span class="codeInline">x / y </span>The quotient. </li>
+</ul>
+<p>There are also a number of operations and literals available from the class <span class="codeInline">Math</span> in the J2SE library. For example</p>
+<ul>
+  <li><span class="codeInline">Math.pow( x, y)</span> gives approximately <span class="style4">x<sup>y</sup></span> </li>
+  <li><span class="codeInline">Math.sin( x )</span> gives approximately the sine, where <span class="style4">x</span> is assumed to be in radians.</li>
+  <li><span class="codeInline">Math.cos( x )</span> gives approximately the cosine, where <span class="style4">x</span> is assumed to be in radians.</li>
+  <li><span class="codeInline">Math.tan( x )</span> gives approximately the tangent, where <span class="style4">x</span> is assumed to be in radians.</li>
+  <li><span class="codeInline">Math.exp( x )</span> gives approximately <span class="style5">e</span><span class="style4"><sup>x</sup></span> </li>
+  <li><span class="codeInline">Math.log( x )</span> gives approximately <span class="style5">ln <span class="stxNonterminal">x</span> </span></li>
+  <li><span class="codeInline">Math.PI</span> gives 3.141592567... . </li>
+  <li><span class="codeInline">Math.E</span> gives 2.7182818284... . </li>
+</ul>
+<p>Overflow <em>is detected</em> and results in a value of <span class="codeInline">Double.POSITIVE_INFINITY</span> or <span class="codeInline">Double.NEGATIVE_INFINITY</span>.</p>
+<p>Some operations (for example 0.0/0.0) result in a &quot;not a number&quot; value of <span class="codeInline">Double.Nan</span>. </p>
+<p>For example, if I might write</p>
+<p class="code">x = y * z ;<br>
+    <span class="codeKeyword">assert</span> !Double.isInfinity(x) &amp;&amp; !Double.isNaN(x) ;</p>
+<h3>Floating Point Literals </h3>
+<p>Floating point literals can be written in decimal with a decimal point or with an explicit decimal exponent</p>
+<ul>
+  <li>1234.456 is of type <span class="codeKeyword">double</span></li>
+  <li>789E+100 is of type <span class="codeKeyword">double</span> and has value 789 &middot; 10<sup>100</sup>.</li>
+</ul>
+<p>Literals of type float are appended with an &quot;F&quot;. </p>
+<ul>
+  <li>1234.456F is of type <span class="codeKeyword">float</span></li>
+  <li>789E+23F is of type <span class="codeKeyword">float</span> and has value 789 &middot; 10<sup>23</sup>.</li>
+</ul>
+<h3>Conversions</h3>
+<p>The following are widening conversions</p>
+<p><span class="codeKeyword">float</span> =W=&gt; <span class="codeKeyword">double</span></p>
+<p><span class="codeKeyword">int</span> =W=&gt; <span class="codeKeyword">double</span></p>
+<p><span class="codeKeyword">int</span> =W=&gt; <span class="codeKeyword">float</span></p>
+<p><span class="codeKeyword">long</span> =W=&gt; <span class="codeKeyword">double</span></p>
+<p><span class="codeKeyword">long</span> =W=&gt; <span class="codeKeyword">float</span></p>
+<p>However, the last three may result in a loss of precision. Consider</p>
+<pre class="code"><span class="codeKeyword">long</span> i,j ;<br><span class="codeKeyword">float</span> f ;<br>i = 9223372036854775807L ;<br>f = i ;<br>j = f ;
+</pre>
+<p>Will <span class="codeInline">i==j</span>? </p>
+<p>These widening conversions are implicit when binary arithmetic operators (or comparison operators) are involved.</p>
+<p>Example:</p>
+<pre class="code"><span class="codeKeyword">int</span> i ;<br><span class="codeKeyword">double</span> d ;<br>...<br>d = d + i ;</pre>
+<p >is the same as </p>
+<pre class="code"><span class="codeKeyword">int</span> i ;<br><span class="codeKeyword">double</span> d ;<br>...<br>d = d + (<span class="codeKeyword">double</span>) i ;</pre>
+<h2>Implicit Conversions</h2>
+<p>For arithmetic binary operators (e.g. +, -, *, /, &lt;, &gt;, &lt;=, &gt;=, ==, !=, &amp;, |, ^) when either operand is numeric (<span class="codeKeyword">double</span>, <span class="codeKeyword">float</span>, <span class="codeKeyword">long</span>, <span class="codeKeyword">int</span>, <span class="codeKeyword">short</span>, <span class="codeKeyword">byte</span>, or <span class="codeKeyword">char</span>) </p>
+<ul>
+  <li>If either operand is <span class="codeKeyword">double</span>, the other is widened to <span class="codeKeyword">double</span>.</li>
+  <li>Otherwise, if either operand is <span class="codeKeyword">float</span>, the other is widened to <span class="codeKeyword">float</span>.</li>
+  <li>Otherwise, if either operand is <span class="codeKeyword">long</span>, the other is widened to <span class="codeKeyword">long</span>.</li>
+  <li>Otherwise, both operands are widened to <span class="codeKeyword">int</span>.</li>
+</ul>
+<p>Conversions are inserted based on the types of the operands, not on the basis of the type of result required. For example if <span class="codeInline">f</span> is <span class="codeKeyword">float</span> and <span class="codeInline">l</span> is <span class="codeKeyword">long</span> and <span class="codeInline">d</span> is <span class="codeKeyword">double</span>. </p>
+<p class="code">d = f + i ;</p>
+<p>is treated as</p>
+<p class="code">d = (<span class="codeKeyword">double</span>)( f + (<span class="codeKeyword">float</span>)i) ;</p>
+<p>which could mean a loss of precision, even though the statement</p>
+<p class="code">d = (<span class="codeKeyword">double</span>)f + (<span class="codeKeyword">double</span>)i ;</p>
+<p>would mean no loss of precision.</p>
+<h2><a name="characters">Characters</a></h2>
+<p>Values of the type <span class="codeKeyword">char</span> represent characters using the UTF-16 encoding.</p>
+<p>Since variables of type char take 16 bits, we can represent about 63,400 characters, enough for many purposes. </p>
+<p>See the Horstmann and Cornell (p. 42 in 8th ed.) for the details.</p>
+<h3>Character Literals </h3>
+<p>Character literals are written by surrounding the appropriate character with apostrophes. In some cases a special &quot;backslash escape sequence&quot; is required:</p>
+<ul>
+  <li><span class="codeInline">'a'</span> The roman letter lower-case A.</li>
+  <li><span class="codeInline">'A'</span> The roman letter upper-case A.</li>
+  <li><span class="codeInline">'&quot;'</span> A double quote character.</li>
+  <li><span class="codeInline">'\''</span> An apostrophe.</li>
+  <li><span class="codeInline">'\\'</span> A backslash.</li>
+</ul>
+<p>Conversions</p>
+<p>We can widen from <span class="codeKeyword">char</span> to <span class="codeKeyword">int</span></p>
+<p><span class="codeKeyword">char</span> =W=&gt; <span class="codeKeyword">int</span></p>
+<h3><a name="booleans">Booleans</a></h3>
+<p>The boolean literal are written as <span class="codeKeyword">false</span> and <span class="codeKeyword">true</span> . </p>
+<p>There is no conversion either to or from the boolean type. </p>
+<p>By comparing two expressions of the same type we can obtain a boolean value. </p>
+<ul>
+  <li><span class="codeInline">x == y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> and <span class="codeInline">y</span> are equal and not both NaN</li>
+  <li><span class="codeInline">x != y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> and <span class="codeInline">y</span> are unequal or one is NaN</li>
+</ul>
+<p>The following comparisons are applicable only to operands of numeric types or the character type. </p>
+<ul>
+  <li><span class="codeInline">x &lt; y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> is less than <span class="codeInline">y</span>.</li>
+  <li><span class="codeInline">x &lt;= y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> is less than or equal to <span class="codeInline">y</span>.</li>
+  <li><span class="codeInline">x &gt; y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> is greater than <span class="codeInline">y</span>.</li>
+  <li><span class="codeInline">x &gt;= y</span> is <span class="codeKeyword">true</span> iff <span class="codeInline">x</span> is greater than or equal to <span class="codeInline">y</span>.</li>
+</ul>
+<p>Boolean values can also be combined using boolean operators</p>
+<ul>
+  <li><span class="codeInline">p &amp;&amp; q</span> is <span class="codeKeyword">false</span> if <span class="codeInline">p</span> is <span class="codeKeyword">false</span> and is otherwise the same as <span class="codeInline">q</span>.</li>
+  <li><span class="codeInline">p || q</span> is <span class="codeKeyword">true</span> if <span class="codeInline">p</span> is <span class="codeKeyword">true</span> and is otherwise the same as <span class="codeInline">q</span>.</li>
+  <li>! p is <span class="codeKeyword">true</span> iff p is <span class="codeKeyword">false</span>. </li>
+</ul>
+<p>In applying the rules for <span class="codeInline">&amp;&amp;</span> and <span class="codeInline">||</span> we only evaluate <span class="codeInline">q</span> if needed.</p>
+<ul>
+  <li>Thus <span class="codeInline">p &amp;&amp; q</span> may be well defined (and <span class="codeKeyword">false</span>) even if the evaluation of <span class="codeInline">q</span> would lead to an error. For example consider this statement</li>
+  <li>
+    <p class="code">p = A[i]==0 ; </p>
+  </li>
+  <li>If <span class="codeInline">i</span> happens not to be a legitimate index to array <span class="codeInline">A</span>, then this statement will cause a runtime error. If that is not what we want, it might be better to write</li>
+  <li>
+    <p class="code">p = 0&lt;=i &amp;&amp; i&lt;A.length &amp;&amp; A[i]==0 ;</p>
+  </li>
+  <li>Similar considerations apply to <span class="codeInline">p || q</span>.</li>
+  <li>Thus <span class="codeInline">&amp;&amp;</span> and <span class="codeInline">||</span> <span class="pseudoCode">are not commutative</span> in Java. </li>
+</ul>
+<p>Of course we can also apply == and != to boolean operands.</p>
+<ul>
+  <li>What boolean operations to these represent?</li>
+</ul>
+<h1><a name="syntax">Syntax of Expressions</a></h1>
+<p>So far we've seen a bit of Java's syntax.</p>
+<p>To better explain the language I'll present an (approximate) <em>context free grammar</em> for the language.</p>
+<p>A context free grammar (see <a href="http://en.wikipedia.org/wiki/Context-free_grammar">http://en.wikipedia.org/wiki/Context-free_grammar</a>) is simply a bunch of grammar rules of the form</p>
+<p class="syntaxDef"><span class="stxNonterminal">Name</span> --&gt; <span class="stxNonterminal">Sequence</span></p>
+<p>which means &quot;a <span class="stxNonterminal">Name</span> can consist of the following <span class="stxNonterminal">Sequence</span>&quot;. </p>
+<p>I say approximate, because I will sometimes sacrifice accuracy and completeness for simplicity. For an accurate context free grammar, see the Java Language Standard (JLS).</p>
+<p>Here are grammar rules describing the syntax we have seen so far</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">ExpressionName</span> <br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxTerminal">Literal</span> <br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline">(</span> <span class="stxNonterminal">Expression</span> <span class="codeInline">)<br>
+    </span><span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline">(</span><span class="stxNonterminal">Type</span><span class="codeInline">)</span><span class="stxNonterminal">Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline">- </span><span class="stxNonterminal">Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="codeInline">! </span><span class="stxNonterminal">Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">*</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">/</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">%</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">+</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">-</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">&lt;</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">&lt;=</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">&gt;</span><span class="stxNonterminal"> Expression</span><br>
+    <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">&gt;=</span><span class="stxNonterminal"> Expression<br>
+  Expression --&gt; Expression </span><span class="style6"><span class="codeInline">==</span></span><span class="stxNonterminal"> Expression<br>
+  Expression --&gt; Expression </span><span class="style6"><span class="codeInline">!=</span></span><span class="stxNonterminal"> Expression</span><br>
+  <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">&amp;&amp;</span><span class="stxNonterminal"> Expression</span><br>
+  <span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">Expression</span> <span class="codeInline">||</span><span class="stxNonterminal"> Expression<br>
+  Expression --</span>&gt;<span class="stxNonterminal"> Expression </span><span class="style6"><span class="codeInline">=</span></span><span class="stxNonterminal"> Expression<br>
+  ExpressionName --&gt; </span><span class="stxTerminal">Identifier</span> <br>
+  <span class="stxNonterminal">Type --&gt; PrimitiveType<br>
+  PrimitiveType</span> --&gt; <span class="codeKeyword">byte</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">short</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">int</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">long</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">float</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">double</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">char</span><br>
+  <span class="stxNonterminal">PrimitiveType</span> --&gt; <span class="codeKeyword">boolean</span></p>
+<div class="breakoutBox"> <strong>Note</strong>
+    <script language="JavaScript" type="text/JavaScript">
+         startNote();
+      </script>
+  .Although I have listed the syntax of the assignment expression as &quot;Expression = Expression&quot; only a few kinds of expressions are allowed on the left-name side. These are of course expressions that identify particular variables. <strong>End of Note.</strong>
+  <script language="JavaScript" type="text/JavaScript">
+          endNote();    
+    </script>
+</div>
+<p>&nbsp;</p>
+<h2><a name="precedenceEtc">Precedence, associativity, and order of evaluation</a></h2>
+<h3>Precedence</h3>
+<p>The precedence of the various operators refers to how they are grouped in the absence of parentheses. </p>
+<p>For example the expression </p>
+<p class="code">a = a * b + c / d</p>
+<p>Is treated by the compiler as if it were written</p>
+<p class="code">a = ( (a*b) + (c/d) )</p>
+<p>as the * and / operators have higher precedence than the + operator, and the + operator has higher precedence than the = operator.</p>
+<p>The precedence of the operations we've seen so far is summarized in the following table from highest to lowest:</p>
+<table width="80%"  border="1">
+  <tr>
+    <td>Highest</td>
+    <td>Unary operations such as <span class="codeInline">-</span> and <span class="codeInline">(</span><span class="stxNonterminal">PrimitiveType</span><span class="codeInline">)</span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Binary operators <span class="codeInline">* / % </span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Binary operators <span class="codeInline">+ -</span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td><p>Binary operators <span class="codeInline">&lt; &gt; &lt;= &gt;=</span></p></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Binary operators <span class="codeInline">== !=</span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Binary operator <span class="codeInline">&amp;&amp;</span></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>Binary operator <span class="codeInline">|| </span></td>
+  </tr>
+  <tr>
+    <td>Lowest</td>
+    <td>Binary operator <span class="codeInline">=</span></td>
+  </tr>
+</table>
+<h3>Associativity</h3>
+<p>Associativity has to do with how we group operators that are at the same precedence level.</p>
+<p>For example </p>
+<p class="code">a - b - c</p>
+<p>groups as</p>
+<p class="code">(a - b) - c</p>
+<p>whereas</p>
+<p class="code">a = b = c</p>
+<p>groups as</p>
+<p class="code">a = (b = c)</p>
+<p>We say that <span class="codeInline">-</span> is left-associative while <span class="codeInline">=</span> is right-associative.</p>
+<p>In Java, most binary operators are left-associative, while only the assignment operators are right-associative.</p>
+<h3>Order of evaluation</h3>
+<p>For most binary operators, evaluation is done in the following steps</p>
+<ul>
+  <li>The left operand is evaluated.</li>
+  <li>The right operand is evaluated.</li>
+  <li>The operator is applied to the results.</li>
+</ul>
+<p>[This is in contrast to many other imperative languages (for example C and C++), where the order of evaluation is not defined.]</p>
+<p>The exceptions are <span class="codeInline">&amp;&amp;</span> and <span class="codeInline">||</span>, which, as we've seen, are evaluated differently:</p>
+<ul>
+  <li>The left operand is evaluated.</li>
+  <li>If the result of the left operand is <span class="codeKeyword">false</span> for <span class="codeInline">&amp;&amp;</span> or <span class="codeKeyword">true</span> for <span class="codeInline">||</span>, then stop with that result </li>
+  <li>Otherwise the right operand is evaluated and the result is the result of evaluating the right operand.</li>
+</ul>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

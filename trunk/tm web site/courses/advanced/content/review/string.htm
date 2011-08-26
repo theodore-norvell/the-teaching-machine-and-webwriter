@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>The string Class</title>
+</head>
+<body>
+<p>Although they look like variables, strings as you learned them last term were 
+  actually <i>objects</i> of class <span class="codeInline">string</span>.</p>
+<p>In some ways they look just like variables. For example here is the declaration 
+  and initialization of some <span class="codeInline">string</span> objects.</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("stringClass.cpp", false, "code", "3891lecture.cfg", "A", "");
+</script>
+</p>
+<p>However, as objects of class <span class="codeInline">string</span> they also 
+  have operations available which can be invoked using the member-of operator, 
+  <span class="codeInline">.</span></p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("stringClass.cpp", false, "code", "3891lecture.cfg", "B", "");
+</script>
+</p>
+<p>Here, the <span class="codeInline">length()</span> function of the <span class="codeInline">string</span> 
+  class returns the length of the string that is used to invoke it, in this case 
+  <span class="codeInline">greetings</span>.</p>
+<p>The <span class="codeInline">at(i)</span> function returns the character at 
+  the i'th position where i must be between <span class="codeInline">0</span> 
+  and <span class="codeInline">greetings.length()-1</span></p>
+<p>See table 3.3 on page 150 of your text for the definition of some other <span class="codeInline">string</span> 
+  class functions.</p>
+<p>Assignment may also be used with <span class="codeInline">string</span> objects. 
+</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("stringClass.cpp", false, "code", "3891lecture.cfg", "C", "");
+</script>
+</p>
+<p>Assignment is subtly different from initialization in that the length of <span class="codeInline">first</span> 
+  when it is declared is <span class="codeInline">0</span> (because it was not 
+  initialized and so is set to a null string).</p>
+<p>After the assignment, it becomes <span class="codeInline">7</span>.</p>
+<p>The <span class="codeInline">+</span> operator may also be used to concatenate 
+  strings.</p>
+<p>Technically what has been done is to overload the assignment operator and the 
+  addition operator for string objects. Operator overloading will be covered in 
+  detail towards the end of the course.</p>
+<p>To be consistent, the <span class="codeInline">+=</span> operator is also used 
+  to add something to the end of an existing string.</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, false,"","");
+insertCode("stringClass.cpp", false, "code", "3891lecture.cfg", "D", "");
+</script>
+
+  <div id="allExamples">
+  <p>&nbsp;</p>
+<h1>Examples in Full</h1>
+<p><script language="JavaScript">
+insertCode("stringClass.cpp", false, "code", "3891lecture.tmcfg", "", "");
+  </script></p>
+</div>
+
+<script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</body>
+</html>
+

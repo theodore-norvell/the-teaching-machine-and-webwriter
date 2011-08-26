@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Abstract Syntax and Static Cheking</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="playStyle.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Abstract Syntax</h1>
+<h2>Classes</h2>
+<p>Each class has a unique name, optionally a superclass, and a finite set of field descriptions:</p>
+<pre>   Class --&gt; <strong>class</strong> Id Fd0 Fd1 ... Seq <strong>end</strong></pre>
+<p>Each field description is a quadruple</p>
+<pre>   Fd --&gt; (<strong>var</strong> | <strong>con</strong>) Id [: Type] [:= Exp]</pre>
+<p>The names are unique within the class.</p>
+<p>A var field can be changed by assignment, whereas a con field can not.</p>
+<p>The type and the expression are optional, but one must be present. If the expression is missing, it is considered to be null. If the type is missing, it must be inferrable from the expression on checking pass 0. </p>
+<h2>Types</h2>
+<p>Types can be primitive, classes, or finite unions of primitive types.</p>
+<pre>   Type --&gt; Id | Type + Type
+</pre>
+<p>Each Id must be the name of a class or one of the following: <span class="kbd">Boolean</span>, <span class="kbd">Number</span>, <span class="kbd">String</span>, <span class="kbd">Any</span>, <span class="kbd">Null</span>, or <span class="kbd">Comm</span>. </p>
+<h2>Expressions</h2>
+<h3>Literal expressions</h3>
+<pre>   Exp --&gt; NumberLiteral(val)
+</pre>
+<p>val must be a string of one or more digits, possibly preceeded with a + or - sign. The value is a normalized string. For example if val is 0123 the value is the string &quot;123&quot;. </p>
+<pre>   Exp --&gt; <strong>true</strong> | <strong>false</strong></pre>
+<p>The value is either the string &quot;true&quot; or the string &quot;false&quot;. </p>
+<pre>   Exp --&gt; StringLiteral(val)</pre>
+<p>The value is the string val.</p>
+<pre>
+   Exp --&gt; null</pre>
+<h3>Variables</h3>
+<pre>   Exp --&gt; <strong>this</strong>.Id | <strong>local</strong>.Id | <strong>world</strong>.Id</pre>
+<h3>Dot</h3>
+<pre>   Exp --&gt; Exp . Id</pre>
+<h3>This</h3>
+<pre>   Exp --&gt; <strong>this</strong></pre>
+<h3>Calls</h3>
+<pre>   Exp --&gt; Exp0 &lt;- Id( Exp1, Exp2, ..., Exp<sub>n</sub> )</pre>
+<p>Above is a call to an explicit recipient.</p>
+<pre>   Exp --&gt; Id( Exp1, Exp2, ..., Exp<sub>n</sub> )</pre>
+<p>The call here has the world as its recipient. The Id could be an operator such as + or *. </p>
+<h3>Allocation</h3>
+<pre>   Exp --&gt; <strong>new</strong> Id( Exp1, Exp2, ..., Expn )</pre>
+<h3>Methods</h3>
+<pre>   Exp --&gt; <strong>method</strong> (v<sub>1</sub> : type<sub>1</sub>, v2 : type<sub>2</sub>, ..., v<sub>n</sub> : type<sub>n</sub>) : type<sub>0</sub> Seq <strong>end</strong></pre>
+<h3>Control constructs</h3>
+<pre>   Seq --&gt; empty | Exp Seq | VarDecl Seq 
+   Exp --&gt; <strong>if</strong> Exp <strong>then</strong> Seq <strong>else</strong> Seq <strong>end</strong>
+   Exp --&gt; <strong>while</strong> Exp <strong>do</strong> Seq <strong>else</strong> Seq <strong>end</strong>
+   VarDecl --&gt; (<strong>var</strong> | <strong>con</strong>) Id [:Type] [:=Exp]</pre>
+<h3>Assignment</h3>
+<pre>   Exp --&gt; Exp := Exp</pre>
+<h1>Static Checking Overview</h1>
+<h2>Pass 0  </h2>
+<p>The aim of the first pass of static checking is to determine the types for all fields and methods using  type inference rules that don't depend on any information that can't be determined directly from the syntax or from pass 0 checking that has already happened earlier in the same class. For example if we have</p>
+<pre>   <strong>class</strong> Fred <strong>var</strong> a := 1 empty <strong>end</strong></pre>
+<p>Then pass 0 checking will determine that field a has type Number. Likewise in </p>
+<pre>   <strong>class</strong> Fred <strong>var</strong> a := 1 <strong>var</strong> b := <strong>this</strong>.a+1 empty <strong>end</strong></pre>
+<p>pass 0 checking will determine a type of Number for field b. However, references to variables other than earlier variables in the same class are not allowed. </p>
+<p>It is an error if a field is missing a type and pass 0 fails to determine a type for it.</p>
+<h2>Pass 1</h2>
+<p>Pass 1 checking assumes that all classes have already undergone pass 0 checking. Therefore each field in each class has a type. Pass 1 is responsible for all further static checks. </p>
+<p>By the end of pass 1 checking there should be a warning message generated for each of the following</p>
+<ul>
+  <li>Type errors. E.g. attempting to add two things that may not be numbers.</li>
+  <li>Name errors. E.g. referring to the name of a variable that does not exist.</li>
+</ul>
+<h1>Pass 0 algorithm</h1>
+<p>I will specify pass 0 as a function taking as input a class.</p>
+<p>The context is a finite mapping from ({world, this, local} x Id) U {this} to {var,con} x (Type U {Unknown}). I'll use the following notation to describe modifications of such maps. Let f be a map. Then </p>
+<p align="center">g = (d +&gt; r | f)</p>
+<p align="left">is a map such that g(d) = r and g(x) = f(x), for each x that is not d. I.e. g is a function just like f, except that it gives a value of r at point d. For a given context, c, I'll write</p>
+<p align="center">type(x,c)</p>
+<p align="left">to mean second(c(x)), when x is in the domain of c, and to mean Unknown, otherwise. Similarly</p>
+<p align="center">varcon(x,c)</p>
+<p align="left">means first(c(x)), when x is in the domain of c, and is undefined otherwise. </p>
+<pre>    checkClass0( (<strong>class</strong> Id Fd0 Fd1 ... Fd<sub>n-1</sub> Seq <strong>end</strong> )) is
+        var context := getTheCurrentWorldContext()
+        context := (this +&gt; (con,Id) | context)
+        for i : 0 , .., n-1
+            let (vc id' [: Type] [:= Exp])
+            context := ((this, id') +&gt; (vc,Unknown) | context)
+        for i : 0 , .., n-1
+            context := checkFieldDescription0( Fd<sub>i</sub>, context)
+        context
+
+    checkFieldDescription0( (vc Id ) , context ) is
+       report an error &quot;Fields must have either a type or an initial value&quot;
+       context
+
+    checkFieldDescription0( (vc Id : Type [:= Exp]) , context ) is
+        ((this,Id) +&gt; (vc, checkType0(Type)) | context)
+
+    checkFieldDescription0( (vc Id := Exp) , context ) is
+        con type := checkExp0( Exp, context )
+        ((this,Id) +&gt; (vc,type) | context)
+    
+    checkExp0( NumberLiteral(val), context ) is Number
+
+    checkExp0( (<strong>true</strong> | <strong>false</strong>), context ) is Boolean
+
+    checkExp0( StringLiteral(val), context ) is
+        depending on the string literal, return Number, Boolean, or String
+
+    checkExp0( <strong>null</strong>, context ) is Null
+
+    checkExp0( <strong>this</strong>.Id, context ) is
+       type( (this,Id), context )
+		   
+    checkExp0( <strong>local</strong>.Id, context ) is
+       type( (local,Id), context )
+		   
+    checkExp0( <strong>world</strong>,Id, context ) is
+       type( (world,Id), context )
+		   
+    checkExp0( <strong>this</strong>, context ) is
+       type( this, context )
+		   
+    checkExp0( (exp . Id), context ) is
+       con t := checkExp0( exp, context )
+       if t = Unknown then Unknown
+       else
+            type( (t,Id), context )
+		   
+    checkExp0((Exp0 &lt;- Id( Exp1, Exp2, ..., Expn )), context ) is
+       con t := checkExp0( Exp0, context )
+       if t = Unknown then Unknown
+       else if (t, Id) not in domain( context ) then Unknown
+       else con tm := type( (t,Id),context )
+            if tm is not a method type then Unknown
+            if tm is a method type that doesn't specify a return type, then Unknown
+            else the return type of tm
+
+    checkExp0((Id( Exp1, Exp2, ..., Expn )), context ) is
+        just like above but using world
+
+    checkExp0((<strong>method</strong> (v1 : type1, v2 : type2, ..., vn : typen) : type0 Seq <strong>end</strong>), context ) is
+        con t1 := checkType0( type1 ) 
+        ...
+        con tn := checkType0( typen )
+        con context := ((local, v1) +&gt; t1, ..., (local, vn) +&gt; tn | context )
+        con resultType := checkSeq0( Seq )
+        if resultType = Unknown then Unknown
+        else
+            con thisType := type( this, context )
+            Method ( t1, ..., tn ) : resultType for thisType
+
+
+    checkExp0( <strong>if</strong> Exp <strong>then</strong> Seq0 <strong>else</strong> Seq1 <strong>end</strong>, context ) is
+        con t0 := checkSeq0( Seq0, context )
+        con t1 := checkSeq0( Seq1, context )
+        if t0 = t1 then t0
+        else if t0 &lt;: t1 then t1
+        else if t1 &lt;: t0 then t0
+        else t0|t1
+
+    checkExp0( <strong>while</strong> Exp <strong>do</strong> Seq <strong>end</strong>, context ) is
+        Comm
+
+    checkExp0( Exp0 := Exp1 ) is
+        Comm
+
+    checkSeq0( empty, context ) is
+        Comm
+
+    checkSeq0( Exp Seq, context ) is
+        con t0 := checkExp( Exp ) 
+        if( t0 is not Comm ) give a warning
+        checkSeq( Seq, context )
+
+    checkSeq0( VarDecl Seq, context ) is
+        context := checkVarDecl0( VarDecl )
+        checkSeq( Seq, context )
+
+    checkVarDecl0( vc Id  ) is
+        warn that either a type or an expression is required.
+        ((local, Id) +&gt; (vc,Unknown) | context)
+
+    checkVarDecl0( (vc Id : Type [:= Exp]) ) is
+        con t := checkType0( Type, context )
+        ((local, Id) +&gt; (vc, t) | context)
+
+    checkVarDecl0( (vc Id := Exp ) is
+        con t := checkExp0( Exp, context )
+        ((local, Id) +&gt; (vc, t) | context)</pre>
+</body>
+</html>

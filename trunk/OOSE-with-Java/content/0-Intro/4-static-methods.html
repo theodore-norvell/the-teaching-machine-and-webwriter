@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<html><!-- InstanceBegin template="/Templates/newContentPage.dwt" codeOutsideHTMLIsLocked="false" -->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<head>
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Static Methods</title>
+<script language="JavaScript">
+  nestingDepth = "../../";
+</script>
+<!-- InstanceEndEditable -->
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<style type="text/css">
+<!--
+.style4 {
+	font-family: "Times New Roman", Times, serif;
+	font-style: italic;
+}
+.style5 {font-family: "Times New Roman", Times, serif}
+.style6 {font-family: "Times new roman", times, serif}
+-->
+</style>
+<link href="../../style/lectureScreen.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<style type="text/css">
+<!--
+.style1 {font-family: "Courier New", Courier, mono}
+.style2 {color: #FFFFFF}
+.style3 {font-family: "Courier New", Courier, mono; color: #FFFFFF; }
+-->
+</style>
+<!-- InstanceEndEditable -->
+</head>
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<h1><a name="methods">Static Methods</a></h1>
+<p>In Java, subroutines come in three varieties:</p>
+<ul>
+  <li>constructors</li>
+  <li>nonstatic methods</li>
+  <li>static methods </li>
+</ul>
+<p>We'll look at constructors and nonstatic methods later on.</p>
+<p>So this section deals with a variety of subroutine called <strong>static methods</strong>.</p>
+<p>We've already seen an example of a static method. It is the main method. For example</p>
+<p>
+  <script language="JavaScript">
+  setButtons(true, false, true,"","");
+  insertCode("Greetings.java", true, "code", "default.tmcfg"); 
+</script>
+</p>
+<p>Here the method is set within a <strong>class</strong> and, in fact, it is a rule in Java that every subroutine must be declared within a class.</p>
+<p>The syntax for classes is this</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* }<br>
+    <span class="stxNonterminal">ClassMember</span><span class="stxMeta"></span> --&gt; <span class="stxNonterminal">MethodDeclaration<br>
+    </span><span class="stxNonterminal">Modifiers</span> --&gt; <span class="stxMeta">(</span> <span class="stxNonterminal">Modifier</span> <span class="stxMeta">)*</span><br>
+    <span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">private</span><br>
+    <span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">public<br>
+  </span><span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">static</span></p>
+<p>And for methods it is this</p>
+<p></p>
+<p class="syntaxDef"><span class="stxNonterminal">MethodDeclaration --&gt; MethodSignature</span> <span class="stxNonterminal">Block</span><br>
+    <span class="stxNonterminal">MethodSignature --&gt; Modifiers ReturnType </span><span class="stxTerminal">Identifier</span> ( <span class="stxNonterminal">Parameters</span> )<br>
+    <span class="stxNonterminal">ReturnType</span> --&gt; <span class="codeKeyword">void</span><br>
+    <span class="stxNonterminal">ReturnType</span> --&gt; <span class="stxNonterminal">Type </span><span class="stxNonterminal"> </span><span class="stxMeta">(</span> <span class="codeInline">[]</span><span class="stxNonterminal"></span> <span class="stxMeta">)</span>*<span class="stxTerminal"> </span><br>
+    <span class="stxNonterminal">Parameters</span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> ParameterDecl </span><span class="stxMeta">(</span> <span class="codeInline">,</span><span class="stxNonterminal">ParameterDecl</span><span class="stxMeta">)</span>*<span class="stxMeta"> )</span><sup>?</sup><br>
+    <span class="stxNonterminal">ParameterDecl<span class="stxMeta"></span> --&gt; Type </span><span class="stxMeta">(</span> <span class="codeInline">[]</span><span class="stxNonterminal"></span> <span class="stxMeta">)</span>*<span class="stxTerminal"> Identifier</span></p>
+<p>For static methods the modifiers should include the keyword <span class="codeKeyword">static</span>.</p>
+<p>For methods intended to be called from outside the class, we should include the keyword <span class="codeKeyword">public</span> in the modifiers. All other methods we'll declare (for now) as <span class="codeKeyword">private</span>. </p>
+<p>[There are a few choices besides public and private, we'll expand on this later.]</p>
+<p>To call a method declared in the same class we use a method call</p>
+<p class="syntaxDef"><span class="stxNonterminal">Expression</span> --&gt; <span class="stxNonterminal">MethodName</span> <span class="codeInline">(</span> <span class="stxNonterminal">Arguments</span> <span class="codeInline">)</span> <br>
+    <span class="stxNonterminal">Arguments</span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> Expression </span><span class="stxMeta">(</span> <span class="codeInline">,</span><span class="stxNonterminal">Expression</span><span class="stxMeta">)</span>*<span class="stxMeta"> )</span><sup>?</sup></p>
+<p>So here is a complete example: We'll write a subroutine to write one line of a truth table</p>
+<p>
+  <script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../src/" ) ;
+  insertCode("TruthTable.java", true, "code", "default.tmcfg"); 
+</script>
+</p>
+<p>Arguments are always passed &quot;by value&quot;.</p>
+<ul>
+  <li>This means that the parameter is initialized by the argument.</li>
+  <li>Changes to the parameter will not affect the argument.</li>
+</ul>
+<p>For example, this subroutine has no effect.</p>
+<p>
+  <script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../src/" ) ;
+  insertCode("Swap.java", true, "code", "default.tmcfg", "A");
+  
+</script>
+</p>
+<h2>Methods with Results</h2>
+<p>The methods we've seen so far have a return type of void. void isn't really a type at all, it is simply a keyword that indicates that the method returns no result value.</p>
+<p>A method that computes a mathematical function will typically return a result and the return type will indicate the type of that result. For example </p>
+<p>
+  <script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../src/" ) ;
+  insertCode("ReturnedValue.java", true, "code", "default.tmcfg", "A");
+</script>
+</p>
+<p>We can also return references to array. </p>
+<p>
+  <script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../src/" ) ;
+  insertCode("ReturnedArray.java", true, "code", "linked.tmcfg", "A");
+  
+  
+</script>
+</p>
+<p class="principle"><strong>Principle</strong>: Objects --such as arrays-- that exist in the heap continue to exist even after the block in which they were allocated is complete. <br>
+  In fact, Objects --such as arrays-- that exist in the heap continue to exist until they are no longer accessible. </p>
+<p> </p>
+<h2>&nbsp;</h2>
+<!-- InstanceEndEditable -->
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+<!-- InstanceEnd --></html>

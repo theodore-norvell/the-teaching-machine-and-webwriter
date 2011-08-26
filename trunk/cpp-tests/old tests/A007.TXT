@@ -1,0 +1,11 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+   
+   long x = 9 ;
+   x = 10 ;
+   char y = 'a' ;
+   x = x * y ;
+}

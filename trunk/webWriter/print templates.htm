@@ -1,0 +1,538 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<h2>Print Templates, Part I</h2>
+<p>Taken from http://www.webreference.com/js/column89/index.html</p>
+<h1>Creating Print Templates with Behaviors</h1>
+<p>Internet Explorer 6 improves the printing model, in terms of better handling
+  of lines at page boundaries, text spacing quality, and uniformity across printers.
+  The print architecture underwent a major overhaul in Internet Explorer 5.5,
+  by introducing the Print Preview and print template capabilities. By creating
+  print templates, you can control:</p>
+<ul>
+  <li>The layout of pages and their content when printed/previewed. </li>
+  <li>The print job parameters such as the page printing order. </li>
+  <li>The look of the Print Preview window and controls available on the print
+    preview user interface. </li>
+</ul>
+<p>You can do a lot with print templates. Among other things, print templates
+  can be used for:</p>
+<ul>
+  <li>Adding fixed banners to print jobs, including company logos, legal notices,
+    and advertisements. </li>
+  <li>Customized placement and styling for header and footer elements, such as
+    page numbers or chapter headings. </li>
+  <li>Application-specific printing (calendars). </li>
+  <li>Multi-fold brochure printing. </li>
+  <li>Book-style printing using mirrored margins for the odd and even pages. </li>
+</ul>
+<p>Print templates are HTML files that use four print template behaviors:</p>
+<ul>
+  <li><code><font color="#0000cc">LayoutRect</font></code> </li>
+  <li><code><font color="#0000cc">DeviceRect</font></code> </li>
+  <li><code><font color="#0000cc">TemplatePrinter</font></code> </li>
+  <li><code><font color="#0000cc">HeaderFooter</font></code> </li>
+</ul>
+<p>DHTML Behaviors are similar to libraries in other programming languages. A
+  behavior is like a function that you can access via an API (Application Procedural
+  Interface). It sports a set of properties and methods you can invoke for your
+  particular object. DHTML behaviors were first introduced in Internet Explorer
+  5.0. Internet Explorer provides you with a set of default behaviors. The above
+  four behaviors belong to this category of default behaviors. You can write
+  behaviors of your own and put them in a ".htc"-extension file. To learn more
+  about behaviors, go to Column 22, <a href="http://www.webreference.com/js/column22/">DHTML
+  Behaviors</a> and Column 23, <a href="http://www.webreference.com/js/column23/">More
+  on DHTML Behaviors</a>.</p>
+<h1>Creating a Master Page</h1>
+<p>The <code><font color="#0000cc">DeviceRect</font></code> behavior defines
+  the master template of all pages. Use it to place your company logo, to change
+  the background color, or to decorate your margins with a special pattern. You
+  define the master page with a regular <code><font color="#0000cc">&lt;STYLE&gt;</font></code> element.
+  Of course, you can have a different master page for every rendered page. Suppose
+  we want to define a master page with the following attributes:</p>
+<ul>
+  <li>8.5 inch wide </li>
+  <li>11 inch tall </li>
+  <li>Yellow background color </li>
+  <li>1 pixel wide solid black left border </li>
+  <li>1 pixel wide solid black top border </li>
+  <li>4 pixels wide solid black right border </li>
+  <li>4 pixels wide solid black bottom border </li>
+  <li>10 pixels wide margin on all sides </li>
+</ul>
+<p>We define a style called <code><font color="#0000cc">masterstyle</font></code> as
+  follows:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;STYLE TYPE="text/css"&gt;
+.masterstyle
+{ 
+  width:8.5in;
+  height:11in;
+  background:#FFFF99;   
+  border-left:1 solid black;
+  border-top:1 solid black;
+  border-right:4 solid black;
+  border-bottom:4 solid black;
+  margin:10px;
+}
+&lt;/STYLE&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>Here is the complete HTML code that displays all master pages:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML XMLNS:IE&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;
+&lt;STYLE TYPE="text/css"&gt;
+.masterstyle
+{ 
+    width:8.5in;
+    height:11in;
+    background:#FFFF99;   
+	border-left:1 solid black;
+	border-top:1 solid black;
+	border-right:4 solid black;
+	border-bottom:4 solid black;
+    margin:10px;
+}
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+
+&lt;IE:DEVICERECT ID="page1" CLASS="masterstyle" MEDIA="print"&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;IE:DEVICERECT ID="page2" CLASS="masterstyle" MEDIA="print"&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>We have included two <code><font color="#0000cc">DeviceRect</font></code> elements.
+  You need to include one <code><font color="#0000cc">DeviceRect</font></code> element
+  per page. If you have <code><font color="#0000cc">100</font></code> pages,
+  you need to include <code><font color="#0000cc">100</font></code> <code><font color="#0000cc">DeviceRect</font></code> tags.
+  Don't panic. We'll show you in an upcoming column how to create them automatically,
+  on the fly. Notice the few parameters we specified for these <code><font color="#0000cc">DeviceRect</font></code> elements.
+  The <code><font color="#0000cc">ID</font></code> attributes should be unique
+  per page. The <code><font color="#0000cc">CLASS</font></code> attribute specifies
+  the <code><font color="#0000cc">STYLE</font></code> definition, masterstyle,
+  to be used for the page. The <code><font color="#0000cc">MEDIA</font></code> attribute
+  tells the browser that the final target of this template is for <code><font color="#0000cc">print</font></code>ing.</p>
+<p>Notice also the first few lines of the code:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML XMLNS:IE&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>The first line specifies the XML namespace. The third line imports the default
+  behaviors. We need the following behaviors: <code><font color="#0000cc">DeviceRect</font></code>, <code><font color="#0000cc">LayoutRect</font></code>, <code><font color="#0000cc">TemplatePrinter</font></code>,
+  and <code><font color="#0000cc">HeaderFooter</font></code>. <a href="http://www.webreference.com/js/column89/3a.html">See</a> what
+  the master page looks like.</p>
+<h1>Content Rendering</h1>
+<p>The <code><font color="#0000cc">LayoutRect</font></code> behavior formats
+  the page content itself. You need one <code><font color="#0000cc">LayoutRect</font></code> per
+  page. The <code><font color="#0000cc">LayoutRect</font></code> element is defined
+  inside the <code><font color="#0000cc">DeviceRect</font></code> element. The
+  content of each <code><font color="#0000cc">LayoutRect</font></code> element
+  is limited to one page. Once a page is filled, formatting jumps to the next
+  page automatically. You need to define <code><font color="#0000cc">LayoutRect</font></code>'s
+  style, as you did for <code><font color="#0000cc">DeviceRect</font></code>.
+  Suppose we want the content portion of the page to have the following characteristics:</p>
+<ul>
+  <li>5.5 inches wide </li>
+  <li>8 inches high </li>
+  <li>1 inch margin from all sides </li>
+  <li>White background </li>
+  <li>1 inch wide gray dashed border </li>
+</ul>
+<p>We can define a style, <code><font color="#0000cc">contentstyle</font></code>,
+  as follows:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;STYLE TYPE="text/css"&gt;
+.contentstyle
+{
+  width:5.5in;
+  height:8in;
+  margin:1in;
+  background:white;
+  border:1 dashed gray;
+}
+&lt;/STYLE&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>We can use the <code><font color="#0000cc">LayoutRect</font></code> elements
+  to format any content. <a href="http://www.webreference.com/js/column89/4a.html">Examine</a> what
+  the second page of this column looks like with the style above. Here is the
+  HTML code:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;
+&lt;STYLE TYPE="text/css"&gt;
+.contentstyle
+{
+  width:5.5in;
+  height:8in;
+  margin:1in;
+  background:white;
+  border:1 dashed gray;
+}
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+
+&lt;BODY&gt;
+&lt;IE:LAYOUTRECT ID="layoutrect1"  CONTENTSRC="2.html"
+  CLASS="contentstyle" NEXTRECT="layoutrect2"/&gt;
+
+&lt;IE:LAYOUTRECT ID="layoutrect2" CLASS="contentstyle"/&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>This HTML code is similar to the example on the <a href="http://www.webreference.com/js/column89/3.html">previous
+    page</a> except that <code><font color="#0000cc">DeviceRect</font></code> is
+    replaced with <code><font color="#0000cc">LayoutRect</font></code>. Again, <code><font color="#0000cc">DeviceRect</font></code> formats
+    the master page, while <code><font color="#0000cc">LayoutRect</font></code> formats
+    the content. Notice the attributes of <code><font color="#0000cc">LayoutRect</font></code> above.
+    The <code><font color="#0000cc">ID</font></code> attribute needs to be unique
+    per page. The <code><font color="#0000cc">CONTENTSRC</font></code> attribute
+    specifies the URL of the content to be formatted. Here we specify Page 2
+    of this column. The <code><font color="#0000cc">CLASS</font></code> attribute
+    links the element with its designated style definition, <code><font color="#0000cc">contentstyle</font></code>.
+    For each page, you need to specify which element is next in line to hold
+    the content overlfow. Use the <code><font color="#0000cc">NEXTREC</font></code> attribute
+    to list the <code><font color="#0000cc">ID</font></code> of the next <code><font color="#0000cc">LayoutRect</font></code> element.
+    In our case above, we include only two pages, and indeed you can see that
+    Page 2 does not need more than two pages</p>
+<h1>Writing a Static Print Template</h1>
+<p>Now that we know what <code><font color="#0000cc">DeviceRect</font></code> and <code><font color="#0000cc">LayoutRect</font></code> elements
+  look like separately, let's see how to combine between them. For each formatted
+  page, you need to have a master page (<code><font color="#0000cc">DeviceRect</font></code>)
+  which includes a content page (<code><font color="#0000cc">LayoutRect</font></code>).
+  The first printed page is different from the other pages because you need to
+  include the <code><font color="#0000cc">CONTENTSRC</font></code> attribute
+  which specifies the content source. Here is the <code><font color="#0000cc">DeviceRect</font></code> element
+  for the first page:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;IE:DEVICERECT ID="page1" CLASS="masterstyle"
+  MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect1"
+  CONTENTSRC="2.html"
+    CLASS="contentstyle" NEXTRECT="layoutrect2"/&gt;
+&lt;/IE:DEVICERECT&gt; </font></code></pre>
+</blockquote>
+<p></p>
+<p>And here is the <code><font color="#0000cc">DeviceRect</font></code> element
+  of the second page:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;IE:DEVICERECT ID="page2" CLASS="masterstyle"
+  MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect2"
+  CLASS="contentstyle"/&gt;
+&lt;/IE:DEVICERECT&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>Let's learn how to assemble the complete code that will format our <code><font color="#0000cc">2.html</font></code> page.
+  First, <a href="http://www.webreference.com/js/column89/5a.html">look</a> at
+  the outcome. Then, look at the code that does it:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML XMLNS:IE&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;
+&lt;STYLE TYPE="text/css"&gt;
+.contentstyle
+{
+  width:5.5in;
+  height:8in;
+  margin:1in;
+  background:white;
+  border:1 dashed gray;
+}
+.masterstyle
+{
+  width:8.5in;
+  height:11in;
+  background:#FFFF99;
+  border-left:1 solid black;
+  border-top:1 solid black;
+  border-right:4 solid black;
+  border-bottom:4 solid black;
+  margin:10px;
+}
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+
+&lt;BODY&gt;
+&lt;IE:DEVICERECT ID="page1" CLASS="masterstyle"
+  MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect1"
+  CONTENTSRC="2.html"
+    CLASS="contentstyle" NEXTRECT="layoutrect2"/&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;IE:DEVICERECT ID="page2" CLASS="masterstyle"
+  MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect2"
+  CLASS="contentstyle"/&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></code></pre>
+</blockquote>
+<h1>Writing a Dynamic Print Template(1)</h1>
+<p>You've probably asked yourself by now how to prepare the exact number of <code><font color="#0000cc">DeviceRect</font></code> and <code><font color="#0000cc">LayoutRect</font></code> elements
+  for the source you want to format. You are also wondering how to create these
+  elements without copying and pasting <code><font color="#0000cc">100</font></code> times.
+  The answer is the same for both. We can write JavaScript code that will create
+  the <code><font color="#0000cc">DeviceRect</font></code> and <code><font color="#0000cc">LayoutRect</font></code> elements
+  on the fly. <a href="http://www.webreference.com/js/column89/6a.html">Try it</a>.</p>
+<p>The key to dynamic creation of HTML statements is a <code><font color="#0000cc">&lt;DIV&gt;</font></code> element
+  that we fill on the fly. Here is how we define this element:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;DIV ID="devicecontainer"&gt;
+&lt;!-- Pages created on the fly go here. --&gt;
+&lt;/DIV&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>We fill this <code><font color="#0000cc">&lt;DIV&gt;</font></code> element
+  using the <code><font color="#0000cc">insertAdjacentHTML()</font></code> method.
+  We use its two flavors, <code><font color="#0000cc">afterBegin</font></code> and <code><font color="#0000cc">beforeEnd</font></code>.
+  We use the first flavor when we insert the first page into an empty <code><font color="#0000cc">&lt;/DIV&gt;</font></code>:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">devicecontainer.insertAdjacentHTML
+  ("afterBegin", newHTML);</font></code></pre>
+</blockquote>
+<p></p>
+<p>We use the second variation of this method when we want to add successive
+  pages before the end of the element:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">devicecontainer.insertAdjacentHTML
+  ("beforeEnd", newHTML);</font></code></pre>
+</blockquote>
+<p></p>
+<p>We create the first page upon loading of the <code><font color="#0000cc">devicecontainer</font></code> page:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;BODY ONLOAD="addFirstPage()"&gt;</font></code></pre>
+</blockquote>
+<p></p>
+<p>The function <code><font color="#0000cc">addFirstPage()</font></code> assembles
+  the first page from the ingredients we showed previously in this column: one <code><font color="#0000cc">LayoutRect</font></code> element
+  within a <code><font color="#0000cc">DeviceRect</font></code> element. The
+  only trick is how to assemble these opening and closing tags in a single string
+  variable, <code><font color="#0000cc">newHTML</font></code>. Be strict with
+  the quotes: use double quotes for newHTML's substrings and single quotes for
+  original quotes in the <code><font color="#0000cc">LayoutRect</font></code> and <code><font color="#0000cc">DeviceRect</font></code> elements.
+  Here is the function:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">function addFirstPage() {
+  newHTML  = "&lt;IE:DEVICERECT ID='devicerect1'
+    MEDIA='print' CLASS='masterstyle'&gt;";
+  newHTML += "&lt;IE:LAYOUTRECT ID='layoutrect1'
+             CONTENTSRC='2.html'" +
+             "ONLAYOUTCOMPLETE='onPageComplete()'
+             NEXTRECT='layoutrect2'" +
+             "CLASS='contentstyle'/&gt;";
+  newHTML += "&lt;/IE:DEVICERECT&gt;";
+
+  devicecontainer.insertAdjacentHTML("afterBegin",
+  newHTML);
+}</font></code></pre>
+</blockquote>
+<p></p>
+<p>Notice the new attribute of <code><font color="#0000cc">LayoutRect</font></code>: <code><font color="#0000cc">onLayoutComplete</font></code>.
+  This event fires when the <code><font color="#0000cc">LayoutRect</font></code> element
+  stops rendering its content. The reason for this can be twofold: either the
+  source is exhausted or the <code><font color="#0000cc">LayoutRect</font></code> element
+  is overflowed by a longer source. We'll show you how to differentiate between
+  these two events on the next page.</p>
+<h1>Writing a Dynamic Print Template(2)</h1>
+<p>The event <code><font color="#0000cc">onLayoutComplete</font></code> fires
+  when the <code><font color="#0000cc">LayoutRect</font></code> element is done
+  rendering. We use the event property <code><font color="#0000cc">contentOverflow</font></code> to
+  tell whether the source is exhausted or the page is overflowed by a longer
+  source.</p>
+<p>The function <code><font color="#0000cc">onPageComplete()</font></code> is
+  called whenever the last page is overflowed by a longer source. This function
+  is similar to the <code><font color="#0000cc">addFirstPage()</font></code> function
+  we showed on the <a href="http://www.webreference.com/js/column89/6.html">previous
+  page</a>. We assemble a variable, <code><font color="#0000cc">newHTML</font></code>,
+  with one <code><font color="#0000cc">LayoutRect</font></code> element within
+  a <code><font color="#0000cc">DeviceRect</font></code> element:</p>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">function onPageComplete() {
+  if (event.contentOverflow) {
+    document.all("layoutrect" +
+      lastPage).onlayoutcomplete = null;
+    newHTML  = "&lt;IE:DEVICERECT
+               ID='devicerect" + (lastPage + 1) +
+               "' MEDIA='print' CLASS='masterstyle'&gt;";
+    newHTML += "&lt;IE:LAYOUTRECT
+               ID='layoutrect" + (lastPage + 1) +
+               "' ONLAYOUTCOMPLETE='onPageComplete()'
+               NEXTRECT='layoutrect" +
+               (lastPage + 2) + "'
+               CLASS='contentstyle'/&gt;";
+    newHTML += "&lt;/IE:DEVICERECT&gt;";
+
+    devicecontainer.insertAdjacentHTML("beforeEnd",
+    newHTML);
+    lastPage++;
+  }
+}</font></code></pre>
+</blockquote>
+<p></p>
+<p>The trick here is how to assemble those attributes that are unique per page.
+  These are <code><font color="#0000cc">ID</font></code> (for both <code><font color="#0000cc">DeviceRect</font></code> and <code><font color="#0000cc">LayoutRect</font></code>)
+  and <code><font color="#0000cc">NEXTRECT</font></code>. They all consist of
+  a fixed string concatenated to the page number. The current page number is <code><font color="#0000cc">lastPage
+  + 1</font></code>. The next page number is <code><font color="#0000cc">lastPage
+  + 2</font></code>. The <code><font color="#0000cc">DeviceRect</font></code> element's <code><font color="#0000cc">ID</font></code> is
+  assembled by concatenating <code><font color="#0000cc">'devicerect'</font></code> and <code><font color="#0000cc">(lastPage
+  + 1)</font></code>. The <code><font color="#0000cc">LayoutRect</font></code> element's <code><font color="#0000cc">ID</font></code> is
+  assembled by <code><font color="#0000cc">'layoutrect'</font></code> and <code><font color="#0000cc">(lastPage
+  + 1)</font></code>. The attribute <code><font color="#0000cc">NEXTRECT</font></code> needs
+  to reference the next page's <code><font color="#0000cc">LayoutRect</font></code> element,
+  so its value is <code><font color="#0000cc">'layoutrect' + (lastPage + 2)</font></code>.</p>
+<p>The variable <code><font color="#0000cc">lastPage</font></code> is initialized
+  to <code><font color="#0000cc">1</font></code> before calling the first page,
+  and is incremented after creating a new page.</p>
+<p>Go ahead and <a href="http://www.webreference.com/js/column89/6a.html">try</a> this
+  dynamically-generated page. You can find a complete code listing on <a href="http://www.webreference.com/js/column89/9.html">one
+  of the next pages</a>.</p>
+<h1>Code Listing of A Static Print Template</h1>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML XMLNS:IE&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;
+&lt;STYLE TYPE="text/css"&gt;
+.contentstyle
+{
+  width:5.5in;
+  height:8in;
+  margin:1in;
+  background:white;   
+  border:1 dashed gray;
+}
+.masterstyle
+{ 
+  width:8.5in;
+  height:11in;
+  background:#FFFF99;   
+  border-left:1 solid black;
+  border-top:1 solid black;
+  border-right:4 solid black;
+  border-bottom:4 solid black;
+  margin:10px;
+}
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+
+&lt;BODY&gt;
+&lt;IE:DEVICERECT ID="page1" CLASS="masterstyle" MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect1" CONTENTSRC="2.html" CLASS="contentstyle" NEXTRECT="layoutrect2"/&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;IE:DEVICERECT ID="page2" CLASS="masterstyle" MEDIA="print"&gt;
+	&lt;IE:LAYOUTRECT ID="layoutrect2" CLASS="contentstyle"/&gt;
+&lt;/IE:DEVICERECT&gt;
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></code></pre>
+</blockquote>
+<h1>Code Listing of A Dynamic Print Template</h1>
+<p></p>
+<blockquote>
+  <pre><code><font color="#0000cc">&lt;HTML XMLNS:IE&gt;
+&lt;HEAD&gt;
+&lt;?IMPORT NAMESPACE="IE" IMPLEMENTATION="#default"&gt;
+&lt;STYLE TYPE="text/css"&gt;
+.contentstyle {
+  width:5.5in;
+  height:8in;
+  margin:1in;
+  background:white;   
+  border:1 dashed gray;
+}
+.masterstyle { 
+  width:8.5in;
+  height:11in;
+  background:#FFFF99;   
+  border-left:1 solid black;
+  border-top:1 solid black;
+  border-right:4 solid black;
+  border-bottom:4 solid black;
+  margin:10px;
+}
+&lt;/STYLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+&lt;SCRIPT LANGUAGE="JavaScript"&gt;
+&lt;!--
+var lastPage = 1;
+
+function addFirstPage() {
+  newHTML  = "&lt;IE:DEVICERECT ID='devicerect1' MEDIA='print' CLASS='masterstyle'&gt;";
+  newHTML += "&lt;IE:LAYOUTRECT ID='layoutrect1' CONTENTSRC='2.html'" +
+             "ONLAYOUTCOMPLETE='onPageComplete()' NEXTRECT='layoutrect2'" +
+             "CLASS='contentstyle'/&gt;";
+  newHTML += "&lt;/IE:DEVICERECT&gt;";
+
+  devicecontainer.insertAdjacentHTML("afterBegin", newHTML);
+}
+
+function onPageComplete() {
+  if (event.contentOverflow) {
+    document.all("layoutrect" + lastPage).onlayoutcomplete = null;
+    newHTML  = "&lt;IE:DEVICERECT ID='devicerect" + (lastPage + 1) +  
+               "' MEDIA='print' CLASS='masterstyle'&gt;";
+    newHTML += "&lt;IE:LAYOUTRECT ID='layoutrect" + (lastPage + 1) + 
+               "' ONLAYOUTCOMPLETE='onPageComplete()' NEXTRECT='layoutrect" + 
+               (lastPage + 2) + "'  CLASS='contentstyle'/&gt;";
+    newHTML += "&lt;/IE:DEVICERECT&gt;";
+
+    devicecontainer.insertAdjacentHTML("beforeEnd", newHTML);
+    lastPage++;
+  }
+}
+// --&gt;
+&lt;/SCRIPT&gt;
+
+&lt;BODY ONLOAD="addFirstPage()"&gt;
+
+&lt;DIV ID="devicecontainer"&gt;
+&lt;!-- Pages created on the fly go here. --&gt;
+&lt;/DIV&gt;
+
+&lt;/BODY&gt;
+&lt;/HTML&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;</font></code></pre>
+</blockquote>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+</html>

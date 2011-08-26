@@ -1,0 +1,90 @@
+
+Oct. 4-6 1999
+CodeDisplay changes
+
+  
+        -   Height of highlight & cursor adjusted
+        -   Optional line numbering added 
+        -   syntax colouring added
+        -   added tab expansion
+        -   added colouring for line numbers
+        -   made syntax colours, fonts + highlighting configurable
+	-   line numbering is Configurable & view menu controlled
+
+TMMainFrame and TMBigApplet
+	took view menu and line-numbering support out.
+	Now view menu passed as argument to BigApplet constructor and then on to DisplayManager
+	constructor.
+
+new ViewStateManager added to DisplayEngine package (singleton class)
+Manages view menu
+calls appropriate listeners and passes calls down to appropriate displays.
+Special code require for each dsplay (only CodeDisplay partly done)
+
+Configuration package reverted to previous version (no menu links at all - menu links are handled 
+as needed at the individual display level)
+
+
+Oct. 8
+
+	Added comments to configuration system. Now C++ style single-line comments can be
+	inserted before a parameter or attached to a parameter by a registered configurable
+	object.
+
+
+	Fonts have been made uniform. Font has changed to Monospaced. Ugly!
+	Font and highlight color are configurable (but not menu controllable).
+	Ugly convinces me I'll have to make fonts configurable at individual
+	display level.
+	Highlight color config works but font doesn't seem to. Not sure why. Sun
+	peer Font shows new changes! Out of time. Have to deal with it when
+	I return from New England
+
+Dec. 9
+    Major new version released several days ago. Completely rewrote StoreDisplay to
+    support hierarchial expansion of Datums. Added a number of new classes, vis---
+    
+        DatumDisplay  - responsible for displaying an individual datum. The workhorse
+            of the new system.
+            
+        Expander - for expander boxes. These are attached to Datums.
+        
+        DisplayLayoutManager -- an interface. Layout of stores is now handled by a separate
+            layout manager to facilitate code sharing between Box and Arrow and linear store
+            views.
+        
+        LinearStoreDisplayManager -- the implementation of the DisplayLayoutManager for standard
+            linear store displays.
+    
+    The following two utilities were put in a separate sub-package allowing them to be friends:
+        DisplayTree - for managing the current view of datum hierarchy being displayed. Effectively
+            a vector of DatumDisplays
+        DDTIterator - iterator objects for the class above.
+        
+        Finally, over the last couple of days I have added a new class
+        
+        StringBox -- a simple, lightweight rmo-component that displays a string inside a box, The
+            box may or may not have an outline. The string will be properly clipped against it.
+            Hooks are in place to allow clipped strings to be displayed in a separate "tool-tip"
+            type window when the mouse is clicked inside it. (I judge holding the mouse in the box for
+            a time will slow TM down more than we want.)
+            
+        Bug fixes: 
+            amended the configurationServer to eliminate problem of windows not being killed off
+            properly when a reduced configuration was loaded.
+            
+            fixed CodeDisplay so that cursor moved to the correct line all the time (this may still
+            need a bit of magic constant fine tuning).
+ Dec. 10th
+    Finally works with new StringBoxes. Leader algorithm reworked entirely. At least it's cleaner now.
+    StoreDisplays are now self-sizing. For wider displays, the boxes will enlarge to fill the space.
+    Thus one fast way to see the contents of a string clipped by abox is to enlarge its store to full TM size.
+        
+ Dec. 11th
+	Fixed bug in DisplayManager that didn't put lineNumbering into a new file loaded when it was
+	in the old one.
+	Fixed bug in CodeDisplay that made lineNumbering fowl up alignments. Also line numbers start at 1.
+
+Dec 13th.
+	Implemented mutable titles (but permanent names) in display windows.
+	Fixed bug in StringBox that had highlighting wiping out box boundaries.

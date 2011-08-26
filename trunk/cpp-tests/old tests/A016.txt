@@ -1,0 +1,14 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+        int i = ~ 13 ;
+        int j = ! + i ;
+        int k = i * * & j ;
+        int l = k ;
+        int *p = & l ;
+        *p = 13 ;
+        int *q = 0 ;
+        *q = 99 ;
+}

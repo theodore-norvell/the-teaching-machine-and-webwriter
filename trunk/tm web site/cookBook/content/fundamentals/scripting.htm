@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<!-- Content pages should be based on this page -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>Scripting Code for Visualization</title>
+<!-- change nesting depth to reflect location of site root relative to this page. This page reflects the standard webWriter
+setup with most topic pages located in topic folders inside a content folder which is in the root folder -->
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<!-- these are relative to page. For standard setup first one could also be written ../noteConstants.js -->
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<link href="../../style/lecturePrint.css" rel="stylesheet" type="text/css">
+<link href="../../style/notesScreen.css" rel="stylesheet" type="text/css">
+</head>
+<body id="bodyRef">
+<div id="contents">
+<p>In order to instrument code to produce program driven visualization, we take advantage of the TM's built-in scripting system. Before describing that, we first describe briefly the architecture of the Teaching Machine itself.</p>
+<h2><a name="TMArchitecture">Teaching Machine Architecture</a></h2>
+<p><img src="../../Images/TM Architecture.jpg" alt="Basic Block Diagram of the TM" width="453" height="402" align="right">The block diagram at right shows a stripped down version of the Teaching Machine architecture. The detailed images represent displays which are visible when the Teaching Machine is running, while the boxes with the rounded tops and green stripes represent non-visible processes. All blocks shown, whether visible or not, exist as plug-ins to the Teaching Machine. When a Java program (C++ can also be used) is read into the TM it is first passed to the Java Compiler.Once compiled it is loaded into the code window.</p>
+<p>Buttons at the top of the code window allow the user to control program execution. They are modeled on the buttons found in debuggers with one very important addition. The TM allows unlimited undo. Menu commands across the top of the code window control loading of code, configuration and some aspects of viewing.</p>
+<p>As execution precedes on the TM in response to button presses, the code is executed on a virtual machine which models how a computer responds to computer code. The virtual machine evolves the detailed state of the model computer. After every step it informs the Display Manager that state changes have occurred by sending a <code>refresh</code> signal. The various displays controlled by the displayManager then request updates by issuing <code>getState</code> calls for the portions of the model machine they are displaying. Details on some of the individual displays follow:</p>
+<div clear="all">
+<h2><a name = "individual">Description of Individual Windows</a></h2>
+<table width="80%" border="0">
+  <tr>
+    <td align="right" valign="center">  <img src="../../Images/codeWindow.png"></td>
+    <td valign="top"><div>
+  <h3>Code Window</h3>
+  <p>In addition to displaying the source code after it has passed through the compiler, this window is the primary controller for running code in the TM. The yellow bar highlight the next line to be executed. From left to right the row of buttons on top do the following:</p>
+  <p><img src="../../webWriter/images/Backup.gif" alt="solid, yellow left arrow" width="12" height="12">&nbsp;&nbsp;<strong>undo</strong> undo the last step;. the TM features unlimited undos.</p>
+  <p><img src="../../webWriter/images/stepOver.gif" alt="red arrow stepping PAST parentheses" width="12" height="12">&nbsp;&nbsp;<strong>stepOver</strong> single step to the next line of code without stepping into any functions in the current line.</p>
+  <p><img src="../../webWriter/images/stepInto.gif" alt="red arrow going into parentheses" width="12" height="12">&nbsp;&nbsp;<strong>stepInto</strong> single step into the first function call on the current line, or to  the next line of code if there are no functions in the current line.</p>
+  <p><img src="../../webWriter/images/stepOut.gif" alt="red arrow stepping out of parentheses" width="12" height="12">&nbsp;&nbsp;<strong>stepOut</strong> if the current line is inside a function, steps out of the function back to the calling line; otherwise steps to the next line of code.</p>
+  <p><img src="../../webWriter/images/ToCursor.gif" alt="right arrow terminating on a vertical green bar" width="12" height="12">&nbsp;&nbsp;<strong>stepTo </strong>before this can be used, a line reachable after the current line must be selected; it will be highlighted with a simple green block at the beginning of the line; pushing the stepTo button will then cause the TM to advance through the program starting with the current line until the line with the green block is reached.</p>
+  <p><img src="../../webWriter/images/ReStart.gif" alt="solid black triangle pointing upwards" width="13" height="13">&nbsp;&nbsp;<strong>reload</strong> the program in the code window is reloaded and the TM is re-initialized</p>
+  <p><img src="../../webWriter/images/AutoRun.gif" width="12" height="12">&nbsp;&nbsp;<strong>autoRun</strong> starting with the current line the code in the TM is stepped through to the end. This will occur too quickly to see the intervening steps</p>
+  <p><img src="../../webWriter/images/AutoStep.gif" alt="moving bar histogram" width="13" height="13">&nbsp;&nbsp;<strong>animate</strong> an autorun slow enough to see the intervening steps; the rate is controlled by a slider bar which will appear when the animate button is selected.</p>
+  <p>&nbsp;</p>
+</div></td>
+  </tr>
+  <tr>
+    <td valign="center"><img src="../../Images/javaCompiler.jpg" alt="a white box with a rounded, green top" align="right"></td>
+    <td valign="top"><div>
+
+<h3>Java Compiler</h3>
+<p>A virtually full implementation of a Java Compiler but with very limited support for the Java libraries. The compiler compiles standard Java code to run on the TM virtual machine.</p>
+</div></td>
+  </tr>
+  <tr>
+    <td valign="center"><img src="../../Images/CppCompiler.jpg" width="149" height="80" align="right"></td>
+    <td valign="top"><div>
+  <h3>C++ Compiler</h3>
+  <p>A partial but pedagogically useful  implementation of a C++ Compiler  with some support for the C++ libraries. The compiler compiles a pedagogical subset of standard C++ code to run on the TM virtual machine.</p>
+</div></td>
+  </tr>
+  <tr>
+    <td valign="center"><img src="../../Images/expressionEngine.png" width="353" height="79" align="right"></td>
+    <td valign="top"><div>
+  <h3>Expression Engine</h3>
+  <p>Displays next expression from the current line and allows it to be stepped through using the <img src="../../webWriter/images/Advance.gif" alt="solid yellow right arrow" width="12" height="12"> button. Steps through the expression in the same way that the code windows step buttons step through code, but at a much finer grain. Together with the symbol table and memory windows allows the fetch and execute cycles of the model computer to be examined in detail. Has its own <img src="../../webWriter/images/Backup.gif" alt="solid, yellow left arrow" width="12" height="12"> button for undos (again unlimited).</p>
+</div></td>
+  </tr>
+  <tr>
+    <td valign="center"><img src="../../Images/symbolTable.png" align="right"></td>
+    <td valign="top"><div>
+  <h3>Symbol Table</h3>
+  <p>Maps variable names to memory addresses. When stepping through an expression in the Expresion Engine, the address of any variable names encountered are looked up in the Symbol Table which highlights the variable being looked up during the process.</p>
+</div></td>
+  </tr>
+  <tr>
+    <td valign="center"><img src="../../Images/stack.png" align="right"></td>
+    <td valign="top"><div><h3>Memory Displays</h3>
+  <p>Maps variable names to memory addresses. When stepping through an expression in the Expresion Engine, the address of any variable names encountered are looked up in the Symbol Table which highlights the variable being looked up during the process.</p>
+</div></td>
+  </tr>
+ </table>
+ </div>
+<div>
+  
+
+
+<h2><a name="Scripting">Scripting the TM</a></h2>
+<p><img src="../../Images/scripting Architecture.jpg" width="481" height="402" align="right"></p>
+<p>Script Code is code, added into the source code, which is able to communicate directly with the Teaching Machine. Both Java and C++ compilers have been adapted very slightly to allow for script code. In C++ a script call is of the form</p>
+<p><code>ScriptManager::functionName(arg1, arg2, ..);</code></p>
+<p>while in Java C++'s scope resolution operator is replaced by a '.', thus</p>
+<p><code>ScriptManager.functionName(arg1, arg2, ..);</code></p>
+<p>The ScriptManager has a number of built-in functions which may be called but for Program Driven Visualization (PDV), the <code>relay</code> function is the only one that matters. This function relays function calls to other plug-ins in the TM. For example, to call the <code>makeNode</code> function in the <code>higraphManager</code> plug-in, we create the following:</p>
+<p><code>ScriptManager.relay(&quot;higraphManager&quot;, &quot;makeNode&quot;, a);</code></p>
+<p>The first and second arguments of the relay functions specify the plug-in (always <code>&quot;higraphManager&quot;</code> for PDV) and function within the plug-in to be called. HigraphManager then controls the creation of both the model and its display in the PDV Visualizer. The DisplayManager continues to handle the standard display functions (such as responding to refreshes or redrawing a window that has just become uncovered).</p>
+<p>The relay function can handle any number of arguments (including none). It is this feature that actually requires the largest changes to the compilers. See the <a href="commands.htm">higraph commands</a> page for a complete list of all the available higraph functions.</p>
+<h3>&nbsp;</h3>
+<p>&nbsp;</p>
+<div id="allExamples">
+<!-- The allExamples div is hidden in on-line content and only shows in the printed version of the page. It was intended
+for printing out examples in full, where only partial windows into examples are displayed on the browser page. To use
+this facility, place an insertCode snippet into this div for each example, setting the selector to "all".
+Also, make sure there is a copy of the printForm.htm page in the same folder as this page.-->
+<p>&nbsp;</p> 
+</div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,2105 @@
+
+<html>
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<link rel=Edit-Time-Data href="CommonLanguageClasses_files/editdata.mso">
+<link rel=OLE-Object-Data href="CommonLanguageClasses_files/oledata.mso">
+<title>Common Langauge Classes</title>
+<style id="dynCom" type="text/css"><!-- --></style>
+<script language="JavaScript"><!--
+function msoCommentShow(anchor_id, com_id)
+{
+	if(msoBrowserCheck()) 
+		{
+		c = document.all(com_id);
+		a = document.all(anchor_id);
+		if (null != c && null == c.length && null != a && null == a.length)
+			{
+			var cw = c.offsetWidth;
+			var ch = c.offsetHeight;
+			var aw = a.offsetWidth;
+			var ah = a.offsetHeight;
+			var x  = a.offsetLeft;
+			var y  = a.offsetTop;
+			var el = a;
+			while (el.tagName != "BODY") 
+				{
+				el = el.offsetParent;
+				x = x + el.offsetLeft;
+				y = y + el.offsetTop;
+				}
+			var bw = document.body.clientWidth;
+			var bh = document.body.clientHeight;
+			var bsl = document.body.scrollLeft;
+			var bst = document.body.scrollTop;
+			if (x + cw + ah / 2 > bw + bsl && x + aw - ah / 2 - cw >= bsl ) 
+				{ c.style.left = x + aw - ah / 2 - cw; }
+			else 
+				{ c.style.left = x + ah / 2; }
+			if (y + ch + ah / 2 > bh + bst && y + ah / 2 - ch >= bst ) 
+				{ c.style.top = y + ah / 2 - ch; }
+			else 
+				{ c.style.top = y + ah / 2; }
+			c.style.visibility = "visible";
+}	}	}
+function msoCommentHide(com_id) 
+{
+	if(msoBrowserCheck())
+		{
+		c = document.all(com_id);
+		if (null != c && null == c.length)
+		{
+		c.style.visibility = "hidden";
+		c.style.left = -1000;
+		c.style.top = -1000;
+		} } 
+}
+function msoBrowserCheck()
+{
+	ms = navigator.appVersion.indexOf("MSIE");
+	vers = navigator.appVersion.substring(ms + 5, ms + 6);
+	ie4 = (ms > 0) && (parseInt(vers) >= 4);
+	return ie4;
+}
+if (msoBrowserCheck())
+{
+	document.styleSheets.dynCom.addRule(".msocomanchor","background: infobackground");
+	document.styleSheets.dynCom.addRule(".msocomoff","display: none");
+	document.styleSheets.dynCom.addRule(".msocomtxt","visibility: hidden");
+	document.styleSheets.dynCom.addRule(".msocomtxt","position: absolute");
+	document.styleSheets.dynCom.addRule(".msocomtxt","top: -1000");
+	document.styleSheets.dynCom.addRule(".msocomtxt","left: -1000");
+	document.styleSheets.dynCom.addRule(".msocomtxt","width: 33%");
+	document.styleSheets.dynCom.addRule(".msocomtxt","background: infobackground");
+	document.styleSheets.dynCom.addRule(".msocomtxt","color: infotext");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-top: 1pt solid threedlightshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-right: 2pt solid threedshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-bottom: 2pt solid threedshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","border-left: 1pt solid threedlightshadow");
+	document.styleSheets.dynCom.addRule(".msocomtxt","padding: 3pt 3pt 3pt 3pt");
+	document.styleSheets.dynCom.addRule(".msocomtxt","z-index: 100");
+}
+// --></script>
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:Wingdings;
+	panose-1:5 0 0 0 0 0 0 0 0 0;
+				}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;
+				}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+h1
+	{	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	text-indent:.2in;
+		
+		font-size:14.0pt;
+		font-family:Arial;
+	
+			font-weight:normal;}
+h2
+	{	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	text-indent:.2in;
+		
+		font-size:12.0pt;
+		font-family:Arial;
+	
+			text-decoration:underline;
+	text-underline:single;}
+h3
+	{	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:0in;
+	text-indent:.2in;
+		
+		font-size:12.0pt;
+		font-family:Arial;
+	
+		}
+h4
+	{	margin-top:12.0pt;
+	margin-right:0in;
+	margin-bottom:3.0pt;
+	margin-left:.5in;
+	text-indent:.2in;
+		
+		font-size:11.0pt;
+		font-family:Arial;
+	
+			font-style:italic;
+	}
+p.MsoToc1, li.MsoToc1, div.MsoToc1
+	{			margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoToc2, li.MsoToc2, div.MsoToc2
+	{			margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:11.0pt;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoToc3, li.MsoToc3, div.MsoToc3
+	{			margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:22.0pt;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoToc4, li.MsoToc4, div.MsoToc4
+	{			margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:33.0pt;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoFootnoteText, li.MsoFootnoteText, div.MsoFootnoteText
+	{	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:10.0pt;
+	font-family:Arial;
+	
+	
+	}
+p.MsoCommentText, li.MsoCommentText, div.MsoCommentText
+	{	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:10.0pt;
+	font-family:Arial;
+	
+	
+	}
+p.MsoHeader, li.MsoHeader, div.MsoHeader
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		tab-stops:center 3.0in right 6.0in;
+	font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoFooter, li.MsoFooter, div.MsoFooter
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		tab-stops:center 3.0in right 6.0in;
+	font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoCaption, li.MsoCaption, div.MsoCaption
+	{		margin-top:6.0pt;
+	margin-right:0in;
+	margin-bottom:6.0pt;
+	margin-left:0in;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-weight:bold;
+	}
+span.MsoFootnoteReference
+	{	vertical-align:super;}
+span.MsoCommentReference
+	{	}
+p.MsoList, li.MsoList, div.MsoList
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:1.75in;
+	margin-bottom:.0001pt;
+	text-indent:-1.25in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-style:italic;
+	}
+p.MsoBodyText2, li.MsoBodyText2, div.MsoBodyText2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-weight:bold;
+	}
+p.MsoBodyTextIndent2, li.MsoBodyTextIndent2, div.MsoBodyTextIndent2
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:1.0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-weight:bold;
+	}
+p.MsoBodyTextIndent3, li.MsoBodyTextIndent3, div.MsoBodyTextIndent3
+	{margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+a:link, span.MsoHyperlink
+	{color:blue;
+	text-decoration:underline;
+	text-underline:single;}
+a:visited, span.MsoHyperlinkFollowed
+	{color:purple;
+	text-decoration:underline;
+	text-underline:single;}
+p.MsoDocumentMap, li.MsoDocumentMap, div.MsoDocumentMap
+	{	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		background:navy;
+	font-size:11.0pt;
+		font-family:Tahoma;
+	
+	
+	}
+p.MsoCommentSubject, li.MsoCommentSubject, div.MsoCommentSubject
+	{	
+	
+	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		font-size:10.0pt;
+	font-family:Arial;
+	
+	
+		font-weight:bold;}
+p.EndOfBlock, li.EndOfBlock, div.EndOfBlock
+	{	margin:0in;
+	margin-bottom:.0001pt;
+	text-indent:.2in;
+		tab-stops:40.5pt;
+	border:none;
+		padding:0in;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-weight:bold;
+	}
+p.Code, li.Code, div.Code
+	{	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:40.5pt;
+	margin-bottom:.0001pt;
+		tab-stops:40.5pt;
+	font-size:11.0pt;
+		font-family:Arial;
+	
+	
+		font-weight:bold;
+	}
+p.NormalFirstline0, li.NormalFirstline0, div.NormalFirstline0
+	{
+	margin:0in;
+	margin-bottom:.0001pt;
+		font-size:11.0pt;
+		font-family:Arial;
+	
+	
+	}
+ins
+	{	text-decoration:none;}
+span.msoIns
+	{	
+	text-decoration:underline;
+	text-underline:single;}
+span.msoDel
+	{	
+	text-decoration:line-through;
+	color:red;}
+@page Section1
+	{size:8.5in 11.0in;
+	margin:.8in 1.0in .8in 1.5in;
+				"CommonLanguageClasses_files/header.htm") h1;
+	"CommonLanguageClasses_files/header.htm") f1;
+	"CommonLanguageClasses_files/header.htm") ff1;
+	}
+div.Section1
+	{page:Section1;}
+ /* List Definitions */
+ @list l0
+	{		}
+@list l0:level1
+	{		margin-left:1.25in;
+	text-indent:-.25in;}
+@list l1
+	{		}
+@list l1:level1
+	{		margin-left:1.0in;
+	text-indent:-.25in;}
+@list l2
+	{		}
+@list l2:level1
+	{		margin-left:.75in;
+	text-indent:-.25in;}
+@list l3
+	{		}
+@list l3:level1
+	{		text-indent:-.25in;}
+@list l4
+	{		}
+@list l4:level1
+	{				margin-left:1.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l5
+	{		}
+@list l5:level1
+	{				margin-left:1.0in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l6
+	{		}
+@list l6:level1
+	{				margin-left:.75in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l7
+	{		}
+@list l7:level1
+	{				text-indent:-.25in;
+	font-family:Symbol;}
+@list l8
+	{		}
+@list l8:level1
+	{		margin-left:.25in;
+	text-indent:-.25in;}
+@list l9
+	{		}
+@list l9:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l10
+	{		}
+@list l10:level1
+	{				margin-left:0in;
+	text-indent:0in;}
+@list l11
+	{		}
+@list l11:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l12
+	{		}
+@list l12:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l13
+	{		}
+@list l13:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l14
+	{		}
+@list l14:level1
+	{					margin-left:.25in;
+	text-indent:-.25in;}
+@list l15
+	{		}
+@list l15:level1
+	{				margin-left:.7in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l16
+	{		}
+@list l16:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l17
+	{		}
+@list l17:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l18
+	{		}
+@list l18:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l19
+	{		}
+@list l19:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l20
+	{		}
+@list l20:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l21
+	{		}
+@list l21:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l22
+	{		}
+@list l22:level1
+	{				margin-left:.7in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l22:level2
+	{				margin-left:1.2in;
+	text-indent:-.25in;
+	font-family:"Courier New";}
+@list l22:level3
+	{				margin-left:1.7in;
+	text-indent:-.25in;
+	font-family:Wingdings;}
+@list l23
+	{		}
+@list l23:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l24
+	{		}
+@list l24:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l25
+	{		}
+@list l25:level1
+	{				margin-left:.25in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+@list l26
+	{		}
+@list l26:level1
+	{		text-indent:-.25in;}
+@list l10:level1 lfo2
+	{									margin-left:.75in;
+	text-indent:-.25in;
+	font-family:Symbol;}
+ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+</head>
+<body lang=EN-US link=blue vlink=purple bgcolor="#ffffff">
+<div class=Section1> 
+  <h1><a name="_Toc6558251">The Common Language Classes</a> </h1>
+  <p class=MsoNormal>Revisions</p>
+  <p class=MsoNormal style='&quot;%1\:1\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>1.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Original July 2001</p>
+  <p class=MsoNormal style='&quot;%1\:2\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>2.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Oct 31</p>
+  <p class=MsoNormal style='&quot;%1\:3\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>3.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Nov 5. At this point we have a working description 
+    of the expression nodes.</p>
+  <p class=MsoNormal style='&quot;%1\:4\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>4.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Nov 5. Editorial corrections.</p>
+  <p class=MsoNormal style='&quot;%1\:5\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>5.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Nov 6. Added some expression nodes and generalized 
+    others.</p>
+  <p class=MsoNormal style='&quot;%1\:6\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>6.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Nov 11. Added information on types.</p>
+  <p class=MsoNormal style='&quot;%1\:7\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>7.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Dec 5. Updates to the expression nodes and statement 
+    nodes.</p>
+  <p class=MsoNormal style='&quot;%1\:8\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>8.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2001 Dec 18. Updates to the expression nodes. Added 
+    node for built-in functions and nodes for logical and conditional evaluation.</p>
+  <p class=MsoNormal style='&quot;%1\:9\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>9.<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Revised 2002 Jan 22. Added syntax to new and delete operators. 
+    Added tentative method for constructing an array.</p>
+  <p class=MsoNormal style='&quot;%1\:10\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>10.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Revised 2002 Jan 23. Revised syntax for new and delete operators.</p>
+  <p class=MsoNormal style='&quot;%1\:11\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>11.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Revised 2002 Jan 29. Revised new and delete again.</p>
+  <p class=MsoNormal style='&quot;%1\:12\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>12.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Revised 2002 April. New and delete moved to language specific 
+    packages.</p>
+  <p class=MsoNormal style='&quot;%1\:13\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>13.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Revised 2002 April 14. Updated documentation of Type_nodes and 
+    Var_nodes. </p>
+  <p class=MsoNormal style='&quot;%1\:14\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>14.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Type_node is no longer a Node, nor is Var_node. Rewrote symbol 
+    table documentation.</p>
+  <p class=MsoNormal style='&quot;%1\:15\:0\:\.&quot; &quot;Carole Peterson&quot; 20030313T0913'><span>15.<span style='font:7.0pt "Times New Roman"'>&nbsp; 
+    </span></span>Revised 2002 July 15. Changes to AbstractArrayDatum</p>
+  <p class=MsoToc1>The Common Language Classes.................................................................................. 
+    1</p>
+  <p class=MsoToc1>Packages........................................................................................................................ 
+    2</p>
+  <p class=MsoToc2>The Clc Package........................................................................................................ 
+    2</p>
+  <p class=MsoToc2>The CPlusPlus.Datum Package................................................................................. 
+    2</p>
+  <p class=MsoToc3>Class AbstractDatum.............................................................................................. 
+    3</p>
+  <p class=MsoToc3>Class Clc_datum_utilites........................................................................................ 
+    4</p>
+  <p class=MsoToc2>Package Clc.Ast......................................................................................................... 
+    4</p>
+  <p class=MsoToc3>Class Clc_AST_utilites........................................................................................... 
+    5</p>
+  <p class=MsoToc3>Class Node.............................................................................................................. 
+    5</p>
+  <p class=MsoToc3>Statement Nodes.................................................................................................... 
+    5</p>
+  <p class=MsoToc3>Expression Nodes................................................................................................... 
+    6</p>
+  <p class=MsoToc3>Default_expression_nodes..................................................................................... 
+    7</p>
+  <p class=MsoToc3>Implementations of Selector, and Stepper.............................................................. 
+    8</p>
+  <p class=MsoToc3>Concrete Expression Nodes................................................................................... 
+    8</p>
+  <p class=MsoToc4>General purpose expression nodes.................................................................... 
+    9</p>
+  <p class=MsoToc4>Arithmetic including pointer arithmetic................................................................. 
+    9</p>
+  <p class=MsoToc4>Logical expressions........................................................................................... 
+    11</p>
+  <p class=MsoToc4>Pointers and arrays........................................................................................... 
+    11</p>
+  <p class=MsoToc4>Assignment........................................................................................................ 
+    12</p>
+  <p class=MsoToc4>Objects.............................................................................................................. 
+    12</p>
+  <p class=MsoToc4>Function calls..................................................................................................... 
+    14</p>
+  <p class=MsoToc4>Heap operations................................................................................................. 
+    16</p>
+  <p class=MsoToc4>I/O and built-in functions.................................................................................... 
+    16</p>
+  <p class=MsoToc3>Identifying Subobjects with a path......................................................................... 
+    16</p>
+  <p class=MsoToc3>Variable Definition Nodes...................................................................................... 
+    16</p>
+  <p class=MsoToc3>Type Nodes........................................................................................................... 
+    17</p>
+  <p class=MsoToc4>TyAbstractPointer and TyAbstractRef............................................................... 
+    18</p>
+  <p class=MsoToc4>TyAbstractArray................................................................................................. 
+    18</p>
+  <p class=MsoToc4>TyAbstractFunction............................................................................................ 
+    18</p>
+  <p class=MsoToc4>TyAbstractClass................................................................................................ 
+    18</p>
+  <p class=MsoToc3>Var_node............................................................................................................... 
+    19</p>
+  <p class=MsoToc2>Clc.Analysis.............................................................................................................. 
+    19</p>
+  <p class=MsoToc2>Clc.RT_Sym_Tab..................................................................................................... 
+    20</p>
+  <p class=MsoToc3>Runtime vs. Compile time symbol tables............................................................. 
+    20</p>
+  <p class=MsoToc3>Responsibilities of the Runtime symbol table....................................................... 
+    20</p>
+  <p class=MsoToc3>Construction.......................................................................................................... 
+    20</p>
+  <p class=MsoToc3>Representing variable bindings............................................................................. 
+    20</p>
+  <p class=MsoToc3>Display................................................................................................................... 
+    22</p>
+  <p class=MsoToc3>Locating static variables and bindings.................................................................. 
+    23</p>
+  <p class=MsoToc3>Initialization statements......................................................................................... 
+    23</p>
+  <h1><a name="_Toc6558252">Packages</a></h1>
+  <p class=MsoNormal>The Common Language Classes (CLC) is a collection of packages 
+    to support C++, Java, and, in the future, possibly other languages. The idea 
+    is to factor out those responsibilities and implementation matters that are 
+    common to more than one language layer. In many cases this will be accomplished 
+    by having a common abstract base class in the CLC packages that is specialized 
+    as required for each language. In other cases the CLC packages provide utilities 
+    that are useful to multiple language interpreters.</p>
+  <p class=MsoList>The Common Language Classes package structure follows the package 
+    structure of the C++ language layer.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc. </p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Datum.  Contains representations of the data objects of 
+    the subject program.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.  Contains representations of the subject program. The 
+    behaviour associated with the representations constitutes the interpretation 
+    of the subject program. Thus this package also contains bulk of the interpreter. 
+    Among the many AST classes we have:</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Type nodes – run-time representation of types. The main associated 
+    behaviour is to create datums. Type nodes are datum factories.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Statement nodes — Representation of the control flow graph.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Expression nodes — Representation of expression trees.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Selectors and steppers — much of an expression node’s behaviour 
+    is delegated to a stepper object and a selector object.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Analyzer. Contains code to create an AST representation 
+    from an input string.</p>
+  <p class=MsoList style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.RT_Sym_Tab. Representation of the run-time symbol table.</p>
+  <h2><a name="_Toc6558253">The Clc Package</a></h2>
+  <p class=MsoNormal>The top level package is at the moment empty.</p>
+  <h2><a name="_Toc6558254">The CPlusPlus.Datum Package</a></h2>
+  <p class=MsoNormal>This package contains a hierarchy of classes implementing 
+    abstract base classes for data objects of various types. </p>
+  <p class=MsoHeader>Clc.Datum.AbstractDatum – implements Interfaces.Datum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractScalarDatum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractIntDatum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractFloatDatum</p>
+  <p class=MsoNormal>Clc.Datum.InputStream</p>
+  <p class=MsoNormal>Clc.Datum.OutputStream</p>
+  <p class=MsoNormal>Clc.Datum.AbstractPointerDatum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractRefDatum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractArrayDatum</p>
+  <p class=MsoNormal>Clc.Datum.AbstractObjectDatum</p>
+  <p class=MsoNormal>Datums are essentially immutable objects. They are initialized 
+    with attributes that do not change over the lifetime of a data-object, such 
+    as address and parent. The actual value of the data object (e.g., after executing 
+    <b>i=13</b> the value of the data object named by <b>i</b> is 13) is <i>not</i> 
+    stored with in a Datum object. Instead, it is stored in the Memory object 
+    that constitutes a part of the VMState object. In a sense, the Datum objects 
+    provide interpretations to the Memory object.</p>
+  <h3><a name="_Toc6558255">Class AbstractDatum</a></h3>
+  <p class=Code>public abstract class AbstractDatum implements Interfaces.Datum 
+    {</p>
+  <p class=Code>           </p>
+  <p class=Code>protected AbstractDatum(int add, int s, Datum p, Memory m, Type_node 
+    tp) ;</p>
+  <p class=Code>/** Return the # of bytes storage required */      </p>
+  <p class=Code>public int getNumBytes() ;</p>
+  <p class=Code>/** Return the enclosing Datum, or null, if none */</p>
+  <p class=Code>           public Datum getParent() ;</p>
+  <p class=Code>public void putHighlight( int h ) ;</p>
+  <p class=Code>public int getHighlight() ;</p>
+  <p class=Code>/** Return the address of the first byte */</p>
+  <p class=Code>           public int getAddress() ;</p>
+  <p class=Code>/** Return the byte value 0..255 of a byte (indexed from 0) */</p>
+  <p class=Code>           public int getByte(int i) ;</p>
+  <p class=Code>/** Set the value of a byte */</p>
+  <p class=Code>           public void putByte(int i, int val)</p>
+  <p class=Code>/** Return the type of the Datum */</p>
+  <p class=Code>           public TypeInterface getType() ;</p>
+  <p class=Code>/* Write the value of the Datum to the console window */</p>
+  <p class=Code>           public void output( VMState vms ) ;</p>
+  <p class=Code>/* Read a value from the console window */</p>
+  <p class=Code>           public void output( VMState vms ) ;</p>
+  <p class=Code>/** getValueString --- Return a string suitable for display in 
+    the expression</p>
+  <p class=Code>                                  window, memory window, or output 
+    window. */</p>
+  <p class=Code>           public abstract String        getValueString();</p>
+  <p class=Code>/** getTypeString --- Return a string suitable for display representing 
+    the type */</p>
+  <p class=Code>           public abstract String        getTypeString();</p>
+  <p class=Code>/** Get the birth order, that is, which of the parents children 
+    is this */</p>
+  <p class=Code>           public int getBirthOrder() ;</p>
+  <p class=Code>           </p>
+  <p class=Code>/** Set the birth-order. */</p>
+  <p class=Code>           protected void setBirthOrder(int i) ;</p>
+  <p class=Code>                       </p>
+  <p class=Code>/** How many subdatums? */</p>
+  <p class=Code>           public int getNumChildren() ;</p>
+  <p class=Code>           </p>
+  <p class=Code>/** Get a subdatum */</p>
+  <p class=Code>           public Datum getChildAt(int i) ;</p>
+  <p class=Code>           </p>
+  <p class=Code>/** Get the label of a subdatum. E.g. field name, or subscript 
+    */</p>
+  <p class=Code>           public String getChildLabelAt(int i) ;</p>
+  <p class=Code>}</p>
+  <p class=MsoNormal>In addition scalar datum classes have <b>getValue</b> and 
+    <b>putValue</b> methods. These are declared farther down class the hierarchy 
+    because there is not a single type suitable for these methods.</p>
+  <p class=MsoNormal>Pointers and references have a method</p>
+  <p class=MsoNormal>            <b>public Datum deref() ;</b></p>
+  <p class=MsoNormal>to dereference them. This method returns <b>null</b> if no 
+    datum of the right type can be found at the current address of the datum. 
+    <b>putValue</b> and <b>getValue</b> are provided, respectively taking and 
+    returning an <b>int</b>.  NULL pointers have a value of 0.</p>
+  <p class=MsoNormal>       Arrays are represented by members of <b>AbstractArrayDatum</b>. 
+    After an object of this class is created, its elements should be created and 
+    added using</p>
+  <p class=MsoNormal>                   <b>public void putElement(int i, Datum 
+    d ) ;</b></p>
+  <p class=MsoNormal>Elements should be retrieved with</p>
+  <p class=MsoNormal>                        <b>public int getNumberOfElements() 
+    ;</b> </p>
+  <p class=MsoNormal>                   <b>public AbstractDatum getElement(int 
+    i) ;</b></p>
+  <p class=MsoNormal>One should not use <b>getChildAt</b> to retrieve an element 
+    since there may be child Datums that are not array elements; in particular, 
+    in the Java interpreter, arrays have a length field, which is not an element.</p>
+  <p class=MsoNormal>A similar mechanism exists for objects with class <b>AbstractObjectDatum</b>.</p>
+  <h3><a name="_Toc6558256">Class Clc_datum_utilites</a></h3>
+  <p class=MsoNormal>This <b>abstract</b> class is a collection of methods of 
+    common use in interpretation. Each language will also have its own utilities, 
+    which will extend this class. A single object of this class will exist in 
+    the VMS for all to use. To get an instance</p>
+  <p class=MsoNormal>       <b>(Clc_datum_utilities) vms.getProperty( “datum_utilities” 
+    )</b></p>
+  <p class=MsoBodyTextIndent3>Of course, if you are in language dependant code, 
+    you may wish to assume more. E.g.</p>
+  <p class=MsoNormal>       <b>(<u>Cpp_datum_utilities</u>) vms.getProperty( “datum_utilities” 
+    )</b></p>
+  <h2><a name="_Toc6558257">Package Clc.Ast</a></h2>
+  <p class=MsoNormal>This package is by far the most diverse. Its classes have 
+    two responsibilities: representing the structure of a C++ program and interpreting 
+    the C++ program.</p>
+  <p class=MsoNormal>       <a><i>Aside. Ast stands for Abstract Syntax Tree, 
+    but a better name would be Abstract Syntax Representation, as the representation 
+    of function bodies in particular is not a tree, but a graph.</i></a><span style='font-size:8.0pt;'><a
+class=msocomanchor id="_anchor_1"
+onmouseover="msoCommentShow('_anchor_1','_com_1')"
+onmouseout="msoCommentHide('_com_1')" href="#_msocom_1" language=JavaScript
+name="_msoanchor_1">[CP1]</a><span>&nbsp;</span></span></p>
+  <h3><a name="_Toc6558258">Class Clc_AST_utilites</a></h3>
+  <p class=MsoNormal>This <b>abstract</b> class is a collection of methods of 
+    common use in interpretation. Each language will also have its own utilities, 
+    which will extend this class. A single object of this class will exist in 
+    the VMS for all to use. To get an instance</p>
+  <p class=MsoNormal>       <b>(Clc_AST_utilities) vms.getProperty( “AST_utilities” 
+    )</b></p>
+  <p class=MsoBodyTextIndent3>If you are in language specific code you may assume 
+    more. E.g.</p>
+  <p class=MsoNormal>       <b>(<u>Cpp_AST_utilities</u>) vms.getProperty( “AST_utilities” 
+    )</b></p>
+  <h3><a name="_Toc6558259">Class Node</a></h3>
+  <p class=MsoNormal><i>       </i>Almost all classes of the package descended 
+    from class <b>Node </b>are in a hierarchy as follows</p>
+  <p class=Code>Node</p>
+  <p class=MsoNormal><b>Expression_node</b> --- Represents expression trees</p>
+  <p class=MsoNormal><b>Statement_node</b> --- Represents statement<span class=msoIns><ins
+cite="mailto:Carole%20Peterson" datetime="2003-03-13T09:13"> graph</ins></span>s 
+  </p>
+  <p class=MsoNormal>All nodes contain a sequence of 0 or more children. This 
+    allows the nodes to easily be formed into trees. The interface is as follows:</p>
+  <p class=MsoNormal><b>public void addFirstChild( Node xx ) ;</b></p>
+  <p class=MsoNormal><b>public void addLastChild( Node xx ) ;</b></p>
+  <p class=MsoNormal><b>public Node_list children() ;</b></p>
+  <p class=MsoNormal><b>public Node child(int i) ; /* <i>Indexed from 0 </i>*/</b></p>
+  <p class=MsoNormal><b>public String toString() ; /* One line representation 
+    for dumping */</b></p>
+  <p class=MsoNormal><b>pubic String ppToString() ; /* Multi-line representation 
+    for dumping */</b></p>
+  <p class=MsoNormal>However, not all sorts of nodes take advantage of this general 
+    mechanism.</p>
+  <h3><a name="_Toc6558260">Statement Nodes</a></h3>
+  <p class=MsoNormal>CLC provides the building blocks to supports many different 
+    kinds of statement. During parsing the statements of each function are converted 
+    to a control flow graph (essentially a flowchart) constructed out of various 
+    kinds of statement nodes.  All these statement nodes implement the <b>LanguageInterfaces.StatementInterface</b> 
+    and thus can be <b>step</b>ped and <b>select</b>ed.</p>
+  <p class=MsoNormal>Local variables are removed from the stack and the symbol 
+    table on the first step of the first Statement Node encountered that is outside 
+    of the variable’s scope.<a href="#_ftn1"
+name="_ftnref1" title=""><span><span style='font-size:11.0pt;font-family:Arial;"Times New Roman";'>[1]</span></span></a> 
+    For example in the code</p>
+  <p class=Code>                       {int i = 2*j+10 ;</p>
+  <p class=Code>                        j = j-i ; }</p>
+  <p class=Code>                       k = j ;</p>
+  <p class=MsoNormal>The  local integer <b>i</b> is removed from the stack and 
+    the symbol table when the <b>StatDo</b> (a kind of <b>Statement_node</b> representing 
+    the <b>k=j;</b> statement is first stepped. To accomplish this, each <b>Statement_node</b> 
+    contains the number of local variables that should exist when it is encountered. 
+    Any excess variables are removed.</p>
+  <p class=MsoNormal>The selected statement node uses the current top <b>Evaluation</b> 
+    to store a record of how far it has progressed in its exection. This value 
+    is null if the statement node is in its initial (just selected state) and 
+    is a small integer for other states of evaluation. For example a <b>StatDo</b> 
+    (<span class=msoDel><del cite="mailto:Carole%20Peterson"
+datetime="2003-03-13T09:16">repsonsible </del></span><span class=msoIns><ins
+cite="mailto:Carole%20Peterson" datetime="2003-03-13T09:16">responsible </ins></span>for 
+    executing expressions whose value is to ignored) has 2 states of execution.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>null – when stepped it pushes a<span
+class=msoIns><ins cite="mailto:Carole%20Peterson" datetime="2003-03-13T09:17">n</ins></span> 
+    Evaluation for the expression on the evaluation stack and changes to state 
+    1.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>1 – when stepped, it removes the expression’s value from the 
+    memory stack, selects the next node and changes the state back to null (ready 
+    for next time).</p>
+  <p class=MsoNormal>This technique is a little weird. It is killing a fly with 
+    a sledgehammer (Evaluations), but the sledgehammer was lying around anyway 
+    for expression evaluation.</p>
+  <p class=MsoNormal>       Statement nodes are linked together using <b>Statement_node_link</b>s, 
+    which are simply mutable references to <b>Statement_node</b>s.</p>
+  <p class=MsoNormal>       The following constructors create statement nodes.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>StatDo</b> (int lineNum, int varDepth, Expression_node e)<br>
+    Executes the expression.<br>
+    Method “Statement_node_link  next()” retrieves the link to the next statement.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>StatDecl</b>(int lineNum, int varDepth, Var_node v)<br>
+    Declares a local variable, adding it to the symbol table.<br>
+    Method “Statement_node_link  next()” retrieves the link to the next statement.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>StatReturn</b> (int lineNum, int varDepth)<br>
+    Returns from the current function.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>StatBranch </b>(int lineNum, int varDepth, Expression_node 
+    e)<br>
+    Makes a two way choice. The Expression_node must evaluate to an AbstractIntDatum. 
+    If that datum has value 0, the false branch is taken, otherwise the true branch.<br>
+    Methods “Statement_node_link  onTrue()” and “Statement_node_link  onFalse()” 
+    return the links to the next statements.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>StatSwitch</b>( int lineNum,<br>
+                        int varDepth,<br>
+                        Expression_node e,<br>
+                        Statement_node_link nextLink )<br>
+    Implements a multiway brach based on an integer expression. The Expression_node 
+    must evaluate to an AbstractIntDatum. The nextLink parameter is used as a 
+    default target unless a default target is subsequently set.<br>
+    Targets are added by calling method “<b>newCase</b>( long value, Statement_node_link 
+    link )”.<br>
+    The default target can be changed by a call to “<b>addDefault</b>( Statement_node_link 
+    link )”.<br>
+    Whether the default target has ever been called is determined by calling method 
+    “boolean hasDefault()”</p>
+  <h3><a name="_Toc6558261">Expression Nodes</a></h3>
+  <p class=MsoNormal>Expression Nodes represent expressions in a normal tree-like 
+    fashion. They support <b>LanguageInterfaces.ExpressionInterface</b> (see the 
+    Virtual Machine Layer Interface). Thus they can be <b>step</b>ped, <b>select</b>ed, 
+    and converted <b>toString</b>. After an expression node has been stepped to 
+    produce a value, it records this value in the top evaluation of the evaluation 
+    stack. See the Virtual Machine Layer Interface for a more detailed discussion 
+    of how expression evaluation works.</p>
+  <p class=MsoNormal>Expression_node itself is an abstract base class.</p>
+  <p class=Code>public abstract class Expression_node extends Node </p>
+  <p class=Code>           implements ExpressionInterface, TypedNodeInterface 
+    {</p>
+  <p class=Code>    </p>
+  <p class=Code>                        public Expression_node(String name, Node_list 
+    children) </p>
+  <p class=Code>                        public Expression_node(String name) </p>
+  <p class=Code>                        public Expression_node(String name, Node 
+    a ) </p>
+  <p class=Code>           public Expression_node(String name, Node a, Node b 
+    ) </p>
+  <p class=Code>           public Expression_node(String name, Node a, Node b, 
+    Node c ) </p>
+  <p class=Code>           public Expression_node(String name,Node a,Node b,Node 
+    c,Node d)</p>
+  <p class=Code>           public Expression_node(String name, Node a, Node_list 
+    args )</p>
+  <p class=Code>    </p>
+  <p class=Code>           protected void set_type( Type_node type )</p>
+  <p class=Code>    </p>
+  <p class=Code>           public Type_node get_type() </p>
+  <p class=Code>    </p>
+  <p class=Code>           public boolean is_integral_constant() </p>
+  <p class=Code>    </p>
+  <p class=Code>           public long get_integral_constant_value()</p>
+  <p class=Code>           public void set_integral_constant_value(long val)</p>
+  <p class=Code>    </p>
+  <p class=Code>           public Expression_node child_exp( int i )</p>
+  <p class=Code>    </p>
+  <p class=Code>           public void set_unintersting( boolean ui ) </p>
+  <p class=Code>           public boolean is_uninteresting() </p>
+  <p class=Code>    </p>
+  <p class=Code>}<span style='font-weight:normal'></span></p>
+  <h3><a name="_Toc6558262">Default_expression_nodes</a></h3>
+  <p class=MsoNormal>The usual concrete implementation of ExpressionNode is Default_expression_node.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Expression nodes vary is a number of ways.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>The algorithm they use for selection.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>The algorithm they use for stepping.</p>
+  <p class=MsoNormal>We use Gamma et. al.’s strategy pattern to customize these 
+    in the Default_expression_node. Each Default_expression_node delegates these 
+    actions to another object.</p>
+  <p class=MsoBodyTextIndent3><b>public class Default_expression_node extends 
+    Expression_node</b></p>
+  <p class=MsoBodyTextIndent3><b>{</b></p>
+  <p class=MsoBodyTextIndent3><b>    </b></p>
+  <p class=MsoBodyTextIndent3><b>    <i>Constructors omitted</i></b></p>
+  <p class=MsoBodyTextIndent3><b>    </b></p>
+  <p class=MsoBodyTextIndent3><b>    public void set_syntax( String [] syntax 
+    ) </b></p>
+  <p class=MsoBodyTextIndent3><b>        </b></p>
+  <p class=MsoBodyTextIndent3><b>    public void set_stepper( Stepper stepper 
+    ) </b></p>
+  <p class=MsoBodyTextIndent3><b>    </b></p>
+  <p class=MsoBodyTextIndent3><b>    public void set_selector( Selector selector 
+    ) </b></p>
+  <p class=MsoBodyTextIndent3><b>        </b></p>
+  <p class=MsoBodyTextIndent3><b>    public void step( VMState vms )</b></p>
+  <p class=MsoBodyTextIndent3><b>    </b></p>
+  <p class=MsoBodyTextIndent3><b>    public void select( VMState vms ) </b></p>
+  <p class=MsoBodyTextIndent3><b>    </b></p>
+  <p class=MsoBodyTextIndent3><b>    public String toString(VMState vms) </b></p>
+  <p class=MsoBodyTextIndent3><b>}</b></p>
+  <p class=MsoNormal>The Default_expression_node hard-codes the strategy for turning 
+    expressions into strings suitable for display in the expression engine. This 
+    strategy, however can be overridden where required. In most cases it suffices 
+    to call set_syntax. The array passed in should be one longer than the number 
+    of operators. The first and the last string bracket the expression and the 
+    remaining serve as internal operators.</p>
+  <p class=MsoBodyTextIndent3>We have the following interfaces:</p>
+  <p class=Code>interface Stepper {</p>
+  <p class=Code>           public void step(Node nd, VMState vms) ;</p>
+  <p class=Code>}</p>
+  <p class=Code>interface Selector {</p>
+  <p class=Code>           public void select(Node nd, VMState vms) ;</p>
+  <p class=Code>}</p>
+  <p class=MsoBodyTextIndent3>Each of these interfaces will have a number of implementations 
+    spanning the common cases. Where necessary the language packages will also 
+    implement their own implementations as needed.</p>
+  <p class=MsoBodyTextIndent3>The syntax array, set by <b>set_syntax</b>, is used 
+    by the default to_string method as follows: <b>syntax[0]</b> is placed first, 
+    then the first operand, then <b>syntax[1]</b>, then the second operand and 
+    so on; at the end goes <b>syntax[syntax.length-1]</b>. Thus the array’s length 
+    should be one more than then number of operands.</p>
+  <h3><a name="_Toc6558263">Implementations of Selector, and Stepper</a></h3>
+  <p class=MsoNormal><b>Selector_left_to_right</b> recursively selects the first 
+    child that is not mapped to a Datum. If there is no such child, the node itself 
+    is set as selected.</p>
+  <p class=MsoNormal><b>Selector_always</b> always sets this node to be selected.</p>
+  <p class=MsoNormal><i> [Other selectors]</i></p>
+  <p class=MsoNormal>Steppers are usually individual to the concrete expression 
+    node. In many cases they can be based off <b>Stepper_basic</b>.</p>
+  <h3><a name="_Toc6558264">Concrete Expression Nodes</a></h3>
+  <p class=MsoNormal>These are the nodes that a front-end (analyzer) will create 
+    as the representation of expressions. Essentially, together with the concrete 
+    statement nodes, the type nodes, and a few other classes, they comprise a 
+    machine code (if machine code can be tree structured) for the TM’s abstract 
+    machine. Only the language independent classes are documented here. For each 
+    language, they will be augmented with language dependent classes in the parallel 
+    package (e.g. Cpp.Ast). However, as these nodes are parameterized by (usually) 
+    language dependant type objects, and because the concrete Utility classes 
+    stashed in the VMState are language dependent, it is often possible to achieve 
+    a language dependent effect with a generic expression node.</p>
+  <p class=MsoNormal>Below we list the constructors. In each case the first parameter 
+    is the type of the expression.</p>
+  <h4><a name="_Toc6558265">General purpose expression nodes</a></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_unimplemented</b>( Type_node t, String message )<br>
+    Apologizes. This is really only meant as a development crutch. The front end 
+    should use it, when the appropriate node has not yet been implemented.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_id</b>( TyRef t, String image, Scoped_name index )<br>
+    The image is displayed in the ExpressionEngine.<br>
+    The index is used as an index into the run-time symbol table.<br>
+    This node constructs a reference to a local or global variable. It should 
+    not be used for variables that are part of the “this” object (use Exp_this_member 
+    for that). Suppose that in C++ we have a variable declared “int i;” then the 
+    expression “i=0” would be coded as<br>
+       Op_assign( Exp_id( tyRefInt, “i”, index_i), Op_const(…) )<br>
+    If we have a reference declared “int &amp;r = i”, then the reference can be 
+    initialized using an assignment<br>
+       Op_assign( Exp_id( tyRefRefInt, “r”, index_r), … )<br>
+    whereas an assignment via the reference, say “r=1” requires a fetch:<br>
+       Op_assign( Exp_fetch( tyRefInt, Exp_id( tyRefRefInt, “r”, index_r) ), … 
+    )<br>
+    <br>
+  </p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_fetch</b>( Type_node t, Expression_node operand )<br>
+    Perhaps misnamed, this node expects a RefDatum as its operand’s value and 
+    simply dereferences the reference to get its target. For example in compiling 
+    “i+1” we need would construct a tree<br>
+           Op_int( ADD, Exp_fetch( Exp_id( “i” ) ), Const_int(1))<br>
+    However, no temporary copy of the “i” datum is made.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_convert_to_reference</b>( AbstractTyRef t, Expression_node 
+    operand )<br>
+    This is sort of the inverse of Exp_fetch. It takes an operand of type T and 
+    produces a reference of type reference to T. This node is really only needed 
+    in a few special circumstances. An example is in C++ to deal with E.mem where 
+    E is an expression like a function call that evaluates to a nonreference. 
+    Note that no copy is made of the operand, so it is not suitable for passing 
+    rvalues to reference parameters.<br>
+    These nodes are by default uninteresting.<br>
+    <br>
+  </p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_parentheses</b>( Type_node t, String open, String close,<br>
+            Expression_node operand)<br>
+    This operation leaves the operand value unchanged.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_sequence</b> ( Type_node t, String operator_image,<br>
+            Expression_node left_operand,<br>
+           Expression_node right_operand )<br>
+    Evaluates the left operand, and then the right operand. The value is the same 
+    as the right operand’s.</p>
+  <h4><a name="_Toc6558266">Arithmetic including pointer arithmetic</a></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Const_int</b>( Type_node t, String image, long value )<br>
+    This can be used for constants of any type that produces a Datum of type AbstractIntDatum. 
+    For example in C++ boolean and char constants can be created, e.g.:<br>
+            Const_int( bool_type, “true”, 1 ) </p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Const_float</b>( Type_node t, String image, double value 
+    )<br>
+    The type must create a datum of type AbstractFloatDatum.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Const_ptr</b>( Type_node t, String image, long value )<br>
+    The type must create a datum of type AbstractPointerDatum</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_int</b>( Type_node t,<br>
+            int operator, <br>
+            String operator_image, <br>
+            Expression_node left_operand, <br>
+            Expression_node right_operand )<br>
+    <b>Op_int</b>( Type_node t,<br>
+            int operator, <br>
+            String operator_image, <br>
+            Expression_node operand )<br>
+    Binary and unary integer operators. The operator should be one of those exported 
+    from the Clc.Ast.Arithmetic. The operands should evaluate to datums under 
+    AbstractIntDatum. The type, t, should create a Datum under AbstractIntDatum. 
+    Arithmetic is in effect done in 64 bit registers.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_float</b>( Type_node t,<br>
+            int operator, <br>
+            String operator_image, <br>
+            Expression_node left_operand, <br>
+            Expression_node right_operand )<br>
+    <b>Op_ float</b>( Type_node t,<br>
+            int operator, <br>
+            String operator_image, <br>
+            Expression_node operand )<br>
+    Binary and unary floating point operators. The operator should be one of those 
+    exported from the Clc.Ast.Arithmetic. The operands should evaluate to datums 
+    under AbstractFloatDatum. The type, t, should create a Datum under AbstractFloatDatum. 
+    Arithmetic is done in the Java double type, which is to say 64 bit IEEE.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_pointer</b>( Type_node t,<br>
+            int operator, <br>
+            String operator_image, <br>
+            Expression_node left_operand, <br>
+            Expression_node right_operand )<br>
+    The operator should be one of the following:</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.ADD_POINTER_INT,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.SUBTRACT_POINTER_INT,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.SUBTRACT_POINTER_POINTER,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.EQUAL,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.NOT_EQUAL,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.LESS,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.GREATER,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.LESS_OR_EQUAL,</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Clc.Ast.Arithmetic.GREATER_OR_EQUAL,</p>
+  <p class=MsoNormal>The operands should evaluate to AbtractPointerDatum and AbstractIntDatum 
+    (or the other way around) in the case of ADD_POINTER_INT, to AbstractPointerDatum 
+    andAbstractIntDatum in the case of SUBTRACT_POINTER_INT,  and to two AbstractPointerDatums 
+    in the other cases. The result type should be a pointer type in the first 
+    two cases and an integer type in other cases.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_arithmetic_conversion</b>(Type_node t,<br>
+            String prefix_operator_image, String postfix_operator_image,<br>
+            Expression_node operand )<br>
+    This operator can convert between any two types provided their Datums both 
+    fall under AbstractPointerDatum, AbstractIntDatum or AbstractFloatDatum. If 
+    the conversion is not to be shown to the user, then the “uninteresting” flag 
+    should be set to “true” using the set_uninteresting method.</p>
+  <h4><a name="_Toc6558267">Logical expressions</a></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span> <b>Op_logical(</b> Type_node t,<br>
+            int operator,<br>
+            String operator_image,<br>
+            Expression_node left_operand,<br>
+            Expression_node right_operand )<br>
+    Implements the &amp;&amp; and || operators. “operator” should be Clc.Ast.Arithmetic.BOOLEAN_AND 
+    or Clc.Ast.Arithmetic.BOOLEAN_OR. The operands should evaluate to integers 
+    (AbstractIntDatum). The result type should produce an AbstractIntDatum.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_if_then_else</b>(Type_node t,<b><br>
+           </b> String first_operator_image,<b> <br>
+           </b> String second_operator_image,<br>
+            Expression_node first_operand,<br>
+            Expression_node second_operand,<br>
+            Expression_node third_operand )<br>
+    Implements the C++ and Java ?: operator. The first operand should evaluate 
+    to an integer (AbstractIntDatum).</p>
+  <h4><a name="_Toc6558268">Pointers and arrays</a></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span> <b>Op_array_subscript</b> ( Type_node t,<br>
+            String open_bracket, String close_bracket,<br>
+            Expression_node left_operand,<br>
+            Expression_node right_operand )<br>
+    The type should be reference to the base type of the array. The left_operand 
+    is a reference to the array and the right_operand is the index.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_address_of </b>( Type_node t,<br>
+            String operator_image,<br>
+            Expression_node operand)<br>
+    The operand should evaluate to an AbstractReference. The type must be an AbstractPointer. 
+    The type should normally be a pointer to the same type. Implements C++’s unary 
+    &amp;. This node can also be used to implement a conversion, implicit or explicit, 
+    from an array to a pointer; to do so, use a reference to the array as the 
+    operand (typically an Exp_id) and for the type, use a pointer to the element 
+    type for the array.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_deref</b> ( Type_node t,<br>
+            String operator_image,<br>
+            Expression_node operand )<br>
+    The operand should evaluate to a pointer to some type. The type should be 
+    a reference to the same type. Implements C++’s unary *.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_pointer_subscript</b> ( Type_node t,<br>
+            String open_bracket, String close_bracket,<br>
+            Expression_node left_operand,<br>
+            Expression_node right_operand )<br>
+    The left operand should evaluate to a pointer to some type. The type should 
+    be a reference to the same type. The right operand should evaluate to an AbstracIntDatum. 
+    Combines pointer addition and dereference.</p>
+  <h4><a name="_Toc6558269">Assignment</a></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_assign</b>( Type_node t, <br>
+            String operator_image,<br>
+            Expression_node left_operand, <br>
+            Expression_node right_operand )<br>
+    The left operand should evaluate to a RefDatum. This is a byte-wise copy from 
+    the right operand to the target of the left operand. No check is made that 
+    the datums are the same type or even the same size. If they are not the same 
+    size then there is either truncation or zero fill. The result is the left 
+    operand, so it is easy to compile C++ code such as (a = b) = c . Note in C++, 
+    you can use this operator to initialize a reference variable: the left operand 
+    is a reference to the reference variable and the right operand is a reference 
+    to the initialization variable. E.g. the initialization part of<br>
+            int &amp;r = i ;<br>
+    can be coded as a tree<br>
+            Op_assign( “=”, Op_id(“r”), Op_id(“i”) )<br>
+    By way of contrast<br>
+            int j = i ;<br>
+    would be coded as a tree<br>
+            Op_assign( “=”, Op_id(“j”), Exp_fetch( Op_id(“i”) ) )</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_op_assign</b>( Type_node t, <br>
+            String operator_image,<br>
+            String alternate_assignment_operator_image,<br>
+            Expression_node left_operand, <br>
+            Expression_node right_operand,<br>
+            Expression_node expression )<br>
+    <i>[Subject to change!]</i> This is one of the only cases in the expression 
+    nodes where we go beyond a tree. The left_operand and right_operands will 
+    typically point into the other expression argument, which is a representation 
+    of the calculation to be done. Consider the C++ expression<br>
+            i += 2.8<br>
+    where “i” is and int variable. This can be compiled to the graph<br>
+            Op_op_assign( “+=”, “=”, p, q, r)<br>
+    where<br>
+            p = Op_id( i )<br>
+    and<br>
+            q = Const_float( 2.8 )<br>
+             r = Convert_float_to_int(Op_float(ADD,Convert_int_to_float(Exp_fetch(p)),q)<br>
+    Note that p recurs in q. The type should be as in Op_assign.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_increment</b>( Type_node t,<br>
+            boolean pre,<br>
+            boolean up,<br>
+            String operator_image,<br>
+            Expression_node operand )<br>
+    The type should be a pointer, integer, or floating type. The operand should 
+    evaluate to a reference datum. The semantics are as in C++.  “up” indicates 
+    whether to increment (true) or decrement (false).</p>
+  <h4><a name="_Toc6558270">Objects</a><span
+style='font-weight:normal'></span></h4>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_member</b>( Type_node t,<br>
+            String operator_image, String member_name,<br>
+            int[] path,<br>
+            Scoped_name member,<br>
+            Expression_node operand )<br>
+    The type should be a reference type (AbstractRefDatum) for the member. The 
+    operand should evaluate to an AbstractPointerDatum to an AbstractObjectDatum. 
+    In the case of C++’s “.” operator, the operand should evaluate to an AbstractRefDatum<a href="#_ftn2" name="_ftnref2" title=""><span><span style='font-size:11.0pt;font-family:Arial;"Times New Roman";'>[2]</span></span></a>. 
+    In the case of C++’s “-&gt;” operator (or Java’s “.” operator), the operand 
+    should evaluate to an instance of a subclass of AbstractPointerDatum. The 
+    member_name should be whatever comes after the “.” or “-&gt;” in the code.  
+    The member is a Scoped_name identifying the member within the object. But 
+    thanks to C++’s multiple inheritance, a Scoped_name is not enough, we must 
+    also indicate the subobject that the member belongs to; that is what the path 
+    parameter is for. See the section on Identifying Subobjects with Paths. The 
+    member should be what C++ calls a nonstatic data member. For static members 
+    use Exp_id. The result is a AbstractRefDatum in the scratch region.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_this_member</b>( Type_node t,<br>
+            String member_name,<br>
+            int[] path,<br>
+            Scoped_name member )<br>
+    Essentially the same as Op_member, except that the operand is implicitly the 
+    “this” object. Selecting and stepping this node will, respectively, highlight 
+    and unhighlight the corresponding item in the run time symbol table.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_up_conversion</b>( Type_node t,<br>
+            String prefix_operator_image,</p>
+  <p class=MsoNormal><b> </b> int[] path, <br>
+            Expression_node operand )<br>
+    Converts a super-object to a sub-object. In C++ terms, it converts a class 
+    instance to a base class instance. The path identifies the sub-object, relative 
+    to the super-object. (See the section on Identifying Subobjects with Paths.) 
+    The operand must be a pointer or reference (AbstractPointerDatum) to an AbstractObjectDatum. 
+    The result type must produce a pointer or a reference (AbstractPointerDatum) 
+    to an AbstractObjectDatum.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_down_conversion</b>(Type_node t,<br>
+            String prefix_operator_image, <br>
+            int[] path,<br>
+            Expression_node operand )<br>
+    Converts an object to a super-object. In C++ terms, it converts a base class 
+    instance to a derived class instance. The path identifies the sub-object, 
+    relative to the super-object. (See the section on Identifying Subobjects with 
+    Paths.) The operand must be a pointer or reference (AbstractPointerDatum) 
+    to an AbstractObjectDatum. The result type must produce a pointer or a reference 
+    (AbstractPointerDatum) to an AbstractObjectDatum. [<i>I’m not sure if this 
+    is sufficient to support dynamic_cast, but I think it will do for old fashioned 
+    down-casts. dynamic casts seem to involve going first down and then up. I’ll 
+    have to study it more.]</i></p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_this</b>(TyAbstractPointer t,<br>
+            String image)<br>
+    Creates a scratch pointer to the “this” object. This operation should only 
+    appear within nonstatic methods, of course. The type t should be a pointer 
+    to the class of the recipient object. This image (in Java or C++) should be 
+    “this”.</p>
+  <h4><a name="_Toc6558271">Function calls</a></h4>
+  <p class=MsoNormal>There are three concrete classes for representing function 
+    calls. All three extend <b>OpAbsFuncCall</b> where the real work is done. 
+    These nodes are used for both user defined function calls and for built-in 
+    function calls. When a function call is executed, the run-time symbol table 
+    is consulted first to see if there is a user defined function for the key 
+    (see RT_Symbol_Table.getFunctionDefn) and then, if that fails, it is consulted 
+    again to see if there is a built-in function with that key (see RT_Symbol_Table.getBuiltInFunctionDefn).  
+    Thus</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Any built-in function can be overridden by defining a user-defined 
+    function with the same key.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Built-in functions should be declared but not defined. In C++ 
+    phase 1, this is done by a standard sequence of declarations (the prelude) 
+    in front of the input text between the preprocessing and parsing passes. In 
+    C++ phase 2, this will be done using the “#include” directive.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>User defined functions must be entered into the run-time symbol 
+    table under the appropriate key (see RT_Symbol_Table.addFunctionDefinition).</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Any built-in function must be entered into the run-time symbol 
+    table under the appropriate key (RT_Symbol_Table.addBuiltInFunctionDefinition).</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_func_call</b> ( Type_node t,<br>
+            String function_name, boolean operator_syntax,<br>
+            Object function_key,<br>
+            Node_list arguments )<br>
+    The type should be the return type of the function. The function_name is used 
+    for display only. operator_syntax should be true only when the number of arguments 
+    is 1 or 2. The function key is used to retrieve the function from the run-time 
+    symbol table (q.v.). The arguments should evaluate to the correct types for 
+    the parameters. I.e. conversions should already have been made. In particular, 
+    value parameters should not evaluate to references, except where objects are 
+    passed by copy-construction.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_member_call</b> ( Type_node t,<br>
+            String function_name,<br>
+            String operator,<br>
+            boolean use_operator_syntax,<br>
+            boolean suppress_recipient,<br>
+            Object function_key,<br>
+            Expression_node recipient,<br>
+            int [] path, <br>
+            Node_list arguments )<br>
+    The type should be the return type of the function. The function_name is used 
+    for display only. The operator should be “.” or “-&gt;” in C++ (“.” in Java). 
+    When use_operator_syntax is true, the operator parameter is ignored and the 
+    function_name is placed as a unary or binary operator. use_operator_syntax 
+    should be true only when the number of arguments is 0 or 1. When suppress 
+    recipient is true, the recipient and the operator are not shown at all. This 
+    is used for constructor calls. For example, the last example in the table 
+    shows in the expression engine as “C(b)”<br>
+    <br>
+  </p>
+  <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>E<b>xample</b></p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>function_name</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>operator</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>suppress_recipient</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>use_operator_syntax</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: a.f()</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“f”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>“.”</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: a.operator==(b)</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“operator==”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>“.”</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: a == b</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“==”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>NA</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>true</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: p-&gt;f()</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“f”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>“-&gt;”</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: p-&gt;operator==(b)</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“operator==”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>“-&gt;”</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: !a</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“!”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>NA</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>true</p>
+      </td>
+    </tr>
+    <tr> 
+      <td width=168 valign=top> 
+        <p class=MsoNormal>C++: C a = b ;</p>
+      </td>
+      <td width=114 valign=top> 
+        <p class=MsoNormal>“C”</p>
+      </td>
+      <td width=72 valign=top> 
+        <p class=MsoNormal>NA</p>
+      </td>
+      <td width=138 valign=top> 
+        <p class=MsoNormal>true</p>
+      </td>
+      <td width=156 valign=top> 
+        <p class=MsoNormal>false</p>
+      </td>
+    </tr>
+  </table>
+  <p class=MsoNormal><br>
+    The function key is used to retrieve the function from the run-time symbol 
+    table (q.v.). The recipient should evaluate to a pointer or a reference (AbstractPointerDatum) 
+    to an AbstractObjectDatum. The path is used to identify the subobject within 
+    the recipient. See the section on Identifying Subobjects with Paths. The arguments 
+    should evaluate to the correct types for the parameters. I.e. conversions 
+    should already have been made. In particular, value parameters should not 
+    evaluate to references, except where objects are passed by copy-construction.</p>
+  <p class=MsoNormal><i>[How to deal with virtual calls is still to be decided.]</i></p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_member_call</b> ( Type_node t,<br>
+            String function_name,<br>
+            String operator,<br>
+            boolean use_operator_syntax,<br>
+            boolean suppress_recipient,<br>
+            Object function_key,<br>
+            Expression_node recipient,<br>
+            int [] path, <br>
+            Node_list arguments,</p>
+  <p class=MsoNormal>        Expression_node repetitions )<br>
+    This variant of Op_member_call adds one more parameter (the last one) and 
+    is intended to be used when an array of objects (in C++) needs to be constructed. 
+    The repetitions expression node should evaluate to an AbstractInt and represents 
+    the number of objects that need to be constructed. recipient locates the first 
+    object and subsequent objects are found by adding the appropriate offset to 
+    the value of recipient.<i> [How to deal with virtual calls is still to be 
+    decided.]</i> </p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Op_this_member_call</b> ( Type_node t,<br>
+      String function_name,</p>
+  <p class=MsoNormal><b>       </b> Object function_key,<br>
+            int [] path,<br>
+            Node_list arguments )<br>
+    The same as Op_member_call, but with the recipient implicitly the “this” object.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_argument</b>( Type_node t, int number)<br>
+    This is used to fetch an argument that was computed for the current function 
+    evaluation. During the execution of the function call expression, the arguments 
+    are computed and stored in the virtual machine in an array. This expression 
+    node fetches these arguments from that array. It is intended to be used only 
+    during parameter initialization. The idea is that at the start of function 
+    we have a series of StatDecl and StatDo nodes to introduce and initialize 
+    the parameters. The parameters are initialized either by assignment or copy 
+    construction to the previously computed arguments each represented by an Exp_argument 
+    node. In more detail, there are 3 kinds of parameter initialization in C++:</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>pass by byte copy</b> In this case we need a StatDo node 
+    with an assignment (OP_assign node) to the parameter from the argument.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>pass by reference</b> This is essentially the same as a the 
+    pass by byte copy case. The only difference is that we do an Op_assign on 
+    references.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>pass by copy constructor</b> In this case, we need to call 
+    the copy constructor on the parameter datum: For example consider:<br>
+       void g(C p) { … }<br>
+    we can code this as something like:<br>
+       StatDecl( for “p”) <span
+style='font-family:Wingdings;'>à</span> StatDo( Op_member_call( tyVoid, “C”, “”, 
+    false, true, key,<br>
+                                                    Exp_id( for “p” ), eA, argA)<br>
+    Where eA is an empty array of int, and argA is an array containing just <br>
+        Exp_argument( tyC, 0)</p>
+  <p class=MsoNormal>Exp_argument nodes are, by default, uninteresting.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>Exp_result</b>( Type_node t )<br>
+    Creates a reference to the result datum. Just before a non-void function is 
+    called, a datum is allocated (but not initialized) in the scratch region. 
+    The Exp_result expression node creates a scratch reference to that datum. 
+    In C++ there are four kinds of return value:</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>void</b> in this case we don’t need to worry about initializing 
+    the result datum.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>return by byte copy</b> In this case we need a StatDo node 
+    with an assignment (OP_assign node) to the result datum (Exp_result). For 
+    example the return statement in <br>
+        int f() { return 1 ; }<br>
+    can be coded as<br>
+       StatDo( Op_assign( tyRefInt, “=”, Exp_result( tyRefInt ),<br>
+                                       Conts_int( tyInt, “1” ,1) ) <span
+style='font-family:Wingdings;'>à</span> StatReturn()</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>return by reference</b> This is essentially the same as a 
+    the return by byte copy case. The only difference is that we do an Op_assign 
+    on references.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>¨<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span><b>return by copy constructor</b> In this case, we need to call 
+    the copy constructor on the result datum: For example consider:<br>
+       C g() { return c ; }<br>
+    we can code this as something like:<br>
+       StatDo( Op_member_call( tyVoid, “C”, “”, false, true, key,<br>
+                     Exp_result(refC), eA, cA) <span
+style='font-family:Wingdings;'>à</span>StatReturn()<br>
+    Where eA is an empty array of int, and cA is an array containing just the 
+    an expression representing the operand.</p>
+  <p class=MsoNormal>Exp_result nodes are by default uninteresting.</p>
+  <h4><a name="_Toc6558272">Heap operations</a></h4>
+  <p class=MsoNormal>Heap operations are language specific.  See language specific 
+    documentation.</p>
+  <h4><a name="_Toc6558273">I/O and built-in functions</a></h4>
+  <p class=MsoNormal>Built in operations are language specific. See language specific 
+    documentation.</p>
+  <h3><a name="_Toc6558274">Identifying Subobjects with a path</a></h3>
+  <p class=MsoNormal>Each AbstractObjectDatum contains an array of datums representing 
+    its instance variables (nonstatic data members in C++ speak), but it is useful 
+    to be able to view each object as an instance of its ancestral classes as 
+    well. So each object also carries an array of AbstractObjectDatum’s corresponding 
+    to its direct inheritance parents. Consider the following example</p>
+  <p class=Code>struct A { int a ; } ;<br>
+    struct B0 : A { int b0 ; } ;</p>
+  <p class=Code>struct B1 : A { int b1 ; } ;</p>
+  <p class=Code>struct C : B0, B1 { int c ; }</p>
+  <p class=MsoNormal>Now, each C object has 5 instance variables named c, b0, 
+    b1, a, and a again. It can be cast to types B0 and B1, but it can also be 
+    cast to type A in two different ways. Each C object has 5 subobject of types 
+    C, B0, B1, A, and A again. When we construct a C object, we not only construct 
+    a Datums for the direct instance variable c, but also the 4 other subobjects. 
+    Now how do we identify subobjects. For immediate parents a single number will 
+    do. We number the parents from left to right, so that the B0 subobject is 
+    numbered [0] and the B1 subobject is numbered [1]. The scheme is extended 
+    so that there are as many numbers as levels to go up. Thus the two A subobjects 
+    are numbered [0,0] and [1,0] respectively. Finally the subobject corresponding 
+    to the main object is the empty array [].</p>
+  <h3><a name="_Toc6558275">Variable Definition Nodes</a></h3>
+  <p class=MsoNormal>Class VarDef. These represent variable definitions. Each 
+    variable definition consists of a name, and a type.</p>
+  <h3><a name="_Toc6558276">Type Nodes</a></h3>
+  <p class=MsoNormal>Type nodes represent types found in the program. Either primitive, 
+    or compound. For example if a C++ declaration <b>int *i[10];</b> is encountered 
+    a type tree is built consisting of three nodes:</p>
+  <p class=MsoNormal>       <b>array(10) of </b><b><span>à</span></b><b> pointer 
+    to </b><b><span>à</span></b><b> int</b></p>
+  <p class=MsoNormal>The links of a type tree are represented by instances of 
+    type <b>Type_node_link</b>. A <b>Type_node_link</b> is simply a `mutable reference’ 
+    (i.e. a pointer) to a <b>Type_node</b>.</p>
+  <p class=MsoNormal>Despite the name, Type_node does not extend the Node class.</p>
+  <p class=MsoNormal>The hierarchy of Type_nodes in the Clc.Ast package is roughly 
+    parallel the hierarchy of Datums</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Type_node</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>TyAbstractPointer</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>§<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>TyAbstractRef</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>TyAbstractArray</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>TyAbstractFunction</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>o<span
+style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>TyAbstractClass</p>
+  <p class=Code>Next we examine the interface shared by all Type_nodes.</p>
+  <p class=MsoNormal>    All Type_nodes support a method</p>
+  <p class=Code>public void addToEnd( Type_node l )</p>
+  <p class=MsoNormal>It adds a type to the end of a chain of modifiers. For example 
+    if we have a chain:</p>
+  <p class=MsoNormal>function returning <span
+style='font-family:Wingdings;'>à</span> array 10 of <span
+style='font-family:Wingdings;'>à</span> array 3 of <span
+style='font-family:Wingdings;'>à</span> pointer to <span
+style='font-family:Wingdings;'>à</span> ?</p>
+  <p class=MsoNormal>where the ? represents a Type_node_link that hasn’t been 
+    set yet, we can add a Type_node to the end of this chain with a call to addToEnd. 
+    This is useful in parsing declarations such as </p>
+  <p class=MsoNormal>int *(f()[10][3]) ;</p>
+  <p class=MsoNormal>where it is easiest to build the type by successively adding 
+    modifiers to the end of the chain and then finally adding the “int” to the 
+    end of the chain. For type nodes that are not modifiers (not arrays, pointers, 
+    references, or functions) this function should assert false, i.e. you should 
+    not try to complete an already completed chain.</p>
+  <p class=MsoNormal>One important behaviour for type nodes is creating Datums 
+    of corresponding type. For example a node representing the type ‘array of 
+    10 pointers to int’ can actually create an array of 10 pointers to int. The 
+    methods are</p>
+  <p class=MsoNormal><b>public AbstractDatum makeMemberDatum(VMState vms,</b></p>
+  <p class=MsoNormal><b>                                                  int 
+    addresss,</b></p>
+  <p class=MsoNormal><b>                                                  AbstractDatum 
+    parent,</b></p>
+  <p class=MsoNormal><b>                                                  String 
+    name ) ;</b></p>
+  <p class=MsoNormal><b>public AbstractDatum makeDatum(VMState vms,</b></p>
+  <p class=MsoNormal><b>                                                    MemRegion 
+    mr,</b></p>
+  <p class=MsoNormal><b>                                                    String 
+    name) ;</b></p>
+  <p class=MsoNormal>This is an example of Gamma et. al.’s Factory Method design 
+    pattern.</p>
+  <p class=MsoNormal>It is possible to see if two types are equal according to 
+    the rules of the language.</p>
+  <p class=Code>public abstract boolean type_equals( TypeInterface t ) ; </p>
+  <p class=MsoNormal>We can find out the number of bytes that datums of type take 
+    up</p>
+  <p class=Code>public abstract int getNumBytes() ;</p>
+  <p class=MsoNormal>For display purposes we can convert a type to a string</p>
+  <p class=Code>abstract public String getTypeString() ;</p>
+  <p class=MsoNormal>In C++ types have additional attributes <b>const</b> and 
+    <b>volatile</b>. To account for this each type node has methods</p>
+  <p class=Code>public void putAttributes( int attr ) ;</p>
+  <p class=Code>public int getAttributes() ;</p>
+  <p class=MsoNormal>The intention is that the attributes serve as a bit-set that 
+    can take on values</p>
+  <p class=Code>0, CONST, VOLATILE, CONST|VOLATILE</p>
+  <p class=MsoNormal>for suitable power of 2 constants CONST and VOLATILE, defined 
+    somewhere in the language package. The values of the attributes do not affect 
+    the results of equals.</p>
+  <h4><a name="_Toc6558277">TyAbstractPointer and TyAbstractRef</a></h4>
+  <p class=MsoNormal>TyAbstactPointer supports the following additional method</p>
+  <p class=Code>public Type_node getPointeeType()</p>
+  <h4><a name="_Toc6558278">TyAbstractArray</a></h4>
+  <p class=MsoNormal>This supports one dimensional arrays.</p>
+  <p class=Code>public TyAbstractArray()</p>
+  <p class=MsoNormal>Immediately after construction the number of elements is 
+    “unknown” and a call to</p>
+  <p class=Code>public int getNumberOfElements()</p>
+  <p class=MsoNormal>will return -1 to indicate this. In C++ this can be used 
+    to for declarations like</p>
+  <p class=Code>extern int A[ ] ;</p>
+  <p class=MsoNormal>In Java, this is the normal state of affairs. Making datum 
+    with makeDatum and makeMemberDatum is not allowed, when the number of elements 
+    is unknown. (For Java we will have special versions of these functions.)</p>
+  <p class=MsoNormal>We can set the number of elements with</p>
+  <p class=Code>public void setNumberOfElements( int count )</p>
+  <p class=MsoNormal>The element type can be added with <b>addToEnd</b>.</p>
+  <p class=MsoNormal>The element type can be retrieved with</p>
+  <p class=Code>public TypeNd getElementType()</p>
+  <h4><a name="_Toc6558279">TyAbstractFunction</a></h4>
+  <p class=MsoNormal>The constructor is</p>
+  <p class=Code>public TyAbstractFunction( Vector params )</p>
+  <p class=MsoNormal>where <b>params</b> is a Vector of Type_nodes representing 
+    the parameter types.</p>
+  <p class=MsoNormal>The return type can be set by with <b>addToEnd</b>.</p>
+  <p class=MsoNormal>The parameters and return type  can be retrieved by using 
+    the following accessors:</p>
+  <p class=Code>public int getParamCount()</p>
+  <p class=Code>public Node_list paramList()</p>
+  <p class=Code>public Type_node getParamType(int i)</p>
+  <p class=Code>public Type_node returnType()</p>
+  <h4><a name="_Toc6558280">TyAbstractClass</a></h4>
+  <p class=MsoNormal>This class and its concrete subclasses are intended to contain 
+    information needed about classes at run-time. Typically more information will 
+    be stored in the analyzer’s symbol table. Class types are constructed with</p>
+  <p class=Code>public TyAbstractClass (String name, Scoped_name fqn)</p>
+  <p class=MsoNormal>The name parameter is used for display to the user. The Scoped_name 
+    is used for equality comparison and should be fully qualified. Thus the default 
+    for equality is “name equivalence”.</p>
+  <p class=MsoNormal>Initially the type is considered to have no definition information. 
+    Until it is given a definition, the following routine will return false</p>
+  <p class=Code>public boolean isDefined() </p>
+  <p class=MsoNormal>Classes that lack a definition can not be used to create 
+    datums with <b>makeDatum</b> or <b>makeMemberDatum</b>. A class that lacks 
+    a definition can be compared for equallity, but the following methods must 
+    <b>not</b> be called: makeDatum, makeMemberDatum, and getNumBytes.</p>
+  <p class=MsoNormal>If we want to give the class a definition, then first we 
+    call</p>
+  <p class=Code>public void setDefined()</p>
+  <p class=MsoNormal>Then we add superclasses, fields, and virtual functions as 
+    described below. Once all superclasses and fields are added, then the makeDatum, 
+    makeMemberDatum, and getNumBytes methods can be called.</p>
+  <p class=MsoNormal>Initially the type has no fields or superclasses. To add 
+    a direct superclass, use</p>
+  <p class=Code>public void addSuperClass( TyAbstractClass superClass )</p>
+  <p class=MsoNormal>The order that superclasses are added is important as it 
+    affects the interpretation of subobject paths. Normally superclasses are added 
+    in the same order that they appear in the program text. For Java, the class 
+    that is extended should be added first and then any interfaces that are implemented.  
+    The class added should be defined. There is no support as of yet for “virtual 
+    base classes”. Privacy information (private protected public package) is not 
+    recorded, as it is not needed at run-time.</p>
+  <p class=MsoNormal>Fields are added one at a time using method</p>
+  <p class=Code>public void addField( Var_node )</p>
+  <p class=MsoNormal>Only fields that are nonstatic and that directly belong to 
+    the class are added. There is no need to add fields that belong to superclasses.</p>
+  <p class=MsoNormal>The following accessors can get information about a class.</p>
+  <p class=Code>public int superClassCount()</p>
+  <p class=Code>public TyAbstractClass getSuperClass( int i )</p>
+  <p class=Code>public int fieldCount()</p>
+  <p class=Code>public Var_node getField( int i )</p>
+  <p class=MsoNormal>Both superclasses and fields are numbered from 0 in the order 
+    they were added.</p>
+  <p class=MsoNormal>Virtual functions [ … TBD …]</p>
+  <h3><a name="_Toc6558281">Var_node</a></h3>
+  <p class=MsoNormal>Var_node is a class representing the name and the type of 
+    a variable. Var_nodes are currently used for declaration statement (Stat_decl) 
+    and to represent fields (nonstatic data members in C++ parlance) in class 
+    types (TyAbstractClass).</p>
+  <p class=MsoNormal>The public interface is</p>
+  <p class=Code>public Var_node(Scoped_name nm, Type_node tp ) </p>
+  <p class=Code>public Scoped_name getName() { return name ; }</p>
+  <p class=Code>public Type_node get_type() { return type ; }</p>
+  <p class=MsoBodyTextIndent3>The name must be should be fully qualified.</p>
+  <p class=MsoBodyTextIndent3>Var_node does not extend Node.</p>
+  <h2><a name="_Toc6558282">Clc.Analysis</a></h2>
+  <p class=MsoNormal>Class Scoped_name is currently in this package. A scoped 
+    name is a sequence of identifiers that serves as a path through the symbol 
+    table. For example in C++ ::A::B::x is a scoped name as is A::B::x. In the 
+    first case, the path is absolute and in the second it is relative. In Java 
+    A.B.x is similar, where A and B are classes.</p>
+  <p class=MsoNormal>Class Abstract_function_defn will give access to the language 
+    independent aspects of function definitions.</p>
+  <p class=MsoNormal><i>[Section to be completed by D.R. Or more likely this section 
+    should be replaced with a reference to D.R.’s documentation of the Analysis 
+    package.]</i></p>
+  <h2><a name="_Toc6558283">Clc.RT_Sym_Tab</a></h2>
+  <h3><a name="_Toc6558284">Runtime vs. Compile time symbol tables.</a></h3>
+  <p class=MsoBodyText><span style='font-style:normal'>The symbol table in this 
+    package is a “runtime symbol table”. That is, it is not used during parsing.</span></p>
+  <p class=MsoBodyText><span style='font-style:normal'>A simplistic view is that, 
+    the compile-time symbol table maps identifiers to declarations and the run-time 
+    symbol table maps identifiers to their run-time instantiations. For static 
+    variables and function definitions, the run-time symbol table plays the role 
+    of a “linker”.</span></p>
+  <p class=MsoBodyText><span style='font-style:normal'>Most importantly the run-time 
+    symbol table is represented to the user via its own subwindow. The compile 
+    time symbol table is not.</span></p>
+  <p class=MsoBodyText><span style='font-style:normal'>It may seem the symbol 
+    table should be part of the Virtual Machine Layer. But as it is hard to create 
+    a symbol table interface suitable for all conceivable languages, it is instead 
+    part of the language layer. However as the symbol tables for C++ and Java 
+    should be fairly similar, we can share the symbol tables between those languages, 
+    at least, and so it is here in the Common Language Classes.</span></p>
+  <h3><a name="_Toc6558285">Responsibilities of the Runtime symbol table</a></h3>
+  <p class=MsoNormal>The runtime symbol table package has only one public class 
+    <b>RT_Symbol_Table</b> it has a number of responsibilities.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Construction</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Representing Variable Bindings</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>The back end uses the Runtime symbol table to keep track of 
+    the association of names to datums.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Display responsibilities</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Implements the Interfaces.ViewableST interface so that its state 
+    can be displayed in a subwindow.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Locating static variables and functions.</p>
+  <p class=MsoNormal style='&quot;Carole Peterson&quot; 20030313T0913;
+'><span>·<span style='font:7.0pt "Times New Roman"'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    </span></span>Keeping track of initialization statements.</p>
+  <p class=NormalFirstline0>Each of these responsibilities and their associated 
+    public routines is discussed separately below.</p>
+  <h3><a name="_Toc6558286">Construction</a></h3>
+  <p class=MsoNormal>The constructor is</p>
+  <p class=Code>/** Constructor */</p>
+  <p class=Code>  public RT_Symbol_Table(BTTimeManager tm)</p>
+  <h3><a name="_Toc6558287">Representing variable bindings</a></h3>
+  <p class=MsoBodyText><span style='font-style:normal'>The run-time association 
+    of variable names to Datums is an important responsibility of the symbol table. 
+    All variables belonging to a single subroutine invocation are grouped together 
+    in a structure called a frame. The frames in turn are grouped as a stack. 
+    Each frame consists of a `static link’ and a stack of associations between 
+    names and Datums.</span></p>
+  <p class=MsoBodyText><span style='font-style:normal'>For example, consider the 
+    following code.</span></p>
+  <p class=Code>int i ;</p>
+  <p class=Code>int main() {     <span style='font-family:Wingdings;
+'>ß</span> A</p>
+  <p class=Code>int i ;    <span style='font-family:Wingdings;
+'>ß</span> B</p>
+  <p class=Code>f(10) ; }</p>
+  <p class=Code>void f(int j) {</p>
+  <p class=Code>int k ;     <span style='font-family:Wingdings;
+'>ß</span> C</p>
+  <p class=Code>return ; }</p>
+  <p class=MsoNormal>As execution begins at point A there is one frame (representing 
+    all the global variables).</p>
+  <p class=MsoNormal style='
+'><img width=406 height=97
+src="CommonLanguageClasses_files/image002.gif" v:shapes="_x0000_i1025"></p>
+  <p class=MsoCaption>Figure 1 As execution begins</p>
+  <p class=MsoNormal>As the main function starts a new frame is pushed for the 
+    local variables of main. As once the declaration of the local variable i is 
+    processed the situation looks like this.</p>
+  <p class=MsoNormal style='
+'><img width=432 height=185
+src="CommonLanguageClasses_files/image004.gif" v:shapes="_x0000_i1026"></p>
+  <p class=MsoCaption>Figure 2 At point B</p>
+  <p class=MsoNormal>As the call to subroutine f is executed, a new frame is pushed 
+    and one entry is pushed onto the frame for each parameter. After the declaration 
+    of k. The symbol table looks like this.</p>
+  <p class=MsoNormal style='
+'><img width=469 height=262
+src="CommonLanguageClasses_files/image006.gif" v:shapes="_x0000_i1027"></p>
+  <p class=MsoCaption><a name="_Ref409345987">Figure </a><span>3</span> At point 
+    C</p>
+  <p class=MsoNormal>Searching for a variable of a given name (variable lookup) 
+    begins with the top variable in the top frame. If the variable is not found 
+    in the top frame, then the static link is followed to find the next frame 
+    to search. Notice that in  Figure 3 the middle frame (corresponding to the 
+    invocation of main) is skipped. Thus a refernce to i will refer to the global 
+    variable i.</p>
+  <p class=MsoNormal>In the case of a call to a method (that is a nonstatic function 
+    member, in C++ parlance), we create add two frames to the stack. The lower 
+    frame represents the object and has one entry for each field (nonstatic data 
+    member) of the object (including inherited fields. The upper frame is just 
+    the usual frame for a function call.</p>
+  <p class=MsoNormal>The public methods are:</p>
+  <p class=Code> /** Begin scope of function parameters for a method call</p>
+  <p class=Code>    * @param recipient null if this is not a nonstatic method 
+    call</p>
+  <p class=Code>    */</p>
+  <p class=Code>  public void enterFunction( AbstractObjectDatum recipient ) </p>
+  <p class=Code>/** Exit function scope */</p>
+  <p class=Code>  public void exitFunction()</p>
+  <p class=Code>/** Get the top recipient object ( &quot;this&quot; ) */</p>
+  <p class=Code>    public AbstractObjectDatum getTopRecipient()          </p>
+  <p class=Code>  /** Add a new auto variable to the current stack */</p>
+  <p class=Code>  public void newVar(Scoped_name index, String name, AbstractDatum 
+    d )</p>
+  <p class=Code>  /** How many vars are in the current top frame */</p>
+  <p class=Code>  public int varsInCurrentFrame() </p>
+  <p class=Code>  /** Delete one variable */</p>
+  <p class=Code>  public void deleteVar() </p>
+  <p class=Code> /** Control the highlighting of an entry */</p>
+  <p class=Code> public void setVarHighlight( Scoped_name index, int value )</p>
+  <p class=Code>/** Control the highlighting of a data member */</p>
+  <p class=Code>  public void setRecipientVarHighlight( int[] path, Scoped_name 
+    scoped_name, int value  )</p>
+  <p class=Code>  /** Get a variable by name. Returns null if not found */</p>
+  <p class=Code>  public AbstractDatum getDatum( Scoped_name index )</p>
+  <p class=Code>public AbstractDatum getDatumFromRecipient( int[] path, Scoped_name 
+    scoped_name )</p>
+  <h3><a name="_Toc6558288">Display</a></h3>
+  <p class=MsoNormal>See interface Interfaces.ViewableST (In the DisplayEngineInterface 
+    document) for documentation of these routines.</p>
+  <p class=Code>  /** getEntry -- see the ViewableST interface. */</p>
+  <p class=Code>  public STEntry getEntry(int index) </p>
+  <p class=Code>  /** getEntryAt --- see the ViewableST interface */</p>
+  <p class=Code>  public STEntry getEntryAt(int address</p>
+  <p class=Code>  /** size --- the number of entries that getEntry can return 
+    */</p>
+  <p class=Code>  public int size() </p>
+  <h3><a name="_Toc6558289">Locating static variables and bindings</a></h3>
+  <p class=MsoNormal>Static global variables are typically added during the compile 
+    time. After that they are treated as any other variable.</p>
+  <p class=MsoNormal>Function definitions are looked up using a key. The symbol 
+    table used “equals” on the keys so they can be whatever the language implementer 
+    wants. The C++ implementation currently uses Strings.</p>
+  <p class=MsoNormal>The public routines are</p>
+  <p class=Code>/** Add function definition */</p>
+  <p class=Code>public void addFunctionDefinition( Abstract_function_defn defn 
+    )</p>
+  <p class=Code>/** Get a function definition. Key’s are compared by “equals” 
+    */</p>
+  <p class=Code>public Abstract_function_defn getFunctionDefinition( Object key 
+    )</p>
+  <p class=Code>/** Add a built-in function definition */</p>
+  <p class=Code>public void addBuiltInFunctionDefinition( Object key, Stepper 
+    stepper ) </p>
+  <p class=Code>/** Retrieve a built-in function definition. Return null if none 
+    found. */</p>
+  <p class=Code>public Stepper getBuiltInFunctionDefn( Object key )</p>
+  <p class=Code>/** Add static global */</p>
+  <p class=Code>public void addStaticGlobal( Scoped_name index, String name, AbstractDatum 
+    d)</p>
+  <p class=MsoNormal>Static globals are retrieved by <b>getDatum</b> and can have 
+    their highlighting changed by <b>setVarHighlight</b>.</p>
+  <h3><a name="_Toc6558290">Initialization statements</a></h3>
+  <p class=MsoNormal>Prior to executing the main function of a C++ program, a 
+    number of statements must be executed to initialize the global data. In C++ 
+    there are actually 2 sequences of statements that must be executed one after 
+    the other. Thus the symbol table must be able to store multiple chains of 
+    statements. Each chain is identified by a String.</p>
+  <p class=Code>/** Add a new chain of initialization statements. </p>
+  <p class=Code>    Each statement will be used to build a FunctionEvaluation.</p>
+  <p class=Code>    and so it should end with a StatReturn. */</p>
+  <p class=Code>           public void new_initialization_chain( String chainName 
+    )</p>
+  <p class=Code>/** Add a new statement to an initialization chain.</p>
+  <p class=Code>           &lt;P&gt;   Typically only one statement is added at 
+    a time.  In this</p>
+  <p class=Code>           case the last_link be the next link of the statement 
+    added,</p>
+  <p class=Code>           however a complex graph of statement nodes may also 
+    be added</p>
+  <p class=Code>           provided it has a single entry (represented</p>
+  <p class=Code>           by statement) and a single exit (represented by last_link). 
+    &lt;/P&gt;</p>
+  <p class=Code>           &lt;P&gt; Note that each chain should be terminated 
+    by a</p>
+  <p class=Code>               StatReturn. (When adding a StatReturn, the last_link</p>
+  <p class=Code>               parameter can be set to null.)&lt;/P&gt;</p>
+  <p class=Code>@param chainName the name of the chain to be added to.  Must already 
+    have been created.</p>
+  <p class=Code>           @param statement the statement to add.</p>
+  <p class=Code>           @param last_link a link out of the statement to add.</p>
+  <p class=Code>           */</p>
+  <p class=Code>public void add_initialization_statement(</p>
+  <p class=Code>                   String chainName,</p>
+  <p class=Code>                   Statement_node statement,</p>
+  <p class=Code>                                Statement_node_link last_link 
+    )</p>
+  <p class=Code>/** Returns an enumeration of statement links */</p>
+  <p class=Code>              public Enumeration get_initialization_chains()</p>
+</div>
+<br clear=all>
+<hr align=left size=1 width="33%">
+<div id=ftn1> 
+  <p class=MsoFootnoteText><a href="#_ftnref1"
+name="_ftn1" title=""><span><span
+style='font-size:10.0pt;font-family:Arial;
+'>[1]</span></span></a> This raises the problem of calling destructors in C++. 
+    The plan is that this will happen automagically prior to the first step of 
+    statement.  Details are yet to be worked out.</p>
+</div>
+<div id=ftn2> 
+  <p class=MsoFootnoteText><a href="#_ftnref2"
+name="_ftn2" title=""><span><span
+style='font-size:10.0pt;font-family:Arial;
+'>[2]</span></span></a> This is a bit at odds with C++’s static semantics, in 
+    which the operand of <b>.member</b> is an rvalue, not an lvalue. In particular, 
+    in dealing with value results of functions, there may need to be an invisible 
+    operator to convert an rvalue object to a reference. For example (a + b).real. 
+    If + returns a complex number object by value, then (a+b) will not naturally 
+    evaluate to a reference datum, but may need to be converted to one. Why? Well, 
+    in the most common case, var.m, we don’t want to show a fetch of var that 
+    doesn’t really happen in the machine, but only in the mind of the compiler. 
+    As a pleasant side effect, we can use one node class to represent both “.” 
+    and “-&gt;”. To convert a nonreference to a reference, you can use Op_convert_to_reference.</p>
+</div>
+<hr class=msocomoff align=left size=1 width="33%">
+<div id="_com_1" class=msocomtxt language=JavaScript
+onmouseover="msoCommentShow('_anchor_1','_com_1')"
+onmouseout="msoCommentHide('_com_1')"><span style='"Carole Peterson"'><a name="_msocom_1"></a></span> 
+  <p class=MsoCommentText><span style='font-size:
+8.0pt;'>&nbsp;<a
+href="#_msoanchor_1" class=msocomoff>[CP1]</a></span>The trouble is there is also 
+    a Graph for the source code. To me, the word “syntax” suggests the source 
+    code. How abou  Abstract Runcode Graphs</p>
+</div>
+</body>
+</html>

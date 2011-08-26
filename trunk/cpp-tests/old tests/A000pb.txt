@@ -1,0 +1,30 @@
+#include <iostream.h>   /* include info from standard library */
+
+int a =9;
+int b=3;
+struct fish {
+	int type;
+	int weight;
+	int length;
+};
+fish sole;
+fish halibut;
+int main()
+
+{
+fish cod;
+fish *fisPtr;
+int localVar=10;
+fish *ptr=&sole;
+int otherLocalVar=1;
+ptr=&halibut;
+ptr=&cod;
+(*ptr).weight=10;
+ptr=&sole;
+cod.type=1;
+a =5;
+cod.length=30;
+
+	localVar = 6;
+        otherLocalVar = otherLocalVar + localVar;
+}

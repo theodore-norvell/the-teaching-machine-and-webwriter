@@ -1,0 +1,13 @@
+#include <iostream>
+
+using namespace sdt ;
+ 
+void main() {
+
+   bool b ;
+   short i ;
+   do {
+       cin >> i ;
+       b = cin ;
+   } while( b ) ;
+}

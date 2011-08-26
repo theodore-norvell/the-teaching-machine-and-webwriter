@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<title>An OverView of Program Dependent Visualization in the Teaching Machine</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+  <h2>  <a name="Objectives">Higraph</a></h2>
+  <p>Higraph is a tool for visualizing a <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("higraphModel","higraph");
+//-->
+</script> which is consists of 0 or more <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("node","nodes");
+//-->
+</script> each of which is either a <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("child","child");
+//-->
+</script> of another node or a <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("topNode","top node");
+//-->
+</script>
+  .</p>
+  <p>Here is a typical higraph
+  <p><img src="simpleForest.png" alt="A simple forest" width="549" height="318"> 
+  <p>It is called a simple forest because it consists of three unrelated trees, each with its own root or <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("topNode","top node");
+//-->
+</script>
+    , coloured blue. The ten red nodes, of course, represent
+    <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("leafNode","leaf nodes");
+//-->
+  </script>
+    while the four green nodes represent interim nodes. In this case, each node represents an integer whose value is displayed in the centre of the node. The black lines connecting the nodes represent 
+  <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("branch","branches");
+//-->
+  </script> 
+    connecting each child to its parent.</p>
+     <p>Higraph models also allow arbitrary   <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("edge","edges");
+//-->
+  </script>
+    between any two nodes, for example
+  <p><img src="simpleForestN.png" alt="A Forest of Nodes with Edges" width="549" height="318">
+  <p>Here the edges are shown in blue and are directed, from <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("source","source");
+//-->
+  </script> to <script type="text/javascript" language="Javascript">
+<!--
+insertDefLink("target","target");
+//-->
+  </script>
+    .
+  <p>Higraph is a powerful modeling tool for courses in Algortihms and Data Structures. For example, here is a visual representation for the problem of Minimizing a Boolean formula in 3-CNF. The nodes labelled p[..] and n[..] represent the values of the three boolean variables X1, X2 and X3 as well as their negations, !X1. !X2 and !X3, respectively. The other nodes represent partial terms in the boolean expression that appears above the graph. In this case, all the nodes in the visualization are higraph root nodes. Edges are used to depict relationships between the nodes.
+  <p><img src="FormulaIn3CNF.png" alt="A Visualization for the problem of minimizing a Boolean formula in 3-CNF" width="749" height="327">
+  <p>Similarly, here is a visualization of an array as a set of root nodes
+  <p><img src="array.png" alt="An array as a set of root nodes" width="417" height="135">
+  <p>But here is an alternative version where myArray is a root node, while its elements are depicted as child nodes nested inside the parent
+  <p><img src="embeddedArray.png" alt="An array visualized as a set of elements embedded within a rectangle representing the array itself" width="395" height="123">
+  <p>Taking this further, here is a visualization of a forest of arrays, that is, the forest consists of a number of trees, each leaf in which is an array of integers.
+  <p><img src="embeddedArrayTree.png" alt="A forest of trees, each tree of which has leaves of arrays of ints" width="822" height="288">
+  <p>To reiterate, the point here is that higraphs represent an extremely flexible visualizing tool for Algorithms and Data Structures.</p>
+  <h2>  <a name="PDV">Program Dependent Visualization</a></h2>
+  <p>The Teaching Machine has always provided dynamic visualization of a program as it unfolds. Particulary useful has been the ability to do unlimited undo, allowing visualizations to be backed up, either in class for discussion, or by students themselves in response to <em>what just happened?</em> reactions. Program Dependent Visualization (or PDV) extends this capability to the much richer visualization available using Higraph models. Here is one of the first examples we built. In the cookbook page devoted to this example we'll show exactly how we instrumented it for visualization. Here we just present it to show what a TM PDV looks like</p>
+  <p>
+    <script language="JavaScript">
+   setButtons(true, false, true,"","");
+   insertCode("ElasticArray.java", true, "code", "");
+</script>
+  </p>  
+
+
+
+<div id="allExamples">
+<p>&nbsp;</p> 
+</div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+</html>
+

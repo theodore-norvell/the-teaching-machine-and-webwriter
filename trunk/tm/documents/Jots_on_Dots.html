@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>Jots on Dots</title></head><body>
+<h1>Notes on Field Access, ExpressionNames, Method Invocation, and MethodNames</h1>
+<h2>ExpressionNames and Field Access<br>
+</h2>
+<p>In the JLS field access expressions and expression names are closely related
+but different. For example, one might expect that in <br>
+
+</p>
+
+
+<pre>   class C {<br>      int f = 1 ;<br>      int m1() {<br>         C c = this ;<br>         System.out.println( <u>this.f</u> ) ;<br>         System.out.println( <u>c.f</u> ) ;<br>         System.out.println( <u>(c).f</u> ) ; } }<br></pre>
+<p>the epressions "this.f", "c.f" and "(c).f" would be similar in that "this",
+"c", and "(c)" would belong to the same syntactic category which is then
+modified by a field access. That is one might expect the grammar to something
+like this<br>
+</p>
+<pre>   Primary --&gt; Identifier<br>             | "this"<br>             | "(" Expression ")"<br>             | "." Identifier<br>             | <i>... // and some other choices</i><br></pre>
+<p>However this is not the way the JLS grammar works and consequently not
+how the semantic is described in the JLS. The JLS grammar works like this<br>
+</p>
+<pre>   PostfixExpression --&gt; Primary<br>                       | ExpressionName<br>                       | PostfixExpression "++"<br>                       | PostfixExpression "--"<br><br>   ExpressionName --&gt; Identifier | AmbiguousName "." Identifier<br>   AmbiguousName --&gt;  Identifier | AmbiguousName "." Identifier<br><br>   Primary --&gt; PrimaryNoNewArray | ArrayCreationExpression<br>   PrimaryNoNewArray --&gt; Literal<br>                       | "this"<br>                       | "(" Expression ")"<br>                       | FieldAccess<br>                       | MethodInvocation<br>                       | <i>... // Other choices, but Identifier is not one<br></i><br>   FieldAccess  --&gt; Primary "." Identifier<br>                  | "super" "." Identifier<br>                  | ClassName "." "super" "." Identifier<br></pre>
+<p>So "this.f" and "(c).f" are FieldAcess expressions while "c.f" is an ExpressionName.
+The "c" in "(c)" is also a simple ExpressionName, while the "c" in "c.f "
+is an AmbiguousName that is reclassified as an ExpressionName.<br>
+</p>
+<p>The reason for this seemingly odd way of doing things is that field access
+applies in situations not covered byExpressionNames,; for example "a.m().f[2].g"
+involves field access for f and g but involves no ExpressionNames ("a.m"
+is a MethodName). And, conversely, there are cases where qualified ExpressionNames
+allow you to do things that can not be done with field access; for example
+"C.f " where "C" is a class name and "f" is a static field of "C", is an
+valid expression name, whereas "(C).f" is not allowed.<br>
+</p>
+<p>One result of this way of doing things is that in the JLS field access
+is described twice, once under ExpressionNames (6.5.6) and once under &nbsp;FieldAccess
+expressions (15.11). In the cases where the syntaxes ought to mean the same thing, they do.<br>
+</p>
+<h2>MethodNames and Method Invocation<br>
+</h2>
+<p>A related situation comes up with method invocations. Consider<br>
+</p>
+
+<pre>   class C {<br>      int m() { return 1;<br>      int m1() {<br>         C c = this ;<br>         System.out.println( <u>this.m()</u> ) ;<br>         System.out.println( <u>c.m()</u> ) ;<br>         System.out.println( <u>(c).m()</u> ) ; } }</pre>
+<p>The syntax of &nbsp;MethodInvocation is<br>
+</p>
+<pre>   MethodInvocation --&gt; MethodName "(" ArgumentList_opt ")"<br>                      | Primary "." Identifier "(" ArgumentList_opt ")"<br>                      | super "." Identifier "(" ArgumentList_opt ")"<br>                      | ClassName "." super "." Identifier "(" ArgumentList_opt ")"<br></pre>
+<p>So in the example "this.m() " and "(c).m()" follow the second alternative, whereas "c.m()" follows the first.<br>
+</p>
+<h2>Two ways forward<br>
+</h2>
+
+<p>The question then comes up of how we should handle these expressions:
+<br>
+</p>
+<ul>
+  <li>(a) Follow the JLS grammar or</li>
+  <li>(b) use a more straight-forward grammar and figure
+out in the latter passes (probably only pass 4, needs to worry about this)
+whether a dot is part of a Name (ExpressionName, MethodName, ClassName, AmbiguousName)
+or separates a name from an Identifier that is not a part of the name (as
+in the first alternative of FieldAccess or the second alternative of &nbsp;MethodInvocation).</li>
+</ul>
+<p>
+</p>
+
+<p>Approach (a) might lead the expressions above to be parsed to compile time syntax trees as follows.<br>
+</p>
+<pre>this.f         JJTDOT<br>                  JJTTHIS<br>                  JJTIDENTIFIERNODE ScopedName:f<br><br>(c).f          JJTDOT<br>                  JJTPARENS<br>                     JJTEXPRESSIONNAME ScopedName: c<br>                  JJTIDENTIFIERNODE ScopedName: f<br><br>c.f            JJTEXPRESSIONNAME ScopedName: c.f<br><br>this.m()       JJTCALL ScopedName: m<br>                  JJTTHIS<br>                  JJTARGUMENTS<br>&nbsp;&nbsp;<br>(c).m()        JJTCALL ScopedName: m<br>                  JJTPARENS <br>                     JJTEXPRESSIONNAME ScopedName: c<br>                  JJTARGUMENTS<br><br>c.f.m()        JJTMETHODNAMECALL: ScopedName: c.f.m<br>                  JJTARGUMENTS<br></pre>
+<p>The current parser takes approach (b). Expressions are parsed by a grammar
+similar to the naive grammar suggested near the start of this discussion.
+The expressions above are parsed to compile time syntax trees as follows:</p>
+
+<pre>this.f         JJTDOT<br>                  JJTTHIS<br>                  JJTIDENTIFIERNODE ScopedName:f<br><br>(c).f          JJTDOT<br>                  JJTPARENS<br>                     JJTIDENTIFIERNODE ScopedName: c<br>                  JJTIDENTIFIERNODE ScopedName: f<br><br>c.f            JJTDOT<br>                  JJTIDENTIFIERNODE ScopedName: c<br>                  JJTIDENTIFIERNODE ScopedName: f<br><br>this.m()       JJTCALL<br>                  JJTDOT<br>                     JJTTHIS<br>                     JJTIDENTIFIERNODE ScopedName:m<br>                  JJTARGUMENTS<br>&nbsp;&nbsp;<br>(c).m()        JJTCALL<br>                  JJTDOT<br>                     JJTPARENS<br>                        JJTIDENTIFIERNODE ScopedName: c<br>                     JJTIDENTIFIERNODE ScopedName:m<br>                  JJTARGUMENTS<br><br><br>c.m()          JJTCALL<br>                  JJTDOT<br>                     JJTIDENTIFIERNODE ScopedName:c<br>                     JJTIDENTIFIERNODE ScopedName:m<br>                  JJTARGUMENTS<br></pre>
+<p>A possible improvement on this is for JJTDOT to have an optional ScopedName
+attribute that indicates whether it represents a Name or not, and, if so,
+what that name is. Thus we would have<br>
+</p>
+<pre><br>c.f            JJTDOT ScopedName: c.f<br>                  JJTIDENTIFIERNODE ScopedName: c<br>                  JJTIDENTIFIERNODE ScopedName: f<br><br>c.m()          JJTCALL<br>                  JJTDOT ScopedName: c.m<br>                     JJTIDENTIFIERNODE ScopedName:c<br>                     JJTIDENTIFIERNODE ScopedName:m<br>                  JJTARGUMENTS<br></pre>
+<p>And for a name like "p.q.C.D.f.g", where p.q is a PackageName, C, and D are classes and f and g are fields, would have<br>
+</p>
+<pre>   JJTDOT ScopedName: p.q.C.D.f.g<br>      JJTDOT ScopedName: p.q.C.D.f<br>         JJTDOT ScopedName: p.q.C.D<br>            JJTDOT ScopedName: p.q.C<br>               JJTDOT ScopedName: p.q<br>                  JJTIDENTIFIERNAME: ScopedName: p<br>                  JJTIDENTIFIERNAME: ScopedName: q<br>               JJTIDENTIFIERNAME: ScopedName: D<br>            JJTIDENTIFIERNAME: ScopedName: C<br>         JJTIDENTIFIERNAME: ScopedName: f<br>      JJTIDENTIFIERNAME: ScopedName: g<br></pre>
+<p><br>
+</p>
+<br>
+</body></html>

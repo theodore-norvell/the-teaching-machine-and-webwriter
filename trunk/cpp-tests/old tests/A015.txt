@@ -1,0 +1,32 @@
+#include <iostream.h>   /* include info from standard library */
+
+int main()
+
+{
+        int a = 1 ;
+        int b = 0 ;
+
+        while( a==b ) { 
+                int i = 0 ; }
+
+        while( a!= b )
+                a = a - 1 ;
+        
+        b = 2 ;
+        do
+                a = a + 1 ;
+        while( a != b ) ;
+
+        for(
+            a = 0 ;
+            a != b ;
+            a = a + 1 )
+                b = b - 1 ;
+
+        for(int i = 0, sz = 2; i < sz ; i = i + 1 ) {
+                b = b + a ; }
+
+        a = b = 0 ;
+        for( ; a != b ; a = a + 1 ) {
+                b = 13 ; }
+}

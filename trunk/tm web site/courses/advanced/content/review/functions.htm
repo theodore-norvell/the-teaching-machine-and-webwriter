@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+<title>Functions</title>
+</head>
+<body>
+<ul>
+  <li>Functions consist of a <i>declaration</i> and a <i>definition</i> (or <i>implementation</i>). 
+  </li>
+  <li>Functions can be <i>called</i> from anywhere in the file after their declaration.</li>
+  <li>The compiler will allow a function to be called even if it hasn't been implemented 
+    (defined). </li>
+</ul>
+    
+<p> 
+<script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("functions1.cpp", true, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<ul>
+  <li>Function declarations are always <i>external</i>.</li>
+  <li>Function names have the same properties as external variable names.</li>
+  <li>Functions don't have to return a value in which case the return type should 
+    be <span class="codeInline">void</span>. </li>
+</ul>
+<p>The declaration is a <i>template</i> specifying</p>
+<ol>
+  <li> the return type</li>
+  <li>the name of the function</li>
+  <li> the number and type of the arguments to be passed (via a <i>formal parameter 
+    list</i>) </li>
+</ol>
+<p class="pagebreak">&nbsp;</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("functions2.cpp", true, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>The names in the formal parameter lists of the declaration and definition do 
+  not have to be the same.</p>
+<ol>
+  <li>Compiler matches lists, in order of argument.</li>
+  <li>Types and number of arguments must be the same.</li>
+  <li>Names are not even required in the declaration </li>
+</ol>
+<p> 
+  <script language="JavaScript">
+insertCode("functions3.cpp", false, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<h1><a name="arguments">Argument Passing</a></h1>
+<p>Arguments in C are passed <i>by value</i>. This was done to avoid <i>side effects</i>.</p>
+<p>Pass-by-value means the function cannot succesfully change one of its arguments</p>
+<p> 
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("functions4.cpp", true, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>Arguments in C++ can also be passed <i>by reference</i>.</p>
+<p>Pass-by-reference allows arguments to be modified</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("functions5.cpp", true, "code", "3891lecture.tmcfg");
+</script>
+</p>
+<p>Notice that the call to the two different swap functions is exactly the same.</p>
+<p><i>You cannot tell from a call whether a function is pass-by-value or pass-by-reference. 
+  You must look at the declaration to find out.</i></p>
+<p>
+  <script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+</p>
+</body>
+</html>

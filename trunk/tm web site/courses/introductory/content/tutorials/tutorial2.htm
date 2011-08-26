@@ -1,0 +1,141 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Second Tutorial</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../../content/noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<p>Let's look at our conversion example from the 
+  <script language="JavaScript">
+startDefLink("passByReference",50,70);
+  </script>
+pass-by-reference
+<script language="JavaScript">endLink();</script>
+ topic</p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("../functions/conversion.cpp", false, "code", "", "C", "C");
+  </script>
+</p>
+<p>Recall our standard clients:</p>
+<blockquote>
+  <p><code>void constantClient(); </code>always calls the service using constants
+  </p>
+    <p><code>
+    void anxiousClient(); </code>always calls the service using the same names</p>
+  </blockquote>
+  <blockquote>
+    <p><code>
+void independentClient(); </code>always calls the service using  different names    </p>
+  </blockquote>
+  <blockquote>
+    <p><code>
+    void expressiveClient(); </code>always calls the service using expressions 
+    
+    </p>
+  </blockquote>
+  <blockquote>
+    <p><code>
+    void confusedClient(); </code>always calls the service out of order
+    
+    </p>
+  </blockquote>
+  <p>
+  Hold it just a moment. We can only pass a pass-by-reference 
+    <script language="JavaScript">
+startDefLink("argument",50,70);
+    </script>
+argument
+<script language="JavaScript">endLink();</script>
+ a 
+    <script language="JavaScript">
+startDefLink("variable",50,70);
+    </script>
+variable
+<script language="JavaScript">endLink();</script>
+. The <code>constantClient</code> for <code>toPolar</code> would want to call  it something like this&#8212;</p>
+  <blockquote>
+    <p><code>toPolar(1.0,1.0);</code></p>
+  </blockquote>
+  <p>Can't work. The whole idea is that <code>toPolar</code> will change the arguments and you can't change a 
+    <script language="JavaScript">
+startDefLink("literal",50,70);
+    </script>
+literal
+<script language="JavaScript">endLink();</script>
+. <code>1.0</code> is a <code>1.0</code> is a <code>1.0</code> and evermore shall be so. This is a syntax error. We <em>can't write</em> a constant client for <code>toPolar</code>.</p>
+  <p>Similarly, 
+    <script language="JavaScript">
+startDefLink("expression",50,70);
+    </script>
+expressions
+<script language="JavaScript">endLink();</script>
+ are always evaluated at run time (when calls actually get made). That means reduced to a 
+ <script language="JavaScript">
+startDefLink("value",50,70);
+    </script>
+value
+<script language="JavaScript">endLink();</script>
+ and values never change either. </p>
+  <p>Again <code>main</code> is going to do is call each of our test clients (including the two that can't work).</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, false,"","");
+	insertCode("conversion.cpp", false, "code", "", "A", "A");
+    </script>
+  </p>
+  <p>They will run the actual tests on our service function, <code>toPolar</code>.</p>
+  <p>Now let's run it, using the <code>stepInto</code> button( <img src="../../webWriter/images/stepInto.gif" width="24" height="24"> ) so we can trace into each function </p>
+<p>
+  <script language="JavaScript">
+	setButtons(true, false, true,"","");
+	insertCode("conversion.cpp", true, "code", "", "A", "ALL");
+  </script>
+</p>
+<h2>Exercises</h2>
+<ol>
+  <li>Use the Teaching Machine to run the  examples in the lecture on pass-by-reference and later lectures. Make sure you get to the point where you can predict what will happen before you click on a control.</li>
+  </ol>
+<p>More exercises have been added directly to the apposite topic. If you expand any topic within the table of contents you will see whether or not exercises have been added at the end. Generally, for most of them, you should be able to&#8212;</p>
+<ol>
+    <ol type="a">
+      <li>Write the contract (header and prototype).</li>
+      <li>Write the 
+        <script language="JavaScript">
+startDefLink("pseudoCode",50,70);
+        </script>
+pseudo-code
+<script language="JavaScript">endLink();</script>
+ (algorithm for the function)</li>
+      <li>write the code.</li>
+    </ol>
+  </ol>
+<blockquote>
+  <p>Note: if you are having trouble coming up with an approach get together with a friend or two and discuss it. Make sure you both (or all) contribute to the discussion. Then break apart and do the question on your own. </p>
+</blockquote>
+<!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+  allExamples
+ <!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+

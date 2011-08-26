@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <script language="JavaScript">
+nestingDepth = "../../";
+  </script>
+  <script language="JavaScript" src="../noteConstants.js"></script>
+  <script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+  <script language="JavaScript" src="../../webWriter/header.js"></script>
+  <title>Configurations</title>
+
+
+</head>
+
+
+<body>
+
+<h2><a name="requirements">Requirements&nbsp;</a></h2>
+
+<p>The Teaching Machine has a singleton ConfigurationManager which is in charge
+  of storing  and retrieving configuration data to and from the file system.
+  Any PlugIn can avail itself of the services of the ConfigurationManager by  </p>
+<ol>
+  <li>registering with the ConfigurationManager</li>
+  <li>implementing the Configurable interface</li>
+</ol>
+<p>Registration is straightforward. Here is a sample</p>
+<pre>		ConfigurationServer server = ConfigurationServer.getConfigurationServer();
+		server.register(this,configId);
+</pre>
+<p>The plugIn making the register request must implement the Configurable interface,
+  shown here: </p>
+<p>
+  <script language="JavaScript">
+insertCode("Configurable.java", false, "code", "default.cfg");
+  </script>
+  </p>
+<h2>Saving or Loading Configuration Data </h2>
+<p>Whenever the ConfigurationManager carries out a load or save operation it
+  notifies all its registrees, passing them in a Configuration object config.
+  While Configuration objects are quite complex, only a pair of methods matter
+  to plugIns. Handling a NotifyOfSave simply requires that the plugIn save all
+  parameters as name-value string pairs, like so</p>
+<pre>	    config.setValue("Height", Integer.toString(r.height));
+	    config.setValue("WindowTitle",mySubWindow.getTitle());
+	    config.setValue("Visible",mySubWindow.isVisible() ? "true" : "false");
+</pre>
+<p>Interpretation of names and values is entirely up to the plugIn. The code
+  to read back the same parameters during a NotifyOfLoad looks as follows:</p>
+<pre>	    temp = config.getValue("Height");
+	    if (temp != null) r.height = new Integer(temp).intValue();
+	    temp = config.getValue("WindowTitle");
+	    if (temp != null) mySubWindow.setTitle(temp);
+	    mySubWindow.setBounds(r);
+	    temp = config.getValue("Visible");
+	    if (temp != null && temp.equalsIgnoreCase("false")) mySubWindow.setVisible(false);
+	    else mySubWindow.setVisible(true);
+</pre>
+<p>The code is slightly more complicated in that local values are only overwritten
+  if the parameter actually exists in the file.</p>
+<h2>Configuration IDs  </h2>
+<p>The ConfigurationManager requires that every Configurable object have a unique
+  ID. In practice, plugIns are virtually always Configurable objects meaning
+  that, almost always, plugIns require unique configuration IDs. Interestingly,
+  these IDs are not hard coded into the plugins. Instead they are handled by
+  the PlugInManager, <em>which itself is a Configurable PlugIn</em>. Lets look
+  at a typical configuration file.</p>
+  <script language="JavaScript">
+insertCode("engr1020AngusBruneau.tmcfg", false, "code", "default.tmcfg");
+  </script>
+<p>The original TM plugIns all have simple names
+    but, inasmuch as plugIns are designed to be developed at multiple sites,
+  we have adopted a more general naming scheme.</p>
+<p>All our new plugIns </p>
+<script language="JavaScript">
+bottomStamp(true, true);
+  </script>
+
+</body>
+</html>

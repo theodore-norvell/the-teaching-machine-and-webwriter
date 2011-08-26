@@ -1,0 +1,541 @@
+body	{
+	font-family: futura, helvetica, sans-serif;
+	background: #FFFFFF;
+	color:#000000;
+	border-color: #e9e9dc;
+	font-size: 12pt;
+	margin:.4in;
+    border: #e9e9dc
+}
+
+/* DELT*/	
+.content	{
+	border: 0;
+	padding: 0;
+	color:#000000;
+	font-family: futura;
+	margin-left: .2in;
+	}
+
+H1 {
+	color: #000000;
+	font-family:futura, helvetica, sans-serif;
+	font-size: 16pt;
+	line-height : normal;
+	margin-top: 0in;
+	margin-bottom: .2in;
+	padding-top: .1in;
+	padding-bottom: .1in;
+	page-break-after: avoid;
+}
+#theTitle{
+	background-color:#CCCCCC;
+	border-bottom-width: 1px;
+	border-top-width:1px;
+	border-color:#000000;
+	text-align:center;
+	font-size:24px;
+	color:#000000;
+}
+
+H2 {
+	color: #000000;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 14pt;
+	line-height : normal;
+	margin-left: 20px;
+	page-break-after: avoid;
+}
+
+H3 {
+	color: #000000;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 12pt;
+	font-weight:bold;
+	line-height : normal;
+	margin-left: .4in;
+	page-break-after: avoid;
+}
+
+H4 {
+	color: #000000;
+	font-family: futura, helvetica, sans-serif;
+	font-size: 12pt;
+	line-height : normal;
+	text-decoration: underline;
+	margin-left: .4in;
+}
+
+/* The division at the bottom of a web page
+	Designed to include one or both of dateStamp and copyright.*/
+.bottomStamp {
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	border-top: thin solid #993333;
+	border-right: 0 none #993333;
+	border-bottom: 0 none #993333;
+	border-left: 0 none #993333;
+}
+
+.copyright {
+	padding: 5px 0 0;
+	color:#000000;
+	margin-top: 10px;
+}
+.dateStamp {
+	padding: 5px 0 0;
+	color:#000000;
+	margin-top: 10px;
+	float:right;
+}
+
+.credit{
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+}
+
+dl {
+	line-height : normal;
+	font-weight: normal;
+
+
+}
+dt {
+	font-weight: bold;
+	font-size: medium;
+	margin-left: 20px;
+
+
+
+
+}
+dd {
+	line-height : normal;
+	font-weight: normal;
+	margin-left: 40px;
+	margin-right: 40px;
+}
+
+li {
+	line-height : normal;
+	font-weight: normal;
+	margin-bottom: 10px;
+}
+
+.updated {
+	padding: 0;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: thin none #993333;
+	border-right: 0 none #993333;
+	border-bottom: 0 none #993333;
+	border-left: 0 none #993333;
+	margin-top: 20px;
+}
+.linkback {
+	padding: 0 0 5px;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: none #990000;
+	border-right: 0 none #990000;
+	border-bottom: thin solid #990000;
+	border-left: 0 none #990000;
+	margin-top: 20px;
+}
+
+.internalLink {
+	padding: 5px 0 5px 5px;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: none #990000;
+	border-right: 0 none #990000;
+	border-bottom: none #990000;
+	border-left: 0 none #990000;
+	margin-top: 20px;
+	background-color: #FFCC00;
+
+}
+.note {
+	padding: 10px;
+	color:#000000;
+	font-family:georgia, palatino, "Times New Roman", times, serif;
+	font-size: small;
+	height: auto;
+	background-color: #FFCC33;
+	font-weight: normal;
+	border-top: thick solid #990000;
+	border-right: thin solid #000000;
+	border-bottom: thin solid #000000;
+	border-left: thin solid #000000;
+	margin-bottom: 20px;
+	margin-top: 20px;
+}
+
+
+.greyNote {
+
+
+	padding: 10px;
+	color:#000000;
+	font-family:georgia, palatino, "Times New Roman", times, serif;
+	font-size: small;
+	height: auto;
+	width: 300px;
+	background-color: #CCCCCC;
+	font-weight: normal;
+	border-top: thick solid #000000;
+	border-right: thin solid #000000;
+	border-bottom: thin solid #000000;
+	border-left: thin solid #000000;
+	margin-bottom: 20px;
+}
+
+.arrows {
+	padding: 0;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: none 33px;
+	border-right: none 33px;
+	border-bottom: none 33px;
+	border-left: none 33px;
+	text-align: right;
+	margin: 10px 0px;
+}
+
+
+.lesson {
+	padding: 0;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: thin none #993333;
+	border-right: 0 none #993333;
+	border-bottom: 0 none #993333;
+	border-left: 0 none #993333;
+	margin-top: 20px;
+	}
+
+.pictureCaption {
+	padding: 5px 0 0;
+	color:#000000;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-size: xx-small;
+	border-top: none #993333;
+	border-right: 0 none #993333;
+	border-bottom: 0 none #993333;
+	border-left: 0 none #993333;
+	text-align: center;
+	margin: 10px;
+
+
+}
+.instructor {
+	border: 0;
+	padding: 0;
+	color:#000000;
+	font-family:georgia, palatino, "Times New Roman", times, serif;
+	line-height: 120%;
+	font-size: medium;
+	font-weight: bold;
+
+}
+
+/* webWriter and TM styles */
+/* Running heads */
+.header{
+	padding-top: 0px;
+	margin-top: 0px;
+	font-family: "comic sans ms", arial, helvetica, sans-serif;
+	font-size: 20pt;
+	border: thin solid #FF0000;
+	background-color: #999999;
+	text-align: right;
+
+}
+
+/*Trademarks*/
+.TM{
+	color: green;
+}
+
+.WW{
+	color: red;
+}
+
+/* Built in HTML style */
+code {
+	font-family: "Courier New", Courier, mono;
+	font-size: larger;
+}
+
+/* div used to hold entire tm example including header bar */
+.tmContainer {
+	position: relative;
+	border: thick solid #000000;
+	background-color: #FFFFff;
+	margin-right: 40px;
+}
+/* The titleBar for a TMContainer*/
+.tmBar {
+	color: #ffffff;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	border-width: 1px;
+	background-color: gray;
+}
+
+
+/* code class, used for TM examples */
+.code {
+   margin-right: 3%;
+   margin-left: auto;
+   padding-left: 3px;
+   padding-right: 3px;
+   padding-top: 16px;
+   padding-bottom: 0px;
+   border-color: #ffcc99;
+   border-width: 1px;
+   color: #000000;
+   font-size: smaller;
+   font-family: "courier new", monospace;
+   page-break-inside: avoid;
+   border: 1px #999999 ridge
+}
+
+/* Styles used to color stain code 
+ these are designed to approximate Dev-C++ defaults*/
+.codeComment{
+		 color: #000000;
+		 font-style: italic;
+}
+
+.codeKeyword{
+	color: #000000;
+    font-weight: bold
+}
+.codeConstant{
+	font-weight: bold;
+}
+
+.pseudoCode{
+    font-style: italic;
+	color: #000000;
+}
+.codeHighlight{
+	text-decoration: underline;
+}
+
+/* Class used for error reporting - added 2006.03.06 */
+.error {
+	font-size:12px;
+	margin-right: .3in;
+	margin-left: .3in;
+	color: #000000;
+	font-family: "courier new", monospace;
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.pseudoCode{
+    font-style: italic;
+}
+
+/* Styles used for hidden notes. indent and hang are quirky and may be safely removed */
+.hiddenNotes p.hang{
+	text-indent: -3em;
+	margin-left: 3em;
+}
+
+p.indent{margin-left: 3em;}
+
+
+/* Define the look of the popups. */
+
+.popup {
+  background-color: #ffffcc;
+  border-color: #000000;
+  border-style:solid;
+  border-width: 2px;
+  font-family: arial, sans-serif;
+  font-size: smaller;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: absolute;
+  visibility: hidden;
+  z-Index: -1;
+}
+
+/* Define the look of the definition popups. */
+
+.definition {
+  background-color: #ffffff;
+  border-color: #000000;
+  border-style:solid;
+  border-width: 1px;
+  font-family: arial, sans-serif;
+  font-size: 11pt;
+  color: #0000FF;
+  margin: 0px;
+  padding: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  position: absolute;
+  visibility: hidden;
+  z-Index: -1;
+}
+/* Define the look of a link that has a popup  #4682b4*/
+.poplink, .deflink, .blocklink {
+   	color: #000000;
+	background-color: transparent;
+    text-decoration:underline;
+}
+
+
+/* Define the look of graphics text */
+.graphicsText{
+	color: red;
+	font-size: 10pt;
+	vertical-align: middle;
+	text-align: center;
+}
+
+/* Define the look of hidden answers */
+
+.hideAnswerContainer{
+	border: 1px;
+	border-style: inset;
+	border-color:#666666;
+	background-color:#eeeeee;
+}
+
+.hideAnswer{
+	font-size: 14px;
+	visibility: hidden;
+}
+
+.hint {
+	color: #000000;
+	background-color: #eeeeee;
+	border-style: solid;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium
+}
+pre {font-family: "Courier New", Courier, mono;
+	color: #000000;
+	font-size: 100%
+}
+.redBox {
+	background-color: #cccccc;
+	margin-right: 10%;
+	margin-left: 10%
+}
+.yellowBox {
+	background-color: #eeeeee;
+	margin-right: 10%;
+	margin-left: 10%
+}
+
+/* Is this ever used?? */
+.windowShade {
+	background-color: #0000FF;
+	position: relative;
+	visibility: visible;
+	z-index: 2;
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+.breakoutBox {
+	background-color: #FF0000;
+	position: relative;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12pt;
+	border: #000000;
+	border-top-width: medium;
+	border-right-width: medium;
+	border-bottom-width: medium;
+	border-left-width: medium
+}
+ .pagebreak {  page-break-before: always}
+ 
+/* Sidebars */
+.sideBarRight {
+	color: #333333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: right;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+
+.sideBarLeft {
+	color: #333333;
+	background-color: #FFFFFF;
+	font-size: 11pt;
+	float: left;
+	border-color: #000066;
+	border-style: groove;
+	border-top-width: thin;
+	border-right-width: thin;
+	border-bottom-width: thin;
+	border-left-width: thin;
+}
+/* These styles together define syntax definitions. Use with syntax def code snippet*/
+.syntaxDef {
+	background-color: #FFCC66;
+	border: thin solid #FF0000;
+	position: relative;
+	left: .5in;
+	right: .5in;
+	padding: 5px;
+	width: 75%;
+}
+.stxTerminal {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.stxNonterminal {
+	font-family: "Courier New", Courier, mono;
+	font-style: italic;
+}
+.stxMeta {
+	font-family: "Courier New", Courier, mono;
+	font-weight: bold;
+}
+.insetClause {
+	margin-left: 1in;
+}
+.principle {
+	font-size: x-large;
+	background-color: #cccccc;
+	text-align: center;
+	border: thin ridge #cccccc;
+}
+
+#allExamples {
+	display:block;
+}
+
+#allExamples h1 {
+	border-top: thin;
+	border-bottom: thin;
+	border-color:#000000;
+	background-color:#CCCCCC;
+	text-align:center;
+	page-break-before:always;
+}
+

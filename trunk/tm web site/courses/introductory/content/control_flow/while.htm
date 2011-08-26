@@ -1,0 +1,543 @@
+<!-- InstanceBegin template="/teachingmachine.org/courses/introductory/Templates/contentPage.dwt" codeOutsideHTMLIsLocked="false" --><!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>While Loops</title>
+<script language="JavaScript">
+nestingDepth = "../../";
+</script>
+<script language="JavaScript" src="../noteConstants.js"></script>
+<!-- InstanceEndEditable -->
+<!-- these are relative to template -->
+<script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../webWriter/web_writer.js"></script>
+</head>
+<body id="bodyRef">
+<div id="contents">
+<!-- InstanceBeginEditable name="contents" -->
+<h1>The While Loop</h1>
+<p>We said that flow of control can be altered in two ways.</p>
+<ol>
+  <li>decisions</li>
+  <li>loops</li>
+</ol>
+<p>Decisions (if statements) allow us to choose between alternate blocks of code.
+  Whichever block is executed, it is only executed once. </p>
+<p>Loops allow us to repeat a block of code.</p>
+<p> Consider the famous old Newfoundland folk song, <em>She's
+            Like the Swallow</em> </p>
+<pre>She's like the swallow that flies so high,
+She's like the river that never runs dry.
+She's like the sunshine on the lee shore,
+She loves her love but she'll love no more.
+
+'Twas down in the meadow this fair maid bent
+A-picking the primrose just as she went.
+The more she picked and the more she pulled,
+Until she gathered her apron full.
+
+She climbed on yonder hill above
+To give a rose unto her love.
+She gave him one, she gave him three
+She gave her heart for company
+
+And as they sat on yonder hill
+His heart grew hard, so harder still.
+He has two hearts instead of one.
+She says, "Young man, what have you done?"
+
+"How foolish, foolish you must be
+To think I love no one but thee.
+The world's not made for one alone,
+I take delight in everyone."
+
+She took her roses and made a bed,
+A stony pillow for her head.
+She lay her down, no more did say,
+But let her roses fade away.
+
+She's like the swallow that flies so high,
+She's like the river that never runs dry,
+She's like the sunshine on the lee shore,
+She loves her love but she'll love no more.</pre>
+<p>When we write out the lyrics, its rather like our programs to date. Each line is similar to an instruction. Start with the first line and work your way down to the last.</p>
+<p>That's fine for singers. Consider the guitar player's view of the same song.</p>
+<pre>      Am       Em           F     G  Am
+She's like the swallow that flies so high,
+      Am       Am7        G6         Em
+She's like the river that never runs dry.
+      Am       Fmaj7    Em         F
+She's like the sunshine on the lee shore.
+    Am        G6       F           G
+She loves her love but she'll love no more.</pre>
+<p>The chords are written above the lyrics, but normally only for the first verse. So the guitarist thinks of the song as follows:</p>
+<blockquote>
+  <pre>while there is another verse, play
+    Line 1:  Am   Em    F  G Am
+    Line 2:  Am   Am7   G6   Em
+    Line 3:  Am   Fmaj7 Em   F
+    Line 4:  Am   G6    F    G</pre>
+</blockquote>
+<p>From the guitarist's viewpoint, each verse is the same. So its just a matter
+  of <em>looping</em> the four line chord patterns
+until we run out of verses. Thus the 
+  <script language="JavaScript">
+startDefLink("algorithm");
+    </script>
+	algorithm
+  <script language="JavaScript">
+endLink();
+    </script>
+for playing this song on guitar is this four line chord pattern and the
+instruction to repeat (or <em>loop</em>) while there are still verses.</p>
+<p>Guitarists don't need to know all the verses or even count them. All they
+  have to do is recognize the last verse (which is easy here, as it is a repeat
+  of the first). </p>
+<h1><a name="Clooping">Looping in C++</a> </h1>
+<p>C++ provides three different kinds of loops. For the moment, we'll only consider one of them, which corresponds pretty closely to what we just did with the guitar chords above.</p>
+<p>First, however, we have to consider
+          a couple of new
+    <script language="JavaScript">
+startDefLink("operator");
+    </script>
+    operators<b><em>
+    <script language="JavaScript">
+endLink();
+    </script>
+    </em></b>.</p>
+<h2><a name="increment">Increment and Decrement</a></h2>
+<p>Incrementing (adding 1 to) a number and decrementing (subtracting 1 from)
+  are so common that they have their own special operators, <code>++</code> and <code>--.
+  Thus </code></p>
+<p><code>i++</code></p>
+<p>means add <code>1</code> to <code>i</code> and</p>
+<p><code> i--</code></p>
+<p>means subtract <code>1</code> from <code>i</code>. </p>
+<p>We'll have more to say about these operators later. </p>
+<h2><a name="while">While Loops</a> </h2>
+<p>Again, a loop is a way of repeating a section of code (&quot;looping&quot;).
+  Consider the problem of computing a factorial. We know that 3! is just 3 *
+  2 * 1 and 5! is 5 * 4 * 3 * 2 * 1. In general then we start with the number
+  whose factorial we want to computee and multiply it by one less than itself
+  then repeat the process until we're down to one.</p>
+<p>Let's write that out a little more clearly, using pseudocode </p>
+<p class="pseudoCode">factorial = 1 </p>
+<p class="pseudoCode"> while number &gt; 1</p>
+<blockquote>
+  <p><span class="pseudoCode">factorial = factorial * number </span> </p>
+  <p class="pseudoCode">subtract 1 from number</p>
+</blockquote>
+<p>The indented part of the algorithm is known as the body of the loop. It is
+  repeated as long as the condition in the while holds. Notice that the body
+  of the loop changes number each time so that the condition being tested can
+  change.</p>
+<p>In C++ a <span class="codeKeyword">while</span> loop
+    is created by a <span class="codeKeyword">while</span> statement.
+    Here is a function that implements the factorial algorithm above using a
+    while loop.</p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("./factorial.cpp", true, "code", "", "A","all");
+  </script>
+
+<p>The <span class="codeKeyword">while</span> loop
+    has a <em>loop
+    continuation condition</em> and a body. As long as the condition is <code class="codeConstant">true</code> the
+  body keeps executing.</p>
+<p>The control flow for the example in the syntax definition looks like this.
+  Once again we colour code it to allow you to correlate the time sequence on
+  the left with the code itself. </p>
+<table width="100%"  border="0">
+  <tr>
+    <td class="normal"><p><img src="while.png" width="229" height="400"></p></td>
+    <td><p class="normal"><code>fact = 1;<br>
+      while (<span style="background-color: yellow">num &gt; 1</span>){<br>
+      <span style="background-color:#00FFFF">&nbsp;&nbsp;&nbsp;&nbsp; fact *= num;<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;num--;</span><br>
+      }</code></p>
+        <p class="normal">The boolean expression <span style="background-color: yellow"><code>num &gt; 1</code></span> represents
+          a <em>loop
+            continuation condition</em></p>
+      <p class="normal">If the condition is <code>true</code> the <span style="background-color:#00FFFF"><em>body
+        of the loop</em></span> is executed.</p>
+      <p class="normal">After <span style="background-color:#00FFFF">the body</span> is executed, we go back and (<span style="background-color: yellow">test the <em>loop continuation condition</em></span> again</p>
+      <p class="normal">As soon as the condition is false, <em>the flow of
+        control </em>moves to the statement immediately after the loop.</p></td>
+  </tr>
+</table>
+<h2>Comparison of <span class="codeKeyword">if</span> and <span class="codeKeyword">while</span></h2>
+<p><span class="codeKeyword">If</span> and <span class="codeKeyword">while</span> statements have a lot in common, particularly if you use a simple
+  <span class="codeKeyword">if</span> with no <span class="codeKeyword">then</span> clause.</p>
+<pre>if (condition)                  while (condition)
+    statement                       statement</pre>
+<p>or</p>
+<pre>if (condition) {                while (condition) {
+    block of statements            block of statements
+}                               }</pre>
+<p>This similarity sometimes leads to confusion. But the difference is simple.</p>
+<p>In the case of the <span class="codeKeyword">if</span>, if the condition is <span class="codeKeyword">true</span>, the statement (or block of
+  statements) is executed exactly once, if it is <span class="codeKeyword">false</span> it is not executed at
+  all.</p>
+<p>In the case of the <span class="codeKeyword">while</span> the statement (or
+  block of statements) is executed repeatedly while (or as long as) the condition
+  is <span class="codeKeyword">true</span>.
+  This could be no times (if the condition is <span class="codeKeyword">false</span> originally),
+  one or more times, or even forever.</p>
+<h2><a name="babylonian">The Babylonian Algorithm</a></h2>
+<p>Event controlled loops often present  interesting cases. Here is the ancient  Babylonian algorithm for computing the square root of a number, as it  appeared on the winter 2008 midterm exam.
+<blockquote>
+  <p class="pseudoCode">make   a <strong>guess</strong></p>
+  <p class="pseudoCode">repeat</p>
+  <blockquote>
+    <p class="pseudoCode">divide   the <strong>number</strong> by the <strong>guess</strong> (to give us a real <strong>result</strong>)</p>
+    <p class="pseudoCode">compute   a new <strong>guess</strong> as the average of the   last <strong>guess</strong> and <strong>result</strong>.</p>
+  </blockquote>
+  <p class="pseudoCode">until   satisfied that the <strong>guess</strong> is close   enough</p>
+</blockquote>
+<p>What is meant by, <em>until satisfied that the guess is close enough</em>? The notion here is that the updated guess will converge on the correct answer. Of course we don't know what the correct result is (if we did, we wouln't need the algorithm). So all that we can do is observe what happens to guess.</p>
+<p>For example, here are five iterations of the algorithm (as done in a spreadsheet) to find the root of 14 when starting with a guess of 3. Notice the guess converges rapidly.</p>
+<table border="1" cellpadding="1" cellspacing="" bordercolor="#00CC33">
+  <col width="64">
+  <col width="114" span="6">
+  <tr height="18">
+    <td height="18" width="64"></td>
+    <td width="114"></td>
+    <td width="114">&nbsp;</td>
+    <td width="104">&nbsp;</td>
+    <td width="114"><strong>Iteration</strong></td>
+    <td width="114">&nbsp;</td>
+    <td width="114">&nbsp;</td>
+  </tr>
+  <tr height="18">
+    <td height="18"></td>
+    <td><strong>start</strong></td>
+    <td align="right"><strong>1</strong></td>
+    <td align="right"><strong>2</strong></td>
+    <td align="right"><strong>3</strong></td>
+    <td align="right"><strong>4</strong></td>
+    <td align="right"><strong>5</strong></td>
+  </tr>
+  <tr height="17">
+    <td height="17"><strong>number</strong></td>
+    <td align="right">14</td>
+    <td align="right">14</td>
+    <td align="right">14</td>
+    <td align="right">14</td>
+    <td align="right">14</td>
+    <td align="right">14</td>
+  </tr>
+  <tr height="17">
+    <td height="17"><strong>guess</strong></td>
+    <td align="right">3</td>
+    <td align="right">3.833333333</td>
+    <td align="right">3.742753623</td>
+    <td align="right">3.741657547</td>
+    <td align="right">3.741657387</td>
+    <td align="right">3.741657387</td>
+  </tr>
+  <tr height="17">
+    <td height="17"><strong>result</strong></td>
+    <td align="right">4.666666667</td>
+    <td align="right">3.652173913</td>
+    <td align="right">3.740561471</td>
+    <td align="right">3.741657226</td>
+    <td align="right">3.741657387</td>
+    <td align="right">3.741657387</td>
+  </tr>
+</table>
+<p>To get a handle on how rapidly, let's measure at each iteration how much the guess has changed since the last time. The variable <code>deltaG</code> is added to the table to compute that difference</p>
+<table border="1" cellpadding="1" cellspacing="" bordercolor="#00CC33">
+  <col width="64">
+  <col width="114" span="6">
+  <tr height="18">
+    <td height="18" width="64"></td>
+    <td width="114"></td>
+    <td width="114">&nbsp;</td>
+    <td width="104">&nbsp;</td>
+    <td width="114"><strong>Iteration</strong></td>
+    <td width="114">&nbsp;</td>
+    <td width="114">&nbsp;</td>
+  </tr>
+  <tr height="18">
+    <td height="18"></td>
+    <td><strong>start</strong></td>
+    <td align="right"><strong>1</strong></td>
+    <td align="right"><strong>2</strong></td>
+    <td align="right"><strong>3</strong></td>
+    <td align="right"><strong>4</strong></td>
+    <td align="right"><strong>5</strong></td>
+  </tr>
+  <tr height="17">
+    <td height="17"><strong>deltaG</strong></td>
+    <td>&nbsp;</td>
+    <td align="right">0.833333333</td>
+    <td align="right">-0.09057971</td>
+    <td align="right">-0.001096076</td>
+    <td align="right">-1.60541E-07</td>
+    <td align="right">-3.55271E-15</td>
+  </tr>
+</table>
+<p>Notice how rapidly <code>deltaG</code> dwindles. It looks like we could use this to tell when to quit iterating. Here is an updated version of the pseudocode, which explicitly uses <span class="codeKeyword">while</span>.</p>
+<blockquote>
+  <p class="pseudoCode">make   a <strong>guess</strong></p>
+  <p class="pseudoCode"><strong>deltaG</strong> = 1</p>
+  <p class="pseudoCode">while <strong>deltaG</strong> &gt; <strong>threshold</strong></p>
+  <blockquote>
+    <p class="pseudoCode">divide   the <strong>number</strong> by the <strong>guess</strong> (to give us a real <strong>result</strong>)</p>
+    <p class="pseudoCode">compute   a new <strong>guess</strong> as the average of the   last <strong>guess</strong> and <strong>result</strong>.</p>
+    <p class="pseudoCode"><strong>deltaG</strong> = | new <strong>guess</strong> - old <strong>guess</strong> |</p>
+  </blockquote>
+</blockquote>
+<p></p>
+<p>A few questions:</p>
+<ol>
+  <li>Why did we use absolute value to compute <code>deltaG</code>?<br>
+      <script language="JavaScript">
+	startHiddenAnswer("1");
+  </script>
+    As the table shows, <code>deltaG</code> can be negative. <strong>All</strong> negative <code>deltaG</code>'s will be less than <strong>any</strong> positive <code>threshold</code>. Clearly we are only interested in the magnitude of deltaG, not its sign.
+    <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  </li>
+  <li>Why did we initialize <code>deltaG</code> to <code>1</code>?<br>
+      <script language="JavaScript">
+	startHiddenAnswer("2");
+      </script>
+    The <span class="codeKeyword">while</span> loop tests before the body of the loop so we need a large enough value of <code>deltaG</code> that the loop will always start. Presumably, <code>threshold</code> will always be less than <code>1</code>.
+    <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  </li>
+  <li>How many variables do we now require?<br>
+      <script language="JavaScript">
+	startHiddenAnswer("3");
+      </script>
+    5 or 6. Certainly <code>deltaG</code>, <code>number</code>, <code>result</code> and both <code>newGuess</code> and <code>oldGuess</code> are required. <code>threshold</code> could be a variable or a constant.
+    <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  </li>
+  <li><code>deltaG</code> is the error, right?<br>
+      <script language="JavaScript">
+	startHiddenAnswer("4");
+      </script>
+    No. If we use the estimate produced by the 5'th iteration, the error is the sum of the infinite set of terms that would be produced from the 6'th iteration on. A lot of math is needed to investigate the actual error in detail. For most series algorithms, <code>deltaG</code> is a reasonable threshold to use.
+    <script language="JavaScript">
+	endHiddenAnswer();
+</script>
+  </li>
+</ol>
+<p>Here is the actual code for a Babylonian function. It actually returns the number of iterations, as a point of interest. In addition, an improvement upon the pseudoCode has been made. Can you spot it? Why might that be better?</p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("babylonian.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p>
+<h1><a name="LoopDesign">Loop Design </a></h1>
+<ol>
+  <li>The general case: </li>
+  <ul>
+    <li>What should be done in the body? </li>
+  </ul>
+  <li>The special cases:</li>
+</ol>
+<ul>
+  <li>Under what condition should the iteration stop? </li>
+  <li>How should the loop control condition be initialized? </li>
+  <li>How should the loop control condition be updated? </li>
+  <li>How should other variables be initialized? </li>
+  <li>How should other variables be updated? </li>
+  <li>What is the state when the loop exits? </li>
+</ul>
+<p>Notice we have put the general case first. Although it may seem counter-intuitive
+  (because when you read the code the <span class="codeKeyword">while</span> precedes
+  the body of the loop)
+<p class="principle">Design loops from the inside out (from the general to the specific). 
+<p>Note the implication here is that</p>
+<ol>
+  <li>first design the loop, then</li>
+  <li>code the loop </li>
+</ol>
+<h2><a name="doWhile">Do While Loops</a> </h2>
+<p>A <span class="codeKeyword">do-while</span> loop is created by a <span class="codeKeyword">do-while</span>    
+  <script language="JavaScript">
+startDefLink("statement");
+  </script>
+  statement
+  <script language="JavaScript">
+endLink();
+  </script>
+  . It is really just a variant of the <span class="codeKeyword">while</span> statement. The
+  difference is that the test
+  <script language="JavaScript">
+startDefLink("condition");
+  </script>
+  condition
+  <script language="JavaScript">
+endLink();
+  </script>
+  comes <em>after</em> the body of the loop which means that
+  the <em>body of the loop will always be executed at least one time</em>. If you look at our original Babylonian algorithm pseudocode, this is just what was required. Recasting it, we get </p>
+<blockquote>
+  <p class="pseudoCode">make a <strong>guess</strong></p>
+  <p class="pseudoCode"><strong>do</strong></p>
+  <blockquote>
+    <p class="pseudoCode">divide the <strong>number</strong> by the <strong>guess</strong> (to give us a real <strong>result</strong>)</p>
+    <p class="pseudoCode">compute a new <strong>guess</strong> as the average of the last <strong>guess</strong> and <strong>result</strong>.</p>
+    <p class="pseudoCode"><strong>deltaG</strong> = | new <strong>guess</strong> - old <strong>guess</strong> |</p>
+    </blockquote>
+  <p class="pseudoCode">while <strong>deltaG</strong> &gt; <strong>threshold</strong></p>
+</blockquote>
+<p>Now it is not necessary to create an artificial value for <code>deltaG</code> (or <code>lastGuess</code>) to get things started. Since the loop test is now at the end, we will always have a <code>deltaG</code> and <code>lastGuess</code> to use in the test. Here's the code. </p>
+<p>
+  <script language="JavaScript">
+setButtons(true, false, true,"","");
+insertCode("babylonian2.cpp", true, "code", "","A","all");
+  </script>
+</p>
+<p><span class="codeKeyword">do-while</span>  is often used to test inputs. First, however, we have to study how to input data from a keyboard.</p>
+<h1><a name="inputData">Input Data to a Program</a></h1>
+<p>All term we have been using <code>cout</code> to print data from a program to the screen. Now we look briefly at how we get data </p>
+<p>In order to input data to a program, a variable is first created to hold the value input. Input is very similar to output in that there is an <em>input stream</em> and an input operator, called the <em>extraction</em> operator. </p>
+    <blockquote>
+      <pre><code>double x;
+</code><code>cin &gt;&gt; x;</code></pre>
+    </blockquote>
+    <p> Extracts a double value from the<em> standard input</em> stream (usually the keyboard) and stores it in the variable named <code>x</code>. </p>
+    <p><code>cin</code> is the name of the standard input stream.</p>
+    <ol>
+      <ol>
+        <li> Assigns to variables left to right order. </li>
+        <li> What can be input depends on the data type of the variable. </li>
+        <li> whitespace (tab, space, newline) is skipped. </li>
+        <li> A reading marker keeps track of the next character to be read. </li>
+      </ol>
+    </ol>
+    <p>Since the input stream extracts values according to the type of the variable the data is being read into, there is always the possibility for error. By definition, input can only occur while the program is running, so any such error is a run-time error. One way to help ameliorate this problem is to give the program user appropriate prompts. This is done by mixing prompts to <code>cout</code> with input from <code>cin</code>. Here we add the capability of inputting data to our Babylonian program.</p>
+    <p>
+      <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("babylonian3.cpp", true, "code", "", "A", "all");
+      </script>
+</p>
+<script language="JavaScript">
+ startNote();
+</script>
+<hr>
+<p align="center"><strong>Code Notes</strong></p>
+<p class="hang">1. Since three pieces of data are to be input three variables are declared in <code>main</code> to hold the data. There is no reason to initialize the variables as we know data will be put into them by the input process.</p>
+<p class="hang">2. Note how <code>cout</code> and <code>cin</code> statements are mixed. When inserting elements into the <code>cout</code> stream the screen cursor ends up right where you leave off. The program takes advantage of this fact to create prompts, always leaving a space. Then the <code>cin</code> statement takes over and the user response gets typed right after the prompt. <code>endl</code>s are used to move the cursor back to a new line. </p>
+ <p class="hang">3. The last set of <code>cout</code> statements are broken up to keep the code lines a manageable length. They do not correspond to the actual length or number of the output lines </p>
+<hr>
+    <script language="JavaScript">
+ endNote();
+    </script>
+    </p>
+ <h3><a name="conditioning">Input Conditioning</a></h3>
+  <p>It is often the case that not all possible inputs are acceptable. Consider, for example, the following program to compute the total grade for a course, given three component marks. The function involved is simple. </p>
+<p>
+      <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark.cpp", true, "code", "", "A", "all");
+      </script>
+</p>
+<p>Now we embed it in a <code>main</code> function that seeks to input the component marks from a user.</p>
+<p>      <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark.cpp", true, "code", "", "M", "all");
+      </script>
+</p>
+<p>Two kinds of error are possible when inputting data.</p>
+  <ol>
+    <li>The wrong type of data could be input, such as <span class="codeConstant">&quot;zero&quot;</span> when a double is expected. Try entering such data to see what happens.</li>
+    <li>The data could be the right type but the wrong value, for example,<span class="codeConstant"> -1</span> or <span class="codeConstant">120.0</span>. Although the prompt gives the correct range of marks, no way has been provided to check to see if the marks are correct. </li>
+  </ol>
+  <p>Input conditioning refers to the process of testing the input data to make sure it is correct. Here is a naive approach: </p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark2.cpp", true, "code", "", "M", "all");
+      </script>
+  </p>
+  <p>Why is it naive? It assumes that a user can only ever possible make a single entry mistake. Hopefully that's true, but it can't be guaranteed. What is needed is to stay there until the user gets it right. Perfect for <span class="codeKeyword">while</span> loops!</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark3.cpp", true, "code", "", "M", "all");
+      </script>
+</p>
+  <p>Mind you, this code is still pretty bad. Look how often we do the exactly the same thing. Good thing we've got cut-and-paste! Of course, changing it will be a pain since we'll have to do it three times. How about we stick all that in a function?</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark4.cpp", true, "code", "", "B", "all");
+      </script>
+  </p>
+  <p>The function doesn't handle the initial prompt because that varies (actually it could except we haven't shown you how to pass a string into a function yet). Still, look how much cleaner our original code is now&#8212;</p>
+  <p>
+    <script language="JavaScript">
+	setButtons(true, false, true,"");
+	insertCode("getMark4.cpp", true, "code", "", "M", "all");
+      </script> 
+  </p>
+  <!-- InstanceEndEditable -->
+<div id="allExamples">
+ <!-- InstanceBeginEditable name="allExamples" -->
+ <h1>Examples Shown in Full </h1>
+<p>
+   <script language="JavaScript">
+insertCode("factorial.cpp", false, "code", "", "all", "all");
+  </script>
+
+<p class="pagebreak">
+   <script language="JavaScript">
+insertCode("babylonian.cpp", false, "code", "", "all", "all");
+  </script>
+  
+<p class="pagebreak">
+   <script language="JavaScript">
+insertCode("babylonian2.cpp", false, "code", "", "all", "all");
+  </script>
+
+<p class="pagebreak">
+   <script language="JavaScript">
+insertCode("babylonian3.cpp", false, "code", "", "all", "all");
+  </script>
+  
+<p class="pagebreak">
+  <script language="JavaScript">
+	insertCode("getMark.cpp", false, "code", "", "all", "all");
+</script>
+</p>
+  
+<p class="pagebreak">
+  <script language="JavaScript">
+	insertCode("getMark2.cpp", false, "code", "", "all", "all");
+</script>
+</p>
+  
+<p class="pagebreak">
+  <script language="JavaScript">
+	insertCode("getMark3.cpp", false, "code", "", "all", "all");
+</script>
+</p>
+  
+<p class="pagebreak">
+  <script language="JavaScript">
+	insertCode("getMark4.cpp", false, "code", "", "all", "all");
+</script>
+</p>
+<!-- InstanceEndEditable --></div>
+<p>
+<script language="JavaScript">
+	bottomStamp(true, true);
+</script>
+</p>
+</div>
+</body>
+<!-- InstanceEnd --></html>
+
