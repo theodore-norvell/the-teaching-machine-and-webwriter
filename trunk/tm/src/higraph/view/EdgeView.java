@@ -240,8 +240,6 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 	private void placeDecorator(PointDecorator<NP,EP,HG,WG,SG,N,E> decorator, double xp, double yp, double xd, double yd){
 		decorator.placeNext(xp, yp);
 		decorator.angleNext(Math.atan2(yd-yp, xd-xp));
-		decorator.setColor( this.getColor() ) ;
-		decorator.setStroke( this.getStroke() ) ;
 	}
 	
 	public GeneralPath getNextShape() {

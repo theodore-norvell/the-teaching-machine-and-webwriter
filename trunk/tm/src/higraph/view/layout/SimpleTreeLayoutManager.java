@@ -85,7 +85,7 @@ public class SimpleTreeLayoutManager
 			NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
 			top.doLayout();  // recursive layout using top's layoutManager
 			top.translateNextHierarchy(x, 0.);
-			x += top.getNextExtent().getWidth() + gap;  // shift default translation over for next top	
+			x += top.getNextExtent().getWidth() + gap;  // shift default translation over for next top
 		}
 		layoutEdges( hgv, hgv.getHigraph().getGovernedEdges() );
 		

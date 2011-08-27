@@ -32,7 +32,6 @@ import tm.interfaces.RegionInterface;
 import tm.interfaces.Scriptable;
 import tm.javaLang.datum.BooleanDatum;
 import tm.utilities.Assert;
-import tm.utilities.TMException;
 import tm.virtualMachine.VMState;
 /**
 * <h2> Overview:</h2>
@@ -54,18 +53,20 @@ public class ScriptManager implements Scriptable{
 	private static int lastImageWidth ;
 	private static int lastImageHeight ;
 	
-	private class CachedMethod{
+/*	private class CachedMethod{
 		Method myMethod;
+		Scriptable myComponent;
+		String methodName;
+		Class<?>[] argClasses;
+		int argMask;
 		int myArgs;
-//		Class<?>[] myArgumentClasses;
-		CachedMethod(Method m, int a){
+		CachedMethod(Method m, Scriptable c, Class<?>[] aClasses, int aMask, int a){
 			myMethod = m;
+			myComponent = c;
+			argMask = aMask;
 			myArgs = a;
-/*			myArgumentClasses = new Class<?>[myArgs];
-			for (int i = 0; i < myArgs; i++)
-				myArgumentClasses[i] = argCs[i];*/
 		}
-	};
+	};*/
 	
 	private Hashtable<String,Object> methodCache = new Hashtable<String,Object>() ;
 	
@@ -91,6 +92,7 @@ public class ScriptManager implements Scriptable{
 	 */
 	public void reset(){
 		registrees.clear();
+		methodCache.clear();
 	}
 	
 	/**
@@ -278,7 +280,12 @@ public class ScriptManager implements Scriptable{
      	
      	
     	while (argsMask >= 0){
-    		method = findMethodInComponent(targetComponent, targetMethodName, argumentClasses, args, argsMask);
+    		method = (Method)methodCache.get(makeKey(componentId, targetMethodName, argumentClasses, args, argsMask));
+    		if (method == null){
+    			method = findMethodInComponent(targetComponent, targetMethodName, argumentClasses, args, argsMask);
+    			if (method != null)
+    				methodCache.put(makeKey(componentId, targetMethodName, argumentClasses, args, argsMask), method);
+    		}// else System.out.println("Using cached " + targetMethodName);
  //       	System.out.println("trying " + targetMethodName + " with argsMask " + argsMask);
     		if (method != null) break;  // found it!
     		while((--argsMask & argsMaskComp) != 0)  // step down to next valid argsMask
@@ -502,6 +509,15 @@ public class ScriptManager implements Scriptable{
 		}
 }
 
+	private String makeKey(String componentId, String methodName, Class<?>[] argClasses, int args, int argsMask){
+		String key = componentId + "." + methodName;
+		for (int i = 0; i < args; i++)
+			key += argClasses[i];
+		key += argsMask;
+//		System.out.println(key);
+		return key;
+	}
+		
 	private Method findMethodInComponent(Scriptable component, String methodName, Class<?>[] argClasses){
     	Class<?> targetClass = component.getClass();
 
@@ -535,6 +551,7 @@ public class ScriptManager implements Scriptable{
 
 
 	private Object makeTheCall(Scriptable component, String methodName, Method method, Object[] arguments){
+		//System.out.println("calling " + methodName + " id: " + method + " with args " + arguments);
 		Assert.scriptingError(method != null, "ScriptManager unable to find method "+methodName+" in " + component);
 		try {
 			return method.invoke(component, arguments);

@@ -20,6 +20,9 @@ import tm.backtrack.BTVar;
 import tm.displayEngine.DisplayAdapter;
 import higraph.view.HigraphView;
 import tm.interfaces.DisplayContextInterface;
+import tm.interfaces.ImageSourceInterface;
+import tm.subWindowPkg.SmallButton;
+import tm.subWindowPkg.ToolBar;
 import tm.utilities.Debug;
 
 public class HigraphVisualizer	extends DisplayAdapter {
@@ -45,8 +48,14 @@ public class HigraphVisualizer	extends DisplayAdapter {
 		myViewVar = new BTVar<HigraphView<NodePayloadTM,EdgePayloadTM,
 		HigraphTM, WholeGraphTM,SubgraphTM,
 		NodeTM,EdgeTM>>(dc.getTimeManager());
-//		System.out.println("Creating SubgraphVisualizer " + this);
-//		dc.getHigraphManager().higraphDisplayAdded(this);
+		SmallButton buttons[] = new SmallButton[2];
+		ImageSourceInterface imageSource = context.getImageSource();
+		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);
+		buttons[0].setToolTipText("Backup");
+		buttons[1] = new SmallButton("AutoRun", imageSource);
+		buttons[1].setToolTipText("Run from here");
+		toolBar = new ToolBar(buttons);
+		mySubWindow.addToolBar(toolBar);
 	}
 	
 	/**
@@ -64,6 +73,18 @@ public class HigraphVisualizer	extends DisplayAdapter {
 			
 			super.refresh(); 
 		}
+		
+		// Button handler
+	    public void buttonPushed(int i) {
+	        if (i < 0 || i > 1) return;
+	        switch (i) {
+	        case 0: commandProcessor.goBack();
+	        break;
+	        case 1: commandProcessor.autoRun();
+	        break;
+	        }
+	    } 
+
 		
 	
 	/**
