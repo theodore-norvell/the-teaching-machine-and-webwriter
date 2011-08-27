@@ -47,9 +47,9 @@ implements Layable
 	protected final BTVar<Double> nextYVar;
 	protected final BTVar<Double> thetaVar;
 	protected final BTVar<Double> nextThetaVar;
-	protected final BTVar<Color> colorVar;
-	protected final BTVar<Stroke> strokeVar;
-	protected final BTVar<Boolean> visibleVar;
+//	protected final BTVar<Color> colorVar;
+//	protected final BTVar<Stroke> strokeVar;
+//	protected final BTVar<Boolean> visibleVar;
 	protected final BTVar<ComponentView<NP,EP,HG,WG,SG,N,E>> ownerVar;
 	protected final BTTimeManager timeMan;
 	
@@ -62,9 +62,9 @@ implements Layable
 		nextThetaVar = new BTVar<Double> (tm, 0.);
 
 		ownerVar = new BTVar<ComponentView<NP,EP,HG,WG,SG,N,E>>(tm);
-		colorVar = new BTVar<Color> (tm, view.getDefaultBranchColor());
-		strokeVar = new BTVar<Stroke> (tm, view.getDefaultBranchStroke());
-		visibleVar = new BTVar<Boolean>(tm, true);
+//		colorVar = new BTVar<Color> (tm, view.getDefaultBranchColor());
+//		strokeVar = new BTVar<Stroke> (tm, view.getDefaultBranchStroke());
+//		visibleVar = new BTVar<Boolean>(tm, true);
 		timeMan = tm;
 	}
 	
@@ -148,37 +148,37 @@ implements Layable
 	/**
 	 *  Set the decorator drawing color
 	 *  
-	 * @param c the color the decorator is to be drawn in */
+	 * @param c the color the decorator is to be drawn in
 	 
 	public void setColor(Color c){
 		colorVar.set(c);
-	}
+	}*/
 	
 	/**
 	 * 
-	 * @return the color the decorator is drawn in */
+	 * @return the color the decorator is drawn in
 	 
 	public Color getColor(){
 		return 	colorVar.get();
-	}
+	}*/
 	
 	/**
 	 * Set the stroke used to draw the decorator, if there is one. There is no guarantee
 	 * the decorator uses stroke drawing so this may have no effect.
 	 * 
-	 * @param s characteristics of the Stroke if one is used */
+	 * @param s characteristics of the Stroke if one is used
 	
 	public void setStroke(Stroke s){
 		strokeVar.set(s);
-	}
+	} */
 	
 	/**
 	 * 
-	 * @return the current Stroke setting*/
+	 * @return the current Stroke setting
 	 
 	public Stroke getStroke(){
 		return 	strokeVar.get();
-	}
+	}*/
 	
 	public double getNextX(){
 		return nextXVar.get();

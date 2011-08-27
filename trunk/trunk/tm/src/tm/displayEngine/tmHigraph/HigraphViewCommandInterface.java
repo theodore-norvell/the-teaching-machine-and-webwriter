@@ -48,6 +48,7 @@ public interface HigraphViewCommandInterface {
 	public void setDefaultNodeFillColor(long c);  // Shape fill color
 	public void setDefaultNodeNameColor(long c);  // Node name label color
 	public void setDefaultNodeValueColor(long c); // node value label color
+	public void setDefaultNodeSize(long w, long h); // node size
 	
 	// Node strokes are not yet defined and this routine is inoperative
 	public void setDefaultNodeStroke(long s);

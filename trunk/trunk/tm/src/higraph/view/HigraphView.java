@@ -17,6 +17,7 @@ package higraph.view;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -122,6 +123,8 @@ public class HigraphView
 	private final BTVar<Color> defaultNodeColorVar;
 	private final BTVar<Color> defaultNodeFillColorVar;
 	private final BTVar<Stroke> defaultNodeStrokeVar;
+	private final BTVar<Double> defaultNodeWidthVar;
+	private final BTVar<Double> defaultNodeHeightVar;
 	private final BTVar<RectangularShape> defaultNodeShapeVar;
 
 	private final BTVar<Color> defaultEdgeColorVar;
@@ -173,7 +176,7 @@ public class HigraphView
 	private final BTFunction<N, NodeView<NP,EP,HG,WG,SG,N,E>> nodeViewFunc;	
 	private final BTFunction<E, EdgeView<NP,EP,HG,WG,SG,N,E>> edgeViewFunc;    
 //	private final BTVar<Rectangle2D> extentVar;
-//	private final BTVar<Rectangle2D> nextExtentVar;
+	private final BTVar<Rectangle2D> nextExtentVar;
 	private final BTVector<DisplayString> myStringVector;
 	private final BTVector<Line2D.Double> lineVector;
 
@@ -182,6 +185,8 @@ public class HigraphView
 	    defaultNodeColorVar = new BTVar<Color>( timeMan, DEFAULT_NODE_COLOR);
 	    defaultNodeFillColorVar = new BTVar<Color>( timeMan, DEFAULT_NODE_FILL_COLOR);
 	    defaultNodeStrokeVar = new BTVar<Stroke>( timeMan, DEFAULT_NODE_STROKE);
+	    defaultNodeWidthVar = new BTVar<Double>(timeMan, DEFAULT_SHAPE_WIDTH);
+	    defaultNodeHeightVar = new BTVar<Double>(timeMan, DEFAULT_SHAPE_HEIGHT);
         defaultNodeShapeVar = new BTVar<RectangularShape>( timeMan, DEFAULT_NODE_SHAPE);
 
 	    defaultEdgeColorVar = new BTVar<Color>( timeMan, DEFAULT_EDGE_COLOR);
@@ -221,7 +226,7 @@ public class HigraphView
 		nodeViewFunc = new BTFunction<N, NodeView<NP,EP,HG,WG,SG,N,E>>(timeMan) ;
 		edgeViewFunc = new BTFunction<E, EdgeView<NP,EP,HG,WG,SG,N,E>>(timeMan) ;
 //		extentVar = new BTVar<Rectangle2D>( timeMan ) ; // initially next
-//		nextExtentVar = new BTVar<Rectangle2D>( timeMan ) ; 
+		nextExtentVar = new BTVar<Rectangle2D>( timeMan ) ; 
 		myStringVector = new BTVector<DisplayString>( timeMan ) ;
 		lineVector = new BTVector<Line2D.Double>(timeMan);
 	}
@@ -261,27 +266,32 @@ public class HigraphView
 			nextExtentVar.set( newExtent ) ;
 		}
 		return nextExtentVar.get();
-	}
+	}*/
 	
 	public void setNextExtent(Rectangle2D extent){
 		nextExtentVar.set(extent);
 	}
 	
-	public Rectangle2D getExtent(){
+	/*public Rectangle2D getExtent(){
 		return extentVar.get();
 	} */
 	
 	public void refresh(){
 		if (layoutManagerVar.get() != null){
 			layoutManagerVar.get().layoutLocal(this);
+			
+			Rectangle2D viewExtent = new Rectangle2D.Double();
 			Iterator<NodeView<NP,EP,HG,WG,SG,N,E>> iterator = getTops();
 			while(iterator.hasNext()){
-				iterator.next().doTransition();
+				NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
+				Rectangle2D.union(viewExtent, top.getNextExtent(), viewExtent);
+				top.doTransition();
 			}
 			for(E edge:myGraph.getEdges())
 				getEdgeView(edge).doTransition();
+			myDisplayVar.get().setPreferredSize(new Dimension((int)(viewExtent.getWidth()+0.5), (int)(viewExtent.getHeight()+0.5)));
 		}
-		myDisplayVar.get().repaint() ;
+//		myDisplayVar.get().repaint() ;
 	}
 	
 	/** Return null if the argument is null or there is no existing view and none can be made,
@@ -358,8 +368,20 @@ public class HigraphView
 	public Color getDefaultNodeFillColor(){
 		return defaultNodeFillColorVar.get();
 	}
-			
-		
+	
+	public void setDefaultNodeSize(int w, int h){
+		defaultNodeWidthVar.set((double)w);
+		defaultNodeHeightVar.set((double)h);
+	}
+	
+	public double getDefaultNodeWidth(){
+		return defaultNodeWidthVar.get();
+	}
+
+	public double getDefaultNodeHeight(){
+		return defaultNodeHeightVar.get();
+	}
+				
 	public void setDefaultNodeStroke(Stroke s){
 		defaultNodeStrokeVar.set( s );
 	}
@@ -373,7 +395,9 @@ public class HigraphView
 	}
 	
 	public RectangularShape getDefaultNodeShape(){
-		return defaultNodeShapeVar.get() ;
+		RectangularShape newNodeShape = (RectangularShape)defaultNodeShapeVar.get().clone();
+		newNodeShape.setFrame(0, 0, defaultNodeWidthVar.get(), defaultNodeHeightVar.get());
+		return newNodeShape;
 	}
 	
 	public void setDefaultEdgeColor(Color c){

@@ -413,6 +413,12 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 			view.setDefaultNodeValueColor(privateGetColor(c));
 	}
 	
+	public void setDefaultNodeSize(long w, long h){ // node size
+		for(HigraphViewTM view : activeViewSet)
+			view.setDefaultNodeSize((int)w, (int) h);
+	}
+
+	
 	@Override
 	public void setDefaultNodeStroke(long s) {
 		// TODO Auto-generated method stub

@@ -103,9 +103,6 @@ public class CodeDisplay extends DisplayAdapter {
 
     public CodeDisplay(DisplayContextInterface dc, String configId){
         super(dc, configId);
-//        context = dc;
-//        commandProcessor = context.getCommandProcessor();
-//        parameter = param;
         cursorLine = 0;
         cursorChar = 0;
         cursorLineCoords = null ;
@@ -113,11 +110,6 @@ public class CodeDisplay extends DisplayAdapter {
         /**dbg*/ Debug.getInstance().msg(Debug.CURRENT, "CodeDisplay "+hashCode() +" adding "+lineNumbersCheckBox.hashCode()); /**/
         context.getViewMenu().add(lineNumbersCheckBox) ;
 
-/*        addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt){
-                moveCursor(evt);
-            }
-        });*/
 		SmallButton buttons[] = new SmallButton[8];
 		ImageSourceInterface imageSource = context.getImageSource();
 		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);
