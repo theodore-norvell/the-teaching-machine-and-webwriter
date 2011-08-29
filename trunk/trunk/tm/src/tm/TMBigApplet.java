@@ -33,8 +33,6 @@ import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.sun.istack.internal.FinalArrayList;
-
 import tm.backtrack.BTTimeManager;
 import tm.evaluator.Evaluator;
 import tm.evaluator.Evaluator.Refreshable;
