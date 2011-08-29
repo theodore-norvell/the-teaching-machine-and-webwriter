@@ -14,17 +14,17 @@
             <canvas class="UmlCanvas" id="canvas_regular_expression_node_class_diagram" width="600" height="370"></canvas>
             <pre id="canvas_regular_expression_node_class_diagramSource" class="uml">
 Diagram RegularExpressionNodeClass{
-    [@28,0]
+    [@31,0]
     interface Node {
     }
-    [@18,80]
+    [@21,80]
     +abstract class AbstractNode : Node{
         Attribute payload : Payload +protected;
     }
     [@0,180]
-    class RegexNode : AbstractNode{
+    class VisreedNode : AbstractNode{
         +public operation appendChild{
-            Argument child : RegexNode;
+            Argument child : VisreedNode;
         }
     }
     [@266,0]
@@ -34,32 +34,32 @@ Diagram RegularExpressionNodeClass{
     interface TaggedPayload : Payload {
         Operation getTag;
     }
-    [@251,160]
-    +abstract class RegexPayload : TaggedPayload{
+    [@248,160]
+    +abstract class VisreedPayload : TaggedPayload{
         +protected attribute tag : RegexTag;
         +abstract operation constructView;
         +abstract operation format{
-            Argument currentNode : RegexNode;
+            Argument currentNode : VisreedNode;
         }
     }
     [@0,300]
-    class AlternationanPayload : RegexPayload{
+    class AlternationanPayload : VisreedPayload{
         operation AlternationanPayload;
     }
     [@130,300]
-    class KleenePlusPayload : RegexPayload{
+    class KleenePlusPayload : VisreedPayload{
         operation KleenePlusPayload;
     }
     [@250,300]
-    class KleeneStarPayload : RegexPayload{
+    class KleeneStarPayload : VisreedPayload{
         operation KleeneStarPayload;
     }
     [@370,300]
-    class SequencePayload : RegexPayload{
+    class SequencePayload : VisreedPayload{
         operation SequencePayload;
     }
     [@485,300]
-    class TerminalPayload : RegexPayload{
+    class TerminalPayload : VisreedPayload{
         operation TerminalPayload{
             Argument terminal;
         }
@@ -80,50 +80,50 @@ Diagram RegularExpressionNodeClass{
             <canvas class="UmlCanvas" id="canvas_regular_expression_node_view_class_diagram" width="700" height="400" ></canvas>
             <pre id="canvas_regular_expression_node_view_class_diagramSource" class="uml">
 Diagram RegularExpressionNodeView{
-    [@303,0]
+    [@306,0]
     interface Layable{
     }
-    [@301,80]
+    [@304,80]
     +abstract class ComponentView : Layable{
     }
-    [@315,150]
+    [@318,150]
     class NodeView : ComponentView{
     }
     [@301,250]
-    +abstract class RegexNodeView : NodeView{
+    +abstract class VisreedNodeView : NodeView{
     }
     [@0,350]
-    class AlternationNodeView : RegexNodeView{
+    class AlternationNodeView : VisreedNodeView{
     }
     [@120,350]
-    class KleenePlusNodeView : RegexNodeView{
+    class KleenePlusNodeView : VisreedNodeView{
     }
     [@240,350]
-    class KleeneStarNodeView : RegexNodeView{
+    class KleeneStarNodeView : VisreedNodeView{
     }
     [@360,350]
-    class SequenceNodeView : RegexNodeView{
+    class SequenceNodeView : VisreedNodeView{
     }
     [@472,350]
-    class TerminalNodeView : RegexNodeView{
+    class TerminalNodeView : VisreedNodeView{
     }
     [@580,350]
-    class SyntaxNodeView : RegexNodeView{
+    class SyntaxNodeView : VisreedNodeView{
     }
     [@490,200]
-    class RegexViewFactory{
+    class VisreedViewFactory{
         operation makeNodeView{
         }
     }
     [@horizontal]
     association makeNodeView{
-        role one : RegexViewFactory;
-        role one : RegexNodeView;
+        role one : VisreedViewFactory;
+        role one : VisreedNodeView;
     }
 }
             </pre>
         </div>
-        <p>All instances of the <span class="name">RegexNode</span> should be created by the factory.</p>
+        <p>All instances of the <span class="name">VisreedNode</span> should be created by the factory.</p>
         <p>Note that a specific <span class="name">SyntaxNodeView</span> is designed for handling the lexical tree diagram.</p>
         
         <h3 id="h3_interactions">Interactions</h3>
@@ -167,7 +167,7 @@ Diagram InteractionClassDiagram{
         operation isDropAccepted{
         }
         operation handleDrop{
-            argument nodes : List&lt;RegexNode>;
+            argument nodes : List&lt;VisreedNode>;
         }
         operation handleClick{
             argument e : MouseEvent;
@@ -177,23 +177,23 @@ Diagram InteractionClassDiagram{
         }
     }
     [@365,227]
-    +abstract class RegexNodeView: ISelectable : IHoverable : IRotatable : IInteractable{
+    +abstract class VisreedNodeView: ISelectable : IHoverable : IRotatable : IInteractable{
     }
     [@80,200]
-    class RegexNode : ISelectable : IHoverable{
+    class VisreedNode : ISelectable : IHoverable{
         attribute isSelected : boolean;
         attribute isHoverOn : boolean;
     }
     [@horizontal]
     association node{
-        role one : RegexNodeView;
-        role one : RegexNode +composite;
+        role one : VisreedNodeView;
+        role one : VisreedNode +composite;
     }
 }
             </pre>
         </div>
-        <p>Note that both the <span class="name">RegexNode</span> and the <span class="name">RegexNodeView</span> implements <span class="name">ISelectable</span> and <span class="name">IHoverable</span>. This design enables selection and hovering effect be reflected in multiple higraph views.</p>
-        <p>The selection and hovering is handled in <span class="name">RegexNode</span> only, and the <span class="name">RegexNodeView</span> just sends these values to its node.</p>
+        <p>Note that both the <span class="name">VisreedNode</span> and the <span class="name">VisreedNodeView</span> implements <span class="name">ISelectable</span> and <span class="name">IHoverable</span>. This design enables selection and hovering effect be reflected in multiple higraph views.</p>
+        <p>The selection and hovering is handled in <span class="name">VisreedNode</span> only, and the <span class="name">VisreedNodeView</span> just sends these values to its node.</p>
         <p>The mouse interaction is built on top of JHigraph event layer.</p>
         <div class="diagram">
             <canvas class="UmlCanvas" id="canvas_mouse_interaction_class_diagram" width="550" height="400" ></canvas>
@@ -226,8 +226,8 @@ Diagram MouseInteractionClassDiagram +dynamic{
             argument observer : SubgraphEventObserver;
         }
     }
-    [@39,320]
-    +public class RegexSubgraphMouseAdapter : SubgraphMouseAdapter{}
+    [@36,320]
+    +public class VisreedSubgraphMouseAdapter : SubgraphMouseAdapter{}
     [@300,100]
     +public +abstract class SubgraphEventObserver{
         +public operation movedOver{}
@@ -243,12 +243,12 @@ Diagram MouseInteractionClassDiagram +dynamic{
             argument t :Transferable;
         }
     }
-    [@303,300]
+    [@300,300]
     +public class RegexSGEventObserver : SubgraphEventObserver{
-        +private operation getTopNodeView : RegexNodeView{}
+        +private operation getTopNodeView : VisreedNodeView{}
         +private operation getNumSelection : int{}
-        +private operation getSelectedView : RegexNodeView{}
-        +private operation getSelectedViews : List&lt;RegexNodeView>{}
+        +private operation getSelectedView : VisreedNodeView{}
+        +private operation getSelectedViews : List&lt;VisreedNodeView>{}
     }
     association _{
         role one : SubgraphMouseAdapter;
@@ -335,7 +335,8 @@ Diagram GraphicsHelperClassDiagram +dynamic{
 }
             </pre>
         </div>
-        <p><span class="name">GraphicsHelper</span> mainly deals with graphics in awt. </p>
+        <p><span class="name">GraphicsHelper</span> mainly deals with graphics in awt. Most of the visualization effects, including arrows, connection lines and anti-aliasing are handled in it.</p>
+        <p><span class="name">SwingHelper</span> mainly handles features related to Swing, such as applying System Look and Feel, and load external image resources as an icon.</p>
         
         <hr />
         <textarea id="umlcanvas_errors" style="width: 100%; height: 160px"></textarea>

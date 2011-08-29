@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package regex.parser;
+package visreed.extension.regex.parser;
 
 import static org.junit.Assert.*;
 
@@ -13,9 +13,10 @@ import java.io.StringReader;
 
 import org.junit.Test;
 
-import regex.model.RegexNode;
-import regex.model.RegexWholeGraph;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.regex.model.RegexNode;
+import visreed.model.VisreedNode;
+import visreed.model.VisreedWholeGraph;
 
 /**
  * @author Xiaoyu Guo
@@ -84,10 +85,10 @@ public class RegexParserTest {
     ) throws ParseException {
         StringReader reader = new StringReader(source);
         BTTimeManager timeMan = new BTTimeManager();
-        RegexWholeGraph wg = new RegexWholeGraph(timeMan);
+        VisreedWholeGraph wg = new VisreedWholeGraph(timeMan);
         
         try {
-            RegexNode resultNode = RegexParser.parse(wg, reader);
+            VisreedNode resultNode = RegexParser.parse(wg, reader);
             String result = resultNode.getPayload().format(resultNode);
             assertEquals(expected, result);
         } catch (ParseException e) {
