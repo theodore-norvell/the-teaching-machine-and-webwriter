@@ -303,8 +303,10 @@ class StepperAbsFuncCall implements Stepper {
                 // Remember the resultDatum by mapping func_call.resultDatum to it.
                 vms.top().map( func_call.resultDummy, resultDatum ) ;
                 
-                Debug.getInstance().msg(Debug.EXECUTE, "Calling user defined or compiler generated function:" );
-                Debug.getInstance().msg(Debug.EXECUTE, defn.toString());
+                Debug d = Debug.getInstance() ;
+                if( d.isOn( Debug.EXECUTE ) ) {
+                	Debug.getInstance().msg(Debug.EXECUTE, "Calling user defined or compiler generated function:" );
+                	Debug.getInstance().msg(Debug.EXECUTE, defn.toString()); }
 
             // Push a new function evaluation on the evaluation stack
                 StatementInterface firstStatement = defn.getBodyLink().get() ;
