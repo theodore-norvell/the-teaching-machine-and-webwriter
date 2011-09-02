@@ -3,9 +3,8 @@
 = Introduction =
 
 This is the home --at least for now-- for a number of projects developed at Memorial University for teaching programming and other purposes.
-   * The Teaching Machine -- a program animations system for Java and C++
+   * The Teaching Machine -- a program animation and algorithm  animation system for Java and C++
    * WebWriter++ -- A JavaScript based system for preparing course sites and lecture notes.
    * JHigraph -- A Java library for presenting and interacting with hierarchical graphs.
 
-Downloads  of the Teaching Machine and WebWriter++ are at http://www.teachingmachine.org/
-
+Downloads  of the Teaching Machine and WebWriter++, along with several course sites that use both the Teachin Machine and WebWriter++, are at http://www.teachingmachine.org/
