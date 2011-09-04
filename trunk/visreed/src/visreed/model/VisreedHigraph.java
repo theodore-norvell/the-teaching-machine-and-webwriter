@@ -7,6 +7,7 @@
  */
 package visreed.model;
 
+import visreed.pattern.IObservable;
 import higraph.model.abstractClasses.AbstractHigraph;
 
 /**
@@ -14,22 +15,6 @@ import higraph.model.abstractClasses.AbstractHigraph;
  */
 public interface VisreedHigraph
 extends
-AbstractHigraph
-        <VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> {
-    /**
-     * Register an observer to this higraph
-     * @param o the observer
-     */
-    void registerObserver(IVisreedHigraphObserver o);
-    
-    /**
-     * De-Register an observer to this higraph
-     * @param o
-     */
-    void deRegisterObserver(IVisreedHigraphObserver o);
-    
-    /**
-     * Notify the observers that the content of the higraph is changed.
-     */
-    void notifyObservers();
+AbstractHigraph <VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> , 
+IObservable <VisreedHigraph> {
 }

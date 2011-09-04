@@ -129,7 +129,7 @@ Diagram RegularExpressionNodeView{
         <h3 id="h3_interactions">Interactions</h3>
         <p>The interactions are implemented through these interfaces:</p>
         <div class="diagram">
-            <canvas class="UmlCanvas" id="canvas_interaction_class_diagram" width="540" height="270" ></canvas>
+            <canvas class="UmlCanvas" id="canvas_interaction_class_diagram" width="600" height="270" ></canvas>
             <pre id="canvas_interaction_class_diagramSource" class="uml">
 Diagram InteractionClassDiagram{
     interface ISelectable{
@@ -167,6 +167,7 @@ Diagram InteractionClassDiagram{
         operation isDropAccepted{
         }
         operation handleDrop{
+            argument e : MouseEvent;
             argument nodes : List&lt;VisreedNode>;
         }
         operation handleClick{
@@ -198,7 +199,7 @@ Diagram InteractionClassDiagram{
         <div class="diagram">
             <canvas class="UmlCanvas" id="canvas_mouse_interaction_class_diagram" width="550" height="400" ></canvas>
             <pre id="canvas_mouse_interaction_class_diagramSource" class="uml">
-Diagram MouseInteractionClassDiagram +dynamic{
+Diagram MouseInteractionClassDiagram{
     interface MouseListener{
         operation mouseClicked{}
         operation mousePressed{}
@@ -264,7 +265,7 @@ Diagram MouseInteractionClassDiagram +dynamic{
         <div class="diagram">
             <canvas class="UmlCanvas" id="canvas_graphics_helper_class_diagram" width="600" height="200" ></canvas>
             <pre id="canvas_graphics_helper_class_diagramSource" class="uml">
-Diagram GraphicsHelperClassDiagram +dynamic{
+Diagram GraphicsHelperClassDiagram{
     +static +public class GraphicsHelper{
         +private +static attribute CONNECTION_CURVE_RADIUS_PIXEL : double;
         +private +static attribute ARROWHEAD_LENGTH_PIXEL : double;

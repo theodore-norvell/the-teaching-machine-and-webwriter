@@ -9,6 +9,7 @@ package visreed.view;
 
 import higraph.view.NodeView;
 
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,71 +52,74 @@ public class InsertChildDropZone extends VisreedDropZone {
      * @see visreed.view.VisreedDropZone#handleDrop(visreed.model.RegexNode[])
      */
     @Override
-    public void handleDrop(List<VisreedNode> nodes){
+    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){
         if(nodes == null){
             return;
         }
         
         VisreedWholeGraph wg = this.getHigraphView().getHigraph().getWholeGraph();
+        wg.reduceSelection();
         
         VisreedNode thisNode = ((VisreedNodeView)this.getAssociatedComponent()).getNode();
         
-        boolean parentIsSeq = false;
-        if(thisNode.getPayload().getTag() == VisreedTag.SEQUENCE){
-            parentIsSeq = true;
+        boolean targetIsSeq = false;
+        if(thisNode.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+            targetIsSeq = true;
         }
         
-        int numChildren = nodes.size();
         // creates a temporary sequence and handle them all
         
         ArrayList<VisreedNode> seqList = new ArrayList<VisreedNode>();
-        for(int i = 0; i < numChildren; i++){
+        ArrayList<VisreedNode> deleteList = new ArrayList<VisreedNode>();
+        for(int i = 0; i < nodes.size(); i++){
             VisreedNode child = nodes.get(i);
             if(child == null){
                 continue;
             }
             if(child.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
-                if(parentIsSeq){
+                if(targetIsSeq){
                     // SEQ -> SEQ
                     for(int j = 0; j < child.getNumberOfChildren(); j++){
-                        seqList.add(child.getChild(j));
+                        seqList.add(child.getChild(j).duplicate());
+                    }
+                    if(child.getNumberOfChildren() == 1){
+                    	// TODO and the child.parent == KLN
+                    	deleteList.add(child.getChild(0));
+                    } else {
+                    	deleteList.add(child);
                     }
                 } else {
                     // nonSEQ -> SEQ
-                    seqList.add(child);
+                    seqList.add(child.duplicate());
+                    deleteList.add(child);
                 }
             } else {
-                if(parentIsSeq){
+                if(targetIsSeq){
                     // SEQ -> nonSeq
-                    seqList.add(child);
+                    seqList.add(child.duplicate());
+                    deleteList.add(child);
                 } else {
                     // nonSeq -> nonSeq
-                	VisreedNode parent = child.getParent();
-                	if(parent != null && parent.getNumberOfChildren() == 1){
-                		if(parent.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
-                			seqList.add(parent);
-                		}
-                	} else {
-	                    VisreedNode seq = wg.makeRootNode(new SequencePayload());
-	                    seq.appendChild(child);
-	                    seqList.add(seq);
-                	}
+                    VisreedNode seq = wg.makeRootNode(new SequencePayload());
+                    seq.appendChild(child.duplicate());
+                    seqList.add(seq);
+                    deleteList.add(child);
                 }
             }
         }
         // now inserts all the temporary nodes into the position
         int position = this.getNodeNumber();
         for(int i = 0; i < seqList.size(); i++){
-        	//*/
         	// handle the situation of the node is already child of the target
-        	VisreedNode temp = seqList.get(i).duplicate();
-            thisNode.insertChild(position + i, temp);
-            seqList.get(i).delete();
-        	
-        	/*/
-            seqList.get(i).detach();
             thisNode.insertChild(position + i, seqList.get(i));
-            //*/
+        }
+        
+        for(int i = 0; i < deleteList.size(); i++){
+        	VisreedNode parent = deleteList.get(i).getParent();
+        	if(parent != null){
+        		parent.notifyObservers();
+        	}
+        	deleteList.get(i).delete();
         }
     }
 }

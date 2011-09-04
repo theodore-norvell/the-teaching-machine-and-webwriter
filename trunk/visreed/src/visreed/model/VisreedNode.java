@@ -7,6 +7,11 @@
  */
 package visreed.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import visreed.pattern.IObservable;
+import visreed.pattern.IObserver;
 import higraph.model.abstractClasses.AbstractNode;
 
 /**
@@ -14,7 +19,7 @@ import higraph.model.abstractClasses.AbstractNode;
  */
 public class VisreedNode 
 extends AbstractNode<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements ISelectable, IHoverable {
+implements ISelectable, IHoverable, IObservable<VisreedNode> {
 
     protected VisreedNode(VisreedWholeGraph higraph, VisreedPayload payload) {
         super(higraph, payload);
@@ -33,6 +38,27 @@ implements ISelectable, IHoverable {
      */
     public void appendChild(VisreedNode child){
         this.insertChild(getNumberOfChildren(), child);
+    }
+    
+    /**
+     * Gets the position in its parent<br />
+     * Example: 
+     * <pre>
+     * Parent
+     * 	 |- child0
+     *   |- child1
+     *   -- child2
+     *   
+     * child1.getOrder() = 1;
+     * </pre>
+     * @return -1 if parent is null
+     */
+    public int getOrder(){
+    	VisreedNode parent = this.getParent();
+    	if(parent != null){
+    		return parent.getChildren().indexOf(this);
+    	}
+    	return -1;
     }
     
     /* (non-Javadoc)
@@ -115,11 +141,41 @@ implements ISelectable, IHoverable {
         return this.hover;
     }
     
+    /* (non-Javadoc)
+     * @see higraph.model.abstractClasses.AbstractNode#duplicate()
+     */
     @Override
     public VisreedNode duplicate(){
     	VisreedNode result = super.duplicate();
-    	result.isSelected = this.isSelected;
-    	result.hover = this.hover;
+    	if(this.isSelected()){
+    		result.isSelected = this.isSelected;
+//    		this.getWholeGraph().addToSelection(result);
+    	}
+    	// result.hover = this.hover;
+    	
     	return result;
     }
+    
+    private List<IObserver<VisreedNode>> observers = new ArrayList<IObserver<VisreedNode>>();
+
+	@Override
+	public void registerObserver(IObserver<VisreedNode> o) {
+		if(o != null && !this.observers.contains(o)){
+			this.observers.add(o);
+		}
+	}
+
+	@Override
+	public void deRegisterObserver(IObserver<VisreedNode> o) {
+		if(this.observers.contains(o)){
+			this.observers.remove(o);
+		}
+	}
+
+	@Override
+	public void notifyObservers() {
+		for(IObserver<VisreedNode> o : this.observers){
+			o.changed(this);
+		}
+	}
 }

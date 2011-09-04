@@ -105,7 +105,7 @@ implements IHoverable, IInteractable
      * @see visreed.swing.IInteractable#handleDrop(java.util.List)
      */
     @Override
-    public void handleDrop(List<VisreedNode> nodes){}
+    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){}
 
     /* (non-Javadoc)
      * @see visreed.swing.IInteractable#handleClick(java.awt.event.MouseEvent)

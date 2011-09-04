@@ -18,8 +18,8 @@ import java.awt.Rectangle;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
-import visreed.model.IVisreedHigraphObserver;
 import visreed.model.VisreedHigraph;
+import visreed.pattern.IObserver;
 import visreed.view.VisreedHigraphView;
 
 /**
@@ -29,7 +29,7 @@ import visreed.view.VisreedHigraphView;
  */
 public class VisreedJComponent
 extends HigraphJComponent 
-implements Scrollable, IVisreedHigraphObserver
+implements Scrollable, IObserver<VisreedHigraph>
 {
     private static final long serialVersionUID = 9172817281342310471L;
 
@@ -171,9 +171,8 @@ implements Scrollable, IVisreedHigraphObserver
         return false;
     }
     
-    
     /* (non-Javadoc)
-     * @see visreed.model.IVisreedHigraphObserver#changed(visreed.model.VisreedSubgraph)
+     * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
      */
     @Override
     public void changed(VisreedHigraph regexHigraph) {

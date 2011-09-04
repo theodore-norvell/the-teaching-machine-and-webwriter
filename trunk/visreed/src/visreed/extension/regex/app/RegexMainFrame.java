@@ -22,7 +22,6 @@ import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.regex.swing.RegexJList;
 import visreed.extension.regex.view.SyntaxViewFactory;
 import visreed.extension.regex.view.layout.SyntaxTreeLayoutManager;
-import visreed.model.IVisreedHigraphObserver;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
@@ -34,10 +33,10 @@ import visreed.model.payload.KleeneStarPayload;
 import visreed.model.payload.OptionalPayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
-import visreed.swing.VisreedSubgraphEventObserver;
+import visreed.pattern.IObserver;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
-import visreed.swing.VisreedSubgraphTransferHandler;
+import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.VisreedTextArea;
 import visreed.view.IGraphContainer;
 import visreed.view.VisreedHigraphView;
@@ -52,7 +51,7 @@ import visreed.view.layout.AlternationLayoutManager;
  */
 public class RegexMainFrame
 extends JFrame 
-implements IGraphContainer, IVisreedHigraphObserver{
+implements IGraphContainer, IObserver<VisreedHigraph>{
 
     private static final long serialVersionUID = -6388967497486007956L;
 
@@ -537,7 +536,7 @@ implements IGraphContainer, IVisreedHigraphObserver{
     }
 
     /* (non-Javadoc)
-     * @see visreed.model.IVisreedHigraphObserver#changed(visreed.model.VisreedHigraph)
+     * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
      */
     @Override
     public void changed(VisreedHigraph regexHigraph) {

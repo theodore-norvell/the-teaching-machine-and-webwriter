@@ -27,9 +27,10 @@ public interface IInteractable {
     
     /**
      * Handles drop operation
+     * @param e The mouse event
      * @param nodes the list containing the transferring data
      */
-    void handleDrop(List<VisreedNode> nodes);
+    void handleDrop(MouseEvent e, List<VisreedNode> nodes);
     
     /**
      * Handles mouse click 
