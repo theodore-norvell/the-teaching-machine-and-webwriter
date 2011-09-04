@@ -181,7 +181,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     public void movedOver(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
 //        System.out.println( getTopNodeDescFromStack(stack) + " : Moved over") ;
         // handling mouse hovering
-        IHoverable top = this.getTopHoverable(stack);
+    	VisreedNodeView top = this.getTopNodeView(stack);
         if(top == null){
             // cancel last hover
             if(this.lastHoveringOn != null){
@@ -493,7 +493,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         
         // notify the graph container to re-layout
         if(stack.peek() instanceof IInteractable){
-            ((IInteractable)stack.peek()).handleDrop(data);
+            ((IInteractable)stack.peek()).handleDrop(null, data);
             this.graphContainer.refreshGraph();
         }
         

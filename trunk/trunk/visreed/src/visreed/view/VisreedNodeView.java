@@ -41,6 +41,7 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
+import visreed.pattern.IObserver;
 import visreed.swing.IInteractable;
 import visreed.swing.menu.PopupMenuHelper;
 import visreed.view.layout.VisreedNodeLayoutManager;
@@ -50,7 +51,7 @@ import visreed.view.layout.VisreedNodeLayoutManager;
  */
 public abstract class VisreedNodeView 
 extends NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements ISelectable, IHoverable, IRotatable, IInteractable {
+implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<VisreedNode> {
     /** Handles the LayoutManager */
     private final BTVar<VisreedNodeLayoutManager> layoutManagerVar;
     
@@ -489,7 +490,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable {
      * @see visreed.swing.IInteractable#handleDrop(java.util.List)
      */
     @Override
-    public void handleDrop(List<VisreedNode> nodes){}
+    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){}
 
     /* (non-Javadoc)
      * @see visreed.swing.IInteractable#handleClick(java.awt.event.MouseEvent)
@@ -657,5 +658,17 @@ implements ISelectable, IHoverable, IRotatable, IInteractable {
         for(int i = 0; i < this.getNumChildren(); i++){
             this.getVisreedChild(i).reverseDirection();
         }
+    }
+    
+    /* (non-Javadoc)
+     * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
+     */
+    @Override
+    public void changed(VisreedNode o){
+    	// force the view to re-paint
+    	this.entryPoint = null;
+    	this.exitPoint = null;
+    	this.stretchVar.set(null);
+    	this.refresh();
     }
 }

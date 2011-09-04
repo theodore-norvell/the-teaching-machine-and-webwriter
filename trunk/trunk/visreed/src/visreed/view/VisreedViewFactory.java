@@ -44,6 +44,7 @@ extends ViewFactory<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWho
         VisreedPayload pl = node.getPayload();
         VisreedNodeView result = pl.constructView(sgv, node, this.timeMan);
         result.setNodeViewFactory(this);
+        node.registerObserver(result);
         return result;
     }
     

@@ -24,6 +24,92 @@
         <p>Each kind of <span class="name">Payload</span> has its corresponding <span class="name">NodeView</span>. Please see <a href="./system_design.html#h3_regular_expression_node_views">System Design: Regular Expression Node Views</a> for design details.</p>
         <h3>LayoutManagers</h3>
         <p>This project implements a set of horizontal <span class="name">NodeViewLayoutManager</span> to manage the layout of the position within each node.</p>
+        <h2>Extensions to JHigraph</h2>
+        <p>Visreed provides a set of extension to the original JHigraph package, most of which is related to user intaraction.</p>
+        <h3>Model-View Observer</h3>
+        <p>The change in model can be notified to the viewer by using the Observer Pattern.</p>
+        
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_visreed_jhigraph_observer" width="400" height="150"></canvas>
+            <pre id="canvas_visreed_jhigraph_observerSource" class="uml">
+Diagram HigraphObserver{
+    [@76,0]
+    interface AbstractHigraph{
+    }
+    [@0,70]
+    interface VisreedHigraph : AbstractHigraph{
+        operation registerObserver{
+            argument o : IVisreedHigraphObserver;
+        }
+        operation deRegisterObserver{
+            argument o : IVisreedHigraphObserver;
+        }
+        operation notifyObservers{
+        }
+    }
+    [@250,70]
+    interface IVisreedHigraphObserver{
+        operation changed{
+            argument regexHigraph : VisreedHigraph;
+        }
+    }
+}
+            </pre>
+        </div>
+        <h3>Selection</h3>
+        <p>Nodes in Visreed Higraph can be selected. The following methods are added to handle node selection.</p>
+        <div class="diagram">
+            <canvas class="UmlCanvas" id="canvas_visreed_jhigraph_selection" width="480" height="400"></canvas>
+            <pre id="canvas_visreed_jhigraph_selectionSource" class="uml">
+Diagram HigraphSelection +dynamic{
+    [@76,0]
+    interface AbstractHigraph{
+    }
+    [@308,98]
+    +abstract class AbstractWholeGraph : AbstractHigraph{
+    }
+    [@0,98]
+    interface VisreedHigraph : AbstractHigraph{
+        operation registerObserver{
+            argument o : IVisreedHigraphObserver;
+        }
+        operation deRegisterObserver{
+            argument o : IVisreedHigraphObserver;
+        }
+        operation notifyObservers{
+        }
+    }
+    [@252,220]
+    class VisreedWholeGraph : AbstractWholeGraph : VisreedHigraph{
+        +private attribute selectedNodesList : List&lt;VisreedNode>;
+        +private attribute selectedNodesGraph : VisreedSubgraph;
+        +public operation select{
+            argument node : VisreedNode;
+        }
+        +public operation select{
+            argument nodes : List&lt;VisreedNode>;
+        }
+        +public operation addToSelection{
+            argument node : VisreedNode;
+        }
+        +public operation addToSelection{
+            argument nodes : List&lt;VisreedNode>;
+        }
+        +public operation toggleSelection{
+            argument node : VisreedNode;
+        }
+        +public operation getSelectionNodes : List&lt;VisreedNode>{
+        }
+        +public operation getSelectionSubgraph : VisreedSubgraph{
+        }
+        +public operation deSelectAll{
+        }
+        +public operation reduceSelection{
+        }
+    }
+}
+            </pre>
+        </div>
         <footer>
             Last update: <pre>$Id: jhigraph.html 529 2011-06-20 19:01:41Z xiaoyu $</pre>
         </footer>

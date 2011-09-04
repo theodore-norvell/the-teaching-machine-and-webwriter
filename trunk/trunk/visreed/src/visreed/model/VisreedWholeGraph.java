@@ -7,12 +7,13 @@
  */
 package visreed.model;
 
+import higraph.model.abstractClasses.AbstractWholeGraph;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import higraph.model.abstractClasses.AbstractWholeGraph;
 import tm.backtrack.BTTimeManager;
-import visreed.extension.regex.model.RegexNode;
+import visreed.pattern.IObserver;
 
 /**
  * @author Xiaoyu Guo
@@ -64,6 +65,9 @@ implements VisreedHigraph{
     private VisreedSubgraph selectedNodesGraph;
     private List<VisreedNode> selectedNodesList;
     
+    /**
+     * Cancel all the selected nodes
+     */
     public void deSelectAll(){
         for(VisreedNode selected : selectedNodesGraph.getNodes()){
             selected.deSelect();
@@ -72,16 +76,28 @@ implements VisreedHigraph{
         this.selectedNodesList.clear();
     }
     
+    /**
+     * Select the specified one node
+     * @param node
+     */
     public void select(VisreedNode node){
         this.deSelectAll();
         addToSelection(node);
     }
     
+    /**
+     * select the specified nodes
+     * @param nodes
+     */
     public void select(List<VisreedNode> nodes){
         this.deSelectAll();
         addToSelection(nodes);
     }
     
+    /**
+     * Add the specified node to the current selection
+     * @param node
+     */
     public void addToSelection(VisreedNode node){
         if(node != null){
             node.select();
@@ -90,6 +106,23 @@ implements VisreedHigraph{
         }
     }
     
+    /**
+     * Add the specified nodes to the current selection
+     * @param nodes
+     */
+    public void addToSelection(List<VisreedNode> nodes){
+        if(nodes == null){
+            return;
+        }
+        for(VisreedNode selected : nodes){
+            this.addToSelection(selected);
+        }
+    }
+    
+    /**
+     * Toggle the selection of the specified node
+     * @param node
+     */
     public void toggleSelection(VisreedNode node){
         if(node != null){
             if(node.isSelected()){
@@ -102,13 +135,23 @@ implements VisreedHigraph{
         }
     }
     
-    public void addToSelection(List<VisreedNode> nodes){
-        if(nodes == null){
-            return;
-        }
-        for(VisreedNode selected : nodes){
-            this.addToSelection(selected);
-        }
+    /**
+     * Reduce the current selection so that no selected nodes are nested.	
+     */
+    public void reduceSelection(){
+    	for(int i = 0; i < this.selectedNodesList.size(); i++){
+    		VisreedNode node = this.selectedNodesList.get(i);
+    		VisreedNode currentParent = node.getParent();
+    		while(currentParent != null){
+    			if(currentParent.isSelected() == true){
+    				// reduce current node
+    				this.toggleSelection(node);
+    				i--;
+    				break;
+    			}
+    			currentParent = currentParent.getParent();
+    		}
+    	}
     }
     
     public List<VisreedNode> getSelectionNodes(){
@@ -121,7 +164,7 @@ implements VisreedHigraph{
 
     
     /* observer pattern */
-    private ArrayList<IVisreedHigraphObserver> observers = new ArrayList<IVisreedHigraphObserver>();
+    private ArrayList<IObserver<VisreedHigraph>> observers = new ArrayList<IObserver<VisreedHigraph>>();
     
     /**
      * Notify the observers that the content of the subgraph is changed.
@@ -130,7 +173,7 @@ implements VisreedHigraph{
         if(this.observers == null || this.observers.size() == 0){
             return;
         }
-        for(IVisreedHigraphObserver o : this.observers){
+        for(IObserver<VisreedHigraph> o : this.observers){
             o.changed(this);
         }
     }
@@ -138,7 +181,7 @@ implements VisreedHigraph{
     /* (non-Javadoc)
      * @see visreed.model.VisreedHigraph#registerObserver(visreed.model.IVisreedHigraphObserver)
      */
-    public void registerObserver(IVisreedHigraphObserver o){
+    public void registerObserver(IObserver<VisreedHigraph> o){
         if(o != null && !this.observers.contains(o)){
             this.observers.add(o);
         }
@@ -146,7 +189,7 @@ implements VisreedHigraph{
     /* (non-Javadoc)
      * @see visreed.model.VisreedHigraph#deRegisterObserver(visreed.model.IVisreedHigraphObserver)
      */
-    public void deRegisterObserver(IVisreedHigraphObserver o){
+    public void deRegisterObserver(IObserver<VisreedHigraph> o){
         if(o != null && this.observers.contains(o)){
             this.observers.remove(o);
         }

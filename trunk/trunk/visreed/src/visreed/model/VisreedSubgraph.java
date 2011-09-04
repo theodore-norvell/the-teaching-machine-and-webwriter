@@ -11,6 +11,8 @@ import higraph.model.abstractClasses.AbstractSubgraph;
 
 import java.util.ArrayList;
 
+import visreed.pattern.IObserver;
+
 /**
  * 
  * @author Xiaoyu Guo
@@ -26,7 +28,7 @@ implements VisreedHigraph
     @Override
     protected VisreedSubgraph getThis() { return this ; }
 
-    private ArrayList<IVisreedHigraphObserver> observers = new ArrayList<IVisreedHigraphObserver>();
+    private ArrayList<IObserver<VisreedHigraph>> observers = new ArrayList<IObserver<VisreedHigraph>>();
  
     /* observer pattern */
     /**
@@ -36,7 +38,7 @@ implements VisreedHigraph
         if(this.observers == null || this.observers.size() == 0){
             return;
         }
-        for(IVisreedHigraphObserver o : this.observers){
+        for(IObserver<VisreedHigraph> o : this.observers){
             o.changed(this);
         }
     }
@@ -44,7 +46,7 @@ implements VisreedHigraph
     /* (non-Javadoc)
      * @see visreed.model.VisreedHigraph#registerObserver(visreed.model.IVisreedHigraphObserver)
      */
-    public void registerObserver(IVisreedHigraphObserver o){
+    public void registerObserver(IObserver<VisreedHigraph> o){
         if(o != null && !this.observers.contains(o)){
             this.observers.add(o);
         }
@@ -52,7 +54,7 @@ implements VisreedHigraph
     /* (non-Javadoc)
      * @see visreed.model.VisreedHigraph#deRegisterObserver(visreed.model.IVisreedHigraphObserver)
      */
-    public void deRegisterObserver(IVisreedHigraphObserver o){
+    public void deRegisterObserver(IObserver<VisreedHigraph> o){
         if(o != null && this.observers.contains(o)){
             this.observers.remove(o);
         }
