@@ -121,8 +121,21 @@ public abstract class AbstractLayoutManager
         p.reset();
         NodeView<NP,EP,HG,WG,SG,N,E> targetView = hgv.getNodeView( edge.getTarget() );
         NodeView<NP,EP,HG,WG,SG,N,E> sourceView = hgv.getNodeView( edge.getSource() );
-        if (targetView != sourceView)
-            setStraightPath(p, sourceView, targetView);
+        if (targetView != sourceView){
+        	boolean doubled = false;
+        	/* Moderately inefficient in that the test has to be run both ways. While
+        	 * both doubled edges could be laid out at once, the edge would have to be
+        	 * marked as laid out and the markings for all edges would have to be
+        	 * updated before any edges were laid out.
+        	 */
+        	for(E outEdge : targetView.getNode().exitingEdges())
+        		if(outEdge.getTarget().equals(sourceView.getNode()))
+        			doubled = true;
+	        if (doubled)
+	        	setCurvedPath(p, sourceView, targetView);
+	        else
+	        	setStraightPath(p, sourceView, targetView);
+        }
         else
             sourceView.selfEdge(p, -45., 25, 1.2); 
         edgeView.setNextShape(p);
@@ -174,9 +187,43 @@ public abstract class AbstractLayoutManager
        intersection = tView.getIntersection(trgPt, intersection);
        p.lineTo(intersection.x, intersection.y);   
    }
-   
-   
-   
-
+    
+    void setCurvedPath(GeneralPath p, NodeView<NP,EP,HG,WG,SG,N,E> sView, NodeView<NP,EP,HG,WG,SG,N,E> tView){
+//    	System.out.println("SetCurvedPath");
+        RectangularShape srcShape = sView.getNextShape();
+        RectangularShape trgShape = tView.getNextShape();
+        Point2D.Double srcPt = new Point2D.Double(srcShape.getCenterX(), srcShape.getCenterY());
+        Point2D.Double trgPt = new Point2D.Double(trgShape.getCenterX(), trgShape.getCenterY());
+        Double d = Math.hypot(trgPt.x - srcPt.x, trgPt.y - srcPt.y);
+        double angle = Math.atan2(trgPt.y - srcPt.y, trgPt.x - srcPt.x);
+        /* Normalized control point is d/2 to the right of srcPt with a 
+         * heuristic offset in y of d/8 to control curvature. It is then rotated
+         * to the correct angle
+         */
+        Point2D.Double cntrlPt = new Point2D.Double( srcPt.x + d/2.0, srcPt.y+d/8.0);
+        rotate(cntrlPt, srcPt, angle);
+        Point2D.Double intersection;
+        intersection = sView.getIntersection(srcPt, cntrlPt);
+        p.moveTo(intersection.x, intersection.y);
+        intersection = tView.getIntersection(trgPt, cntrlPt);
+        p.quadTo(cntrlPt.x, cntrlPt.y, intersection.x, intersection.y);   
+    }
+    
+	/* convenience method for rotating a single point through theta degrees. Positive theta is clockwise
+	 * since positive y is downwards in computer graphics.
+	 */
+	public static void rotate(Point2D.Double p1, Point2D.Double pc, double theta){
+		rotate (p1, pc, Math.cos(theta), Math.sin(theta));
+	}
 	
+	/* Use this method with precomputed trig values to rotate multiple points through the same angle */
+	public static void rotate(Point2D.Double p1, Point2D.Double pc, double cosTheta, double sinTheta){
+		p1.x -= pc.x;
+		p1.y -= pc.y;
+		double newX = p1.x * cosTheta - p1.y * sinTheta;
+		p1.y = p1.y * cosTheta + p1.x * sinTheta;
+		p1.x = newX + pc.x;
+		p1.y += pc.y;		
+	}
+
 }

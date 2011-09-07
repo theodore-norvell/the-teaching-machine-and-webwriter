@@ -32,7 +32,7 @@ public class Forest {
     public Forest() {
         n = new int[NODES];
         randomize(n);/*#TS*/makeTops(n, 3); makeMids(n, 3, 4); makeLeaves(n, 7); hookUpNodes(); hookUpLeaves();/*#/TS*/
-//        /*#TS*/makeSomeEdges(); /*#/TS*/
+        /*#TS*/makeSomeEdges(); /*#/TS*/
    } 
     
     public void randomize(int[] array){
@@ -110,13 +110,17 @@ public class Forest {
     public void makeSomeEdges(){
         ScriptManager.relay("HigraphManager", "setDefaultEdgeColor", PDV.BLUE);
    	    ScriptManager.relay("HigraphManager","makeEdge", n[5], n[4]);
+   	    ScriptManager.relay("HigraphManager","makeEdge", n[4], n[5]);
+   	    ScriptManager.relay("HigraphManager","makeEdge", n[10], n[9]);
     	ScriptManager.relay("HigraphManager","makeEdge", n[9], n[10]);
     	ScriptManager.relay("HigraphManager","setDefaultTargetDecorator", PDV.ARROWHEAD);
     	ScriptManager.relay("HigraphManager","setDefaultSourceDecorator", PDV.CIRCLE);
     	ScriptManager.relay("HigraphManager","makeEdge", n[10], n[2]);
+    	ScriptManager.relay("HigraphManager","makeEdge", n[2], n[10]);
     	ScriptManager.relay("HigraphManager","makeEdge", n[15], n[15]);
     	ScriptManager.relay("HigraphManager","makeEdge", n[6], n[6]);
     	ScriptManager.relay("HigraphManager","makeEdge", n[12], n[2]);
+    	ScriptManager.relay("HigraphManager","makeEdge", n[2], n[12]);
     }
     
     

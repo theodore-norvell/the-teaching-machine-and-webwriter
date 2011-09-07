@@ -539,8 +539,8 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 
 		// rotate control points to the desired angles
 
-		rotate(P1, center, Math.PI*(axisAngle+spreadAngle/2.0)/180.);
-		rotate(P2, center, Math.PI*(axisAngle-spreadAngle/2.0)/180.);
+		AbstractLayoutManager.rotate(P1, center, Math.PI*(axisAngle+spreadAngle/2.0)/180.);
+		AbstractLayoutManager.rotate(P2, center, Math.PI*(axisAngle-spreadAngle/2.0)/180.);
 		
 		/* Project back to the centre to find intersections which are start and end pts
 		 * Now starting tangents of self curve will be along spokes from centre to
@@ -553,22 +553,6 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 		p.curveTo(P1.x, P1.y, P2.x, P2.y, P3.x,P3.y);
 	}
 	
-	/* convenience method for rotating a single point through theta degrees. Positive theta is clockwise
-	 * since positive y is downwards in computer graphics.
-	 */
-	private void rotate(Point2D.Double p1, Point2D.Double pc, double theta){
-		rotate (p1, pc, Math.cos(theta), Math.sin(theta));
-	}
-	
-	/* Use this method with precomputed trig values to rotate multiple points through the same angle */
-	private void rotate(Point2D.Double p1, Point2D.Double pc, double cosTheta, double sinTheta){
-		p1.x -= pc.x;
-		p1.y -= pc.y;
-		double newX = p1.x * cosTheta - p1.y * sinTheta;
-		p1.y = p1.y * cosTheta + p1.x * sinTheta;
-		p1.x = newX + pc.x;
-		p1.y += pc.y;		
-	}
 
 
 
