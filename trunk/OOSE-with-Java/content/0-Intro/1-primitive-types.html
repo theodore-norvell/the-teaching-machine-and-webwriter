@@ -78,7 +78,7 @@
     <ul>
         <li>15 significant decimal digits</li>
         <li>range of about -1.7 &middot; 10<sup>308</sup> to +1.7 &middot; 10<sup>308</sup></li>
-      </ul>
+    </ul>
   </li>
   <li><span class="codeKeyword">boolean</span> Boolean values written as <span class="codeKeyword">true</span> and <span class="codeKeyword">false</span>. </li>
   <li><span class="codeKeyword">char</span> Characters using a 16 bit representation (UTF-16).</li>
@@ -198,9 +198,11 @@
 <p><span class="codeKeyword">long</span> =W=&gt; <span class="codeKeyword">double</span></p>
 <p><span class="codeKeyword">long</span> =W=&gt; <span class="codeKeyword">float</span></p>
 <p>However, the last three may result in a loss of precision. Consider</p>
-<pre class="code"><span class="codeKeyword">long</span> i,j ;<br><span class="codeKeyword">float</span> f ;<br>i = 9223372036854775807L ;<br>f = i ;<br>j = f ;
-</pre>
-<p>Will <span class="codeInline">i==j</span>? </p>
+<pre class="code"><span class="codeKeyword">float</span> f = 9223372036854775805L ;<br><span class="codeKeyword">float</span> g = 9223372036854775806L ; <br><span class="codeKeyword">long</span> i = (<span class="codeKeyword">long</span>) f ;<br>System.out.println( i ) ;</pre>
+<p>Will <span class="codeInline">f==g</span>?</p>
+<p>Yes!</p>
+<p>Furthermore, printing <span class="codeInline">i</span> shows that its value is </p>
+<p align="center"><span class="codeInline">9223372036854775807</span></p>
 <p>These widening conversions are implicit when binary arithmetic operators (or comparison operators) are involved.</p>
 <p>Example:</p>
 <pre class="code"><span class="codeKeyword">int</span> i ;<br><span class="codeKeyword">double</span> d ;<br>...<br>d = d + i ;</pre>
@@ -214,7 +216,7 @@
   <li>Otherwise, if either operand is <span class="codeKeyword">long</span>, the other is widened to <span class="codeKeyword">long</span>.</li>
   <li>Otherwise, both operands are widened to <span class="codeKeyword">int</span>.</li>
 </ul>
-<p>Conversions are inserted based on the types of the operands, not on the basis of the type of result required. For example if <span class="codeInline">f</span> is <span class="codeKeyword">float</span> and <span class="codeInline">l</span> is <span class="codeKeyword">long</span> and <span class="codeInline">d</span> is <span class="codeKeyword">double</span>. </p>
+<p>Conversions are inserted based on the types of the operands, not on the basis of the type of result required. For example if <span class="codeInline">f</span> is <span class="codeKeyword">float</span> and <span class="codeInline">i</span> is <span class="codeKeyword">long</span> and <span class="codeInline">d</span> is <span class="codeKeyword">double</span>. </p>
 <p class="code">d = f + i ;</p>
 <p>is treated as</p>
 <p class="code">d = (<span class="codeKeyword">double</span>)( f + (<span class="codeKeyword">float</span>)i) ;</p>
