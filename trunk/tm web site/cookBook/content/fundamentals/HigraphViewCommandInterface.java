@@ -1,14 +1,6 @@
 package tm.displayEngine.tmHigraph;
 
-import higraph.view.EdgeView;
-import higraph.view.PointDecorator;
-
-import java.awt.Color;
-import java.awt.Stroke;
-import java.awt.geom.RectangularShape;
-
 import tm.interfaces.Datum;
-import tm.utilities.Assert;
 
 public interface HigraphViewCommandInterface {
 	
@@ -48,6 +40,7 @@ public interface HigraphViewCommandInterface {
 	public void setDefaultNodeFillColor(long c);  // Shape fill color
 	public void setDefaultNodeNameColor(long c);  // Node name label color
 	public void setDefaultNodeValueColor(long c); // node value label color
+	public void setDefaultNodeSize(long w, long h); // node size
 	
 	// Node strokes are not yet defined and this routine is inoperative
 	public void setDefaultNodeStroke(long s);
@@ -77,11 +70,11 @@ public interface HigraphViewCommandInterface {
 	 */
 	// Decorators are one of ARROWHEAD, CIRCLE, NULL
 	public void setDefaultTargetDecorator(long td);	
-	public void setDefaultTargetDecoratorColor(long c);	
-	public void setDefaultTargetDecoratorStroke(long s);
+/*	public void setDefaultTargetDecoratorColor(long c);	
+	public void setDefaultTargetDecoratorStroke(long s);*/
 	public void setDefaultSourceDecorator(long sd);
-	public void setDefaultSourceDecoratorColor(long c);	
-	public void setDefaultSourceDecoratorStroke(long s);/*#/TDefE*/
+/*	public void setDefaultSourceDecoratorColor(long c);	
+	public void setDefaultSourceDecoratorStroke(long s);*/ /*#/TDefE*/
 	
 	/*#TDefB*//**
 	 * Set the defaults used for the creation of all new branches. Affects only
@@ -97,11 +90,11 @@ public interface HigraphViewCommandInterface {
 	 * @param long - longs are used across the scripting interface and have to be converted
 	 */
 	public void setDefaultParentDecorator(long pd);
-	public void setDefaultParentDecoratorColor(long c);	
-	public void setDefaultParentDecoratorStroke(long s);
+/*	public void setDefaultParentDecoratorColor(long c);	
+	public void setDefaultParentDecoratorStroke(long s);*/
 	public void setDefaultChildDecorator(long pd);
-	public void setDefaultChildDecoratorColor(long c);
-	public void setDefaultChildDecoratorStroke(long s);/*#/TDefB*/
+/*	public void setDefaultChildDecoratorColor(long c);
+	public void setDefaultChildDecoratorStroke(long s);*/ /*#/TDefB*/
 	
 	/*#TDefZ*//**
 	 * Set the defaults used for the creation of all new zones. Affects only
@@ -112,7 +105,7 @@ public interface HigraphViewCommandInterface {
 	public void setDefaultZoneFillColor(long c);	
 	public void setDefaultZoneStroke(long s);
 	public void setDefaultZoneShape(long s);
-	public void setCountZones(long count);	
+	public void setCountZones(boolean count);	
 	
 	/**
 	 * Set the defaults used for the creation of all new labels. Affects only
@@ -121,7 +114,7 @@ public interface HigraphViewCommandInterface {
 	 */
 	public void setDefaultLabelColor(long c);
 	public void setDefaultLabelFillColor(long c);
-    public void setCountLabels(long count);	/*#/TDefZ*/
+    public void setCountLabels(boolean count);	/*#/TDefZ*/
 
     /*#TNode*/	
 	/********* Start of individual component controls ***********/
@@ -142,7 +135,7 @@ public interface HigraphViewCommandInterface {
 	public void setNodeLayoutManager(Datum node, String layoutManagerPlugIn);
 	public void setNodeColor(Datum d, long c);
 	public void setNodeFillColor(Datum d, long c);	
-	public void setNodeShape(Datum d, long s);	
+	public void setNodeShape(Datum d, long s);
 	public void setNodeStroke(Datum d, long s);
 	public void setNodeNameLabel(Datum d, String l);   // Over-ride the standard name label
 	public void setNodeNameShow(Datum d, boolean show);
@@ -164,7 +157,7 @@ public interface HigraphViewCommandInterface {
 	public void setNodeExtraLabel(Datum d, String labelName, String label);  // The actual label
     public void setNodeExtraFillColor(Datum d, String labelName, long c);/*#/TNode*/ 
 		
-    /*#TEdge*/ // Edge controls
+    /*#TEdge*/// Edge controls
 	public void setEdgeColor(Datum source, Datum target, long c);
 	public void setEdgeFillColor(Datum source, Datum target, long c);
 	public void setEdgeShape(Datum source, Datum target, long s);	
