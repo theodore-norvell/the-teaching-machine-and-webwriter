@@ -289,27 +289,28 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 		setLayoutManager(layoutManager, view);
 	}
 	
-	   @Override
-	    public void addToActiveViewSet(String viewId) {
-	    	HigraphViewTM
-	    		view = getView(viewId);
-	    	Assert.check(view !=null, "Can't add unspecified view " + viewId + " to activeViewSet");
-	    	for(HigraphViewTM v : activeViewSet)
-	    		if (v == view) return; // already in activeViewSet
-	    	activeViewSet.add(view);
-	    }
+	@Override
+    public void addToActiveViewSet(String viewId) {
+    	HigraphViewTM
+    		view = getView(viewId);
+    	Assert.check(view !=null, "Can't add unspecified view " + viewId + " to activeViewSet");
+    	for(HigraphViewTM v : activeViewSet)
+    		if (v == view) return; // already in activeViewSet
+    	activeViewSet.add(view);
+    }
 
-	    @Override
-	    public void removeFromActiveViewSet(String viewId) {
-	    	HigraphViewTM
-			view = getView(viewId);
-	    	Assert.check(view !=null, "Can't remove unspecified view " + viewId + " from activeViewSet");
-	    	activeViewSet.remove(view);
-	    }
-	    
-	    public void clearActiveViewSet(){
-	    	activeViewSet.clear();
-	    }
+	@Override
+    public void removeFromActiveViewSet(String viewId) {
+    	HigraphViewTM
+		view = getView(viewId);
+    	Assert.check(view !=null, "Can't remove unspecified view " + viewId + " from activeViewSet");
+    	activeViewSet.remove(view);
+    }
+    
+	@Override
+   public void clearActiveViewSet(){
+    	activeViewSet.clear();
+    }
 		
 
 	
@@ -397,22 +398,25 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
             }} ) ;
 	}
 
-    @Override
+   @Override
 	public void setDefaultNodeFillColor(long c){
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultNodeFillColor(privateGetColor(c));
 	}
 	
+	@Override
 	public void setDefaultNodeNameColor(long c){
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultNodeNameColor(privateGetColor(c));
 	}
 	
+	@Override
 	public void setDefaultNodeValueColor(long c){
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultNodeValueColor(privateGetColor(c));
 	}
 	
+	@Override
 	public void setDefaultNodeSize(long w, long h){ // node size
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultNodeSize((int)w, (int) h);
@@ -478,37 +482,14 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 			view.setDefaultSourceDecorator(getDecorator(view, pd));		
 	}
 
-/*	@Override
-	public void setDefaultSourceDecoratorColor(long c) {
-		for(HigraphViewTM view : activeViewSet)
-			view.setDefaultSourceDecoratorColor(privateGetColor(c));
-		
-	}
-
-	@Override
-	public void setDefaultSourceDecoratorStroke(long s) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 	@Override
 	public void setDefaultTargetDecorator(long pd) {
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultTargetDecorator(getDecorator(view, pd));				
 	}
 
-/*	@Override
-	public void setDefaultTargetDecoratorColor(long c) {
-		for(HigraphViewTM view : activeViewSet)
-			view.setDefaultTargetDecoratorColor(privateGetColor(c));
-	}
 
 	@Override
-	public void setDefaultTargetDecoratorStroke(long s) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 	public void setDefaultBranchColor(long c){
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultBranchColor(privateGetColor(c));		
@@ -527,36 +508,13 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 			view.setDefaultParentDecorator(getDecorator(view, pd));				
 	}
 
-/*	@Override
-	public void setDefaultParentDecoratorColor(long c) {
-		for(HigraphViewTM view : activeViewSet)
-			view.setDefaultParentDecoratorColor(privateGetColor(c));
-	}
-
-	@Override
-	public void setDefaultParentDecoratorStroke(long s) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 	@Override
 	public void setDefaultChildDecorator(long pd) {
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultChildDecorator(getDecorator(view, pd));				
 	}
 
-/*	@Override
-	public void setDefaultChildDecoratorColor(long c) {
-		for(HigraphViewTM view : activeViewSet)
-			view.setDefaultChildDecoratorColor(privateGetColor(c));
-	}
-
 	@Override
-	public void setDefaultChildDecoratorStroke(long s) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 	public void setDefaultZoneShape(long s){
 		for(HigraphViewTM view : activeViewSet)
 			view.setDefaultZoneShape(getRectangularShape(s));
@@ -1370,44 +1328,52 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	}
 	
 	
+	@Override
 	public void createString(String id) {
 		for(HigraphViewTM view : activeViewSet)
 			view.createString(id);		
 	}
 		
+	@Override
 	public void clearString(String id) {
 		for(HigraphViewTM view : activeViewSet)
 			view.clearString(id);		
 	}
 		
+	@Override
 	public void addToString(String id, String addendum) {
 		for(HigraphViewTM view : activeViewSet)
 			view.addToString(id, addendum);		
 	}
 		
 
+	@Override
 	public void placeString(String id, long x, long y) {
 		for(HigraphViewTM view : activeViewSet)
 			view.placeString(id, (int)x, (int)y);		
 	}
 		
+	@Override
 	public void setStringBaseColor(String id, long color) {
 		for(HigraphViewTM view : activeViewSet)
 			view.setStringBaseColor(id, (int)color);		
 	}
 		
+	@Override
 	public void removeString(String id) {
 		for(HigraphViewTM view : activeViewSet)
 			view.removeString(id);		
 	}
 
 	
+	@Override
 	public void markSubString(String id, String subStr, long marker, long index) {
 		for(HigraphViewTM view : activeViewSet){
 			view.markSubString(id, subStr, (char)marker, (int)index);
 		}
 	}
 	
+	@Override
 	public void removeStringMarking(String id) {
 		for(HigraphViewTM view : activeViewSet)
 			view.removeStringMarking(id);		

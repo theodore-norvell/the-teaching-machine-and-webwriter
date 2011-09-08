@@ -1,14 +1,6 @@
 package tm.displayEngine.tmHigraph;
 
-import higraph.view.EdgeView;
-import higraph.view.PointDecorator;
-
-import java.awt.Color;
-import java.awt.Stroke;
-import java.awt.geom.RectangularShape;
-
 import tm.interfaces.Datum;
-import tm.utilities.Assert;
 
 public interface HigraphViewCommandInterface {
 	
