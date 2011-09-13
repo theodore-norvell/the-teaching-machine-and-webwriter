@@ -26,19 +26,21 @@ Diagram RegularExpressionNodeClass{
         +public operation appendChild{
             Argument child : VisreedNode;
         }
+        +public operation getOrder : int{
+        }
     }
     [@266,0]
     interface Payload{
     }
-    [@266,70]
+    [@263,70]
     interface TaggedPayload : Payload {
-        Operation getTag;
+        Operation getTag : Tag;
     }
-    [@248,160]
+    [@215,160]
     +abstract class VisreedPayload : TaggedPayload{
         +protected attribute tag : RegexTag;
-        +abstract operation constructView;
-        +abstract operation format{
+        +abstract operation constructView : VisreedNodeView;
+        +abstract operation format : String{
             Argument currentNode : VisreedNode;
         }
     }
@@ -177,7 +179,7 @@ Diagram InteractionClassDiagram{
             argument e : MouseEvent;
         }
     }
-    [@365,227]
+    [@365,215]
     +abstract class VisreedNodeView: ISelectable : IHoverable : IRotatable : IInteractable{
     }
     [@80,200]
@@ -229,7 +231,7 @@ Diagram MouseInteractionClassDiagram{
     }
     [@36,320]
     +public class VisreedSubgraphMouseAdapter : SubgraphMouseAdapter{}
-    [@300,100]
+    [@301,100]
     +public +abstract class SubgraphEventObserver{
         +public operation movedOver{}
         +public operation dragged{}
@@ -245,11 +247,11 @@ Diagram MouseInteractionClassDiagram{
         }
     }
     [@300,300]
-    +public class RegexSGEventObserver : SubgraphEventObserver{
-        +private operation getTopNodeView : VisreedNodeView{}
-        +private operation getNumSelection : int{}
-        +private operation getSelectedView : VisreedNodeView{}
-        +private operation getSelectedViews : List&lt;VisreedNodeView>{}
+    +public class VisreedSGEventObserver : SubgraphEventObserver{
+        +protected operation getTopNodeView : VisreedNodeView{}
+        +protected operation getNumSelection : int{}
+        +protected operation getSelectedView : VisreedNodeView{}
+        +protected operation getSelectedViews : List&lt;VisreedNodeView>{}
     }
     association _{
         role one : SubgraphMouseAdapter;

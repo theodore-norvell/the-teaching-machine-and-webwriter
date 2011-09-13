@@ -41,6 +41,15 @@ public abstract class VisreedPayload implements TaggedPayload<VisreedTag, Visree
         return this.tag;
     }
     
+    private VisreedNode node;
+    void setNode(VisreedNode node){
+    	this.node = node;
+    }
+    
+    public VisreedNode getNode(){
+    	return this.node;
+    }
+    
     /**
      * Returns the string format of regular expression
      * @param currentNode the {@link visreed.extension.regex.model.RegexNode} of the payload

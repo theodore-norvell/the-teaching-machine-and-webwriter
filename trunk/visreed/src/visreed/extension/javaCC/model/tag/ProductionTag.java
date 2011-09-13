@@ -20,11 +20,17 @@ import visreed.model.tag.VisreedTag;
  * @author Xiaoyu Guo
  */
 public class ProductionTag extends JavaCCTag{
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o){
         return (o instanceof ProductionTag);
     }
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString(){
         return "PRODUCTION";
@@ -35,7 +41,11 @@ public class ProductionTag extends JavaCCTag{
      */
     @Override
     public boolean contentModel(List<VisreedTag> seq) {
-        return true;
+    	if(seq != null && seq.size() == 1 && seq.get(0).equals(SEQUENCE)){
+    		return true;
+    	} else {
+    		return false;
+    	}
     }
 
     /* (non-Javadoc)
@@ -43,7 +53,7 @@ public class ProductionTag extends JavaCCTag{
      */
     @Override
     public List<VisreedTag> defaultTagSequence() {
-        ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(2);
+        ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(1);
         seq.add(SEQUENCE);
         return seq;
     }

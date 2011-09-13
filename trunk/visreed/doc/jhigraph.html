@@ -30,32 +30,45 @@
         <p>The change in model can be notified to the viewer by using the Observer Pattern.</p>
         
         <div class="diagram">
-            <canvas class="UmlCanvas" id="canvas_visreed_jhigraph_observer" width="400" height="150"></canvas>
+            <canvas class="UmlCanvas" id="canvas_visreed_jhigraph_observer" width="530" height="220"></canvas>
             <pre id="canvas_visreed_jhigraph_observerSource" class="uml">
-Diagram HigraphObserver{
-    [@76,0]
+Diagram HigraphObserver +dynamic{
+    [@0,0]
     interface AbstractHigraph{
     }
-    [@0,70]
-    interface VisreedHigraph : AbstractHigraph{
+    [@110,0]
+    interface IObservable&lt;T>{
         operation registerObserver{
-            argument o : IVisreedHigraphObserver;
+            argument o : IObserver&lt;T>;
         }
         operation deRegisterObserver{
-            argument o : IVisreedHigraphObserver;
+            argument o : IObserver&lt;T>;
         }
-        operation notifyObservers{
+        operation notifyObservers;
+    }
+    [@352,0]
+    interface IObserver&lt;T>{
+        operation changed{
+            argument object : T;
         }
     }
-    [@250,70]
-    interface IVisreedHigraphObserver{
-        operation changed{
-            argument regexHigraph : VisreedHigraph;
-        }
+    [@445,0]
+    +abstract class HigraphView{
+    }
+    [@163,180]
+    interface VisreedHigraph : AbstractHigraph : IObservable&lt;VisreedHigraph>{
+    }
+    [@341,180]
+    class VisreedHigraphView : HigraphView : IObserver&lt;VisreedHigraph>{
+    }
+    association observe{
+        role one : VisreedHigraph;
+        role one : VisreedHigraphView;
     }
 }
             </pre>
         </div>
+        <p><span class="name">VisreedNode</span> and <span class="name">VisreedNodeView</span> have the same observer relationship so that the changes in the node can be reflected to its views.</p>
         <h3>Selection</h3>
         <p>Nodes in Visreed Higraph can be selected. The following methods are added to handle node selection.</p>
         <div class="diagram">

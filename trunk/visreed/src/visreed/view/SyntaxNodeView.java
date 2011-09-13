@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.view;
+package visreed.view;
 
 import higraph.view.HigraphView;
 
@@ -18,7 +18,6 @@ import java.awt.geom.Rectangle2D;
 
 import tm.backtrack.BTTimeManager;
 import visreed.awt.GraphicsHelper;
-import visreed.extension.regex.view.layout.SyntaxTreeLayoutManager;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -26,7 +25,7 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.view.VisreedNodeView;
+import visreed.view.layout.SyntaxTreeLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**

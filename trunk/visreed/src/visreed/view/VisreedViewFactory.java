@@ -57,4 +57,7 @@ extends ViewFactory<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWho
         return new InsertChildDropZone(nv, timeMan);
     }
     
+    public VisreedDropZone makeTerminalDropZone(VisreedNodeView nv){
+    	return new TerminalDropZone(nv, timeMan);
+    }
 }

@@ -5,10 +5,11 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.view.layout;
+package visreed.view.layout;
+
+import java.awt.geom.Rectangle2D;
 
 import visreed.view.VisreedNodeView;
-import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**
  * @author Xiaoyu Guo
@@ -30,7 +31,7 @@ public class SyntaxTreeLayoutManager extends
      */
     public void layoutNode(VisreedNodeView n, double px, double py){
         double shapeWidth = n.getNextShapeExtent().getWidth();  // width of the shape of a single node
-		double myHeight = n.getNextHeight();
+		double myHeight = n.getNextShapeExtent().getHeight();
 		int kids = n.getNumChildren();
 		
 		if(n.getDislocation() != null){
@@ -59,6 +60,16 @@ public class SyntaxTreeLayoutManager extends
 	
 		for (int i = 0; i < kids; i++){
 			layoutBranch(n, n.getChild(i));
+		}
+		
+		if(kids > 0){
+	        Rectangle2D myNextExtent = new Rectangle2D.Double(
+	            px, 
+	            py, 
+	            localX - px - offset, 
+	            n.getChild(kids - 1).getNextShapeExtent().getMaxY() - py
+	        );
+//	        n.setNextShape(myNextExtent);
 		}
     }
     

@@ -57,11 +57,6 @@ public class JavaCodePayload extends TerminalPayload {
     }
     
     @Override
-    public JavaCodePayload copy() {
-        return this;
-    }
-    
-    @Override
     public String getDescription(){
         return "Java Code";
     }

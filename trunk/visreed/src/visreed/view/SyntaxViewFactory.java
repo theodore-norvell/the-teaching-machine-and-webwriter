@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.view;
+package visreed.view;
 
 import higraph.view.HigraphView;
 import higraph.view.ViewFactory;
@@ -20,8 +20,6 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.view.VisreedHigraphView;
-import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo

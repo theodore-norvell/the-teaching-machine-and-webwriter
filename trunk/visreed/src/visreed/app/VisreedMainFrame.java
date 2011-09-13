@@ -1,4 +1,4 @@
-package visreed.extension.regex.app;
+package visreed.app;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -20,8 +20,6 @@ import javax.swing.SwingUtilities;
 import tm.backtrack.BTTimeManager;
 import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.regex.swing.RegexJList;
-import visreed.extension.regex.view.SyntaxViewFactory;
-import visreed.extension.regex.view.layout.SyntaxTreeLayoutManager;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
@@ -39,23 +37,25 @@ import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.VisreedTextArea;
 import visreed.view.IGraphContainer;
+import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedHigraphView;
 import visreed.view.VisreedNodeView;
 import visreed.view.VisreedViewFactory;
 import visreed.view.VoidPointDecorator;
 import visreed.view.layout.AlternationLayoutManager;
+import visreed.view.layout.SyntaxTreeLayoutManager;
 
 /**
  * This shall be the main entry for the project
  * @author Xiaoyu Guo
  */
-public class RegexMainFrame
+public class VisreedMainFrame
 extends JFrame 
 implements IGraphContainer, IObserver<VisreedHigraph>{
 
     private static final long serialVersionUID = -6388967497486007956L;
 
-    private void initializeGraph(){
+    protected void initializeGraph(){
         this.timeMan = new BTTimeManager();
         this.wholeGraph = new VisreedWholeGraph(this.timeMan);
         this.subgraph = this.wholeGraph.makeSubGraph();
@@ -137,41 +137,41 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     }
     
     // main wholeGraph
-    private BTTimeManager timeMan;
-    private VisreedWholeGraph wholeGraph;
-    private VisreedSubgraph subgraph;
+    protected BTTimeManager timeMan;
+    protected VisreedWholeGraph wholeGraph;
+    protected VisreedSubgraph subgraph;
 
-    private VisreedJComponent mainGraphDisplay;
-    private VisreedViewFactory mainViewFactory;
-    private VisreedHigraphView mainGraphView;
-    private AlternationLayoutManager graphLayoutManger;
+    protected VisreedJComponent mainGraphDisplay;
+    protected VisreedViewFactory mainViewFactory;
+    protected VisreedHigraphView mainGraphView;
+    protected AlternationLayoutManager graphLayoutManger;
     
     // Set up an event mainGraphObserver.
-    private VisreedSubgraphEventObserver mainGraphObserver;
-    private VisreedSubgraphEventObserver syntaxGraphObserver;
-    private VisreedSubgraphMouseAdapter sgm;
-    private VisreedSubgraphMouseAdapter sgm2;
+    protected VisreedSubgraphEventObserver mainGraphObserver;
+    protected VisreedSubgraphEventObserver syntaxGraphObserver;
+    protected VisreedSubgraphMouseAdapter sgm;
+    protected VisreedSubgraphMouseAdapter sgm2;
 
     // secondary wholeGraph
-    private VisreedJComponent syntaxDisplay; 
-    private SyntaxViewFactory syntaxViewFactory;
-    private VisreedHigraphView syntaxView;
+    protected VisreedJComponent syntaxDisplay; 
+    protected SyntaxViewFactory syntaxViewFactory;
+    protected VisreedHigraphView syntaxView;
     
-    private SyntaxTreeLayoutManager syntaxLayoutManager;
+    protected SyntaxTreeLayoutManager syntaxLayoutManager;
     
-    private VisreedTextArea regexText;
+    protected VisreedTextArea regexText;
     
-    private RegexJList nodeListBar;
+    protected RegexJList nodeListBar;
 
     /**
      * Construct the main frame
      */
-    public RegexMainFrame() {
+    public VisreedMainFrame() {
         this.initializeGraph();
         this.initializeControl();
     }
 
-    private void initializeControl() {
+    protected void initializeControl() {
         getContentPane().setLayout(new BorderLayout());
         
         /* the panels */
@@ -222,7 +222,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
      * @param testToolBar
      */
     @SuppressWarnings("serial")
-    private void fillOptionToolBar(JToolBar toolBar) {
+    protected void fillOptionToolBar(JToolBar toolBar) {
         Action action;
         action = new AbstractAction("Toggle Debug Border"){
             public void actionPerformed(ActionEvent e) {
@@ -238,7 +238,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
      * @param toolBar
      */
     @SuppressWarnings("serial")
-    private void fillTestToolBar(JToolBar toolBar) {
+    protected void fillTestToolBar(JToolBar toolBar) {
         Action action = new AbstractAction("refresh") {
             public void actionPerformed(ActionEvent e) {
                 refreshGraph();
@@ -529,7 +529,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         SwingHelper.setSystemLookAndFeel();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                RegexMainFrame frame = new RegexMainFrame();
+                VisreedMainFrame frame = new VisreedMainFrame();
                 frame.setVisible(true);
             }
         });

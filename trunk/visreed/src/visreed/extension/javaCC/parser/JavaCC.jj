@@ -1,203 +1,54 @@
-/* Copyright (c) 2006, Sun Microsystems, Inc.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- *     * Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of the Sun Microsystems, Inc. nor the names of its
- *       contributors may be used to endorse or promote products derived from
- *       this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
- * THE POSSIBILITY OF SUCH DAMAGE.
- */
-
-/*
- * This file contains the grammar and actions that describe
- * JavaCCParser.  When passed as input to JavaCCParser it generates
- * another copy of itself.  Hence JavaCCParser may be modified by
- * modifying this file, and therefore this file is to be considered
- * the master version of JavaCCParser.
- */
-
 options {
   JAVA_UNICODE_ESCAPE = true;
-  STATIC=false;
+  STATIC = false;
 }
 
 PARSER_BEGIN(JavaCCParser)
-
-/**
- * This file contains the code for JavaCCParser generated
- * by JavaCCParser itself.
- */
 
 package visreed.extension.javaCC.parser;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class JavaCCParser extends JavaCCParserInternals {
+import org.javacc.parser.JavaCCErrors;
 
-  /**
-   * The name of the parser class.
-   */
-  String parser_class_name;
+import visreed.model.*;
+import visreed.extension.javaCC.model.*;
 
-  /**
-   * This flag is set to true when the part between PARSER_BEGIN and
-   * PARSER_END is being parsed.
-   */
-  boolean processing_cu = false;
+import visreed.extension.javaCC.model.JavaCCOptions;
 
-  /**
-   * The level of class nesting.
-   */
-  int class_nesting = 0;
+public class JavaCCParser {
+    private JavaCCBuilder builder;
+    private JavaCCWholeGraph wg;
+    
+    public static VisreedNode parse(
+        JavaCCWholeGraph wg,
+        java.io.Reader reader
+    ) throws ParseException {
+        JavaCCParser parser = new JavaCCParser(reader);
+        parser.builder = new JavaCCBuilder(wg);
+        try{
+            parser.javacc_input();
+            parser.makeRoot();
+            return parser.result();
+        }
+        catch (Exception e){
+            System.out.println("Parsing Exception, message: " + e.getMessage());
+            throw new ParseException(e.getMessage());
+        }
+        catch (Error e){
+            System.out.println("Parsing Error, message: " + e.getMessage());
+            throw new ParseException(e.getMessage());
+        }
+    }
 
-  /**
-   * This int variable is incremented while parsing local lookaheads.
-   * Hence it keeps track of *syntactic* lookahead nesting.
-   * This is used to provide warnings when actions and nested lookaheads
-   * are used in syntactic lookahead productions.  This is to prevent
-   * typos such as leaving out the comma in LOOKAHEAD( foo(), {check()} ).
-   */
-  int inLocalLA = 0;
+    public VisreedNode result(){
+        return builder.pop();
+    }
 
-  /**
-   * Set to true when the parser is within an action.
-   */
-  boolean inAction = false;
-
-  /**
-   * This flag keeps track of whether or not return and throw
-   * statements have been patched during the parsing of a production.
-   * The value of this flag is assigned the field with the same
-   * name in BNFProduction.java.
-   */
-  boolean jumpPatched = false;
-
-  protected boolean isJavaLanguage = true;
-
-
-  /*
-   * Returns true if the next token is not in the FOLLOW list of "expansion".
-   * It is used to decide when the end of an "expansion" has been reached.
-   */
-  private boolean notTailOfExpansionUnit() {
-    Token t;
-    t = getToken(1);
-    if (t.kind == BIT_OR || t.kind == COMMA || t.kind == RPAREN || t.kind == RBRACE || t.kind == RBRACKET) return false;
-    return true;
-  }
-
-   /**
-    * Class to hold modifiers.
-    */
-   static public final class ModifierSet
-   {
-     /* Definitions of the bits in the modifiers field.  */
-     public static final int PUBLIC = 0x0001;
-     public static final int PROTECTED = 0x0002;
-     public static final int PRIVATE = 0x0004;
-     public static final int ABSTRACT = 0x0008;
-     public static final int STATIC = 0x0010;
-     public static final int FINAL = 0x0020;
-     public static final int SYNCHRONIZED = 0x0040;
-     public static final int NATIVE = 0x0080;
-     public static final int TRANSIENT = 0x0100;
-     public static final int VOLATILE = 0x0200;
-     public static final int STRICTFP = 0x1000;
-
-     /** A set of accessors that indicate whether the specified modifier
-         is in the set. */
-
-     public boolean isPublic(int modifiers)
-     {
-       return (modifiers & PUBLIC) != 0;
-     }
-
-     public boolean isProtected(int modifiers)
-     {
-       return (modifiers & PROTECTED) != 0;
-     }
-
-     public boolean isPrivate(int modifiers)
-     {
-       return (modifiers & PRIVATE) != 0;
-     }
-
-     public boolean isStatic(int modifiers)
-     {
-       return (modifiers & STATIC) != 0;
-     }
-
-     public boolean isAbstract(int modifiers)
-     {
-       return (modifiers & ABSTRACT) != 0;
-     }
-
-     public boolean isFinal(int modifiers)
-     {
-       return (modifiers & FINAL) != 0;
-     }
-
-     public boolean isNative(int modifiers)
-     {
-       return (modifiers & NATIVE) != 0;
-     }
-
-     public boolean isStrictfp(int modifiers)
-     {
-       return (modifiers & STRICTFP) != 0;
-     }
-
-     public boolean isSynchronized(int modifiers)
-     {
-       return (modifiers & SYNCHRONIZED) != 0;
-     }
-
-     public boolean isTransient(int modifiers)
-      {
-       return (modifiers & TRANSIENT) != 0;
-     }
-
-     public boolean isVolatile(int modifiers)
-     {
-       return (modifiers & VOLATILE) != 0;
-     }
-
-     /**
-      * Removes the given modifier.
-      */
-     static int removeModifier(int modifiers, int mod)
-     {
-        return modifiers & ~mod;
-     }
-   }
-
-   private void eatUptoCloseBrace() {
-     int b = 1;
-     while(getToken(1).kind != RBRACE || --b != 0) {
-       if (getToken(1).kind == EOF) break;
-       if (getNextToken().kind == LBRACE) b++;
-     }
-   }
-
+    private void makeRoot(){
+        builder.makeRoot();
+    }
 }
 
 PARSER_END(JavaCCParser)
@@ -531,37 +382,20 @@ TOKEN :
 void javacc_input() :
 	{
 	  String id1, id2;
-	  initialize();
 	}
 {
   javacc_options()
-  {
-    isJavaLanguage = Options.getOutputLanguage().equals("java");
-  }
   "PARSER_BEGIN" "(" id1=identifier()
 	{
-	  addcuname(id1);
+	  this.wg.setParserName(id1);
 	}
                  ")"
-	{
-	  processing_cu = true;
-	  parser_class_name = id1;
-
-          if (!isJavaLanguage) {
-            JavaCCGlobals.otherLanguageDeclTokenBeg = getToken(1);
-            while(getToken(1).kind != _PARSER_END) {
-              getNextToken();
-            }
-            JavaCCGlobals.otherLanguageDeclTokenEnd = getToken(1);
-          }
-	}
   CompilationUnit()
-	{
-	  processing_cu = false;
-	}
   "PARSER_END" "(" id2=identifier()
 	{
-	  compare(getToken(0), id1, id2);
+      if (!id2.equals(id1)) {
+        JavaCCErrors.parse_error(getToken(0), "Name " + id2 + " must be the same as that used at PARSER_BEGIN (" + id1 + ")");
+      }
 	}
                ")"
   ( production() )+
@@ -573,7 +407,7 @@ void javacc_options() :
 {
   [ LOOKAHEAD({ getToken(1).image.equals("options") }) <IDENTIFIER>  "{" ( option_binding() )* "}" ]
 	{
-	  Options.normalize();
+	  this.options.normalize();
 	}
 }
 
@@ -594,17 +428,17 @@ void option_binding() :
   (
     int_val = IntegerLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, new Integer(int_val));
+	  this.options.set(option_name, new Integer(int_val));
 	}
   |
     bool_val = BooleanLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, new Boolean(bool_val));
+	  this.options.set(option_name, new Boolean(bool_val));
 	}
   |
     string_val = StringLiteral()
 	{
-	  Options.setInputFileOption(t, getToken(0), option_name, string_val);
+	  this.options.set(option_name, string_val);
 	}
   )
   ";"
@@ -1497,6 +1331,7 @@ void CompilationUnit() :
  */
 	{
 	  set_initial_cu_token(getToken(1));
+	  StringBuffer sb = new StringBuffer();
 	}
 {
   [ LOOKAHEAD( ( Annotation() )* "package" ) PackageDeclaration() ]

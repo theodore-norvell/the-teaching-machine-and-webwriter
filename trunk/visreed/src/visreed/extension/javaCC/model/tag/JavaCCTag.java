@@ -15,8 +15,10 @@ import visreed.model.tag.VisreedTag;
  */
 public abstract class JavaCCTag extends VisreedTag {
     public static final VisreedTag PRODUCTION = ProductionTag.getInstance();
+    public static final VisreedTag ROOT = RootTag.getInstance();
     
     private static final VisreedTag[] VALUES = new VisreedTag[]{
+    	ROOT,
         SEQUENCE,
         ALTERNATION,
         KLEENE_PLUS,

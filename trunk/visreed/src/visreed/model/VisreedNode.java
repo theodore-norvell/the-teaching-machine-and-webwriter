@@ -23,10 +23,12 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
 
     protected VisreedNode(VisreedWholeGraph higraph, VisreedPayload payload) {
         super(higraph, payload);
+        payload.setNode(this);
     }
 
     protected VisreedNode(VisreedNode original, VisreedNode parent) {
         super(original, parent);
+        this.getPayload().setNode(this);
     }
 
     @Override
@@ -154,6 +156,17 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
     	// result.hover = this.hover;
     	
     	return result;
+    }
+    
+    /* (non-Javadoc)
+     * @see higraph.model.abstractClasses.AbstractNode#replacePayload(higraph.model.interfaces.Payload)
+     */
+    @Override
+    public void replacePayload(VisreedPayload payload){
+    	if(! payload.equals(this.getPayload())){
+        	super.replacePayload(payload);
+        	this.notifyObservers();
+    	}
     }
     
     private List<IObserver<VisreedNode>> observers = new ArrayList<IObserver<VisreedNode>>();
