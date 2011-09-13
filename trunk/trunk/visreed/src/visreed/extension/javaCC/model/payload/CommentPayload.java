@@ -26,9 +26,6 @@ import visreed.view.VisreedNodeView;
  */
 public class CommentPayload extends TerminalPayload {
 
-    /**
-     * 
-     */
     public CommentPayload() {
         super();
     }
@@ -57,11 +54,6 @@ public class CommentPayload extends TerminalPayload {
             result += "...";
         }
         return result;
-    }
-    
-    @Override
-    public CommentPayload copy() {
-        return this;
     }
     
     @Override

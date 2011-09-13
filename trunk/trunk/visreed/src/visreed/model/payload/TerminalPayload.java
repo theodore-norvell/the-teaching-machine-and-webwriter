@@ -20,7 +20,11 @@ public class TerminalPayload extends VisreedPayload {
 	}
 	
 	public void setTerminal(String terminal){
+		boolean changed = (this.terminal != terminal || !this.terminal.equals(terminal));
 		this.terminal = terminal;
+		if(changed && this.getNode() != null){
+			this.getNode().notifyObservers();
+		}
 	}
 
     public TerminalPayload(){
@@ -42,7 +46,7 @@ public class TerminalPayload extends VisreedPayload {
      */
     @Override
     public TerminalPayload copy() {
-        return this;
+        return new TerminalPayload(this.terminal);
     }
 
 	/* (non-Javadoc)

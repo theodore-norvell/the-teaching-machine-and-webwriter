@@ -12,12 +12,13 @@ import java.util.Hashtable;
 
 import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.model.VisreedNode;
+import visreed.pattern.IObserver;
 
 /**
+ * ProductionManager handles relationship between all names and production nodes.
  * @author Xiaoyu Guo
- *
  */
-public class ProductionManager {
+public class ProductionManager implements IObserver<VisreedNode> {
     private ArrayList<VisreedNode> nodeList;
     private Hashtable<String, VisreedNode> nodeDictionary;
     
@@ -34,6 +35,11 @@ public class ProductionManager {
         if(node != null && node.getPayload() != null){
             if(node.getPayload() instanceof ProductionPayload){
                 this.nodeList.add(node);
+                String key = ((ProductionPayload)node.getPayload()).getName();
+                if(key != null && key.length() > 0){
+                	this.nodeDictionary.put(key, node);
+                }
+                node.registerObserver(this);
             }
         }
     }
@@ -45,8 +51,7 @@ public class ProductionManager {
     public void deRegisterNode(VisreedNode node){
         if(node != null && this.nodeDictionary.containsValue(node)){
             this.nodeList.remove(node);
-            String name = ((ProductionPayload)node.getPayload()).getName();
-            this.nodeDictionary.remove(name);
+            this.nodeDictionary.values().remove(node);
         }
     }
     
@@ -61,6 +66,20 @@ public class ProductionManager {
         }
         return null;
     }
+
+	/* (non-Javadoc)
+	 * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
+	 */
+	@Override
+	public void changed(VisreedNode object) {
+		if(this.nodeDictionary.containsValue(object)){
+			// possibly the object has changed its name, so delete it and re-add it.
+			this.nodeDictionary.values().remove(object);
+			
+			String key = ((ProductionPayload)object.getPayload()).getName();
+			this.nodeDictionary.put(key, object);
+		}
+	}
     
     /**
      * Updates the name for each production node in its list. 
@@ -73,7 +92,15 @@ public class ProductionManager {
         }
     }
     
+    /**
+     * Clear all the registered node
+     */
     public void clear(){
+    	if(this.nodeList != null && this.nodeList.size() > 0){
+    		for(VisreedNode n : this.nodeList){
+    			n.deRegisterObserver(this);
+    		}
+    	}
         this.nodeList.clear();
         this.nodeDictionary.clear();
     }

@@ -26,8 +26,6 @@ import javax.swing.KeyStroke;
 import tm.backtrack.BTTimeManager;
 import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.regex.swing.RegexJList;
-import visreed.extension.regex.view.SyntaxViewFactory;
-import visreed.extension.regex.view.layout.SyntaxTreeLayoutManager;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
@@ -42,11 +40,13 @@ import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedTextArea;
 import visreed.view.IGraphContainer;
+import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedHigraphView;
 import visreed.view.VisreedNodeView;
 import visreed.view.VisreedViewFactory;
 import visreed.view.VoidPointDecorator;
 import visreed.view.layout.AlternationLayoutManager;
+import visreed.view.layout.SyntaxTreeLayoutManager;
 
 /**
  * @author Xiaoyu Guo

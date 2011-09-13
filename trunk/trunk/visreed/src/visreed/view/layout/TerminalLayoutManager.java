@@ -11,6 +11,7 @@ import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 
 import visreed.view.TerminalNodeView;
+import visreed.view.VisreedDropZone;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -59,6 +60,15 @@ public class TerminalLayoutManager extends VisreedNodeLayoutManager {
         nv.setNextShape(extent);
         
         nv.placeNext(px, py);
+    }
+    
+    /* (non-Javadoc)
+     * @see visreed.view.layout.VisreedNodeLayoutManager#layoutZones(visreed.view.VisreedNodeView, visreed.view.VisreedDropZone)
+     */
+    public void layoutZones(VisreedNodeView view, VisreedDropZone zone){
+    	Rectangle2D extent = view.getNextShapeExtent();
+    	zone.setNextShape(extent);
+    	zone.placeNext(extent.getX(), extent.getY());
     }
 
     private static TerminalLayoutManager instance = new TerminalLayoutManager();

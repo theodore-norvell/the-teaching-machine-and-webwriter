@@ -58,18 +58,18 @@ public class VisreedSubgraphMouseAdapter extends
             jComponent.setTransferHandler(new VisreedSubgraphTransferHandler(this));
         }
     }    
-    
-    @Override
-    protected void findComponentsUnder(
-        Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, 
-        NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nodeView,
-        Point p
-    ){
-//      System.out.println("Checking node " + nodeView + " for component under (" + p.x + ", " + p.y + ")");
-        if (nodeView.getNextShapeExtent().contains(p)) {
-            nodeView.getComponentsUnder(stack, p);  // containing nodeView is deepest backup
-            for (int i = 0; i < nodeView.getNumChildren(); i++) // children will be considered first
-                findComponentsUnder(stack, nodeView.getChild(i), p);            
-        }
-    }
+//    
+//    @Override
+//    protected void findComponentsUnder(
+//        Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, 
+//        NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nodeView,
+//        Point p
+//    ){
+////      System.out.println("Checking node " + nodeView + " for component under (" + p.x + ", " + p.y + ")");
+//        if (nodeView.getNextShapeExtent().contains(p)) {
+//            nodeView.getComponentsUnder(stack, p);  // containing nodeView is deepest backup
+//            for (int i = 0; i < nodeView.getNumChildren(); i++) // children will be considered first
+//                findComponentsUnder(stack, nodeView.getChild(i), p);            
+//        }
+//    }
 }

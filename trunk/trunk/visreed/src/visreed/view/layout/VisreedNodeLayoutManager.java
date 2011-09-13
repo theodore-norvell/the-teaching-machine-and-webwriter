@@ -54,6 +54,9 @@ public abstract class VisreedNodeLayoutManager
         }
     }
     
+    /* (non-Javadoc)
+     * @see higraph.view.layout.AbstractLayoutManager#layoutLocal(higraph.view.HigraphView)
+     */
     public void layoutLocal(HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> hgv){
         Iterator<NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> iterator = hgv.getTops();
         if(iterator.hasNext()){
@@ -77,6 +80,11 @@ public abstract class VisreedNodeLayoutManager
         }
     }
     
+    /**
+     * @param nv
+     * @param px
+     * @param py
+     */
     public final void layoutNodes(VisreedNodeView nv, double px, double py){
         // refresh drop zones
         nv.refreshDropZone();

@@ -144,6 +144,9 @@ public class TerminalNodeView extends VisreedNodeView {
         return TerminalLayoutManager.getInstance();
     }
     
+    /* (non-Javadoc)
+     * @see visreed.view.VisreedNodeView#handleDoubleClick(java.awt.event.MouseEvent)
+     */
     public void handleDoubleClick(MouseEvent e){
         if(e.getButton() == MouseEvent.BUTTON1){
             String newValue = (String)JOptionPane.showInputDialog(
@@ -156,6 +159,30 @@ public class TerminalNodeView extends VisreedNodeView {
                 this.setTerminal(newValue);
                 this.getHigraphView().getHigraph().getWholeGraph().notifyObservers();
             }
+        }
+    }
+    
+    protected static final String ID_DROPZONE_TERMINAL = "term_"; 
+    
+    /* (non-Javadoc)
+     * @see visreed.view.VisreedNodeView#shouldRefreshDropZone()
+     */
+    protected boolean shouldRefreshDropZone(){
+    	boolean shouldRefresh = (this.zones.size() != 1 || this.findZone(ID_DROPZONE_TERMINAL) == null);
+    	return shouldRefresh;
+    }
+    
+    /* (non-Javadoc)
+     * @see visreed.view.VisreedNodeView#reCreateDropZone()
+     */
+    public void reCreateDropZone(){
+    	this.removeZones();
+        if(this.mayAddZones() && this.findZone(ID_DROPZONE_TERMINAL) == null){
+            VisreedDropZone zone = this.getNodeViewFactory().makeTerminalDropZone(this);
+            zone.setId(ID_DROPZONE_TERMINAL);
+            zone.setNodeNumber(0);
+            this.addZone(zone);
+        } else {
         }
     }
 }

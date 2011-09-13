@@ -94,7 +94,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
     protected void drawDebugBorder(Graphics2D screen){
         // use getExtent() to get the extent for dealing with drawing
         if(IN_DEBUG_MODE){
-            Rectangle2D extent = this.getExtent();
+            Rectangle2D extent = this.getNextShapeExtent();
             Color previousColor = screen.getColor();
             screen.setColor(Color.red);
             // border

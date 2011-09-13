@@ -10,6 +10,7 @@ package visreed.extension.javaCC.model.payload;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
 import visreed.extension.javaCC.model.tag.ProductionTag;
+import visreed.extension.javaCC.view.ProductionNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -25,11 +26,13 @@ import visreed.view.VisreedNodeView;
  */
 public class ProductionPayload extends VisreedPayload {
 
-    /**
-     * @param tag
-     */
     public ProductionPayload() {
         super(ProductionTag.getInstance());
+    }
+    
+    public ProductionPayload(String name){
+    	super(ProductionTag.getInstance());
+    	this.name = name;
     }
 
     /* (non-Javadoc)
@@ -53,7 +56,11 @@ public class ProductionPayload extends VisreedPayload {
     }
     
     public void setName(String value){
+    	boolean changed = (!this.name.equals(value));
         this.name = value;
+        if(changed && this.getNode() != null){
+        	this.getNode().notifyObservers();
+        }
     }
 
 
@@ -65,8 +72,7 @@ public class ProductionPayload extends VisreedPayload {
         HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> sgv,
         VisreedNode node, BTTimeManager timeman
     ) {
-        // TODO Auto-generated method stub
-        return null;
+        return new ProductionNodeView(sgv, node, timeman);
     }
 
 }

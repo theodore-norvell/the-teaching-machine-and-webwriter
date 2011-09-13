@@ -5,13 +5,13 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.payload;
+package visreed.model.tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import visreed.model.VisreedPayload;
-import visreed.model.tag.VisreedTag;
+import visreed.model.payload.OptionalPayload;
 
 /**
  * @author Xiaoyu Guo
