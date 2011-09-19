@@ -407,7 +407,7 @@ void javacc_options() :
 {
   [ LOOKAHEAD({ getToken(1).image.equals("options") }) <IDENTIFIER>  "{" ( option_binding() )* "}" ]
 	{
-	  this.options.normalize();
+	  this.wg.getOptions().normalize();
 	}
 }
 
@@ -428,17 +428,17 @@ void option_binding() :
   (
     int_val = IntegerLiteral()
 	{
-	  this.options.set(option_name, new Integer(int_val));
+	  this.wg.getOptions().set(option_name, new Integer(int_val));
 	}
   |
     bool_val = BooleanLiteral()
 	{
-	  this.options.set(option_name, new Boolean(bool_val));
+	  this.wg.getOptions().set(option_name, new Boolean(bool_val));
 	}
   |
     string_val = StringLiteral()
 	{
-	  this.options.set(option_name, string_val);
+	  this.wg.getOptions().set(option_name, string_val);
 	}
   )
   ";"
@@ -476,44 +476,19 @@ void production() :
 
 void javacode_production() :
 	{
-	  JavaCodeProduction p = new JavaCodeProduction();
-	  String lhs;
-	  Token t = getToken(1);
-	  p.setFirstToken(t);
-	  java.util.List excName;
-	  p.setThrowsList(new java.util.ArrayList());
-	  p.setLine(t.beginLine);
-	  p.setColumn(t.beginColumn);
 	}
 {
   "JAVACODE"
-  AccessModifier(p)
-  ResultType(p.getReturnTypeTokens())
-  lhs=identifier()	{ p.setLhs(lhs); }
-  FormalParameters(p.getParameterListTokens())
+  AccessModifier()
+  ResultType()
+  identifier()
   [ "throws"
-	{
-	  excName = new ArrayList();
-	}
-    Name(excName)
-	{
-	  p.getThrowsList().add(excName);
-	}
+    Name(null)
     (
-	{
-	  excName = new ArrayList();
-	}
-      "," Name(excName)
-	{
-	  p.getThrowsList().add(excName);
-	}
+      "," Name(null)
     )*
   ]
-  Block(p.getCodeTokens())
-	{
-	  p.setLastToken(getToken(0));
-	  addproduction(p);
-	}
+  Block(null)
 }
 
 void bnf_production() :
@@ -530,30 +505,18 @@ void bnf_production() :
 	  jumpPatched = false;
 	}
 {
-  AccessModifier(p)
-  ResultType(p.getReturnTypeTokens())
-  lhs=identifier()  { p.setLhs(lhs); }
-  FormalParameters(p.getParameterListTokens())
+  AccessModifier()
+  ResultType()
+  identifier()
+  FormalParameters(null)
   [ "throws"
-	{
-	  excName = new ArrayList();
-	}
-    Name(excName)
-	{
-	  p.getThrowsList().add(excName);
-	}
+    Name(null)
     (
-	{
-	  excName = new ArrayList();
-	}
-      "," Name(excName)
-	{
-	  p.getThrowsList().add(excName);
-	}
+      "," Name(null)
     )*
   ]
   ":"
-  Block(p.getDeclarationTokens())
+  Block(null)
   "{" expansion_choices(c) t="}"
 	{
 	  p.setLastToken(t);
@@ -563,17 +526,11 @@ void bnf_production() :
 	}
 }
 
-void AccessModifier(NormalProduction p) :
-	{
-	  Token t = null;
-	}
+void AccessModifier() :
+    {
+    }
 {
-	( t = "public" | t = "protected" | t = "private" )?
-	{
-	  if(t != null){
-	    p.setAccessMod(t.image);
-	  }
-	}
+    ( "public" | "protected" | "private" )?
 }
 
 void regular_expr_production() :
@@ -719,6 +676,7 @@ void regexpr_spec(TokenProduction p) :
 	}
 }
 
+// shall result in an alternation node
 void expansion_choices(Container c1) :
 	{
 	  boolean morethanone = false;
@@ -1767,11 +1725,8 @@ void PrimitiveType():
 }
 
 
-void ResultType(List tokens) :
+void ResultType() :
 	{
-	  Token first = getToken(1);
-	  if (tokens == null)
-	    tokens = new ArrayList();
 	}
 {
 (
@@ -1779,15 +1734,6 @@ void ResultType(List tokens) :
 |
   Type()
 )
-	{
-	  Token last = getToken(0);
-	  Token t = first;
-	  while (true) {
-	    tokens.add(t);
-	    if (t == last) break;
-	    t = t.next;
-	  }
-	}
 }
 
 void Name(List tokens) :

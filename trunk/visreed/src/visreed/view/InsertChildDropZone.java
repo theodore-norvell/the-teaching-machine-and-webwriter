@@ -61,7 +61,12 @@ public class InsertChildDropZone extends VisreedDropZone {
         wg.reduceSelection();
         
         VisreedNode thisNode = ((VisreedNodeView)this.getAssociatedComponent()).getNode();
-        
+
+        for(VisreedNode n : nodes){
+        	if(n == thisNode || n.isChildOf(thisNode)){
+        		nodes.remove(n);
+        	}
+        }
         boolean targetIsSeq = false;
         if(thisNode.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
             targetIsSeq = true;
