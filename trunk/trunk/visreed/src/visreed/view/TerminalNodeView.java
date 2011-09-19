@@ -144,24 +144,6 @@ public class TerminalNodeView extends VisreedNodeView {
         return TerminalLayoutManager.getInstance();
     }
     
-    /* (non-Javadoc)
-     * @see visreed.view.VisreedNodeView#handleDoubleClick(java.awt.event.MouseEvent)
-     */
-    public void handleDoubleClick(MouseEvent e){
-        if(e.getButton() == MouseEvent.BUTTON1){
-            String newValue = (String)JOptionPane.showInputDialog(
-                null,
-                "Editing value for Terminal Node",
-                this.getTerminal()
-            );
-
-            if(newValue != null && newValue.length() > 0 && !(newValue.equals(this.getTerminal()))){
-                this.setTerminal(newValue);
-                this.getHigraphView().getHigraph().getWholeGraph().notifyObservers();
-            }
-        }
-    }
-    
     protected static final String ID_DROPZONE_TERMINAL = "term_"; 
     
     /* (non-Javadoc)

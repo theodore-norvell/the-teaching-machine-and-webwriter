@@ -34,7 +34,7 @@ public class VisreedSubgraphEventObserver
 extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> {
 
     /** Defines the minimum distance of dragging */
-    private static final double MINIMUM_DRAG_DISTANCE_PIXEL = 10;
+    protected static final double MINIMUM_DRAG_DISTANCE_PIXEL = 10;
 
     /**
      * Default constructor
@@ -49,19 +49,57 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     public void setSubgraphView(VisreedHigraphView view){
         this.mySubgraphView = view;
     }
-
-    private Point2D marqueeStartingPoint;
-    private Point2D marqueeEndingPoint;
-    private int lastButton = -1;
-    private Point2D dragSourcePoint;
-    private Point2D dragTargetPoint;
+    protected int lastButton = -1;
+    protected Point2D dragSourcePoint;
+    protected Point2D dragTargetPoint;
     
     protected VisreedHigraphView mySubgraphView ;
     protected VisreedWholeGraph myWholeGraph;
     protected IGraphContainer graphContainer;
     protected IHoverable lastHoveringOn;
+    private boolean currentActionIsClick = false;
+    
+    private boolean inDebugMode = true;
+    public boolean IsInDebugMode(){
+    	return inDebugMode;
+    }
+    
+    public void setInDebugMode(boolean value){
+    	this.inDebugMode = value;
+    }
     
     private StringBuilder sb = new StringBuilder();
+    
+    /**
+     * Gets the only one selected view
+     * @return
+     */
+    protected VisreedNodeView getSelectedView(){
+        VisreedNodeView result = null;
+        if( this.myWholeGraph.getSelectionNodes().size() == 0 ){
+            // do nothing
+        } else {
+            VisreedNode node = this.myWholeGraph.getSelectionNodes().get(0);
+            result = (VisreedNodeView) this.mySubgraphView.getNodeView(node);
+        }
+        return result;
+    }
+    
+    /**
+     * Gets all the selected views
+     * @return
+     */
+    protected List<VisreedNodeView> getSelectedViews(){
+        List<VisreedNodeView> result = new ArrayList<VisreedNodeView>();
+        for(VisreedNode node : this.myWholeGraph.getSelectionNodes()){
+            result.add((VisreedNodeView)this.mySubgraphView.getNodeView(node));
+        }
+        return result;
+    }
+    
+    protected int getNumSelection(){
+        return this.myWholeGraph.getSelectionNodes().size();
+    }
     
     /**
      * Gets the top node view from the stack
@@ -128,6 +166,26 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
      * The check is performed by checking every view's extent
      * @return
      */
+    protected boolean isSelectedSource(
+    		Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack
+		){
+        if(this.dragSourcePoint == null){
+            return false;
+        }
+        
+        List<VisreedNodeView> selection = this.getSelectedViews();
+        VisreedNodeView topView = this.getTopNodeView(stack);
+        if(selection.contains(topView)){
+        	return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Check whether the source of drag is the selected view(s) <br />
+     * The check is performed by checking every view's extent
+     * @return
+     */
     protected boolean isSelectedSource(){
         if(this.dragSourcePoint == null){
             return false;
@@ -146,7 +204,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         return false;
     }
     
-    private void maybeShowPopupMenu(
+    protected void maybeShowPopupMenu(
         Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack,
         MouseEvent e
     ){
@@ -179,7 +237,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     /** Called when the mouse is being moved with no buttons down. */
     @Override
     public void movedOver(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
-//        System.out.println( getTopNodeDescFromStack(stack) + " : Moved over") ;
+//        if(inDebugMode){
+//        	System.out.println( getTopNodeDescFromStack(stack) + " : Moved over") ;
+//        }
         // handling mouse hovering
     	VisreedNodeView top = this.getTopNodeView(stack);
         if(top == null){
@@ -203,54 +263,52 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     /** Called when the mouse is being moved with one or more buttons down. */ 
     @Override
     public void dragged(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
-        // System.out.println( getTopNodeDescFromStack(stack) + " : Dragged") ;
-        if(this.lastButton == MouseEvent.BUTTON1){
-            if(this.isSelectedSource()){
-                // selected == source, handling move/copy/etc.
-                int a = 0;
-                a++;
-            } else {
-                // not dragging selection, handling marquee selection
-                if(this.marqueeStartingPoint == null){
-                    this.marqueeStartingPoint = e.getPoint();
-    //                System.out.println( "Dragged: setting starting point = (" + this.marqueeStartingPoint + ")") ;
-                }
-                this.marqueeEndingPoint = e.getPoint();
-//                System.out.println( "Dragged: start = (" + this.marqueeStartingPoint + "), end = (" + this.marqueeEndingPoint + ")") ;
-                
-                this.mySubgraphView.setMarquee(this.marqueeStartingPoint, this.marqueeEndingPoint);
-                this.mySubgraphView.selectMarquee();
-                this.graphContainer.repaint();
-            }
-        }
+    	if(inDebugMode){
+    		System.out.println( getTopNodeDescFromStack(stack) + " : Dragged") ;
+    	}
     }
 
     /** Called when the mouse button has been pressed and released. */
     @Override
     public void clickedOn(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
-//        System.out.println( getTopNodeDescFromStack(stack) + " : Clicked on " + e.getClickCount() + " times") ;
+    	if(inDebugMode){
+    		System.out.println( getTopNodeDescFromStack(stack) + " : Clicked on " + e.getClickCount() + " times") ;
+    	}
+    }
+    
+    
+    /** Called when a mouse button goes down. */
+    @Override
+    public void pressedOn(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
+    	if(inDebugMode){
+    		System.out.println( "Pressed on, position = (" + e.getPoint() + ") " + e.getClickCount() + " times" ) ;
+    	}
+        this.dragSourcePoint = e.getPoint();
+        this.dragTargetPoint = null;
+        this.lastButton = e.getButton();
         
-        if(e.getClickCount() == 1){
-            // handle click selection
-            VisreedNodeView view = getTopNodeView(stack);
-            if(view == null){
+    	if(!this.isSelectedSource(stack)){
+    		// pressing at outside of the selection, handle selecting first
+    		VisreedNodeView view = getTopNodeView(stack);
+    		if(view == null){
                 // clear selection
                 this.myWholeGraph.deSelectAll();
             } else {
-                if(e.isControlDown()){
-                    // add to selection
-                    this.myWholeGraph.toggleSelection(view.getNode());
-                } else {
-                    // select the view
-                    this.myWholeGraph.select(view.getNode());
-                }
-            }
-            
-            // clear marquee selection
-            this.lastButton = -1;
-            this.mySubgraphView.clearMarquee();
-            this.graphContainer.repaint();
-        } else if (e.getClickCount() >= 2){
+	    		if(e.isControlDown()){
+	    			this.myWholeGraph.toggleSelection(view.getNode());
+	    		} else {
+	    			this.myWholeGraph.select(view.getNode());
+	    		}
+    		}
+    		this.currentActionIsClick = true;
+    	}
+        
+        if (e.getButton() == MouseEvent.BUTTON1){
+        } else if (e.isPopupTrigger()){
+            maybeShowPopupMenu(stack, e);
+        }
+        
+        if (e.getClickCount() >= 2){
             // handle double click
             if(stack == null || stack.size() == 0){
                 return;
@@ -258,23 +316,6 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
             if(stack.peek() instanceof IInteractable){
                 ((IInteractable)(stack.peek())).handleDoubleClick(e);
             }
-        }
-    }
-    
-    
-    /** Called when a mouse button goes down. */
-    @Override
-    public void pressedOn(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
-        this.dragSourcePoint = e.getPoint();
-        this.dragTargetPoint = null;
-        this.lastButton = e.getButton();
-        
-        // handle marquee selection
-        if(e.getButton() == MouseEvent.BUTTON1){
-            this.marqueeStartingPoint = e.getPoint();
-//            System.out.println("Pressed: starting = (" + this.marqueeStartingPoint + ")");
-        } else if (e.isPopupTrigger()){
-            maybeShowPopupMenu(stack, e);
         }
         this.graphContainer.repaint();
     }
@@ -285,29 +326,13 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
      */
     @Override
     public void releasedOn(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
-//        System.out.println( "Release on, position = (" + e.getPoint() + ")" ) ;
+    	if(inDebugMode){
+    		System.out.println( "Release on, position = (" + e.getPoint() + ")" ) ;
+    	}
         this.dragTargetPoint = e.getPoint();
         if(this.lastButton == MouseEvent.BUTTON1){
-            if(marqueeStartingPoint == null){
-                return;
-            }
-            if(marqueeStartingPoint.distance(e.getPoint()) < MINIMUM_DRAG_DISTANCE_PIXEL){
-                // treat as click
-                // note: the click is already handled, so we do not need to call
-                // this.clickedOn(stack, e);
-                // again.
-                return;
-            }
-            
-            // handle marquee selection
-            this.marqueeEndingPoint = e.getPoint();
-            // handle marquee selection
-            this.mySubgraphView.setMarquee(marqueeStartingPoint, marqueeEndingPoint);
-            this.mySubgraphView.selectMarquee();
             
             // finish selection
-            this.marqueeStartingPoint = null;
-            this.marqueeEndingPoint = null;
             this.lastButton = -1;
             this.mySubgraphView.clearMarquee();
             this.graphContainer.repaint();
@@ -329,44 +354,14 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
             // handling popup menu
             maybeShowPopupMenu(stack, e);
         } else {
-            if(this.isSelectedSource()){
+            if(this.isSelectedSource(stack)){
             }
                 // handling drag with options
             else {
                 // handling with pan
             }
         }
-    }
-    
-    /**
-     * Gets the only one selected view
-     * @return
-     */
-    private VisreedNodeView getSelectedView(){
-        VisreedNodeView result = null;
-        if( this.myWholeGraph.getSelectionNodes().size() == 0 ){
-            // do nothing
-        } else {
-            VisreedNode node = this.myWholeGraph.getSelectionNodes().get(0);
-            result = (VisreedNodeView) this.mySubgraphView.getNodeView(node);
-        }
-        return result;
-    }
-    
-    /**
-     * Gets all the selected views
-     * @return
-     */
-    private List<VisreedNodeView> getSelectedViews(){
-        List<VisreedNodeView> result = new ArrayList<VisreedNodeView>();
-        for(VisreedNode node : this.myWholeGraph.getSelectionNodes()){
-            result.add((VisreedNodeView)this.mySubgraphView.getNodeView(node));
-        }
-        return result;
-    }
-    
-    protected int getNumSelection(){
-        return this.myWholeGraph.getSelectionNodes().size();
+        this.currentActionIsClick = false;
     }
     
     /* (non-Javadoc)
@@ -374,7 +369,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
      */
     @Override
     public int getSourceActions() {
-//        System.out.println( "getSourceActions()" ) ;
+    	if(inDebugMode){
+    		System.out.println( "getSourceActions()" ) ;
+    	}
         int result = java.awt.dnd.DnDConstants.ACTION_NONE;
         if( this.getNumSelection() == 0){
             result =  java.awt.dnd.DnDConstants.ACTION_NONE ;
@@ -395,8 +392,10 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
      */
     @Override
     public Transferable createTransferable() {
+        if(inDebugMode){
+        	System.out.println( "createTransferable" ) ;
+        }
         Transferable result = null;
-        System.out.println( "createTransferable" ) ;
         if( this.myWholeGraph.getSelectionNodes().size() == 0 ){
             result =  null ;
         } else {
@@ -413,10 +412,14 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     public boolean canDropHere(
         Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack,
         TransferHandler.TransferSupport supportObj ) {
-        System.out.println( "canDropHere()" ) ;  
+    	if(inDebugMode){
+    		System.out.println( "canDropHere()" ) ;  
+    	}
         boolean result = false;
         if ( supportObj.getDropAction() == java.awt.dnd.DnDConstants.ACTION_NONE ){
-            System.out.println("ACTION_NONE");
+        	if(inDebugMode){
+        		System.out.println("ACTION_NONE");
+        	}
             result = false ;
 //        } else if (dragSourcePoint != null && dragTargetPoint != null && dragSourcePoint.distance(dragTargetPoint) < 5){
 //            // small move distance, considers no move at all
@@ -424,7 +427,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
 //            result = false;
         } else {
             for( DataFlavor f : supportObj.getDataFlavors() ) {
-                System.out.println( "...data flavor is " + f) ; 
+            	if(inDebugMode){
+            		System.out.println( "...data flavor is " + f) ; 
+            	}
             }
             result = supportObj.isDataFlavorSupported( ViewTransferObject.theViewDataFlavor ) ;
             result |= supportObj.isDataFlavorSupported( VisreedNodeTransferObject.theNodeDataFlavor ) ;
@@ -459,7 +464,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
             this.lastHoveringOn = top;
             this.graphContainer.repaint();
         }
-        System.out.println( "...returns " + result) ;  
+        if(inDebugMode){
+        	System.out.println( "...returns " + result) ;  
+        }
         return result ;
     }
     
@@ -470,9 +477,13 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     public boolean importData(
         Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack,
         TransferHandler.TransferSupport support) {
-        System.out.println( "Import data") ;
+    	if(inDebugMode){
+    		System.out.println( "Import data") ;
+    	}
         if( !canDropHere( stack, support ) ) {
-            System.out.println( "... returns false") ;
+        	if(inDebugMode){
+        		System.out.println( "... returns false") ;
+        	}
             return false ;
         }
         // Do the drop.
@@ -499,7 +510,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         
 //        this.dragSourcePoint = null;
 //        this.dragTargetPoint = null;
-        System.out.println( "... returns true") ;
+        if(inDebugMode){
+        	System.out.println( "... returns true") ;
+        }
         return true ;
     }
 }

@@ -41,6 +41,25 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
     public void appendChild(VisreedNode child){
         this.insertChild(getNumberOfChildren(), child);
     }
+
+	/**
+	 * Returns whether this node is underneath another specified node
+	 * @param root the root
+	 * @return
+	 */
+	public boolean isChildOf(VisreedNode root) {
+		if(root == null){
+			return false;
+		}
+		VisreedNode current = this;
+		while(current != null){
+			if(current == root){
+				return true;
+			}
+			current = current.getParent();
+		}
+		return false;
+	}
     
     /**
      * Gets the position in its parent<br />
@@ -149,10 +168,10 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
     @Override
     public VisreedNode duplicate(){
     	VisreedNode result = super.duplicate();
-    	if(this.isSelected()){
-    		result.isSelected = this.isSelected;
-//    		this.getWholeGraph().addToSelection(result);
-    	}
+//    	if(this.isSelected()){
+//    		result.isSelected = this.isSelected;
+////    		this.getWholeGraph().addToSelection(result);
+//    	}
     	// result.hover = this.hover;
     	
     	return result;

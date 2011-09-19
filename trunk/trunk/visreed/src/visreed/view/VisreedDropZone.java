@@ -54,6 +54,12 @@ implements IHoverable, IInteractable
     public void setNodeNumber(int nodeNumber) {
         this.nodeNumber = nodeNumber;
     }
+    
+    private VisreedNodeView attachedNodeView;
+    
+    public VisreedNodeView getNodeView(){
+    	return this.attachedNodeView;
+    }
 
     /**
      * @param nv
@@ -64,6 +70,18 @@ implements IHoverable, IInteractable
         BTTimeManager timeMan) {
         super(nv, timeMan);
         this.nodeNumber = 0; // Default value
+        if(nv instanceof VisreedNodeView){
+        	this.attachedNodeView = (VisreedNodeView)nv;
+        }
+    }
+    
+    public VisreedDropZone(
+		VisreedNodeView nv, 
+		BTTimeManager timeMan
+	) {
+    	super(nv, timeMan);
+    	this.nodeNumber = 0;
+    	this.attachedNodeView = nv;
     }
     
     private static final Color ZONE_BORDER_COLOR = SystemColor.textHighlight;
