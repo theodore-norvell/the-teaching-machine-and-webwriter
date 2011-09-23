@@ -435,7 +435,7 @@ function loadCode(theURL, configurationFile, tmParseString){
 	dataFileSet[currentCode] = lastDataSet;
 // Updated 2007.02.02 to use new configuration filetype, ignoring any type specified in the call
 	if (configurationFile && configurationFile!= "")
-		config[currentCode] = getToConfigurations() + peelFileType(configurationFile) + ".tmcfg";
+		config[currentCode] = getToConfigurations() + configurationFile;
 	else
 		config[currentCode] = "";
 	if (tmParseString)
@@ -483,7 +483,8 @@ function invokeTM(example){
 		
 // Changed March, 2008, to use sitewide default config file if none was specified originally
 		var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
-//		alert(useConfigFile);
+		useConfigFile = peelFileType(useConfigFile) + getConfigSuffix() + ".tmcfg"
+		alert(useConfigFile);
 		TMApplet.readRemoteConfiguration(useConfigFile);
 			
 		if (selection[example] != null) {
@@ -1629,6 +1630,10 @@ with support to change the default file so different ones could be used in diffe
 */
 function getDefaultConfigFile(){
 	return oneTimeScript.getDefaultConfig();
+}
+
+function getConfigSuffix(){
+	return oneTimeScript.getConfigSuffix();
 }
 
 function getToContent(){

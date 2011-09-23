@@ -66,11 +66,11 @@ document.write('<div id="topBanner">');
 
 	document.write('</div>');
 
-	document.write('<div id="configPicker" display = "none">');
-	document.write('<form name="configPickerForm" >');
-	document.write('<select name = "configSelect" onchange="changeSelection();" title="choose a new default configuration file for the TM">');
-	for (var i = 0; i < configFilesArray.length; i++)
-		document.write('<option value = "', i, '"> ', configFilesArray[i], '</option>');
+	document.write('<div id="configSuffixPicker" display = "none">');
+	document.write('<form name="configSuffixPickerForm" >');
+	document.write('<select name = "configSelect" onchange="changeSelection();" title="choose a new configuration suffix or locale for the TM">');
+	for (var i = 0; i < configSuffixArray.length; i++)
+		document.write('<option value = "', i, '"> ', configSuffixArray[i], '</option>');
 	document.write('</select>');	
 	document.write('</form>');
 	document.write('</div>');
@@ -89,7 +89,7 @@ document.write('<div id="topBanner">');
 
 	
 	function changeSelection(){
-		changeConfig(configFilesArray[document.configPickerForm.configSelect.value]);
+		changeConfigSuffix(configSuffixArray[document.configSuffixPickerForm.configSelect.value]);
 	}
 	
 	
