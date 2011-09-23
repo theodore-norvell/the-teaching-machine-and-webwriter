@@ -812,8 +812,13 @@ public class TMMainFrame extends JFrame
         if (temp != null) r.width = new Integer(temp).intValue();
         temp = config.getValue("Height");
         if (temp != null) r.height = new Integer(temp).intValue();
+        //System.out.println( "Setting Bounds to " +r.x+ ", " +r.y+ ", " +r.width+ ", " +r.height ) ;
         setBounds(r);
+        invalidate() ;
+        //System.out.println( "invalidate completed." ) ;
         validate();
+        //System.out.println( "validate completed." ) ;
+        
     }
 }
 
