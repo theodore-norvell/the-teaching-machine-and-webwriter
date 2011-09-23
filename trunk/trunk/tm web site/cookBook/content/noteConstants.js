@@ -49,25 +49,50 @@ var startWithShade = true;
 
 var helpButton = false;
 
-var configButton = false;
+var configButton = true;
 
 /******************************************************
 	Configuration file index
 	
 ******************************************************/
-
+/* Deprecated - each config file picked directly - this doesn't work well when insertCode
+examples specify their own configs rather than using the default
+*/
 defaultConfigurationFile = "default.tmcfg";
 configFilesArray = new Array();
 configFilesArray[0] = "default.tmcfg";
-configFilesArray[1] = "full800x600.tmcfg";
-configFilesArray[2] = "full1024x768.tmcfg";
-configFilesArray[3] = "full1280x1024.tmcfg";
+configFilesArray[1] = "800x600.tmcfg";
+configFilesArray[2] = "1024x768.tmcfg";
+configFilesArray[3] = "1280x1024.tmcfg";
 configFilesArray[4] = "localGlobal800x600.tmcfg";
 configFilesArray[5] = "localGlobal1024x768.tmcfg";
 configFilesArray[6] = "localGlobal1280x1024.tmcfg";
 configFilesArray[7] = "engr1020IncoCentre.tmcfg";
 configFilesArray[8] = "engr1020AngusBruneau.tmcfg";
 configFilesArray[9] = "engr1020AngusBruneauArrayBar.tmcfg";
+
+/* Locale suffix: config file name is made up of specified name plus suffix plus ".tmcfg"
+    For example if the suffix is "1024x768" -
+	 if no config file is specified WebWriter will look for "default1024x768.tmcfg"
+	 if "mySpecialConfig" (or "mySpecialConfig.tmcfg") is specified WW will look for
+	     "mySpecialConfig1024x768.tmcfg"
+	
+	Instructor will have to make sure configuration file exists. That is, variations of
+	every config file used in a course will have to be created for every locale used.
+*/
+
+configSuffixArray = new Array();
+/* Generic locales by screen size
+These three sizes should accommodate most projectors currently in use.
+*/
+configSuffixArray[0] = "800x600";
+configSuffixArray[1] = "1024x768";
+configSuffixArray[2] = "1280x1024";
+configSuffixArray[3] = "1920x1080";
+// Specific locales
+configSuffixArray[4] = "EngrLecThe";
+configSuffixArray[5] = "BruneauCentre";
+
 
 
 /***********************************************************

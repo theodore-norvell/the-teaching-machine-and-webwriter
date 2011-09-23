@@ -75,8 +75,8 @@
 <config id="mainFrame">
 <param name="Position.x">0</param>
 <param name="Position.y">0</param>
-<param name="Width">1280</param>
-<param name="Height">1024</param>
+<param name="Width">1024</param>
+<param name="Height">768</param>
 </config>
 
 <config id="Display Manager">
@@ -92,8 +92,8 @@
 <config id="Code">
 <param name="Position.x">0</param>
 <param name="Position.y">0</param>
-<param name="Width">738</param>
-<param name="Height">507</param>
+<param name="Width">598</param>
+<param name="Height">383</param>
 <param name="fontMapper[NORMAL]">0</param>
 <param name="fontMapper[KEYWORD]">0</param>
 <param name="fontMapper[COMMENT]">2</param>
@@ -114,103 +114,103 @@
 </config>
 
 <config id="Console">
-<param name="Position.x">125</param>
-<param name="Position.y">650</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">727</param>
+<param name="Position.y">193</param>
+<param name="Width">281</param>
+<param name="Height">205</param>
 <param name="WindowTitle">Console</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Expression">
-<param name="Position.x">738</param>
+<param name="Position.x">595</param>
 <param name="Position.y">0</param>
-<param name="Width">390</param>
+<param name="Width">286</param>
 <param name="Height">60</param>
 <param name="WindowTitle">Expression Engine</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Linked">
-<param name="Position.x">100</param>
-<param name="Position.y">620</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">695</param>
+<param name="Position.y">166</param>
+<param name="Width">298</param>
+<param name="Height">208</param>
 <param name="WindowTitle">Linked Display</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="PC">
-<param name="Position.x">1127</param>
-<param name="Position.y">0</param>
-<param name="Width">138</param>
+<param name="Position.x">879</param>
+<param name="Position.y">1</param>
+<param name="Width">129</param>
 <param name="Height">60</param>
 <param name="WindowTitle">PC</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Symtab">
-<param name="Position.x">0</param>
-<param name="Position.y">508</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">596</param>
+<param name="Position.y">60</param>
+<param name="Width">296</param>
+<param name="Height">227</param>
 <param name="WindowTitle">Symbol Table</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Heap">
-<param name="Position.x">75</param>
-<param name="Position.y">590</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">670</param>
+<param name="Position.y">140</param>
+<param name="Width">293</param>
+<param name="Height">212</param>
 <param name="WindowTitle">Heap</param>
 <param name="View">0</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Stack">
-<param name="Position.x">50</param>
-<param name="Position.y">560</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">646</param>
+<param name="Position.y">114</param>
+<param name="Width">297</param>
+<param name="Height">215</param>
 <param name="WindowTitle">Stack</param>
 <param name="View">0</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Static">
-<param name="Position.x">25</param>
-<param name="Position.y">538</param>
-<param name="Width">476</param>
-<param name="Height">270</param>
+<param name="Position.x">621</param>
+<param name="Position.y">87</param>
+<param name="Width">297</param>
+<param name="Height">220</param>
 <param name="WindowTitle">Static Memory</param>
 <param name="View">0</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Higraph.PDV">
-<param name="Position.x">601</param>
-<param name="Position.y">506</param>
-<param name="Width">663</param>
-<param name="Height">425</param>
+<param name="Position.x">-1</param>
+<param name="Position.y">380</param>
+<param name="Width">600</param>
+<param name="Height">311</param>
 <param name="WindowTitle">"Program Driven Visualization"</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Higraph.KidTree">
-<param name="Position.x">737</param>
-<param name="Position.y">279</param>
-<param name="Width">527</param>
-<param name="Height">228</param>
+<param name="Position.x">624</param>
+<param name="Position.y">409</param>
+<param name="Width">384</param>
+<param name="Height">282</param>
 <param name="WindowTitle">Higraph of KidTree</param>
 <param name="Visible">true</param>
 </config>
 
 <config id="Higraph.NestedTree">
-<param name="Position.x">738</param>
-<param name="Position.y">59</param>
-<param name="Width">525</param>
-<param name="Height">223</param>
+<param name="Position.x">597</param>
+<param name="Position.y">381</param>
+<param name="Width">381</param>
+<param name="Height">279</param>
 <param name="WindowTitle">Nested Tree</param>
 <param name="Visible">true</param>
 </config>

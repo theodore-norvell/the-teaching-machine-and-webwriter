@@ -67,5 +67,5 @@ helpButtonDef.actionString = "getHelp()";
 helpButtonDef.tooltip = "Get help on the website";
 
 var configButtonDef = new ButtonDef("configButton");
-configButtonDef.actionString = "showConfigPicker(true)";
-configButtonDef.tooltip = "set sitewide default TM configuration file";
+configButtonDef.actionString = "showconfigSuffixPicker(true)";
+configButtonDef.tooltip = "set sitewide suffix or locale for TM configuration file names";

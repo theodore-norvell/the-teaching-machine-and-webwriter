@@ -185,16 +185,17 @@ function goHome(){
 
 
 var siteDefaultConfig = defaultConfigurationFile;
+var siteConfigSuffix = "";
 
-function changeConfig(configFile){
-	siteDefaultConfig = configFile;
-	showConfigPicker(false);
+function changeConfigSuffix(configSuffix){
+	siteConfigSuffix = configSuffix;
+	showconfigSuffixPicker(false);
 	
 //	alert("siteDefaultConfig is " + siteDefaultConfig);
 }
 
-function showConfigPicker(show){
-	var picker = document.getElementById("configPicker");
+function showconfigSuffixPicker(show){
+	var picker = document.getElementById("configSuffixPicker");
 	picker.style.visibility= show ? "visible" : "hidden";
 }
 
@@ -202,6 +203,10 @@ function showConfigPicker(show){
 
 function getDefaultConfig(){
 	return getToConfigurations() + siteDefaultConfig;
+}
+
+function getConfigSuffix(){
+	return siteConfigSuffix;
 }
 
 	
