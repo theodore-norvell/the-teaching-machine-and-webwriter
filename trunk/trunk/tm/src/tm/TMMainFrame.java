@@ -56,7 +56,8 @@ import tm.virtualMachine.SelectionParser;
 
 public class TMMainFrame extends JFrame
                          implements ExternalCommandInterface,
-                                    Configurable {
+                                    Configurable
+{
 
     private static final String COPYRIGHT = "(C) 1997--2008 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
     private static final String PROGRAMMERS = "Designed and coded by\n"
@@ -267,6 +268,8 @@ public class TMMainFrame extends JFrame
     
     public void dispose() {
         tmBigApplet.disposeBigApplet() ;
+        ConfigurationServer server = ConfigurationServer.getConfigurationServer();
+        server.deregister(this) ;
         super.dispose();
     }
 
