@@ -484,7 +484,7 @@ function invokeTM(example){
 // Changed March, 2008, to use sitewide default config file if none was specified originally
 		var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
 		useConfigFile = peelFileType(useConfigFile) + getConfigSuffix() + ".tmcfg"
-		alert(useConfigFile);
+//		alert(useConfigFile);
 		TMApplet.readRemoteConfiguration(useConfigFile);
 			
 		if (selection[example] != null) {
