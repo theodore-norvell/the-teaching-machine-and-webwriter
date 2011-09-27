@@ -1,6 +1,7 @@
 package visreed.app;
 
 import java.awt.BorderLayout;
+import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -13,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
@@ -35,7 +37,7 @@ import visreed.pattern.IObserver;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedSubgraphEventObserver;
-import visreed.swing.VisreedTextArea;
+import visreed.swing.editor.VisreedTextArea;
 import visreed.view.IGraphContainer;
 import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedHigraphView;
@@ -86,7 +88,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         this.sgm.installIn(mainGraphDisplay);
         
         // secondary graph
-        this.syntaxDisplay = new VisreedJComponent(); 
+        this.syntaxDisplay = new VisreedJComponent();
+        syntaxDisplay.setForeground(SystemColor.control);
         this.syntaxViewFactory = new SyntaxViewFactory(timeMan);
         this.syntaxView = syntaxViewFactory.makeHigraphView(
             subgraph, 
@@ -162,6 +165,9 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     protected VisreedTextArea regexText;
     
     protected RegexJList nodeListBar;
+    
+    // containers
+    protected JTabbedPane sidePanelContainer;
 
     /**
      * Construct the main frame
@@ -195,10 +201,16 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         
         secondPanel.setResizeWeight(0.3);
 
+        /* The side panel */
+        this.sidePanelContainer = new JTabbedPane();
+
+        initializeSidePanel();
+        
+        /* The main panel container */
         JSplitPane mainPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         mainPanel.setLeftComponent(secondPanel);
-        mainPanel.setRightComponent(syntaxDisplay);
-        mainPanel.setResizeWeight(0.66);
+        mainPanel.setRightComponent(sidePanelContainer);
+        mainPanel.setResizeWeight(0.80);
         
         getContentPane().add(mainPanel, BorderLayout.CENTER);
 
@@ -217,6 +229,21 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
     }
+
+	/**
+	 * Initialize the side panel
+	 * Note: overridden methods shall call super.initializeSidePanel() first.
+	 * @param sidePanel the container of the side panel
+	 */
+	protected void initializeSidePanel() {
+		JPanel skeletonPanel = new JPanel();
+        skeletonPanel.setLayout(new BorderLayout());
+        this.sidePanelContainer.add("Skeleton View", skeletonPanel);
+        
+        JScrollPane skeletonGraphScroller = new JScrollPane();
+        skeletonGraphScroller.getViewport().setView(syntaxDisplay);
+        skeletonPanel.add(skeletonGraphScroller, BorderLayout.CENTER);
+	}
 
     /**
      * @param testToolBar
@@ -506,7 +533,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 seq.insertChild(0, leaf);
                 current.insertChild(0, seq);
                 root.insertChild(0, current);
-                
+
                 refreshGraph();
             }
         };
@@ -514,6 +541,10 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     }
     
     public void refreshGraph(){
+    	this.wholeGraph.notifyObservers();
+    }
+    
+    private void privateRefreshGraph(){
         this.mainGraphView.refresh();
         this.mainGraphDisplay.repaint();
         
@@ -541,7 +572,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     @Override
     public void changed(VisreedHigraph regexHigraph) {
         if(regexHigraph == this.wholeGraph){
-            this.refreshGraph();
+            this.privateRefreshGraph();
         }
     }
 }

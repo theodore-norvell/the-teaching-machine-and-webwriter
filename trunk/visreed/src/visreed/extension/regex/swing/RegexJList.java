@@ -21,7 +21,7 @@ import visreed.model.payload.SequencePayload;
 import visreed.model.tag.VisreedTag;
 
 /**
- * The default toolbar does not support drag, so use a JList with custom
+ * The default tool bar does not support drag, so use a JList with custom
  * renderer instead.
  * @author Xiaoyu Guo
  */

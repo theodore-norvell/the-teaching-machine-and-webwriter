@@ -151,7 +151,7 @@ public class VisreedBuilder {
         buildAndPushNodeWithNoSeq(new SequencePayload(), numOfChildren);
     }
     
-    protected void buildAndPushNodeWithNoSeq(
+    public void buildAndPushNodeWithNoSeq(
         VisreedPayload payload,
         int numOfChildren
     ){
@@ -183,7 +183,7 @@ public class VisreedBuilder {
         this.push(node);
     }
     
-    protected void buildAndPushNodeWithSeq(
+    public void buildAndPushNodeWithSeq(
         VisreedPayload payload,
         int numOfChildren
     ){

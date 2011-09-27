@@ -38,7 +38,7 @@ import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.VisreedJComponent;
-import visreed.swing.VisreedTextArea;
+import visreed.swing.editor.VisreedTextArea;
 import visreed.view.IGraphContainer;
 import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedHigraphView;

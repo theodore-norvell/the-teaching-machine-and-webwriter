@@ -1,5 +1,6 @@
 package visreed.extension.javaCC.parser;
 
+import visreed.extension.javaCC.model.payload.JavaCodeProductionPayload;
 import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
@@ -16,7 +17,11 @@ public class JavaCCBuilder extends VisreedBuilder {
      * @param productionName
      */
     public void buildProduction(String productionName){
-    	buildAndPushNodeWithNoSeq(new ProductionPayload(productionName), 0);
+    	buildAndPushNodeWithNoSeq(new ProductionPayload(productionName), 1);
+    }
+    
+    public void buildJavaCode(String image) {
+        buildAndPushNodeWithNoSeq(new JavaCodeProductionPayload(image), 0);
     }
     
     /* (non-Javadoc)

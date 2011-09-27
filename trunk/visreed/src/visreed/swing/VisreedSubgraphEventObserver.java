@@ -505,7 +505,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         // notify the graph container to re-layout
         if(stack.peek() instanceof IInteractable){
             ((IInteractable)stack.peek()).handleDrop(null, data);
-            this.graphContainer.refreshGraph();
+            this.myWholeGraph.notifyObservers();
         }
         
 //        this.dragSourcePoint = null;

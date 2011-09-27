@@ -175,7 +175,7 @@ extends HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWho
             NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nodeView = this.getNodeView(node);
             Rectangle.union(
                 area, 
-                nodeView.getNextShapeExtent(), 
+                nodeView.getNextExtent(), 
                 area
             );
         }

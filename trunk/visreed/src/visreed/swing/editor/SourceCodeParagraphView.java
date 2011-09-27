@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.swing;
+package visreed.swing.editor;
 
 import javax.swing.text.Element;
 import javax.swing.text.ParagraphView;
