@@ -20,6 +20,15 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
 		this.parserName = "";
 		this.options = new JavaCCOptions();
 		this.compilationUnit = "";
+		this.productionManager = new ProductionManager();
+	}
+	
+	private ProductionManager productionManager;
+	/**
+	 * @return the productionManager
+	 */
+	public ProductionManager getProductionManager() {
+		return productionManager;
 	}
 
 	private String parserName;

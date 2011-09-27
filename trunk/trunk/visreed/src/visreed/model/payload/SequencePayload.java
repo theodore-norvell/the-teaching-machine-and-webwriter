@@ -45,6 +45,7 @@ public class SequencePayload extends VisreedPayload {
 		}
 		return result.toString();
 	}
+	
     /* (non-Javadoc)
      * @see visreed.model.VisreedPayload#constructView(higraph.view.HigraphView, visreed.model.RegexNode, java.awt.Color, java.awt.Color, java.awt.Stroke, java.awt.geom.RectangularShape, boolean)
      */

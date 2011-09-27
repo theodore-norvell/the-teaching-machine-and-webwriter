@@ -63,7 +63,8 @@ public class InsertChildDropZone extends VisreedDropZone {
         VisreedNode thisNode = ((VisreedNodeView)this.getAssociatedComponent()).getNode();
 
         for(VisreedNode n : nodes){
-        	if(n == thisNode || n.isChildOf(thisNode)){
+        	// you can not drag a node into its children
+        	if(n == thisNode || thisNode.isChildOf(n)){
         		nodes.remove(n);
         	}
         }

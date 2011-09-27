@@ -17,21 +17,21 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.TerminalPayload;
 import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo
- *
  */
-public class JavaCodePayload extends TerminalPayload {
+public class JavaCodeProductionPayload extends ProductionPayload {
 
-    public JavaCodePayload() {
+	private String code;
+    public JavaCodeProductionPayload() {
         super();
     }
     
-    public JavaCodePayload(String code){
-        super(code);
+    public JavaCodeProductionPayload(String code){
+    	super();
+        this.code = code;
     }
     
     /** The maximum length of the code, for display */
@@ -43,14 +43,14 @@ public class JavaCodePayload extends TerminalPayload {
     @Override
     public String format(VisreedNode currentNode) {
         String result = "";
-        if(this.terminal == null){
+        if(this.code == null){
             result = "null";
-        } else if (this.terminal.length() == 0){
+        } else if (this.code.length() == 0){
             result = "\"\"";
-        } else if (this.terminal.length() < MAX_DESC_CODE_DISPLAY_LENGTH){
-            result = this.terminal;
+        } else if (this.code.length() < MAX_DESC_CODE_DISPLAY_LENGTH){
+            result = this.code;
         } else {
-            result = this.terminal.substring(0, MAX_DESC_CODE_DISPLAY_LENGTH - 1);
+            result = this.code.substring(0, MAX_DESC_CODE_DISPLAY_LENGTH - 1);
             result += "...";
         }
         return result;

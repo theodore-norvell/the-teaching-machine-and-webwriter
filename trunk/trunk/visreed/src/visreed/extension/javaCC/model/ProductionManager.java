@@ -9,6 +9,7 @@ package visreed.extension.javaCC.model;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.model.VisreedNode;
@@ -65,6 +66,10 @@ public class ProductionManager implements IObserver<VisreedNode> {
             return this.nodeDictionary.get(name);
         }
         return null;
+    }
+    
+    public List<VisreedNode> getAllProductions(){
+    	return this.nodeList;
     }
 
 	/* (non-Javadoc)
