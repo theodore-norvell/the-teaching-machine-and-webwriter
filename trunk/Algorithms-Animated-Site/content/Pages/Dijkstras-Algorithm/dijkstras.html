@@ -11,6 +11,17 @@ nestingDepth = "../../../";
 <script language="JavaScript" src="../../../webWriter/mathSymbols.js"></script>
 <script language="JavaScript">setSymbolsToLATex(true);</script>
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="../../../MathJax1.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
 <title>Dijkstra's Shortest Paths Algorithm</title>
 
 <!-- The following style sheet is for editing purposes. WW will supply the runtime style. -->
@@ -29,9 +40,9 @@ nestingDepth = "../../../";
 <p>If you have studied networking, you may recognize that this method is very similar to the packet-flooding protocols that are used to build internet routing tables.</p>
 <p>If all these optimizations are implemented, we can divide the cities into three classes, which we will represent by colours. Black cities have already been visited. Grey cities have one cyclist heading to them. All other cities are coloured white. Later we will use this colouring scheme to see that the algorithm is correct. </p>
 <h2>Formalizing</h2>
-<p> We'll work on a directed graph (V,E) in which each edge <span class="stxNonterminal">e</span> is associated with a distance <span class="stxNonterminal">w</span>(<span class="stxNonterminal">e</span>). A <span class="stxMeta">path</span> is an alternating sequnence of nodes and edges starting and ending with a node </p>
-<p align="center">[<span class="stxNonterminal">u</span><sub>0</sub>, <span class="stxNonterminal">e</span><sub>0</sub>, <span class="stxNonterminal">u</span><sub>1</sub>, <span class="stxNonterminal">e</span><sub>1</sub>, ..., <span class="stxNonterminal">u</span><sub><span class="stxNonterminal">n</span>-1</sub>, <span class="stxNonterminal">e<sub>n</sub></span><sub>-1</sub>, <span class="stxNonterminal">u<sub>n</sub></span>] </p>
-<p align="left">in which each edge <span class="stxNonterminal">e</span><span class="stxNonterminal"><sub>i</sub></span> connects <span class="stxNonterminal">u<sub>i</sub></span> to <span class="stxNonterminal">u<sub>i</sub></span><sub>+1</sub>. The path is said to be <span class="stxMeta">from</span> <span class="stxNonterminal">u</span><sub>0</sub> and <span class="stxMeta">to</span> <span class="stxNonterminal">u<sub>n</sub></span>.The <span class="stxMeta">length</span> of a path is the sum of the distances of its edges. There is always a path with no edges [<span class="stxNonterminal">u</span>], with length 0, from a node <span class="stxNonterminal">u</span> to itself.</p>
+<p> We'll work on a directed graph $(V,E)$ in which each edge $e$ is associated with a distance $w(e)$. A <span class="stxMeta">path</span> is an alternating sequnence of nodes and edges starting and ending with a node 
+$$[u_0, e_0, u_1, e_1, \cdots, u_{n-1}, e_{n-1}, u_n]$$</p>
+in which each edge <span class="stxNonterminal">e</span><span class="stxNonterminal"><sub>i</sub></span> connects <span class="stxNonterminal">u<sub>i</sub></span> to <span class="stxNonterminal">u<sub>i</sub></span><sub>+1</sub>. The path is said to be <span class="stxMeta">from</span> <span class="stxNonterminal">u</span><sub>0</sub> and <span class="stxMeta">to</span> <span class="stxNonterminal">u<sub>n</sub></span>.The <span class="stxMeta">length</span> of a path is the sum of the distances of its edges. There is always a path with no edges [<span class="stxNonterminal">u</span>], with length 0, from a node <span class="stxNonterminal">u</span> to itself.</p>
 <p> We'll call the starting node <em>s</em><sub></sub>. As mentioned above, the intuitive idea is to start at <em>s<sub></sub></em> and work outwards, visiting all the other nodes in order of closeness to the starting node. That is, the first node visited is <em>s</em>; after visiting <em>s</em><sub></sub>, the second node visited (call it <em>v</em><sub>1</sub>) is the one that is closest to <em> s </em><sub></sub>, and the third node visited (call it <em>v</em><sub>2</sub>) is the node that is second closest to <em>s</em><sub></sub>, and so on.</p>
 <p>For any node <em>u</em> reachable from <em>s</em>, let's write <em>t</em>(<em>u</em>) for the true distance to <em>u</em>, i.e. the length of every shortest path from <em>s</em> to <em>u</em>. We will visit the nodes (reachable from <em>s</em>) in an order </p>
 <p align="center"><em>v</em><sub>0</sub>, <em>v</em><sub>1</sub>, <em>..., v<sub>m</sub></em><sub>-1</sub></p>
