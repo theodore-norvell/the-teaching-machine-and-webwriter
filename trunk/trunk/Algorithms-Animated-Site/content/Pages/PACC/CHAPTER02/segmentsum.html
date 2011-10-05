@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">nestingDepth = "../../../../";</script>
+<script language="JavaScript" src="../../../noteConstants.js"></script>
+<script language="JavaScript" src="../../../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../../../webWriter/web_writer.js"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<title>The segment sum problem</title>
+<link href="../../../../style/lectureScreen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<p>In order to explain the basic principles of algorithm design and complexity
+analysis, let us consider a "toy" problem, that is, searching for a <em>segment
+with maximum sum</em>. Given a sequence of $n$ integers stored into an
+array $a$, a <b>segment</b> is any subsequence of consecutive elements $a_i,
+a_{i+1}, \ldots, a_j$, from position $i$ to position $j$. We will denote this
+segment by $a[i, j]$, where $0 \leq i \leq j \leq n-1$ (hence, the entire array
+corresponds to $a[0,n-1]$). The <em>sum</em> of segment $a[i, j]$ is equal to
+the sum of its components: $sum(a[i, j]) = \sum_{k=i}^j a[k]$. Our problem
+consists in looking for the segment with maximum sum (if two segments have the
+same sum, then the shorter one is better). Clearly, the problem is interesting
+only if the sequence contains negative elements (otherwise the best solution is
+always the entire array). </p>
+
+<p>The simplest solution for this problem consists of analysing all possible
+segments and to select the one with the maximum sum. This can be done by
+generating all pairs of indices $i$ and $j$ with $0 \leq i \leq j \leq n-1$ e by
+computing the corresponding sums. The computational cost of this solution is
+$O(n^3)$ time: indeed, we need two loops (one nested into the other) in order to
+generate all pairs of indices $i$ and $j$ and one loop nested into the inner one
+whose body is executed $j-i+1$ times. Observe that the spatial complexity of the
+algorithm is $O(1)$ since we just use a constant number of additional variables
+(besides the input array).</p>
+
+<p>A better solution is based on the fact that $sum(a[i, j]) = sum(a[i, j-1]) +
+a[j]$: hence, we don't need to start again in order to compute $sum(a[i, j])$
+since we can use the previously computed value $sum(a[i, j-1])$. The
+computational cost of this new solution is $O(n^2)$ time and $O(1)$ space.</p>
+
+<p>The optimal solution takes advantage of the combinatorial structure of the
+problem, since the number of possible segments of maximum sum is linear and
+since these segments have to be disjoint as a consequence of the following
+properties. Let $a[i, j]$ be a segment of maximum sum and of shortest length
+among the ones with the same sum: then the following holds.</p>
+
+<ol> <li>Any prefix of $a[i,j]$ has positive sum: $sum(a[i, k]) > 0$ for any $i
+\leq k < j$. Otherwise, there exists $k$ such that \[sum(a[i, j]) = sum(a[i, k])
++ sum(a[k+1, j]) \leq sum(a[k+1, j]).\] That is, $a[k+1, j]$ has a sum greater
+than $a[i, j]$ or it has equal sum but it is shorter: this contradicts the
+optimality of $a[i,j]$.</li>
+  
+<li>$a[i,j]$ cannot be extended on the left: $sum(a[k, i-1]) \leq 0$ for any $0
+\leq k \leq i-1$. Otherwise there exits $k \leq i-1$ such that \[sum(a[k, j]) =
+sum(a[k, i-1]) + sum(a[i, j]) > sum(a[i, j]).\] That is, $a[k, j]$ has a sum
+greater than $a[i, j]$: this contradicts the optimality of $a[i,j]$.</li> </ol>
+
+<p>We can take advantage of these two properties while scanning the array $a$,
+as shown in the following code.</p>
+
+<p> <script language="JavaScript">
+  setButtons(true, false, true,"",""); setSourceRoot( "../../../src/" ) ;
+  insertCode("pacc/chapter02/SegmentSum.java", true, "code", "segmentsum.tmcfg",
+  "ww", "tm&!S");
+</script> </p> <h2>Complexity analysis</h2> <p>The complexity of this algorithm
+is $O(n)$ time (we have one loop whose body requires constant time) and $O(1)$
+space (we use a constant number of additional variables). This complexity is
+clearly optimal.</p>
+
+<p> <script language="JavaScript">
+    bottomStamp(true, true);
+</script> </p> </body> </html>

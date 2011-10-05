@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">nestingDepth = "../../../../";</script>
+<script language="JavaScript" src="../../../noteConstants.js"></script>
+<script language="JavaScript" src="../../../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../../../webWriter/web_writer.js"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<title>Fast integer product</title>
+<link href="../../../../style/lectureScreen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<p>The <em>divide et impera</em> approach is one of the most popular techniques used while designing recursive algorithms and it is based on the idea of decomposing a problem into two or more sub-problems, solving these sub-problems by applying again the same principle until "elementary" problems (that is, problems that can be directly solved) are generated, and composing the solutions of the sub-problems in order to obtain a solution to the original problem. This approach can then be structured into the following three phases.</p>
+
+<ol>
+<li><b>Decomposition</b>: identifying a small number of sub-problems of the same type (each sub-problem is defined over a data set of size smaller than the starting one).</li>
+
+<li><b>Recursion</b>: recursively solving each sub-problem until a data set is reached whose size is so small that can be directly solved.</li>
+
+<li><b>Combination</b>: composing the solutions of the sub-problems in order to produce a solution of the starting problem.</li></ol>
+
+<h2>The fast integer product problem</h2>
+<p>An integer number with $n$ digits, where $n$ is arbitrarily large, can be represented by means of an array $x$ with $n+1$ elements, where $x[0]$ is an integer that denotes the sign (that is, $+1$ or $-1$) and $x[i]$ is an integer that denotes the $i$-th most significant digit, with $0 \leq x[i] \leq 9$ and $1 \leq i \leq n$ (in the following, we assume that $n$ is a power of $2$).</p>
+
+<p>The sum of two such integers can be done by using the well-known algorithm which is taught at the shool: this algorithm is optimal, since its complexity is $O(n)$ time. On the other hand, the well-known algorithm for computing the product requires time $O(n^2)$. By using the divide et impera technique, we can now drastically reduce this complexity.</p>
+
+<p>To this aim, let us observe that each integer number $w$ with $n$ digits can be written as $10^{n/2} \times w_s+w_d$, where $w_s$ denotes the number formed by the $n/2$ most significant digits of $w$ and $w_d$ denotes the number formed by the $n/2$ least significant digits. It then holds the following equality:
+\[  
+x\,y  =  (10^{n/2}\,x_s+x_d)(10^{n/2}\,y_s+y_d) =  10^n \, x_s\, y_s+10^{n/2} (x_s\, y_d+x_d\, y_s)+x_d\, y_d.
+\]
+Since
+\[ 
+x_sy_d+x_dy_s = x_sy_s+x_dy_d-(x_s-x_d) \times (y_s-y_d)
+\]
+we then have that
+\[  
+x\,y  =  (10^{n/2}\,x_s+x_d)(10^{n/2}\,y_s+y_d) =  10^n \, x_s\, y_s+10^{n/2} (x_sy_s+x_dy_d-(x_s-x_d) \times (y_s-y_d))+x_d\, y_d.
+\]
+In other words, we can compute the product of two integers with $n$ digits by means of three products of two integers with $n/2$ digits. The corresponding algorithm is shown in the following code.</p>
+
+<p>
+<script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../../../src/" ) ;
+  insertCode("pacc/chapter02/FastIntegerProduct.java", true, "code", "fastintegerproduct.tmcfg", "ww", "tm&!S"); 
+</script>
+</p>
+<h2>Complexity analysis</h2>
+<p>The total number of steps executed by this algorithm is bounded by
+\[
+T(n) = \left\{\begin{array}{ll}c & \mbox{se $n = 1$}\\ 3T(n/2)+c'n & \mbox{otherwise}\end{array}\right.  
+\]
+where $c$ and $c'$ are two positive constants. By applying the recurrence theorem, we have that $T(n) \in O(n^{\log 3}) = O(n^{1,585})$, which is much better than the quadratic complexity of the school algorithm.</p> 
+
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>

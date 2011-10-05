@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<script language="JavaScript">nestingDepth = "../../../../";</script>
+<script language="JavaScript" src="../../../noteConstants.js"></script>
+<script language="JavaScript" src="../../../../webWriter/buttonClass.js"></script>
+<script language="JavaScript" src="../../../../webWriter/parser.js"></script>
+<script language="JavaScript" src="../../../../webWriter/web_writer.js"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<title>Matrix multiplication</title>
+<link href="../../../../style/lectureScreen.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<p>The immediate algorithm for summing two $n \times n$ matrices $A$ and $B$ executes $n\times n$ sum operations (one for each element of the resulting matrix): hence, this algorithm is optimal. On the other hand, the immediate algorithm for multiplying the two matrices requires $O(n^3)$ operations: by using the divide et impera technique, we can now drastically reduce this complexity (once again we assume that $n$ is a power of $2$).</p>
+
+<p>Let us consider the following multiplication to be executed:
+\[
+\begin{bmatrix}
+a & b\\
+c & d
+\end{bmatrix}
+\times
+\begin{bmatrix}
+e & f\\
+g & h
+\end{bmatrix}
+=
+\begin{bmatrix}
+ae+bg & af+bh \\
+ce+dg & cf+dh
+\end{bmatrix}
+\]
+If we define
+\[
+\begin{array}{lll}
+v_0 =(b-d)(g+h) & \qquad & v_4 =a(f-h)\\
+v_1 =(a+d)(e+h) & \qquad & v_5 =d(g-e)\\
+v_2 =(a-c)(e+f) & \qquad & v_6 =(c+d)e\\
+v_3 =(a+b)h & &
+\end{array}
+\]
+then the previous multiplication can be expressed as follows:
+\[
+\begin{bmatrix}
+a & b \\
+c & d
+\end{bmatrix}
+\times
+\begin{bmatrix}
+e & f \\
+g & h
+\end{bmatrix}
+=
+\begin{bmatrix}
+v_0+v_1-v_3+v_5 &v_3+v_4 \\
+v_5+v_6 & v_1-v_2+v_4-v_6
+\end{bmatrix}
+\]
+The corresponding algorithm is shown in the following code.</p>
+
+<p>
+<script language="JavaScript">
+  setButtons(true, false, true,"","");
+  setSourceRoot( "../../../src/" ) ;
+  insertCode("pacc/chapter02/Strassen.java", true, "code", "strassen.tmcfg", "ww", "tm&!S"); 
+</script>
+</p>
+<h2>Complexity analysis</h2>
+<p>The total number of steps executed by this algorithm is bounded by
+\[
+T(n) = \left\{\begin{array}{ll}c & \mbox{if $n \leq 2$}\\ 7T\left(\frac{n}{2}\right)+c'n^2 & \mbox{otherwise}\end{array}\right.\]
+where $c$ and $c'$ are two positive constants. By applying the recurrence theorem, we have that $T(n) \in O(n^{\log 7}) = O(n^{2,807\ldots})$, which is much better than the cubic complexity of the immediate algorithm.</p> 
+
+<p>
+<script language="JavaScript">
+    bottomStamp(true, true);
+</script>
+</p>
+</body>
+</html>
