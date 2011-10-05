@@ -14,6 +14,10 @@ var pages = "content/Pages/";
 root.addChild(new Node(pages + "introduction.html"));
 root.addChild(new Node(pages + "Dijkstras-Algorithm/dijkstras.html"));
 root.addChild(new Node(pages + "Kruskals-Algorithm/kruskals.html"));
+root.addChild(new Node(pages + "PACC/CHAPTER02/segmentsum.html"));
+root.addChild(new Node(pages + "PACC/CHAPTER02/dynamicarray.html"));
+root.addChild(new Node(pages + "PACC/CHAPTER02/fastintegerproduct.html"));
+root.addChild(new Node(pages + "PACC/CHAPTER02/strassen.html"));
 
 
 
