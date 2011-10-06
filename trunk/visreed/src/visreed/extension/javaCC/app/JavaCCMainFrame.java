@@ -25,11 +25,11 @@ import visreed.app.VisreedMainFrame;
 import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.swing.JavaCCProductionsTreeView;
+import visreed.extension.javaCC.swing.editor.JavaCCTextArea;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.TreeView.VisreedOutlineTreeView;
-import visreed.swing.editor.VisreedTextArea;
 import visreed.swing.properties.PropertyEditor;
 import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedViewFactory;
@@ -166,12 +166,13 @@ public class JavaCCMainFrame extends VisreedMainFrame {
         this.sgm2.installIn(syntaxDisplay);
         
         // text area
-        this.regexText = new VisreedTextArea();
+        this.regexText = new JavaCCTextArea();
         this.regexText.setSubHigraph(subgraph);
         this.regexText.getInputMap().put(
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), 
             "refreshModelFromText"
         );
+        this.regexText.setAutoscrolls(true);
         this.regexText.getActionMap().put(
             "refreshModelFromText", 
             new AbstractAction(){

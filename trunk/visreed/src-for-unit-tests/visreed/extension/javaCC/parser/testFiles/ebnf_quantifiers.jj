@@ -1,0 +1,34 @@
+PARSER_BEGIN(IdParser)
+import java.io.*;
+public class IdParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    IdParser p = new IdParser(sr);
+    try {
+      p.Id();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(IdParser)
+TOKEN : {
+  <DIGIT : (["0"-"9"])>
+  | <LOWERCASE_LETTER : (["a"-"z"])>
+  | <UPPERCASE_LETTER : (["A"-"Z"])>
+}
+void Id() : {} {
+  ZeroOrOne()  {System.out.println("ZeroOrOne\n");} | 
+  OneOrMore() {System.out.println("OneOrMore\n");} | 
+  ZeroOrMore() {System.out.println("ZeroOrMore\n");}
+  <EOF>
+}
+void ZeroOrOne() : {} {
+  "-" (<DIGIT>)?
+}
+void OneOrMore() : {} {
+  (<LOWERCASE_LETTER>)+
+}
+void ZeroOrMore() : {} {
+  (<UPPERCASE_LETTER>)*
+}

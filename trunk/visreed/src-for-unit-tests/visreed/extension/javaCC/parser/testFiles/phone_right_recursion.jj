@@ -1,0 +1,22 @@
+PARSER_BEGIN(PhoneParser)
+import java.io.*;
+public class PhoneParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    PhoneParser p = new PhoneParser(sr);
+    try {
+      p.AreaCode();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(PhoneParser)
+TOKEN : {
+  <THREE_DIGITS : (<DIGITS>){3}> | <#DIGITS : ["0"-"9"]>
+}
+void AreaCode() : { Token t; } {
+  t=<THREE_DIGITS> 
+  {System.out.println("Parsed " + t.image); }
+  "-" [AreaCode()]
+}

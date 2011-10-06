@@ -1,0 +1,17 @@
+PARSER_BEGIN(LetterParser)
+import java.io.*;
+public class LetterParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    LetterParser p = new LetterParser(sr);
+    try {
+      p.Start();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(LetterParser)
+void Start() : {} {
+  "A" "B"
+}

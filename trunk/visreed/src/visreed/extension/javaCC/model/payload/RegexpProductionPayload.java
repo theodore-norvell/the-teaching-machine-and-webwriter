@@ -17,6 +17,10 @@ public class RegexpProductionPayload extends ProductionPayload {
 	}
 	
 	private boolean ignoreCase = false;
+	private Kind kind;
+	public String[] lexStates;
+	
+	
 	public boolean getIgnoreCase(){
 		return this.ignoreCase;
 	}
@@ -24,7 +28,6 @@ public class RegexpProductionPayload extends ProductionPayload {
 		this.ignoreCase = value;
 	}
 	
-	private Kind kind;
 	public Kind getKind() {
 		return kind;
 	}

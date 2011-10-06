@@ -1,0 +1,32 @@
+PARSER_BEGIN(PhoneParser)
+import java.io.*;
+public class PhoneParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    PhoneParser p = new PhoneParser(sr);
+    try {
+      p.PhoneNumber();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(PhoneParser)
+TOKEN : {
+  <FOUR_DIGITS : (<DIGITS>){4}>
+  | <THREE_DIGITS : (<DIGITS>){3}>
+  | <#DIGITS : ["0"-"9"]>
+}
+void PhoneNumber() : {
+  StringBuffer sb = new StringBuffer();
+  String areaCodeResult;
+} 
+{
+  areaCodeResult=AreaCode() {sb.append(areaCodeResult);}  "-" 
+  <THREE_DIGITS> {sb.append(token.image);} "-" 
+  <FOUR_DIGITS> {sb.append(token.image);}
+  <EOF> {System.out.println("Number: " + sb.toString());}
+}
+String AreaCode() : {} {
+  <THREE_DIGITS> {return token.image;}
+}

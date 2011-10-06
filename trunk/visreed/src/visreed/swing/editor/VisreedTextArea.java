@@ -32,8 +32,8 @@ public class VisreedTextArea extends javax.swing.JEditorPane{
 
     private static final long serialVersionUID = 6615489588445662558L;
     
-    private VisreedSubgraph graph;
-    private VisreedWholeGraph wholeGraph;
+    protected VisreedSubgraph graph;
+    protected VisreedWholeGraph wholeGraph;
     
     /**
      * Gets the {@link visreed.model.VisreedSubgraph} attached to the text area.

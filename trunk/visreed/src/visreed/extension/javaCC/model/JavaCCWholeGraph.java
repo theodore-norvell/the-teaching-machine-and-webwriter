@@ -7,7 +7,14 @@
  */
 package visreed.extension.javaCC.model;
 
+import java.io.StringReader;
+import java.util.List;
+
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.parser.JavaCCParser;
+import visreed.extension.javaCC.parser.ParseException;
+import visreed.extension.javaCC.parser.Token;
+import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
 
 /**
@@ -24,6 +31,33 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
 	}
 	
 	private ProductionManager productionManager;
+	private String parserName;
+	private JavaCCOptions options;
+	private String compilationUnit;
+	private List<Token> tokenManagerDeclarations;
+	
+    /**
+     * Construct a tree structure from a given regular expression
+     * @param wg the WholeGraph
+     * @param regexp  the regular expression
+     * @return the root node of the node tree
+     * @throws ParseException 
+     */
+    public static VisreedNode construct(
+    	JavaCCWholeGraph wg,
+        String regexp
+    ) throws ParseException{
+        StringReader reader = new StringReader(regexp);
+        BTTimeManager timeMan = new BTTimeManager();
+        if(wg == null){
+            wg = new JavaCCWholeGraph(timeMan);
+        }
+        
+        VisreedNode result = null;
+        result = JavaCCParser.parse(wg, reader);
+        return result;
+    }
+	
 	/**
 	 * @return the productionManager
 	 */
@@ -31,7 +65,6 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
 		return productionManager;
 	}
 
-	private String parserName;
 	public String getParserName(){
 		return this.parserName;
 	}
@@ -39,18 +72,24 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
 		this.parserName = value;
 	}
 	
-	private JavaCCOptions options;
 	public JavaCCOptions getOptions(){
 		return this.options;
 	}
 	
-	private String compilationUnit;
 	public String getCompilationUnit(){
 		return this.compilationUnit;
 	}
 	
 	public void setCompilationUnit(String value){
 		this.compilationUnit = value;
+	}
+
+	public List<Token> getTokenManagerDeclarations() {
+		return tokenManagerDeclarations;
+	}
+
+	public void setTokenManagerDeclarations(List<Token> tokenManagerDeclarations) {
+		this.tokenManagerDeclarations = tokenManagerDeclarations;
 	}
 	
 }

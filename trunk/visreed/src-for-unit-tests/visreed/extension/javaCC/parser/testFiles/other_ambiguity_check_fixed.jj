@@ -1,0 +1,23 @@
+PARSER_BEGIN(ChoiceParser)
+import java.io.*;
+public class ChoiceParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    ChoiceParser p = new ChoiceParser(sr);
+    try {
+      p.Start();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(ChoiceParser)
+void Start() : {} {
+  LOOKAHEAD(2) Hello1() | Hello2()
+}
+void Hello1() : {} {
+  (LOOKAHEAD(1) "hello")? "hello" "happy" "world"
+}
+void Hello2() : {} {
+  ("hello")? "there" "world"
+}

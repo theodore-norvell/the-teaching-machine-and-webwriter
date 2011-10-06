@@ -1,0 +1,10 @@
+PARSER_BEGIN(ChoiceParser)
+public class ChoiceParser {}
+PARSER_END(ChoiceParser)
+void Start() : {} {
+  Hello1() | Hello2()
+}
+void Hello1() : {}
+{ "hello" "there" "happy" "world"}
+void Hello2() : {}
+{ "hello" "there" "happy"}
