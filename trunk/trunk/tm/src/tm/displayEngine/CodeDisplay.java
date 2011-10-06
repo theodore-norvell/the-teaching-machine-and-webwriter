@@ -101,8 +101,8 @@ public class CodeDisplay extends DisplayAdapter {
             }} ) ;
     }
 
-    public CodeDisplay(DisplayContextInterface dc, String configId){
-        super(dc, configId);
+    public CodeDisplay(DisplayManager dm, String configId){
+        super(dm, configId);
         cursorLine = 0;
         cursorChar = 0;
         cursorLineCoords = null ;

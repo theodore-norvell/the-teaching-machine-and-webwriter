@@ -275,13 +275,64 @@ public interface HigraphViewCommandInterface {
 	public void setChildDecorator(Datum node, boolean deref, long d);/*#/TDerefB*/
 
 	/*#TStr*/	
-	/************ Start of hiGraph string commands ***********************/	
+	/************ Start of hiGraph string commands ***********************/
+	/** create a string called id. id must be unique. The content
+	 *  of the string called id is null at this point.
+	 *  
+	 *  @param id the name of the string
+	 */
 	public void createString(String id);
+	
+	/** Set the string called id to null
+	 * 
+	 * @param id the name of the string
+	 */
 	public void clearString(String id);
+	
+	/** add addendum to the string called id
+	 * 
+	 * @param id the name of the string
+	 * @param addendum the string to be added. If the string called
+	 *  id is null it is now addendum. Otherwise addendum is
+	 *  concatenated to the end of the string called id.
+	 */
 	public void addToString(String id, String addendum);
+	
+	/** place the string called id at (x, y)
+	 * 
+	 * @param id the name of the string
+	 * @param x no. of pixels to the right of the display origin
+	 * @param y no. of pixels down from the display origin
+	 */
 	public void placeString(String id, long x, long y);
+	
+	/** set the normal color of the string called id. This color
+	 * can be over-ridden for parts of the string by using markSubString
+	 * 
+	 * @param id  the name of the string
+	 * @param color the normal color of the string
+	 */
 	public void setStringBaseColor(String id, long color);
+	
+	/** remove the string called id completely
+	 * 
+	 * @param id the name of the string
+	 */
 	public void removeString(String id);
+	
+	/** mark the substring in the string called id with the marker,
+	 *  starting the substring search at index of the string called id.
+	 * @param id  the name of the string
+	 * @param subStr the subString to be marked
+	 * @param marker the marker
+	 * @param index the starting position for the subString search in
+     *              the string called id 
+	 */
 	public void markSubString(String id, String subStr, long marker, long index);
+	
+	/** remove all marking from the string called id
+	 * 
+	 * @param id  the name of the string
+	 */
 	public void removeStringMarking(String id);/*#/TStr*/
 }

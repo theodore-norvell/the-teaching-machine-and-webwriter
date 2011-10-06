@@ -80,9 +80,9 @@ public abstract class DataVisualizerAdapter extends DisplayAdapter{
  * @param dc the display context provided by the object managing this display
  * @param configId the id used in the config file for this display
  */
-	public DataVisualizerAdapter(DisplayContextInterface dc, String configId) {
-		super(dc, configId);		// Automatic scrollbars
-		myGenerator = new SelectionGenerator(dc, this);		
+	public DataVisualizerAdapter(DisplayManager dm, String configId) {
+		super(dm, configId);		// Automatic scrollbars
+		myGenerator = new SelectionGenerator(dm, this);		
 //		setPreferredSize(this.getViewportSize());
 		generatorMode = SELECTION;
 	}

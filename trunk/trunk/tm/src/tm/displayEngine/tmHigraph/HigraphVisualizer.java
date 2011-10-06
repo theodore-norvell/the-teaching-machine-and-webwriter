@@ -18,6 +18,7 @@ import java.awt.Graphics2D;
 
 import tm.backtrack.BTVar;
 import tm.displayEngine.DisplayAdapter;
+import tm.displayEngine.DisplayManager;
 import higraph.view.HigraphView;
 import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
@@ -43,11 +44,11 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 * @param dc
 	 * @param configId
 	 */
-	public HigraphVisualizer(DisplayContextInterface dc, String configId){
-		super(dc, configId);
+	public HigraphVisualizer(DisplayManager dm, String configId){
+		super(dm, configId);
 		myViewVar = new BTVar<HigraphView<NodePayloadTM,EdgePayloadTM,
 		HigraphTM, WholeGraphTM,SubgraphTM,
-		NodeTM,EdgeTM>>(dc.getTimeManager());
+		NodeTM,EdgeTM>>(dm.getTimeManager());
 		SmallButton buttons[] = new SmallButton[2];
 		ImageSourceInterface imageSource = context.getImageSource();
 		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);

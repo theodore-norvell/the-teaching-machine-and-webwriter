@@ -65,8 +65,8 @@ public class ConsoleDisplay extends DisplayAdapter {
 
 
 
-	    public ConsoleDisplay(DisplayContextInterface dc, String configId){
-	        super(dc, configId);
+	    public ConsoleDisplay(DisplayManager dm, String configId){
+	        super(dm, configId);
 	    }
 
 

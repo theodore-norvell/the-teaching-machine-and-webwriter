@@ -14,10 +14,9 @@
 
 package tm.displayEngine;
 
-import tm.interfaces.DisplayContextInterface;
 import tm.plugins.PlugInFactory;
 
 public interface DisplayPIFactoryIntf extends PlugInFactory {
-    public DisplayInterface createPlugin(DisplayContextInterface dm) ;
+    public DisplayInterface createPlugin(DisplayManager dm) ;
     String getParameter();
 }

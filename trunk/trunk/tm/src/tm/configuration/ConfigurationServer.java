@@ -309,7 +309,7 @@ public class ConfigurationServer extends DefaultHandler{
         return null;
     }
 
-    private Configuration findConfig(String identifier) {
+    Configuration findConfig(String identifier) {
         if (myVector != null){
             Configuration possible;
             int i = 0;

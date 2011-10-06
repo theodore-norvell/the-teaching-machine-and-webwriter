@@ -52,8 +52,8 @@ public class StoreDisplayPIFactory implements DisplayPIFactoryIntf{
     	return new StoreDisplayPIFactory(parameter) ;
     }
 	
-	public DisplayInterface createPlugin(DisplayContextInterface dc) {		
-		return new StoreDisplay(dc, configId);
+	public DisplayInterface createPlugin(DisplayManager dm) {		
+		return new StoreDisplay(dm, configId);
 	}
 
 	public Requirement[] getRequirements() {

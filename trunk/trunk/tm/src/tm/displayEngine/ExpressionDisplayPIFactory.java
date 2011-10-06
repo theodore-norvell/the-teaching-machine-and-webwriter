@@ -32,8 +32,8 @@ public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{
     	return new ExpressionDisplayPIFactory(parameter) ;
     }
 	
-	public DisplayInterface createPlugin(DisplayContextInterface dc) {		
-		return new ExpressionDisplay(dc,configId);
+	public DisplayInterface createPlugin(DisplayManager dm) {		
+		return new ExpressionDisplay(dm,configId);
 	}
 
 	public Requirement[] getRequirements() {

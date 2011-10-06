@@ -49,8 +49,8 @@ public class ExpressionDisplay extends DisplayAdapter {
 	String theExpression = "";
 	int advances[];		// Character sizes
 
-	public ExpressionDisplay(DisplayContextInterface dc, String configId) {
-		super(dc, configId);
+	public ExpressionDisplay(DisplayManager dm, String configId) {
+		super(dm, configId);
 		ImageSourceInterface imageSource = context.getImageSource();
 		SmallButton[] buttons = new SmallButton[2];
 		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);

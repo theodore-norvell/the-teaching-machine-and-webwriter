@@ -54,8 +54,8 @@ public class STDisplay extends DisplayAdapter{
 
 
 
-	public STDisplay(DisplayContextInterface dc, String configId) {
-	    super(dc, configId);
+	public STDisplay(DisplayManager dm, String configId) {
+	    super(dm, configId);
 		setScale(1,entryHeight);	// Unit scroll increment
 }
 
