@@ -1,0 +1,24 @@
+PARSER_BEGIN(AddParser)
+import java.io.*;
+public class AddParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    AddParser p = new AddParser(sr);
+    try {
+      p.Expression();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(AddParser)
+TOKEN : {
+  <DIGIT : (["0"-"9"])>
+  | <PLUS : "+">
+}
+void Expression() : {} {
+  Term() ("+" Term())+
+}
+void Term() : {} {
+  <DIGIT>
+}

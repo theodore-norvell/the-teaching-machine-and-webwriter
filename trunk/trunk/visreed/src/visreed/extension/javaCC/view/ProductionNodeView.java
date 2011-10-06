@@ -16,15 +16,15 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.view.VisreedNodeView;
-import visreed.view.layout.TerminalLayoutManager;
+import visreed.view.TerminalNodeView;
+import visreed.view.layout.AlternationLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class ProductionNodeView extends VisreedNodeView {
+public class ProductionNodeView extends TerminalNodeView {
 
     /**
      * @param v
@@ -37,13 +37,24 @@ public class ProductionNodeView extends VisreedNodeView {
             BTTimeManager timeMan) {
         super(v, node, timeMan);
     }
+    
+    private boolean folded;
 
     /* (non-Javadoc)
      * @see visreed.view.VisreedNodeView#getLayoutHelper()
      */
     @Override
     protected VisreedNodeLayoutManager getLayoutHelper() {
-        return TerminalLayoutManager.getInstance();
+        return AlternationLayoutManager.getInstance();
     }
 
+	public boolean isFolded() {
+		return folded;
+	}
+
+	public void setFolded(boolean folded) {
+		if(folded != this.folded){
+			this.folded = folded;
+		}
+	}
 }

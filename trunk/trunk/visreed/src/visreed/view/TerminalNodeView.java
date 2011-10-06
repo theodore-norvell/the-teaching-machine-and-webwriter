@@ -14,10 +14,7 @@ import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Paint;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-
-import javax.swing.JOptionPane;
 
 import tm.backtrack.BTTimeManager;
 import visreed.awt.GraphicsHelper;

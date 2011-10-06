@@ -22,6 +22,7 @@ implements Tag<VisreedTag, VisreedPayload>, IDescribable{
     public static final VisreedTag KLEENE_STAR =  KleeneStarTag.getInstance();
     public static final VisreedTag TERMINAL = TerminalTag.getInstance();
     public static final VisreedTag OPTIONAL = OptionalTag.getInstance();
+    public static final VisreedTag REPEAT_RANGE = RepeatRangeTag.getInstance();
     
     private static final VisreedTag[] VALUES = new VisreedTag[]{
         SEQUENCE,
@@ -29,7 +30,8 @@ implements Tag<VisreedTag, VisreedPayload>, IDescribable{
         KLEENE_PLUS,
         KLEENE_STAR,
         TERMINAL,
-        OPTIONAL
+        OPTIONAL,
+        REPEAT_RANGE
     };
     
     public static VisreedTag[] values(){

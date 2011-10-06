@@ -1,0 +1,35 @@
+PARSER_BEGIN(PhoneParser)
+import java.io.*;
+public class PhoneParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    PhoneParser p = new PhoneParser(sr);
+    try {
+      p.PhoneNumber();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(PhoneParser)
+TOKEN :
+{
+  <FOUR_DIGITS : (<DIGITS>){4}>
+  | <THREE_DIGITS : (<DIGITS>){3}>
+  | <#DIGITS : ["0"-"9"]>
+}
+void PhoneNumber() : {} {
+  (
+    LOOKAHEAD(("A"|"B")+ AreaCode() "-" <FOUR_DIGITS>) LocalNumber() {System.out.println("Found a local number");}
+    | CountryNumber() {System.out.println("Found a country number");}
+  ) <EOF>
+}
+void LocalNumber() : {} {
+  ("A"|"B")+ AreaCode() "-" <FOUR_DIGITS>
+}
+void CountryNumber() : {} {
+  ("A"|"B")+ AreaCode() "-" <THREE_DIGITS> "-" <FOUR_DIGITS> 
+}
+void AreaCode() : {} {
+  <THREE_DIGITS> 
+}

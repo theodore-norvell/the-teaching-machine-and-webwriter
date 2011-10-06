@@ -1,0 +1,33 @@
+PARSER_BEGIN(NestedParser)
+import java.io.*;
+public class NestedParser {
+  public static void main(String[] args) {
+    Reader sr = new StringReader(args[0]);
+    NestedParser p = new NestedParser(sr);
+    try {
+      p.Start();
+    } catch (ParseException pe) {
+      pe.printStackTrace();
+    }
+  }
+}
+PARSER_END(NestedParser)
+SKIP : {
+  " "
+}
+void Start() : {} {
+  LOOKAHEAD(Fullname()) Fullname() | Douglas()
+  <EOF>
+}
+void Fullname() : {} {
+  (
+    LOOKAHEAD(Douglas() Munro()) 
+    Douglas() 
+    | 
+    Douglas() Albert()
+  ) 
+  Munro()
+}
+void Douglas() : {} { "Douglas" }
+void Albert() : {} { "Albert" }
+void Munro() : {} { "Munro" }

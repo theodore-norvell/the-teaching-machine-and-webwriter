@@ -13,20 +13,23 @@ import java.util.ArrayList;
 import org.javacc.parser.JavaCCErrors;
 
 import visreed.model.*;
+import visreed.model.payload.*;
 import visreed.extension.javaCC.model.*;
-
-import visreed.extension.javaCC.model.JavaCCOptions;
-import visreed.extension.javaCC.model.payload.RegexpProductionPayload;
+import visreed.extension.javaCC.model.payload.*;
 
 public class JavaCCParser {
     private JavaCCBuilder builder;
     private JavaCCWholeGraph wg;
+    int class_nesting = 0;
+    String parser_class_name;
+    boolean processing_cu = false;
     
     public static VisreedNode parse(
         JavaCCWholeGraph wg,
         java.io.Reader reader
     ) throws ParseException {
         JavaCCParser parser = new JavaCCParser(reader);
+        parser.wg = wg;
         parser.builder = new JavaCCBuilder(wg);
         try{
             parser.javacc_input();
@@ -42,6 +45,17 @@ public class JavaCCParser {
             throw new ParseException(e.getMessage());
         }
     }
+    
+    /*
+     * Returns true if the next token is not in the FOLLOW list of "expansion".
+     * It is used to decide when the end of an "expansion" has been reached.
+     */
+    private boolean notTailOfExpansionUnit() {
+        Token t;
+        t = getToken(1);
+        if (t.kind == BIT_OR || t.kind == COMMA || t.kind == RPAREN || t.kind == RBRACE || t.kind == RBRACKET) return false;
+        return true;
+    }
 
     public VisreedNode result(){
         return builder.pop();
@@ -50,6 +64,101 @@ public class JavaCCParser {
     private void makeRoot(){
         builder.makeRoot();
     }
+
+    
+
+   /**
+    * Class to hold modifiers.
+    */
+   static public final class ModifierSet
+   {
+     /* Definitions of the bits in the modifiers field.  */
+     public static final int PUBLIC = 0x0001;
+     public static final int PROTECTED = 0x0002;
+     public static final int PRIVATE = 0x0004;
+     public static final int ABSTRACT = 0x0008;
+     public static final int STATIC = 0x0010;
+     public static final int FINAL = 0x0020;
+     public static final int SYNCHRONIZED = 0x0040;
+     public static final int NATIVE = 0x0080;
+     public static final int TRANSIENT = 0x0100;
+     public static final int VOLATILE = 0x0200;
+     public static final int STRICTFP = 0x1000;
+
+     /** A set of accessors that indicate whether the specified modifier
+         is in the set. */
+
+     public boolean isPublic(int modifiers)
+     {
+       return (modifiers & PUBLIC) != 0;
+     }
+
+     public boolean isProtected(int modifiers)
+     {
+       return (modifiers & PROTECTED) != 0;
+     }
+
+     public boolean isPrivate(int modifiers)
+     {
+       return (modifiers & PRIVATE) != 0;
+     }
+
+     public boolean isStatic(int modifiers)
+     {
+       return (modifiers & STATIC) != 0;
+     }
+
+     public boolean isAbstract(int modifiers)
+     {
+       return (modifiers & ABSTRACT) != 0;
+     }
+
+     public boolean isFinal(int modifiers)
+     {
+       return (modifiers & FINAL) != 0;
+     }
+
+     public boolean isNative(int modifiers)
+     {
+       return (modifiers & NATIVE) != 0;
+     }
+
+     public boolean isStrictfp(int modifiers)
+     {
+       return (modifiers & STRICTFP) != 0;
+     }
+
+     public boolean isSynchronized(int modifiers)
+     {
+       return (modifiers & SYNCHRONIZED) != 0;
+     }
+
+     public boolean isTransient(int modifiers)
+      {
+       return (modifiers & TRANSIENT) != 0;
+     }
+
+     public boolean isVolatile(int modifiers)
+     {
+       return (modifiers & VOLATILE) != 0;
+     }
+
+     /**
+      * Removes the given modifier.
+      */
+     static int removeModifier(int modifiers, int mod)
+     {
+        return modifiers & ~mod;
+     }
+   }
+
+   private void eatUptoCloseBrace() {
+     int b = 1;
+     while(getToken(1).kind != RBRACE || --b != 0) {
+       if (getToken(1).kind == EOF) break;
+       if (getNextToken().kind == LBRACE) b++;
+     }
+   }
 }
 
 PARSER_END(JavaCCParser)
@@ -376,10 +485,13 @@ TOKEN :
 }
 
 
-/* handling simplified java code */
+/*
+   // handling simplified java code
 TOKEN:
 {
     < WITH_NO_BRACES : (~["{", "}"])* >}
+
+*/
 
 
 /************************************************
@@ -458,12 +570,35 @@ void option_binding() :
 void production() :
 {}
 {
+  LOOKAHEAD(1)
+  /*
+   * Since JAVACODE is both a JavaCC reserved word and a Java identifier,
+   * we need to give preference to "javacode_production" over
+   * "bnf_production".
+   */
   javacode_production()
+|
+  LOOKAHEAD(1)
+  /*
+   * Since SKIP, TOKEN, etc. are both JavaCC reserved words and Java
+   * identifiers, we need to give preference to "regular_expression_production"
+   * over "bnf_production".
+   */
+  regular_expr_production()
+|
+  LOOKAHEAD(1)
+  /*
+   * Since TOKEN_MGR_DECLS is both a JavaCC reserved word and a Java identifier,
+   * we need to give preference to "token_manager_decls" over
+   * "bnf_production".
+   */
+  token_manager_decls()
 |
   bnf_production()
 }
 
-/* block -> { with_in_block ({with_in_block})* }  */
+/*
+// block -> { with_in_block ({with_in_block})* }
 String block() :
     {
         StringBuilder sb = new StringBuilder();
@@ -494,61 +629,85 @@ String with_in_block():
     t = < WITH_NO_BRACES >
     {
         return t.image;    }}
+*/
 
 void javacode_production() :
 	{
+	   JavaCodeProductionPayload pl = new JavaCodeProductionPayload();
 	   String production_name = "";
 	   String java_code = "";
+       Token t = getToken(1);
+	   List<Token> excName = new ArrayList<Token>();
+	   pl.setLine(t.beginLine);
+	   pl.setColumn(t.beginColumn);
 	}
 {
   "JAVACODE"
-  AccessModifier()
-  ResultType()
-  production_name = identifier()
+  AccessModifier(pl)
+  ResultType(pl.getReturnTypeTokens())
+  production_name = identifier() {pl.setName(production_name);}
   [ "throws"
-    Name(null)
+    Name(excName)
+    {pl.getThrowsList().addAll(excName);}
     (
-      "," Name(null)
+	  {excName.clear();}
+      "," Name(excName)
+	  {pl.getThrowsList().addAll(excName);}
     )*
   ]
   "{"
-  java_code = block()
+  Block(pl.getCodeList())
   "}"
 
     {
-        builder.buildJavaCode(java_code);
-        builder.buildProduction(production_name);    }
+        builder.buildAndPushNodeWithNoSeq(pl, 1);
+    }
     
 }
 
 void bnf_production() :
 	{
 	   String production_name = "";
+	   BNFProductionPayload pl = new BNFProductionPayload();
+	   Token t = getToken(1);
+	   pl.setLine(t.beginLine);
+	   pl.setColumn(t.beginColumn);
+	   List<Token> excName = new ArrayList<Token>();
 	}
 {
-  AccessModifier()
-  ResultType()
-  production_name = identifier()
-  FormalParameters(null)
+  AccessModifier(pl)
+  ResultType(pl.getReturnTypeTokens())
+  production_name = identifier()  {pl.setName(production_name);}
+  FormalParameters(pl.getParameterListTokens())
   [ "throws"
-    Name(null)
+    Name(excName)
+	{pl.getThrowsList().addAll(excName);}
     (
-      "," Name(null)
+	  {excName.clear();}
+      "," Name(excName)
+	  {pl.getThrowsList().addAll(excName);}
     )*
   ]
   ":"
-  block()
+  Block(null)
   "{" expansion_choices() "}"
 	{
 	   builder.buildSequence(1);
-	   builder.buildProduction(production_name);
+	   builder.buildAndPushNodeWithNoSeq(pl, 1);
 	}
 }
 
-void AccessModifier() :
-{}
+void AccessModifier(ProductionPayload p) :
+	{
+	  Token t = null;
+	}
 {
-    ( "public" | "protected" | "private" )?
+	( t = "public" | t = "protected" | t = "private" )?
+	{
+	  if(t != null){
+	    p.setModifier(t.image);
+	  }
+	}
 }
 
 void regular_expr_production() :
@@ -556,93 +715,114 @@ void regular_expr_production() :
 	   RegexpProductionPayload pl = new RegexpProductionPayload("Regexp");
 	   RegexpProductionPayload.Kind kind = RegexpProductionPayload.Kind.TOKEN;
 	   int count_regexpr = 1;
+    
+       List<String> states = new ArrayList<String>();
+    
+	   Token t = getToken(1);
+	   pl.setLine(t.beginLine);
+	   pl.setColumn(t.beginColumn);
 	}
 {
+	{
+	  // set p.lexStates assuming there is no state spec.
+	  // and then override if necessary.
+	  pl.lexStates = new String[] {"DEFAULT"};
+	}
   [
     LOOKAHEAD(2) "<" "*" ">"
+	{
+	  pl.lexStates = null;
+	}
   |
     "<"
-      <IDENTIFIER>
-      ( "," <IDENTIFIER>
+      t=<IDENTIFIER>
+	{
+	  states.add(t.image);
+	}
+      ( "," t=<IDENTIFIER>
+	{
+	  states.add(t.image);
+	}
       )*
     ">"
+	{
+	  pl.lexStates = new String[states.size()];
+	  for (int i = 0; i < states.size(); i++) {
+	    pl.lexStates[i] = (String)states.get(i);
+	  }
+	}
   ]
-  kind = regexpr_kind()
-  {
-        pl.setKind(kind);  }
+  regexpr_kind(pl)
   [
-    "[" "IGNORE_CASE" "]"    {
-        pl.setIgnoreCase(true);    }
+    "[" t="IGNORE_CASE" "]"
+	{
+	  pl.setIgnoreCase(true);
+	}
   ]
   ":"
-  "{" regexpr_spec()
-   (
-     "|" regexpr_spec()
-     {
-        count_regexpr++;     }
-   )*
-   "}"
-   {        builder.buildSequence(count_regexpr);
+  "{" regexpr_spec(pl)
+    ( "|"
+        regexpr_spec(pl)
+        {
+          count_regexpr++;        }
+    )*
+  t="}"
+	{
+        pl.setLastToken(t);
+        if(count_regexpr > 1)        {
+            builder.buildAlternation(count_regexpr);        } else {        }
         builder.buildAndPushNodeWithNoSeq(pl, 1);
-   }
+    }
 }
 
-RegexpProductionPayload.Kind regexpr_kind() :
+void token_manager_decls() :
+	{
+	  List<Token> decls = new ArrayList<Token>();
+	}
+{
+  "TOKEN_MGR_DECLS" ":"
+  ClassOrInterfaceBody(false, decls)
+	{
+	  this.wg.setTokenManagerDeclarations(decls);
+	}
+}
+
+void regexpr_kind(RegexpProductionPayload p) :
 {}
 {
   "TOKEN"
-  {
-    return RegexpProductionPayload.Kind.TOKEN;  }
+	{
+	  p.setKind(RegexpProductionPayload.Kind.TOKEN);
+	}
 |
   "SPECIAL_TOKEN"
-  {    return RegexpProductionPayload.Kind.SPECIAL_TOKEN;
-  }
+	{
+	  p.setKind(RegexpProductionPayload.Kind.SPECIAL_TOKEN);
+	}
 |
   "SKIP"
-  {
-    return RegexpProductionPayload.Kind.SKIP;  }
+	{
+	  p.setKind(RegexpProductionPayload.Kind.SKIP);
+	}
 |
   "MORE"
-  {
-    return RegexpProductionPayload.Kind.MORE;  }
+	{
+	  p.setKind(RegexpProductionPayload.Kind.MORE);
+	}
 }
 
-void regexpr_spec(TokenProduction p) :
+void regexpr_spec(RegexpProductionPayload p) :
 	{
 	  Token t;
 	}
 {
   regular_expression()
   [
-    block()
+    Block(null)
   ]
   [
     ":" t=<IDENTIFIER>
   ]
-}
-
-void regular_expression(Container c) :
-    {
-      REndOfFile ef;
-      String image;
-      boolean private_rexp = false;
-      Token t = getToken(1);
-    }
-{
-  StringLiteral()
-|
-  LOOKAHEAD(3)
-  < LANGLE: "<" >
-  [
-    [ "#" ]
-    identifier() ":"
-  ]
-  expansion_choices() < RANGLE: ">" >
-|
-  LOOKAHEAD(2)
-  "<" identifier() ">"
-|
-  "<" "EOF" ">"
 }
 
 // shall result in an alternation node
@@ -659,7 +839,8 @@ void expansion_choices() :
        num_of_choices ++;     }
   )*
 	{
-        builder.buildAlternation(num_of_choices);
+	    if(num_of_choices == 1)	    {
+	        // do nothing, as the SEQ is already handled	    } else {            builder.buildAlternation(num_of_choices);        }    
 	}
 }
 
@@ -687,7 +868,7 @@ void local_lookahead() :
      * know that this is what we want.
      */
     LOOKAHEAD(1)
-    laAmount = IntegerLiteral()
+    IntegerLiteral()
   ]
   [ LOOKAHEAD(0, { (getToken(1).kind != RPAREN) } )
     ","
@@ -700,19 +881,13 @@ void local_lookahead() :
   ]
   [ LOOKAHEAD(0)
     "{"
-        [ Expression(la.getActionTokens()) ]
+        [ Expression(null) ]
     "}"
   ]
 }
 
 void expansion_unit() :
 	{
-	  String name;
-	  java.util.List lhsTokens = new java.util.ArrayList();
-	  NonTerminal nt;
-	  Action act;
-	  Token t;
-	  Lookahead la;
 	}
 {
   LOOKAHEAD(1)
@@ -720,9 +895,9 @@ void expansion_unit() :
    * We give this priority over primary expressions which use LOOKAHEAD as the
    * name of its identifier.
    */
-  t="LOOKAHEAD" "(" local_lookahead() ")"
+  "LOOKAHEAD" "(" local_lookahead() ")"
 |
-  block()
+  Block(null)
 |
   "[" expansion_choices() "]"
 	{
@@ -740,26 +915,12 @@ void expansion_unit() :
   )
   [
     LOOKAHEAD(PrimaryExpression() "=")
-	{
-	  Token first = getToken(1);
-	}
     PrimaryExpression()
-	{
-	  Token last = getToken(0);
-	}
     "="
-	{
-	  t = first;
-	  while (true) {
-	    lhsTokens.add(t);
-	    if (t == last) break;
-	    t = t.next;
-	  }
-	}
   ]
   (
 	LOOKAHEAD( identifier() "(")
-   identifier() Arguments(nt.getArgumentTokens())
+   identifier() Arguments(null)
   |
     regular_expression()
 	[ "." <IDENTIFIER> ]
@@ -772,6 +933,161 @@ void expansion_unit() :
   )?
 }
 
+void regular_expression() :
+    {
+      String image = null;
+      boolean private_rexp = false;
+      Token t = getToken(1);
+    }
+{
+  image = StringLiteral()
+  {
+      builder.buildSequence(0);
+      builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);  }
+|
+  LOOKAHEAD(3)
+  < LANGLE: "<" >
+  [
+    [ "#" {private_rexp = true;} ]
+    image = identifier() ":"
+  ]
+  complex_regular_expression_choices()
+  < RANGLE: ">" >
+  {
+      if(image != null)      {
+          builder.buildSequence(1);
+          builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);      }     }
+|
+  LOOKAHEAD(2)
+  "<" image = identifier() ">"
+  {
+      builder.buildSequence(0);
+      builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);  }
+|
+  "<" "EOF" ">"
+}
+
+void complex_regular_expression_choices() :
+    {
+      int count = 1;
+    }
+{
+  complex_regular_expression()
+  ( "|" complex_regular_expression()
+    {
+      count++;
+    }
+  )*
+    {
+      if (count > 1) {
+        builder.buildAlternation(count);
+      }
+    }
+}
+
+void complex_regular_expression() :
+    {
+      int count = 0;
+    }
+{
+  ( complex_regular_expression_unit()
+    {
+      count++;
+    }
+  )+
+    {
+      if (count > 1) {
+          builder.buildSequence(count);
+      }
+    }
+}
+
+void complex_regular_expression_unit() :
+    {
+      String image;
+      Token t = getToken(1);
+      int r1 = 0, r2 = -1;
+      boolean hasMax = false;
+    }
+{
+  image=StringLiteral()
+    {
+      builder.buildTerminal(image);
+    }
+|
+  "<" image=identifier() ">"
+    {
+      builder.buildTerminal(image);
+    }
+|
+  character_list()
+|
+  "(" complex_regular_expression_choices() ")"
+  (  "+"
+    {
+        builder.buildKleenePlus();
+      // c.member = new ROneOrMore(t, (RegularExpression)c.member);
+    }
+   | "*"
+    {
+        builder.buildKleeneStar();
+      // c.member = new RZeroOrMore(t, (RegularExpression)c.member);
+    }
+   | "?"
+    {
+        builder.buildOptional();
+    }
+   | "{" r1 = IntegerLiteral()
+         [ "," { hasMax = true; } [ r2 = IntegerLiteral() ] ]
+     "}"
+    {
+        RepeatRangePayload pl = null;
+        if(hasMax) {
+            pl = new RepeatRangePayload(r1, r2);        } else {
+            pl = new RepeatRangePayload(r1);        }
+        builder.buildAndPushNodeWithSeq(pl, 1);
+    }
+  )?
+}
+
+void character_list() :
+    {
+        int count = 0;
+    }
+{
+  ["~"
+    {
+    }
+  ]
+  "[" [ character_descriptor()
+        { count ++; }
+        ( "," character_descriptor()
+            { count ++; }
+        )*
+      ]
+  "]"
+  {
+      builder.buildSequence(count);  }
+}
+
+void character_descriptor() :
+    {
+        String s1 = "" , s2 = "";
+        boolean isInRange = false;
+    }
+{
+  s1 = StringLiteral()
+  [ "-" s2 = StringLiteral()
+    {
+        isInRange = true;    }
+  ]
+  {
+      if(isInRange) {
+          builder.buildAndPushNodeWithNoSeq(new CharacterRangePayload(s1, s2, false), 0);      } else {
+          builder.buildAndPushNodeWithNoSeq(new CharacterRangePayload(s1), 0);      }
+            }
+}
+
 String identifier() :
 	{
 	  Token t;
@@ -782,7 +1098,6 @@ String identifier() :
 	  return t.image;
 	}
 }
-
 
 /**********************************************
  * THE JAVA GRAMMAR SPECIFICATION STARTS HERE *
@@ -832,17 +1147,11 @@ void CompilationUnit() :
  * within grammar code.
  */
     {
-      set_initial_cu_token(getToken(1));
     }
 {
   [ LOOKAHEAD( ( Annotation() )* "package" ) PackageDeclaration() ]
   ( ImportDeclaration() )*
   ( TypeDeclaration() )*
-    {
-          if (Options.getOutputLanguage().equals("java")) {
-        insertionpointerrors(getToken(1));
-          }
-    }
 }
 
 void PackageDeclaration() :
@@ -941,13 +1250,13 @@ void ClassOrInterfaceDeclaration(int modifiers, List tokens):
     {
       if (t.image.equals(parser_class_name) && class_nesting == 1 && processing_cu) {
         is_parser_class = true;
-        setinsertionpoint(getToken(1), 1);
+        // setinsertionpoint(getToken(1), 1);
       }
     }
   ClassOrInterfaceBody(isInterface, null)
     {
       if (is_parser_class) {
-        setinsertionpoint(getToken(0), 2);
+        // setinsertionpoint(getToken(0), 2);
       }
       class_nesting--;
     }
@@ -1268,11 +1577,11 @@ void PrimitiveType():
 }
 
 
-void ResultType(List tokens) :
+void ResultType(List<Token> tokens) :
     {
       Token first = getToken(1);
       if (tokens == null)
-        tokens = new ArrayList();
+        tokens = new ArrayList<Token>();
     }
 {
 (
@@ -1291,14 +1600,14 @@ void ResultType(List tokens) :
     }
 }
 
-void Name(List tokens) :
+void Name(List<Token> tokens) :
 /*
  * A lookahead of 2 is required below since "Name" can be followed
  * by a ".*" when used in the context of an "ImportDeclaration".
  */
     {
       if (tokens == null)
-        tokens = new ArrayList();
+        tokens = new ArrayList<Token>();
       Token first = getToken(1);
     }
 {
@@ -1328,7 +1637,7 @@ void NameList():
  * Expression syntax follows.
  */
 
-void Expression(List tokens) :
+void Expression(List<Token> tokens) :
 /*
  * This expansion has been written this way instead of:
  *   Assignment() | ConditionalExpression()
@@ -1341,7 +1650,7 @@ void Expression(List tokens) :
     {
       Token first = getToken(1);
       if (tokens == null)
-        tokens = new ArrayList();
+        tokens = new ArrayList<Token>();
     }
 {
   ConditionalExpression()
@@ -1604,7 +1913,7 @@ String StringLiteral() :
 {
   t=<STRING_LITERAL>
     {
-      return remove_escapes_and_quotes(t, t.image);
+      return JavaCCParserHelper.remove_escapes_and_quotes(t, t.image);
     }
 }
 
@@ -1733,7 +2042,7 @@ void LabeledStatement():
   <IDENTIFIER> ":" Statement()
 }
 
-void Block(List tokens) :
+void Block(List<Token> tokens) :
 /*
  * Parsing this fills "tokens" with all tokens of the block
  * excluding the braces at each end.
@@ -1741,15 +2050,12 @@ void Block(List tokens) :
     {
       Token first, last;
       if (tokens == null)
-        tokens = new ArrayList();
+        tokens = new ArrayList<Token>();
     }
 {
   "{"
     {
       first = getToken(1);
-          if (!isJavaLanguage) {
-            eatUptoCloseBrace();
-          }
     }
   ( BlockStatement() )*
     {
@@ -1902,54 +2208,22 @@ void ContinueStatement():
 
 void ReturnStatement() :
     {
-      Token t;
     }
 {
-  t="return"
-    {
-      // Add if statement to prevent subsequent code generated
-      // from being dead code.
-      // NB: eclipse now detects 'if (true)' as dead code, so use the more complicated
-      // 'if ("" != null)'
-      if (inAction) {
-        t.image = "{if (\"\" != null) return";
-        jumpPatched = true;
-      }
-    }
+  "return"
   [
     Expression(null)
   ]
-  t=";"
-    {
-      // Add closing brace for above if statement.
-      if (inAction) {
-        t.image = ";}";
-      }
-    }
+  ";"
 }
 
 void ThrowStatement() :
     {
-      Token t;
     }
 {
-  t="throw"
-    {
-      // Add if statement to prevent subsequent code generated
-      // from being dead code.
-      if (inAction) {
-        t.image = "{if (true) throw";
-        jumpPatched = true;
-      }
-    }
+  "throw"
   Expression(null)
-  t=";"
-    {
-      // Add closing brace for above if statement.
-      if (inAction) {
-        t.image = ";}";
-      }
-    }
+  ";"
 }
 
 void SynchronizedStatement():

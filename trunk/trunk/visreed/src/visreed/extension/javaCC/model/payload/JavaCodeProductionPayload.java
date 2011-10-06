@@ -7,8 +7,12 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.parser.Token;
 import visreed.extension.javaCC.view.JavaCodeNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
@@ -24,15 +28,25 @@ import visreed.view.VisreedNodeView;
  */
 public class JavaCodeProductionPayload extends ProductionPayload {
 
-	private String code;
+	private List<Token> codeList;
     public JavaCodeProductionPayload() {
         super();
+        this.codeList = new ArrayList<Token>();
     }
     
     public JavaCodeProductionPayload(String code){
     	super();
-        this.code = code;
+        this.codeList = new ArrayList<Token>();
     }
+    
+    public String getCode(){
+    	StringBuilder sb = new StringBuilder();
+    	for(Token t : this.codeList){
+    		sb.append(t.image);
+    	}
+    	return sb.toString();
+    }
+    
     
     /** The maximum length of the code, for display */
     public static final int MAX_DESC_CODE_DISPLAY_LENGTH = 10;
@@ -43,14 +57,15 @@ public class JavaCodeProductionPayload extends ProductionPayload {
     @Override
     public String format(VisreedNode currentNode) {
         String result = "";
-        if(this.code == null){
+        String code = this.getCode();
+        if(code == null){
             result = "null";
-        } else if (this.code.length() == 0){
+        } else if (code.length() == 0){
             result = "\"\"";
-        } else if (this.code.length() < MAX_DESC_CODE_DISPLAY_LENGTH){
-            result = this.code;
+        } else if (code.length() < MAX_DESC_CODE_DISPLAY_LENGTH){
+            result = code;
         } else {
-            result = this.code.substring(0, MAX_DESC_CODE_DISPLAY_LENGTH - 1);
+            result = code.substring(0, MAX_DESC_CODE_DISPLAY_LENGTH - 1);
             result += "...";
         }
         return result;
@@ -72,5 +87,9 @@ public class JavaCodeProductionPayload extends ProductionPayload {
     ) {
         return new JavaCodeNodeView(sgv, node, timeman);
     }
+
+	public List<Token> getCodeList() {
+		return codeList;
+	}
 
 }

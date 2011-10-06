@@ -17,6 +17,7 @@ import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.KleenePlusPayload;
 import visreed.model.payload.KleeneStarPayload;
 import visreed.model.payload.OptionalPayload;
+import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 
@@ -115,6 +116,10 @@ public class VisreedBuilder {
         buildAndPushNodeWithSeq(new OptionalPayload(), 1);
     }
     
+    public void buildRepeatRange(int minValue, int maxValue) {
+        buildAndPushNodeWithSeq(new RepeatRangePayload(), 1);
+    }
+    
     /**
      * @param wg
      * @param image
@@ -151,6 +156,12 @@ public class VisreedBuilder {
         buildAndPushNodeWithNoSeq(new SequencePayload(), numOfChildren);
     }
     
+    /**
+     * Build a node and push it into the stack.
+     * The node is SEQ type, so all its children will be Non-SEQ.
+     * @param payload
+     * @param numOfChildren
+     */
     public void buildAndPushNodeWithNoSeq(
         VisreedPayload payload,
         int numOfChildren
@@ -183,6 +194,12 @@ public class VisreedBuilder {
         this.push(node);
     }
     
+    /**
+     * Build a node and push it into the stack.
+     * The node is Non-SEQ type, so all its children will be SEQ.
+     * @param payload
+     * @param numOfChildren
+     */
     public void buildAndPushNodeWithSeq(
         VisreedPayload payload,
         int numOfChildren
