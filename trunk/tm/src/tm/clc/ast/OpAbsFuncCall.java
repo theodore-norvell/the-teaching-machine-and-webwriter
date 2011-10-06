@@ -31,7 +31,7 @@ is a bit complicated.  We have to deal with plain function calls,
 method calls where the recipient is explicit and method calls
 where the recipient is implicit. We also allow the display of the
 recipient to be suppressed, even when it is explicit (this is
-used for constructors).
+used for constructors)....
 */
 public class OpAbsFuncCall  extends DefaultExpressionNode
 {
