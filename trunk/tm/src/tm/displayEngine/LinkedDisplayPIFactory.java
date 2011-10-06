@@ -36,8 +36,8 @@ public class LinkedDisplayPIFactory implements DisplayPIFactoryIntf{
     static public LinkedDisplayPIFactory createInstance( String parameter ) {
     	return new LinkedDisplayPIFactory(parameter) ;
     }
-	public DisplayInterface createPlugin(DisplayContextInterface dc) {		
-		return new LinkedDisplay(dc,configId);
+	public DisplayInterface createPlugin(DisplayManager dm) {		
+		return new LinkedDisplay(dm,configId);
 	}
 
 	public Requirement[] getRequirements() {

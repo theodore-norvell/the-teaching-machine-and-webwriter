@@ -100,13 +100,13 @@ public class LinkedDisplay extends DataVisualizerAdapter implements DataDisplayV
 // Constructor
 // =================================================================
 
-	public LinkedDisplay(DisplayContextInterface dc, String configId) {
-		super(dc, configId);		// Automatic scrollbars
+	public LinkedDisplay(DisplayManager dm, String configId) {
+		super(dm, configId);		// Automatic scrollbars
 		CommandInterface cp = context.getCommandProcessor();
 		localGenerator = new StoreGenerator(
                 new RegionGenerator(cp.getStaticRegion()),
                 new RegionGenerator(cp.getStackRegion()));
-		selectionGen = new SelectionGenerator(dc, this);
+		selectionGen = new SelectionGenerator(dm, this);
 		myGenerator = localGenerator;
 	    layoutManager = new LinkedLayoutManager(this);
 		setScale(1,LinkedDatumDisplay.BASE_HEIGHT);	// scrolling increment

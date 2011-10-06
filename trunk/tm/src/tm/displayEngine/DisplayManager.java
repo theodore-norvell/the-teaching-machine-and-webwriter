@@ -34,6 +34,7 @@ package tm.displayEngine;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Iterator;
@@ -47,6 +48,8 @@ import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import tm.backtrack.BTTimeManager;
 import tm.configuration.Configuration;
@@ -76,7 +79,7 @@ import tm.utilities.TMException;
  * 
  * @author mpbl
  */
-public class DisplayManager extends JPanel implements DisplayManagerInterface, DisplayContextInterface, Observer{
+public class DisplayManager extends JPanel implements DisplayManagerInterface, DisplayContextInterface, Observer, InternalFrameListener{
     
 	private static final long serialVersionUID = -7376951577050649901L;
 
@@ -100,6 +103,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	// subwindows whose display objects are listed in myDisplays.
 	private JDesktopPane windowArea;
 	private JLabel status;
+	private JPanel bottomBar;
 	
 	private HigraphManager higraphManager;
 
@@ -113,10 +117,13 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
  		windowArea.setDoubleBuffered(true);
  		windowArea.setOpaque(true);
 
- 		
 		status = new JLabel();
 		status.setText("");
-		add("South", status);
+		status.setPreferredSize(new Dimension(60,20));
+ 		bottomBar = new JPanel();
+ 		bottomBar.setBackground(Color.blue);
+ 		bottomBar.add(status);
+		add("South", bottomBar);
 		add("Center",windowArea);
 		
 		commandProcessor = cp;
@@ -189,7 +196,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
          		String id = pieFactory.getParameter();
          		Assert.check(id != null, "No id paramater for display factory " + pieFactory.toString());
          		Debug.getInstance().msg(Debug.DISPLAY, "Creating display plugin using " + pieFactory.toString());
-	         	myDisplays[d] = pieFactory.createPlugin((DisplayContextInterface)this/*, window*/);
+	         	myDisplays[d] = pieFactory.createPlugin(this);
 	         	//System.out.println("createAllDisplays: creates "+ myDisplays[d] +"::"+myDisplays[d].hashCode()) ;
 	         	myDisplays[d].loadInitConfig();
 	         	windowArea.add(myDisplays[d].getWindowComponent());
@@ -357,4 +364,50 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
     public JMenu getViewMenu() {
         return viewMenu ;
     }
+
+	@Override
+	public void internalFrameActivated(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void internalFrameClosed(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void internalFrameClosing(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void internalFrameDeactivated(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void internalFrameDeiconified(InternalFrameEvent e) {
+		DisplayInterface display = getDisplay(e);
+		
+	}
+
+	@Override
+	public void internalFrameIconified(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void internalFrameOpened(InternalFrameEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private DisplayInterface getDisplay(InternalFrameEvent e){
+		return (DisplayInterface)e.getInternalFrame();
+	}
 }

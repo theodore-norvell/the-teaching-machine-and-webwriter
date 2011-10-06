@@ -95,8 +95,8 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 	         * @param w the subWindow which holds the display
 	         * @param b the array of buttons for the display
 	         */        
-		public StoreDisplay(DisplayContextInterface dc, String configId) {
-			super(dc, configId);		// Automatic scrollbars
+		public StoreDisplay(DisplayManager dm, String configId) {
+			super(dm, configId);		// Automatic scrollbars
 //			System.out.println("storeDisplay configId is " + configId);
 			if (configId.equalsIgnoreCase("Heap"))
 				region = commandProcessor.getHeapRegion();

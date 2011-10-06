@@ -33,8 +33,8 @@ public class PCDisplay extends DisplayAdapter{
 	public static final int TOPMARGIN = 2;
 	String theLocation = null;
 
-	public PCDisplay(DisplayContextInterface dc, String configId) {
-	    super(dc, configId);
+	public PCDisplay(DisplayManager dm, String configId) {
+	    super(dm, configId);
 //		setPreferredSize(this.getViewportSize());
 	}
 

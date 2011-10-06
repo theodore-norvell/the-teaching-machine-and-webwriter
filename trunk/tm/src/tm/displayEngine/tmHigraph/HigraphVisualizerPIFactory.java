@@ -14,6 +14,7 @@
 
 package tm.displayEngine.tmHigraph;
 
+import tm.displayEngine.DisplayManager;
 import tm.displayEngine.DisplayPIFactoryIntf;
 import tm.interfaces.DisplayContextInterface;
 import tm.plugins.Requirement;
@@ -39,8 +40,8 @@ public class HigraphVisualizerPIFactory implements DisplayPIFactoryIntf{
     	return new HigraphVisualizerPIFactory(parameter) ;
     }
 	
-	public HigraphVisualizer createPlugin(DisplayContextInterface dc) {		
-		return new HigraphVisualizer(dc,configId);
+	public HigraphVisualizer createPlugin(DisplayManager dm) {		
+		return new HigraphVisualizer(dm,configId);
 	}
 
 	public Requirement[] getRequirements() {

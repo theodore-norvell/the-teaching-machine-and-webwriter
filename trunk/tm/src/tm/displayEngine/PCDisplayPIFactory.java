@@ -43,8 +43,8 @@ public class PCDisplayPIFactory implements DisplayPIFactoryIntf{
     	return new PCDisplayPIFactory(parameter) ;
     }
 	
-	public DisplayInterface createPlugin(DisplayContextInterface dc) {		
-		return new PCDisplay(dc, configId);
+	public DisplayInterface createPlugin(DisplayManager dm) {		
+		return new PCDisplay(dm, configId);
 	}
 
 	public Requirement[] getRequirements() {

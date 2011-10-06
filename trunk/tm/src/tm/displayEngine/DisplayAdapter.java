@@ -55,14 +55,15 @@ public abstract class DisplayAdapter extends WorkArea implements DisplayInterfac
  * @param dc the display context provided by the object managing this display
  * @param configId the id used in the config file for this display
  */
-	public DisplayAdapter(DisplayContextInterface dc, String configId) {
-		super(dc.getImageSource());		// Automatic scrollbars
+	public DisplayAdapter(DisplayManager dm, String configId) {
+		super(dm.getImageSource());		// Automatic scrollbars
 		this.configId = configId;
-		context = dc;
+		context = (DisplayContextInterface)dm;
         commandProcessor = context.getCommandProcessor();		
 		setPreferredSize(this.getViewportSize());
     	mySubWindow.addWorkArea(this);
 		mySubWindow.setVisible(true);
+		mySubWindow.addInternalFrameListener(dm);
 		
 		//System.out.println("Display adapter "+this+  "::" +this.hashCode() +" registering.") ;
 		ConfigurationServer.getConfigurationServer().register(this,configId);
