@@ -260,6 +260,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
     
+    @Override public void init() {
+    	TMBigApplet.setLookAndFeel( this ) ;
+    }
+    
     @Override public void destroy() {
         disposeBigApplet() ;
         super.stop() ; // Not sure this does anything, but it can't hurt.
@@ -1082,5 +1086,20 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 
     public TMFile getDataFile() throws Throwable {
         return dataFiles.getDataFile(this.getDocumentBase()) ;
+    }
+    
+    static void setLookAndFeel(java.awt.Component component) {
+    	UIManager.LookAndFeelInfo[]lookAndFeelArray = UIManager.getInstalledLookAndFeels();
+    	for (int i = 0; i < lookAndFeelArray.length; i++) {
+    	        if (lookAndFeelArray[i].getName().equals("Nimbus")) {
+    	            try {
+						UIManager.setLookAndFeel(lookAndFeelArray[i].getClassName()); }
+    	            catch (Exception e) {
+						// TODO Auto-generated catch block
+						System.err.println("Could not set the look and feel to "+lookAndFeelArray[i].getClassName()) ;
+						e.printStackTrace(); }  
+    	            if( component != null ) SwingUtilities.updateComponentTreeUI(component);
+    	            break ; } }
+    	
     }
 }
