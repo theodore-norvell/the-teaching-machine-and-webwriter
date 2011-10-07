@@ -15,6 +15,7 @@
 package tm;
 import java.applet.AppletStub;
 import javax.swing.* ;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
@@ -418,13 +419,8 @@ public class TMMainFrame extends JFrame
 
         SwingUtilities.invokeLater( new Runnable() {
             public void run() {
-                try {
-                    // Ok for the application, but what about applets?
-                    UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-                } 
-                catch( Throwable e ) {
-                    e.printStackTrace( System.err ) ;
-                }
+            	TMBigApplet.setLookAndFeel( null ) ;
+            	
                 AppletStub appletStub = new TMMainFrameAppletStub(argPackage.installDirectory,
                         argPackage.installDirectory) ;
                 ActionListener exitListener = new KillTheProcess() ;

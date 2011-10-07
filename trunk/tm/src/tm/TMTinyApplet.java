@@ -17,6 +17,8 @@ package tm;
 
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import java.awt.Image;
 import java.awt.event.* ;
@@ -38,7 +40,8 @@ public class TMTinyApplet extends JApplet
 ////////////////////////
 
     public void init() {
-                setLayout(null);
+    	setLayout(null);	
+    	TMBigApplet.setLookAndFeel( this ) ;
     }
 
     public void destroy() {
