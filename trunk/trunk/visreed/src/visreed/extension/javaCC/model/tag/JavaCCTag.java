@@ -16,6 +16,7 @@ import visreed.model.tag.VisreedTag;
 public abstract class JavaCCTag extends VisreedTag {
     public static final VisreedTag PRODUCTION = ProductionTag.getInstance();
     public static final VisreedTag ROOT = RootTag.getInstance();
+    public static final VisreedTag LINK = JavaCCLinkTag.getInstance();
     
     private static final VisreedTag[] VALUES = new VisreedTag[]{
     	ROOT,
@@ -25,7 +26,8 @@ public abstract class JavaCCTag extends VisreedTag {
         KLEENE_STAR,
         TERMINAL,
         OPTIONAL,
-        PRODUCTION
+        PRODUCTION,
+        LINK
     };
     
     public static VisreedTag[] values(){

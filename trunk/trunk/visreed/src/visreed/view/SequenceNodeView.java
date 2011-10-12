@@ -44,73 +44,82 @@ public class SequenceNodeView extends VisreedNodeView {
             dir = dir.getReverseDirection();
         }
         
-        for (int i = 0; i < this.getNumChildren(); i++) {
-            VisreedNodeView child = this.getVisreedChild(i);
-            if(child == null){
-                continue;
-            }
-            
-            VisreedNodeView prevChild;
-            if (i == 0) {
-                // starting connection
-                GraphicsHelper.drawHorizontalConnectionCurve(
-                    screen,
-                    this.getEntryPoint().getX(),
-                    this.getEntryPoint().getY(),
-                    child.getEntryPoint().getX(),
-                    child.getEntryPoint().getY()
-                );
-            } else {
-                prevChild = this.getVisreedChild(i - 1);
-                if(prevChild == null){
-                    continue;
-                }
-                GraphicsHelper.drawHorizontalConnectionCurve(
-                    screen,
-                    prevChild.getExitPoint().getX(),
-                    prevChild.getExitPoint().getY(),
-                    child.getEntryPoint().getX(),
-                    child.getEntryPoint().getY()
-                );
-            }
-
-            if(i == this.getNumChildren() - 1){
-                // last connection
-                GraphicsHelper.drawHorizontalConnectionCurve(
-                    screen,
-                    child.getExitPoint().getX(),
-                    child.getExitPoint().getY(),
-                    this.getExitPoint().getX(),
-                    this.getExitPoint().getY()
-                );
-            }
-            
-            /* Arrows */
-            //*
-            // connection arrows
-            if(i > 0){
-                // the first element does need the arrow, as the previous
-                // element have the arrow already.
-                GraphicsHelper.drawArrow(
-                    screen, 
-                    ArrowStyle.DEFAULT, 
-                    dir, 
-                    child.getEntryPoint()
-                );
-            }
-            //*/
-            
-            //*
-            if(this.getNumChildren() > 1 || this.getStretch().getWidth() > 0){
-                // exit arrow
-                GraphicsHelper.drawArrow(
-                    screen, 
-                    ArrowStyle.DEFAULT, 
-                    dir, 
-                    this.getExitPoint()
-                );
-            }
-            //*/
+        if(this.getNumChildren() == 0){
+        	screen.drawLine(
+        		(int)this.getEntryPoint().getX(),
+        		(int)this.getEntryPoint().getY(),
+        		(int)this.getExitPoint().getX(),
+        		(int)this.getExitPoint().getY()
+			);
+        } else {
+	        for (int i = 0; i < this.getNumChildren(); i++) {
+	            VisreedNodeView child = this.getVisreedChild(i);
+	            if(child == null){
+	                continue;
+	            }
+	            
+	            VisreedNodeView prevChild;
+	            if (i == 0) {
+	                // starting connection
+	                GraphicsHelper.drawHorizontalConnectionCurve(
+	                    screen,
+	                    this.getEntryPoint().getX(),
+	                    this.getEntryPoint().getY(),
+	                    child.getEntryPoint().getX(),
+	                    child.getEntryPoint().getY()
+	                );
+	            } else {
+	                prevChild = this.getVisreedChild(i - 1);
+	                if(prevChild == null){
+	                    continue;
+	                }
+	                GraphicsHelper.drawHorizontalConnectionCurve(
+	                    screen,
+	                    prevChild.getExitPoint().getX(),
+	                    prevChild.getExitPoint().getY(),
+	                    child.getEntryPoint().getX(),
+	                    child.getEntryPoint().getY()
+	                );
+	            }
+	
+	            if(i == this.getNumChildren() - 1){
+	                // last connection
+	                GraphicsHelper.drawHorizontalConnectionCurve(
+	                    screen,
+	                    child.getExitPoint().getX(),
+	                    child.getExitPoint().getY(),
+	                    this.getExitPoint().getX(),
+	                    this.getExitPoint().getY()
+	                );
+	            }
+	            
+	            /* Arrows */
+	            //*
+	            // connection arrows
+	            if(i > 0){
+	                // the first element does need the arrow, as the previous
+	                // element have the arrow already.
+	                GraphicsHelper.drawArrow(
+	                    screen, 
+	                    ArrowStyle.DEFAULT, 
+	                    dir, 
+	                    child.getEntryPoint()
+	                );
+	            }
+	            //*/
+	            
+	            //*
+	            if(this.getNumChildren() > 1 || this.getStretch().getWidth() > 0){
+	                // exit arrow
+	                GraphicsHelper.drawArrow(
+	                    screen, 
+	                    ArrowStyle.DEFAULT, 
+	                    dir, 
+	                    this.getExitPoint()
+	                );
+	            }
+	            //*/
+	        }
         }
     }
 

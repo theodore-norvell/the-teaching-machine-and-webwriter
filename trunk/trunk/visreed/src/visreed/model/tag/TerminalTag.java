@@ -18,7 +18,7 @@ import visreed.model.payload.TerminalPayload;
  *
  */
 public class TerminalTag extends VisreedTag {
-    TerminalTag (){
+    protected TerminalTag (){
         super();
     }
     
@@ -60,7 +60,7 @@ public class TerminalTag extends VisreedTag {
     
     private static final TerminalTag instance = new TerminalTag();
     
-    public static final TerminalTag getInstance(){
+    public static TerminalTag getInstance(){
         return instance;
     }
 }

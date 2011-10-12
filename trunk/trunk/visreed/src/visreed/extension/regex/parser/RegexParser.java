@@ -3,6 +3,7 @@ package visreed.extension.regex.parser;
 
 import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.RepeatRangePayload;
 
 public class RegexParser implements RegexParserConstants {
     private RegexBuilder builder;
@@ -55,6 +56,14 @@ public class RegexParser implements RegexParserConstants {
     }
   }
 
+  final public int integer() throws ParseException {
+    int intValue = 0;
+    jj_consume_token(DECIMAL_LITERAL);
+        intValue = Integer.parseInt(token.image);
+        {if (true) return intValue;}
+    throw new Error("Missing return statement in function");
+  }
+
   final public void alternation() throws ParseException {
     int numOfChildren;
     seq();
@@ -84,6 +93,8 @@ public class RegexParser implements RegexParserConstants {
   }
 
   final public void non_seq() throws ParseException {
+    int minValue, maxValue = 0;
+    boolean hasMaxValue = false;
     terminal();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case QUESTION_MARK:
@@ -98,8 +109,30 @@ public class RegexParser implements RegexParserConstants {
       jj_consume_token(STAR);
           builder.buildKleeneStar();
       break;
+    case LEFT_BRACKET:
+      jj_consume_token(LEFT_BRACKET);
+      minValue = integer();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case COMMA:
+        jj_consume_token(COMMA);
+        maxValue = integer();
+              hasMaxValue = true;
+        break;
+      default:
+        jj_la1[3] = jj_gen;
+        ;
+      }
+      jj_consume_token(RIGHT_BRACKET);
+            RepeatRangePayload pl = null;
+                if(hasMaxValue) {
+                    pl = new RepeatRangePayload(minValue, maxValue);
+                } else {
+                    pl = new RepeatRangePayload(minValue);
+                }
+                builder.buildAndPushNodeWithSeq(pl, 1);
+      break;
     default:
-      jj_la1[3] = jj_gen;
+      jj_la1[4] = jj_gen;
 
     }
   }
@@ -117,7 +150,7 @@ public class RegexParser implements RegexParserConstants {
         ;
         break;
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[5] = jj_gen;
         break label_2;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -125,7 +158,7 @@ public class RegexParser implements RegexParserConstants {
         jj_consume_token(SEMI_COLON);
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         ;
       }
       non_seq();
@@ -143,13 +176,13 @@ public class RegexParser implements RegexParserConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[6];
+  final private int[] jj_la1 = new int[7];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1200,0x100,0x100,0xe0,0x1a00,0x800,};
+      jj_la1_0 = new int[] {0x20200,0x100,0x100,0x4000,0x10e0,0x20a00,0x800,};
    }
 
   /** Constructor with InputStream. */
@@ -163,7 +196,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -177,7 +210,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -187,7 +220,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -197,7 +230,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -206,7 +239,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -215,7 +248,7 @@ public class RegexParser implements RegexParserConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 6; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 7; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -266,12 +299,12 @@ public class RegexParser implements RegexParserConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[15];
+    boolean[] la1tokens = new boolean[19];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < 7; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -280,7 +313,7 @@ public class RegexParser implements RegexParserConstants {
         }
       }
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 19; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

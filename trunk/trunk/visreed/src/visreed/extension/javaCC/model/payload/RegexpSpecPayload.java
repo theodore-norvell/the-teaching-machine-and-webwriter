@@ -12,6 +12,8 @@ package visreed.extension.javaCC.model.payload;
  *
  */
 public class RegexpSpecPayload extends ProductionPayload {
+	
+	public static RegexpSpecPayload EOF = new RegexpSpecPayload("EOF");
 
 	public RegexpSpecPayload() {
 		super();
@@ -21,4 +23,11 @@ public class RegexpSpecPayload extends ProductionPayload {
 		super(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString(){
+		return "RegSpec_" + this.getName();
+	}
 }

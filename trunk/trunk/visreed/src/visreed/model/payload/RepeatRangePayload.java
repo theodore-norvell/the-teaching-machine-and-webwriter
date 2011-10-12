@@ -9,6 +9,7 @@ package visreed.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import tm.utilities.Assert;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -17,7 +18,7 @@ import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
-import visreed.view.TerminalNodeView;
+import visreed.view.RepeatRangeNodeView;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -53,11 +54,36 @@ public class RepeatRangePayload extends VisreedPayload {
 	 */
 	@Override
 	public String format(VisreedNode currentNode) {
+		StringBuffer result = new StringBuffer();
+		int numOfChildren = currentNode.getNumberOfChildren();
+		// RepeatRange -> Sequence
+		Assert.check(numOfChildren == 1);
+			
+		VisreedNode currentChildN = currentNode.getChild(0);
+		VisreedPayload currentChildPl = currentChildN.getPayload();
+		
+		result.append(currentChildPl.format(currentChildN));
+		
+		result.append(this.getDescription());
+		return result.toString();
+	}
+	
+	public String getDescription(){
+		StringBuffer result = new StringBuffer();
+
+        if(result.length() > 1){
+            result.insert(0, "(");
+            result.append(")");
+        }
+		
+        result.append("{");
+        result.append(this.minValue);
+        
 		if(this.hasMaxValue){
-			return "{" + this.minValue + "," + this.maxValue + "}";
-		} else {
-			return "{" + this.minValue + "}";
+			result.append("," + this.maxValue);
 		}
+		result.append("}");
+		return result.toString();
 	}
 
 	/* (non-Javadoc)
@@ -67,8 +93,7 @@ public class RepeatRangePayload extends VisreedPayload {
 	public VisreedNodeView constructView(
 			HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> sgv,
 			VisreedNode node, BTTimeManager timeman) {
-		// TODO Auto-generated method stub
-		return new TerminalNodeView(sgv, node, timeman);
+		return new RepeatRangeNodeView(sgv, node, timeman);
 	}
 
 	public int getMinValue(){

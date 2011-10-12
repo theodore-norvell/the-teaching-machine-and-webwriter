@@ -217,13 +217,17 @@ public class GraphicsHelper {
         case DEFAULT:
             // DEFAULT is using ARROW style
         case ARROW:
+        case ARROW_AT_THE_BACK:
             offsetX = ARROWHEAD_LENGTH_PIXEL * Math.cos(Math.toRadians(165));
             offsetY = ARROWHEAD_LENGTH_PIXEL * Math.sin(Math.toRadians(150));
             result.lineTo(offsetX, offsetY);
             result.lineTo(-ARROWHEAD_LENGTH_PIXEL / 1.2, 0);
             result.lineTo(offsetX, -offsetY);
             result.lineTo(0.0, 0.0);
-            break;
+            if(style == ArrowStyle.ARROW_AT_THE_BACK){
+            	result.transform(AffineTransform.getTranslateInstance(-offsetX, 0));
+            }
+        	break;
         case THIN:
             // a thinner triangle
             offsetX = -ARROWHEAD_LENGTH_PIXEL * 1.5;

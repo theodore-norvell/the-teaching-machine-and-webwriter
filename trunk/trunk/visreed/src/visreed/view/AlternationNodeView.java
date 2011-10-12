@@ -53,14 +53,14 @@ public class AlternationNodeView extends VisreedNodeView {
 	        if(this.getCurrentDirection().equals(Direction.EAST)){
     	        GraphicsHelper.drawArrow(
     	            screen, 
-    	            ArrowStyle.DEFAULT, 
+    	            ArrowStyle.ARROW_AT_THE_BACK, 
     	            ArrowDirection.EAST, 
     	            child.getEntryPoint()
                 );
 	        } else if(this.getCurrentDirection().equals(Direction.WEST)){
                 GraphicsHelper.drawArrow(
                     screen, 
-                    ArrowStyle.DEFAULT, 
+                    ArrowStyle.ARROW_AT_THE_BACK, 
                     ArrowDirection.WEST, 
                     child.getExitPoint()
                 );

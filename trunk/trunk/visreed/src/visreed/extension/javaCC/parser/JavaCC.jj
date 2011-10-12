@@ -65,7 +65,6 @@ public class JavaCCParser {
         builder.makeRoot();
     }
 
-    
 
    /**
     * Class to hold modifiers.
@@ -660,7 +659,7 @@ void javacode_production() :
   "}"
 
     {
-        builder.buildAndPushNodeWithNoSeq(pl, 1);
+        builder.buildProduction(pl, 0);
     }
     
 }
@@ -692,8 +691,7 @@ void bnf_production() :
   Block(null)
   "{" expansion_choices() "}"
 	{
-	   builder.buildSequence(1);
-	   builder.buildAndPushNodeWithNoSeq(pl, 1);
+	   builder.buildProduction(pl, 1);
 	}
 }
 
@@ -771,7 +769,7 @@ void regular_expr_production() :
         pl.setLastToken(t);
         if(count_regexpr > 1)        {
             builder.buildAlternation(count_regexpr);        } else {        }
-        builder.buildAndPushNodeWithNoSeq(pl, 1);
+        builder.buildProduction(pl, 1);
     }
 }
 
@@ -846,6 +844,7 @@ void expansion_choices() :
 
 void expansion() :
 	{
+	    int count = 0;
 	}
 {
   ( LOOKAHEAD(1)
@@ -853,7 +852,12 @@ void expansion() :
   )?
   ( LOOKAHEAD(0, { notTailOfExpansionUnit() } )
     expansion_unit()
+    {
+        count ++;    }
   )+
+  {
+      if(count > 0) {
+          builder.buildSequence(count);      }            }
 }
 
 void local_lookahead() :
@@ -942,7 +946,7 @@ void regular_expression() :
 {
   image = StringLiteral()
   {
-      builder.buildSequence(0);
+      builder.buildTerminal(image);
       builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);  }
 |
   LOOKAHEAD(3)
@@ -956,15 +960,16 @@ void regular_expression() :
   {
       if(image != null)      {
           builder.buildSequence(1);
-          builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);      }     }
+          builder.buildProduction(new RegexpSpecPayload(image), 1);      }     }
 |
   LOOKAHEAD(2)
   "<" image = identifier() ">"
   {
-      builder.buildSequence(0);
-      builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);  }
+      builder.buildLink(image);  }
 |
   "<" "EOF" ">"
+  {
+      builder.buildLink("EOF");  }
 }
 
 void complex_regular_expression_choices() :
@@ -1017,7 +1022,7 @@ void complex_regular_expression_unit() :
 |
   "<" image=identifier() ">"
     {
-      builder.buildTerminal(image);
+      builder.buildLink(image);
     }
 |
   character_list()

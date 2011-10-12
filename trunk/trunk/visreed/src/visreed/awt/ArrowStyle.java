@@ -16,5 +16,6 @@ public enum ArrowStyle {
     DEFAULT,
     THIN,
     TRIANGLE,
-    ARROW
+    ARROW,
+    ARROW_AT_THE_BACK
 }

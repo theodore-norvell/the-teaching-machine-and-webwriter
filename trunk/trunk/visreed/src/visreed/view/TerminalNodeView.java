@@ -37,7 +37,7 @@ public class TerminalNodeView extends VisreedNodeView {
 
     /** Maximum radius for round rectangle  */
     private static final int MAX_ROUND_RADIUS_PX = 10;
-    private static final Color FILL_COLOR = Color.pink;
+    protected static Color FILL_COLOR = Color.pink;
     
     public TerminalNodeView(
             HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> v,
@@ -51,7 +51,20 @@ public class TerminalNodeView extends VisreedNodeView {
     protected static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
 
     public double getDesiredWidth(){
-        return this.font.getSize()  / 2.1 * this.getNode().getPayload().getDescription().length();
+    	String text = this.getNode().getPayload().getDescription();
+    	// assume we are not using mono fonts, so we calculate all the chars in upper 
+    	// and lower case
+    	double result = 0.0;
+    	final double UPPER_CASE_WIDTH = this.font.getSize() / 1.7;
+    	final double LOWER_CASE_WIDTH = this.font.getSize() / 2.0;
+    	for(int i = 0; i < text.length(); i++){
+    		if(Character.isLowerCase(text.charAt(i))){
+    			result += LOWER_CASE_WIDTH;
+    		} else {
+    			result += UPPER_CASE_WIDTH;
+    		}
+    	}
+        return result;
     }
     
     public String getTerminal(){
@@ -80,7 +93,7 @@ public class TerminalNodeView extends VisreedNodeView {
         Rectangle2D extent = this.getExtent();
         
         // border
-        screen.setColor(this.colorVar.get());
+        screen.setColor(this.getColor());
         screen.drawRoundRect(
             (int)extent.getX(), 
             (int)extent.getY(),

@@ -10,6 +10,7 @@ package visreed.extension.javaCC.model.payload;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
 import visreed.extension.javaCC.model.JavaCCOptions;
+import visreed.extension.javaCC.view.JavaCCRootNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -82,6 +83,6 @@ public class JavaCCRootPayload extends SequencePayload {
         VisreedNode node, 
         BTTimeManager timeman
     ) {
-        return new TerminalNodeView(sgv, node, timeman);
+        return new JavaCCRootNodeView(sgv, node, timeman);
     }
 }
