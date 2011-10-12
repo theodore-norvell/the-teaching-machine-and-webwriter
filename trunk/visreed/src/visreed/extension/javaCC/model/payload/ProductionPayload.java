@@ -47,6 +47,14 @@ public class ProductionPayload extends VisreedPayload {
     public String format(VisreedNode currentNode) {
         return "";
     }
+    
+    /* (non-Javadoc)
+     * @see visreed.model.VisreedPayload#getDescription()
+     */
+    @Override
+    public String getDescription(){
+        return "Production_" + this.getName();
+    }
 
     /* (non-Javadoc)
      * @see visreed.model.VisreedPayload#constructView(higraph.view.HigraphView, visreed.model.VisreedNode, tm.backtrack.BTTimeManager)

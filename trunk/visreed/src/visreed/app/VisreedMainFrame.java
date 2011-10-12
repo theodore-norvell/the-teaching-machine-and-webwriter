@@ -31,6 +31,7 @@ import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.KleenePlusPayload;
 import visreed.model.payload.KleeneStarPayload;
 import visreed.model.payload.OptionalPayload;
+import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 import visreed.pattern.IObserver;
@@ -458,6 +459,13 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 VisreedNode root, kplus, current, leaf;
                 root = wholeGraph.makeRootNode(new SequencePayload());
                 subgraph.addTop(root);
+                
+                kplus = wholeGraph.makeRootNode(new RepeatRangePayload(5));
+                current = wholeGraph.makeRootNode(new SequencePayload());
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("c"));
+                current.insertChild(0, leaf);
+                kplus.insertChild(0, current);
+                root.insertChild(0, kplus);
                 
                 kplus = wholeGraph.makeRootNode(new KleenePlusPayload());
                 current = wholeGraph.makeRootNode(new SequencePayload());

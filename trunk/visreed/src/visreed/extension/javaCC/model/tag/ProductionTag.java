@@ -71,7 +71,7 @@ public class ProductionTag extends JavaCCTag{
      */
     @Override
     public String getDescription() {
-        return "Production";
+        return "PRD";
     }
 
     private static final ProductionTag instance = new ProductionTag();

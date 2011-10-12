@@ -22,9 +22,20 @@ public class RepeatRangeTag extends VisreedTag {
 		super();
 	}
     
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object o){
         return (o instanceof RepeatRangeTag);
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString(){
+    	return "Range";
     }
 
 	/* (non-Javadoc)
@@ -65,7 +76,7 @@ public class RepeatRangeTag extends VisreedTag {
 	 */
 	@Override
 	public String getDescription() {
-		return "REPEAT_RANGE";
+		return "RNG";
 	}
     
     private static final RepeatRangeTag instance = new RepeatRangeTag();

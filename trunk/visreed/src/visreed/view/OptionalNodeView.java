@@ -88,7 +88,7 @@ public class OptionalNodeView extends VisreedNodeView {
 
             GraphicsHelper.drawArrow(
                 screen, 
-                ArrowStyle.DEFAULT, 
+                ArrowStyle.ARROW_AT_THE_BACK, 
                 ArrowDirection.RIGHT, 
                 kid.getEntryPoint()
             );

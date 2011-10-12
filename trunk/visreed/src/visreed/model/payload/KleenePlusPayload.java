@@ -30,7 +30,7 @@ public class KleenePlusPayload extends VisreedPayload {
 
 	@Override
 	public String format(VisreedNode currentNode) {
-		StringBuilder result = new StringBuilder();
+		StringBuffer result = new StringBuffer();
 		int numOfChildren = currentNode.getNumberOfChildren();
 		// KneenePlus -> Sequence
 		Assert.check(numOfChildren == 1);

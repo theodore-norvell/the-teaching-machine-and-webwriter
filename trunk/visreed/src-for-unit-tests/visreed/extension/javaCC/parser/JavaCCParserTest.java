@@ -64,6 +64,7 @@ public class JavaCCParserTest {
         String expected
     ) throws ParseException {
 		try {
+			// TODO: <EOF> now works. next to check the bnfProduction
 			FileReader reader = new FileReader(sourceFileName);
             VisreedNode resultNode = JavaCCParser.parse(wg, reader);
             String result = resultNode.getPayload().format(resultNode);

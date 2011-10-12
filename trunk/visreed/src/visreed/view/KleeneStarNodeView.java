@@ -88,7 +88,7 @@ public class KleeneStarNodeView extends VisreedNodeView {
 
             GraphicsHelper.drawArrow(
                 screen, 
-                ArrowStyle.DEFAULT, 
+                ArrowStyle.ARROW_AT_THE_BACK, 
                 dir, 
                 kid.getEntryPoint()
             );

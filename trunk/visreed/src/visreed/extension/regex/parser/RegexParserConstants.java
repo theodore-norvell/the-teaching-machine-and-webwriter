@@ -25,11 +25,19 @@ public interface RegexParserConstants {
   /** RegularExpression Id. */
   int SEMI_COLON = 11;
   /** RegularExpression Id. */
-  int STRING = 12;
+  int LEFT_BRACKET = 12;
   /** RegularExpression Id. */
-  int DIGIT = 13;
+  int RIGHT_BRACKET = 13;
   /** RegularExpression Id. */
-  int TERMINAL = 14;
+  int COMMA = 14;
+  /** RegularExpression Id. */
+  int DIGIT = 15;
+  /** RegularExpression Id. */
+  int DECIMAL_LITERAL = 16;
+  /** RegularExpression Id. */
+  int STRING = 17;
+  /** RegularExpression Id. */
+  int TERMINAL = 18;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -48,8 +56,12 @@ public interface RegexParserConstants {
     "\"(\"",
     "\")\"",
     "\";\"",
-    "<STRING>",
+    "\"{\"",
+    "\"}\"",
+    "\",\"",
     "<DIGIT>",
+    "<DECIMAL_LITERAL>",
+    "<STRING>",
     "<TERMINAL>",
   };
 

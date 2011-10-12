@@ -4,6 +4,7 @@
 
 import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.RepeatRangePayload;
 
 public class RegexParser{
     private RegexBuilder builder;
@@ -26,7 +27,11 @@ public class RegexParser{
 | < QUESTION_MARK : "?" >| < ALTERNATION : "|" >
 | < OPEN_PAR : "(" >
 | < CLOSE_PAR : ")" >
-| < SEMI_COLON : ";" >}TOKEN :{  < STRING : (< DIGIT > | < TERMINAL >)+ >| < #DIGIT : [ "0"-"9" ] >
+| < SEMI_COLON : ";" >
+| < LEFT_BRACKET : "{" >
+| < RIGHT_BRACKET : "}" >
+| < COMMA : "," >    }TOKEN :{  < #DIGIT : [ "0"-"9" ] >
+| < DECIMAL_LITERAL: (< DIGIT >)+ >| < STRING : (< DIGIT > | < TERMINAL >)+ >
 | < TERMINAL : [ "a"-"z" ] | [ "A"-"Z" ] >}
 void terminal() :
 {
@@ -38,6 +43,13 @@ void terminal() :
     < OPEN_PAR >
     alternation()
     < CLOSE_PAR > }
+
+int integer() : {
+    int intValue = 0;}{
+    < DECIMAL_LITERAL >
+    {
+        intValue = Integer.parseInt(token.image);
+        return intValue;    }}
 
 void alternation() :
 {
@@ -58,7 +70,10 @@ void alternation() :
 }
 
 void non_seq() :
-{}
+{
+    int minValue, maxValue = 0;
+    boolean hasMaxValue = false;
+}
 {
     terminal()
     (
@@ -70,6 +85,24 @@ void non_seq() :
       |
         < STAR >
         { builder.buildKleeneStar(); }
+      |
+        < LEFT_BRACKET >
+        minValue = integer()
+        [
+            < COMMA >
+            maxValue = integer()
+            { hasMaxValue = true; }
+        ]
+        < RIGHT_BRACKET >
+        {
+            RepeatRangePayload pl = null;
+	        if(hasMaxValue) {
+	            pl = new RepeatRangePayload(minValue, maxValue);
+	        } else {
+	            pl = new RepeatRangePayload(minValue);
+	        }
+	        builder.buildAndPushNodeWithSeq(pl, 1);
+        }   
       |{} 
     ) }
 

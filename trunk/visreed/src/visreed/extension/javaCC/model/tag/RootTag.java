@@ -20,7 +20,7 @@ import visreed.model.tag.VisreedTag;
  */
 public class RootTag extends JavaCCTag {
 
-	public RootTag() {
+	protected RootTag() {
 	}
 	
 	/* (non-Javadoc)

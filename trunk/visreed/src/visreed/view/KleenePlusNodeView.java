@@ -55,7 +55,7 @@ public class KleenePlusNodeView extends VisreedNodeView {
             
             GraphicsHelper.drawArrow(
                 screen, 
-                ArrowStyle.DEFAULT, 
+                ArrowStyle.ARROW_AT_THE_BACK, 
                 0, 
                 kid.getEntryPoint()
             );
