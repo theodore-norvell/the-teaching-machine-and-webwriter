@@ -83,7 +83,7 @@ public class VisreedTextArea extends javax.swing.JEditorPane{
     /**
      * Refresh the text highlight
      */
-    private void refreshStyle() {
+    protected void refreshStyle() {
         // zoom characters
         java.awt.Font f = this.getFont();
         

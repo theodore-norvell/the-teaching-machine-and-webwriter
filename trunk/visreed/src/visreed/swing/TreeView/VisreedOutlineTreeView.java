@@ -37,6 +37,7 @@ public class VisreedOutlineTreeView extends JTree{
 
         this.setAutoscrolls(true);
         this.setDragEnabled(true);
+        this.setRootVisible(true);
 	}
 
 }

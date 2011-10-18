@@ -47,7 +47,7 @@ public class JavaCCParserTest {
         
         try {
             VisreedNode resultNode = JavaCCParser.parse(wg, reader);
-            String result = resultNode.getPayload().format(resultNode);
+            String result = resultNode.getPayload().dump(null, 0).toString();
             assertEquals(expected, result);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -67,7 +67,7 @@ public class JavaCCParserTest {
 			// TODO: <EOF> now works. next to check the bnfProduction
 			FileReader reader = new FileReader(sourceFileName);
             VisreedNode resultNode = JavaCCParser.parse(wg, reader);
-            String result = resultNode.getPayload().format(resultNode);
+            String result = resultNode.getPayload().dump(null, 0).toString();
             assertEquals(expected, result);
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();

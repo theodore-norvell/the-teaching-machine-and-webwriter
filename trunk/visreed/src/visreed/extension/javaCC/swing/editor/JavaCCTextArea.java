@@ -48,6 +48,29 @@ public class JavaCCTextArea extends VisreedTextArea {
     }
 
     /**
+     * Refresh text from the (updated) model 
+     */
+	@Override
+    public void refreshFromModel() {
+        if(this.graph == null || graph.getTops().size() == 0){
+            this.setText("");
+            return;
+        }
+        List<VisreedNode> tops = this.graph.getTops();
+        VisreedNode top = tops.get(0);
+        if(top.getPayload() == null){
+            this.setText("");
+            return;
+        }
+        
+        String expression = top.getPayload().dump(null, 0).toString();
+        
+        this.setText(expression);
+        
+        this.refreshStyle();
+    }
+
+    /**
      * Refresh model from the (updated) text
      */
 	@Override

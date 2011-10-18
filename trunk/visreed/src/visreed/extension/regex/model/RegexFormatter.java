@@ -1,6 +1,6 @@
 package visreed.extension.regex.model;
 
-import visreed.model.VisreedPayload;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * Provides formatting methods to RegexNode

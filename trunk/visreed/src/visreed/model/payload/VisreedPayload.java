@@ -5,11 +5,17 @@
  * @author: Xiaoyu Guo (MUN# 200982155)
  * This file was prepared by Xiaoyu Guo. It was completed by me alone.
  */
-package visreed.model;
+package visreed.model.payload;
 
 import higraph.model.taggedInterfaces.TaggedPayload;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.model.VisreedEdge;
+import visreed.model.VisreedEdgeLabel;
+import visreed.model.VisreedHigraph;
+import visreed.model.VisreedNode;
+import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
 import visreed.view.VisreedNodeView;
 
@@ -42,7 +48,7 @@ public abstract class VisreedPayload implements TaggedPayload<VisreedTag, Visree
     }
     
     private VisreedNode node;
-    void setNode(VisreedNode node){
+    public void setNode(VisreedNode node){
     	this.node = node;
     }
     
@@ -78,4 +84,17 @@ public abstract class VisreedPayload implements TaggedPayload<VisreedTag, Visree
         VisreedNode node,
         BTTimeManager timeman
     );
+    
+    /**
+     * Turns the tree structure to source code
+     * @param sb 
+     * @param indentLevel
+     * @return
+     */
+    public StringBuffer dump(StringBuffer sb, int indentLevel){
+    	if(sb == null){
+    		sb = new StringBuffer();
+    	}
+    	return sb;
+    }
 }

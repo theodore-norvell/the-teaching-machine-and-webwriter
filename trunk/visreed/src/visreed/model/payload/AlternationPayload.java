@@ -2,11 +2,11 @@ package visreed.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
@@ -62,4 +62,33 @@ public class AlternationPayload extends VisreedPayload {
     ) {
         return new AlternationNodeView(sgv, node, timeman);
     }
+
+	/* (non-Javadoc)
+	 * @see visreed.model.payload.VisreedPayload#dump(java.lang.StringBuffer, int)
+	 */
+	@Override
+	public StringBuffer dump(StringBuffer sb, int indentLevel) {
+		sb = super.dump(sb, indentLevel);
+		int numOfChildren = this.getNode().getNumberOfChildren();
+		boolean bracketNeeded = (numOfChildren > 1);
+
+		if(bracketNeeded){
+			sb.append("(");
+		}
+		
+		for(int i = 0; i < numOfChildren; i++){
+			if(i > 0){
+				JavaCCBuilder.dumpPrefix(sb, indentLevel);
+				sb.append("|");
+			}
+			this.getNode().getChild(i).getPayload().dump(sb, indentLevel);
+			sb.append("\n");
+		}
+		
+		if(bracketNeeded){
+			JavaCCBuilder.dumpPrefix(sb, indentLevel);
+			sb.append(")");
+		}
+		return sb;
+	}
 }

@@ -18,9 +18,9 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -28,23 +28,22 @@ import visreed.view.VisreedNodeView;
  */
 public class JavaCodeProductionPayload extends ProductionPayload {
 
-	private List<Token> codeList;
+	private String code;
     public JavaCodeProductionPayload() {
         super();
-        this.codeList = new ArrayList<Token>();
+        this.code = "";
     }
     
     public JavaCodeProductionPayload(String code){
     	super();
-        this.codeList = new ArrayList<Token>();
+        this.code = code;
     }
     
     public String getCode(){
-    	StringBuilder sb = new StringBuilder();
-    	for(Token t : this.codeList){
-    		sb.append(t.image);
-    	}
-    	return sb.toString();
+    	return this.code;
+    }
+    public void setCode(String code){
+    	this.code = code;
     }
     
     
@@ -87,9 +86,5 @@ public class JavaCodeProductionPayload extends ProductionPayload {
     ) {
         return new JavaCodeNodeView(sgv, node, timeman);
     }
-
-	public List<Token> getCodeList() {
-		return codeList;
-	}
 
 }

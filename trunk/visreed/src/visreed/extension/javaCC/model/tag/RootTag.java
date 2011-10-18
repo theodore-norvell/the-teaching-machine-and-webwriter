@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
-import visreed.model.VisreedPayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.model.tag.VisreedTag;
 
 /**
@@ -60,7 +60,7 @@ public class RootTag extends JavaCCTag {
 	 */
 	@Override
 	public VisreedPayload defaultPayload() {
-		return new JavaCCRootPayload();
+		return new JavaCCRootPayload(null);
 	}
 
 	/* (non-Javadoc)

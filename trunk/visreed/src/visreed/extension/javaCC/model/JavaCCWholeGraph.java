@@ -51,6 +51,10 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
         BTTimeManager timeMan = new BTTimeManager();
         if(wg == null){
             wg = new JavaCCWholeGraph(timeMan);
+        } else {
+        	for(VisreedNode n : wg.getTops()){
+        		n.delete();
+        	}
         }
         
         VisreedNode result = null;

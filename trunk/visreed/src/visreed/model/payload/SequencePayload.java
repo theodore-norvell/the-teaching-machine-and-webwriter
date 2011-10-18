@@ -6,7 +6,6 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
@@ -17,6 +16,10 @@ public class SequencePayload extends VisreedPayload {
 
 	public SequencePayload() {
 		super(VisreedTag.SEQUENCE);
+	}
+
+	protected SequencePayload(VisreedTag tag) {
+		super(tag);
 	}
 
     /* (non-Javadoc)
@@ -56,5 +59,17 @@ public class SequencePayload extends VisreedPayload {
         BTTimeManager timeman
     ) {
         return new SequenceNodeView(sgv, node, timeman);
+    }
+    
+    @Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel){
+    	sb = super.dump(sb, indentLevel);
+    	
+    	for(int i = 0; i < this.getNode().getNumberOfChildren(); i++){
+    		this.getNode().getChild(i).getPayload().dump(sb, indentLevel);
+    		sb.append(" ");
+    	}
+    	
+    	return sb;
     }
 }

@@ -13,10 +13,10 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.TerminalPayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.view.TerminalNodeView;
 import visreed.view.VisreedNodeView;
 

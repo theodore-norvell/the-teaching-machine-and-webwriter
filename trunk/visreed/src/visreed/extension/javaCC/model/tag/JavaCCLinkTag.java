@@ -8,7 +8,7 @@
 package visreed.extension.javaCC.model.tag;
 
 import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
-import visreed.model.VisreedPayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.model.tag.TerminalTag;
 
 /**

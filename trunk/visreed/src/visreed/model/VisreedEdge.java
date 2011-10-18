@@ -7,6 +7,7 @@
  */
 package visreed.model;
 
+import visreed.model.payload.VisreedPayload;
 import higraph.model.abstractClasses.AbstractEdge;
 
 /**

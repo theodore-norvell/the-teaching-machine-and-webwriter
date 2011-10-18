@@ -14,7 +14,6 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
@@ -95,6 +94,27 @@ public class RepeatRangePayload extends VisreedPayload {
 			VisreedNode node, BTTimeManager timeman) {
 		return new RepeatRangeNodeView(sgv, node, timeman);
 	}
+	
+	/* (non-Javadoc)
+	 * @see visreed.model.payload.VisreedPayload#dump(java.lang.StringBuffer, int)
+	 */
+	@Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel){
+    	sb = super.dump(sb, indentLevel);
+    	sb.append("(");
+    	this.getNode().getChild(0).getPayload().dump(sb, 0);
+    	sb.append(")");
+    	
+    	sb.append("{");
+    	sb.append(this.minValue);
+    	
+    	if(this.hasMaxValue){
+    		sb.append(", ");
+    		sb.append(this.maxValue);
+    	}
+    	sb.append("}");
+    	return sb;
+    }
 
 	public int getMinValue(){
 		return this.minValue;

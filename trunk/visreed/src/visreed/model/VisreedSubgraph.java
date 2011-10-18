@@ -11,6 +11,7 @@ import higraph.model.abstractClasses.AbstractSubgraph;
 
 import java.util.ArrayList;
 
+import visreed.model.payload.VisreedPayload;
 import visreed.pattern.IObserver;
 
 /**

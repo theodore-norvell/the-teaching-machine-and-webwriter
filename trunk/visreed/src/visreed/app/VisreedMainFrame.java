@@ -24,7 +24,6 @@ import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.regex.swing.RegexJList;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.AlternationPayload;
@@ -34,6 +33,7 @@ import visreed.model.payload.OptionalPayload;
 import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.pattern.IObserver;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
@@ -197,7 +197,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         mainGraphPanel.add(mainGraphScroller, BorderLayout.CENTER);
         
         JSplitPane secondPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        secondPanel.setTopComponent(regexText);
+        JScrollPane editorScroller = new JScrollPane(regexText);
+        secondPanel.setTopComponent(editorScroller);
         secondPanel.setBottomComponent(mainGraphPanel);
         
         secondPanel.setResizeWeight(0.3);
