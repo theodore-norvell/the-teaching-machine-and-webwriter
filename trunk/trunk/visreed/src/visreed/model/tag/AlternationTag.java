@@ -10,8 +10,8 @@ package visreed.model.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import visreed.model.VisreedPayload;
 import visreed.model.payload.AlternationPayload;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo

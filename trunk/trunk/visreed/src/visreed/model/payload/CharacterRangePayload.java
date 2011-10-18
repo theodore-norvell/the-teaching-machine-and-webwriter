@@ -13,7 +13,6 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.view.TerminalNodeView;
@@ -94,6 +93,29 @@ public class CharacterRangePayload extends TerminalPayload {
 			HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> sgv,
 			VisreedNode node, BTTimeManager timeman) {
 		return new TerminalNodeView(sgv, node, timeman);
+	}
+	
+	public StringBuffer dump(StringBuffer sb, int indentLevel){
+		if(sb == null){
+			sb = new StringBuffer();
+		}
+		
+		sb.append("[");
+		if(this.exclude){
+			sb.append("~");
+		}
+		sb.append("\"");
+		sb.append(this.minValue);
+		sb.append("\"");
+		if(this.hasMaxValue){
+			sb.append("-");
+			sb.append("\"");
+			sb.append(this.maxValue);
+			sb.append("\"");
+		}
+		sb.append("]");
+		
+		return sb;
 	}
 
 	public boolean getExclude(){

@@ -8,6 +8,8 @@
 package visreed.extension.javaCC.view;
 
 import tm.backtrack.BTTimeManager;
+import visreed.view.VisreedDropZone;
+import visreed.view.VisreedNodeView;
 import visreed.view.VisreedViewFactory;
 
 /**
@@ -23,4 +25,7 @@ public class JavaCCViewFactory extends VisreedViewFactory {
         super(tm);
     }
 
+    public VisreedDropZone makeGoToDefinitionDropZone(VisreedNodeView nv){
+    	return new GoToDefinitionDropZone(nv, timeMan);
+    }
 }

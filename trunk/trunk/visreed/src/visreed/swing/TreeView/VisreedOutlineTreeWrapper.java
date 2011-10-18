@@ -22,6 +22,7 @@ import visreed.pattern.IObserver;
 
 /**
  * VisreedOutlineTreeWrapper converts a {@link VisreedHigraph} to the tree view
+ * The root node is the {@link VisreedHigraph} itself.
  * @author Xiaoyu Guo
  */
 public class VisreedOutlineTreeWrapper
@@ -77,8 +78,10 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public void valueForPathChanged(TreePath arg0, Object arg1) {
-		// TODO Auto-generated method stub
-
+		TreeModelEvent e = new TreeModelEvent(this, this.higraph.getTops().toArray());
+		for(TreeModelListener tml : this.listeners){
+			tml.treeNodesChanged(e);
+		}
 	}
 
 	/* (non-Javadoc)
@@ -86,7 +89,16 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public Object getChild(Object arg0, int arg1) {
-		if(arg0 != null && arg0 instanceof VisreedNode){
+		if(arg0 == null){
+			return null;
+		}
+		if(arg0 instanceof VisreedHigraph){
+			VisreedHigraph higraph = (VisreedHigraph)arg0;
+			List<VisreedNode> tops = higraph.getTops();
+			if(arg1 >= 0 && arg1 < tops.size()){
+				return tops.get(arg1);
+			}
+		} else if(arg0 instanceof VisreedNode){
 			VisreedNode node = (VisreedNode)arg0;
 			if(node.getNumberOfChildren() >= arg1){
 				return node.getChild(arg1);
@@ -100,7 +112,12 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public int getChildCount(Object arg0) {
-		if(arg0 != null && arg0 instanceof VisreedNode){
+		if(arg0 == null){
+			return 0;
+		}
+		if(arg0 instanceof VisreedHigraph){
+			return ((VisreedHigraph)arg0).getTops().size();
+		} else if(arg0 instanceof VisreedNode){
 			return ((VisreedNode)arg0).getNumberOfChildren();
 		}
 		return 0;
@@ -111,12 +128,25 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public int getIndexOfChild(Object arg0, Object arg1) {
-		if(arg0 != null && arg0 instanceof VisreedNode && arg1 != null && arg1 instanceof VisreedNode){
+		if(arg0 == null || arg1 == null){
+			return -1;
+		}
+		if(arg0 instanceof VisreedHigraph && arg1 instanceof VisreedNode){
+			List<VisreedNode> tops = ((VisreedHigraph)arg0).getTops();
+			int result = -1;
+			for(int i = 0; i < tops.size(); i++){
+				if(tops.get(i).equals(arg1)){
+					result = i;
+					break;
+				}
+			}
+			return result;
+		} else if(arg0 instanceof VisreedNode && arg1 instanceof VisreedNode){
 			if(((VisreedNode)arg1).getParent() == arg0){
 				return ((VisreedNode)arg1).getOrder();
 			}
 		}
-		return 0;
+		return -1;
 	}
 
 	/* (non-Javadoc)
@@ -124,11 +154,7 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public Object getRoot() {
-		List<VisreedNode> tops = this.higraph.getTops();
-		if(tops != null && tops.size() > 0){
-			return tops.get(0);
-		}
-		return null;
+		return this.higraph;
 	}
 
 	/* (non-Javadoc)
@@ -136,7 +162,12 @@ implements TreeModel, IObserver<VisreedHigraph> {
 	 */
 	@Override
 	public boolean isLeaf(Object arg0) {
-		if(arg0 != null && arg0 instanceof VisreedNode){
+		if(arg0 == null){
+			return true;
+		}
+		if(arg0 instanceof VisreedHigraph){
+			return ((VisreedHigraph)arg0).getTops().size() == 0;
+		} else if(arg0 instanceof VisreedNode){
 			return ((VisreedNode)arg0).getNumberOfChildren() == 0;
 		}
 		return false;

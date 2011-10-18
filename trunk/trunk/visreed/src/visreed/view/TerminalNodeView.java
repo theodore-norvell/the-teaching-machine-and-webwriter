@@ -22,10 +22,10 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.TerminalPayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.view.layout.TerminalLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
@@ -36,7 +36,7 @@ import visreed.view.layout.VisreedNodeLayoutManager;
 public class TerminalNodeView extends VisreedNodeView {
 
     /** Maximum radius for round rectangle  */
-    private static final int MAX_ROUND_RADIUS_PX = 10;
+    protected static final int MAX_ROUND_RADIUS_PX = 10;
     protected static Color FILL_COLOR = Color.pink;
     
     public TerminalNodeView(
@@ -154,7 +154,7 @@ public class TerminalNodeView extends VisreedNodeView {
         return TerminalLayoutManager.getInstance();
     }
     
-    protected static final String ID_DROPZONE_TERMINAL = "term_"; 
+    public static final String ID_DROPZONE_TERMINAL = "term_"; 
     
     /* (non-Javadoc)
      * @see visreed.view.VisreedNodeView#shouldRefreshDropZone()

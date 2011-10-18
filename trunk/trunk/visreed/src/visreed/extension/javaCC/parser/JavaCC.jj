@@ -643,7 +643,7 @@ void javacode_production() :
 {
   "JAVACODE"
   AccessModifier(pl)
-  ResultType(pl.getReturnTypeTokens())
+  ResultType(pl)
   production_name = identifier() {pl.setName(production_name);}
   [ "throws"
     Name(excName)
@@ -655,10 +655,10 @@ void javacode_production() :
     )*
   ]
   "{"
-  Block(pl.getCodeList())
+  java_code = Block()
   "}"
-
     {
+        pl.setCode(java_code);
         builder.buildProduction(pl, 0);
     }
     
@@ -672,12 +672,13 @@ void bnf_production() :
 	   pl.setLine(t.beginLine);
 	   pl.setColumn(t.beginColumn);
 	   List<Token> excName = new ArrayList<Token>();
+	   String declaration = "";
 	}
 {
   AccessModifier(pl)
-  ResultType(pl.getReturnTypeTokens())
+  ResultType(pl)
   production_name = identifier()  {pl.setName(production_name);}
-  FormalParameters(pl.getParameterListTokens())
+  FormalParameters(pl)
   [ "throws"
     Name(excName)
 	{pl.getThrowsList().addAll(excName);}
@@ -688,7 +689,8 @@ void bnf_production() :
     )*
   ]
   ":"
-  Block(null)
+  declaration = Block()
+  { pl.setDeclaration(declaration); }
   "{" expansion_choices() "}"
 	{
 	   builder.buildProduction(pl, 1);
@@ -816,7 +818,7 @@ void regexpr_spec(RegexpProductionPayload p) :
 {
   regular_expression()
   [
-    Block(null)
+    Block()
   ]
   [
     ":" t=<IDENTIFIER>
@@ -901,7 +903,7 @@ void expansion_unit() :
    */
   "LOOKAHEAD" "(" local_lookahead() ")"
 |
-  Block(null)
+  Block()
 |
   "[" expansion_choices() "]"
 	{
@@ -959,8 +961,9 @@ void regular_expression() :
   < RANGLE: ">" >
   {
       if(image != null)      {
-          builder.buildSequence(1);
-          builder.buildProduction(new RegexpSpecPayload(image), 1);      }     }
+          RegexpSpecPayload pl = new RegexpSpecPayload(image);
+          pl.setPrivate(private_rexp); 
+          builder.buildProduction(pl, 1);      }     }
 |
   LOOKAHEAD(2)
   "<" image = identifier() ">"
@@ -1152,11 +1155,15 @@ void CompilationUnit() :
  * within grammar code.
  */
     {
+        Token firstToken = getToken(1);
     }
 {
   [ LOOKAHEAD( ( Annotation() )* "package" ) PackageDeclaration() ]
   ( ImportDeclaration() )*
   ( TypeDeclaration() )*
+  {
+      Token finalToken = getToken(1);
+      builder.setCompilationUnit(firstToken, finalToken);  }
 }
 
 void PackageDeclaration() :
@@ -1436,7 +1443,7 @@ void MethodDeclaration(int modifiers):
   [ TypeParameters() ]
   ResultType(null)
   MethodDeclarator() [ "throws" NameList() ]
-  ( Block(null) | ";" )
+  ( Block() | ";" )
 }
 
 void MethodDeclarator():
@@ -1445,15 +1452,9 @@ void MethodDeclarator():
   <IDENTIFIER> FormalParameters(null) ( "[" "]" )*
 }
 
-void FormalParameters(List tokens) :
-/*
- * Parsing this fills "tokens" with all tokens of the formal
- * parameters excluding the parentheses at each end.
- */
+void FormalParameters(ProductionPayload pl) :
     {
       Token first, last;
-      if (tokens == null)
-        tokens = new ArrayList();
     }
 {
   "("
@@ -1462,17 +1463,12 @@ void FormalParameters(List tokens) :
     }
   [ FormalParameter() ( "," FormalParameter() )* ]
     {
-      last = getToken(0);
+      last = getToken(1);
     }
   ")"
     {
-      if (last.next != first) { // i.e., this is not an empty sequence
-        Token t = first;
-        while (true) {
-          tokens.add(t);
-          if (t == last) break;
-          t = t.next;
-        }
+      if (pl != null) {
+          pl.setParameterList(builder.dumpJavaCode(first, last).toString().trim());
       }
     }
 }
@@ -1507,7 +1503,7 @@ void ExplicitConstructorInvocation():
 void Initializer():
 {}
 {
-  [ "static" ] Block(null)
+  [ "static" ] Block()
 }
 
 
@@ -1581,29 +1577,16 @@ void PrimitiveType():
   "double"
 }
 
-
-void ResultType(List<Token> tokens) :
-    {
-      Token first = getToken(1);
-      if (tokens == null)
-        tokens = new ArrayList<Token>();
-    }
+void ResultType(ProductionPayload pl) :{
+    Token first = getToken(1);
+    Token last = null;
+    String resultType = "";}
 {
-(
-  "void"
-|
-  Type()
-)
+    ( "void" | Type() )
     {
-      Token last = getToken(0);
-      Token t = first;
-      while (true) {
-        tokens.add(t);
-        if (t == last) break;
-        t = t.next;
-      }
-    }
-}
+        if(pl != null) {	        last = getToken(1);
+	        pl.setReturnType(builder.dumpJavaCode(first, last).toString());
+        }    }}
 
 void Name(List<Token> tokens) :
 /*
@@ -2006,7 +1989,7 @@ void Statement():
 |
   AssertStatement()
 |
-  Block(null)
+  Block()
 |
   EmptyStatement()
 |
@@ -2047,15 +2030,9 @@ void LabeledStatement():
   <IDENTIFIER> ":" Statement()
 }
 
-void Block(List<Token> tokens) :
-/*
- * Parsing this fills "tokens" with all tokens of the block
- * excluding the braces at each end.
- */
+String Block() :
     {
       Token first, last;
-      if (tokens == null)
-        tokens = new ArrayList<Token>();
     }
 {
   "{"
@@ -2069,13 +2046,9 @@ void Block(List<Token> tokens) :
   "}"
     {
       if (last.next != first) { // i.e., this is not an empty sequence
-        Token t = first;
-        while (true) {
-          tokens.add(t);
-          if (t == last) break;
-          t = t.next;
-        }
-      }
+        return builder.dumpJavaCode(first, last).toString(); 
+      } else {
+        return "";      }
     }
 }
 
@@ -2234,7 +2207,7 @@ void ThrowStatement() :
 void SynchronizedStatement():
 {}
 {
-  "synchronized" "(" Expression(null) ")" Block(null)
+  "synchronized" "(" Expression(null) ")" Block()
 }
 
 void TryStatement():
@@ -2244,9 +2217,9 @@ void TryStatement():
  */
 {}
 {
-  "try" Block(null)
-  ( "catch" "(" FormalParameter() ")" Block(null) )*
-  [ "finally" Block(null) ]
+  "try" Block()
+  ( "catch" "(" FormalParameter() ")" Block() )*
+  [ "finally" Block() ]
 }
 
 /* We use productions to match >>>, >> and > so that we can keep the

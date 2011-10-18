@@ -7,6 +7,8 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import visreed.extension.javaCC.parser.JavaCCBuilder;
+
 /**
  * @author Xiaoyu Guo
  */
@@ -17,7 +19,7 @@ public class RegexpProductionPayload extends ProductionPayload {
 	}
 	
 	private boolean ignoreCase = false;
-	private Kind kind;
+	private Kind kind = Kind.TOKEN;
 	public String[] lexStates;
 	
 	
@@ -39,5 +41,21 @@ public class RegexpProductionPayload extends ProductionPayload {
 		super(name);
 	}
 
+	@Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel) {
+    	sb = JavaCCBuilder.dumpPrefix(sb, indentLevel);
+    	sb.append(this.kind);
+    	sb.append(" : {\n");
+    	
+    	for(int i = 0; i < this.getNode().getNumberOfChildren(); i++){
+    		JavaCCBuilder.dumpPrefix(sb, indentLevel + 1);
+    		this.getNode().getChild(i).getPayload().dump(sb, indentLevel + 1);
+    	}
+    	
+		sb.append("\n");
+		JavaCCBuilder.dumpPrefix(sb, indentLevel);
+		sb.append("}\n");
+    	return sb;
+    }
 
 }

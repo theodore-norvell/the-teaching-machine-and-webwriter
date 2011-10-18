@@ -26,13 +26,13 @@ import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.swing.JavaCCProductionsTreeView;
 import visreed.extension.javaCC.swing.editor.JavaCCTextArea;
+import visreed.extension.javaCC.view.JavaCCViewFactory;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.TreeView.VisreedOutlineTreeView;
 import visreed.swing.properties.PropertyEditor;
 import visreed.view.SyntaxViewFactory;
-import visreed.view.VisreedViewFactory;
 import visreed.view.VoidPointDecorator;
 import visreed.view.layout.AlternationLayoutManager;
 import visreed.view.layout.SyntaxTreeLayoutManager;
@@ -115,7 +115,7 @@ public class JavaCCMainFrame extends VisreedMainFrame {
         
         // main graph
         this.mainGraphDisplay = new VisreedJComponent();
-        this.mainViewFactory = new VisreedViewFactory(timeMan);
+        this.mainViewFactory = new JavaCCViewFactory(timeMan);
         this.mainGraphView = mainViewFactory.makeHigraphView(
             subgraph,
             mainGraphDisplay

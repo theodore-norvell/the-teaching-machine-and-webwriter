@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.KleenePlusPayload;
@@ -20,6 +19,7 @@ import visreed.model.payload.OptionalPayload;
 import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
@@ -169,16 +169,21 @@ public class VisreedBuilder {
         if(this.getStackSize() < numOfChildren){
             return;
         }
-        VisreedNode node = this.wholeGraph.makeRootNode(payload);
-        if(numOfChildren == 1){
+        VisreedNode node = null;
+        if(numOfChildren == 0){
+        	node = this.wholeGraph.makeRootNode(payload);
+        } else if(numOfChildren == 1){
             VisreedNode kid = this.pop();
             if(kid.getPayload() instanceof SequencePayload){
                 // do nothing
+            	node = kid;
             }
             else{
+            	node = this.wholeGraph.makeRootNode(payload);
                 node.insertChild(0, kid);
             }
         } else { 
+        	node = this.wholeGraph.makeRootNode(payload);
             for(int i = 0; i < numOfChildren; i++){
                 VisreedNode kid = this.pop();
                 if(kid.getPayload() instanceof SequencePayload){

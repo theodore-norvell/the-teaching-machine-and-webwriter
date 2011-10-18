@@ -15,9 +15,9 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -62,9 +62,9 @@ public class JavaCCLinkPayload extends VisreedPayload {
 	@Override
 	public String getDescription(){
 		if(this.source == null){
-			return this.productionName;
+			return "Link_" + this.productionName;
 		} else {
-			return this.source.getName();
+			return "Link_" + this.source.getName();
 		}
 	}
 
@@ -77,5 +77,21 @@ public class JavaCCLinkPayload extends VisreedPayload {
 			VisreedNode node, BTTimeManager timeman) {
 		return new JavaCCLinkNodeView(sgv, node, timeman);
 	}
-
+	
+	@Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel) {
+    	sb = super.dump(sb, indentLevel);
+    	sb.append("< ");
+    	
+    	String text = "";
+    	if(this.source != null){
+    		text = this.source.getName();
+    	} else {
+    		text = this.productionName;
+    	}
+    	sb.append(text);
+    	
+		sb.append(">");
+    	return sb;
+    }
 }

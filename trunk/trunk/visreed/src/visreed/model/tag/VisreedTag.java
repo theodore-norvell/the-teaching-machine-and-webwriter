@@ -9,7 +9,7 @@ package visreed.model.tag;
 
 import higraph.model.taggedInterfaces.Tag;
 import visreed.model.IDescribable;
-import visreed.model.VisreedPayload;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo

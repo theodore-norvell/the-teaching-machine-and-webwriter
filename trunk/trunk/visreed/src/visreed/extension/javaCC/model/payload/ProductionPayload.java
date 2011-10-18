@@ -14,15 +14,16 @@ import java.util.Set;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
 import visreed.extension.javaCC.model.tag.ProductionTag;
+import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.extension.javaCC.parser.Token;
 import visreed.extension.javaCC.view.ProductionNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -73,26 +74,18 @@ public class ProductionPayload extends VisreedPayload {
     private Token firstToken = null, lastToken = null;
 
     private String modifier = "";
-    private List<Token> return_type_tokens = new ArrayList<Token>();
-    private List<Token> parameter_list_tokens = new ArrayList<Token>();
+    private String returnType = "";
+    private String parameter = "";
+    private String declaration = "";
+    private boolean isPrivate = false;
     private List<Token> throws_list = new ArrayList<Token>();
     
     protected String eol = System.getProperty("line.separator", "\n");
-    protected StringBuffer dumpPrefix(int indent) {
-      StringBuffer sb = new StringBuffer(128);
-      for (int i = 0; i < indent; i++)
-        sb.append("  ");
-      return sb;
-    }
 
-    public StringBuffer dump(int indent, Set alreadyDumped) {
-      StringBuffer sb = dumpPrefix(indent).append(System.identityHashCode(this)).append(' ').append(getName());
-      if (!alreadyDumped.contains(this))
-      {
-        alreadyDumped.add(this);
-      }
-
-      return sb;
+    public StringBuffer dump(StringBuffer sb, int indentLevel) {
+    	sb = JavaCCBuilder.dumpPrefix(sb, indentLevel);
+    	
+    	return sb;
     }
     
     public String getName(){
@@ -137,12 +130,18 @@ public class ProductionPayload extends VisreedPayload {
 		this.modifier = modifier;
 	}
 
-	public List<Token> getReturnTypeTokens() {
-		return return_type_tokens;
+	public void setReturnType(String value){
+		this.returnType = value;
+	}
+	public String getReturnType() {
+		return returnType;
 	}
 
-	public List<Token> getParameterListTokens() {
-		return parameter_list_tokens;
+	public void setParameterList(String value){
+		this.parameter = value;
+	}
+	public String getParameterList() {
+		return parameter;
 	}
 
 	public List<Token> getThrowsList() {
@@ -164,4 +163,22 @@ public class ProductionPayload extends VisreedPayload {
 	public void setLastToken(Token lastToken) {
 		this.lastToken = lastToken;
 	}
+
+	public String getDeclaration() {
+		return declaration;
+	}
+
+	public void setDeclaration(String declaration) {
+		this.declaration = declaration;
+	}
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	
 }

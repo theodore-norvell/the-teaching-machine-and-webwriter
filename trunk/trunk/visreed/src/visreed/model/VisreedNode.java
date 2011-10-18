@@ -10,6 +10,7 @@ package visreed.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.payload.VisreedPayload;
 import visreed.pattern.IObservable;
 import visreed.pattern.IObserver;
 import higraph.model.abstractClasses.AbstractNode;
@@ -93,7 +94,7 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
         } else {
             desc = getPayload().getDescription();
         }
-        return "VisreedNode_" + desc;
+        return "VNode_" + desc;
     }
 
     /* Handles selection */

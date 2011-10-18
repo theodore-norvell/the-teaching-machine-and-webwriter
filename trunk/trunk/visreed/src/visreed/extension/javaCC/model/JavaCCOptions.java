@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import visreed.extension.javaCC.parser.JavaCCBuilder;
+
 /**
  * JavaCCOptions provides an unified management for JavaCC options.
  * @author Xiaoyu Guo
@@ -103,21 +105,20 @@ public class JavaCCOptions {
 		return Double.parseDouble(rawGet(option).toString());
 	}
 
-	public String format() {
-	    StringBuffer sb = new StringBuffer();
-
-	    int count = 0;
-	    for (Iterator<String> iter = optionValues.keySet().iterator(); iter.hasNext(); count++) {
-			if (count > 0) {
-				sb.append(";\n");
-			}
+	public StringBuffer dump(StringBuffer sb, int identLevel) {
+		sb = JavaCCBuilder.dumpPrefix(sb, identLevel);
+		sb.append("options {\n");
+	    for (Iterator<String> iter = optionValues.keySet().iterator(); iter.hasNext(); ) {
+			JavaCCBuilder.dumpPrefix(sb, identLevel + 1);
 			String key = iter.next();
 			sb.append(key);
-			sb.append('=');
+			sb.append(" = ");
 			sb.append(optionValues.get(key));
+			sb.append(";\n");
 		}
-
-	    return sb.toString();
+	    JavaCCBuilder.dumpPrefix(sb, identLevel);
+	    sb.append("}\n\n");
+	    return sb;
 	}
 	
 	public void set(String key, int value){

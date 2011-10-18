@@ -23,8 +23,8 @@ public class TerminalLayoutManager extends VisreedNodeLayoutManager {
     protected TerminalLayoutManager() {
         super();
     }
-    private static final double HSPACE_PIXEL = 5;
-    private static final double VSPACE_PIXEL = 5;
+    protected static final double HSPACE_PIXEL = 5;
+    protected static final double VSPACE_PIXEL = 5;
 
     /* (non-Javadoc)
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)

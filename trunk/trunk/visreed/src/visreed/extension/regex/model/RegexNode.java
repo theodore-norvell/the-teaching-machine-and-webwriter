@@ -13,8 +13,8 @@ import tm.backtrack.BTTimeManager;
 import visreed.extension.regex.parser.ParseException;
 import visreed.extension.regex.parser.RegexParser;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedWholeGraph;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo

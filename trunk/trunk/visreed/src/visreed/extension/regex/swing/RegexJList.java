@@ -15,9 +15,9 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.SequencePayload;
+import visreed.model.payload.VisreedPayload;
 import visreed.model.tag.VisreedTag;
 
 /**

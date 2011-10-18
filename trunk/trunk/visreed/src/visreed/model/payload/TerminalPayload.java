@@ -2,11 +2,11 @@ package visreed.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
-import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.tag.VisreedTag;
@@ -76,5 +76,17 @@ public class TerminalPayload extends VisreedPayload {
         BTTimeManager timeman
     ) {
         return new TerminalNodeView(sgv, node, timeman);
+    }
+    
+    /* (non-Javadoc)
+     * @see visreed.model.payload.VisreedPayload#dump(java.lang.StringBuffer, int)
+     */
+    @Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel) {
+    	sb = super.dump(sb, indentLevel);
+    	sb.append("\"");
+    	sb.append(this.terminal);
+    	sb.append("\"");
+    	return sb;
     }
 }
