@@ -16,11 +16,9 @@ import java.awt.SystemColor;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import tm.backtrack.BTTimeManager;
-import visreed.model.IHoverable;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -36,7 +34,7 @@ import visreed.swing.IInteractable;
  */
 public class VisreedDropZone 
 extends DropZone<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements IHoverable, IInteractable
+implements IInteractable
 {
 
     private int nodeNumber;

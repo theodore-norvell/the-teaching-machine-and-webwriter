@@ -73,7 +73,7 @@ public class JavaCCRootPayload extends SequencePayload {
 		sb.append(this.wg.getCompilationUnit());
 		
 		// parser end
-		sb.append("PARSER_END(");
+		sb.append("\nPARSER_END(");
 		sb.append(parserName);
 		sb.append(")\n");
 		

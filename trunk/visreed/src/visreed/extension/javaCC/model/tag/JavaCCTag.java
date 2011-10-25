@@ -17,6 +17,7 @@ public abstract class JavaCCTag extends VisreedTag {
     public static final VisreedTag PRODUCTION = ProductionTag.getInstance();
     public static final VisreedTag ROOT = RootTag.getInstance();
     public static final VisreedTag LINK = JavaCCLinkTag.getInstance();
+    public static final VisreedTag REGEXP_SPEC = RegexpSpecTag.getInstance();
     
     private static final VisreedTag[] VALUES = new VisreedTag[]{
     	ROOT,
@@ -27,7 +28,8 @@ public abstract class JavaCCTag extends VisreedTag {
         TERMINAL,
         OPTIONAL,
         PRODUCTION,
-        LINK
+        LINK,
+        REGEXP_SPEC
     };
     
     public static VisreedTag[] values(){

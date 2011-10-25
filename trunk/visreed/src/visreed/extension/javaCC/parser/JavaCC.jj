@@ -894,6 +894,9 @@ void local_lookahead() :
 
 void expansion_unit() :
 	{
+	    String terminal = "";
+	    String returnVariableName = "";
+	    List<Token> parameterList = new ArrayList<Token> ();
 	}
 {
   LOOKAHEAD(1)
@@ -903,7 +906,9 @@ void expansion_unit() :
    */
   "LOOKAHEAD" "(" local_lookahead() ")"
 |
-  Block()
+  terminal = Block()
+  {
+      builder.buildJavaCode(terminal);  }
 |
   "[" expansion_choices() "]"
 	{
@@ -921,13 +926,22 @@ void expansion_unit() :
   )
   [
     LOOKAHEAD(PrimaryExpression() "=")
-    PrimaryExpression()
+    returnVariableName = PrimaryExpression()
     "="
   ]
   (
 	LOOKAHEAD( identifier() "(")
-   identifier() Arguments(null)
+    terminal = identifier() Arguments(parameterList)
+    {
+        FunctionCallPayload pl = new FunctionCallPayload(terminal);
+        pl.setReturnVariableName(returnVariableName);
+        builder.buildAndPushNodeWithSeq(pl, 0);    }
   |
+    LOOKAHEAD( StringLiteral() )
+    terminal = StringLiteral()
+    {
+        builder.buildTerminal(terminal);    }
+  |   
     regular_expression()
 	[ "." <IDENTIFIER> ]
   )
@@ -963,7 +977,7 @@ void regular_expression() :
       if(image != null)      {
           RegexpSpecPayload pl = new RegexpSpecPayload(image);
           pl.setPrivate(private_rexp); 
-          builder.buildProduction(pl, 1);      }     }
+          builder.buildRegexpSpec(pl);      }     }
 |
   LOOKAHEAD(2)
   "<" image = identifier() ">"
@@ -1801,10 +1815,15 @@ void CastExpression():
   "(" Type() ")" UnaryExpressionNotPlusMinus()
 }
 
-void PrimaryExpression():
-{}
+String PrimaryExpression():
+{
+    Token first = getToken(1);
+}
 {
   PrimaryPrefix() ( LOOKAHEAD(2) PrimarySuffix() )*
+  {
+      Token last = getToken(1);
+      return builder.dumpJavaCode(first, last).toString();  }
 }
 
 void MemberSelector():
@@ -2041,11 +2060,11 @@ String Block() :
     }
   ( BlockStatement() )*
     {
-      last = getToken(0);
+      last = getToken(1);
     }
   "}"
     {
-      if (last.next != first) { // i.e., this is not an empty sequence
+      if (last != first) { // i.e., this is not an empty sequence
         return builder.dumpJavaCode(first, last).toString(); 
       } else {
         return "";      }

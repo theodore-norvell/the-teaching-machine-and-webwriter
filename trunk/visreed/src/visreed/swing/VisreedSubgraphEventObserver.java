@@ -4,23 +4,20 @@
 package visreed.swing;
 import higraph.swing.ViewTransferObject;
 import higraph.view.ComponentView;
+import higraph.view.NodeView;
 import higraph.view.interfaces.SubgraphEventObserver;
 
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
 import javax.swing.TransferHandler;
 
-import visreed.model.IHoverable;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -28,7 +25,10 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.VisreedPayload;
-import visreed.view.*;
+import visreed.view.IGraphContainer;
+import visreed.view.VisreedDropZone;
+import visreed.view.VisreedHigraphView;
+import visreed.view.VisreedNodeView;
 
 public class VisreedSubgraphEventObserver
 extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> {
@@ -56,7 +56,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     protected VisreedHigraphView mySubgraphView ;
     protected VisreedWholeGraph myWholeGraph;
     protected IGraphContainer graphContainer;
-    protected IHoverable lastHoveringOn;
+    protected IInteractable lastHoveringOn;
     private boolean currentActionIsClick = false;
     
     private boolean inDebugMode = true;
@@ -92,7 +92,10 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     protected List<VisreedNodeView> getSelectedViews(){
         List<VisreedNodeView> result = new ArrayList<VisreedNodeView>();
         for(VisreedNode node : this.myWholeGraph.getSelectionNodes()){
-            result.add((VisreedNodeView)this.mySubgraphView.getNodeView(node));
+        	NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nv = this.mySubgraphView.getNodeView(node);
+        	if(nv != null){
+        		result.add((VisreedNodeView)nv);
+        	}
         }
         return result;
     }
@@ -124,12 +127,12 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
      * @param stack
      * @return
      */
-    protected IHoverable getTopHoverable(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack){
+    protected IInteractable getTopInteractable(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack){
         if(stack == null || stack.size() == 0){
             return null;
         }
-        if(stack.peek() instanceof IHoverable){
-            return (IHoverable)stack.peek();
+        if(stack.peek() instanceof IInteractable){
+            return (IInteractable)stack.peek();
         } else {
             return null;
         }
@@ -197,6 +200,9 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         
         List<VisreedNodeView> selection = this.getSelectedViews();
         for(VisreedNodeView nv : selection){
+        	if(nv == null || nv.getNextShapeExtent() == null){
+        		continue;
+        	}
             if(nv.getNextShapeExtent().contains(this.dragSourcePoint)){
                 return true;
             }
@@ -274,6 +280,10 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     	if(inDebugMode){
     		System.out.println( getTopNodeDescFromStack(stack) + " : Clicked on " + e.getClickCount() + " times") ;
     	}
+    	IInteractable top = this.getTopInteractable(stack);
+    	if(top != null){
+    		top.handleClick(e);
+    	}
     }
     
     
@@ -304,6 +314,11 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     	}
         
         if (e.getButton() == MouseEvent.BUTTON1){
+        	// handle click on a view, however the click should be triggered only
+        	// if the stack is not empty.
+        	if(!stack.empty()){
+        		this.clickedOn(stack, e);
+        	}
         } else if (e.isPopupTrigger()){
             maybeShowPopupMenu(stack, e);
         }
@@ -331,16 +346,8 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     	}
         this.dragTargetPoint = e.getPoint();
         if(this.lastButton == MouseEvent.BUTTON1){
-            
-            // finish selection
-            this.lastButton = -1;
-            this.mySubgraphView.clearMarquee();
-            this.graphContainer.repaint();
-        
-            // clear a drag operation at last
-            this.dragSourcePoint = null;
-            this.dragTargetPoint = null;
-            this.lastButton = -1;
+        	if(this.currentActionIsClick){
+        	}
         } else if (e.isPopupTrigger()){
             // handle single right-click selection
             VisreedNodeView view = getTopNodeView(stack);
@@ -447,7 +454,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         }
         
         // handling hovering
-        IHoverable top = this.getTopHoverable(stack);
+        IInteractable top = this.getTopInteractable(stack);
         if(top == null){
             // cancel last hover
             if(this.lastHoveringOn != null){

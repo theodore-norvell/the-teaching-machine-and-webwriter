@@ -9,6 +9,8 @@ package visreed.extension.javaCC.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.parser.JavaCCBuilder;
+import visreed.extension.javaCC.parser.Token;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -24,14 +26,18 @@ import visreed.view.VisreedNodeView;
  * @author Xiaoyu Guo
  *
  */
-public class CommentPayload extends TerminalPayload {
+public class JavaCodeBlockPayload extends TerminalPayload {
+	
+	private static final int MAX_INLINE_BLOCK_LENGTH = 30;
 
-    public CommentPayload() {
+    private Token firstToken = null, lastToken = null;
+
+    public JavaCodeBlockPayload() {
         super();
     }
     
-    public CommentPayload(String comment){
-        super(comment);
+    public JavaCodeBlockPayload(String code){
+        super(code);
     }
     
     /** The maximum length of the code, for display */
@@ -57,8 +63,27 @@ public class CommentPayload extends TerminalPayload {
     }
     
     @Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel){
+    	sb = JavaCCBuilder.dumpPrefix(sb, indentLevel);
+    	sb.append("{");
+    	if(this.terminal.length() > MAX_INLINE_BLOCK_LENGTH){
+    		sb.append("\n");
+    		JavaCCBuilder.dumpPrefix(sb, indentLevel + 1);
+    	}
+    	
+    	sb.append(this.terminal);
+    	
+    	if(this.terminal.length() > MAX_INLINE_BLOCK_LENGTH){
+    		sb.append("\n");
+    		JavaCCBuilder.dumpPrefix(sb, indentLevel);
+    	}
+    	sb.append("}");
+		return sb;
+    }
+    
+    @Override
     public String getDescription(){
-        return "Comment";
+        return "Java Code Block";
     }
 
     /* (non-Javadoc)
@@ -72,4 +97,20 @@ public class CommentPayload extends TerminalPayload {
     ) {
         return new TerminalNodeView(sgv, node, timeman);
     }
+    
+    public Token getFirstToken() {
+		return firstToken;
+	}
+
+	public void setFirstToken(Token firstToken) {
+		this.firstToken = firstToken;
+	}
+
+	public Token getLastToken() {
+		return lastToken;
+	}
+
+	public void setLastToken(Token lastToken) {
+		this.lastToken = lastToken;
+	}
 }

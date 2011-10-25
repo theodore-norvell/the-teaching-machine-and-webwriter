@@ -20,7 +20,7 @@ import higraph.model.abstractClasses.AbstractNode;
  */
 public class VisreedNode 
 extends AbstractNode<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements ISelectable, IHoverable, IObservable<VisreedNode> {
+implements ISelectable, IObservable<VisreedNode> {
 
     protected VisreedNode(VisreedWholeGraph higraph, VisreedPayload payload) {
         super(higraph, payload);
@@ -32,6 +32,9 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
         this.getPayload().setNode(this);
     }
 
+	/* (non-Javadoc)
+     * @see higraph.model.abstractClasses.AbstractNode#getThis()
+     */
     @Override
     protected VisreedNode getThis() { return this ; }
     
@@ -138,27 +141,14 @@ implements ISelectable, IHoverable, IObservable<VisreedNode> {
         this.hover = hover;
     }
     
-    /* (non-Javadoc)
-     * @see visreed.view.IHoverable#setHoverOn()
-     */
-    @Override
     public void setHoverOn() {
         this.setHover(true);
     }
 
-    /* (non-Javadoc)
-     * @see visreed.view.IHoverable#setHoverOff()
-     */
-    @Override
     public void setHoverOff() {
         this.setHover(false);
     }
     
-
-    /* (non-Javadoc)
-     * @see visreed.model.IHoverable#isHoverOn()
-     */
-    @Override
     public boolean isHoverOn() {
         return this.hover;
     }

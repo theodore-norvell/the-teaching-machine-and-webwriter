@@ -2,7 +2,6 @@ package visreed.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
-import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;

@@ -7,106 +7,105 @@
  */
 package visreed.extension.javaCC.model;
 
-import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 
 import visreed.extension.javaCC.model.payload.ProductionPayload;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.model.VisreedNode;
-import visreed.pattern.IObserver;
+import visreed.model.VisreedNodeManager;
+import visreed.model.VisreedSubgraph;
+import visreed.model.payload.VisreedPayload;
 
 /**
  * ProductionManager handles relationship between all names and production nodes.
  * @author Xiaoyu Guo
  */
-public class ProductionManager implements IObserver<VisreedNode> {
-    private ArrayList<VisreedNode> nodeList;
-    private Hashtable<String, VisreedNode> nodeDictionary;
-    
-    public ProductionManager(){
-        this.nodeList = new ArrayList<VisreedNode>();
-        this.nodeDictionary = new Hashtable<String, VisreedNode>();
-    }
-    
-    /**
-     * Adds a new production to the manager
-     * @param node
-     */
-    public void registerNode(VisreedNode node){
-        if(node != null && node.getPayload() != null){
-            if(node.getPayload() instanceof ProductionPayload){
-                this.nodeList.add(node);
-                String key = ((ProductionPayload)node.getPayload()).getName();
-                if(key != null && key.length() > 0){
-                	this.nodeDictionary.put(key, node);
-                }
-                node.registerObserver(this);
-            }
-        }
-    }
-    
-    /**
-     * Removes a production from the manager
-     * @param node
-     */
-    public void deRegisterNode(VisreedNode node){
-        if(node != null && this.nodeDictionary.containsValue(node)){
-            this.nodeList.remove(node);
-            this.nodeDictionary.values().remove(node);
-        }
-    }
-    
-    /**
-     * Gets the specified production node by name
-     * @param name
-     * @return
-     */
-    public VisreedNode getNode(String name){
-        if(name != null && name.length() > 0){
-            return this.nodeDictionary.get(name);
-        }
-        return null;
-    }
-    
-    public List<VisreedNode> getAllProductions(){
-    	return this.nodeList;
-    }
-
+public class ProductionManager extends VisreedNodeManager {
+	private Hashtable<String, VisreedSubgraph> subgraphDirectory;
+	private JavaCCWholeGraph wholeGraph;
+	
+	public ProductionManager(){
+		super();
+		subgraphDirectory = new Hashtable<String, VisreedSubgraph>();
+		this.wholeGraph = null;
+	}
+	
 	/* (non-Javadoc)
-	 * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
+	 * @see visreed.model.VisreedNodeManager#registerNode(visreed.model.VisreedNode)
 	 */
 	@Override
-	public void changed(VisreedNode object) {
-		if(this.nodeDictionary.containsValue(object)){
-			// possibly the object has changed its name, so delete it and re-add it.
-			this.nodeDictionary.values().remove(object);
-			
-			String key = ((ProductionPayload)object.getPayload()).getName();
-			this.nodeDictionary.put(key, object);
+	public void registerNode(VisreedNode node){
+		if(node == null || !(node.getPayload() instanceof ProductionPayload)){
+			return;
+		}
+		super.registerNode(node);
+		
+		String name = this.getString(node);
+        if(name == null){
+        	return;
+        }
+		
+        if(wholeGraph == null){
+			wholeGraph = (JavaCCWholeGraph) node.getWholeGraph();
+		}
+
+        // construct a subgraph
+		VisreedSubgraph graph = wholeGraph.constructSubgraph();
+		// add the node as the only top node in the subgraph
+		graph.addTop(node);
+		this.subgraphDirectory.put(name, graph);
+	}
+	
+	/* (non-Javadoc)
+	 * @see visreed.model.VisreedNodeManager#deRegisterNode(visreed.model.VisreedNode)
+	 */
+	@Override
+	public void deRegisterNode(VisreedNode node){
+		super.deRegisterNode(node);
+		String name = this.getString(node);
+		if(name != null && name.length() > 0 && subgraphDirectory.containsKey(name)){
+			subgraphDirectory.remove(name);
 		}
 	}
-    
-    /**
-     * Updates the name for each production node in its list. 
-     */
-    public void refresh(){
-        this.nodeDictionary.clear();
-        for(VisreedNode node : this.nodeList){
-            String name = ((ProductionPayload)node.getPayload()).getName();
-            this.nodeDictionary.put(name, node);
-        }
-    }
-    
-    /**
-     * Clear all the registered node
-     */
-    public void clear(){
-    	if(this.nodeList != null && this.nodeList.size() > 0){
-    		for(VisreedNode n : this.nodeList){
-    			n.deRegisterObserver(this);
-    		}
-    	}
-        this.nodeList.clear();
-        this.nodeDictionary.clear();
-    }
+
+	/* (non-Javadoc)
+	 * @see visreed.model.VisreedNodeManager#getString(visreed.model.VisreedNode)
+	 */
+	@Override
+	protected String getString(VisreedNode node) {
+		if(node == null || node.getPayload() == null){
+			return null;
+		}
+		
+		VisreedPayload pl = node.getPayload();
+		if(pl.getTag().equals(JavaCCTag.PRODUCTION)){
+			return ((ProductionPayload)pl).getName();
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * Gets all the productions registered to this manager
+	 * @return
+	 */
+	public List<VisreedNode> getAllProductions() {
+		return this.nodeList;
+	}
+	
+	/**
+	 * Gets the corresponding subgraph with the specified production node as 
+	 * the only top node
+	 * @param productionName
+	 * @return {@value null} if such production does not exist
+	 */
+	public VisreedSubgraph getSubgraph(String productionName){
+		if(productionName != null && productionName.length() > 0){
+			if(subgraphDirectory.containsKey(productionName)){
+				return subgraphDirectory.get(productionName);
+			}
+		}
+		return null;
+	}
 }

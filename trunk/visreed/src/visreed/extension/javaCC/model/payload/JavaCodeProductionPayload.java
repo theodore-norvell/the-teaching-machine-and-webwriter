@@ -7,12 +7,8 @@
  */
 package visreed.extension.javaCC.model.payload;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
-import visreed.extension.javaCC.parser.Token;
 import visreed.extension.javaCC.view.JavaCodeNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;

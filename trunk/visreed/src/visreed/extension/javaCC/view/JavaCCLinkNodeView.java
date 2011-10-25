@@ -11,9 +11,7 @@ import higraph.view.HigraphView;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GradientPaint;
 import java.awt.Graphics2D;
-import java.awt.Paint;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
@@ -35,7 +33,7 @@ import visreed.view.layout.VisreedNodeLayoutManager;
  * @author Xiaoyu Guo
  */
 public class JavaCCLinkNodeView extends TerminalNodeView {
-    protected static Color FILL_COLOR = Color.green;
+    protected static Color FILL_COLOR = new Color(140, 240, 150);
 
 	/**
 	 * @param v
@@ -46,6 +44,7 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
 			HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> v,
 			VisreedNode node, BTTimeManager timeMan) {
 		super(v, node, timeMan);
+		this.setFillColor(FILL_COLOR);
 	}
 
 	/* (non-Javadoc)
@@ -60,46 +59,11 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
     }
     
     /* (non-Javadoc)
-     * @see visreed.view.VisreedNodeView#drawNode(java.awt.Graphics2D)
+     * @see visreed.view.TerminalNodeView#drawString(java.awt.Graphics2D)
      */
     @Override
-    protected void drawNode(Graphics2D screen) {
+    protected void drawString(Graphics2D screen) {
         Rectangle2D extent = this.getExtent();
-        
-        // border
-        screen.setColor(this.getColor());
-        screen.drawRoundRect(
-            (int)extent.getX(), 
-            (int)extent.getY(),
-            (int)extent.getWidth(),
-            (int)extent.getHeight(), 
-            MAX_ROUND_RADIUS_PX,
-            MAX_ROUND_RADIUS_PX
-        );
-
-        // content
-        if(this.getOutlineOnly() == false){
-            // dealing with filling color
-            Paint previousPaint = screen.getPaint();
-            Paint gradientPaint = new GradientPaint(
-                (float) this.getNextShapeExtent().getX(), 
-                (float) this.getNextShapeExtent().getY(),
-                GraphicsHelper.getGradientColor(FILL_COLOR),
-                (float) this.getNextShapeExtent().getX(), 
-                (float) this.getNextShapeExtent().getMaxY(),
-                FILL_COLOR
-            );
-            screen.setPaint(gradientPaint);
-            screen.fillRoundRect(
-                (int)extent.getX() + 1, 
-                (int)extent.getY() + 1,
-                (int)extent.getWidth() - 1,
-                (int)extent.getHeight() - 1, 
-                MAX_ROUND_RADIUS_PX,
-                MAX_ROUND_RADIUS_PX
-            );
-            screen.setPaint(previousPaint);
-        }
         
         screen.setColor(this.getColor());
         if(this.getColor() == null){

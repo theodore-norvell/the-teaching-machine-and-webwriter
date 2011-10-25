@@ -6,7 +6,9 @@ import java.util.List;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
 import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
+import visreed.extension.javaCC.model.payload.JavaCodeBlockPayload;
 import visreed.extension.javaCC.model.payload.ProductionPayload;
+import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.VisreedPayload;
@@ -14,29 +16,36 @@ import visreed.parser.VisreedBuilder;
 
 public class JavaCCBuilder extends VisreedBuilder {
     
-    public JavaCCBuilder(VisreedWholeGraph wg){
+	protected JavaCCWholeGraph wholeGraph;
+	
+    public JavaCCBuilder(JavaCCWholeGraph wg){
         super(wg);
-//        this.productionPayloads = new ArrayList<ProductionPayload>();
-//        this.productionNodes = new ArrayList<VisreedNode>();
+        this.wholeGraph = wg;
     }
-    
-//    private List<ProductionPayload> productionPayloads;
-    private List<VisreedNode> productionNodes;
     
     public void setCompilationUnit(Token first, Token last){
     	StringBuffer sb = dumpJavaCode(first, last);
-        ((JavaCCWholeGraph)this.wholeGraph).setCompilationUnit(sb.toString());
+        this.wholeGraph.setCompilationUnit(sb.toString());
     }
+    
+    /**
+     * Generates well-formed Java Code by beginning token and last token
+     * @param sb
+     * @param indentLevel
+     * @param first
+     * @param last
+     * @return
+     */
+    public static StringBuffer dumpJavaCode(
+		StringBuffer sb,
+		int indentLevel,
+		Token first, 
+		Token last
+	){
+    	if(sb == null){
+    		sb = new StringBuffer();
+    	}
 
-	/**
-	 * Generates well-formed Java Code by beginning token and last token
-	 * @param first
-	 * @param last
-	 * @return
-	 */
-	public StringBuffer dumpJavaCode(Token first, Token last) {
-		StringBuffer sb = new StringBuffer();
-    	int currentIdentLevel = 0;
         while (first != last) {
         	String image = first.image;
             sb.append(image);
@@ -46,18 +55,18 @@ public class JavaCCBuilder extends VisreedBuilder {
             boolean newLine = image.equals(";") || lBracket || rBracket;
             if(newLine){
             	if(lBracket){
-            		currentIdentLevel ++;
+            		indentLevel ++;
             	} else if(rBracket && sb.substring(length - 5).equals("    }")){
-            		// cancel the current identation by one level 
+            		// cancel the current indentation by one level 
             		sb.delete(length - 5, length - 1);
-            		currentIdentLevel --;
+            		indentLevel --;
             	} else if (!lBracket && !rBracket){
                 	if(sb.charAt(length - 2) == ' '){
                 		sb.delete(length - 2, length - 1);
                 	}
             	}
             	sb.append("\n");
-            	dumpPrefix(sb, currentIdentLevel);
+            	dumpPrefix(sb, indentLevel);
             } else if (image.matches("^[;\\.\\(\\)\\[\\]]$")){
             	if(sb.charAt(length - 2) == ' '){
             		sb.delete(length - 2, length - 1);
@@ -70,12 +79,27 @@ public class JavaCCBuilder extends VisreedBuilder {
             }
             first = first.next;
         }
+//        sb.append(last.image);
+        
+        if(sb.length() > 0 && sb.charAt(sb.length() - 1) == '\n'){
+        	sb.deleteCharAt(sb.length() - 1);
+        }
 		return sb;
+    }
+
+	/**
+	 * Generates well-formed Java Code by beginning token and last token
+	 * @param first
+	 * @param last
+	 * @return
+	 */
+	public StringBuffer dumpJavaCode(Token first, Token last) {
+		return dumpJavaCode(null, 0, first, last);
 	}
     
     /**
-     * Build a production node. The production node will be treated as direct leaf
-     * of the root.
+     * Build a production node. The production node will be treated as a
+     * direct leaf of the root with all children specified. 
      * Also adds a link node to the stack. 
      * @param productionName
      * @param numOfChild the child of the production node
@@ -85,16 +109,30 @@ public class JavaCCBuilder extends VisreedBuilder {
     	buildAndPushNodeWithSeq(pl, 1);
     	this.pop();
     	
-//    	this.productionPayloads.add(pl);
-//    	this.productionNodes.add(this.pop());
-    	
     	JavaCCLinkPayload linkPl = new JavaCCLinkPayload(pl);
     	buildAndPushNodeWithSeq(linkPl, 0);
     }
     
+    /**
+     * Build a Link node with given name.
+     * @param image
+     */
     public void buildLink(String image){
     	JavaCCLinkPayload linkPl = new JavaCCLinkPayload(image);
     	buildAndPushNodeWithSeq(linkPl, 0);
+    }
+    
+    /**
+     * Build a regular expression specification node.
+     * @param payload
+     */
+    public void buildRegexpSpec(RegexpSpecPayload payload){
+    	buildAndPushNodeWithSeq(payload, 1);
+    }
+    
+    public void buildJavaCode(String code){
+    	JavaCodeBlockPayload pl = new JavaCodeBlockPayload(code);
+    	buildAndPushNodeWithSeq(pl, 0);
     }
     
     /* (non-Javadoc)

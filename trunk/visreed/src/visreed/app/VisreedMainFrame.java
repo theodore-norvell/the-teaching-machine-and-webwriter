@@ -47,6 +47,7 @@ import visreed.view.VisreedViewFactory;
 import visreed.view.VoidPointDecorator;
 import visreed.view.layout.AlternationLayoutManager;
 import visreed.view.layout.SyntaxTreeLayoutManager;
+import java.awt.FlowLayout;
 
 /**
  * This shall be the main entry for the project
@@ -58,66 +59,27 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 
     private static final long serialVersionUID = -6388967497486007956L;
 
+    /**
+     * Initialization of the graphs
+     */
     protected void initializeGraph(){
         this.timeMan = new BTTimeManager();
         this.wholeGraph = new VisreedWholeGraph(this.timeMan);
-        this.subgraph = this.wholeGraph.makeSubGraph();
+        this.rootSubgraph = this.wholeGraph.makeSubGraph();
+        this.currentSubgraph = this.rootSubgraph;
         
         // main graph
         this.mainGraphDisplay = new VisreedJComponent();
-        this.mainViewFactory = new VisreedViewFactory(timeMan);
-        this.mainGraphView = mainViewFactory.makeHigraphView(
-            subgraph,
-            mainGraphDisplay
-        );
-        this.mainGraphDisplay.setSubgraphView(mainGraphView);
-        this.graphLayoutManger = new AlternationLayoutManager();
-        this.mainGraphView.setLayoutManager(graphLayoutManger);
-        
-        this.mainGraphView.setDefaultParentDecorator(
-            new VoidPointDecorator(mainGraphView, timeMan)
-        );
-        this.mainGraphView.setDefaultChildDecorator(
-            new VoidPointDecorator(mainGraphView, timeMan)
-        );
-        
-        this.mainGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
-        this.sgm = new VisreedSubgraphMouseAdapter(
-            mainGraphView,
-            mainGraphObserver
-        );
-        this.sgm.installIn(mainGraphDisplay);
+        this.mainViewFactory = new VisreedViewFactory(timeMan, this);
         
         // secondary graph
         this.syntaxDisplay = new VisreedJComponent();
         syntaxDisplay.setForeground(SystemColor.control);
         this.syntaxViewFactory = new SyntaxViewFactory(timeMan);
-        this.syntaxView = syntaxViewFactory.makeHigraphView(
-            subgraph, 
-            syntaxDisplay
-        );
-        this.syntaxDisplay.setSubgraphView(syntaxView);
-        
-        this.syntaxLayoutManager = new SyntaxTreeLayoutManager();
-        this.syntaxView.setLayoutManager(syntaxLayoutManager);
-
-        this.syntaxView.setDefaultParentDecorator(
-            new VoidPointDecorator(syntaxView, timeMan)
-        );
-        this.syntaxView.setDefaultChildDecorator(
-            new VoidPointDecorator(syntaxView, timeMan)
-        );
-
-        this.syntaxGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
-        this.sgm2 = new VisreedSubgraphMouseAdapter(
-            syntaxView,
-            syntaxGraphObserver
-        );
-        this.sgm2.installIn(syntaxDisplay);
         
         // text area
         this.regexText = new VisreedTextArea();
-        this.regexText.setSubHigraph(subgraph);
+        this.regexText.setSubHigraph(rootSubgraph);
         this.regexText.getInputMap().put(
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), 
             "refreshModelFromText"
@@ -136,6 +98,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
             }
         );
         
+        this.setSubgraph(rootSubgraph);
+        
         // register this as the observer
         this.wholeGraph.registerObserver(this);
     }
@@ -143,7 +107,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     // main wholeGraph
     protected BTTimeManager timeMan;
     protected VisreedWholeGraph wholeGraph;
-    protected VisreedSubgraph subgraph;
+    protected VisreedSubgraph rootSubgraph;
+    protected VisreedHigraph currentSubgraph;
 
     protected VisreedJComponent mainGraphDisplay;
     protected VisreedViewFactory mainViewFactory;
@@ -154,7 +119,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     protected VisreedSubgraphEventObserver mainGraphObserver;
     protected VisreedSubgraphEventObserver syntaxGraphObserver;
     protected VisreedSubgraphMouseAdapter sgm;
-    protected VisreedSubgraphMouseAdapter sgm2;
+    protected VisreedSubgraphMouseAdapter sgmSyntax;
 
     // secondary wholeGraph
     protected VisreedJComponent syntaxDisplay; 
@@ -178,6 +143,9 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         this.initializeControl();
     }
 
+    /**
+     * Initialization of all the controls, which is irrelevant to graph
+     */
     protected void initializeControl() {
         getContentPane().setLayout(new BorderLayout());
         
@@ -218,6 +186,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 
         /* tool bars */
         JPanel toolBarContainer = new JPanel();
+        FlowLayout flowLayout = (FlowLayout) toolBarContainer.getLayout();
+        flowLayout.setAlignment(FlowLayout.LEFT);
         JToolBar testToolBar = new JToolBar();
         toolBarContainer.add(testToolBar, BorderLayout.NORTH);
         this.fillTestToolBar(testToolBar);
@@ -248,7 +218,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 	}
 
     /**
-     * @param testToolBar
+     * Fills in the option toolbar
+     * @param toolBar
      */
     @SuppressWarnings("serial")
     protected void fillOptionToolBar(JToolBar toolBar) {
@@ -264,6 +235,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     }
 
     /**
+     * Fills in the test toolbar
      * @param toolBar
      */
     @SuppressWarnings("serial")
@@ -277,10 +249,10 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 
         action = new AbstractAction("add the root") {
             public void actionPerformed(ActionEvent e) {
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 if(tops == null || tops.size() == 0){
                     VisreedNode n = wholeGraph.makeRootNode(new SequencePayload());
-                    subgraph.addTop(n);
+                    rootSubgraph.addTop(n);
                     mainGraphView.refresh();
                     mainGraphDisplay.repaint();
                     
@@ -309,7 +281,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 
         action = new AbstractAction("add nested node") {
             public void actionPerformed(ActionEvent e) {
-                List<VisreedNode> nodes = subgraph.getNodes();
+                List<VisreedNode> nodes = rootSubgraph.getNodes();
                 if (nodes.size() > 0) {
                     Random rand = new Random();
                     int randIndex = rand.nextInt(nodes.size());
@@ -329,7 +301,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         action = new AbstractAction("Whole tree"){
             public void actionPerformed(ActionEvent e){
                 // first delete all the nodes
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 for(int i = 0; i < tops.size(); i++){
                     VisreedNode top = tops.get(i);
                     if(top.canDelete()){
@@ -340,7 +312,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 // then add new nodes, one by one
                 VisreedNode root, alt, kplus, current, leaf;
                 root = wholeGraph.makeRootNode(new SequencePayload());
-                subgraph.addTop(root);
+                rootSubgraph.addTop(root);
                 
                 kplus = wholeGraph.makeRootNode(new KleenePlusPayload());
                 current = wholeGraph.makeRootNode(new SequencePayload());
@@ -379,7 +351,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         action = new AbstractAction("Alternation"){
             public void actionPerformed(ActionEvent e){
                 // first delete all the nodes
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 for(int i = 0; i < tops.size(); i++){
                     VisreedNode top = tops.get(i);
                     if(top.canDelete()){
@@ -404,7 +376,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 current.insertChild(0, leaf);
                 alt.insertChild(0, current);
                 
-                subgraph.addTop(alt);
+                rootSubgraph.addTop(alt);
                 
                 refreshGraph();
             }
@@ -414,7 +386,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         action = new AbstractAction("Nested_SEQ"){
             public void actionPerformed(ActionEvent ae){
                 // first delete all the nodes
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 for(int i = 0; i < tops.size(); i++){
                     VisreedNode top = tops.get(i);
                     if(top.canDelete()){
@@ -425,7 +397,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 // then add new nodes, one by one
                 VisreedNode root, a, b, c, d, e;
                 root = wholeGraph.makeRootNode(new SequencePayload());
-                subgraph.addTop(root);
+                rootSubgraph.addTop(root);
                 
                 a = wholeGraph.makeRootNode(new SequencePayload());
                 b = wholeGraph.makeRootNode(new SequencePayload());
@@ -448,7 +420,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         action = new AbstractAction("KleeneTest"){
             public void actionPerformed(ActionEvent e){
                 // first delete all the nodes
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 for(int i = 0; i < tops.size(); i++){
                     VisreedNode top = tops.get(i);
                     if(top.canDelete()){
@@ -459,7 +431,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 // then add new nodes, one by one
                 VisreedNode root, kplus, current, leaf;
                 root = wholeGraph.makeRootNode(new SequencePayload());
-                subgraph.addTop(root);
+                rootSubgraph.addTop(root);
                 
                 kplus = wholeGraph.makeRootNode(new RepeatRangePayload(5));
                 current = wholeGraph.makeRootNode(new SequencePayload());
@@ -490,7 +462,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         action = new AbstractAction("Telephone"){
             public void actionPerformed(ActionEvent e){
                 // first delete all the nodes
-                List<VisreedNode> tops = subgraph.getTops();
+                List<VisreedNode> tops = rootSubgraph.getTops();
                 for(int i = 0; i < tops.size(); i++){
                     VisreedNode top = tops.get(i);
                     if(top.canDelete()){
@@ -501,7 +473,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 // then add new nodes, one by one
                 VisreedNode root, seq, current, leaf;
                 root = wholeGraph.makeRootNode(new SequencePayload());
-                subgraph.addTop(root);
+                rootSubgraph.addTop(root);
                 
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{4}"));
                 root.insertChild(0, leaf);
@@ -549,9 +521,72 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         toolBar.add(action);
     }
     
+    /* (non-Javadoc)
+     * @see visreed.view.IGraphContainer#refreshGraph()
+     */
+    @Override
     public void refreshGraph(){
     	this.wholeGraph.notifyObservers();
     }
+
+	/* (non-Javadoc)
+	 * @see visreed.view.IGraphContainer#setSubgraph(visreed.model.VisreedHigraph)
+	 */
+	@Override
+	public void setSubgraph(VisreedHigraph subgraph) {
+		if(subgraph != null){
+			this.currentSubgraph = subgraph;
+			
+			// main view
+	        this.mainGraphView = mainViewFactory.makeHigraphView(
+                subgraph,
+                mainGraphDisplay
+            );
+            this.mainGraphDisplay.setSubgraphView(mainGraphView);
+            this.graphLayoutManger = new AlternationLayoutManager();
+            this.mainGraphView.setLayoutManager(graphLayoutManger);
+            
+            this.mainGraphView.setDefaultParentDecorator(
+                new VoidPointDecorator(mainGraphView, timeMan)
+            );
+            this.mainGraphView.setDefaultChildDecorator(
+                new VoidPointDecorator(mainGraphView, timeMan)
+            );
+            
+            this.mainGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
+            this.sgm = new VisreedSubgraphMouseAdapter(
+                mainGraphView,
+                mainGraphObserver
+            );
+            this.sgm.installIn(mainGraphDisplay);
+			
+            // subview
+            this.syntaxView = syntaxViewFactory.makeHigraphView(
+                subgraph, 
+                syntaxDisplay
+            );
+            this.syntaxDisplay.setSubgraphView(syntaxView);
+            
+            this.syntaxLayoutManager = new SyntaxTreeLayoutManager();
+            this.syntaxView.setLayoutManager(syntaxLayoutManager);
+
+            this.syntaxView.setDefaultParentDecorator(
+                new VoidPointDecorator(syntaxView, timeMan)
+            );
+            this.syntaxView.setDefaultChildDecorator(
+                new VoidPointDecorator(syntaxView, timeMan)
+            );
+
+            this.syntaxGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
+            this.sgmSyntax = new VisreedSubgraphMouseAdapter(
+                syntaxView,
+                syntaxGraphObserver
+            );
+            this.sgmSyntax.installIn(syntaxDisplay);
+		}
+		
+		refreshGraph();
+	}
     
     private void privateRefreshGraph(){
         this.mainGraphView.refresh();
@@ -560,7 +595,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         this.syntaxView.refresh();
         this.syntaxDisplay.repaint();
         
-        this.subgraph.notifyObservers();
+        this.currentSubgraph.notifyObservers();
         
         this.regexText.refreshFromModel();
     }

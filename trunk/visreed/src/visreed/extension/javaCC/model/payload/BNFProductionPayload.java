@@ -52,10 +52,19 @@ public class BNFProductionPayload extends ProductionPayload {
 		sb.append(")");
 		
 		sb.append(" : ");
-		// TODO INIT_BLOCK
-		sb.append("{}");
+		
+		// INIT_BLOCK
+		sb.append("{");
+		if(this.getDeclaration().length() > 0){
+			sb.append("\n");
+			JavaCCBuilder.dumpPrefix(sb, indentLevel + 1);
+			sb.append(this.getDeclaration());
+			sb.append("\n");
+		}
+		sb.append("}");
 		
 		sb.append("{\n");
+		JavaCCBuilder.dumpPrefix(sb, indentLevel + 1);
 		for(int i = 0; i < this.getNode().getNumberOfChildren(); i++){
 			this.getNode().getChild(i).getPayload().dump(sb, indentLevel + 1);
 			sb.append("\n");

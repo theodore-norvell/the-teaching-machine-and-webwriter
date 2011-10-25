@@ -8,6 +8,7 @@
 package visreed.extension.javaCC.view;
 
 import tm.backtrack.BTTimeManager;
+import visreed.view.IGraphContainer;
 import visreed.view.VisreedDropZone;
 import visreed.view.VisreedNodeView;
 import visreed.view.VisreedViewFactory;
@@ -17,15 +18,16 @@ import visreed.view.VisreedViewFactory;
  *
  */
 public class JavaCCViewFactory extends VisreedViewFactory {
-
+	
     /**
      * @param tm
      */
-    public JavaCCViewFactory(BTTimeManager tm) {
-        super(tm);
+    public JavaCCViewFactory(BTTimeManager tm, IGraphContainer gt) {
+        super(tm, gt);
+        
     }
 
     public VisreedDropZone makeGoToDefinitionDropZone(VisreedNodeView nv){
-    	return new GoToDefinitionDropZone(nv, timeMan);
+    	return new GoToDefinitionDropZone(nv, timeMan, graphContainer);
     }
 }

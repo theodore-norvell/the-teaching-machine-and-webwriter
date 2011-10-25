@@ -132,17 +132,15 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
         }
         
         // stretch
-        if(nv instanceof VisreedNodeView){
-            if(numChildren > 0){
-                // modify entry and exit point
-                double entryPointY = myNextExtent.getY() + VSPACE_PIXEL + maxOffsetTopY;
-                if(nv.getCurrentDirection().equals(Direction.EAST)){
-                    ((VisreedNodeView)nv).setEntryPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                    ((VisreedNodeView)nv).setExitPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-                } else if (nv.getCurrentDirection().equals(Direction.WEST)){
-                    ((VisreedNodeView)nv).setExitPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                    ((VisreedNodeView)nv).setEntryPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-                }
+        if(numChildren > 0){
+            // modify entry and exit point
+            double entryPointY = myNextExtent.getY() + VSPACE_PIXEL + maxOffsetTopY;
+            if(nv.getCurrentDirection().equals(Direction.EAST)){
+                nv.setEntryPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
+                nv.setExitPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
+            } else if (nv.getCurrentDirection().equals(Direction.WEST)){
+                nv.setExitPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
+                nv.setEntryPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
             }
         }
         nv.setNextShape(myNextExtent);
@@ -178,7 +176,7 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
                     double newX = stretchExtent.getWidth() - view.getChild(0).getNextShapeExtent().getWidth();
                     newX /= 2.0;
                     newX += myNextShape.getX();
-                    view.getChild(0).placeNext(newX, view.getChild(0).getNextShapeExtent().getY());
+                    view.getChild(0).placeNextHierarchy(newX, view.getChild(0).getNextShapeExtent().getY());
                 } else {
                     // calculates the average horizontal space
                     double averageHspace = (stretchExtent.getWidth() - HSPACE_PIXEL * 2);
@@ -195,7 +193,7 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
                             kid = view.getVisreedChild(numChildren - i - 1);
                         }
                         
-                        kid.placeNext(currentX, kid.getNextShapeExtent().getY());
+                        kid.placeNextHierarchy(currentX, kid.getNextShapeExtent().getY());
                         currentX += kid.getNextShapeExtent().getWidth();
                         currentX += averageHspace;
                     }

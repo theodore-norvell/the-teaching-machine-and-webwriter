@@ -48,4 +48,20 @@ public interface IInteractable {
      * @return
      */
     JPopupMenu getPopupMenu(MouseEvent e);
+
+    /**
+     * Sets the hover on
+     */
+    public void setHoverOn();
+
+    /**
+     * Sets the hover off
+     */
+    public void setHoverOff();
+
+    /**
+     * Gets whether the view is being hovered on.
+     * @return
+     */
+    public boolean isHoverOn();
 }
