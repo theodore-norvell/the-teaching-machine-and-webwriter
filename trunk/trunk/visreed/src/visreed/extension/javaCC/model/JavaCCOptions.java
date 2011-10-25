@@ -63,6 +63,12 @@ public class JavaCCOptions {
 	    DEFAULT_VALUES.put("TOKEN_FACTORY", "");
 	    DEFAULT_VALUES.put("GRAMMAR_ENCODING", "");
 	    DEFAULT_VALUES.put("OUTPUT_LANGUAGE", "java");
+	    
+	    DEFAULT_VALUES.put("GENERATE_CHAINED_EXCEPTION", Boolean.TRUE);
+	    DEFAULT_VALUES.put("GENERATE_GENERICS", Boolean.TRUE);
+	    DEFAULT_VALUES.put("GENERATE_STRING_BUILDER", Boolean.TRUE);
+	    DEFAULT_VALUES.put("GENERATE_ANNOTATIONS", Boolean.TRUE);
+	
     }
 	
 	public JavaCCOptions() {
@@ -105,20 +111,60 @@ public class JavaCCOptions {
 		return Double.parseDouble(rawGet(option).toString());
 	}
 
+	/**
+	 * @param sb
+	 * @param identLevel
+	 * @return
+	 */
 	public StringBuffer dump(StringBuffer sb, int identLevel) {
+		if(!containsValue()){
+			return sb;
+		}
 		sb = JavaCCBuilder.dumpPrefix(sb, identLevel);
 		sb.append("options {\n");
-	    for (Iterator<String> iter = optionValues.keySet().iterator(); iter.hasNext(); ) {
-			JavaCCBuilder.dumpPrefix(sb, identLevel + 1);
+		Iterator<String> iter = optionValues.keySet().iterator();
+	    while (iter.hasNext()) {
 			String key = iter.next();
+			Object value = optionValues.get(key);
+			
+			// skip all default values
+			if(DEFAULT_VALUES.containsKey(key)){
+				Object defaultValue = DEFAULT_VALUES.get(key);
+				if(value.equals(defaultValue)){
+					continue;
+				}
+			}
+			
+			JavaCCBuilder.dumpPrefix(sb, identLevel + 1);
 			sb.append(key);
 			sb.append(" = ");
-			sb.append(optionValues.get(key));
+			sb.append(value);
 			sb.append(";\n");
 		}
 	    JavaCCBuilder.dumpPrefix(sb, identLevel);
 	    sb.append("}\n\n");
 	    return sb;
+	}
+	
+	private boolean containsValue(){
+		boolean result = false;
+		Iterator<String> iter = optionValues.keySet().iterator();
+	    while (iter.hasNext()) {
+			String key = iter.next();
+			Object value = optionValues.get(key);
+			
+			// skip all default values
+			if(DEFAULT_VALUES.containsKey(key)){
+				Object defaultValue = DEFAULT_VALUES.get(key);
+				if(value.equals(defaultValue)){
+					continue;
+				}
+			}
+			
+			result = true;
+			break;
+		}
+	    return result;
 	}
 	
 	public void set(String key, int value){

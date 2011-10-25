@@ -32,7 +32,6 @@ import tm.backtrack.BTVar;
 import tm.utilities.Assert;
 import visreed.awt.GraphicsHelper;
 import visreed.model.Direction;
-import visreed.model.IHoverable;
 import visreed.model.ISelectable;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
@@ -51,7 +50,7 @@ import visreed.view.layout.VisreedNodeLayoutManager;
  */
 public abstract class VisreedNodeView 
 extends NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<VisreedNode> {
+implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     /** Handles the LayoutManager */
     private final BTVar<VisreedNodeLayoutManager> layoutManagerVar;
     
@@ -139,6 +138,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
     protected final void drawSelf(Graphics2D screen){
         // draw self
         this.drawNode(screen);
+        this.drawString(screen);
         
         // draw children
         for(int i = 0; i < this.getNumChildren(); i++){
@@ -146,6 +146,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
             if(child != null){
                 child.drawNode(screen);
                 child.draw(screen);
+                child.drawString(screen);
             }
         }
         
@@ -236,9 +237,16 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
     }
     
     /**
+     * Handles painting of the node
      * @param screen
      */
     protected void drawNode(Graphics2D screen) {}
+    
+    /**
+     * Handles painting of any strings.
+     * @param screen
+     */
+    protected void drawString(Graphics2D screen) {}
     
     /* (non-Javadoc)
      * @see higraph.view.NodeView#doLayout()
@@ -447,7 +455,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
     }
 
     /* (non-Javadoc)
-     * @see visreed.view.IHoverable#setHoverOn()
+     * @see visreed.swing.IInteractable#setHoverOn()
      */
     @Override
     public final void setHoverOn(){
@@ -455,7 +463,7 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
     }
     
     /* (non-Javadoc)
-     * @see visreed.view.IHoverable#setHoverOff()
+     * @see visreed.swing.IInteractable#setHoverOff()
      */
     @Override
     public final void setHoverOff(){
@@ -467,9 +475,9 @@ implements ISelectable, IHoverable, IRotatable, IInteractable, IObserver<Visreed
             }
         }
     }
-    
+
     /* (non-Javadoc)
-     * @see visreed.model.IHoverable#isHoverOn()
+     * @see visreed.swing.IInteractable#isHoverOn()
      */
     @Override
     public boolean isHoverOn(){

@@ -18,6 +18,22 @@ public class RegexpProductionPayload extends ProductionPayload {
 		TOKEN, SPECIAL_TOKEN, SKIP, MORE
 	}
 	
+	/* (non-Javadoc)
+	 * @see visreed.extension.javaCC.model.payload.ProductionPayload#getDescription()
+	 */
+	@Override
+	public String getDescription(){
+		return this.kind.toString();
+	}
+	
+	/* (non-Javadoc)
+	 * @see visreed.extension.javaCC.model.payload.ProductionPayload#getName()
+	 */
+	@Override
+	public String getName(){
+		return this.kind.toString();
+	}
+	
 	private boolean ignoreCase = false;
 	private Kind kind = Kind.TOKEN;
 	public String[] lexStates;
@@ -41,6 +57,9 @@ public class RegexpProductionPayload extends ProductionPayload {
 		super(name);
 	}
 
+	/* (non-Javadoc)
+	 * @see visreed.extension.javaCC.model.payload.ProductionPayload#dump(java.lang.StringBuffer, int)
+	 */
 	@Override
     public StringBuffer dump(StringBuffer sb, int indentLevel) {
     	sb = JavaCCBuilder.dumpPrefix(sb, indentLevel);

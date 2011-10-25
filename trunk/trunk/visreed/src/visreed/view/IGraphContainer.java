@@ -7,6 +7,8 @@
  */
 package visreed.view;
 
+import visreed.model.VisreedHigraph;
+
 /**
  * @author Xiaoyu Guo
  */
@@ -23,4 +25,10 @@ public interface IGraphContainer {
      * shows the latest state of the model.
      */
     void refreshGraph();
+    
+    /**
+     * Sets the subgraph for main display area(s).
+     * @param subgraph
+     */
+    void setSubgraph(VisreedHigraph subgraph);
 }

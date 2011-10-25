@@ -73,15 +73,17 @@ public class AlternationPayload extends VisreedPayload {
 		boolean bracketNeeded = (numOfChildren > 1);
 
 		if(bracketNeeded){
-			sb.append("(");
+			sb.append("(\n");
 		}
 		
 		for(int i = 0; i < numOfChildren; i++){
-			if(i > 0){
-				JavaCCBuilder.dumpPrefix(sb, indentLevel);
-				sb.append("|");
+			JavaCCBuilder.dumpPrefix(sb, indentLevel);
+			if (i == 0){
+				sb.append("  ");
+			} else {
+				sb.append("| ");
 			}
-			this.getNode().getChild(i).getPayload().dump(sb, indentLevel);
+			this.getNode().getChild(i).getPayload().dump(sb, 0);
 			sb.append("\n");
 		}
 		

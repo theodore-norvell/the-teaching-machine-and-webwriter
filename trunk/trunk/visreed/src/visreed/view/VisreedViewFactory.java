@@ -24,9 +24,11 @@ import visreed.model.payload.VisreedPayload;
 public class VisreedViewFactory
 extends ViewFactory<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
 {
-    
-    public VisreedViewFactory( BTTimeManager tm ) {
+	protected IGraphContainer graphContainer;
+	
+    public VisreedViewFactory( BTTimeManager tm, IGraphContainer gt) {
         super(tm) ;
+        this.graphContainer = gt;
     }
 
     @Override

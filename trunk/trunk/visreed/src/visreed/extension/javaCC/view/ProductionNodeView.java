@@ -64,10 +64,10 @@ public class ProductionNodeView extends VisreedNodeView {
 	}
 	
 	/* (non-Javadoc)
-	 * @see visreed.view.VisreedNodeView#drawNode(java.awt.Graphics2D)
+	 * @see visreed.view.VisreedNodeView#drawString(java.awt.Graphics2D)
 	 */
 	@Override
-	protected void drawNode(Graphics2D screen) {
+	protected void drawString(Graphics2D screen) {
 		if(this.getColor() != null){
 			screen.setColor(this.getColor());
 		}

@@ -26,6 +26,7 @@ import javax.swing.KeyStroke;
 import tm.backtrack.BTTimeManager;
 import visreed.awt.VisreedSubgraphMouseAdapter;
 import visreed.extension.regex.swing.RegexJList;
+import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
@@ -62,7 +63,7 @@ public class RegexDialog extends JDialog implements IGraphContainer {
         
         // main graph
         this.mainGraphDisplay = new VisreedJComponent();
-        this.mainViewFactory = new VisreedViewFactory(timeMan);
+        this.mainViewFactory = new VisreedViewFactory(timeMan, this);
         this.mainGraphView = mainViewFactory.makeHigraphView(
             subgraph,
             mainGraphDisplay
@@ -106,11 +107,11 @@ public class RegexDialog extends JDialog implements IGraphContainer {
         );
 
         this.syntaxGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
-        this.sgm2 = new VisreedSubgraphMouseAdapter(
+        this.sgmSyntax = new VisreedSubgraphMouseAdapter(
             syntaxView,
             syntaxGraphObserver
         );
-        this.sgm2.installIn(syntaxDisplay);
+        this.sgmSyntax.installIn(syntaxDisplay);
         
         // text area
         this.regexText = new VisreedTextArea();
@@ -148,7 +149,7 @@ public class RegexDialog extends JDialog implements IGraphContainer {
     private VisreedSubgraphEventObserver mainGraphObserver;
     private VisreedSubgraphEventObserver syntaxGraphObserver;
     private VisreedSubgraphMouseAdapter sgm;
-    private VisreedSubgraphMouseAdapter sgm2;
+    private VisreedSubgraphMouseAdapter sgmSyntax;
 
     // secondary wholeGraph
     private VisreedJComponent syntaxDisplay; 
@@ -511,6 +512,10 @@ public class RegexDialog extends JDialog implements IGraphContainer {
         toolBar.add(action);
     }
     
+    /* (non-Javadoc)
+     * @see visreed.view.IGraphContainer#refreshGraph()
+     */
+    @Override
     public void refreshGraph(){
         this.mainGraphView.refresh();
         this.mainGraphDisplay.repaint();
@@ -522,6 +527,36 @@ public class RegexDialog extends JDialog implements IGraphContainer {
         
         this.regexText.refreshFromModel();
     }
+    
+	/* (non-Javadoc)
+	 * @see visreed.view.IGraphContainer#setSubgraph(visreed.model.VisreedHigraph)
+	 */
+	@Override
+	public void setSubgraph(VisreedHigraph subgraph) {
+		if(subgraph != null){
+	        this.mainGraphView = mainViewFactory.makeHigraphView(
+                subgraph,
+                mainGraphDisplay
+            );
+            this.mainGraphDisplay.setSubgraphView(mainGraphView);
+            this.sgm = new VisreedSubgraphMouseAdapter(
+                mainGraphView,
+                mainGraphObserver
+            );
+            this.sgm.installIn(mainGraphDisplay);
+			
+			this.syntaxView = syntaxViewFactory.makeHigraphView(
+	            subgraph, 
+	            syntaxDisplay
+	        );
+	        this.syntaxDisplay.setSubgraphView(syntaxView);
+	        this.sgmSyntax = new VisreedSubgraphMouseAdapter(
+                syntaxView,
+                syntaxGraphObserver
+            );
+            this.sgmSyntax.installIn(syntaxDisplay);
+		}
+	}
     
     public String getText(){
         return this.regexText.getText();

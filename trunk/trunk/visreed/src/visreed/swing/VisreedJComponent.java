@@ -62,11 +62,15 @@ implements Scrollable, IObserver<VisreedHigraph>
     private VisreedHigraphView higraphView;
     
     public void setSubgraphView( VisreedHigraphView view ){
+    	if(view == this.higraphView){
+    		return;
+    	}
         if(this.higraphView != null){
             this.higraphView.getHigraph().deRegisterObserver(this);
         }
         this.higraphView = view ;
         this.higraphView.getHigraph().registerObserver(this);
+        this.changed(view.getHigraph());
     }
     
     public VisreedHigraphView getSubgraphView(){

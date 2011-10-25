@@ -7,13 +7,13 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import higraph.view.HigraphView;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
-import visreed.extension.javaCC.model.tag.ProductionTag;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.extension.javaCC.parser.Token;
 import visreed.extension.javaCC.view.ProductionNodeView;
@@ -33,11 +33,11 @@ import visreed.view.VisreedNodeView;
 public class ProductionPayload extends VisreedPayload {
 
     public ProductionPayload() {
-        super(ProductionTag.getInstance());
+        super(JavaCCTag.PRODUCTION);
     }
     
     public ProductionPayload(String name){
-    	super(ProductionTag.getInstance());
+    	super(JavaCCTag.PRODUCTION);
     	this.name = name;
     }
 
@@ -77,11 +77,14 @@ public class ProductionPayload extends VisreedPayload {
     private String returnType = "";
     private String parameter = "";
     private String declaration = "";
-    private boolean isPrivate = false;
     private List<Token> throws_list = new ArrayList<Token>();
     
     protected String eol = System.getProperty("line.separator", "\n");
 
+    /* (non-Javadoc)
+     * @see visreed.model.payload.VisreedPayload#dump(java.lang.StringBuffer, int)
+     */
+    @Override
     public StringBuffer dump(StringBuffer sb, int indentLevel) {
     	sb = JavaCCBuilder.dumpPrefix(sb, indentLevel);
     	
@@ -170,14 +173,6 @@ public class ProductionPayload extends VisreedPayload {
 
 	public void setDeclaration(String declaration) {
 		this.declaration = declaration;
-	}
-
-	public boolean isPrivate() {
-		return isPrivate;
-	}
-
-	public void setPrivate(boolean isPrivate) {
-		this.isPrivate = isPrivate;
 	}
 	
 	

@@ -26,8 +26,8 @@ import visreed.view.VisreedNodeView;
  */
 public class JavaCCLinkPayload extends VisreedPayload {
 
-	private ProductionPayload source;
-	String productionName;
+	protected ProductionPayload source;
+	protected String productionName;
 	
 	public JavaCCLinkPayload(String productionName) {
 		super(JavaCCTag.LINK);
@@ -36,11 +36,17 @@ public class JavaCCLinkPayload extends VisreedPayload {
 	
 	public JavaCCLinkPayload(ProductionPayload pl){
 		super(JavaCCTag.LINK);
-		this.source = pl;
+		this.setSource(pl);
 	}
 	
 	public void setSource(ProductionPayload pl){
-		this.source = pl;
+		if(pl != null){
+			this.source = pl;
+			this.productionName = pl.getName();
+		} else {
+			this.source = null;
+			this.productionName = "";
+		}
 	}
 
 	/* (non-Javadoc)
@@ -62,9 +68,13 @@ public class JavaCCLinkPayload extends VisreedPayload {
 	@Override
 	public String getDescription(){
 		if(this.source == null){
-			return "Link_" + this.productionName;
+			return this.productionName;
 		} else {
-			return "Link_" + this.source.getName();
+			String name = this.source.getName();
+			if(!name.equals(this.productionName)){
+				this.productionName = name;
+			}
+			return name;
 		}
 	}
 

@@ -18,7 +18,7 @@ import visreed.view.layout.VisreedNodeLayoutManager;
  * @author Xiaoyu Guo
  */
 public class ProductionLayoutManager extends VisreedNodeLayoutManager {
-    private static final double VSPACE_TOP_PIXEL = 13;
+    private static final double VSPACE_TOP_PIXEL = 15;
 
 	protected ProductionLayoutManager() {
 		super();
@@ -92,17 +92,10 @@ public class ProductionLayoutManager extends VisreedNodeLayoutManager {
         for(int i = 0; i < numChildren; i++){
             // currently at y=0, go down by moveDownDistances[i]
             
-            /*/
-            nv.getChild(i).placeNext(
-                nv.getChild(i).getNextX(), 
-                nv.getChild(i).getNextY() + VSPACE_PIXEL + moveDownDistances[i]
-            );
-            /*/
             nv.getChild(i).translateNextHierarchy(
                 0, 
                 VSPACE_TOP_PIXEL + moveDownDistances[i]
             );
-            //*/
         }
 
         nv.placeNext(px, py);

@@ -45,6 +45,7 @@ public class TerminalNodeView extends VisreedNodeView {
             BTTimeManager timeMan) {
         super(v, node, timeMan);
         this.font = DEFAULT_FONT;
+        this.setFillColor(FILL_COLOR);
     }
     
     protected Font font;
@@ -106,14 +107,16 @@ public class TerminalNodeView extends VisreedNodeView {
         // content
         if(this.getOutlineOnly() == false){
             // dealing with filling color
+        	Color fillColor = this.getFillColor();
+        	
             Paint previousPaint = screen.getPaint();
             Paint gradientPaint = new GradientPaint(
                 (float) this.getNextShapeExtent().getX(), 
                 (float) this.getNextShapeExtent().getY(),
-                GraphicsHelper.getGradientColor(FILL_COLOR),
+                GraphicsHelper.getGradientColor(fillColor),
                 (float) this.getNextShapeExtent().getX(), 
                 (float) this.getNextShapeExtent().getMaxY(),
-                FILL_COLOR
+                fillColor
             );
             screen.setPaint(gradientPaint);
             screen.fillRoundRect(
@@ -126,7 +129,11 @@ public class TerminalNodeView extends VisreedNodeView {
             );
             screen.setPaint(previousPaint);
         }
-        
+    }
+    
+    @Override
+    protected void drawString(Graphics2D screen){
+        Rectangle2D extent = this.getExtent();
         screen.setColor(this.getColor());
         if(this.getColor() == null){
             screen.setColor(Color.black);
