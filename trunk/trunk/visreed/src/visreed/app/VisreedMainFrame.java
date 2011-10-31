@@ -1,6 +1,7 @@
 package visreed.app;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
@@ -45,9 +46,9 @@ import visreed.view.VisreedHigraphView;
 import visreed.view.VisreedNodeView;
 import visreed.view.VisreedViewFactory;
 import visreed.view.VoidPointDecorator;
-import visreed.view.layout.AlternationLayoutManager;
+import visreed.view.layout.SequenceLayoutManager;
 import visreed.view.layout.SyntaxTreeLayoutManager;
-import java.awt.FlowLayout;
+import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**
  * This shall be the main entry for the project
@@ -113,7 +114,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     protected VisreedJComponent mainGraphDisplay;
     protected VisreedViewFactory mainViewFactory;
     protected VisreedHigraphView mainGraphView;
-    protected AlternationLayoutManager graphLayoutManger;
+    protected VisreedNodeLayoutManager graphLayoutManger;
     
     // Set up an event mainGraphObserver.
     protected VisreedSubgraphEventObserver mainGraphObserver;
@@ -326,13 +327,11 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 
                 alt = wholeGraph.makeRootNode(new AlternationPayload());
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("c"));
-                current = wholeGraph.makeRootNode(new SequencePayload());
-                current.insertChild(0, leaf);
-                alt.insertChild(0, current);
+                alt.insertChild(2, leaf);
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("b"));
                 current = wholeGraph.makeRootNode(new SequencePayload());
                 current.insertChild(0, leaf);
-                alt.insertChild(0, current);
+                alt.getChild(1).replace(current);
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("a"));
                 current = wholeGraph.makeRootNode(new SequencePayload());
                 current.insertChild(0, leaf);
@@ -340,7 +339,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 kplus.insertChild(0, current);
                 current = wholeGraph.makeRootNode(new SequencePayload());
                 current.insertChild(0, kplus);
-                alt.insertChild(0, current);
+                alt.getChild(0).replace(current);
                 root.insertChild(0, alt);
                 
                 refreshGraph();
@@ -360,23 +359,22 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 }
                 
                 // then add new nodes, one by one
-                VisreedNode alt, current, leaf;
-                
+                VisreedNode root, alt, current, leaf;
+                root = wholeGraph.makeRootNode(new SequencePayload());
                 alt = wholeGraph.makeRootNode(new AlternationPayload());
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("c"));
-                current = wholeGraph.makeRootNode(new SequencePayload());
-                current.insertChild(0, leaf);
-                alt.insertChild(0, current);
+                alt.insertChild(2, leaf);
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("b"));
                 current = wholeGraph.makeRootNode(new SequencePayload());
                 current.insertChild(0, leaf);
-                alt.insertChild(0, current);
+                alt.getChild(1).replace(current);
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("a"));
                 current = wholeGraph.makeRootNode(new SequencePayload());
                 current.insertChild(0, leaf);
-                alt.insertChild(0, current);
+                alt.getChild(0).replace(current);
                 
-                rootSubgraph.addTop(alt);
+                root.appendChild(alt);
+                rootSubgraph.addTop(root);
                 
                 refreshGraph();
             }
@@ -475,8 +473,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 root = wholeGraph.makeRootNode(new SequencePayload());
                 rootSubgraph.addTop(root);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{4}"));
-                root.insertChild(0, leaf);
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(4));
+                root.insertChild(0, current);
+                
+                seq = wholeGraph.makeRootNode(new SequencePayload());
+                current.insertChild(0, seq);
+                
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
+                seq.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -485,8 +489,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 current.insertChild(0, seq);
                 root.insertChild(0, current);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{3}"));
-                root.insertChild(0, leaf);
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(3));
+                root.insertChild(0, current);
+                
+                seq = wholeGraph.makeRootNode(new SequencePayload());
+                current.insertChild(0, seq);
+                
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
+                seq.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -501,9 +511,15 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 seq.insertChild(0, leaf);
                 current.insertChild(0, seq);
                 root.insertChild(0, current);
+
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(2));
+                root.insertChild(0, current);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{2}"));
-                root.insertChild(0, leaf);
+                seq = wholeGraph.makeRootNode(new SequencePayload());
+                current.insertChild(0, seq);
+                
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
+                seq.insertChild(0, leaf);
                 
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("[1-9]"));
                 root.insertChild(0, leaf);
@@ -543,7 +559,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 mainGraphDisplay
             );
             this.mainGraphDisplay.setSubgraphView(mainGraphView);
-            this.graphLayoutManger = new AlternationLayoutManager();
+            this.graphLayoutManger = SequenceLayoutManager.getInstance();
             this.mainGraphView.setLayoutManager(graphLayoutManger);
             
             this.mainGraphView.setDefaultParentDecorator(

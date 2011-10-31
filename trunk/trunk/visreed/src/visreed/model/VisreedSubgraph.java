@@ -7,11 +7,12 @@
  */
 package visreed.model;
 
-import higraph.model.abstractClasses.AbstractSubgraph;
+import higraph.model.abstractTaggedClasses.AbstractTaggedSubgraph;
 
 import java.util.ArrayList;
 
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObserver;
 
 /**
@@ -19,7 +20,7 @@ import visreed.pattern.IObserver;
  * @author Xiaoyu Guo
  */
 public class VisreedSubgraph
-extends AbstractSubgraph<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
+extends AbstractTaggedSubgraph<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
 implements VisreedHigraph
 {
     protected VisreedSubgraph(VisreedWholeGraph wholeGraph) {

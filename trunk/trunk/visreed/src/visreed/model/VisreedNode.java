@@ -7,19 +7,22 @@
  */
 package visreed.model;
 
+import higraph.model.abstractTaggedClasses.AbstractTaggedNode;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.payload.SequencePayload;
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObservable;
 import visreed.pattern.IObserver;
-import higraph.model.abstractClasses.AbstractNode;
 
 /**
  * @author Xiaoyu Guo
  */
 public class VisreedNode 
-extends AbstractNode<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
+extends AbstractTaggedNode<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
 implements ISelectable, IObservable<VisreedNode> {
 
     protected VisreedNode(VisreedWholeGraph higraph, VisreedPayload payload) {
@@ -84,6 +87,61 @@ implements ISelectable, IObservable<VisreedNode> {
     		return parent.getChildren().indexOf(this);
     	}
     	return -1;
+    }
+    
+    /* (non-Javadoc)
+     * @see higraph.model.abstractClasses.AbstractNode#insertChild(int, higraph.model.abstractClasses.AbstractNode)
+     */
+    @Override
+    public void insertChild(int position, VisreedNode newChild){
+    	boolean childIsSeq = newChild.getTag().equals(VisreedTag.SEQUENCE);
+	
+    	// oneChildMode: this != seq, this holds only one child; only child is seq.
+		boolean oneChildMode = (getTag().canHoldExactOneChild());
+		oneChildMode &= (getNumberOfChildren() == 1 && getChild(0).getTag().equals(VisreedTag.SEQUENCE));
+		oneChildMode &= (!getTag().equals(VisreedTag.SEQUENCE));
+		
+		VisreedNode insertionTarget = this;
+		if(oneChildMode){
+			insertionTarget = this.getChild(0);
+		}
+		
+		if(insertionTarget.getTag().equals(VisreedTag.SEQUENCE)){
+			// now insertionTarget is a seq.
+	    	
+			// inserting a node into a seq node
+			if(childIsSeq){
+				// inserting a seq into a seq
+				for(int i = 0; i < newChild.getNumberOfChildren(); i++){
+					VisreedNode kid = newChild.getChild(i);
+					kid.detach();
+					if(oneChildMode){
+						insertionTarget.insertChild(position + i, kid);
+					} else {
+						super.insertChild(position + i, kid);
+					}
+				}
+			} else {
+				// inserting a non-seq into a seq, do as defaults
+				if(oneChildMode){
+					insertionTarget.insertChild(position, newChild);
+				} else {
+					super.insertChild(position, newChild);
+				}
+			}
+		} else {
+			// insertionTarget == this, and is not in oneChildMode
+			// this is non-seq
+			
+			if(childIsSeq){
+				super.insertChild(position, newChild);
+			} else {
+				// non-seq ad non-seq, make a new seq in the middle
+				VisreedNode seq = this.getWholeGraph().makeRootNode(new SequencePayload());
+				seq.appendChild(newChild);
+				super.insertChild(position, seq);
+			}
+		}
     }
     
     /* (non-Javadoc)

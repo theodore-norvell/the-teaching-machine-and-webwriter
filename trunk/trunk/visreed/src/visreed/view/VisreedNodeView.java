@@ -252,7 +252,9 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
      * @see higraph.view.NodeView#doLayout()
      */
     public void doLayout(){
-        getLayoutManager().layoutLocal(this);
+        // refresh drop zones
+        refreshDropZone();
+        getLayoutManager().layoutNode(this);
     }
     
     public void doTransition(){
@@ -311,63 +313,66 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     }
     
     /** handing entry and exit points */
-    private Point2D entryPoint;
-    private Point2D exitPoint;
+//    private Point2D entryPoint;
+//    private Point2D exitPoint;
+    
+//    private double entryOffsetX = 0.0;
+    private double entryOffsetY = 0.0;
     
     /**
      * Gets the entry point 
      * @return
      */
     public Point2D getEntryPoint(){
-        if(this.entryPoint != null){
-            return this.entryPoint;
-        }
+//        if(this.entryPoint != null){
+//            return this.entryPoint;
+//        }
         Rectangle2D extent = this.getNextShapeExtent();
         Point2D result = new Point2D.Double(
-            extent.getX(), extent.getCenterY()
+            extent.getX(), extent.getCenterY() + entryOffsetY
         );
         
         if(this.getCurrentDirection().equals(Direction.WEST)){
             result = new Point2D.Double(
-                extent.getMaxX(), extent.getCenterY()
+                extent.getMaxX(), extent.getCenterY() + entryOffsetY
             );
         }
         
         return result;
     }
     
-    public void setEntryPoint(Point2D value){
-        if(value != null){
-            this.entryPoint = value;
-        }
-    }
+//    public void setEntryPoint(Point2D value){
+//        this.entryPoint = value;
+//    }
     
     /**
      * Gets the exit point
      * @return
      */
     public Point2D getExitPoint(){
-        if(this.exitPoint != null){
-            return this.exitPoint;
-        }
+//        if(this.exitPoint != null){
+//            return this.exitPoint;
+//        }
         Rectangle2D extent = this.getNextShapeExtent();
         Point2D result = new Point2D.Double(
-            extent.getMaxX(), extent.getCenterY()
+            extent.getMaxX(), extent.getCenterY() + entryOffsetY
         );
         
         if(this.getCurrentDirection().equals(Direction.WEST)){
             result = new Point2D.Double(
-                extent.getX(), extent.getCenterY()
+                extent.getX(), extent.getCenterY() + entryOffsetY
             );
         }
         
         return result;
     }
     
-    public void setExitPoint(Point2D value){
-        if(value != null){
-            this.exitPoint = value;
-        }
+//    public void setExitPoint(Point2D value){
+//        this.exitPoint = value;
+//    }
+    
+    public void setEntryOffsetY(double value){
+    	this.entryOffsetY = value;
     }
     
     /* The stretch handler */
@@ -391,19 +396,30 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         return (stretchVar.get()==null) ? new Rectangle2D.Double() : stretchVar.get();
     }
     
-    /* (non-Javadoc)
-     * @see higraph.view.NodeView#translateNext(double, double)
+    /**
+     * Resets all the previously saved parameters for layout.<br />
+     * This function should be called when changing the structure of the node
+     * and re-layout is needed.
      */
-    @Override   
-    public void translateNext(double dx, double dy) {
-        super.translateNext(dx, dy);
-        if(this.entryPoint != null){
-            entryPoint.setLocation(entryPoint.getX() + dx, entryPoint.getY() + dy);
-        }
-        if(this.exitPoint != null){
-            exitPoint.setLocation(exitPoint.getX() + dx, exitPoint.getY() + dy);
-        }
+    public void resetLayout(){
+    	this.setStretch(null);
+//    	this.setEntryPoint(null);
+//    	this.setExitPoint(null);
     }
+    
+//    /* (non-Javadoc)
+//     * @see higraph.view.NodeView#translateNext(double, double)
+//     */
+//    @Override   
+//    public void translateNext(double dx, double dy) {
+//        super.translateNext(dx, dy);
+//        if(this.entryPoint != null){
+//            entryPoint.setLocation(entryPoint.getX() + dx, entryPoint.getY() + dy);
+//        }
+//        if(this.exitPoint != null){
+//            exitPoint.setLocation(exitPoint.getX() + dx, exitPoint.getY() + dy);
+//        }
+//    }
     
     /* Handles selection */
 
@@ -583,7 +599,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         ZoneView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> zone)
     {
         Assert.check(zone instanceof VisreedDropZone);
-        this.getLayoutManager().layoutZones(this, (VisreedDropZone)zone);
+        this.getLayoutManager().layoutZone(this, (VisreedDropZone)zone);
     }
     
     /**
@@ -674,9 +690,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     @Override
     public void changed(VisreedNode o){
     	// force the view to re-paint
-    	this.entryPoint = null;
-    	this.exitPoint = null;
-    	this.stretchVar.set(null);
+    	this.resetLayout();
     	this.refresh();
     }
 }

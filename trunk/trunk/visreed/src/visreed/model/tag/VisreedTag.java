@@ -34,7 +34,21 @@ implements Tag<VisreedTag, VisreedPayload>, IDescribable{
         REPEAT_RANGE
     };
     
+    /**
+     * Gets all the possible values
+     * @return
+     */
     public static VisreedTag[] values(){
         return VALUES;
+    }
+    
+    /**
+     * Indicates whether the tag can hold only one child. <br />
+     * For most non-sequence tags this value should be true.<br />
+     * For other tags this value should be false.
+     * @return
+     */
+    public boolean canHoldExactOneChild(){
+    	return true;
     }
 }

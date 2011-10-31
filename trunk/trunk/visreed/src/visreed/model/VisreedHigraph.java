@@ -7,15 +7,16 @@
  */
 package visreed.model;
 
+import higraph.model.abstractTaggedClasses.AbstractTaggedHigraph;
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObservable;
-import higraph.model.abstractClasses.AbstractHigraph;
 
 /**
  * @author Xiaoyu Guo
  */
 public interface VisreedHigraph
 extends
-AbstractHigraph <VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> , 
+AbstractTaggedHigraph <VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> , 
 IObservable <VisreedHigraph> {
 }

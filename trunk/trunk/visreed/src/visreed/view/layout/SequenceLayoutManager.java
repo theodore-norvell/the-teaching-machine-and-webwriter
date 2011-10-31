@@ -7,7 +7,6 @@
  */
 package visreed.view.layout;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import tm.utilities.Assert;
@@ -24,7 +23,7 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
 
     private static final double HSPACE_PIXEL = 15;
     private static final double VSPACE_PIXEL = 0;
-    private static final double EMPTY_VSPACE_PIXEL = 10;
+    private static final double EMPTY_VSPACE_PIXEL = 15;
     protected SequenceLayoutManager() {
         super();
     }
@@ -33,7 +32,7 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView)
      */
     @Override
-    public void layoutNode(VisreedNodeView nv, double px, double py) {
+    public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -58,7 +57,9 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
             }
             
             // layout a child at (currentX, 0)
-            layoutNodes(kid, px + currentX, py);
+            kid.doLayout();
+            kid.placeNextHierarchy(currentX, 0);
+            
             childrenExtents[i] = kid.getNextShapeExtent();
             
             // handling baseline
@@ -98,34 +99,25 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
         for(int i = 0; i < numChildren; i++){
             // currently at y=0, go down by moveDownDistances[i]
             
-            /*/
-            nv.getChild(i).placeNext(
-                nv.getChild(i).getNextX(), 
-                nv.getChild(i).getNextY() + VSPACE_PIXEL + moveDownDistances[i]
-            );
-            /*/
             nv.getChild(i).translateNextHierarchy(
                 0, 
                 VSPACE_PIXEL + moveDownDistances[i]
             );
-            //*/
         }
-
-        nv.placeNext(px, py);
         
         Rectangle2D myNextExtent = null;
         // set the size to adapt the children
         if(nv.getNumChildren() == 0){
             myNextExtent = new Rectangle2D.Double(
-                px, 
-                py, 
+                0, 
+                0, 
                 currentX, 
                 maxOffsetTopY + maxBottomOffsetY + EMPTY_VSPACE_PIXEL * 2
             );
         } else {
             myNextExtent = new Rectangle2D.Double(
-                px, 
-                py, 
+                0, 
+                0, 
                 currentX, 
                 maxOffsetTopY + maxBottomOffsetY + VSPACE_PIXEL * 2
             );
@@ -134,16 +126,19 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
         // stretch
         if(numChildren > 0){
             // modify entry and exit point
-            double entryPointY = myNextExtent.getY() + VSPACE_PIXEL + maxOffsetTopY;
-            if(nv.getCurrentDirection().equals(Direction.EAST)){
-                nv.setEntryPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                nv.setExitPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-            } else if (nv.getCurrentDirection().equals(Direction.WEST)){
-                nv.setExitPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                nv.setEntryPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-            }
+//            double entryPointY = myNextExtent.getY() + VSPACE_PIXEL + maxOffsetTopY;
+//            if(nv.getCurrentDirection().equals(Direction.EAST)){
+//                nv.setEntryPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
+//                nv.setExitPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
+//            } else if (nv.getCurrentDirection().equals(Direction.WEST)){
+//                nv.setExitPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
+//                nv.setEntryPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
+//            }
+        	nv.setEntryOffsetY(VSPACE_PIXEL + maxOffsetTopY - (myNextExtent.getHeight() / 2.0));
         }
         nv.setNextShape(myNextExtent);
+
+        nv.placeNext(0, 0);
         
         // TODO unlock(view)
     }
@@ -201,20 +196,20 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
             }
             
             // expand the shape of the SEQ
-            // update the exit point
-            if(view.getCurrentDirection().equals(Direction.EAST)){
-                Point2D oldExitPoint = view.getExitPoint();
-                view.setExitPoint(new Point2D.Double(
-                    oldExitPoint.getX() + stretchExtent.getWidth() - myNextShape.getWidth(),
-                    oldExitPoint.getY()
-                ));
-            } else if (view.getCurrentDirection().equals(Direction.WEST)){
-                Point2D oldEntryPoint = view.getEntryPoint();
-                view.setEntryPoint(new Point2D.Double(
-                    oldEntryPoint.getX() + stretchExtent.getWidth() - myNextShape.getWidth(),
-                    oldEntryPoint.getY()
-                ));
-            }
+//            // update the exit point
+//            if(view.getCurrentDirection().equals(Direction.EAST)){
+//                Point2D oldExitPoint = view.getExitPoint();
+//                view.setExitPoint(new Point2D.Double(
+//                    oldExitPoint.getX() + stretchExtent.getWidth() - myNextShape.getWidth(),
+//                    oldExitPoint.getY()
+//                ));
+//            } else if (view.getCurrentDirection().equals(Direction.WEST)){
+//                Point2D oldEntryPoint = view.getEntryPoint();
+//                view.setEntryPoint(new Point2D.Double(
+//                    oldEntryPoint.getX() + stretchExtent.getWidth() - myNextShape.getWidth(),
+//                    oldEntryPoint.getY()
+//                ));
+//            }
             
             // do the stretch on shape
             Rectangle2D.union(
@@ -246,7 +241,7 @@ public class SequenceLayoutManager extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutZones(visreed.view.VisreedNodeView, visreed.view.VisreedDropZone)
      */
     @Override
-    public void layoutZones(VisreedNodeView view, VisreedDropZone zone){
+    public void layoutZone(VisreedNodeView view, VisreedDropZone zone){
         Rectangle2D extent = view.getNextShapeExtent();
         
         String zoneIdStr = zone.getId();

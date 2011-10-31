@@ -27,7 +27,7 @@ public class OptionalLayoutManager extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView)
      */
     @Override
-    public void layoutNode(VisreedNodeView nv, double px, double py) {
+    public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -46,20 +46,15 @@ public class OptionalLayoutManager extends VisreedNodeLayoutManager {
             kidHeight = kid.getNextShapeExtent().getHeight();
         }
         
-        nv.placeNext(px, py);
-        kid.placeNextHierarchy(px + HSPACE_PIXEL, py + VSPACE_KID_TOP_PIXEL);
+        nv.placeNext(0, 0);
+        kid.placeNextHierarchy(HSPACE_PIXEL, VSPACE_KID_TOP_PIXEL);
 
         // set the padding
-        Rectangle2D myNextExtent = nv.getNextShapeExtent();
-        Rectangle2D.union(
-            myNextExtent,
-            new Rectangle2D.Double(
-                px, 
-                py, 
-                kidWidth + 2 * HSPACE_PIXEL, 
-                kidHeight + VSPACE_KID_TOP_PIXEL + VSPACE_BOTTOM_PIXEL
-            ),
-            myNextExtent
+        Rectangle2D myNextExtent = new Rectangle2D.Double(
+            0, 
+            0, 
+            kidWidth + 2 * HSPACE_PIXEL, 
+            kidHeight + VSPACE_KID_TOP_PIXEL + VSPACE_BOTTOM_PIXEL
         );
         nv.setNextShape(myNextExtent);
     }

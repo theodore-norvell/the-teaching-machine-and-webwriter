@@ -283,6 +283,8 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     	IInteractable top = this.getTopInteractable(stack);
     	if(top != null){
     		top.handleClick(e);
+    		// hack: we do not sure whether the click will change the model.
+    		this.mySubgraphView.refresh();
     	}
     }
     
@@ -512,6 +514,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         // notify the graph container to re-layout
         if(stack.peek() instanceof IInteractable){
             ((IInteractable)stack.peek()).handleDrop(null, data);
+//            this.mySubgraphView.refresh();
             this.myWholeGraph.notifyObservers();
         }
         

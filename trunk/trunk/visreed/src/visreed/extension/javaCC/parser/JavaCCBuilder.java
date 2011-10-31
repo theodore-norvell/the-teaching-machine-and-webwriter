@@ -1,16 +1,11 @@
 package visreed.extension.javaCC.parser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
 import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
 import visreed.extension.javaCC.model.payload.JavaCodeBlockPayload;
 import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
-import visreed.model.VisreedNode;
-import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.VisreedPayload;
 import visreed.parser.VisreedBuilder;
 

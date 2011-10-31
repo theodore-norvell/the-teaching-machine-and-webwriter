@@ -7,10 +7,8 @@
  */
 package visreed.extension.javaCC.view.layout;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
-import visreed.model.Direction;
 import visreed.view.VisreedNodeView;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
@@ -22,7 +20,7 @@ public class RegexpSpecLayoutManager extends VisreedNodeLayoutManager {
     private static final double TITLE_HEIGHT_PIXEL = 15;
     
     @Override
-    public void layoutNode(VisreedNodeView nv, double px, double py) {
+    public void layoutNode(VisreedNodeView nv) {
     	if(nv == null){return;}
 
     	VisreedNodeView kid = nv.getVisreedChild(0);
@@ -42,23 +40,24 @@ public class RegexpSpecLayoutManager extends VisreedNodeLayoutManager {
     		nv.getChild(i).translateNextHierarchy(0, TITLE_HEIGHT_PIXEL);
     	}
     	
-    	nv.placeNextHierarchy(px, py);
+    	nv.placeNextHierarchy(0, 0);
     	newExtent = nv.getNextShapeExtent();
     	
     	// handle entry & exit points
-    	double entryPointY = newExtent.getMaxY() - extent.getHeight() / 2.0;
-    	Point2D.Double entryP = null, exitP = null;
-    	if(nv.getCurrentDirection().equals(Direction.EAST)){
-    		entryP = new Point2D.Double(newExtent.getX(), entryPointY);
-    		exitP = new Point2D.Double(newExtent.getMaxX(), entryPointY);
-    	} else if (nv.getCurrentDirection().equals(Direction.WEST)){
-    		entryP = new Point2D.Double(newExtent.getX(), entryPointY);
-    		exitP = new Point2D.Double(newExtent.getMaxX(), entryPointY);
-    	}
-    	if(entryP != null && exitP != null){
-	    	nv.setEntryPoint(entryP);
-	    	nv.setExitPoint(exitP);
-    	}
+//    	double entryPointY = newExtent.getMaxY() - extent.getHeight() / 2.0;
+//    	Point2D.Double entryP = null, exitP = null;
+//    	if(nv.getCurrentDirection().equals(Direction.EAST)){
+//    		entryP = new Point2D.Double(newExtent.getX(), entryPointY);
+//    		exitP = new Point2D.Double(newExtent.getMaxX(), entryPointY);
+//    	} else if (nv.getCurrentDirection().equals(Direction.WEST)){
+//    		entryP = new Point2D.Double(newExtent.getX(), entryPointY);
+//    		exitP = new Point2D.Double(newExtent.getMaxX(), entryPointY);
+//    	}
+//    	if(entryP != null && exitP != null){
+//	    	nv.setEntryPoint(entryP);
+//	    	nv.setExitPoint(exitP);
+//    	}
+    	nv.setEntryOffsetY(TITLE_HEIGHT_PIXEL / 2.0);
     }
     
     private static RegexpSpecLayoutManager instance = new RegexpSpecLayoutManager();

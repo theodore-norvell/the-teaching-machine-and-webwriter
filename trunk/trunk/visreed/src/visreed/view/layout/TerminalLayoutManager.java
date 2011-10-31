@@ -30,7 +30,7 @@ public class TerminalLayoutManager extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)
      */
     @Override
-    public void layoutNode(VisreedNodeView nv, double px, double py) {
+    public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -59,13 +59,13 @@ public class TerminalLayoutManager extends VisreedNodeLayoutManager {
         );
         nv.setNextShape(extent);
         
-        nv.placeNext(px, py);
+        nv.placeNext(0, 0);
     }
     
     /* (non-Javadoc)
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutZones(visreed.view.VisreedNodeView, visreed.view.VisreedDropZone)
      */
-    public void layoutZones(VisreedNodeView view, VisreedDropZone zone){
+    public void layoutZone(VisreedNodeView view, VisreedDropZone zone){
     	Rectangle2D extent = view.getNextShapeExtent();
     	zone.setNextShape(extent);
     	zone.placeNext(extent.getX(), extent.getY());

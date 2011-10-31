@@ -20,6 +20,7 @@ import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
@@ -136,7 +137,32 @@ public class VisreedBuilder {
      * @return
      */
     public void buildAlternation(int numOfChildren) {
-        buildAndPushNodeWithSeq(new AlternationPayload(), numOfChildren);
+    	// alternation is special, as it comes with 2 empty sequences.
+        if(this.getStackSize() < numOfChildren){
+            return;
+        }
+        VisreedPayload payload = new AlternationPayload();
+        VisreedNode node = this.wholeGraph.makeRootNode(payload);
+        for(int i = 0; i < numOfChildren; i++){
+            VisreedNode kid = this.pop();
+            VisreedNode toInsert = null;
+            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+            	// kid == seq
+                toInsert = kid;
+            } else {
+            	// kid != seq
+                VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
+                seq.insertChild(0, kid);
+                toInsert = seq;
+            }
+            
+            if(i == numOfChildren - 1 || i == numOfChildren - 2){
+            	node.getChild(numOfChildren - i - 1).replace(toInsert);
+            } else {
+            	node.insertChild(2, toInsert);
+            }
+        }
+        this.push(node);
     }
 
     /**
@@ -174,7 +200,7 @@ public class VisreedBuilder {
         	node = this.wholeGraph.makeRootNode(payload);
         } else if(numOfChildren == 1){
             VisreedNode kid = this.pop();
-            if(kid.getPayload() instanceof SequencePayload){
+            if(kid.getTag().equals(VisreedTag.SEQUENCE)){
                 // do nothing
             	node = kid;
             }
@@ -186,12 +212,14 @@ public class VisreedBuilder {
         	node = this.wholeGraph.makeRootNode(payload);
             for(int i = 0; i < numOfChildren; i++){
                 VisreedNode kid = this.pop();
-                if(kid.getPayload() instanceof SequencePayload){
+                if(kid.getTag().equals(VisreedTag.SEQUENCE)){
+                	// kid = sequence
                     int kidChildren = kid.getNumberOfChildren();
                     for(int j = 0; j < kidChildren; j++){
                         node.insertChild(0, kid.getChild(kidChildren - j - 1));
                     }
                 } else {
+                	// kid is not seq
                     node.insertChild(0, kid);
                 }
             }
@@ -215,9 +243,11 @@ public class VisreedBuilder {
         VisreedNode node = this.wholeGraph.makeRootNode(payload);
         for(int i = 0; i < numOfChildren; i++){
             VisreedNode kid = this.pop();
-            if(kid.getPayload() instanceof SequencePayload){
+            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+            	// kid == seq
                 node.insertChild(0, kid);
             } else {
+            	// kid != seq
                 VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
                 seq.insertChild(0, kid);
                 node.insertChild(0, seq);
