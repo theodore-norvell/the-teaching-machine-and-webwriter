@@ -7,7 +7,6 @@
  */
 package visreed.extension.javaCC.view.layout;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import visreed.model.Direction;
@@ -33,7 +32,7 @@ public class ProductionLayoutManager extends VisreedNodeLayoutManager {
 	 * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)
 	 */
 	@Override
-	public void layoutNode(VisreedNodeView nv, double px, double py) {
+	public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -58,7 +57,8 @@ public class ProductionLayoutManager extends VisreedNodeLayoutManager {
             }
             
             // layout a child at (currentX, 0)
-            layoutNodes(kid, px + currentX, py);
+            kid.doLayout();
+            kid.placeNextHierarchy(currentX, 0);
             childrenExtents[i] = kid.getNextShapeExtent();
             
             // handling baseline
@@ -98,13 +98,13 @@ public class ProductionLayoutManager extends VisreedNodeLayoutManager {
             );
         }
 
-        nv.placeNext(px, py);
+        nv.placeNext(0, 0);
         
         Rectangle2D myNextExtent = null;
         // set the size to adapt the children
         myNextExtent = new Rectangle2D.Double(
-            px, 
-            py, 
+            0, 
+            0, 
             currentX, 
             maxOffsetTopY + maxBottomOffsetY + VSPACE_TOP_PIXEL
         );
@@ -113,14 +113,7 @@ public class ProductionLayoutManager extends VisreedNodeLayoutManager {
         if(nv instanceof VisreedNodeView){
             if(numChildren > 0){
                 // modify entry and exit point
-                double entryPointY = myNextExtent.getY() + VSPACE_TOP_PIXEL + maxOffsetTopY;
-                if(nv.getCurrentDirection().equals(Direction.EAST)){
-                    ((VisreedNodeView)nv).setEntryPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                    ((VisreedNodeView)nv).setExitPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-                } else if (nv.getCurrentDirection().equals(Direction.WEST)){
-                    ((VisreedNodeView)nv).setExitPoint(new Point2D.Double(myNextExtent.getX(), entryPointY));
-                    ((VisreedNodeView)nv).setEntryPoint(new Point2D.Double(myNextExtent.getMaxX(), entryPointY));
-                }
+                nv.setEntryOffsetY(VSPACE_TOP_PIXEL + maxOffsetTopY - (myNextExtent.getHeight() / 2.0));
             }
         }
         nv.setNextShape(myNextExtent);

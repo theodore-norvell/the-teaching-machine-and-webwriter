@@ -7,13 +7,14 @@
  */
 package visreed.model;
 
-import higraph.model.abstractClasses.AbstractWholeGraph;
+import higraph.model.abstractTaggedClasses.AbstractTaggedWholeGraph;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import tm.backtrack.BTTimeManager;
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObserver;
 
 /**
@@ -21,7 +22,7 @@ import visreed.pattern.IObserver;
  *
  */
 public class VisreedWholeGraph
-extends AbstractWholeGraph<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
+extends AbstractTaggedWholeGraph<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
 implements VisreedHigraph{
 
     public VisreedWholeGraph(BTTimeManager timeMan) {

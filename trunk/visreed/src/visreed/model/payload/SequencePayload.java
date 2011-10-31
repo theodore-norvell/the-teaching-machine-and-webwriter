@@ -38,7 +38,7 @@ public class SequencePayload extends VisreedPayload {
 		
 		for(int i = 0; i < numOfChildren; i++){
 			if(i > 0){
-				result.append(";");
+				result.append(" ");
 			}
 			
 			VisreedNode currentChildN = currentNode.getChild(i);

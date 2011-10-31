@@ -25,27 +25,20 @@ public class SyntaxTreeLayoutManager extends
      * are affected.
      * 
      * @param n the nodeview to be layed out
-     * @param px the x and y co-ordinates where the
-     * @param py  nodeview should be moved, px >=0, py >= 0
-     * @return the width of layout
      */
-    public void layoutNode(VisreedNodeView n, double px, double py){
-        double shapeWidth = n.getNextShapeExtent().getWidth();  // width of the shape of a single node
-		double myHeight = n.getNextShapeExtent().getHeight();
+    public void layoutNode(VisreedNodeView n){
+		double shapeWidth = n.getNextShapeExtent().getWidth();  // width of the shape of a single node
+		double myHeight = n.getNextHeight();
 		int kids = n.getNumChildren();
-		
-		if(n.getDislocation() != null){
-    		px += n.getDislocation().getX();  // Currently dislocations are not allowed to be
-    		py += n.getDislocation().getY();	// negative so px, py cannot be negative
-		}
-		
-		double localX = px;
+				
+		double localX = 0;
 		double offset = shapeWidth/2.0;
 		// put kids underneath stepping over from left
 		for (int i = 0; i < kids; i++){
 			VisreedNodeView kid = n.getVisreedChild(i);
-			layoutNodes(kid, localX, py + 2 * myHeight);
-			localX +=kid.getNextExtent().getWidth() + offset;			
+			kid.doLayout();
+			kid.placeNextHierarchy(localX, 2 * myHeight);
+			localX += kid.getNextExtent().getWidth() + offset;
 		}
 		if (kids > 0) {
 			double shapeCenterX = n.getChild(kids/2).getNextShapeExtent().getCenterX(); // center of middle kids shape
@@ -53,24 +46,24 @@ public class SyntaxTreeLayoutManager extends
 				shapeCenterX = (shapeCenterX + n.getChild(kids/2-1).getNextShapeExtent().getCenterX())/2.0; 
 			}
 			double leftToCenterX = n.getNextShapeExtent().getCenterX()-n.getNextX();
-			n.placeNext(shapeCenterX - leftToCenterX, py);
-		} else{
-			n.placeNext(px, py);
-		}
+			n.placeNext(shapeCenterX - leftToCenterX, 0);
+		} else
+			n.placeNext(0, 0);
+		Rectangle2D r = n.getNextExtent(); // Correct for any excursion out of the positive quadrant
+		double dx = r.getMinX();
+		double dy = r.getMinY();
+		
+		dx = (dx < 0) ? -dx : 0;
+		dy = (dy < 0) ? -dy : 0;
+				
+		// Now apply any correction needed
+		if (dx!=0 || dy !=0)
+			n.translateNextHierarchy(dx, dy);
 	
 		for (int i = 0; i < kids; i++){
 			layoutBranch(n, n.getChild(i));
 		}
 		
-		if(kids > 0){
-	        Rectangle2D myNextExtent = new Rectangle2D.Double(
-	            px, 
-	            py, 
-	            localX - px - offset, 
-	            n.getChild(kids - 1).getNextShapeExtent().getMaxY() - py
-	        );
-//	        n.setNextShape(myNextExtent);
-		}
     }
     
     private static final SyntaxTreeLayoutManager instance = new SyntaxTreeLayoutManager();

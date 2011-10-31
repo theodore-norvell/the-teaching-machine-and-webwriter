@@ -33,6 +33,11 @@ public class AlternationTag extends VisreedTag {
     }
     
     @Override
+    public boolean canHoldExactOneChild(){
+    	return false;
+    }
+    
+    @Override
     public boolean contentModel(List<VisreedTag> seq) {
         // Alternation must have 2 or more children, all must be sequences.
         if(seq == null || seq.size() < 2){

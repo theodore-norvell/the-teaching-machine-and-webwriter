@@ -57,8 +57,7 @@ public class RepeatRangeTag extends VisreedTag {
 	 */
 	@Override
 	public List<VisreedTag> defaultTagSequence() {
-		ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(2);
-		seq.add(SEQUENCE);
+		ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(1);
 		seq.add(SEQUENCE);
 		return seq;
 	}

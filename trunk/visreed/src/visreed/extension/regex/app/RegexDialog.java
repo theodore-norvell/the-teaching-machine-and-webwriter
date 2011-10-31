@@ -34,6 +34,7 @@ import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.KleenePlusPayload;
 import visreed.model.payload.KleeneStarPayload;
 import visreed.model.payload.OptionalPayload;
+import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 import visreed.model.payload.VisreedPayload;
@@ -466,8 +467,11 @@ public class RegexDialog extends JDialog implements IGraphContainer {
                 root = wholeGraph.makeRootNode(new SequencePayload());
                 subgraph.addTop(root);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{4}"));
-                root.insertChild(0, leaf);
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(4));
+                root.insertChild(0, current);
+                
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
+                current.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -476,8 +480,11 @@ public class RegexDialog extends JDialog implements IGraphContainer {
                 current.insertChild(0, seq);
                 root.insertChild(0, current);
                 
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(3));
+                root.insertChild(0, current);
+                
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{3}"));
-                root.insertChild(0, leaf);
+                current.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -492,9 +499,12 @@ public class RegexDialog extends JDialog implements IGraphContainer {
                 seq.insertChild(0, leaf);
                 current.insertChild(0, seq);
                 root.insertChild(0, current);
+
+                current = wholeGraph.makeRootNode(new RepeatRangePayload(2));
+                root.insertChild(0, current);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d{2}"));
-                root.insertChild(0, leaf);
+                leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
+                current.insertChild(0, leaf);
                 
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("[1-9]"));
                 root.insertChild(0, leaf);

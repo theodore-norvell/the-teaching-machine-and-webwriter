@@ -57,6 +57,13 @@ public class InsertChildDropZone extends VisreedDropZone {
             return;
         }
         
+        boolean isCopy = false;
+        /*/
+        isCopy = true;
+        /*/
+        isCopy = (e != null && ((e.getModifiers() & MouseEvent.CTRL_DOWN_MASK) != 0));
+        //*/
+        
         VisreedWholeGraph wg = this.getHigraphView().getHigraph().getWholeGraph();
         wg.reduceSelection();
         
@@ -69,28 +76,48 @@ public class InsertChildDropZone extends VisreedDropZone {
         	}
         }
         boolean targetIsSeq = false;
-        if(thisNode.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+        if(thisNode.getTag().equals(VisreedTag.SEQUENCE)){
             targetIsSeq = true;
         }
         
         // creates a temporary sequence and handle them all
         
+        // all nodes in seq form
         ArrayList<VisreedNode> seqList = new ArrayList<VisreedNode>();
+        // all nodes which should be deleted
         ArrayList<VisreedNode> deleteList = new ArrayList<VisreedNode>();
+        ArrayList<VisreedNode> reLayoutList = new ArrayList<VisreedNode>();
+        
         for(int i = 0; i < nodes.size(); i++){
             VisreedNode child = nodes.get(i);
             if(child == null){
                 continue;
             }
-            if(child.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+        	VisreedNode childParent = child.getParent();
+            if(child.getTag().equals(VisreedTag.SEQUENCE)){
                 if(targetIsSeq){
                     // SEQ -> SEQ
                     for(int j = 0; j < child.getNumberOfChildren(); j++){
                         seqList.add(child.getChild(j).duplicate());
                     }
-                    if(child.getNumberOfChildren() == 1){
-                    	// TODO and the child.parent == KLN
+                    // deletion
+                    if(child.getTag().canHoldExactOneChild()){
+                    	// dragging the content out of a RepeatRange, preserve the 
+                    	// original SEQ inside the RepeatRange
                     	deleteList.add(child.getChild(0));
+                    } else if (childParent != null){
+	                	if(childParent.getTag().equals(VisreedTag.ALTERNATION)){
+	                		 // dragging a direct branch of ALT to elsewhere
+	                		if(childParent.getNumberOfChildren() > 2){
+	                			// dragging a branch out
+	                			deleteList.add(child);
+	                		} else {
+	                			// dragging all children of a branch out, but the branch remains
+	                			for(int j = 0; j < child.getNumberOfChildren(); j++){
+	                				deleteList.add(child.getChild(j));
+	                			}
+	                		}
+	                	}
                     } else {
                     	deleteList.add(child);
                     }
@@ -112,6 +139,9 @@ public class InsertChildDropZone extends VisreedDropZone {
                     deleteList.add(child);
                 }
             }
+            if(childParent != null){
+            	reLayoutList.add(childParent);
+            }
         }
         // now inserts all the temporary nodes into the position
         int position = this.getNodeNumber();
@@ -120,12 +150,21 @@ public class InsertChildDropZone extends VisreedDropZone {
             thisNode.insertChild(position + i, seqList.get(i));
         }
         
-        for(int i = 0; i < deleteList.size(); i++){
-        	VisreedNode parent = deleteList.get(i).getParent();
-        	if(parent != null){
-        		parent.notifyObservers();
-        	}
-        	deleteList.get(i).delete();
+        if(!isCopy){
+        	// remove all the listed nodes
+	        for(int i = 0; i < deleteList.size(); i++){
+	        	VisreedNode parent = deleteList.get(i).getParent();
+	        	deleteList.get(i).delete();
+	        	if(parent != null){
+	        		parent.notifyObservers();
+	        	}
+	        }
         }
+        
+        // re-layout
+        for(VisreedNode n : reLayoutList){
+        	n.notifyObservers();
+        }
+        this.getHigraphView().refresh();
     }
 }

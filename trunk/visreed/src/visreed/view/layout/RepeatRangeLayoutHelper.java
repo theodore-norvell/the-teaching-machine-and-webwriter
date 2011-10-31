@@ -32,7 +32,7 @@ public class RepeatRangeLayoutHelper extends VisreedNodeLayoutManager {
 	 * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)
 	 */
 	@Override
-	public void layoutNode(VisreedNodeView nv, double px, double py) {
+	public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -48,21 +48,16 @@ public class RepeatRangeLayoutHelper extends VisreedNodeLayoutManager {
             kidHeight = kid.getNextShapeExtent().getHeight();
         }
         
-        nv.placeNext(px, py);
+        nv.placeNext(0, 0);
         
-        kid.placeNextHierarchy(px + HSPACE_PIXEL, py + VSPACE_PIXEL);
+        kid.placeNextHierarchy(HSPACE_PIXEL, VSPACE_PIXEL);
         
         // set the padding
-        Rectangle2D myNextExtent = nv.getNextShapeExtent();
-        Rectangle2D.union(
-            myNextExtent,
-            new Rectangle2D.Double(
-                px, 
-                py, 
-                kidWidth + 2 * HSPACE_PIXEL, 
-                kidHeight + VSPACE_PIXEL * 2
-            ),
-            myNextExtent
+        Rectangle2D myNextExtent = new Rectangle2D.Double(
+            0, 
+            0, 
+            kidWidth + 2 * HSPACE_PIXEL, 
+            kidHeight + VSPACE_PIXEL * 2
         );
         nv.setNextShape(myNextExtent);
 	}

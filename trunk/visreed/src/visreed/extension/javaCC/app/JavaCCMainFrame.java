@@ -180,7 +180,7 @@ public class JavaCCMainFrame extends VisreedMainFrame {
                 
                 // branch 1
                 seq = wholeGraph.makeRootNode(new SequencePayload());
-                alt.appendChild(seq);
+                alt.getChild(1).replace(seq);
                 
                 regspec = wholeGraph.makeRootNode(new RegexpSpecPayload("Spec Name"));
                 seq.appendChild(regspec);
@@ -193,7 +193,7 @@ public class JavaCCMainFrame extends VisreedMainFrame {
                 
                 // branch 2
                 seq = wholeGraph.makeRootNode(new SequencePayload());
-                alt.appendChild(seq);
+                alt.getChild(0).replace(seq);
                 
                 regspec = wholeGraph.makeRootNode(new RegexpSpecPayload("Spec 2"));
                 seq.appendChild(regspec);

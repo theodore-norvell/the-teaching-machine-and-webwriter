@@ -129,4 +129,14 @@ public class AlternationNodeView extends VisreedNodeView {
             zone = this.makeAndAddInsertChildDropZone(ID_PREFIX_DROPZONE_NODE + (i+1), i+1);
         }
     }
+    
+    @Override
+    public void resetLayout(){
+    	super.resetLayout();
+    	
+    	for(int i = 0; i < this.getNumChildren(); i++){
+    		VisreedNodeView child = this.getVisreedChild(i);
+    		child.resetLayout();
+    	}
+    }
 }

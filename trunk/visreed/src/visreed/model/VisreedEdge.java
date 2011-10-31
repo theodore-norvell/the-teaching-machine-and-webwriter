@@ -7,8 +7,9 @@
  */
 package visreed.model;
 
+import higraph.model.abstractTaggedClasses.AbstractTaggedEdge;
 import visreed.model.payload.VisreedPayload;
-import higraph.model.abstractClasses.AbstractEdge;
+import visreed.model.tag.VisreedTag;
 
 /**
  * RegexEdges are not used in this project.
@@ -16,7 +17,7 @@ import higraph.model.abstractClasses.AbstractEdge;
  */
 public class VisreedEdge
 extends
-AbstractEdge<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> {
+AbstractTaggedEdge<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> {
 
     protected VisreedEdge(
         VisreedNode source, 

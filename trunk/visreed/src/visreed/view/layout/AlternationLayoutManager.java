@@ -36,8 +36,10 @@ extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)
      */
     @Override
-    public void layoutNode(VisreedNodeView view, double px, double py) {
+    public void layoutNode(VisreedNodeView view) {
         double myHeight = view.getNextShapeExtent().getHeight();
+        double px = 0.0;
+        double py = 0.0;
         int kids = view.getNumChildren();
         
         if(view.getDislocation() != null){
@@ -54,7 +56,8 @@ extends VisreedNodeLayoutManager {
             if(i > 0){
                 localY += VSPACE_BETWEEN_LEVEL_PIXEL;
             }
-            layoutNodes(kid, px + HSPACE_PIXEL, localY);
+            kid.doLayout();
+            kid.placeNextHierarchy(px + HSPACE_PIXEL, localY);
             
             Rectangle2D kidExtent = kid.getNextShapeExtent();
             localY += kidExtent.getHeight();
@@ -93,19 +96,13 @@ extends VisreedNodeLayoutManager {
         } else {
             view.placeNext(px, py);
         }
-
-        myNextExtent = view.getNextShapeExtent();
-        
         myHeight = localY - py;
-        Rectangle2D.union(
-            myNextExtent, 
-            new Rectangle2D.Double(
-                px, 
-                py, 
-                maxChildWidth + 2 * HSPACE_PIXEL, 
-                myHeight + VSPACE_BETWEEN_LEVEL_PIXEL
-            ), 
-            myNextExtent
+
+        myNextExtent = new Rectangle2D.Double(
+            px, 
+            py, 
+            maxChildWidth + 2 * HSPACE_PIXEL, 
+            myHeight + VSPACE_BETWEEN_LEVEL_PIXEL
         );
         view.setNextShape(myNextExtent);
     }
@@ -114,7 +111,7 @@ extends VisreedNodeLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutZones(visreed.view.VisreedNodeView, visreed.view.VisreedDropZone)
      */
     @Override
-    public void layoutZones(VisreedNodeView view, VisreedDropZone zone){
+    public void layoutZone(VisreedNodeView view, VisreedDropZone zone){
         Rectangle2D extent = view.getNextShapeExtent();
         double zoneX = extent.getX();
         double zoneWidth = extent.getWidth();

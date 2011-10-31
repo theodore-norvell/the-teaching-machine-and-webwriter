@@ -32,10 +32,10 @@ public class JavaCCLinkLayoutManager extends TerminalLayoutManager {
 	 * @see visreed.view.layout.TerminalLayoutManager#layoutZones(visreed.view.VisreedNodeView, visreed.view.VisreedDropZone)
 	 */
 	@Override
-	public void layoutZones(VisreedNodeView view, VisreedDropZone zone){
+	public void layoutZone(VisreedNodeView view, VisreedDropZone zone){
 		String zoneIdStr = zone.getId();
 		if(zoneIdStr.equals(TerminalNodeView.ID_DROPZONE_TERMINAL) ){
-			super.layoutZones(view, zone);
+			super.layoutZone(view, zone);
 		} else if (zoneIdStr.equals(JavaCCLinkNodeView.ID_DROPZONE_GO_TO_DEFINITION)){
 			Rectangle2D parentExtent = view.getNextShapeExtent();
 			Rectangle2D shape = new Rectangle.Double(
@@ -52,7 +52,7 @@ public class JavaCCLinkLayoutManager extends TerminalLayoutManager {
      * @see visreed.view.layout.VisreedNodeLayoutManager#layoutNode(visreed.view.VisreedNodeView, double, double)
      */
     @Override
-    public void layoutNode(VisreedNodeView nv, double px, double py) {
+    public void layoutNode(VisreedNodeView nv) {
         if(nv == null){
             return;
         }
@@ -84,7 +84,7 @@ public class JavaCCLinkLayoutManager extends TerminalLayoutManager {
         );
         nv.setNextShape(extent);
         
-        nv.placeNext(px, py);
+        nv.placeNext(0, 0);
     }
 	
     private static JavaCCLinkLayoutManager instance = new JavaCCLinkLayoutManager();

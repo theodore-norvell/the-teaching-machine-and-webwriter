@@ -40,6 +40,10 @@ public class TerminalPayload extends VisreedPayload {
 		this.setTerminal(terminal + "");
 	}
 
+	public String getEscapedTerminal(){
+		return this.terminal.replaceAll("([\\(\\)\\.\\+\\*\\?])", "\\\\$1");
+	}
+	
     /* (non-Javadoc)
      * @see higraph.model.interfaces.Payload#copy()
      */
@@ -54,7 +58,7 @@ public class TerminalPayload extends VisreedPayload {
 	@Override
 	public String format(VisreedNode currentNode) {
 		// no child for terminalNode
-		return this.terminal;
+		return getEscapedTerminal();
 	}
     
 	/* (non-Javadoc)

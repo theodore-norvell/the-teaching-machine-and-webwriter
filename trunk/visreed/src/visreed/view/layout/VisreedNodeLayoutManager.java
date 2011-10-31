@@ -35,11 +35,9 @@ public abstract class VisreedNodeLayoutManager
     /**
      * Recursively layout the children of the nodeview, bottom-up.
      * @param nv the desired nodeview
-     * @param px
-     * @param py
      * @return the extent of the node
      */
-    public abstract void layoutNode(VisreedNodeView nv, double px, double py);
+    public abstract void layoutNode(VisreedNodeView nv);
     
     /**
      * Gets a {@link visreed.view.layout.VisreedNodeLayoutManager} from a given {@link visreed.view.VisreedNodeView}.
@@ -62,7 +60,7 @@ public abstract class VisreedNodeLayoutManager
         if(iterator.hasNext()){
             NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> top = iterator.next();
             
-            layoutLocal(top);
+            top.doLayout();
         }
         
         if(hgv instanceof VisreedHigraphView){
@@ -76,21 +74,8 @@ public abstract class VisreedNodeLayoutManager
     @Override
     public void layoutLocal(NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nv){
         if(nv instanceof VisreedNodeView){
-            this.layoutNodes((VisreedNodeView)nv, 0., 0.);
+            this.layoutNode((VisreedNodeView)nv);
         }
-    }
-    
-    /**
-     * @param nv
-     * @param px
-     * @param py
-     */
-    public final void layoutNodes(VisreedNodeView nv, double px, double py){
-        // refresh drop zones
-        nv.refreshDropZone();
-        nv.getLayoutManager().layoutNode(nv, px, py);
-        nv.moveZones();
-        //v.doLayout(0, 0);
     }
     
     /**
@@ -105,8 +90,7 @@ public abstract class VisreedNodeLayoutManager
      * @param view
      * @param zone
      */
-    public void layoutZones(VisreedNodeView view, VisreedDropZone zone) {
+    public void layoutZone(VisreedNodeView view, VisreedDropZone zone) {
         // TODO Auto-generated method stub
-        
     }
 }

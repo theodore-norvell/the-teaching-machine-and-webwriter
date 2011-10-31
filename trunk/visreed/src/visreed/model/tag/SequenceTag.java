@@ -18,7 +18,7 @@ import visreed.model.payload.VisreedPayload;
  * 
  */
 public class SequenceTag extends VisreedTag {
-    SequenceTag(){
+    protected SequenceTag(){
         super();
     }
     
@@ -30,6 +30,11 @@ public class SequenceTag extends VisreedTag {
     @Override
     public String toString(){
         return "SEQUENCE";
+    }
+    
+    @Override
+    public boolean canHoldExactOneChild(){
+    	return false;
     }
     
     @Override
