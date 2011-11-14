@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.view;
+package visreed.view.layout;
 
 import visreed.model.Direction;
 

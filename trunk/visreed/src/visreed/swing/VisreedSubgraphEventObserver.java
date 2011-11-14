@@ -386,9 +386,6 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
             result =  java.awt.dnd.DnDConstants.ACTION_NONE ;
         } else if (this.isSelectedSource()){
             result = java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE;
-        } else if (false) {
-            // TODO: decide whether we drags from the toolbar
-            result = java.awt.dnd.DnDConstants.ACTION_COPY;
         } else {
             result =  java.awt.dnd.DnDConstants.ACTION_NONE;
         }
@@ -440,6 +437,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
             		System.out.println( "...data flavor is " + f) ; 
             	}
             }
+            
             result = supportObj.isDataFlavorSupported( ViewTransferObject.theViewDataFlavor ) ;
             result |= supportObj.isDataFlavorSupported( VisreedNodeTransferObject.theNodeDataFlavor ) ;
         
@@ -485,7 +483,8 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     @Override
     public boolean importData(
         Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack,
-        TransferHandler.TransferSupport support) {
+        TransferHandler.TransferSupport support
+    ) {
     	if(inDebugMode){
     		System.out.println( "Import data") ;
     	}
@@ -513,7 +512,7 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         
         // notify the graph container to re-layout
         if(stack.peek() instanceof IInteractable){
-            ((IInteractable)stack.peek()).handleDrop(null, data);
+            ((IInteractable)stack.peek()).handleDrop(support, data);
 //            this.mySubgraphView.refresh();
             this.myWholeGraph.notifyObservers();
         }

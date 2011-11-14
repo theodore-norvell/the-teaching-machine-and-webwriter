@@ -112,8 +112,8 @@ implements ISelectable, IObservable<VisreedNode> {
 			// inserting a node into a seq node
 			if(childIsSeq){
 				// inserting a seq into a seq
-				for(int i = 0; i < newChild.getNumberOfChildren(); i++){
-					VisreedNode kid = newChild.getChild(i);
+				for(int i = 0; newChild.getNumberOfChildren() > 0; i++){
+					VisreedNode kid = newChild.getChild(0);
 					kid.detach();
 					if(oneChildMode){
 						insertionTarget.insertChild(position + i, kid);

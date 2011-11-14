@@ -18,7 +18,7 @@ import visreed.model.payload.VisreedPayload;
  *
  */
 public class RepeatRangeTag extends VisreedTag {
-	RepeatRangeTag(){
+	protected RepeatRangeTag(){
 		super();
 	}
     
@@ -80,7 +80,7 @@ public class RepeatRangeTag extends VisreedTag {
     
     private static final RepeatRangeTag instance = new RepeatRangeTag();
     
-    public static final RepeatRangeTag getInstance(){
+    protected static RepeatRangeTag getInstance(){
         return instance;
     }
 

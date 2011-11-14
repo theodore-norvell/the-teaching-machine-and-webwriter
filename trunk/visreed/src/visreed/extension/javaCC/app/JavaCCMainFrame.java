@@ -41,6 +41,7 @@ import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.TreeView.VisreedOutlineTreeView;
 import visreed.swing.properties.PropertyEditor;
+import visreed.swing.properties.PropertyTableModel;
 import visreed.view.SyntaxViewFactory;
 
 /**
@@ -59,6 +60,8 @@ public class JavaCCMainFrame extends VisreedMainFrame {
     }
     
 	private static final long serialVersionUID = -8133879588309521708L;
+	private PropertyEditor propertiesEditor;
+	private Object previousSelectedNodeView = null;
 
 	public JavaCCMainFrame() {
 		super();
@@ -80,7 +83,7 @@ public class JavaCCMainFrame extends VisreedMainFrame {
 		super.initializeSidePanel();
 		
 		// create and add properties panel
-		PropertyEditor propertiesEditor = new PropertyEditor();
+		this.propertiesEditor = new PropertyEditor(new PropertyTableModel(null));
 		propertiesEditor.setFillsViewportHeight(true);
 		
 		JScrollPane propertiesPanel = new JScrollPane(propertiesEditor);
@@ -263,4 +266,24 @@ public class JavaCCMainFrame extends VisreedMainFrame {
         // register this as the observer
         this.wholeGraph.registerObserver(this);
     }
+	
+	/* (non-Javadoc)
+	 * @see visreed.app.VisreedMainFrame#refreshHook()
+	 */
+	@Override
+	protected void refreshHook(){
+		if(this.wholeGraph.getSelectionNodes().size() == 1){
+			VisreedNode n = wholeGraph.getSelectionNodes().get(0);
+			Object nv = mainGraphView.getNodeView(n);
+			
+			if(nv == null || nv.equals(previousSelectedNodeView)){
+				return;
+			}
+			
+			this.propertiesEditor.setModel(new PropertyTableModel(nv));
+			previousSelectedNodeView = nv;
+		} else {
+			previousSelectedNodeView = null;
+		}
+	}
 }

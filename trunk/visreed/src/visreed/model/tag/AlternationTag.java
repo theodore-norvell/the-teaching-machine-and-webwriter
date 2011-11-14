@@ -18,7 +18,7 @@ import visreed.model.payload.VisreedPayload;
  *
  */
 public class AlternationTag extends VisreedTag {
-    AlternationTag (){
+    protected AlternationTag (){
         super();
     }
     
@@ -38,18 +38,8 @@ public class AlternationTag extends VisreedTag {
     }
     
     @Override
-    public boolean contentModel(List<VisreedTag> seq) {
-        // Alternation must have 2 or more children, all must be sequences.
-        if(seq == null || seq.size() < 2){
-            return false;
-        }
-
-        for(int i = 0; i < seq.size(); i++){
-            if(!(seq.get(i).equals(SequenceTag.getInstance()))){
-                return false;
-            }
-        }
-        return true;
+    protected boolean contentModelHook(final List<VisreedTag> childTags){
+    	return childTags.size() >= 2;
     }
 
     @Override
@@ -72,7 +62,7 @@ public class AlternationTag extends VisreedTag {
     
     private static final AlternationTag instance = new AlternationTag();
     
-    public static final AlternationTag getInstance(){
+    protected static AlternationTag getInstance(){
         return instance;
     }
 }

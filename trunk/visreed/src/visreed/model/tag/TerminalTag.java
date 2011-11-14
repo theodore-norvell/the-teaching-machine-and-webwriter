@@ -60,7 +60,7 @@ public class TerminalTag extends VisreedTag {
     
     private static final TerminalTag instance = new TerminalTag();
     
-    public static TerminalTag getInstance(){
+    protected static TerminalTag getInstance(){
         return instance;
     }
 }

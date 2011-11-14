@@ -476,11 +476,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 current = wholeGraph.makeRootNode(new RepeatRangePayload(4));
                 root.insertChild(0, current);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                current.insertChild(0, seq);
-                
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
-                seq.insertChild(0, leaf);
+                current.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -492,11 +489,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 current = wholeGraph.makeRootNode(new RepeatRangePayload(3));
                 root.insertChild(0, current);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                current.insertChild(0, seq);
-                
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
-                seq.insertChild(0, leaf);
+                current.insertChild(0, leaf);
                 
                 current = wholeGraph.makeRootNode(new OptionalPayload());
                 seq = wholeGraph.makeRootNode(new SequencePayload());
@@ -515,11 +509,8 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 current = wholeGraph.makeRootNode(new RepeatRangePayload(2));
                 root.insertChild(0, current);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                current.insertChild(0, seq);
-                
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("\\d"));
-                seq.insertChild(0, leaf);
+                current.insertChild(0, leaf);
                 
                 leaf = wholeGraph.makeRootNode(new TerminalPayload("[1-9]"));
                 root.insertChild(0, leaf);
@@ -616,6 +607,11 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         this.regexText.refreshFromModel();
     }
 
+	/**
+	 * called after the wholegraph has changed.
+	 */
+	protected void refreshHook() {}
+
     public static void main(String[] args) {
         SwingHelper.setSystemLookAndFeel();
         SwingUtilities.invokeLater(new Runnable() {
@@ -630,9 +626,10 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
      * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
      */
     @Override
-    public void changed(VisreedHigraph regexHigraph) {
+    public final void changed(VisreedHigraph regexHigraph) {
         if(regexHigraph == this.wholeGraph){
             this.privateRefreshGraph();
+            this.refreshHook();
         }
     }
 }

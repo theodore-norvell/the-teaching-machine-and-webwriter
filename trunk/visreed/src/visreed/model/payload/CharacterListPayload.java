@@ -22,14 +22,14 @@ import visreed.view.VisreedNodeView;
  * @author Xiaoyu Guo
  *
  */
-public class CharacterRangePayload extends TerminalPayload {
+public class CharacterListPayload extends TerminalPayload {
 
-	public CharacterRangePayload(char value) {
+	public CharacterListPayload(char value) {
 		super(value);
 		this.minValue = value;
 		this.hasMaxValue = false;
 	}
-	public CharacterRangePayload(char minValue, char maxValue, boolean exclude) {
+	public CharacterListPayload(char minValue, char maxValue, boolean exclude) {
 		super(exclude?"~":"" + minValue + "-" + maxValue);
 		this.minValue = minValue;
 		this.hasMaxValue = true;
@@ -37,7 +37,7 @@ public class CharacterRangePayload extends TerminalPayload {
 		this.exclude = exclude;
 	}
 
-	public CharacterRangePayload(String valueStr) {
+	public CharacterListPayload(String valueStr) {
 		super(valueStr);
 		char minValue = ' ';
 		if(valueStr.length() > 0){
@@ -46,7 +46,7 @@ public class CharacterRangePayload extends TerminalPayload {
 		this.minValue = minValue;
 		this.hasMaxValue = false;
 	}
-	public CharacterRangePayload(String minValueStr, String maxValueStr, boolean exclude) {
+	public CharacterListPayload(String minValueStr, String maxValueStr, boolean exclude) {
 		super(exclude?"~":"" + minValueStr + "-" + maxValueStr);
 		
 		char minValue = ' ';

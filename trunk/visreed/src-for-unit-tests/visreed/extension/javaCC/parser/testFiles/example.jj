@@ -1,0 +1,32 @@
+PARSER_BEGIN(PhoneParser)
+public class PhoneParser {
+}
+PARSER_END(PhoneParser)
+
+void bnf_production() : {
+  String name;
+  VisreedPayload pl;
+  List excName;
+}{
+  AccessModifier(pl)
+  ResultType(pl)
+  name = identifier()
+  {pl.setName(name);}
+  FormalParameters(pl)
+  [ "throws" Exception(pl) ]
+  ":"
+  declaration = Block()
+  { pl.setDeclaration(declaration); }
+  "{" expansion_choices() "}"
+  {
+     builder.buildProduction(pl, 1);
+  }
+}
+
+void AccessModifier() : {}{<EOF>}
+void ResultType() : {}{<EOF>}
+void identifier() : {}{<EOF>}
+void FormalParameters() : {}{<EOF>}
+void Exception() : {}{<EOF>}
+void Block() : {}{<EOF>}
+void expansion_choices() : {}{<EOF>}

@@ -77,14 +77,14 @@ public class RegexJList extends JList {
         VisreedPayload pl = selectedData.getTag().defaultPayload();
         
         VisreedNode node = this.wholeGraph.makeRootNode(pl);
-        
-        VisreedTag tag = selectedData.getTag();
-        if(tag.equals(VisreedTag.ALTERNATION)){
-            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
-            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
-        } else if (tag.equals(VisreedTag.KLEENE_PLUS) || tag.equals(VisreedTag.KLEENE_STAR) || tag.equals(VisreedTag.OPTIONAL)){
-            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
-        }
+//        
+//        VisreedTag tag = selectedData.getTag();
+//        if(tag.equals(VisreedTag.ALTERNATION)){
+//            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
+//            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
+//        } else if (tag.equals(VisreedTag.KLEENE_PLUS) || tag.equals(VisreedTag.KLEENE_STAR) || tag.equals(VisreedTag.OPTIONAL)){
+//            node.appendChild(this.wholeGraph.makeRootNode(new SequencePayload()));
+//        }
 
         return node;
     }

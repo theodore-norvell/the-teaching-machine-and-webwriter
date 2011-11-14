@@ -18,7 +18,7 @@ import visreed.model.payload.VisreedPayload;
  *
  */
 public class OptionalTag extends VisreedTag {
-    OptionalTag(){
+    protected OptionalTag(){
         super();
     }
     
@@ -58,7 +58,7 @@ public class OptionalTag extends VisreedTag {
     
     private static final OptionalTag instance = new OptionalTag();
     
-    public static final OptionalTag getInstance(){
+    protected static OptionalTag getInstance(){
         return instance;
     }
 }

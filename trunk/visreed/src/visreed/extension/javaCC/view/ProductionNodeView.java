@@ -22,6 +22,8 @@ import visreed.model.VisreedNode;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.VisreedPayload;
+import visreed.swing.properties.Property;
+import visreed.swing.properties.Property.Editor;
 import visreed.view.VisreedNodeView;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
@@ -84,4 +86,27 @@ public class ProductionNodeView extends VisreedNodeView {
 		
 		// dashed border
 	}
+
+	@Property(editor=Editor.TEXT, name="Name", defaultValue="Production")
+	private String name;
+	
+	public String getName(){
+		String name = ((ProductionPayload)getNode().getPayload()).getName();
+		this.name = name;
+		return name;
+	}
+	
+	public void SetName(String value){
+		name = value;
+		((ProductionPayload)getNode().getPayload()).setName(value);
+	}
+
+	/* (non-Javadoc)
+	 * @see visreed.view.VisreedNodeView#drawNode(java.awt.Graphics2D)
+	 */
+	@Override
+	protected void drawNode(Graphics2D screen) {
+	}
+	
+	
 }
