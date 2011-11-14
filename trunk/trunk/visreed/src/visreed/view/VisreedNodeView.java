@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JPopupMenu;
+import javax.swing.TransferHandler.TransferSupport;
 
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.BTVar;
@@ -43,6 +44,9 @@ import visreed.model.payload.VisreedPayload;
 import visreed.pattern.IObserver;
 import visreed.swing.IInteractable;
 import visreed.swing.menu.PopupMenuHelper;
+import visreed.view.layout.IRotatable;
+import visreed.view.layout.LayoutParameter;
+import visreed.view.layout.SingleChildLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**
@@ -82,7 +86,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         this.layoutManagerVar = new BTVar<VisreedNodeLayoutManager>(timeMan);
         this.stretchVar = new BTVar<Rectangle2D>(timeMan);
         this.zoneMap = new HashMap<String, VisreedDropZone>();
-        this.headingDirection = Direction.EAST;
+        this.layoutParameter = new LayoutParameter();
     }
     
     /**
@@ -240,7 +244,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
      * Handles painting of the node
      * @param screen
      */
-    protected void drawNode(Graphics2D screen) {}
+    protected abstract void drawNode(Graphics2D screen);
     
     /**
      * Handles painting of any strings.
@@ -294,9 +298,12 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     }
     /**
      * Gets the corresponding concrete NodeViewLayoutManager class
+     * by default this will return the {@link SingleChildLayoutManager}
      * @return
      */
-    protected abstract VisreedNodeLayoutManager getLayoutHelper();
+    protected VisreedNodeLayoutManager getLayoutHelper(){
+    	return SingleChildLayoutManager.getInstance();
+    };
     
     /**
      * Gets the ith child and cast it to {@link visreed.view.VisreedNodeView}
@@ -514,7 +521,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
      * @see visreed.swing.IInteractable#handleDrop(java.util.List)
      */
     @Override
-    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){}
+    public void handleDrop(TransferSupport support, List<VisreedNode> nodes){}
 
     /* (non-Javadoc)
      * @see visreed.swing.IInteractable#handleClick(java.awt.event.MouseEvent)
@@ -557,6 +564,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         this.zoneMap.clear();
     }
     
+    @Override
     public VisreedDropZone findZone(String id){
         Assert.check(id != null, "Can only search for a non-null id");
         return this.zoneMap.get(id);
@@ -647,14 +655,25 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     
     
     /* Handling rotation */
-    private Direction headingDirection;
+    protected LayoutParameter layoutParameter;
+    
+    public void setLayoutParameter(LayoutParameter value){
+    	if(!value.equals(this.layoutParameter)){
+    		this.layoutParameter = value;
+    		this.refresh();
+    	}
+    }
+    
+    public LayoutParameter getLayoutParameter(){
+    	return this.layoutParameter;
+    }
     
     /* (non-Javadoc)
      * @see visreed.view.IRotatable#getCurrentDirection()
      */
     @Override
     public final Direction getCurrentDirection(){
-        return this.headingDirection;
+        return this.layoutParameter.getCurrentDirection();
     }
     
     /* (non-Javadoc)
@@ -662,9 +681,9 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
      */
     @Override
     public void setDirection(Direction newDirection){
-        if(! newDirection.equals(this.headingDirection)){
+        if(! newDirection.equals(this.getCurrentDirection())){
             // TODO calculate the difference with old direction
-            this.headingDirection = newDirection;
+            this.layoutParameter.setDirection(newDirection);
             
             // TODO rotate all children
             for(int i = 0; i < this.getNumChildren(); i++){
@@ -678,7 +697,7 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
      */
     @Override
     public final void reverseDirection(){
-        this.headingDirection = this.headingDirection.getReverseDirection();
+        this.layoutParameter.reverseDirection();
         for(int i = 0; i < this.getNumChildren(); i++){
             this.getVisreedChild(i).reverseDirection();
         }

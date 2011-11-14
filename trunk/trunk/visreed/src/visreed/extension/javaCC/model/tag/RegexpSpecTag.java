@@ -24,7 +24,7 @@ public class RegexpSpecTag extends JavaCCTag {
 	}
 	
 	private static RegexpSpecTag instance = new RegexpSpecTag();
-	public static RegexpSpecTag getInstance(){
+	protected static RegexpSpecTag getInstance(){
 		return instance;
 	}
 
@@ -33,7 +33,7 @@ public class RegexpSpecTag extends JavaCCTag {
 	 */
 	@Override
 	public boolean contentModel(List<VisreedTag> seq) {
-		return (seq != null && seq.size() == 1 && seq.get(0).equals(SEQUENCE));
+		return (seq != null && seq.size() == 1 && seq.get(0).is(SEQUENCE));
 	}
 
 	/* (non-Javadoc)

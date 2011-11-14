@@ -9,9 +9,11 @@ package visreed.view;
 
 import higraph.view.NodeView;
 
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.TransferHandler;
+import javax.swing.TransferHandler.TransferSupport;
 
 import tm.backtrack.BTTimeManager;
 import visreed.model.VisreedEdge;
@@ -52,17 +54,15 @@ public class InsertChildDropZone extends VisreedDropZone {
      * @see visreed.view.VisreedDropZone#handleDrop(visreed.model.RegexNode[])
      */
     @Override
-    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){
+    public void handleDrop(TransferSupport support, List<VisreedNode> nodes){
         if(nodes == null){
             return;
         }
         
         boolean isCopy = false;
-        /*/
-        isCopy = true;
-        /*/
-        isCopy = (e != null && ((e.getModifiers() & MouseEvent.CTRL_DOWN_MASK) != 0));
-        //*/
+        if(support != null){
+        	isCopy = ((support.getDropAction() & TransferHandler.COPY) == TransferHandler.COPY);
+        }
         
         VisreedWholeGraph wg = this.getHigraphView().getHigraph().getWholeGraph();
         wg.reduceSelection();

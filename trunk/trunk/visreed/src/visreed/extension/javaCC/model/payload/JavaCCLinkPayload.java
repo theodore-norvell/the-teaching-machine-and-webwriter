@@ -22,7 +22,6 @@ import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo
- *
  */
 public class JavaCCLinkPayload extends VisreedPayload {
 
@@ -54,7 +53,6 @@ public class JavaCCLinkPayload extends VisreedPayload {
 	 */
 	@Override
 	public String format(VisreedNode currentNode) {
-		// TODO
 		if(this.source == null){
 			return "Link_" + this.productionName;
 		} else {

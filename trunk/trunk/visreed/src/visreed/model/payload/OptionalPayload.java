@@ -10,6 +10,7 @@ package visreed.model.payload;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
 import tm.utilities.Assert;
+import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -39,6 +40,19 @@ public class OptionalPayload extends VisreedPayload {
     @Override
     public OptionalPayload copy() {
         return this;
+    }
+    
+    @Override
+    public StringBuffer dump(StringBuffer sb, int indentLevel){
+    	sb.append('[');
+    	sb.append('\n');
+    	JavaCCBuilder.dumpPrefix(sb, indentLevel + 1);
+    	this.getNode().getChild(0).getPayload().dump(sb, indentLevel + 1);
+    	sb.append('\n');
+    	JavaCCBuilder.dumpPrefix(sb, indentLevel);
+    	sb.append(']');
+    	sb.append('\n');
+    	return sb;
     }
 
     /* (non-Javadoc)

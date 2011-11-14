@@ -67,7 +67,7 @@ public class SequenceTag extends VisreedTag {
     
     private static final SequenceTag instance = new SequenceTag();
 
-    public static SequenceTag getInstance() {
+    protected static SequenceTag getInstance() {
         return instance;
     };
 

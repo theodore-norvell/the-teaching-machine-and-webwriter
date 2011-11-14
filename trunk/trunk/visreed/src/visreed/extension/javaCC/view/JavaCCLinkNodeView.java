@@ -12,7 +12,6 @@ import higraph.view.HigraphView;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 
 import tm.backtrack.BTTimeManager;
@@ -98,7 +97,7 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
      * @see visreed.view.VisreedNodeView#reCreateDropZone()
      */
     public void reCreateDropZone(){
-    	super.reCreateDropZone();
+//    	super.reCreateDropZone();
     	if(this.mayAddZones() && this.findZone(ID_DROPZONE_GO_TO_DEFINITION) == null){
             VisreedDropZone zone = (
         		(JavaCCViewFactory)this.getNodeViewFactory()
@@ -107,12 +106,5 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
             zone.setNodeNumber(0);
             this.addZone(zone);
     	}    
-    }
-    
-    /* (non-Javadoc)
-     * @see visreed.view.VisreedNodeView#handleDoubleClick(java.awt.event.MouseEvent)
-     */
-    @Override
-    public void handleDoubleClick(MouseEvent e) {
     }
 }

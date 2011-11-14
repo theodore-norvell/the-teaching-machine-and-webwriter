@@ -8,6 +8,8 @@
 package visreed.swing.properties;
 
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.TableCellEditor;
 
 /**
  * @author Xiaoyu Guo
@@ -16,8 +18,12 @@ import javax.swing.JTable;
 public class PropertyEditor extends JTable {
 	private static final long serialVersionUID = -5123551319497838990L;
 
-	public PropertyEditor() {
-		// TODO Auto-generated constructor stub
+	private PropertyTableModel model;
+	
+	public PropertyEditor(PropertyTableModel tm) {
+		super(tm);
+		this.model = tm;
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
 
 }

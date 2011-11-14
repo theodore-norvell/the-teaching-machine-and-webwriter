@@ -1,12 +1,19 @@
 package visreed.extension.javaCC.parser;
 
+import java.util.List;
+
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
 import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
 import visreed.extension.javaCC.model.payload.JavaCodeBlockPayload;
+import visreed.extension.javaCC.model.payload.LexicalAlternationPayload;
+import visreed.extension.javaCC.model.payload.LookAheadPayload;
 import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
+import visreed.model.VisreedNode;
+import visreed.model.payload.SequencePayload;
 import visreed.model.payload.VisreedPayload;
+import visreed.model.tag.VisreedTag;
 import visreed.parser.VisreedBuilder;
 
 public class JavaCCBuilder extends VisreedBuilder {
@@ -91,6 +98,13 @@ public class JavaCCBuilder extends VisreedBuilder {
 	public StringBuffer dumpJavaCode(Token first, Token last) {
 		return dumpJavaCode(null, 0, first, last);
 	}
+	
+	public StringBuffer dumpJavaCode(List<Token> tokenList){
+		if(tokenList == null || tokenList.size() == 0){
+			return new StringBuffer();
+		}
+		return dumpJavaCode(null, 0, tokenList.get(0), tokenList.get(tokenList.size() - 1));
+	}
     
     /**
      * Build a production node. The production node will be treated as a
@@ -109,6 +123,39 @@ public class JavaCCBuilder extends VisreedBuilder {
     }
     
     /**
+     * Build a lexical Alternation node.
+     * @param numOfChildren
+     */
+    public void buildLexicalAlternation(int numOfChildren){
+    	// alternation is special, as it comes with 2 empty sequences.
+        if(this.getStackSize() < numOfChildren){
+            return;
+        }
+        VisreedPayload payload = new LexicalAlternationPayload();
+        VisreedNode node = this.wholeGraph.makeRootNode(payload);
+        for(int i = 0; i < numOfChildren; i++){
+            VisreedNode kid = this.pop();
+            VisreedNode toInsert = null;
+            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
+            	// kid == seq
+                toInsert = kid;
+            } else {
+            	// kid != seq
+                VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
+                seq.insertChild(0, kid);
+                toInsert = seq;
+            }
+            
+            if(i == numOfChildren - 1 || i == numOfChildren - 2){
+            	node.getChild(numOfChildren - i - 1).replace(toInsert);
+            } else {
+            	node.insertChild(2, toInsert);
+            }
+        }
+        this.push(node);
+    }
+    
+    /**
      * Build a Link node with given name.
      * @param image
      */
@@ -123,6 +170,10 @@ public class JavaCCBuilder extends VisreedBuilder {
      */
     public void buildRegexpSpec(RegexpSpecPayload payload){
     	buildAndPushNodeWithSeq(payload, 1);
+    }
+    
+    public void buildLookAhead(){
+    	buildAndPushNodeWithSeq(new LookAheadPayload(), 1);
     }
     
     public void buildJavaCode(String code){

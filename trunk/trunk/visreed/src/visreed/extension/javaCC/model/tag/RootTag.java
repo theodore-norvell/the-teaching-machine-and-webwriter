@@ -75,7 +75,7 @@ public class RootTag extends SequenceTag {
 	
     private static final RootTag instance = new RootTag();
     
-    public static final RootTag getInstance(){
+    protected static final RootTag getInstance(){
         return instance;
     }
 }

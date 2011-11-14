@@ -18,7 +18,7 @@ import visreed.model.payload.VisreedPayload;
  *
  */
 public class KleeneStarTag extends VisreedTag {
-    KleeneStarTag(){
+    protected KleeneStarTag(){
         super();
     }
     
@@ -62,7 +62,7 @@ public class KleeneStarTag extends VisreedTag {
 
     private static final KleeneStarTag instance = new KleeneStarTag();
     
-    public static final KleeneStarTag getInstance(){
+    protected static KleeneStarTag getInstance(){
         return instance;
     }
 }

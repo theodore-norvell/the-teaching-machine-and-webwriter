@@ -85,6 +85,7 @@ implements VisreedHigraph{
     public void select(VisreedNode node){
         this.deSelectAll();
         addToSelection(node);
+        this.notifyObservers();
     }
     
     /**
@@ -119,6 +120,7 @@ implements VisreedHigraph{
         for(VisreedNode selected : nodes){
             this.addToSelection(selected);
         }
+        this.notifyObservers();
     }
     
     /**
@@ -135,6 +137,7 @@ implements VisreedHigraph{
                 this.addToSelection(node);
             }
         }
+        this.notifyObservers();
     }
     
     /**

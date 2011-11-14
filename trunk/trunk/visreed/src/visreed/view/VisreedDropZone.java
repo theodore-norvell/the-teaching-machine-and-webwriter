@@ -17,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JPopupMenu;
+import javax.swing.TransferHandler.TransferSupport;
 
 import tm.backtrack.BTTimeManager;
 import visreed.model.VisreedEdge;
@@ -121,7 +122,7 @@ implements IInteractable
      * @see visreed.swing.IInteractable#handleDrop(java.util.List)
      */
     @Override
-    public void handleDrop(MouseEvent e, List<VisreedNode> nodes){}
+    public void handleDrop(TransferSupport support, List<VisreedNode> nodes){}
 
     /* (non-Javadoc)
      * @see visreed.swing.IInteractable#handleClick(java.awt.event.MouseEvent)

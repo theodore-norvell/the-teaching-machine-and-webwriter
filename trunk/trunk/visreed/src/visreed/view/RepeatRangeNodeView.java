@@ -25,6 +25,7 @@ import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.RepeatRangePayload;
 import visreed.model.payload.VisreedPayload;
+import visreed.swing.properties.Property;
 import visreed.view.layout.RepeatRangeLayoutHelper;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
@@ -229,4 +230,11 @@ public class RepeatRangeNodeView extends VisreedNodeView {
     		);
         }
     }
+	
+	@Property(editor=Property.Editor.NONE)
+	private int minRange;
+	public int getMinRange(){
+		minRange = ((RepeatRangePayload)this.getNode().getPayload()).getMinValue();
+		return minRange;
+	}
 }

@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JPopupMenu;
+import javax.swing.TransferHandler.TransferSupport;
 
 import visreed.model.VisreedNode;
 
@@ -27,10 +28,10 @@ public interface IInteractable {
     
     /**
      * Handles drop operation
-     * @param e The mouse event
+     * @param support The TransferSupport
      * @param nodes the list containing the transferring data
      */
-    void handleDrop(MouseEvent e, List<VisreedNode> nodes);
+    void handleDrop(TransferSupport support, List<VisreedNode> nodes);
     
     /**
      * Handles mouse click 

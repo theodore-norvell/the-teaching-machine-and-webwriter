@@ -770,7 +770,7 @@ void regular_expr_production() :
 	{
         pl.setLastToken(t);
         if(count_regexpr > 1)        {
-            builder.buildAlternation(count_regexpr);        } else {        }
+            builder.buildLexicalAlternation(count_regexpr);        } else {        }
         builder.buildProduction(pl, 1);
     }
 }
@@ -850,7 +850,8 @@ void expansion() :
 	}
 {
   ( LOOKAHEAD(1)
-    "LOOKAHEAD" "(" local_lookahead() ")"
+    lookahead()
+    { count ++; }
   )?
   ( LOOKAHEAD(0, { notTailOfExpansionUnit() } )
     expansion_unit()
@@ -862,9 +863,23 @@ void expansion() :
           builder.buildSequence(count);      }            }
 }
 
-void local_lookahead() :
-	{
-	}
+void lookahead() : {
+    LookAheadPayload pl = new LookAheadPayload();
+    int childCount = 0;
+}{
+    "LOOKAHEAD" "(" local_lookahead(pl) ")"    {
+        if(pl.hasChild()){
+            childCount = 0;
+        }            
+        builder.buildAndPushNodeWithSeq(pl, childCount);    }}   
+
+void local_lookahead(LookAheadPayload pl) :
+{
+    int intValue = 0;
+    String block = "";
+    List<Token> list = new ArrayList<Token>();
+    boolean commaAtEnd = false, emptyLA = true;
+}
 {
   [
     /*
@@ -874,21 +889,35 @@ void local_lookahead() :
      * know that this is what we want.
      */
     LOOKAHEAD(1)
-    IntegerLiteral()
+    intValue = IntegerLiteral()
+    {
+        emptyLA = false;
+        pl.setInteger(intValue);
+        pl.setHasInteger(true);    }
   ]
-  [ LOOKAHEAD(0, { (getToken(1).kind != RPAREN) } )
+  [ LOOKAHEAD(0, { !emptyLA && (getToken(1).kind != RPAREN) } )
     ","
+    {
+        commaAtEnd = true;
+    }
   ]
   [ LOOKAHEAD(0, { getToken(1).kind != RPAREN && getToken(1).kind != LBRACE } )
     expansion_choices()
+    {
+        emptyLA = false; commaAtEnd = false;
+        pl.setHasChild(true);    }
   ]
-  [ LOOKAHEAD(0, { (getToken(1).kind != RPAREN) } )
+  [ LOOKAHEAD(0, { !emptyLA && !commaAtEnd && (getToken(1).kind != RPAREN) } )
     ","
+    {
+        commaAtEnd = true;
+    }
   ]
-  [ LOOKAHEAD(0)
-    "{"
-        [ Expression(null) ]
-    "}"
+  [ LOOKAHEAD(0, { emptyLA || commaAtEnd })
+    "{"        [ Expression(list) { list.add(getToken(0)); } ]    "}"
+    {
+        if(emptyLA){
+            pl.setInteger(0);        }            pl.setBlock(builder.dumpJavaCode(list).toString());    }
   ]
 }
 
@@ -904,7 +933,7 @@ void expansion_unit() :
    * We give this priority over primary expressions which use LOOKAHEAD as the
    * name of its identifier.
    */
-  "LOOKAHEAD" "(" local_lookahead() ")"
+  lookahead()
 |
   terminal = Block()
   {

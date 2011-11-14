@@ -48,7 +48,7 @@ public class JavaCCLinkTag extends TerminalTag {
 
     private static final JavaCCLinkTag instance = new JavaCCLinkTag();
     
-    public static JavaCCLinkTag getInstance(){
+    protected static JavaCCLinkTag getInstance(){
         return instance;
     }
 }

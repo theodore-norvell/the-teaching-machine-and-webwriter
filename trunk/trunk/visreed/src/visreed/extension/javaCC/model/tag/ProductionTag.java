@@ -41,7 +41,7 @@ public class ProductionTag extends JavaCCTag{
      */
     @Override
     public boolean contentModel(List<VisreedTag> seq) {
-    	if(seq != null && seq.size() == 1 && seq.get(0).equals(SEQUENCE)){
+    	if(seq != null && seq.size() == 1 && seq.get(0).is(SEQUENCE)){
     		return true;
     	} else {
     		return false;
@@ -76,7 +76,7 @@ public class ProductionTag extends JavaCCTag{
 
     private static final ProductionTag instance = new ProductionTag();
     
-    public static final ProductionTag getInstance(){
+    protected static final ProductionTag getInstance(){
         return instance;
     }
 }
