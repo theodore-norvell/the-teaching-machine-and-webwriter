@@ -72,7 +72,7 @@ class Heap {
      * @param i
      */
     private void bubbleUp(int i) {
-        // We bubble the item at i up the heap until it reaches the top or a point where it is
+        // We bubble the item at i up the heap until it reaches the top or a point where
         // its priority is less or equal to its parent's.
         while( i != 0 && priority[i] < priority[parent(i)]) {
             swap(i, parent(i) ) ;
@@ -180,13 +180,13 @@ public class Dijkstra {
     Graph g ;
     // d[i] represents the shortest distance from the source to node i.
     int[] d ;
-    // p[i] represents the predecessor of i on the path back to the source.
-    int[] p ;
+    // pi[i] represents the predecessor of i on the path back to the source.
+    int[] pi ;
     
     Dijkstra(Graph g) {
         this.g = g ;
         d = new int[g.N];
-        p = new int[g.N] ; /*#I 
+        pi = new int[g.N] ; /*#I 
         for( int i = 0 ; i < g.N ; ++i ) {
             ScriptManager.relay("HigraphManager", "makeNode", d[i] ) ;
             ScriptManager.relay("HigraphManager", "setNodeNameLabel", d[i], g.name[i] ) ;
@@ -212,7 +212,7 @@ public class Dijkstra {
             d[i] = -1 ;
             // In the p array, we use -1 to represent an
             // unknown predecessor.
-            p[i] = -1 ; }
+            pi[i] = -1 ; }
         // Initially we know the distance from node s
         // to node s is 0.
         d[s] = 0 ; 
@@ -223,33 +223,33 @@ public class Dijkstra {
         while( ! queue.isEmpty() ) {
             // The grey node with the lowest label is suitable
             // to be the next node visited. (It becomes black.)
-            int v = queue.dequeue() ; /*#I
-            ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[v], "var", "v" ) ;
-            ScriptManager.relay("HigraphManager", "setNodeFillColor", d[v], PDV.BLACK);
-            ScriptManager.relay("HigraphManager", "setNodeValueColor", d[v], PDV.WHITE);*/
-            // Loop through all edges leaving v
-            Edge [] outgoing = g.edges[v] ;
+            int u = queue.dequeue() ; /*#I
+            ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[u], "var", "u" ) ;
+            ScriptManager.relay("HigraphManager", "setNodeFillColor", d[u], PDV.BLACK);
+            ScriptManager.relay("HigraphManager", "setNodeValueColor", d[u], PDV.WHITE);*/
+            // Loop through all edges leaving u
+            Edge [] outgoing = g.edges[u] ;
             for( int i = 0 ; i < outgoing.length ; ++i ) {
                 Edge e = outgoing[i] ; /*#I
-                ScriptManager.relay("HigraphManager", "setEdgeColor", d[v], d[e.target], PDV.GREEN);*/
-                int u = e.target ;/*#I
-                ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[u], "var", "u" ) ;*/
+                ScriptManager.relay("HigraphManager", "setEdgeColor", d[u], d[e.target], PDV.GREEN);*/
+                int w = e.target ;/*#I
+                ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[w], "var", "w" ) ;*/
                 int distance = e.distance ;
-                if( d[u] == -1 || d[u] > d[v] + distance ) {
-                    d[u] = d[v] + distance ;  /*#I
-                    if( p[u] != -1 ) ScriptManager.relay("HigraphManager", "setEdgeColor", d[p[u]], d[u], PDV.BLACK);*/
-                    p[u] = v ;
-                    // Add u to the queue. If it is already on
+                if( d[w] == -1 || d[w] > d[u] + distance ) {
+                    d[w] = d[u] + distance ;  /*#I
+                    if( pi[w] != -1 ) ScriptManager.relay("HigraphManager", "setEdgeColor", d[pi[w]], d[w], PDV.BLACK);*/
+                    pi[w] = u ;
+                    // Add w to the queue. If it is already on
                     // the queue, it's priority is revised.
                     // (It becomes a grey.)
-                    queue.enqueue(u, d[u]) ;  /*#I
-                    ScriptManager.relay("HigraphManager", "setEdgeColor", d[v], d[u], PDV.RED);
-                    ScriptManager.relay("HigraphManager", "setNodeFillColor", d[u], PDV.GREY);*/
+                    queue.enqueue(w, d[w]) ;  /*#I
+                    ScriptManager.relay("HigraphManager", "setEdgeColor", d[u], d[w], PDV.RED);
+                    ScriptManager.relay("HigraphManager", "setNodeFillColor", d[w], PDV.GREY);*/
                 } /*#I else {
-                    ScriptManager.relay("HigraphManager", "setEdgeColor", d[v], d[u], PDV.BLACK); }
-                ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[u], "var", "" ) ;*/
+                    ScriptManager.relay("HigraphManager", "setEdgeColor", d[u], d[w], PDV.BLACK); }
+                ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[w], "var", "" ) ;*/
             } /*#I
-            ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[v], "var", "" ) ;*/
+            ScriptManager.relay("HigraphManager", "setNodeExtraLabel", d[u], "var", "" ) ;*/
         }
     } /*#/T ww*/
 
@@ -257,9 +257,9 @@ public class Dijkstra {
         if( u==s ) {
             System.out.print(u) ; }
         else {
-            Edge[] es = g.edges[p[u]] ;
+            Edge[] es = g.edges[pi[u]] ;
             int i=0 ; while( es[i].target != u ) i++ ;
-            printPath( p[u], s ) ;
+            printPath( pi[u], s ) ;
             System.out.print( "  --");
             System.out.print( es[i].distance ) ;
             System.out.print( "-->  " ) ;
