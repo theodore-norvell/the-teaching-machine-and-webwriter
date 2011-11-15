@@ -25,8 +25,9 @@ nestingDepth = "../../../";
 </head>
 <body>
 <h1>Kruskal's Minimum Spanning Tree Algorithm </h1>
-<p>Suppose you need to supply electrical power to an area that is currently off the grid. There is a set of cities and towns that need power and a set of potential connections between them, say roads or proposed right-of-ways. Each for each potential connection there is a cost. You need to find the minimum cost network that connects all the town. This is the problem that faced an employee of a Moravian power company, Jind&#345;ich Saxel. He posed the problem to a young mathematician, <a href="http://www.gap-system.org/%7Ehistory/Biographies/Boruvka.html">Otakar Bor&#367;vka</a>, who, in 1926,  published the problem and an algorithm to solve it. The problem turns out to have lots of applications besides electrical power distribution. </p>
-<p>Modelling the situation as a graph problem, we have a set <em>V</em> of nodes (towns) and a set <em>E</em> of undirected edges (potential connections), each with an associated positive cost. We'll assume, for now, that the graph <em>G</em> = (<em>V</em>,<em>E</em>) is connected, i.e., there is at least one path between any two nodes. We need to find a subset <em>T</em> of the edges that connects all the towns and that has minimal total cost. A moment's thought will convince you that any solution <em>T</em> will form an undirected tree, since, if there were a cycle in <em>T</em>, we could remove one edge of the cycle to get a better solution. Since every node is in the tree, we call it a <strong>spanning tree</strong> and, as we want the one with least cost, we want a <strong>minimum spanning tree</strong>.</p>
+<p>Suppose you need to supply electrical power to an area that is currently off the grid. There is a set of cities and towns that need power and a set of potential connections between them, say roads or proposed right-of-ways. Each for each potential connection there is a cost. You need to find the minimum cost network that connects all the towns. </p>
+<p>This is the problem that faced an employee of a Moravian power company, Jind&#345;ich Saxel. He posed the problem to a young mathematician, <a href="http://www.gap-system.org/%7Ehistory/Biographies/Boruvka.html">Otakar Bor&#367;vka</a>, who, in 1926,  published the problem and an algorithm to solve it. The problem turns out to have lots of applications besides electrical power distribution. </p>
+<p>Modelling the situation as a graph problem, we have a set <em>V</em> of nodes (towns) and a set <em>E</em> of undirected edges (potential connections), each with an associated positive cost. We'll assume, for now, that the graph <em>G</em> = (<em>V</em>,<em>E</em>) is connected, i.e., there is at least one path between any two nodes. We need to find a subset <em>T</em> of the edges that connects all the towns and that has minimal total cost. A moment's thought will convince you that any solution <em>T</em> will form an undirected tree, since, if there were a cycle in <em>T</em>, we could remove one edge of the cycle to get a better solution. Since every node is in the tree, we call it a <strong>spanning tree</strong> and, as we want the one with least cost, we want a <strong>minimum cost spanning tree</strong>.</p>
 <h2>Idea</h2>
 <p>In 1956, U.S.A. mathematician Joseph Kruskal, having simplified Bor&#367;vka's algorithm, published a particularly simple method to find minimal spanning trees. </p>
 
@@ -80,9 +81,9 @@ insertSymbol("cup")
         <p>p.union(<em>e</em>.source, e.target)</p>
       </blockquote>
       
-      </blockquote>
- 
   </blockquote>
+ 
+</blockquote>
 <h2>Implementation</h2>
 <p>Now we come to an implementation in Java.</p>
 <ul>
@@ -106,38 +107,89 @@ insertSymbol("cup")
 </script>
 </p>
 <h2>Why it works </h2>
-<p>First off let's drop the requirement that the graph be connected. A <strong>component</strong> of an undirected graph is a nonempty subgraph that has, for nodes, a maximal set of nodes that have paths between them in the graph, and for edges all edges between two of its nodes. A <strong>forest</strong> is the union of a set of pairwise disjoint trees. Equivalently a <strong>forest</strong> is a set of edges that has no cycles. A <strong>spanning forest</strong> for a graph is the union of a set of trees for the graph's  components. In the special case of a connected graph, a spanning forest and a spanning tree are the same thing. Of course a minimum spanning forest is a spanning forest of least total cost. Any two spanning forests have the same size.</p>
+<p>First, off let's drop the requirement that the graph be connected. A <strong>component</strong> of an undirected graph is a nonempty subgraph that has, for nodes, a maximal set of nodes that have paths between them in the graph, and for edges all edges between two of its nodes. A <strong>forest</strong> is the union of a set of pairwise disjoint trees. Equivalently a <strong>forest</strong> is a set of edges that has no cycles. A <strong>spanning forest</strong> for a graph is the union of a set of trees for the graph's  components. In the special case of a connected graph, a spanning forest and a spanning tree are the same thing. Of course a minimum spanning forest is a spanning forest of least total cost. Any two spanning forests have the same size.</p>
 <p>It's clear that, if the graph is connected, the algorithm produces a spanning tree and, in any case, a spanning forest. What may not be clear is that the algorithm produces a minimum spanning tree. </p>
 <p>Clearly Kruskal's algorithm is greedy. It makes the locally best choice at each point. It is not at all obvious that this will not lead it down any blind alleys.</p>
 <p>The following proof is based on one by Dijkstra. </p>
 <p>A <strong>simple cycle</strong> is a set of 3 or more edges that form a cycle that visits no node more than once. A simple cycle provides two distinct paths between any two nodes on it. </p>
-<p><strong>Lemma 0.</strong> If a simple cycle C and a spanning forest F share an edge e, we can form a different spanning tree by removing e from F and then adding some other edge of C.</p>
-<p><strong>Proof:</strong> Removing e = {u,v} from F splits the component of G containing C into two disconnected parts, call these U and V. Some other edge {u',v'} in C must also connect U with V. Edge {u',v'} can not be in F or there would be two paths in F from u to v, one direct and the other through u' and v'. Now F \ {u,v} 
+<p><strong>Lemma 0.</strong> If a simple cycle C and a spanning forest F share an edge e, we can form a different spanning tree by removing e from F and then adding another edge of C.</p>
+<p><strong>Proof:</strong> Removing e = {u,v} from F splits the component of G containing C into two disconnected parts, call these U and V. Some other edge {u',v'} in C must also connect U with V. Edge {u',v'} can not be in F or there would be two paths in F from u to v, one direct and the other through u' and v'. Now F - {{u,v}} 
   <script language="">insertSymbol("cup")</script>
-{u',v'} is a spanning forest. <strong>End of Proof. </strong></p>
-<p>As two different spanning forests can have the same cost, it is possible that a graph G could have more than one minimum cost spanning forest. However, it simplifies the proof below to consider a total order on the spanning trees. We'll say that e0 &lt; e1 iff cost(e0) &lt; cost(e1) or cost(e0) = cost(e1) and e0 is examined  by the algorithm before e1. (Actually, because the algorithm examines edges in order of increasing cost, it would be sufficient to say e0 &lt; e1 iff e0 is examined before e1. For two spanning forests, we'll say that F0 &lt; F1 iff cost(F0) &lt; cost(F1) or cost(F0) = cost(F1) and the least edge in F0 not in F1 &lt; the least edge in F1 not in F0. Now any nonempty set of edges has a unique maximum and  there is a unique minimum spanning forest; call it F<sub>min</sub>.</p>
+{{u',v'}} is a spanning forest. <strong>End of Proof. </strong></p>
+<p>As two different spanning forests can have the same cost, it is possible that a graph G could have more than one minimum cost spanning forest. However, it simplifies the proof below to consider a <span class="stxNonterminal">total</span> order on the spanning trees.</p>
+<ul>
+  <li><span class="stxMeta">For 2 edges.</span> We'll say that e0 &lt; e1 iff
+    <ul>
+      <li>cost(e0) &lt; cost(e1) or</li>
+      <li>cost(e0) = cost(e1) and e0 is examined  by the algorithm before e1.</li>
+    </ul>
+  </li>
+  <li>(Actually, because Kruskal's algorithm examines edges in order of increasing cost, it would be sufficient to say e0 &lt; e1 iff e0 is examined before e1.)</li>
+  <li><span class="stxMeta">For a set of edges.</span> cost(F) is the sum of the costs of the edges. </li>
+  <li><span class="stxMeta">For two sets of edge.</span> We'll say that F0 &lt; F1 iff
+    <ul>
+      <li>cost(F0) &lt; cost(F1) or</li>
+      <li>cost(F0) = cost(F1) and the least edge in F0 not in F1 &lt; the least edge in F1 not in F0.</li>
+    </ul>
+  </li>
+  <li>Now
+    <ul>
+      <li>any nonempty set of edges has a unique maximum edge and</li>
+      <li>there is a unique minimum spanning forest; call it F<sub>min</sub>.</li>
+    </ul>
+  </li>
+</ul>
 <p><strong>Lemma 1.</strong> For any simple cycle C in the graph, the maximum edge in that cycle, {u,v}, can not be F<sub>min</sub>.</p>
-<p><strong>Proof:</strong> Proof by contradiction. Suppose e were in F<sub>min</sub>. By Lemma 0 we can remove e and replace it with some other edge in the cycle to get another spanning forest. But this edge will be smaller than e. This makes a spanning forest that is smaller than F<sub>min</sub>. <strong>End of Proof.</strong></p>
-<p><strong>Theorem 2:</strong> Every node in F<sub>min</sub> is eventually added to T. </p>
-<p><strong>Proof:</strong> In each iteration of the loop, an edge e is either added to T or it is rejected. From the way we defined &lt; on edges, all edges in the current value of T are less than e. By Lemma 1, if e is in F<sub>min</sub>, it is not the maximum edge in any simple cycle. As it is larger than every edge in the current value of T, it is therefore not an edge in any cycle involving only itself and the edges in the current value of T. By the description of the algorithm, it is therefore added to T. Since every edge is eventually considered, every edge of F<sub>min</sub> is eventually added to T. <strong>End of Proof.</strong></p>
+<p><strong>Proof:</strong> Proof by contradiction. Suppose e were in F<sub>min</sub>. By Lemma 0 we can remove e and replace it with another edge in the cycle to get another spanning forest. But this edge will be smaller than e. This makes a spanning forest that is smaller than F<sub>min</sub>. <strong>End of Proof.</strong></p>
+<p><strong>Theorem 2:</strong> Every edge rejected is not in F<sub>min</sub> . </p>
+<p><strong>Proof:</strong> In each iteration of the loop, an edge e is either added to T or it is rejected. </p>
+<p>From the way we defined &lt; on edges, all edges in the current value of T are less than e. </p>
+<p>Suppose e is rejected. Then it forms a cycle with edges already in T. As these nodes are &lt; e, e is the maximum edge in the cycle. </p>
+<p>By Lemma 1, e can not be in F<sub>min</sub>. <strong>End of Proof.</strong></p>
 <p><strong>Theorem 3:</strong> The final value of T is F<sub>min</sub>.</p>
-<p><strong>Proof:</strong> From Theorem 2 and the fact that we never remove any nodes from T, it is clear that the final value of T contains all edges of F<sub>min</sub>. It is a loop invariant that the value of T is a forest; so the final value of T is a forest. No strict superset of a spanning forest can also be a forest, so the final value of T can only be F<sub>min</sub>. <strong>End of proof.</strong></p>
-<p>The invariant trivially holds at the start of the loop. When the loop finishes we have a spanning forest that is a subset of F<sub>min</sub> and so it is F<sub>min</sub>. </p>
+<p><strong>Proof:</strong> Every edge rejected is not in F<sub>min</sub>. So every edge in F<sub>min</sub> is not rejected and so is added to T. </p>
+<p>At termination:</p>
+<ul>
+  <li>T contains all edges not rejected.</li>
+  <li>So T is a superset of F<sub>min</sub></li>
+  <li>Any <span class="stxNonterminal">strict</span> superset of a spanning forest is not a forest. </li>
+  <li>But T is a forest and so the only spanning forest it can be a superset of is itself.</li>
+  <li>Thus T = F<sub>min</sub>.</li>
+</ul>
+<p> <strong>End of proof.</strong></p>
 <h2>Dijkstra's Minimum Spanning Tree Algorithm</h2>
 <p>Dijkstra came up with an interesting algorithm whose proof is quite similar to the one given above. </p>
 <blockquote class="syntaxDef">
   <p>T := &empty;</p>
-  <p> For each edge e in any order at all</p>
+  <p>inv T is a forest</p>
+  <p>For each edge e in any order at all</p>
   <blockquote>
     <p>Add e to T</p>
     <p>If this results in a cycle, remove the largest edge in that cycle. </p>
   </blockquote>
-  </blockquote>
-<p>
-The really interesting thing about this algorithm is that you can examine the edges in any order you like. Depending on the order you get different algorithms, but all these algorithms share a single proof.</p>
-<p>If you examine the edges in increasing cost order, you have Kruskal's algorithm.</p>
-<p>You get the Jarn&iacute;k/Prim algorithm if  the edges are examined in an order such that the first edge is a least cost edge and, after that, the next edge to be examined is a least cost edge among those that share a vertex with an edge already in T.</p>
-<p>You get Bor&#367;vka's algorithm if you examine the edges in yet a different  order. The list of edges consists of a number of <span class="stxMeta">rounds</span>. The first round of edges examined are the smallest ones that group the vertices into pairs. That is, the first round contains the smallest edge and  the smallest edge that does not meet the smallest edge and so on. (Within this round, and all others, the edges can be examined in any order.) Now the vertices are partitioned into a number of parts. Most parts are pairs, but there may be a left-over singleton part. The second round of edges are the smallest ones that join pairs of these parts. And so on, until no more pairs of parts can be joined. At this point, all remaining edges would form cycles and are larger than the ones in the forest and so may be ignored. </p>
+</blockquote>
+<p class="stxMeta">Proof</p>
+<ul>
+  <li>Observe that edges are removed from T are largest (in &lt; order) in a cycle.</li>
+  <li>Therefore the edges removed are not in F<sub>min</sub>.</li>
+  <li>At termination:
+      <ul>
+        <li>T contains all edges not removed.</li>
+        <li>So T is a superset of F<sub>min</sub></li>
+        <li>Any strict superset of a spanning forest is not a forest. </li>
+        <li>But T is a forest and so the only spanning forest it can be a superset of is itself.</li>
+        <li>Thus T = F<sub>min</sub>.</li>
+      </ul>
+  </li>
+</ul>
+<p><strong>End of proof.</strong></p>
+<p>This isn't really a greedy algorithm in the sense that it sometimes revises earlier, tentative decisions. </p>
+<p>The really interesting thing about this algorithm is that you can examine the edges in any order you like. Depending on the order you get different algorithms, but all these algorithms share a single proof.</p>
+<ul>
+  <li><span class="stxMeta">Kruskal's Algorithm.</span> Examine the edges in order of increasing cost.</li>
+  <li><span class="stxMeta">The Jarn&iacute;k/Prim algorithm.</span> Start at some node s. The next edge examined is the least cost edge, not yet examined, that is connected to s by edges in T.</li>
+  <li><span class="stxMeta">Bor&#367;vka's algorithm.</span> The list of edges consists of a number of <span class="stxMeta">rounds</span>. The first round of edges examined are the smallest ones that group the vertices into pairs. That is, the first round contains the smallest edge and  the smallest edge that does not meet the smallest edge and so on. (Within each round, the edges can be examined in any order.) After the first round, vertices are partitioned into a number of parts. Most parts are pairs, but there may be a left-over singleton part. The second round of edges are the smallest ones that join pairs of these parts. And so on, until no more pairs of parts can be joined. At this point, all remaining edges would form cycles and are larger than the ones in the forest and so may be ignored. </li>
+</ul>
 <p>  <script language="JavaScript">
     bottomStamp(true, true);
 </script>

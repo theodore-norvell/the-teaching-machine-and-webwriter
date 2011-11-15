@@ -35,24 +35,24 @@ nestingDepth = "../../../";
 <h2>Idea</h2>
 <p>In fact Dijkstra's shortest paths algorithm does more than find the shortest path between two cities in a graph, it finds the shortest path between one particular city and all others.</p>
 <p>Consider the following idea. Suppose you want to know the shortest path from Amsterdam to 63 other cities in the Netherlands. To keep things simple, well think of the road network as consisting of the 64 cities and for each pair of different cities, <em>v</em> and <em>u</em>, either one or zero roads from <em>v</em> to <em>u</em>. First send cyclists from Amsterdam to all cities that are directly connected to Amsterdam. All cyclists start at the same time and travel at the same constant speed. As soon as a cyclist arrives at a city <em>v</em> we send more cyclists out to all cities directly connected to <em>v</em>, except that, if a cyclist is not the first to arrive at <em>v</em>, we don't bother sending out more cyclists. Eventually all cities that can be reached will have been reached and the process ends. You can see that, whenever a cyclist is the first to reach a city, they will have taken a road that is on a shortest path from Amsterdam. If we paint all the roads that were taken by cyclists who are first to arrive at their destination city red, we will have a tree of red roads rooted in Amsterdam. The roads painted red, will represent shortest paths from Amsterdam.</p>
-<p>A few of optimizations can be made to this process, provided the cyclists can all communicate with each other and we know the lengths of all the roads. First, there is no need to send cyclists to a city that has already been visited. Second, there is no need to send a cyclist to a city if there is already a cyclist heading to that city who would arrive first (or at the same time). Third, when a cyclist departs to a city, any other cyclist heading to that city who will arrive later should stop.</p>
+<p>A few of optimizations can be made to this process, provided the cyclists can all communicate with each other and we know the lengths of all the roads. First, there is no need to send cyclists to a city that has already been handled. Second, there is no need to send a cyclist to a city if there is already a cyclist heading to that city who would arrive first (or at the same time). Third, when a cyclist departs to a city, any other cyclist heading to that city who will arrive later should stop.</p>
 <p>Dijkstra's algorithm can be considered an event-driven simulation of this process.</p>
 <p>If you have studied networking, you may recognize that this method is very similar to the packet-flooding protocols that are used to build internet routing tables.</p>
-<p>If all these optimizations are implemented, we can divide the cities into three classes, which we will represent by colours. Black cities have already been visited. Grey cities have one cyclist heading to them. All other cities are coloured white. Later we will use this colouring scheme to see that the algorithm is correct. </p>
+<p>If all these optimizations are implemented, we can divide the cities into three classes, which we will represent by colours. Black cities have already been handled. Grey cities have one cyclist heading to them. All other cities are coloured white. Later we will use this colouring scheme to see that the algorithm is correct. </p>
 <h2>Formalizing</h2>
 <p> We'll work on a directed graph $(V,E)$ in which each edge $e$ is associated with a distance $w(e)$. A <span class="stxMeta">path</span> is an alternating sequnence of nodes and edges starting and ending with a node 
 $$[u_0, e_0, u_1, e_1, \cdots, u_{n-1}, e_{n-1}, u_n]$$</p>
 in which each edge <span class="stxNonterminal">e</span><span class="stxNonterminal"><sub>i</sub></span> connects <span class="stxNonterminal">u<sub>i</sub></span> to <span class="stxNonterminal">u<sub>i</sub></span><sub>+1</sub>. The path is said to be <span class="stxMeta">from</span> <span class="stxNonterminal">u</span><sub>0</sub> and <span class="stxMeta">to</span> <span class="stxNonterminal">u<sub>n</sub></span>.The <span class="stxMeta">length</span> of a path is the sum of the distances of its edges. There is always a path with no edges [<span class="stxNonterminal">u</span>], with length 0, from a node <span class="stxNonterminal">u</span> to itself.</p>
-<p> We'll call the starting node <em>s</em><sub></sub>. As mentioned above, the intuitive idea is to start at <em>s<sub></sub></em> and work outwards, visiting all the other nodes in order of closeness to the starting node. That is, the first node visited is <em>s</em>; after visiting <em>s</em><sub></sub>, the second node visited (call it <em>v</em><sub>1</sub>) is the one that is closest to <em> s </em><sub></sub>, and the third node visited (call it <em>v</em><sub>2</sub>) is the node that is second closest to <em>s</em><sub></sub>, and so on.</p>
-<p>For any node <em>u</em> reachable from <em>s</em>, let's write <em>t</em>(<em>u</em>) for the true distance to <em>u</em>, i.e. the length of every shortest path from <em>s</em> to <em>u</em>. We will visit the nodes (reachable from <em>s</em>) in an order </p>
+<p> We'll call the starting node <em>s</em><sub></sub>. As mentioned above, the intuitive idea is to start at <em>s<sub></sub></em> and work outwards, handling all the other nodes in order of closeness to the starting node. That is, the first node handled is <em>s</em>; after handling <em>s</em><sub></sub>, the second node handled (call it <em>v</em><sub>1</sub>) is the one that is closest to <em> s </em><sub></sub>, and the third node handled (call it <em>v</em><sub>2</sub>) is the node that is second closest to <em>s</em><sub></sub>, and so on.</p>
+<p>For any node <em>u</em> reachable from <em>s</em>, let's write <em>t</em>(<em>u</em>) for the true distance to <em>u</em>, i.e. the length of every shortest path from <em>s</em> to <em>u</em>. We will handle the nodes (reachable from <em>s</em>) in an order </p>
 <p align="center"><em>v</em><sub>0</sub>, <em>v</em><sub>1</sub>, <em>..., v<sub>m</sub></em><sub>-1</sub></p>
 <p>such that, <em>m</em> is the number of nodes (including <em>s</em>) reachable from <em>s</em>, <em>v</em><sub>0</sub> = <em>s</em>, and, for each reachable <em>u</em>, and for each <em>i</em> and <em>j</em>, </p>
-<p align="center"><em>t</em>(<em>v</em><sub><em>i</em></sub>) <script>insertSymbol("leq")</script> <em>t</em>(<em>v</em><sub><em>j</em></sub>) when 0 <script>insertSymbol("leq")</script> <em>i</em> &lt; <em> j</em> &lt; <em> m. </em></p>
-<p align="left">(I.e., we visit further nodes later.) </p>
+<p align="center"><em>t</em>(<em>v</em><sub><em>i</em></sub>) $\le$ <em>t</em>(<em>v</em><sub><em>j</em></sub>) when 0 $\le$ <em>i</em> &lt; <em> j</em> &lt; <em> m. </em></p>
+<p align="left">(I.e., we handle further nodes later.) </p>
 <p>We will assume that all edges in the graph have nonnegative distances.</p>
 <p>This gives us a useful property.</p>
 <p><span class="stxMeta">Lemma 0</span>. If <em>p</em> is a shortest path from <em>s</em> to <em>u</em> and <em>u</em>' is any node on the path then <em>t</em>(<em>u</em>') 
-<script>insertSymbol("leq")</script> <em>t</em>(<em>u</em>). Furthermore, the path <span class="stxNonterminal">p</span>', from <span class="stxNonterminal">s</span> to <span class="stxNonterminal">u</span>', formed by removing every thing after <span class="stxNonterminal">u</span>' from <span class="stxNonterminal">p</span>, is a shortest path. </p>
+$\le$ <em>t</em>(<em>u</em>). Furthermore, the path <span class="stxNonterminal">p</span>', from <span class="stxNonterminal">s</span> to <span class="stxNonterminal">u</span>', formed by removing every thing after <span class="stxNonterminal">u</span>' from <span class="stxNonterminal">p</span>, is a shortest path. </p>
 <p>The proof is left as an exercise.</p>
 <p>It also means that a shortest path to <em>s</em> is the edgeless path [<span class="stxNonterminal">s</span>] and so <em>t</em>(<em>s</em>) = 0. </p>
 <h2>The algorithm </h2>
@@ -61,11 +61,11 @@ in which each edge <span class="stxNonterminal">e</span><span class="stxNontermi
 <p>In the description below and in the animation, we use colors to summarize the information we have about each node and we label nodes with distances. We'll write <em>d</em>[<em>u</em>] for the label on node <em>u</em>. If a node is labelled with the actual length of the shortest path(s) from <em>s</em> to it, i.e. if <em>d</em>[<em>u</em>] = <em>t</em>(<em>u</em>), we say it is <span class="stxMeta">correctly labelled</span>. </p>
 <p>The following  rules about colouring and labelling nodes will serve as a loop invariant</p>
 <ul>
-  <li>Black nodes are the nodes already visited. Black nodes are always correctly labelled [B0]. Since we will visit nodes in order of distance from <em>s</em>, there is never a path from <em>s</em> to a nonblack node that is shorter than the shortest path from <em>s</em> to a black node [B1]. If any node is black, <em>s</em> is black [B2]. </li>
-  <li>Grey nodes are nodes that have not already been visited, but that are one edge away from a node already visited, i.e. a black node [G0]. We label grey nodes with the length of the shortest path that can be formed by catenating a shortest path to a black node  with an edge from that black node to the grey node [G1]. As a special case, if no nodes have been visited (are black), then node <em>s</em> will be coloured grey and will be correctly labelled with 0 [G2]. </li>
-  <li>White nodes represent all other nodes [W0]. I.e. nodes that have not been visited and that are not adjacent to any nodes visited. We label them with -1 to represent that we have no information about their distance [W1].</li>
+  <li>Black nodes are the nodes already handled. Black nodes are always correctly labelled [B0]. Since we will handle nodes in order of distance from <em>s</em>, there is never a path from <em>s</em> to a nonblack node that is shorter than the shortest path from <em>s</em> to a black node [B1]. If any node is black, <em>s</em> is black [B2]. </li>
+  <li>Grey nodes are nodes that have not already been handled, but that are one edge away from a node already handled, i.e., a black node [G0]. We label grey nodes with the length of the shortest path that can be formed by catenating a shortest path to a black node  with an edge from that black node to the grey node [G1]. As a special case, if no nodes have been handled (are black), then node <em>s</em> will be coloured grey and will be correctly labelled with 0 [G2]. </li>
+  <li>White nodes represent all other nodes [W0]. I.e. nodes that have not been handled and that are not adjacent to any nodes handled. We label them with -1 to represent that we have no information about their distance [W1].</li>
 </ul>
-<p><span class="stxMeta">Lemma 1</span>: Assuming the invariant: For any grey node <em>d</em>[<em>u</em>] <script>insertSymbol("geq")</script> 
+<p><span class="stxMeta">Lemma 1</span>: Assuming the invariant: For any grey node, <span class="stxNonterminal">u</span>, <em>d</em>[<em>u</em>] $\ge$ 
 <em>t</em>(<em>u</em>).</p>
 <p><span class="stxMeta">Proof.</span> Since the label <em>d</em>[<em>u</em>] represents the length of a path from <em>s</em> to <em>u</em> [G1 and G2], it can't be less than the length of the shortest such path. &#9633;</p>
 <p></p>
@@ -82,14 +82,14 @@ in which each edge <span class="stxNonterminal">e</span><span class="stxNontermi
   <p>// Loop invariant: See above. </p>
   <p>While there are grey nodes</p>
   <blockquote>
-    <p>Pick a grey node <em>v</em> such that <em>d</em>[<em>v</em>] is the smallest possible. </p>
-    <p>Colour <em>v</em> black.</p>
-    <p>For each edge <em>e</em> leaving <em>v</em></p>
+    <p>Pick a grey node <em>u</em> such that <em>d</em>[<em>u</em>] is the smallest possible. </p>
+    <p>Colour <em>u</em> black.</p>
+    <p>For each edge <em>e</em> leaving <em>u</em></p>
     <blockquote>
-      <p>Let <em>u</em> be <em>e</em>'s target.</p>
-      <p>If <em>u</em> is white or <em>d</em>[<em>u</em>] &gt; <em>d</em>[<em>v</em>] + <em>w</em>(<em>e</em>):</p>
+      <p>Let <em>w</em> be <em>e</em>'s target.</p>
+      <p>If <em>w</em> is white or <em>d</em>[<em>w</em>] &gt; <em>d</em>[<em>u</em>] + <em>w</em>(<em>e</em>):</p>
       <blockquote>
-        <p>Colour <em>u</em> grey and set <em>d</em>[<em>u</em>] :=<em> w</em>(<em>e</em>) +<em> d</em>[<em>v</em>]</p>
+        <p>Colour <em>w</em> grey and set <em>d</em>[<em>w</em>] :=<em> w</em>(<em>e</em>) +<em> d</em>[<em>u</em>]</p>
       </blockquote>
     </blockquote>
   </blockquote>
@@ -112,15 +112,15 @@ in which each edge <span class="stxNonterminal">e</span><span class="stxNontermi
   <p><u>Colour all edges black. </u></p>
   <p>While there are grey nodes</p>
   <blockquote>
-    <p>Pick a grey node <em>v</em> such that <em>d</em>[<em>v</em>] is the smallest possible number. </p>
-    <p>Colour <em>v</em> black.</p>
-    <p>For each edge <em>e</em> leaving <em>v</em></p>
+    <p>Pick a grey node <em>u</em> such that <em>d</em>[<em>u</em>] is the smallest possible number. </p>
+    <p>Colour <em>u</em> black.</p>
+    <p>For each edge <em>e</em> leaving <em>u</em></p>
     <blockquote>
-      <p>Let <em>u</em> be <em>e</em>'s target.</p>
-      <p>If <em>u</em> is white or <em>d</em>[<em>u</em>] &gt; <em>d</em>[<em>v</em>] + <em>w</em>(<em>e</em>):</p>
+      <p>Let <em>w</em> be <em>e</em>'s target.</p>
+      <p>If <em>w</em> is white or <em>d</em>[<em>w</em>] &gt; <em>d</em>[<em>u</em>] + <em>w</em>(<em>e</em>):</p>
       <blockquote>
-        <p>Color <em>u</em> grey and set <em>d</em>[<em>u</em>] := <em>w</em>(<em>e</em>) + <em>d</em>[<em>v</em>].</p>
-        <p><u>If there is already a red edge to <em>u</em>, colour it black. </u></p>
+        <p>Color <em>w</em> grey and set <em>d</em>[<em>w</em>] := <em>w</em>(<em>e</em>) + <em>d</em>[<em>u</em>].</p>
+        <p><u>If there is already a red edge to <em>w</em>, colour it black. </u></p>
         <p><u>Colour <em>e</em> red.</u> </p>
       </blockquote>
     </blockquote>
@@ -160,11 +160,11 @@ in which each edge <span class="stxNonterminal">e</span><span class="stxNontermi
 <p><span class="stxMeta">Theorem 1:</span> Assuming the invariant: If there is at least one grey node, any node <em>v</em> that is grey and has the lowest label among grey nodes must be among the nonblack nodes closest to <em>s</em> and, furthermore, <em>v</em> is correctly labelled.</p>
 <p><span class="stxMeta">Proof:</span> Suppose the invariant is true and there is at least one grey node. Let <em>v</em> be any grey node that has the lowest label among all labels of grey nodes.</p>
 <ul>
-  <li>First: we show that there is no nonblack node that is closer to <em>s</em> than <em>v</em>. Let <em>u</em> be any nonblack node and let <em>p</em> be a shortest path from <em>s</em> to <em>u</em>. Let <em>u</em>' be the first nonblack node on path <em>p</em>. By Lemma 0, <em>t</em>(<em>u</em>') is <script>insertSymbol("leq")</script> <em>t</em>(<em>u</em>) and path the <span class="stxNonterminal">p</span>' formed by removing everything after <span class="stxNonterminal">u</span>' from path <span class="stxNonterminal">p</span> is a shortest path. By Lemma 2, <em>u</em>' is grey and therefore, by Lemma 3, its label is correct: <em>d</em>[<em>u</em>']=<em>t</em>(<em>u</em>'). Since <em>u</em>' is grey and the label on <em>v</em> is the least  over all grey nodes, <em>d</em>[<em>v</em>] 
-  <script>insertSymbol("leq")</script> <em>d</em>[<em>u</em>']. By [G1], <em>t</em>(<em>v</em>) <script>insertSymbol("leq")</script> <em>d</em>[<em>v</em>]. Putting these facts together, we have <em>t</em>(<em>v</em>) <script>insertSymbol("leq")</script> <em>d</em>[<em>v</em>] <script>insertSymbol("leq")</script> <em>d</em>[<em>u</em>'] = <em>t</em>(<em>u</em>') <script>insertSymbol("leq")</script> <em>t</em>(<em>u</em>). Thus <em>v</em> is at least as close to <em>s</em> as any other nonblack node. </li>
-  <li>Second: we need to show that <em>v</em> is correctly labelled. Since <em>v</em> is nonblack, everything we said of <em>u</em> in the preceeding paragraph applies to <em>v</em>. So consider a shortest path <em>p</em> from <em>s</em> to <em>v</em> and the first nonblack node on that path <em>u</em>'. For reasons given in the last paragraph, we have <em>d</em>[<em>v</em>] <script>insertSymbol("leq")</script> <em>d</em>[<em>u</em>'] = t(<em>u</em>') <script>insertSymbol("leq")</script> <em>t</em>(<em>v</em>). By Lemma 1, <em>d</em>[<em>v</em>] can't be less than <em>t</em>(<em>v</em>) and so <em>d</em>[<em>v</em>]=<em>t</em>(<em>v</em>); <em>v</em> is correctly labelled. &#9633;</li>
+  <li>First: we show that there is no nonblack node that is closer to <em>s</em> than <em>v</em>. Let <em>u</em> be any nonblack node and let <em>p</em> be a shortest path from <em>s</em> to <em>u</em>. Let <em>u</em>' be the first nonblack node on path <em>p</em>. By Lemma 0, <em>t</em>(<em>u</em>') is $\le$ <em>t</em>(<em>u</em>) and path the <span class="stxNonterminal">p</span>' formed by removing everything after <span class="stxNonterminal">u</span>' from path <span class="stxNonterminal">p</span> is a shortest path. By Lemma 2, <em>u</em>' is grey and therefore, by Lemma 3, its label is correct: <em>d</em>[<em>u</em>']=<em>t</em>(<em>u</em>'). Since <em>u</em>' is grey and the label on <em>v</em> is the least  over all grey nodes, <em>d</em>[<em>v</em>] 
+  $\le$ <em>d</em>[<em>u</em>']. By [G1], <em>t</em>(<em>v</em>) $\le$ <em>d</em>[<em>v</em>]. Putting these facts together, we have <em>t</em>(<em>v</em>) $\le$ <em>d</em>[<em>v</em>] $\le$ <em>d</em>[<em>u</em>'] = <em>t</em>(<em>u</em>') $\le$ <em>t</em>(<em>u</em>). Thus <em>v</em> is at least as close to <em>s</em> as any other nonblack node. </li>
+  <li>Second: we need to show that <em>v</em> is correctly labelled. Since <em>v</em> is nonblack, everything we said of <em>u</em> in the preceeding paragraph applies to <em>v</em>. So consider a shortest path <em>p</em> from <em>s</em> to <em>v</em> and the first nonblack node on that path <em>u</em>'. For reasons given in the last paragraph, we have <em>d</em>[<em>v</em>] $\le$ <em>d</em>[<em>u</em>'] = t(<em>u</em>') $\le$ <em>t</em>(<em>v</em>). By Lemma 1, <em>d</em>[<em>v</em>] can't be less than <em>t</em>(<em>v</em>) and so <em>d</em>[<em>v</em>]=<em>t</em>(<em>v</em>); <em>v</em> is correctly labelled. &#9633;</li>
 </ul>
-<p>Theorem 1 tells us that, provided the invariant holds, and there is a grey node, any grey node that has the lowest label of all grey nodes can be visited next (i.e. turned black) without violating [B1]. Furthermore any such node is correctly labelled and so turning it black won't violate [B0].</p>
+<p>Theorem 1 tells us that, provided the invariant holds, and there is a grey node, any grey node that has the lowest label of all grey nodes can be handled next (i.e. turned black) without violating [B1]. Furthermore any such node is correctly labelled and so turning it black won't violate [B0].</p>
 <p>As a special case, if a node is the first to turn black, it must (by [G2]) be <em>s</em> and so [B2] is not violated.</p>
 <p>After turning <em>v</em> black, the rest of the loop body is devoted to restoring the other parts of the invariant. A full proof would show that it does so. </p>
 <p>
