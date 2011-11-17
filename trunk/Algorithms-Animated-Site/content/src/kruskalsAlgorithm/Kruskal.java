@@ -240,14 +240,14 @@ public class Kruskal {
         while( ! priorityQueue.isEmpty() && s.numberOfParts() > 1 ) {
             int i = priorityQueue.dequeue() ;
             Edge e = g.edges[i] ; /*#I
-            ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.GREEN ) ; */
+            ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.BLUE ) ; */
             if( ! s.find(e.source, e.target) ) {
-                e.output() ; /*#I
-                ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.RED ) ; */
-                s.union( e.source, e.target ) ;/*#I
+                e.output() ;
+                s.union( e.source, e.target ) ; /*#I
+                ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.GREEN ) ; 
                 recolor(s) ; */
             } /*#I else {
-                ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.BLACK ) ; } */
+                ScriptManager.relay("HigraphManager", "setEdgeColor", g.x[e.source], g.x[e.target], PDV.RED ) ; } */
         }
     } /*#/T ww*/
 
