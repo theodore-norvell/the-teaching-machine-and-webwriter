@@ -7,18 +7,20 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import visreed.model.tag.SequenceTag;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
+import visreed.model.payload.SequencePayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class GrammarSequenceTag extends SequenceTag {
+public class GrammarSequenceTag extends GrammarTag {
 	protected GrammarSequenceTag(){
-		super();
+		super(TagCategory.SEQ);
 	}
 	
 	private static final GrammarSequenceTag instance = new GrammarSequenceTag();
@@ -26,24 +28,55 @@ public class GrammarSequenceTag extends SequenceTag {
 		return instance;
 	}
 	
-	protected static final VisreedTag[] LSEQ_CHILD = {
-		JavaCCTag.LEXICAL_ALTERNATION,
-		TERMINAL,
-		JavaCCTag.LINK,
-		CHARACTER_LIST,
-		JavaCCTag.LEXICAL_KLEENE_PLUS,
-		JavaCCTag.LEXICAL_KLEENE_STAR,
-		JavaCCTag.LEXICAL_OPTIONAL,
-		JavaCCTag.LEXICAL_REPEAT_RANGE
+	protected static final VisreedTag[] GSEQ_CHILD = {
+//		GRAMMAR_ALTERNATION,
+//		LOOKAHEAD,
+//		GRAMMAR_TERMINAL,
+//		GRAMMAR_OPTIONAL,
+//		GRAMMAR_KLEENE_PLUS,
+//		GRAMMAR_KLEENE_STAR,
+//		GRAMMAR_LINK,
+//		LEXICAL_LINK
+		GrammarAlternationTag.getInstance(),
+		LookAheadTag.getInstance(),
+		GrammarTerminalTag.getInstance(),
+		GrammarOptionalTag.getInstance(),
+		GrammarKleenePlusTag.getInstance(),
+		GrammarKleeneStarTag.getInstance(),
+		GrammarLinkTag.getInstance(),
+		LexicalLinkTag.getInstance()
 	};
 	
 	@Override
-	protected VisreedTag[] getAcceptableChildTags(){
-		return LSEQ_CHILD;
+	protected boolean contentModelHook(final List<VisreedTag> childTags){
+    	boolean result = true;
+    	for(VisreedTag t : childTags){
+    		if(!t.isOneOf(GSEQ_CHILD)){
+    			result = false;
+    			break;
+    		}
+    	}
+    	return result;
+    }
+
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
+	 */
+	@Override
+	public VisreedPayload defaultPayload() {
+		return new SequencePayload(this);
 	}
 	
 	@Override
-	protected boolean contentModelHook(final List<VisreedTag> childTags){
-    	return true;
-    }
+	public List<VisreedTag> defaultTagSequence(){
+		return new ArrayList<VisreedTag>(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see visreed.model.IDescribable#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return "GSEQ";
+	}
 }

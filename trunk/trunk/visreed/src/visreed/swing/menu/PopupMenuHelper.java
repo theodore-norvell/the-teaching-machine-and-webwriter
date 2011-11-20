@@ -15,8 +15,9 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.KeyStroke;
 
+import visreed.extension.regex.model.tag.RegexTag;
 import visreed.model.VisreedNode;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedTag;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -41,7 +42,7 @@ public final class PopupMenuHelper {
         // change type sub menu
         JMenu changeTypeMenuEntry = new JMenu("Change Type");
         
-        for(VisreedTag t : VisreedTag.values()){
+        for(VisreedTag t : RegexTag.values()){
             ChangeTypeMenuItem menuItem = new ChangeTypeMenuItem(node, t);
             changeTypeMenuEntry.add(menuItem);
         }

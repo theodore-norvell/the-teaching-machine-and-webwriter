@@ -7,6 +7,7 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.model.payload.AlternationPayload;
 
@@ -17,7 +18,7 @@ import visreed.model.payload.AlternationPayload;
  */
 public class LexicalAlternationPayload extends AlternationPayload {
 	public LexicalAlternationPayload() {
-		super();
+		super(JavaCCTag.LEXICAL_ALTERNATION);
 	}
 	
 	/* (non-Javadoc)

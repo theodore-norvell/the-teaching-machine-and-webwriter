@@ -13,7 +13,9 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
 import visreed.view.TerminalNodeView;
 import visreed.view.VisreedNodeView;
@@ -24,21 +26,21 @@ import visreed.view.VisreedNodeView;
  */
 public class CharacterListPayload extends TerminalPayload {
 
-	public CharacterListPayload(char value) {
-		super(value);
+	public CharacterListPayload(VisreedTag tag, char value) {
+		super(tag, value);
 		this.minValue = value;
 		this.hasMaxValue = false;
 	}
-	public CharacterListPayload(char minValue, char maxValue, boolean exclude) {
-		super(exclude?"~":"" + minValue + "-" + maxValue);
+	public CharacterListPayload(VisreedTag tag, char minValue, char maxValue, boolean exclude) {
+		super(tag, exclude?"~":"" + minValue + "-" + maxValue);
 		this.minValue = minValue;
 		this.hasMaxValue = true;
 		this.maxValue = maxValue;
 		this.exclude = exclude;
 	}
 
-	public CharacterListPayload(String valueStr) {
-		super(valueStr);
+	public CharacterListPayload(VisreedTag tag, String valueStr) {
+		super(tag, valueStr);
 		char minValue = ' ';
 		if(valueStr.length() > 0){
 			minValue = valueStr.charAt(0);
@@ -46,8 +48,8 @@ public class CharacterListPayload extends TerminalPayload {
 		this.minValue = minValue;
 		this.hasMaxValue = false;
 	}
-	public CharacterListPayload(String minValueStr, String maxValueStr, boolean exclude) {
-		super(exclude?"~":"" + minValueStr + "-" + maxValueStr);
+	public CharacterListPayload(VisreedTag tag, String minValueStr, String maxValueStr, boolean exclude) {
+		super(tag, exclude?"~":"" + minValueStr + "-" + maxValueStr);
 		
 		char minValue = ' ';
 		if(minValueStr.length() > 0){

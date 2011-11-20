@@ -6,9 +6,10 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.TerminalNodeView;
 import visreed.view.VisreedNodeView;
 
@@ -26,17 +27,17 @@ public class TerminalPayload extends VisreedPayload {
 		}
 	}
 
-    public TerminalPayload(){
-        super(VisreedTag.TERMINAL);
+    public TerminalPayload(VisreedTag tag){
+        super(tag);
         this.setTerminal("");
     }
-	public TerminalPayload(String terminal) {
-		super(VisreedTag.TERMINAL);
+	public TerminalPayload(VisreedTag tag, String terminal) {
+		super(tag);
 		this.setTerminal(terminal);
 	}
 	
-	public TerminalPayload(char terminal){
-		super(VisreedTag.TERMINAL);
+	public TerminalPayload(VisreedTag tag, char terminal){
+		super(tag);
 		this.setTerminal(terminal + "");
 	}
 
@@ -49,7 +50,7 @@ public class TerminalPayload extends VisreedPayload {
      */
     @Override
     public TerminalPayload copy() {
-        return new TerminalPayload(this.terminal);
+        return new TerminalPayload(this.tag, this.terminal);
     }
 
 	/* (non-Javadoc)

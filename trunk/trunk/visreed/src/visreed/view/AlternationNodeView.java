@@ -13,9 +13,9 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.view.layout.AlternationLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
@@ -123,10 +123,9 @@ public class AlternationNodeView extends VisreedNodeView {
     public void reCreateDropZone(){
         // For simplicity here we just wipe everything out and build them again.
         this.removeZones();
-        VisreedDropZone zone = null;
-        zone = this.makeAndAddInsertChildDropZone(ID_DROPZONE_HEAD, 0);
+        this.makeAndAddInsertChildDropZone(ID_DROPZONE_HEAD, 0);
         for(int i = 0; i < this.getNumChildren(); i++){
-            zone = this.makeAndAddInsertChildDropZone(ID_PREFIX_DROPZONE_NODE + (i+1), i+1);
+            this.makeAndAddInsertChildDropZone(ID_PREFIX_DROPZONE_NODE + (i+1), i+1);
         }
     }
     

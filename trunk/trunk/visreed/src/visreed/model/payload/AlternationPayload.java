@@ -7,16 +7,17 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.AlternationNodeView;
 import visreed.view.VisreedNodeView;
 
 public class AlternationPayload extends VisreedPayload {
 
-	public AlternationPayload() {
-		super(VisreedTag.ALTERNATION);
+	public AlternationPayload(VisreedTag tag) {
+		super(tag);
 	}
 
     /* (non-Javadoc)

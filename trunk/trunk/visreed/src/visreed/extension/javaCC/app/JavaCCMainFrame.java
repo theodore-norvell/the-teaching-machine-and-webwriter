@@ -27,15 +27,14 @@ import javax.swing.SwingUtilities;
 import tm.backtrack.BTTimeManager;
 import visreed.app.VisreedMainFrame;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
-import visreed.extension.javaCC.model.payload.ProductionPayload;
+import visreed.extension.javaCC.model.payload.RegexpProductionPayload;
 import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.swing.JavaCCProductionsTreeView;
 import visreed.extension.javaCC.swing.editor.JavaCCTextArea;
 import visreed.extension.javaCC.view.JavaCCViewFactory;
 import visreed.model.VisreedNode;
-import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.RepeatRangePayload;
-import visreed.model.payload.SequencePayload;
 import visreed.model.payload.TerminalPayload;
 import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
@@ -139,19 +138,21 @@ public class JavaCCMainFrame extends VisreedMainFrame {
                 }
                 
                 VisreedNode prod, seq, regspec, leaf;
-                prod = wholeGraph.makeRootNode(new ProductionPayload("Production Name"));
+                prod = wholeGraph.makeRootNode(new RegexpProductionPayload("Production Name"));
                 rootSubgraph.addTop(prod);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
+                // by now prod does not have children
+                // so appendChild() fail.
+                seq = wholeGraph.makeRootNode(JavaCCTag.LEXICAL_SEQUENCE);
                 prod.appendChild(seq);
                 
                 regspec = wholeGraph.makeRootNode(new RegexpSpecPayload("Spec Name"));
                 seq.appendChild(regspec);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
+                seq = wholeGraph.makeRootNode(JavaCCTag.LEXICAL_SEQUENCE);
                 regspec.appendChild(seq);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("TERMINAL"));
+                leaf = wholeGraph.makeRootNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, "TERMINAL"));
                 seq.appendChild(leaf);
                 
                 setSubgraph(rootSubgraph);
@@ -171,47 +172,31 @@ public class JavaCCMainFrame extends VisreedMainFrame {
                     }
                 }
                 
-                VisreedNode prod, alt, branch, seq, regspec, leaf;
-                prod = wholeGraph.makeRootNode(new ProductionPayload("Production Name"));
+                VisreedNode prod, alt, regspec, rpn, leaf;
+                prod = wholeGraph.makeRootNode(new RegexpProductionPayload("Production Name"));
                 rootSubgraph.addTop(prod);
                 
-                branch = wholeGraph.makeRootNode(new SequencePayload());
-                prod.appendChild(branch);
-                
-                alt = wholeGraph.makeRootNode(new AlternationPayload());
-                branch.appendChild(alt);
+                alt = wholeGraph.makeRootNode(JavaCCTag.LEXICAL_ALTERNATION);
+                prod.getChild(0).appendChild(alt);
                 
                 // branch 1
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                alt.getChild(1).replace(seq);
                 
                 regspec = wholeGraph.makeRootNode(new RegexpSpecPayload("Spec Name"));
-                seq.appendChild(regspec);
+                alt.getChild(1).appendChild(regspec);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                regspec.appendChild(seq);
+                leaf = wholeGraph.makeRootNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, "TERMINAL"));
+                regspec.getChild(0).appendChild(leaf);
                 
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("TERMINAL"));
-                seq.appendChild(leaf);
-                
-                // branch 2
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                alt.getChild(0).replace(seq);
+                // branch 0
                 
                 regspec = wholeGraph.makeRootNode(new RegexpSpecPayload("Spec 2"));
-                seq.appendChild(regspec);
+                alt.getChild(0).appendChild(regspec);
                 
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                regspec.appendChild(seq);
+                rpn = wholeGraph.makeRootNode(new RepeatRangePayload(JavaCCTag.LEXICAL_REPEAT_RANGE, 4));
+                regspec.getChild(0).appendChild(rpn);
                 
-                leaf = wholeGraph.makeRootNode(new RepeatRangePayload(4));
-                seq.appendChild(leaf);
-                
-                seq = wholeGraph.makeRootNode(new SequencePayload());
-                leaf.appendChild(seq);
-                
-                leaf = wholeGraph.makeRootNode(new TerminalPayload("DIGITS"));
-                seq.appendChild(leaf);
+                leaf = wholeGraph.makeRootNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, "DIGITS"));
+                rpn.getChild(0).appendChild(leaf);
                 
                 setSubgraph(rootSubgraph);
 			}

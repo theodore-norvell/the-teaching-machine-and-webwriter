@@ -2,6 +2,7 @@
  * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
  */options{  JDK_VERSION = "1.5";  static = false;}PARSER_BEGIN(RegexParser)package visreed.extension.regex.parser;
 
+import visreed.extension.regex.model.tag.RegexTag;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.RepeatRangePayload;
@@ -97,11 +98,11 @@ void non_seq() :
         {
             RepeatRangePayload pl = null;
 	        if(hasMaxValue) {
-	            pl = new RepeatRangePayload(minValue, maxValue);
+	            pl = new RepeatRangePayload(RegexTag.REPEAT_RANGE, minValue, maxValue);
 	        } else {
-	            pl = new RepeatRangePayload(minValue);
+	            pl = new RepeatRangePayload(RegexTag.REPEAT_RANGE, minValue);
 	        }
-	        builder.buildAndPushNodeWithSeq(pl, 1);
+	        builder.buildNode(pl, 1);
         }   
       |{} 
     ) }

@@ -9,8 +9,8 @@ package visreed.extension.regex.swing;
 
 import javax.swing.JButton;
 
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 
 /**
  * RegexNodeButton defines the node button from which the user can drag

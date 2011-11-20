@@ -5,18 +5,11 @@
  * @author: Xiaoyu Guo (MUN# 200982155)
  * This file was prepared by Xiaoyu Guo. It was completed by me alone.
  */
-package visreed.model.payload;
+package visreed.model;
 
 import higraph.model.taggedInterfaces.TaggedPayload;
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
-import visreed.model.VisreedEdge;
-import visreed.model.VisreedEdgeLabel;
-import visreed.model.VisreedHigraph;
-import visreed.model.VisreedNode;
-import visreed.model.VisreedSubgraph;
-import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.VisreedNodeView;
 
 /**

@@ -5,26 +5,22 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.tag;
+package visreed.extension.regex.model.tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.payload.AlternationPayload;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class AlternationTag extends VisreedTag {
+public class AlternationTag extends RegexTag {
     protected AlternationTag (){
-        super();
-    }
-    
-    @Override
-    public boolean equals(Object o){
-        return (o instanceof AlternationTag);
+        super(TagCategory.ALT);
     }
     
     @Override
@@ -44,7 +40,7 @@ public class AlternationTag extends VisreedTag {
 
     @Override
     public VisreedPayload defaultPayload() {
-        return new AlternationPayload();
+        return new AlternationPayload(RegexTag.ALTERNATION);
     }
 
     @Override

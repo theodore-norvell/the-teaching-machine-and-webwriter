@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tm.backtrack.BTTimeManager;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObserver;
 
 /**

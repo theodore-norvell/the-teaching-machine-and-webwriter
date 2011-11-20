@@ -11,8 +11,6 @@ import higraph.model.abstractTaggedClasses.AbstractTaggedSubgraph;
 
 import java.util.ArrayList;
 
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObserver;
 
 /**

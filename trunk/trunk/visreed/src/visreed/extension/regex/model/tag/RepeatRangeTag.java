@@ -5,21 +5,18 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.tag;
+package visreed.extension.regex.model.tag;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import visreed.model.VisreedPayload;
 import visreed.model.payload.RepeatRangePayload;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class RepeatRangeTag extends VisreedTag {
+public class RepeatRangeTag extends RegexTag {
 	protected RepeatRangeTag(){
-		super();
+		super(TagCategory.SINGLE_SEQ_CHILD);
 	}
     
     /* (non-Javadoc)
@@ -39,35 +36,11 @@ public class RepeatRangeTag extends VisreedTag {
     }
 
 	/* (non-Javadoc)
-	 * @see higraph.model.taggedInterfaces.Tag#contentModel(java.util.List)
-	 */
-	@Override
-	public boolean contentModel(List<VisreedTag> seq) {
-        // RepeatRange nodes must have exactly 1 sequence as child
-        if(seq != null && seq.size() == 1 && seq.get(0).equals(SEQUENCE)){
-            return true;
-        }
-        else{
-            return false;
-        }
-	}
-
-	/* (non-Javadoc)
-	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
-	 */
-	@Override
-	public List<VisreedTag> defaultTagSequence() {
-		ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(1);
-		seq.add(SEQUENCE);
-		return seq;
-	}
-
-	/* (non-Javadoc)
 	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
 	 */
 	@Override
 	public VisreedPayload defaultPayload() {
-		return new RepeatRangePayload();
+		return new RepeatRangePayload(RegexTag.REPEAT_RANGE);
 	}
 
 	/* (non-Javadoc)

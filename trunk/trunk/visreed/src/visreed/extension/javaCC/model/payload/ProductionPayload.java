@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tm.backtrack.BTTimeManager;
-import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.extension.javaCC.parser.Token;
 import visreed.extension.javaCC.view.ProductionNodeView;
@@ -21,23 +20,24 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class ProductionPayload extends VisreedPayload {
+public abstract class ProductionPayload extends VisreedPayload {
 
-    public ProductionPayload() {
-        super(JavaCCTag.PRODUCTION);
+    public ProductionPayload(VisreedTag tag) {
+        super(tag);
     }
     
-    public ProductionPayload(String name){
-    	super(JavaCCTag.PRODUCTION);
+    public ProductionPayload(VisreedTag tag, String name){
+    	super(tag);
     	this.name = name;
     }
 

@@ -12,9 +12,6 @@ import higraph.model.abstractTaggedClasses.AbstractTaggedNode;
 import java.util.ArrayList;
 import java.util.List;
 
-import visreed.model.payload.SequencePayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObservable;
 import visreed.pattern.IObserver;
 
@@ -94,54 +91,48 @@ implements ISelectable, IObservable<VisreedNode> {
      */
     @Override
     public void insertChild(int position, VisreedNode newChild){
-    	boolean childIsSeq = newChild.getTag().equals(VisreedTag.SEQUENCE);
-	
-    	// oneChildMode: this != seq, this holds only one child; only child is seq.
-		boolean oneChildMode = (getTag().canHoldExactOneChild());
-		oneChildMode &= (getNumberOfChildren() == 1 && getChild(0).getTag().equals(VisreedTag.SEQUENCE));
-		oneChildMode &= (!getTag().equals(VisreedTag.SEQUENCE));
-		
-		VisreedNode insertionTarget = this;
-		if(oneChildMode){
-			insertionTarget = this.getChild(0);
-		}
-		
-		if(insertionTarget.getTag().equals(VisreedTag.SEQUENCE)){
-			// now insertionTarget is a seq.
-	    	
-			// inserting a node into a seq node
-			if(childIsSeq){
-				// inserting a seq into a seq
-				for(int i = 0; newChild.getNumberOfChildren() > 0; i++){
-					VisreedNode kid = newChild.getChild(0);
-					kid.detach();
-					if(oneChildMode){
-						insertionTarget.insertChild(position + i, kid);
-					} else {
-						super.insertChild(position + i, kid);
-					}
-				}
-			} else {
-				// inserting a non-seq into a seq, do as defaults
-				if(oneChildMode){
-					insertionTarget.insertChild(position, newChild);
-				} else {
-					super.insertChild(position, newChild);
-				}
-			}
-		} else {
-			// insertionTarget == this, and is not in oneChildMode
-			// this is non-seq
-			
-			if(childIsSeq){
-				super.insertChild(position, newChild);
-			} else {
-				// non-seq ad non-seq, make a new seq in the middle
-				VisreedNode seq = this.getWholeGraph().makeRootNode(new SequencePayload());
-				seq.appendChild(newChild);
-				super.insertChild(position, seq);
-			}
-		}
+    	List<VisreedNode> children = new ArrayList<VisreedNode>(1);
+    	children.add(newChild);
+    	NodeInsertionParameter p = this.getTag().processInsertion(this, children, position);
+    	
+    	VisreedNode insertionTarget = p.insertionTarget;
+    	for(int i = 0; i < p.children.size(); i++){
+    		insertionTarget.privateInsertChild(position + i, p.children.get(i));
+    	}
+    }
+    
+    /**
+     * Inserts a list of children to specified position
+     * @param position
+     * @param newChildren
+     */
+    public void insertChild(int position, List<VisreedNode> newChildren){
+    	NodeInsertionParameter p = this.getTag().processInsertion(this, newChildren, position);
+    	
+    	for(int i = 0; i < newChildren.size(); i++){
+    		p.insertionTarget.privateInsertChild(position + i, newChildren.get(i));
+    	}
+    }
+    
+    @Override
+    public void replace(VisreedNode node){
+    	List<VisreedNode> children = new ArrayList<VisreedNode>(1);
+    	children.add(node);
+    	NodeInsertionParameter p = this.getTag().processInsertion(getParent(), children, getPosition());
+    	privateReplace(p.children.get(0));
+    }
+    
+    private final void privateReplace(VisreedNode node){
+    	super.replace(node);
+    }
+    
+    /**
+     * Just call super.insertChild()
+     * @param position
+     * @param child
+     */
+    private final void privateInsertChild(int position, VisreedNode child){
+    	super.insertChild(position, child);
     }
     
     /* (non-Javadoc)

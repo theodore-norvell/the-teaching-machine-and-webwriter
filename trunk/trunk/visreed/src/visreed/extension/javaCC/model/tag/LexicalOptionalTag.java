@@ -7,18 +7,33 @@
  */
 package visreed.extension.javaCC.model.tag;
 
-import visreed.model.tag.OptionalTag;
+import visreed.model.VisreedPayload;
+import visreed.model.payload.OptionalPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class LexicalOptionalTag extends OptionalTag {
+public class LexicalOptionalTag extends LexicalTag {
 	protected LexicalOptionalTag() {
-		super();
+		super(TagCategory.SINGLE_SEQ_CHILD);
 	}
 	private static final LexicalOptionalTag instance = new LexicalOptionalTag();
 	protected static LexicalOptionalTag getInstance(){
 		return instance;
+	}
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
+	 */
+	@Override
+	public VisreedPayload defaultPayload() {
+		return new OptionalPayload(this);
+	}
+	/* (non-Javadoc)
+	 * @see visreed.model.IDescribable#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return "LOPT";
 	}
 }

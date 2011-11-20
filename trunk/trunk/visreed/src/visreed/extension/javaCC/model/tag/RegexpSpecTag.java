@@ -7,43 +7,21 @@
  */
 package visreed.extension.javaCC.model.tag;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  */
-public class RegexpSpecTag extends JavaCCTag {
+public class RegexpSpecTag extends LexicalTag {
 	
 	private RegexpSpecTag(){
-		super();
+		super(TagCategory.SINGLE_SEQ_CHILD);
 	}
 	
 	private static RegexpSpecTag instance = new RegexpSpecTag();
 	protected static RegexpSpecTag getInstance(){
 		return instance;
-	}
-
-	/* (non-Javadoc)
-	 * @see higraph.model.taggedInterfaces.Tag#contentModel(java.util.List)
-	 */
-	@Override
-	public boolean contentModel(List<VisreedTag> seq) {
-		return (seq != null && seq.size() == 1 && seq.get(0).is(SEQUENCE));
-	}
-
-	/* (non-Javadoc)
-	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
-	 */
-	@Override
-	public List<VisreedTag> defaultTagSequence() {
-		List<VisreedTag> seq = new ArrayList<VisreedTag>();
-		seq.add(JavaCCTag.SEQUENCE);
-		return seq;
 	}
 
 	/* (non-Javadoc)

@@ -7,6 +7,7 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 
 /**
@@ -16,6 +17,10 @@ public class RegexpProductionPayload extends ProductionPayload {
 
 	public enum Kind {
 		TOKEN, SPECIAL_TOKEN, SKIP, MORE
+	}
+	
+	public RegexpProductionPayload(String name) {
+		super(JavaCCTag.REGULAR_PRODUCTION, name);
 	}
 	
 	/* (non-Javadoc)
@@ -51,10 +56,6 @@ public class RegexpProductionPayload extends ProductionPayload {
 	}
 	public void setKind(Kind kind) {
 		this.kind = kind;
-	}
-	
-	public RegexpProductionPayload(String name) {
-		super(name);
 	}
 
 	/* (non-Javadoc)

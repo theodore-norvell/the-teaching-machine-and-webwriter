@@ -9,14 +9,15 @@ package visreed.extension.javaCC.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.view.JavaCodeNodeView;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
@@ -26,12 +27,12 @@ public class JavaCodeProductionPayload extends ProductionPayload {
 
 	private String code;
     public JavaCodeProductionPayload() {
-        super();
+        super(JavaCCTag.JAVA_CODE_PRODUCTION);
         this.code = "";
     }
     
     public JavaCodeProductionPayload(String code){
-    	super();
+    	super(JavaCCTag.JAVA_CODE_PRODUCTION);
         this.code = code;
     }
     

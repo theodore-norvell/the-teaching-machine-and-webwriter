@@ -5,26 +5,22 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.tag;
+package visreed.extension.regex.model.tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.payload.SequencePayload;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  * 
  */
-public class SequenceTag extends VisreedTag {
+public class SequenceTag extends RegexTag {
     protected SequenceTag(){
-        super();
-    }
-    
-    @Override
-    public boolean equals(Object obj){
-        return (obj instanceof SequenceTag);
+        super(TagCategory.SEQ);
     }
     
     @Override
@@ -36,23 +32,10 @@ public class SequenceTag extends VisreedTag {
     public boolean canHoldExactOneChild(){
     	return false;
     }
-    
-    @Override
-    public boolean contentModel(List<VisreedTag> seq) {
-        // Sequence may have 0 or more children, but none can be sequence.
-        boolean validated = true;
-        if (seq == null || seq.size() == 0) {
-            validated = true;
-        }
-        if (seq.contains(SEQUENCE) == true) {
-            validated = false;
-        }
-        return validated;
-    }
 
     @Override
     public VisreedPayload defaultPayload() {
-        return new SequencePayload();
+        return new SequencePayload(RegexTag.SEQUENCE);
     }
 
     @Override

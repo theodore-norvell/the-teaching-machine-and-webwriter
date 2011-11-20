@@ -20,11 +20,10 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag.TagCategory;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.SequencePayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
@@ -37,8 +36,8 @@ public class InsertChildDropZone extends VisreedDropZone {
      * @param timeMan
      */
     public InsertChildDropZone(
-            NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nv,
-            BTTimeManager timeMan) {
+        NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nv,
+        BTTimeManager timeMan) {
         super(nv, timeMan);
     }
 
@@ -67,7 +66,7 @@ public class InsertChildDropZone extends VisreedDropZone {
         VisreedWholeGraph wg = this.getHigraphView().getHigraph().getWholeGraph();
         wg.reduceSelection();
         
-        VisreedNode thisNode = ((VisreedNodeView)this.getAssociatedComponent()).getNode();
+        VisreedNode thisNode = getNodeView().getNode();
 
         for(VisreedNode n : nodes){
         	// you can not drag a node into its children
@@ -75,79 +74,49 @@ public class InsertChildDropZone extends VisreedDropZone {
         		nodes.remove(n);
         	}
         }
-        boolean targetIsSeq = false;
-        if(thisNode.getTag().equals(VisreedTag.SEQUENCE)){
-            targetIsSeq = true;
-        }
-        
         // creates a temporary sequence and handle them all
         
-        // all nodes in seq form
-        ArrayList<VisreedNode> seqList = new ArrayList<VisreedNode>();
         // all nodes which should be deleted
         ArrayList<VisreedNode> deleteList = new ArrayList<VisreedNode>();
         ArrayList<VisreedNode> reLayoutList = new ArrayList<VisreedNode>();
         
         for(int i = 0; i < nodes.size(); i++){
-            VisreedNode child = nodes.get(i);
-            if(child == null){
+            VisreedNode srcNode = nodes.get(i);
+            if(srcNode == null){
                 continue;
             }
-        	VisreedNode childParent = child.getParent();
-            if(child.getTag().equals(VisreedTag.SEQUENCE)){
-                if(targetIsSeq){
-                    // SEQ -> SEQ
-                    for(int j = 0; j < child.getNumberOfChildren(); j++){
-                        seqList.add(child.getChild(j).duplicate());
-                    }
-                    // deletion
-                    if(child.getTag().canHoldExactOneChild()){
-                    	// dragging the content out of a RepeatRange, preserve the 
-                    	// original SEQ inside the RepeatRange
-                    	deleteList.add(child.getChild(0));
-                    } else if (childParent != null){
-	                	if(childParent.getTag().equals(VisreedTag.ALTERNATION)){
-	                		 // dragging a direct branch of ALT to elsewhere
-	                		if(childParent.getNumberOfChildren() > 2){
-	                			// dragging a branch out
-	                			deleteList.add(child);
-	                		} else {
-	                			// dragging all children of a branch out, but the branch remains
-	                			for(int j = 0; j < child.getNumberOfChildren(); j++){
-	                				deleteList.add(child.getChild(j));
-	                			}
-	                		}
-	                	}
-                    } else {
-                    	deleteList.add(child);
-                    }
-                } else {
-                    // nonSEQ -> SEQ
-                    seqList.add(child.duplicate());
-                    deleteList.add(child);
-                }
-            } else {
-                if(targetIsSeq){
-                    // SEQ -> nonSeq
-                    seqList.add(child.duplicate());
-                    deleteList.add(child);
-                } else {
-                    // nonSeq -> nonSeq
-                    VisreedNode seq = wg.makeRootNode(new SequencePayload());
-                    seq.appendChild(child.duplicate());
-                    seqList.add(seq);
-                    deleteList.add(child);
-                }
-            }
-            if(childParent != null){
-            	reLayoutList.add(childParent);
-            }
+            
+            // handle special cases
+        	VisreedNode srcParent = srcNode.getParent();
+            
+        	if(srcParent != null){
+	            if(srcParent.getTag().isCategory(TagCategory.SINGLE_SEQ_CHILD)){
+	            	// dragging the SEQ outside of a SINGLE_SEQ_CHILD
+	            	deleteList.addAll(srcNode.getChildren());
+	            } else {
+	            	if (srcParent.getTag().isCategory(TagCategory.ALT)){
+		        		 // dragging a direct branch of ALT to elsewhere
+		        		if(srcParent.getNumberOfChildren() > 2){
+		        			// dragging a branch out
+		        			deleteList.add(srcNode);
+		        		} else {
+		        			// dragging all children of a branch out, but the branch remains
+		        			for(int j = 0; j < srcNode.getNumberOfChildren(); j++){
+		        				deleteList.add(srcNode.getChild(j));
+		        			}
+		        		}
+		            } else {
+		            	deleteList.add(srcNode);
+		            }
+	            }
+            	reLayoutList.add(srcParent);
+        	}
         }
         // now inserts all the temporary nodes into the position
         int position = this.getNodeNumber();
-        for(int i = 0; i < seqList.size(); i++){
+        for(int i = 0; i < nodes.size(); i++){
         	// handle the situation of the node is already child of the target
-            thisNode.insertChild(position + i, seqList.get(i));
+            thisNode.insertChild(position + i, nodes.get(i).duplicate());
         }
         
         if(!isCopy){

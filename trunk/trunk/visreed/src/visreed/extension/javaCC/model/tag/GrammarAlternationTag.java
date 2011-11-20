@@ -7,39 +7,37 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.payload.AlternationPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.AlternationTag;
-import visreed.model.tag.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class GrammarAlternationTag extends AlternationTag {
+public class GrammarAlternationTag extends GrammarTag {
 	protected GrammarAlternationTag() {
-		super();
+		super(TagCategory.ALT);
 	}
 	private static final GrammarAlternationTag instance = new GrammarAlternationTag();
 	protected static GrammarAlternationTag getInstance(){
 		return instance;
 	}
-    
-    @Override
-    public boolean canHoldExactOneChild(){
-    	return false;
-    }
-
-    @Override
-	protected boolean contentModelHook(List<VisreedTag> childTags){
-		return childTags.size() >= 2;
-	}
 	
 	@Override
-	protected VisreedTag[] getAcceptableChildTags(){
-		return JavaCCTag.CHILD_TAG_NON_SEQ_GRA;
+	protected boolean contentModelHook(final List<VisreedTag> childTags){
+		boolean result = true;
+
+		for(VisreedTag t : childTags){
+			if(!t.equals(GRAMMAR_SEQUENCE)){
+				result = false;
+				break;
+			}
+		}
+		return result;
 	}
 
 	/* (non-Javadoc)
@@ -47,7 +45,7 @@ public class GrammarAlternationTag extends AlternationTag {
 	 */
 	@Override
 	public VisreedPayload defaultPayload() {
-		return new AlternationPayload();
+		return new AlternationPayload(this);
 	}
 
 	/* (non-Javadoc)
@@ -57,4 +55,17 @@ public class GrammarAlternationTag extends AlternationTag {
 	public String getDescription() {
 		return "GALT";
 	}
+
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
+	 */
+	@Override
+	public List<VisreedTag> defaultTagSequence() {
+		List<VisreedTag> result = new ArrayList<VisreedTag>(2);
+		result.add(GRAMMAR_SEQUENCE);
+		result.add(GRAMMAR_SEQUENCE);
+		return result;
+	}
+
+
 }

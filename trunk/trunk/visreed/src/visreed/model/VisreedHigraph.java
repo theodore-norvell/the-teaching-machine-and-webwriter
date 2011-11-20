@@ -8,8 +8,6 @@
 package visreed.model;
 
 import higraph.model.abstractTaggedClasses.AbstractTaggedHigraph;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 import visreed.pattern.IObservable;
 
 /**

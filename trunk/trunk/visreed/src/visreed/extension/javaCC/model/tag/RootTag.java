@@ -7,55 +7,24 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.SequenceTag;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
+import visreed.model.VisreedWholeGraph;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class RootTag extends SequenceTag {
+public class RootTag extends JavaCCTag {
 
 	protected RootTag() {
-		super();
+		super(TagCategory.SEQ, Field.GENERAL);
 	}
-	
-	/* (non-Javadoc)
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object o){
-    	if(o.equals(VisreedTag.SEQUENCE)){
-    		return true;
-    	}
-        return (o instanceof RootTag);
-    }
-
-//	/* (non-Javadoc)
-//	 * @see higraph.model.taggedInterfaces.Tag#contentModel(java.util.List)
-//	 */
-//	@Override
-//	public boolean contentModel(List<VisreedTag> seq) {
-//		// Root nodes must have exactly 1 sequence as child
-//        if(seq != null && seq.size() == 1 && seq.get(0).equals(SEQUENCE)){
-//            return true;
-//        }
-//        else{
-//            return false;
-//        }
-//	}
-//
-//	/* (non-Javadoc)
-//	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
-//	 */
-//	@Override
-//	public List<VisreedTag> defaultTagSequence() {
-//        ArrayList<VisreedTag> seq = new ArrayList<VisreedTag>(1);
-//        seq.add(SEQUENCE);
-//        return seq;
-//	}
 
 	/* (non-Javadoc)
 	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
@@ -78,4 +47,20 @@ public class RootTag extends SequenceTag {
     protected static final RootTag getInstance(){
         return instance;
     }
+
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
+	 */
+	@Override
+	public List<VisreedTag> defaultTagSequence() {
+		return new ArrayList<VisreedTag>(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see visreed.model.VisreedTag#createSEQ(visreed.model.VisreedWholeGraph)
+	 */
+	@Override
+	protected VisreedNode createSEQ(VisreedWholeGraph wholeGraph) {
+		return null;
+	}
 }
