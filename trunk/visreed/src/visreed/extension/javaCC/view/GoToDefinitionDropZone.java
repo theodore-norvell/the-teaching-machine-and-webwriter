@@ -17,14 +17,14 @@ import javax.swing.SwingUtilities;
 
 import tm.backtrack.BTTimeManager;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
-import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
+import visreed.extension.javaCC.model.payload.LexicalLinkPayload;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.swing.SwingHelper;
 import visreed.view.IGraphContainer;
 import visreed.view.VisreedDropZone;
@@ -78,7 +78,7 @@ public class GoToDefinitionDropZone extends VisreedDropZone {
 	    			try{
 	    				VisreedNode node = getNodeView().getNode();
 	    				JavaCCWholeGraph wg = (JavaCCWholeGraph) node.getWholeGraph();
-	    				String productionName = ((JavaCCLinkPayload)node.getPayload()).getDescription();
+	    				String productionName = ((LexicalLinkPayload)node.getPayload()).getDescription();
 	    				// clear all selection since we are going to change a view
 	    				wg.deSelectAll();
 	    				

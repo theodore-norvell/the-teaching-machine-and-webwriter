@@ -9,16 +9,17 @@ package visreed.extension.javaCC.model.payload;
 
 import higraph.view.HigraphView;
 import tm.backtrack.BTTimeManager;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.extension.javaCC.parser.Token;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.model.payload.TerminalPayload;
-import visreed.model.payload.VisreedPayload;
 import visreed.view.TerminalNodeView;
 import visreed.view.VisreedNodeView;
 
@@ -33,11 +34,11 @@ public class JavaCodeBlockPayload extends TerminalPayload {
     private Token firstToken = null, lastToken = null;
 
     public JavaCodeBlockPayload() {
-        super();
+        super(JavaCCTag.GRAMMAR_TERMINAL);
     }
     
     public JavaCodeBlockPayload(String code){
-        super(code);
+        super(JavaCCTag.GRAMMAR_TERMINAL, code);
     }
     
     /** The maximum length of the code, for display */

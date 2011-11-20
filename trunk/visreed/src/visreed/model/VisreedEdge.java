@@ -8,8 +8,6 @@
 package visreed.model;
 
 import higraph.model.abstractTaggedClasses.AbstractTaggedEdge;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 
 /**
  * RegexEdges are not used in this project.

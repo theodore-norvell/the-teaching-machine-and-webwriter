@@ -11,16 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.AlternationPayload;
-import visreed.model.payload.KleenePlusPayload;
-import visreed.model.payload.KleeneStarPayload;
-import visreed.model.payload.OptionalPayload;
-import visreed.model.payload.RepeatRangePayload;
-import visreed.model.payload.SequencePayload;
-import visreed.model.payload.TerminalPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
@@ -102,85 +95,24 @@ public class VisreedBuilder {
     public VisreedBuilder(VisreedWholeGraph wg){
         this.wholeGraph = wg;
     }
-    
-    /** Handling nodes building */
-    
-    /**
-     * @param seq
-     * @return
-     */
-    public void buildKleeneStar() {
-        buildAndPushNodeWithSeq(new KleeneStarPayload(), 1);
-    }
-    
-    public void buildOptional() {
-        buildAndPushNodeWithSeq(new OptionalPayload(), 1);
-    }
-    
-    public void buildRepeatRange(int minValue, int maxValue) {
-        buildAndPushNodeWithSeq(new RepeatRangePayload(), 1);
-    }
-    
-    /**
-     * @param wg
-     * @param image
-     * @return
-     */
-    public void buildTerminal(String image) {
-        buildAndPushNodeWithNoSeq(new TerminalPayload(image), 0);
-    }
 
-    /**
-     * @param wg
-     * @param seq
-     * @param numOfChildren
-     * @return
-     */
-    public void buildAlternation(int numOfChildren) {
-    	// alternation is special, as it comes with 2 empty sequences.
-        if(this.getStackSize() < numOfChildren){
-            return;
-        }
-        VisreedPayload payload = new AlternationPayload();
-        VisreedNode node = this.wholeGraph.makeRootNode(payload);
-        for(int i = 0; i < numOfChildren; i++){
-            VisreedNode kid = this.pop();
-            VisreedNode toInsert = null;
-            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
-            	// kid == seq
-                toInsert = kid;
-            } else {
-            	// kid != seq
-                VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
-                seq.insertChild(0, kid);
-                toInsert = seq;
-            }
-            
-            if(i == numOfChildren - 1 || i == numOfChildren - 2){
-            	node.getChild(numOfChildren - i - 1).replace(toInsert);
-            } else {
-            	node.insertChild(2, toInsert);
-            }
-        }
-        this.push(node);
-    }
-
-    /**
-     * @param wg
-     * @param seq
-     * @return
-     */
-    public void buildKleenePlus() {
-        buildAndPushNodeWithSeq(new KleenePlusPayload(), 1);
+    
+    public void buildNode(VisreedTag tag, int numOfChildren){
+    	buildNode(tag.defaultPayload(), numOfChildren);
     }
     
-    /**
-     * @param wg
-     * @param numOfChildren
-     */
-    public void buildSequence(int numOfChildren){
-        buildAndPushNodeWithNoSeq(new SequencePayload(), numOfChildren);
+    public void buildNode(VisreedPayload payload, int numOfChildren){
+    	if(this.getStackSize() < numOfChildren){
+    		return;
+    	}
+    	VisreedNode node = this.wholeGraph.makeRootNode(payload);
+    	for(int i = 0; i < numOfChildren; i++){
+    		VisreedNode kid = this.pop();
+    		node.insertChild(0, kid);
+    	}
+    	this.push(node);
     }
+    
     
     /**
      * Build a node and push it into the stack.
@@ -188,6 +120,7 @@ public class VisreedBuilder {
      * @param payload
      * @param numOfChildren
      */
+    @Deprecated
     public void buildAndPushNodeWithNoSeq(
         VisreedPayload payload,
         int numOfChildren
@@ -195,35 +128,13 @@ public class VisreedBuilder {
         if(this.getStackSize() < numOfChildren){
             return;
         }
-        VisreedNode node = null;
-        if(numOfChildren == 0){
-        	node = this.wholeGraph.makeRootNode(payload);
-        } else if(numOfChildren == 1){
-            VisreedNode kid = this.pop();
-            if(kid.getTag().equals(VisreedTag.SEQUENCE)){
-                // do nothing
-            	node = kid;
-            }
-            else{
-            	node = this.wholeGraph.makeRootNode(payload);
-                node.insertChild(0, kid);
-            }
-        } else { 
-        	node = this.wholeGraph.makeRootNode(payload);
-            for(int i = 0; i < numOfChildren; i++){
-                VisreedNode kid = this.pop();
-                if(kid.getTag().equals(VisreedTag.SEQUENCE)){
-                	// kid = sequence
-                    int kidChildren = kid.getNumberOfChildren();
-                    for(int j = 0; j < kidChildren; j++){
-                        node.insertChild(0, kid.getChild(kidChildren - j - 1));
-                    }
-                } else {
-                	// kid is not seq
-                    node.insertChild(0, kid);
-                }
-            }
+        VisreedNode node = this.wholeGraph.makeRootNode(payload);
+        
+        for(int i = 0; i < numOfChildren; i++){
+        	VisreedNode kid = this.pop();
+        	node.insertChild(0, kid);
         }
+        
         this.push(node);
     }
     
@@ -233,6 +144,7 @@ public class VisreedBuilder {
      * @param payload
      * @param numOfChildren
      */
+    @Deprecated
     public void buildAndPushNodeWithSeq(
         VisreedPayload payload,
         int numOfChildren
@@ -241,17 +153,10 @@ public class VisreedBuilder {
             return;
         }
         VisreedNode node = this.wholeGraph.makeRootNode(payload);
+        
         for(int i = 0; i < numOfChildren; i++){
-            VisreedNode kid = this.pop();
-            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
-            	// kid == seq
-                node.insertChild(0, kid);
-            } else {
-            	// kid != seq
-                VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
-                seq.insertChild(0, kid);
-                node.insertChild(0, seq);
-            }
+        	VisreedNode kid = this.pop();
+        	node.insertChild(0, kid);
         }
         this.push(node);
     }

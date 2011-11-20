@@ -7,24 +7,33 @@
  */
 package visreed.extension.javaCC.model.tag;
 
-import visreed.model.tag.OptionalTag;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
+import visreed.model.payload.OptionalPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class GrammarOptionalTag extends OptionalTag {
+public class GrammarOptionalTag extends GrammarTag {
 	protected GrammarOptionalTag() {
-		super();
+		super(TagCategory.SINGLE_SEQ_CHILD);
 	}
 	private static final GrammarOptionalTag instance = new GrammarOptionalTag();
 	protected static GrammarOptionalTag getInstance(){
 		return instance;
 	}
-	
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
+	 */
 	@Override
-	protected VisreedTag[] getAcceptableChildTags(){
-		return JavaCCTag.CHILD_TAG_NON_SEQ_GRA;
+	public VisreedPayload defaultPayload() {
+		return new OptionalPayload(this);
+	}
+	/* (non-Javadoc)
+	 * @see visreed.model.IDescribable#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return "GOPT";
 	}
 }

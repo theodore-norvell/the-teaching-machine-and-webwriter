@@ -7,19 +7,29 @@
  */
 package visreed.extension.javaCC.model.tag;
 
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedTag;
 
 /**
  * This is the common definition for all Tags in JavaCC extension. 
  * @author Xiaoyu Guo
  */
 public abstract class JavaCCTag extends VisreedTag {
+	protected Field field = Field.GENERAL;
+	
+	protected JavaCCTag(TagCategory category, Field field){
+		super(category);
+		this.field = field;
+	}
+	
+	protected enum Field{
+		LEXICAL, GRAMMATICAL, GENERAL, OTHER
+	}
+	
 	/* JavaCC specific tags */
-    public static final VisreedTag PRODUCTION 			= ProductionTag.getInstance();
     public static final VisreedTag ROOT 				= RootTag.getInstance();
-    public static final VisreedTag LINK 				= JavaCCLinkTag.getInstance();
     public static final VisreedTag REGEXP_SPEC			= RegexpSpecTag.getInstance();
     public static final VisreedTag LOOKAHEAD 			= LookAheadTag.getInstance();
+    public static final VisreedTag JAVA_CODE_PRODUCTION = JavaCodeProductionTag.getInstance();
     
     /* Lexical Tags are used in <> */
     public static final VisreedTag LEXICAL_SEQUENCE 	= LexicalSequenceTag.getInstance();
@@ -28,6 +38,10 @@ public abstract class JavaCCTag extends VisreedTag {
     public static final VisreedTag LEXICAL_KLEENE_STAR 	= LexicalKleeneStarTag.getInstance();
     public static final VisreedTag LEXICAL_OPTIONAL 	= LexicalOptionalTag.getInstance();
     public static final VisreedTag LEXICAL_REPEAT_RANGE = LexicalRepeatRangeTag.getInstance();
+    public static final VisreedTag LEXICAL_LINK 		= LexicalLinkTag.getInstance();
+    public static final VisreedTag LEXICAL_TERMINAL		= LexicalTerminalTag.getInstance();
+    public static final VisreedTag CHARACTER_LIST		= CharacterListTag.getInstance();
+    public static final VisreedTag REGULAR_PRODUCTION 	= RegularExpressionProductionTag.getInstance();
     
     /* Gramma(tical)r Tags are used in bnf productions */
     public static final VisreedTag GRAMMAR_SEQUENCE 	= GrammarSequenceTag.getInstance();
@@ -36,11 +50,11 @@ public abstract class JavaCCTag extends VisreedTag {
     public static final VisreedTag GRAMMAR_KLEENE_STAR 	= GrammarKleeneStarTag.getInstance();
     public static final VisreedTag GRAMMAR_OPTIONAL 	= GrammarOptionalTag.getInstance();
     public static final VisreedTag GRAMMAR_REPEAT_RANGE = GrammarRepeatRangeTag.getInstance();
-    
+    public static final VisreedTag GRAMMAR_LINK 		= GrammarLinkTag.getInstance();
+    public static final VisreedTag GRAMMAR_TERMINAL		= GrammarTerminalTag.getInstance();
+    public static final VisreedTag BNF_PRODUCTION 		= BNFProductionTag.getInstance();
+   
     private static final VisreedTag[] VALUES = new VisreedTag[]{
-    	// commonly used inheriented values
-        TERMINAL,
-        
         // lexical tags
         LEXICAL_SEQUENCE, 	
         LEXICAL_ALTERNATION, 
@@ -48,6 +62,11 @@ public abstract class JavaCCTag extends VisreedTag {
         LEXICAL_KLEENE_STAR, 
         LEXICAL_OPTIONAL, 	
         LEXICAL_REPEAT_RANGE,
+        LEXICAL_LINK,
+        LEXICAL_TERMINAL,
+        CHARACTER_LIST,
+        REGULAR_PRODUCTION,
+        REGEXP_SPEC,
 
         // grammatical tags
         GRAMMAR_SEQUENCE, 	
@@ -56,13 +75,14 @@ public abstract class JavaCCTag extends VisreedTag {
         GRAMMAR_KLEENE_STAR, 
         GRAMMAR_OPTIONAL, 	
         GRAMMAR_REPEAT_RANGE,
+        GRAMMAR_LINK,
+        GRAMMAR_TERMINAL,
+        BNF_PRODUCTION,
+        LOOKAHEAD,
 
-        // javaCC tags
+        // general tags
     	ROOT,
-        PRODUCTION,
-        LINK,
-        REGEXP_SPEC,
-        LOOKAHEAD
+        JAVA_CODE_PRODUCTION
     };
     
     /**
@@ -73,9 +93,4 @@ public abstract class JavaCCTag extends VisreedTag {
         return VALUES;
     }
     
-    /** Common child tags for Lexical non-SEQs */
-    protected static final VisreedTag[] CHILD_TAG_NON_SEQ_LEX = {LEXICAL_SEQUENCE};
-    
-    /** Common child tags for Grammatical non-SEQs */
-    protected static final VisreedTag[] CHILD_TAG_NON_SEQ_GRA = {GRAMMAR_SEQUENCE};
 }

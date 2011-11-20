@@ -6,19 +6,16 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.SequenceNodeView;
 import visreed.view.VisreedNodeView;
 
 public class SequencePayload extends VisreedPayload {
 
-	public SequencePayload() {
-		super(VisreedTag.SEQUENCE);
-	}
-
-	protected SequencePayload(VisreedTag tag) {
+	public SequencePayload(VisreedTag tag) {
 		super(tag);
 	}
 

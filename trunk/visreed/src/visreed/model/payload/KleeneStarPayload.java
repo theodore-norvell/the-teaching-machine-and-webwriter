@@ -7,16 +7,17 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.KleeneStarNodeView;
 import visreed.view.VisreedNodeView;
 
 public class KleeneStarPayload extends VisreedPayload {
 
-	public KleeneStarPayload() {
-		super(VisreedTag.KLEENE_STAR);
+	public KleeneStarPayload(VisreedTag tag) {
+		super(tag);
 	}
 	
     /* (non-Javadoc)

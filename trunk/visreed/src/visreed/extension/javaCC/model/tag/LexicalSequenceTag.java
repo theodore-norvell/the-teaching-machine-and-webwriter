@@ -7,18 +7,20 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import visreed.model.tag.SequenceTag;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
+import visreed.model.payload.SequencePayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class LexicalSequenceTag extends SequenceTag {
+public class LexicalSequenceTag extends LexicalTag {
 	protected LexicalSequenceTag(){
-		super();
+		super(TagCategory.SEQ);
 	}
 	private static final LexicalSequenceTag instance = new LexicalSequenceTag();
 	protected static LexicalSequenceTag getInstance(){
@@ -26,24 +28,56 @@ public class LexicalSequenceTag extends SequenceTag {
 	}
 	
 	protected static final VisreedTag[] LSEQ_CHILD = {
-		JavaCCTag.GRAMMAR_ALTERNATION,
-		JavaCCTag.LOOKAHEAD,
-		TERMINAL,
-		JavaCCTag.LINK,
-		CHARACTER_LIST,
-		JavaCCTag.GRAMMAR_KLEENE_PLUS,
-		JavaCCTag.GRAMMAR_KLEENE_STAR,
-		JavaCCTag.GRAMMAR_OPTIONAL,
-		JavaCCTag.GRAMMAR_REPEAT_RANGE
+//		LEXICAL_ALTERNATION,
+//		LEXICAL_TERMINAL,
+//		LEXICAL_LINK,
+//		CHARACTER_LIST,
+//		LEXICAL_KLEENE_STAR,
+//		LEXICAL_KLEENE_PLUS,
+//		LEXICAL_OPTIONAL,
+//		LEXICAL_REPEAT_RANGE
+		
+		LexicalAlternationTag.getInstance(),
+		LexicalTerminalTag.getInstance(),
+		LexicalLinkTag.getInstance(),
+		CharacterListTag.getInstance(),
+		LexicalKleeneStarTag.getInstance(),
+		LexicalKleenePlusTag.getInstance(),
+		LexicalOptionalTag.getInstance(),
+		LexicalRepeatRangeTag.getInstance(),
+		RegexpSpecTag.getInstance()
 	};
 	
 	@Override
-	protected VisreedTag[] getAcceptableChildTags(){
-		return LSEQ_CHILD;
+	protected boolean contentModelHook(final List<VisreedTag> childTags){
+    	boolean result = true;
+    	for(VisreedTag t : childTags){
+    		if(!t.isOneOf(LSEQ_CHILD)){
+    			result = false;
+    			break;
+    		}
+    	}
+    	return result;
+    }
+
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
+	 */
+	@Override
+	public VisreedPayload defaultPayload() {
+		return new SequencePayload(this);
 	}
 	
 	@Override
-	protected boolean contentModelHook(final List<VisreedTag> childTags){
-    	return true;
-    }
+	public List<VisreedTag> defaultTagSequence(){
+		return new ArrayList<VisreedTag>(0);
+	}
+
+	/* (non-Javadoc)
+	 * @see visreed.model.IDescribable#getDescription()
+	 */
+	@Override
+	public String getDescription() {
+		return "LSEQ";
+	}
 }

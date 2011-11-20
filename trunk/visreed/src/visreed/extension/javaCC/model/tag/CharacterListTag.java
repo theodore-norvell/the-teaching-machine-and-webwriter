@@ -1,27 +1,31 @@
 /**
  * CharacterListTag.java
  * 
- * @date: Nov 8, 2011
+ * @date: Nov 15, 2011
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.tag;
+package visreed.extension.javaCC.model.tag;
 
+import visreed.model.VisreedPayload;
 import visreed.model.payload.CharacterListPayload;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class CharacterListTag extends VisreedTag {
+public class CharacterListTag extends LexicalTerminalTag {
+
+	protected CharacterListTag(){
+		super();
+	}
 
 	/* (non-Javadoc)
 	 * @see higraph.model.taggedInterfaces.Tag#defaultPayload()
 	 */
 	@Override
 	public VisreedPayload defaultPayload() {
-		return new CharacterListPayload("");
+		return new CharacterListPayload(JavaCCTag.CHARACTER_LIST, "");
 	}
 
 	/* (non-Javadoc)
@@ -33,8 +37,8 @@ public class CharacterListTag extends VisreedTag {
 	}
 
     private static final CharacterListTag instance = new CharacterListTag();
-    protected static VisreedTag getInstance() {
+    protected static JavaCCTag getInstance() {
         return instance;
-    };
+    }
 
 }

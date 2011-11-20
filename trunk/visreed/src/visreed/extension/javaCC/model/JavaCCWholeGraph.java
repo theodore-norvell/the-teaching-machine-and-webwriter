@@ -17,8 +17,8 @@ import visreed.extension.javaCC.parser.ParseException;
 import visreed.extension.javaCC.parser.Token;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
@@ -80,7 +80,7 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
         if(tag.equals(JavaCCTag.ROOT)){
         	this.rootSubgraph.clear();
         	this.rootSubgraph.addTop(node);
-        } else if(tag.equals(JavaCCTag.PRODUCTION)){
+        } else if(tag.equals(JavaCCTag.REGULAR_PRODUCTION)){
         	this.productionManager.registerNode(node);
         } else if (tag.equals(JavaCCTag.REGEXP_SPEC)){
         	this.regexpSpecManager.registerNode(node);

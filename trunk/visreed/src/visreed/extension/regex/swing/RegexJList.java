@@ -14,11 +14,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 
+import visreed.extension.regex.model.tag.RegexTag;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.SequencePayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
 
 /**
  * The default tool bar does not support drag, so use a JList with custom
@@ -49,11 +48,11 @@ public class RegexJList extends JList {
     }
     
     private static final RegexIconData[] PREDEFINED_NODE_DATA = new RegexIconData[]{
-        new RegexIconData("Sequence",       "/images/toolbar_node_seq.png",     VisreedTag.SEQUENCE),
-        new RegexIconData("Alternation",    "/images/toolbar_node_alt.png",     VisreedTag.ALTERNATION),
-        new RegexIconData("Kleene +",       "/images/toolbar_node_kln+.png",    VisreedTag.KLEENE_PLUS),
-        new RegexIconData("Kleene *",       "/images/toolbar_node_klnstar.png", VisreedTag.KLEENE_STAR),
-        new RegexIconData("Terminal",       "/images/toolbar_node_ter.png",     VisreedTag.TERMINAL)
+        new RegexIconData("Sequence",       "/images/toolbar_node_seq.png",     RegexTag.SEQUENCE),
+        new RegexIconData("Alternation",    "/images/toolbar_node_alt.png",     RegexTag.ALTERNATION),
+        new RegexIconData("Kleene +",       "/images/toolbar_node_kln+.png",    RegexTag.KLEENE_PLUS),
+        new RegexIconData("Kleene *",       "/images/toolbar_node_klnstar.png", RegexTag.KLEENE_STAR),
+        new RegexIconData("Terminal",       "/images/toolbar_node_ter.png",     RegexTag.TERMINAL)
     };
 
     private static DefaultListModel getDefaultData() {

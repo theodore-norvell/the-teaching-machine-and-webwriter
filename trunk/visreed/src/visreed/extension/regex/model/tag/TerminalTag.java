@@ -5,21 +5,22 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.model.tag;
+package visreed.extension.regex.model.tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.payload.TerminalPayload;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class TerminalTag extends VisreedTag {
+public class TerminalTag extends RegexTag {
     protected TerminalTag (){
-        super();
+        super(TagCategory.TERMINAL);
     }
     
     @Override
@@ -33,19 +34,8 @@ public class TerminalTag extends VisreedTag {
     }
 
     @Override
-    public boolean contentModel(List<VisreedTag> seq) {
-        // Terminal nodes do not have child
-        if(seq == null || seq.size() == 0){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-
-    @Override
     public VisreedPayload defaultPayload() {
-        return new TerminalPayload();
+        return new TerminalPayload(RegexTag.TERMINAL);
     }
 
     @Override

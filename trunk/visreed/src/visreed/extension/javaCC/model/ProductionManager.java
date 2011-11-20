@@ -14,8 +14,8 @@ import visreed.extension.javaCC.model.payload.ProductionPayload;
 import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedNodeManager;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
-import visreed.model.payload.VisreedPayload;
 
 /**
  * ProductionManager handles relationship between all names and production nodes.
@@ -79,7 +79,7 @@ public class ProductionManager extends VisreedNodeManager {
 		}
 		
 		VisreedPayload pl = node.getPayload();
-		if(pl.getTag().equals(JavaCCTag.PRODUCTION)){
+		if(pl.getTag().equals(JavaCCTag.REGULAR_PRODUCTION)){
 			return ((ProductionPayload)pl).getName();
 		} else {
 			return null;

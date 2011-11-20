@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 
 import visreed.model.VisreedNode;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedTag;
 
 /**
  * @author Xiaoyu Guo

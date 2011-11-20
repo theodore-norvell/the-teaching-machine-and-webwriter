@@ -7,7 +7,7 @@
  */
 package visreed.extension.regex.swing;
 
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedTag;
 
 /**
  * RegexIconData represents a button with path to icon image and description.

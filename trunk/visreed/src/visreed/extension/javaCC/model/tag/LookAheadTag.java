@@ -8,17 +8,16 @@
 package visreed.extension.javaCC.model.tag;
 
 import visreed.extension.javaCC.model.payload.LookAheadPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class LookAheadTag extends VisreedTag {
+public class LookAheadTag extends GrammarTag {
 
 	LookAheadTag(){
-		super();
+		super(TagCategory.SINGLE_SEQ_CHILD);
 	}
 	
 	/* (non-Javadoc)
@@ -43,4 +42,5 @@ public class LookAheadTag extends VisreedTag {
 	protected static final LookAheadTag getInstance(){
 		return instance;
 	}
+
 }

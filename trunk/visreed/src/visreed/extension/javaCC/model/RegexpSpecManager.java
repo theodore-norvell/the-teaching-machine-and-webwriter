@@ -11,7 +11,7 @@ import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
 import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedNodeManager;
-import visreed.model.payload.VisreedPayload;
+import visreed.model.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo

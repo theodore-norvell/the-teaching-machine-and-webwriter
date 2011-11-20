@@ -15,26 +15,32 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo
  */
-public class JavaCCLinkPayload extends VisreedPayload {
+public class LexicalLinkPayload extends VisreedPayload {
 
 	protected ProductionPayload source;
 	protected String productionName;
 	
-	public JavaCCLinkPayload(String productionName) {
-		super(JavaCCTag.LINK);
+	public LexicalLinkPayload(String productionName) {
+		super(JavaCCTag.LEXICAL_LINK);
 		this.productionName = productionName;
 	}
 	
-	public JavaCCLinkPayload(ProductionPayload pl){
-		super(JavaCCTag.LINK);
+	protected LexicalLinkPayload(VisreedTag tag, String productionName) {
+		super(tag);
+		this.productionName = productionName;
+	}
+	
+	public LexicalLinkPayload(ProductionPayload pl){
+		super(JavaCCTag.LEXICAL_LINK);
 		this.setSource(pl);
 	}
 	

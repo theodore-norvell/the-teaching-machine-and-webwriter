@@ -14,9 +14,10 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.tag.VisreedTag;
 import visreed.view.RepeatRangeNodeView;
 import visreed.view.VisreedNodeView;
 
@@ -27,18 +28,18 @@ import visreed.view.VisreedNodeView;
  */
 public class RepeatRangePayload extends VisreedPayload {
 
-	public RepeatRangePayload() {
-		super(VisreedTag.REPEAT_RANGE);
+	public RepeatRangePayload(VisreedTag tag) {
+		super(tag);
 	}
 	
-	public RepeatRangePayload(int value) {
-		super(VisreedTag.REPEAT_RANGE);
+	public RepeatRangePayload(VisreedTag tag, int value) {
+		super(tag);
 		this.minValue = value;
 		this.hasMaxValue = false;
 	}
 	
-	public RepeatRangePayload(int minValue, int maxValue) {
-		super(VisreedTag.REPEAT_RANGE);
+	public RepeatRangePayload(VisreedTag tag, int minValue, int maxValue) {
+		super(tag);
 		this.minValue = minValue;
 		this.maxValue = maxValue;
 		this.hasMaxValue = true;

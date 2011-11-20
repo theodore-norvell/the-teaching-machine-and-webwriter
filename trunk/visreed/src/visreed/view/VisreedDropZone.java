@@ -24,9 +24,9 @@ import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
+import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
-import visreed.model.payload.VisreedPayload;
 import visreed.swing.IInteractable;
 
 /**
@@ -66,7 +66,8 @@ implements IInteractable
      */
     public VisreedDropZone(
         NodeView <VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> nv,
-        BTTimeManager timeMan) {
+        BTTimeManager timeMan
+    ) {
         super(nv, timeMan);
         this.nodeNumber = 0; // Default value
         if(nv instanceof VisreedNodeView){

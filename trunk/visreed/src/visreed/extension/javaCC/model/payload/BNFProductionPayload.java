@@ -7,6 +7,7 @@
  */
 package visreed.extension.javaCC.model.payload;
 
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 
 /**
@@ -16,10 +17,11 @@ import visreed.extension.javaCC.parser.JavaCCBuilder;
 public class BNFProductionPayload extends ProductionPayload {
 
 	public BNFProductionPayload() {
+		super(JavaCCTag.BNF_PRODUCTION);
 	}
 
 	public BNFProductionPayload(String name) {
-		super(name);
+		super(JavaCCTag.BNF_PRODUCTION, name);
 	}
 
 	/* (non-Javadoc)

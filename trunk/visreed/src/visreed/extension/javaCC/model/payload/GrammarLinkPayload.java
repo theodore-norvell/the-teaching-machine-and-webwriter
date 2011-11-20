@@ -10,6 +10,7 @@ package visreed.extension.javaCC.model.payload;
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.extension.javaCC.parser.JavaCCBuilder;
 import visreed.extension.javaCC.parser.Token;
 
@@ -17,13 +18,13 @@ import visreed.extension.javaCC.parser.Token;
  * @author Xiaoyu Guo
  *
  */
-public class FunctionCallPayload extends JavaCCLinkPayload {
+public class GrammarLinkPayload extends LexicalLinkPayload {
 
 	/**
 	 * @param productionName
 	 */
-	public FunctionCallPayload(String productionName) {
-		super(productionName);
+	public GrammarLinkPayload(String productionName) {
+		super(JavaCCTag.GRAMMAR_LINK, productionName);
 		this.parameters = new ArrayList<Token>();
 		this.returnVariableName = "";
 	}

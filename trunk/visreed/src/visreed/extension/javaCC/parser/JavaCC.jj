@@ -16,6 +16,7 @@ import visreed.model.*;
 import visreed.model.payload.*;
 import visreed.extension.javaCC.model.*;
 import visreed.extension.javaCC.model.payload.*;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 
 public class JavaCCParser {
     private JavaCCBuilder builder;
@@ -769,8 +770,8 @@ void regular_expr_production() :
   t="}"
 	{
         pl.setLastToken(t);
-        if(count_regexpr > 1)        {
-            builder.buildLexicalAlternation(count_regexpr);        } else {        }
+        if(count_regexpr > 1) {
+            builder.buildAlternation(JavaCCTag.LEXICAL_ALTERNATION, count_regexpr);        } else {        }
         builder.buildProduction(pl, 1);
     }
 }
@@ -840,7 +841,7 @@ void expansion_choices() :
   )*
 	{
 	    if(num_of_choices == 1)	    {
-	        // do nothing, as the SEQ is already handled	    } else {            builder.buildAlternation(num_of_choices);        }    
+	        // do nothing, as the SEQ is already handled	    } else {            builder.buildAlternation(JavaCCTag.GRAMMAR_ALTERNATION, num_of_choices);        }    
 	}
 }
 
@@ -860,7 +861,7 @@ void expansion() :
   )+
   {
       if(count > 0) {
-          builder.buildSequence(count);      }            }
+          builder.buildNode(JavaCCTag.GRAMMAR_SEQUENCE, count);      }            }
 }
 
 void lookahead() : {
@@ -871,7 +872,7 @@ void lookahead() : {
         if(pl.hasChild()){
             childCount = 0;
         }            
-        builder.buildAndPushNodeWithSeq(pl, childCount);    }}   
+        builder.buildNode(pl, childCount);    }}   
 
 void local_lookahead(LookAheadPayload pl) :
 {
@@ -941,7 +942,7 @@ void expansion_unit() :
 |
   "[" expansion_choices() "]"
 	{
-	  builder.buildOptional();
+	  builder.buildNode(JavaCCTag.GRAMMAR_OPTIONAL, 1);
 	}
 |
   LOOKAHEAD(
@@ -962,23 +963,23 @@ void expansion_unit() :
 	LOOKAHEAD( identifier() "(")
     terminal = identifier() Arguments(parameterList)
     {
-        FunctionCallPayload pl = new FunctionCallPayload(terminal);
+        GrammarLinkPayload pl = new GrammarLinkPayload(terminal);
         pl.setReturnVariableName(returnVariableName);
-        builder.buildAndPushNodeWithSeq(pl, 0);    }
+        builder.buildNode(pl, 0);    }
   |
     LOOKAHEAD( StringLiteral() )
     terminal = StringLiteral()
     {
-        builder.buildTerminal(terminal);    }
+        builder.buildTerminal(JavaCCTag.GRAMMAR_TERMINAL, terminal);    }
   |   
     regular_expression()
 	[ "." <IDENTIFIER> ]
   )
 |
   "(" expansion_choices() ")"
-  (  "+" { builder.buildKleenePlus(); }
-   | "*" { builder.buildKleeneStar(); }
-   | "?" { builder.buildOptional(); }
+  (  "+" { builder.buildNode(JavaCCTag.GRAMMAR_KLEENE_PLUS, 1); }
+   | "*" { builder.buildNode(JavaCCTag.GRAMMAR_KLEENE_STAR, 1); }
+   | "?" { builder.buildNode(JavaCCTag.GRAMMAR_OPTIONAL, 1); }
   )?
 }
 
@@ -991,8 +992,8 @@ void regular_expression() :
 {
   image = StringLiteral()
   {
-      builder.buildTerminal(image);
-      builder.buildAndPushNodeWithSeq(new RegexpSpecPayload(image), 1);  }
+      builder.buildNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, image), 1);
+      // builder.buildNode(new RegexpSpecPayload(image), 1);  }
 |
   LOOKAHEAD(3)
   < LANGLE: "<" >
@@ -1006,16 +1007,16 @@ void regular_expression() :
       if(image != null)      {
           RegexpSpecPayload pl = new RegexpSpecPayload(image);
           pl.setPrivate(private_rexp); 
-          builder.buildRegexpSpec(pl);      }     }
+          builder.buildNode(pl, 1);      }     }
 |
   LOOKAHEAD(2)
   "<" image = identifier() ">"
   {
-      builder.buildLink(image);  }
+      builder.buildLink(JavaCCTag.LEXICAL_LINK, image);  }
 |
   "<" "EOF" ">"
   {
-      builder.buildLink("EOF");  }
+      builder.buildLink(JavaCCTag.LEXICAL_LINK, "EOF");  }
 }
 
 void complex_regular_expression_choices() :
@@ -1031,7 +1032,7 @@ void complex_regular_expression_choices() :
   )*
     {
       if (count > 1) {
-        builder.buildAlternation(count);
+        builder.buildNode(JavaCCTag.LEXICAL_ALTERNATION, count);
       }
     }
 }
@@ -1048,7 +1049,7 @@ void complex_regular_expression() :
   )+
     {
       if (count > 1) {
-          builder.buildSequence(count);
+          builder.buildNode(JavaCCTag.LEXICAL_SEQUENCE, count);
       }
     }
 }
@@ -1063,12 +1064,12 @@ void complex_regular_expression_unit() :
 {
   image=StringLiteral()
     {
-      builder.buildTerminal(image);
+      builder.buildTerminal(JavaCCTag.LEXICAL_TERMINAL, image);
     }
 |
   "<" image=identifier() ">"
     {
-      builder.buildLink(image);
+      builder.buildLink(JavaCCTag.LEXICAL_LINK, image);
     }
 |
   character_list()
@@ -1076,17 +1077,15 @@ void complex_regular_expression_unit() :
   "(" complex_regular_expression_choices() ")"
   (  "+"
     {
-        builder.buildKleenePlus();
-      // c.member = new ROneOrMore(t, (RegularExpression)c.member);
+        builder.buildNode(JavaCCTag.LEXICAL_KLEENE_PLUS, 1);
     }
    | "*"
     {
-        builder.buildKleeneStar();
-      // c.member = new RZeroOrMore(t, (RegularExpression)c.member);
+        builder.buildNode(JavaCCTag.LEXICAL_KLEENE_STAR, 1);
     }
    | "?"
     {
-        builder.buildOptional();
+        builder.buildNode(JavaCCTag.LEXICAL_OPTIONAL, 1);
     }
    | "{" r1 = IntegerLiteral()
          [ "," { hasMax = true; } [ r2 = IntegerLiteral() ] ]
@@ -1094,9 +1093,9 @@ void complex_regular_expression_unit() :
     {
         RepeatRangePayload pl = null;
         if(hasMax) {
-            pl = new RepeatRangePayload(r1, r2);        } else {
-            pl = new RepeatRangePayload(r1);        }
-        builder.buildAndPushNodeWithSeq(pl, 1);
+            pl = new RepeatRangePayload(JavaCCTag.LEXICAL_REPEAT_RANGE, r1, r2);        } else {
+            pl = new RepeatRangePayload(JavaCCTag.LEXICAL_REPEAT_RANGE, r1);        }
+        builder.buildNode(pl, 1);
     }
   )?
 }
@@ -1118,7 +1117,8 @@ void character_list() :
       ]
   "]"
   {
-      builder.buildSequence(count);  }
+      // TODO implement CharacterRange
+      builder.buildNode(JavaCCTag.LEXICAL_SEQUENCE, count);  }
 }
 
 void character_descriptor() :
@@ -1134,8 +1134,8 @@ void character_descriptor() :
   ]
   {
       if(isInRange) {
-          builder.buildAndPushNodeWithNoSeq(new CharacterRangePayload(s1, s2, false), 0);      } else {
-          builder.buildAndPushNodeWithNoSeq(new CharacterRangePayload(s1), 0);      }
+          builder.buildNode(new CharacterListPayload(JavaCCTag.CHARACTER_LIST, s1, s2, false), 0);      } else {
+          builder.buildNode(new CharacterListPayload(JavaCCTag.CHARACTER_LIST, s1), 0);      }
             }
 }
 

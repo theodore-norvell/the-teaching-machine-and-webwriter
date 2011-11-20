@@ -3,17 +3,12 @@ package visreed.extension.javaCC.parser;
 import java.util.List;
 
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
-import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
-import visreed.extension.javaCC.model.payload.JavaCCRootPayload;
-import visreed.extension.javaCC.model.payload.JavaCodeBlockPayload;
-import visreed.extension.javaCC.model.payload.LexicalAlternationPayload;
-import visreed.extension.javaCC.model.payload.LookAheadPayload;
-import visreed.extension.javaCC.model.payload.ProductionPayload;
-import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
+import visreed.extension.javaCC.model.payload.*;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.model.VisreedNode;
-import visreed.model.payload.SequencePayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
+import visreed.model.payload.TerminalPayload;
 import visreed.parser.VisreedBuilder;
 
 public class JavaCCBuilder extends VisreedBuilder {
@@ -114,42 +109,31 @@ public class JavaCCBuilder extends VisreedBuilder {
      * @param numOfChild the child of the production node
      */
     public void buildProduction(ProductionPayload pl, int numOfChild){
-    	buildSequence(numOfChild);
-    	buildAndPushNodeWithSeq(pl, 1);
+    	buildNode(pl, numOfChild);
     	this.pop();
     	
-    	JavaCCLinkPayload linkPl = new JavaCCLinkPayload(pl);
-    	buildAndPushNodeWithSeq(linkPl, 0);
+    	LexicalLinkPayload linkPl = new LexicalLinkPayload(pl);
+    	buildNode(linkPl, 0);
     }
     
     /**
      * Build a lexical Alternation node.
      * @param numOfChildren
      */
-    public void buildLexicalAlternation(int numOfChildren){
+    public void buildAlternation(VisreedTag tag, int numOfChildren){
     	// alternation is special, as it comes with 2 empty sequences.
         if(this.getStackSize() < numOfChildren){
             return;
         }
-        VisreedPayload payload = new LexicalAlternationPayload();
+        VisreedPayload payload = tag.defaultPayload();
         VisreedNode node = this.wholeGraph.makeRootNode(payload);
         for(int i = 0; i < numOfChildren; i++){
             VisreedNode kid = this.pop();
-            VisreedNode toInsert = null;
-            if(kid.getPayload().getTag().equals(VisreedTag.SEQUENCE)){
-            	// kid == seq
-                toInsert = kid;
-            } else {
-            	// kid != seq
-                VisreedNode seq = this.wholeGraph.makeRootNode(new SequencePayload());
-                seq.insertChild(0, kid);
-                toInsert = seq;
-            }
             
             if(i == numOfChildren - 1 || i == numOfChildren - 2){
-            	node.getChild(numOfChildren - i - 1).replace(toInsert);
+            	node.getChild(numOfChildren - i - 1).replace(kid);
             } else {
-            	node.insertChild(2, toInsert);
+            	node.insertChild(2, kid);
             }
         }
         this.push(node);
@@ -159,26 +143,38 @@ public class JavaCCBuilder extends VisreedBuilder {
      * Build a Link node with given name.
      * @param image
      */
-    public void buildLink(String image){
-    	JavaCCLinkPayload linkPl = new JavaCCLinkPayload(image);
-    	buildAndPushNodeWithSeq(linkPl, 0);
+    public void buildLink(VisreedTag tag, String image){
+    	LexicalLinkPayload linkPl = null;
+    	// hack: GrammarLink inherits from LexicalLink
+    	if(tag.equals(JavaCCTag.GRAMMAR_LINK)){
+    		linkPl = new GrammarLinkPayload(image);
+    	} else {
+    		linkPl = new LexicalLinkPayload(image);
+    	}
+    	buildNode(linkPl, 0);
     }
     
     /**
      * Build a regular expression specification node.
      * @param payload
      */
+    @Deprecated
     public void buildRegexpSpec(RegexpSpecPayload payload){
-    	buildAndPushNodeWithSeq(payload, 1);
+    	buildNode(payload, 1);
     }
     
+    @Deprecated
     public void buildLookAhead(){
-    	buildAndPushNodeWithSeq(new LookAheadPayload(), 1);
+    	buildNode(new LookAheadPayload(), 1);
     }
     
     public void buildJavaCode(String code){
     	JavaCodeBlockPayload pl = new JavaCodeBlockPayload(code);
-    	buildAndPushNodeWithSeq(pl, 0);
+    	buildNode(pl, 0);
+    }
+    
+    public void buildTerminal(VisreedTag tag, String image){
+    	buildNode(new TerminalPayload(tag, image), 0);
     }
     
     /* (non-Javadoc)
@@ -194,7 +190,7 @@ public class JavaCCBuilder extends VisreedBuilder {
     	int count = getStackSize();
     	
     	VisreedPayload rootPl = new JavaCCRootPayload((JavaCCWholeGraph) this.wholeGraph);
-    	this.buildAndPushNodeWithNoSeq(rootPl, count);
+    	this.buildNode(rootPl, count);
     	
     	// now the stack have only one node (root), which contains N link children 
     }

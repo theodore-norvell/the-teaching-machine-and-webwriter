@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import visreed.model.tag.VisreedTag;
+import visreed.model.VisreedTag;
 
 /**
  * @author Xiaoyu Guo
@@ -20,7 +20,7 @@ import visreed.model.tag.VisreedTag;
 public class JavaCCTagTest {
 
     /**
-     * Test method for {@link visreed.model.tag.VisreedTag#values()}.
+     * Test method for {@link visreed.model.VisreedTag#values()}.
      */
     @Test
     public void testValues() {

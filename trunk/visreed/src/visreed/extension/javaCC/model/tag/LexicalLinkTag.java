@@ -7,22 +7,21 @@
  */
 package visreed.extension.javaCC.model.tag;
 
-import visreed.extension.javaCC.model.payload.JavaCCLinkPayload;
-import visreed.model.payload.VisreedPayload;
-import visreed.model.tag.TerminalTag;
+import visreed.extension.javaCC.model.payload.LexicalLinkPayload;
+import visreed.model.VisreedPayload;
 
 /**
  * @author Xiaoyu Guo
  *
  */
-public class JavaCCLinkTag extends TerminalTag {
+public class LexicalLinkTag extends LexicalTerminalTag {
 
-	protected JavaCCLinkTag() {
+	protected LexicalLinkTag() {
 	}
 	
     @Override
     public boolean equals(Object o){
-        return (o instanceof JavaCCLinkTag);
+        return (o instanceof LexicalLinkTag);
     }
     
     @Override
@@ -35,7 +34,7 @@ public class JavaCCLinkTag extends TerminalTag {
 	 */
 	@Override
 	public VisreedPayload defaultPayload() {
-		return new JavaCCLinkPayload("");
+		return new LexicalLinkPayload("");
 	}
 
 	/* (non-Javadoc)
@@ -46,9 +45,9 @@ public class JavaCCLinkTag extends TerminalTag {
 		return "LNK";
 	}
 
-    private static final JavaCCLinkTag instance = new JavaCCLinkTag();
+    private static final LexicalLinkTag instance = new LexicalLinkTag();
     
-    protected static JavaCCLinkTag getInstance(){
+    protected static LexicalLinkTag getInstance(){
         return instance;
     }
 }
