@@ -22,6 +22,7 @@ import visreed.model.VisreedHigraph;
 import visreed.model.VisreedNode;
 import visreed.model.VisreedPayload;
 import visreed.model.VisreedSubgraph;
+import visreed.model.VisreedTag;
 import visreed.model.VisreedTag.TagCategory;
 import visreed.model.VisreedWholeGraph;
 
@@ -46,7 +47,12 @@ public class InsertChildDropZone extends VisreedDropZone {
      */
     @Override
     public boolean isDropAccepted(){
-        return true;
+    	boolean result = true;
+    	
+    	// TODO consult tag for hint
+//    	VisreedTag tag = this.getNodeView().getNode().getTag();
+    	
+        return result;
     }
     
     /* (non-Javadoc)

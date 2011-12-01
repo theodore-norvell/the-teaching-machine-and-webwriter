@@ -22,9 +22,12 @@ import visreed.pattern.IObserver;
 public class VisreedWholeGraph
 extends AbstractTaggedWholeGraph<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
 implements VisreedHigraph{
+	
+	protected List<VisreedSubgraph> subgraphs;
 
     public VisreedWholeGraph(BTTimeManager timeMan) {
         super(timeMan);
+        this.subgraphs = new ArrayList<VisreedSubgraph>();
         this.selectedNodesGraph = constructSubGraph();
         this.selectedNodesList = new ArrayList<VisreedNode>();
     }
@@ -53,12 +56,18 @@ implements VisreedHigraph{
 
     @Override
     protected VisreedSubgraph constructSubGraph() {
-        return new VisreedSubgraph(this) ;
+        VisreedSubgraph sg = new VisreedSubgraph(this) ;
+        this.subgraphs.add(sg);
+        return sg;
     }
 
     @Override
     public VisreedWholeGraph getWholeGraph() {
         return this;
+    }
+    
+    public List<VisreedSubgraph> getAllSubgraph(){
+    	return subgraphs;
     }
     
     /* Handles selection */
@@ -197,4 +206,11 @@ implements VisreedHigraph{
             this.observers.remove(o);
         }
     }
+
+	/**
+	 * Clear all pre-created subgraphs and nodes
+	 */
+	public void clearAll() {
+		this.subgraphs.clear();
+	}
 }

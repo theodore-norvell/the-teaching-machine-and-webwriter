@@ -41,6 +41,15 @@ public abstract class VisreedNodeManager implements IObserver<VisreedNode> {
     }
     
     /**
+     * Whether the manager contains the node
+     * @param node
+     * @return
+     */
+    public boolean contains(VisreedNode node){
+    	return this.nodeList.contains(node);
+    }
+    
+    /**
      * Removes a production from the manager
      * @param node
      */

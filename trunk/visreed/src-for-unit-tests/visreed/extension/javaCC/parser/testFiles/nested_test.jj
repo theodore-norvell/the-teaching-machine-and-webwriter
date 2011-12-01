@@ -1,0 +1,6 @@
+/**
+ * JavaCC template file created by SF JavaCC plugin 1.5.17+ wizard for JavaCC 1.5.0+
+ */options{  JDK_VERSION = "1.5";  static = true;}PARSER_BEGIN(NestedTest)package visreed.extension.javaCC.parser.testFiles;
+
+public class NestedTest{  public static void main(String args []) throws ParseException  {  }}PARSER_END(NestedTest)SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN :{  < CONSTANT : (< DIGIT >)+ >| < #DIGIT : [ "0"-"9" ] >}void production() : {}{
+    <"String Literal"><EOF>}

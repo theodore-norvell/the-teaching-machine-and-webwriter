@@ -14,12 +14,12 @@ import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
-import visreed.extension.regex.swing.RegexJList;
+import visreed.extension.regex.swing.nodebar.RegexNodeToolBar;
 import visreed.model.VisreedNode;
 
 /**
  * VisreedNodeTransferObject implements an transferable object based on 
- * RegexNodes. The object is transferred from the tool bar ({@link RegexJList}) 
+ * RegexNodes. The object is transferred from the tool bar ({@link RegexNodeToolBar}) 
  * to one of the diagram containers (usually a {@link VisreedJComponent})
  * @author Xiaoyu Guo
  */

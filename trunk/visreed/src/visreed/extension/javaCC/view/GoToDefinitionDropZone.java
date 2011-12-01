@@ -17,7 +17,10 @@ import javax.swing.SwingUtilities;
 
 import tm.backtrack.BTTimeManager;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
+import visreed.extension.javaCC.model.payload.GrammarLinkPayload;
 import visreed.extension.javaCC.model.payload.LexicalLinkPayload;
+import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
+import visreed.extension.javaCC.model.tag.JavaCCTag;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -78,11 +81,24 @@ public class GoToDefinitionDropZone extends VisreedDropZone {
 	    			try{
 	    				VisreedNode node = getNodeView().getNode();
 	    				JavaCCWholeGraph wg = (JavaCCWholeGraph) node.getWholeGraph();
-	    				String productionName = ((LexicalLinkPayload)node.getPayload()).getDescription();
+	    				String name = "";
 	    				// clear all selection since we are going to change a view
 	    				wg.deSelectAll();
 	    				
-	    				gt.setSubgraph(wg.getProductionManager().getSubgraph(productionName));
+	    				VisreedHigraph targetHG = null;
+	    				if(node.getTag().equals(JavaCCTag.LEXICAL_LINK)){
+	    					name = ((LexicalLinkPayload)node.getPayload()).getDescription();
+	    					RegexpSpecPayload pl = (RegexpSpecPayload) wg.getRegexpSpecManager().getNode(name).getPayload();
+	    					// TODO set targetHG
+	    					name = pl.getProductionName();
+	    					if(name.length() > 0){
+	    						targetHG = wg.getProductionManager().getSubgraph(name);
+	    					}
+	    				} else if (node.getTag().equals(JavaCCTag.GRAMMAR_LINK)){
+	    					name = ((GrammarLinkPayload)node.getPayload()).getDescription();
+	    					targetHG = wg.getProductionManager().getSubgraph(name);
+	    				}
+	    				gt.setSubgraph(targetHG);
 	    			} catch (Exception ex){
 	    				ex.printStackTrace();
 	    			}

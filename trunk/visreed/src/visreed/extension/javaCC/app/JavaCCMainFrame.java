@@ -25,11 +25,12 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import tm.backtrack.BTTimeManager;
-import visreed.app.VisreedMainFrame;
+import visreed.app.VisreedFileFrame;
 import visreed.extension.javaCC.model.JavaCCWholeGraph;
 import visreed.extension.javaCC.model.payload.RegexpProductionPayload;
 import visreed.extension.javaCC.model.payload.RegexpSpecPayload;
 import visreed.extension.javaCC.model.tag.JavaCCTag;
+import visreed.extension.javaCC.swing.nodebar.JavaCCNodeToolBar;
 import visreed.extension.javaCC.swing.JavaCCProductionsTreeView;
 import visreed.extension.javaCC.swing.editor.JavaCCTextArea;
 import visreed.extension.javaCC.view.JavaCCViewFactory;
@@ -47,7 +48,7 @@ import visreed.view.SyntaxViewFactory;
  * @author Xiaoyu Guo
  *
  */
-public class JavaCCMainFrame extends VisreedMainFrame {
+public class JavaCCMainFrame extends VisreedFileFrame {
     public static void main(String[] args) {
         SwingHelper.setSystemLookAndFeel();
         SwingUtilities.invokeLater(new Runnable() {
@@ -73,6 +74,10 @@ public class JavaCCMainFrame extends VisreedMainFrame {
 	protected void initializeControl(){
 		super.initializeControl();
 	}
+	
+	protected void initializeNodeToolBar(){
+        this.nodeListBar = new JavaCCNodeToolBar(this.wholeGraph);
+    }
 	
 	/* (non-Javadoc)
 	 * @see visreed.app.VisreedMainFrame#initializeSidePanel()
@@ -225,20 +230,20 @@ public class JavaCCMainFrame extends VisreedMainFrame {
         this.syntaxViewFactory = new SyntaxViewFactory(timeMan);
         
         // text area
-        this.regexText = new JavaCCTextArea();
-        this.regexText.setSubHigraph(rootSubgraph);
-        this.regexText.getInputMap().put(
+        this.mainTextArea = new JavaCCTextArea();
+        this.mainTextArea.setSubHigraph(rootSubgraph);
+        this.mainTextArea.getInputMap().put(
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), 
             "refreshModelFromText"
         );
-        this.regexText.getActionMap().put(
+        this.mainTextArea.getActionMap().put(
             "refreshModelFromText", 
             new AbstractAction(){
                 private static final long serialVersionUID = -3922739423828722390L;
 
                 public void actionPerformed(ActionEvent e){
-                    if(regexText.tryParseText() == true){
-                        regexText.refreshFromText();
+                    if(mainTextArea.tryParseText() == true){
+                        mainTextArea.refreshFromText();
                         setSubgraph(rootSubgraph);
                         refreshGraph();
                     }

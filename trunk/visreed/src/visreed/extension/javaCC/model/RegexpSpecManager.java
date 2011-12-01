@@ -18,7 +18,6 @@ import visreed.model.VisreedPayload;
  *
  */
 public class RegexpSpecManager extends VisreedNodeManager{
-
 	/* (non-Javadoc)
 	 * @see visreed.model.VisreedNodeManager#getString(visreed.model.VisreedNode)
 	 */

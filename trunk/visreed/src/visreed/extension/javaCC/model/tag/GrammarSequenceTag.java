@@ -36,7 +36,15 @@ public class GrammarSequenceTag extends GrammarTag {
 //		GRAMMAR_KLEENE_PLUS,
 //		GRAMMAR_KLEENE_STAR,
 //		GRAMMAR_LINK,
-//		LEXICAL_LINK
+//		LEXICAL_LINK,
+//		LEXICAL_TERMINAL,
+//		LEXICAL_ALTERNATION,
+//		LEXICAL_KLEENE_STAR,
+//		LEXICAL_KLEENE_PLUS,
+//		LEXICAL_OPTIONAL,
+//		LEXICAL_REPEAT_RANGE,
+//		CHARACTER_LIST,
+		
 		GrammarAlternationTag.getInstance(),
 		LookAheadTag.getInstance(),
 		GrammarTerminalTag.getInstance(),
@@ -44,7 +52,14 @@ public class GrammarSequenceTag extends GrammarTag {
 		GrammarKleenePlusTag.getInstance(),
 		GrammarKleeneStarTag.getInstance(),
 		GrammarLinkTag.getInstance(),
-		LexicalLinkTag.getInstance()
+		LexicalLinkTag.getInstance(),
+		LexicalTerminalTag.getInstance(),
+		LexicalAlternationTag.getInstance(),
+		LexicalKleeneStarTag.getInstance(),
+		LexicalKleenePlusTag.getInstance(),
+		LexicalOptionalTag.getInstance(),
+		LexicalRepeatRangeTag.getInstance(),
+		CharacterListTag.getInstance()
 	};
 	
 	@Override

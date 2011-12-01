@@ -11,6 +11,7 @@ import higraph.view.ComponentView;
 
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
+import java.util.List;
 import java.util.Stack;
 
 import visreed.model.VisreedEdge;
@@ -42,6 +43,23 @@ public class MarqueeSelectionSGEventObserver extends VisreedSubgraphEventObserve
 		super(frame, wg);
 	}
 	
+    protected boolean isSelectedSource(
+    		Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack
+		){
+        if(this.dragSourcePoint == null || this.marqueeStartingPoint == null){
+            return false;
+        }
+        
+        List<VisreedNodeView> selection = this.getSelectedViews();
+        VisreedNodeView topView = this.getTopNodeView(stack);
+        if(selection.contains(topView)){
+        	if(topView.getNextShapeExtent().contains(this.marqueeStartingPoint)){
+        		return true;
+        	}
+        }
+        return false;
+    }
+	
     /** Called when the mouse is being moved with one or more buttons down. */ 
     @Override
     public void dragged(Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack, MouseEvent e) {
@@ -49,14 +67,15 @@ public class MarqueeSelectionSGEventObserver extends VisreedSubgraphEventObserve
         if(this.lastButton == MouseEvent.BUTTON1){
             if(this.isSelectedSource(stack)){
                 // selected == source, handling move/copy/etc.
+            	System.out.println("drag from selected source, ignoring marquee");
             } else {
                 // not dragging selection, handling marquee selection
                 if(this.marqueeStartingPoint == null){
                     this.marqueeStartingPoint = e.getPoint();
-    //                System.out.println( "Dragged: setting starting point = (" + this.marqueeStartingPoint + ")") ;
+                    System.out.println( "Dragged: setting starting point = (" + this.marqueeStartingPoint + ")") ;
                 }
                 this.marqueeEndingPoint = e.getPoint();
-//                System.out.println( "Dragged: start = (" + this.marqueeStartingPoint + "), end = (" + this.marqueeEndingPoint + ")") ;
+                System.out.println( "Dragged: start = (" + this.marqueeStartingPoint + "), end = (" + this.marqueeEndingPoint + ")") ;
                 
                 this.mySubgraphView.setMarquee(this.marqueeStartingPoint, this.marqueeEndingPoint);
                 this.mySubgraphView.selectMarquee();
@@ -76,6 +95,7 @@ public class MarqueeSelectionSGEventObserver extends VisreedSubgraphEventObserve
         // handle marquee selection
         if(e.getButton() == MouseEvent.BUTTON1){
             this.marqueeStartingPoint = e.getPoint();
+            this.dragSourcePoint = e.getPoint();
 //            System.out.println("Pressed: starting = (" + this.marqueeStartingPoint + ")");
         } else if (e.isPopupTrigger()){
             maybeShowPopupMenu(stack, e);
@@ -95,13 +115,13 @@ public class MarqueeSelectionSGEventObserver extends VisreedSubgraphEventObserve
             if(marqueeStartingPoint == null){
                 return;
             }
-            if(marqueeStartingPoint.distance(e.getPoint()) < MINIMUM_DRAG_DISTANCE_PIXEL){
-                // treat as click
-                // note: the click is already handled, so we do not need to call
-                // this.clickedOn(stack, e);
-                // again.
-                return;
-            }
+//            if(marqueeStartingPoint.distance(e.getPoint()) < MINIMUM_DRAG_DISTANCE_PIXEL){
+//                // treat as click
+//                // note: the click is already handled, so we do not need to call
+//                // this.clickedOn(stack, e);
+//                // again.
+//                return;
+//            }
             
             // handle marquee selection
             this.marqueeEndingPoint = e.getPoint();

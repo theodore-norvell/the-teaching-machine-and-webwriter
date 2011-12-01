@@ -40,7 +40,7 @@ public class Offset {
 	
 	public void set(double top, double right, double bottom, double left){
 		this.top = top;
-		this.left = left;
+		this.right = right;
 		this.bottom = bottom;
 		this.left = left;
 	}

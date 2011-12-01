@@ -43,7 +43,7 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
 			HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> v,
 			VisreedNode node, BTTimeManager timeMan) {
 		super(v, node, timeMan);
-		this.setFillColor(FILL_COLOR);
+//		this.setFillColor(FILL_COLOR);
 	}
 
 	/* (non-Javadoc)
@@ -71,7 +71,7 @@ public class JavaCCLinkNodeView extends TerminalNodeView {
         if(this.getNode() != null && this.getNode().getPayload() != null){
             Font previousFont = screen.getFont();
             
-            screen.setFont(this.font);
+            screen.setFont(this.getFont());
             GraphicsHelper.paintCenteredString(
                 screen, 
                 this.getNode().getPayload().getDescription(),

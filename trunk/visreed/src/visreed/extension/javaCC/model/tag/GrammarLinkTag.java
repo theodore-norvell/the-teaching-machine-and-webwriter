@@ -15,10 +15,10 @@ import visreed.model.VisreedTag;
  * @author Xiaoyu Guo
  *
  */
-public class GrammarLinkTag extends GrammarTag {
+public class GrammarLinkTag extends GrammarTerminalTag {
 
 	protected GrammarLinkTag() {
-		super(TagCategory.TERMINAL);
+		super();
 	}
 
 	/* (non-Javadoc)

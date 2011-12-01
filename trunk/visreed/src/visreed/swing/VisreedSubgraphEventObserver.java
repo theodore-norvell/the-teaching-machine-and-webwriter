@@ -427,10 +427,6 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
         		System.out.println("ACTION_NONE");
         	}
             result = false ;
-//        } else if (dragSourcePoint != null && dragTargetPoint != null && dragSourcePoint.distance(dragTargetPoint) < 5){
-//            // small move distance, considers no move at all
-//            System.out.println("No move");
-//            result = false;
         } else {
             for( DataFlavor f : supportObj.getDataFlavors() ) {
             	if(inDebugMode){
@@ -446,10 +442,6 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
                 if(stack.peek() instanceof IInteractable){
                     result &= ((IInteractable)(stack.peek())).isDropAccepted();
                 }
-            }
-            
-            if( result == false && this.getNumSelection() > 0 && !stack.contains( getSelectedView() ) ){
-//                result = false ;
             }
         }
         
@@ -480,7 +472,8 @@ extends SubgraphEventObserver<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, 
     /* (non-Javadoc)
      * @see higraph.view.interfaces.SubgraphEventObserver#importData(java.util.Stack, javax.swing.TransferHandler.TransferSupport)
      */
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public boolean importData(
         Stack<ComponentView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>> stack,
         TransferHandler.TransferSupport support

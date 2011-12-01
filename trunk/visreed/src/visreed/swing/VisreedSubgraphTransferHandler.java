@@ -16,7 +16,7 @@ import javax.swing.JComponent;
 import javax.swing.TransferHandler;
 
 import visreed.awt.VisreedSubgraphMouseAdapter;
-import visreed.extension.regex.swing.RegexJList;
+import visreed.extension.regex.swing.nodebar.RegexNodeToolBar;
 import visreed.model.VisreedEdge;
 import visreed.model.VisreedEdgeLabel;
 import visreed.model.VisreedHigraph;
@@ -52,7 +52,7 @@ extends SubgraphTransferHandler<VisreedPayload, VisreedEdgeLabel, VisreedHigraph
 
     @Override
     public int getSourceActions(JComponent comp) {
-        if(comp instanceof RegexJList){
+        if(comp instanceof RegexNodeToolBar){
             return COPY;
         } else {
             return super.getSourceActions(comp);

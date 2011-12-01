@@ -7,20 +7,26 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import visreed.model.VisreedNode;
 import visreed.model.VisreedTag;
 import visreed.model.VisreedWholeGraph;
+import visreed.view.PaintParameter;
 
 /**
  * @author Xiaoyu Guo
  *
  */
 public abstract class GrammarTag extends JavaCCTag {
+	protected static final Color BACK_COLOR = new Color(248, 207, 42);
+	
 	protected GrammarTag(TagCategory category) {
 		super(category, Field.GRAMMATICAL);
+		this.paintParameter = new PaintParameter();
+		this.paintParameter.setBackColor(BACK_COLOR);
 	}
 	
 	/* (non-Javadoc)

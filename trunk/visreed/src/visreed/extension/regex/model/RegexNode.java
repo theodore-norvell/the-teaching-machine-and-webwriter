@@ -54,6 +54,7 @@ public class RegexNode extends VisreedNode {
         }
         
         VisreedNode result = null;
+        wg.clearAll();
         result = RegexParser.parse(wg, reader);
         return result;
     }

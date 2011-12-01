@@ -16,19 +16,19 @@ import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import tm.backtrack.BTTimeManager;
 import visreed.awt.VisreedSubgraphMouseAdapter;
-import visreed.extension.regex.swing.RegexJList;
 import visreed.model.VisreedHigraph;
 import visreed.model.VisreedSubgraph;
 import visreed.model.VisreedWholeGraph;
 import visreed.pattern.IObserver;
-import visreed.swing.SwingHelper;
 import visreed.swing.VisreedJComponent;
 import visreed.swing.VisreedSubgraphEventObserver;
 import visreed.swing.editor.VisreedTextArea;
+import visreed.swing.navigator.VisreedWholeGraphNavigator;
+import visreed.swing.nodebar.VisreedNodeToolBar;
+import visreed.swing.nodebar.VisreedNodeToolBarIconData;
 import visreed.view.IGraphContainer;
 import visreed.view.SyntaxViewFactory;
 import visreed.view.VisreedHigraphView;
@@ -40,59 +40,13 @@ import visreed.view.layout.SyntaxTreeLayoutManager;
 import visreed.view.layout.VisreedNodeLayoutManager;
 
 /**
- * This shall be the main entry for the project
+ * This is the base frame for visreed projects.
  * @author Xiaoyu Guo
  */
-public class VisreedMainFrame
+public class VisreedSimpleFrame
 extends JFrame 
 implements IGraphContainer, IObserver<VisreedHigraph>{
-
     private static final long serialVersionUID = -6388967497486007956L;
-
-    /**
-     * Initialization of the graphs
-     */
-    protected void initializeGraph(){
-        this.timeMan = new BTTimeManager();
-        this.wholeGraph = new VisreedWholeGraph(this.timeMan);
-        this.rootSubgraph = this.wholeGraph.makeSubGraph();
-        this.currentSubgraph = this.rootSubgraph;
-        
-        // main graph
-        this.mainGraphDisplay = new VisreedJComponent();
-        this.mainViewFactory = new VisreedViewFactory(timeMan, this);
-        
-        // secondary graph
-        this.syntaxDisplay = new VisreedJComponent();
-        syntaxDisplay.setForeground(SystemColor.control);
-        this.syntaxViewFactory = new SyntaxViewFactory(timeMan);
-        
-        // text area
-        this.regexText = new VisreedTextArea();
-        this.regexText.setSubHigraph(rootSubgraph);
-        this.regexText.getInputMap().put(
-            KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), 
-            "refreshModelFromText"
-        );
-        this.regexText.getActionMap().put(
-            "refreshModelFromText", 
-            new AbstractAction(){
-                private static final long serialVersionUID = -3922739423828722390L;
-
-                public void actionPerformed(ActionEvent e){
-                    if(regexText.tryParseText() == true){
-                        regexText.refreshFromText();
-                        refreshGraph();
-                    }
-                }
-            }
-        );
-        
-        this.setSubgraph(rootSubgraph);
-        
-        // register this as the observer
-        this.wholeGraph.registerObserver(this);
-    }
     
     // main wholeGraph
     protected BTTimeManager timeMan;
@@ -118,19 +72,63 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     
     protected SyntaxTreeLayoutManager syntaxLayoutManager;
     
-    protected VisreedTextArea regexText;
+    protected VisreedTextArea mainTextArea;
     
-    protected RegexJList nodeListBar;
+    protected VisreedNodeToolBar nodeListBar;
     
     // containers
     protected JTabbedPane sidePanelContainer;
+	protected JPanel toolBarContainer;
 
     /**
      * Construct the main frame
      */
-    public VisreedMainFrame() {
+    public VisreedSimpleFrame() {
         this.initializeGraph();
         this.initializeControl();
+    }
+
+    /**
+     * Initialization of the graphs
+     */
+    protected void initializeGraph(){
+        this.timeMan = new BTTimeManager();
+        this.wholeGraph = new VisreedWholeGraph(this.timeMan);
+        this.rootSubgraph = this.wholeGraph.makeSubGraph();
+        this.rootSubgraph.setName("Default");
+        this.currentSubgraph = this.rootSubgraph;
+        
+        // main graph
+        this.mainGraphDisplay = new VisreedJComponent();
+        this.mainViewFactory = new VisreedViewFactory(timeMan, this);
+        
+        // secondary graph
+        this.syntaxDisplay = new VisreedJComponent();
+        syntaxDisplay.setForeground(SystemColor.control);
+        this.syntaxViewFactory = new SyntaxViewFactory(timeMan);
+        
+        // text area
+        this.mainTextArea = new VisreedTextArea();
+        this.mainTextArea.setSubHigraph(rootSubgraph);
+        this.mainTextArea.getInputMap().put(
+            KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, InputEvent.CTRL_DOWN_MASK), 
+            "refreshModelFromText"
+        );
+        this.mainTextArea.getActionMap().put(
+            "refreshModelFromText", 
+            new AbstractAction(){
+                private static final long serialVersionUID = -3922739423828722390L;
+
+                public void actionPerformed(ActionEvent e){
+                    setText(mainTextArea.getText());
+                }
+            }
+        );
+        
+        this.setSubgraph(rootSubgraph);
+        
+        // register this as the observer
+        this.wholeGraph.registerObserver(this);
     }
 
     /**
@@ -141,12 +139,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         
         /* the panels */
         /* The node tool bar */
-        this.nodeListBar = new RegexJList(this.wholeGraph);
+        initializeNodeToolBar();
+        JScrollPane spNodeToolBar = new JScrollPane();
+        spNodeToolBar.setViewportView(nodeListBar);
         
         /* The main graph panel */
         JPanel mainGraphPanel = new JPanel();
         mainGraphPanel.setLayout(new BorderLayout());
-        mainGraphPanel.add(nodeListBar, BorderLayout.EAST);
+        mainGraphPanel.add(spNodeToolBar, BorderLayout.EAST);
         
         /* The main graph display */
         JScrollPane mainGraphScroller = new JScrollPane();
@@ -155,9 +155,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         mainGraphPanel.add(mainGraphScroller, BorderLayout.CENTER);
         
         JSplitPane secondPanel = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        JScrollPane editorScroller = new JScrollPane(regexText);
+        JScrollPane editorScroller = new JScrollPane(mainTextArea);
         secondPanel.setTopComponent(editorScroller);
         secondPanel.setBottomComponent(mainGraphPanel);
+        
+        JPanel pnlNavigator = new JPanel();
+        VisreedWholeGraphNavigator nav = new VisreedWholeGraphNavigator(this, this.wholeGraph);
+        pnlNavigator.add(nav);
+        mainGraphPanel.add(pnlNavigator, BorderLayout.NORTH);
         
         secondPanel.setResizeWeight(0.3);
 
@@ -175,21 +180,35 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         getContentPane().add(mainPanel, BorderLayout.CENTER);
 
         /* tool bars */
-        JPanel toolBarContainer = new JPanel();
-        FlowLayout flowLayout = (FlowLayout) toolBarContainer.getLayout();
-        flowLayout.setAlignment(FlowLayout.LEFT);
-        JToolBar testToolBar = new JToolBar();
-        toolBarContainer.add(testToolBar, BorderLayout.NORTH);
-        this.fillTestToolBar(testToolBar);
-        
-        JToolBar optionToolBar = new JToolBar();
-        this.fillOptionToolBar(optionToolBar);
-        toolBarContainer.add(optionToolBar, BorderLayout.SOUTH);
+        this.toolBarContainer = new JPanel();
+        initializeToolBars();
         
         getContentPane().add(toolBarContainer, BorderLayout.NORTH);
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 600);
+    }
+    
+    protected void initializeNodeToolBar(){
+        this.nodeListBar = new VisreedNodeToolBar(wholeGraph, new VisreedNodeToolBarIconData[]{}){
+			private static final long serialVersionUID = -2256242796939385713L;};
+    }
+    
+    /**
+     * Initialize the tool bars
+     */
+    protected void initializeToolBars(){
+        FlowLayout flowLayout = new FlowLayout();
+        flowLayout.setAlignment(FlowLayout.LEFT);
+        toolBarContainer.setLayout(flowLayout);
+        
+        JToolBar testToolBar = new JToolBar();
+        this.fillTestToolBar(testToolBar);
+        toolBarContainer.add(testToolBar);
+        
+        JToolBar optionToolBar = new JToolBar();
+        this.fillOptionToolBar(optionToolBar);
+        toolBarContainer.add(optionToolBar);
     }
 
 	/**
@@ -238,6 +257,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
     public void refreshGraph(){
     	this.wholeGraph.notifyObservers();
     }
+    
+    /**
+     * Gets the subgraph observer for main display area
+     * @return
+     */
+    protected VisreedSubgraphEventObserver getSubgraphObserver(){
+    	return new VisreedSubgraphEventObserver(this, wholeGraph);
+    }
 
 	/* (non-Javadoc)
 	 * @see visreed.view.IGraphContainer#setSubgraph(visreed.model.VisreedHigraph)
@@ -263,7 +290,7 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
                 new VoidPointDecorator(mainGraphView, timeMan)
             );
             
-            this.mainGraphObserver = new VisreedSubgraphEventObserver(this, this.wholeGraph);
+            this.mainGraphObserver = getSubgraphObserver();
             this.sgm = new VisreedSubgraphMouseAdapter(
                 mainGraphView,
                 mainGraphObserver
@@ -297,6 +324,14 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
 		
 		refreshGraph();
 	}
+
+	/* (non-Javadoc)
+	 * @see visreed.view.IGraphContainer#getCurrentSubgraph()
+	 */
+	@Override
+	public VisreedHigraph getCurrentSubgraph() {
+		return currentSubgraph;
+	}
     
     private void privateRefreshGraph(){
         this.mainGraphView.refresh();
@@ -307,23 +342,13 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
         
         this.currentSubgraph.notifyObservers();
         
-        this.regexText.refreshFromModel();
+        this.mainTextArea.refreshFromModel();
     }
 
 	/**
 	 * called after the wholegraph has changed.
 	 */
 	protected void refreshHook() {}
-
-    public static void main(String[] args) {
-        SwingHelper.setSystemLookAndFeel();
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                VisreedMainFrame frame = new VisreedMainFrame();
-                frame.setVisible(true);
-            }
-        });
-    }
 
     /* (non-Javadoc)
      * @see visreed.pattern.IObserver#changed(visreed.pattern.IObservable)
@@ -335,4 +360,28 @@ implements IGraphContainer, IObserver<VisreedHigraph>{
             this.refreshHook();
         }
     }
+    
+    public void clearAll(){
+    	wholeGraph.clearAll();
+    }
+
+	/**
+	 * Sets the text
+	 */
+	public void setText(String text) {
+		mainTextArea.setText(text);
+		if(mainTextArea.tryParseText() == true){
+		    mainTextArea.refreshFromText();
+		    refreshGraph();
+		}
+	}
+    
+    /**
+     * Gets the text
+     * @return
+     */
+    public String getText(){
+    	return mainTextArea.getText();
+    }
+    
 }
