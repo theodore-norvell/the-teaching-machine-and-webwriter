@@ -13,6 +13,7 @@ import higraph.view.ZoneView;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Stroke;
@@ -57,6 +58,8 @@ extends NodeView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeG
 implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     /** Handles the LayoutManager */
     private final BTVar<VisreedNodeLayoutManager> layoutManagerVar;
+    protected final BTVar<Font> fontVar;
+    protected static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
     
     /** The flag is asserted when debugging layout managers. */
     protected static boolean IN_DEBUG_MODE = false;
@@ -85,8 +88,33 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         super(v, node, timeMan);
         this.layoutManagerVar = new BTVar<VisreedNodeLayoutManager>(timeMan);
         this.stretchVar = new BTVar<Rectangle2D>(timeMan);
+        this.fontVar = new BTVar<Font>(timeMan, DEFAULT_FONT);
+        
         this.zoneMap = new HashMap<String, VisreedDropZone>();
         this.layoutParameter = new LayoutParameter();
+        
+        // load in paint parameters specified in tag
+        PaintParameter pp = node.getTag().getPaintParameter();
+        if(pp != null){
+        	Color c = pp.getBackColor();
+        	if(c != null){
+        		setFillColor(c);
+        	}
+        	c = pp.getForeColor();
+        	if(c != null){
+        		setColor(c);
+        	}
+        	
+        	Font f = pp.getFont();
+        	if(f != null){
+        		setFont(f);
+        	}
+        	
+        	Stroke s = pp.getStroke();
+        	if(s != null){
+        		setStroke(s);
+        	}
+        }
     }
     
     /**
@@ -711,5 +739,13 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
     	// force the view to re-paint
     	this.resetLayout();
     	this.refresh();
+    }
+    
+    public void setFont(Font f){
+    	fontVar.set(f);
+    }
+    
+    public Font getFont(){
+    	return fontVar.get();
     }
 }

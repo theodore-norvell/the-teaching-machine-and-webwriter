@@ -16,8 +16,9 @@ import javax.swing.Action;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
-import visreed.app.VisreedMainFrame;
+import visreed.app.VisreedSimpleFrame;
 import visreed.extension.regex.model.tag.RegexTag;
+import visreed.extension.regex.swing.nodebar.RegexNodeToolBar;
 import visreed.model.VisreedNode;
 import visreed.model.payload.AlternationPayload;
 import visreed.model.payload.RepeatRangePayload;
@@ -28,9 +29,14 @@ import visreed.swing.SwingHelper;
  * @author Xiaoyu Guo
  *
  */
-public class RegexMainFrame extends VisreedMainFrame {
+public class RegexMainFrame extends VisreedSimpleFrame {
 	private static final long serialVersionUID = -4306227443468279340L;
-
+	
+	@Override
+    protected void initializeNodeToolBar(){
+        this.nodeListBar = new RegexNodeToolBar(this.wholeGraph);
+    }
+	
 	@SuppressWarnings("serial")
 	@Override
     protected void fillTestToolBar(JToolBar toolBar) {
@@ -53,7 +59,7 @@ public class RegexMainFrame extends VisreedMainFrame {
                     syntaxView.refresh();
                     syntaxDisplay.repaint();
                     
-                    regexText.refreshFromModel();
+                    mainTextArea.refreshFromModel();
                 }
             }
         };
@@ -324,7 +330,7 @@ public class RegexMainFrame extends VisreedMainFrame {
         SwingHelper.setSystemLookAndFeel();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                VisreedMainFrame frame = new VisreedMainFrame();
+            	RegexMainFrame frame = new RegexMainFrame();
                 frame.setVisible(true);
             }
         });

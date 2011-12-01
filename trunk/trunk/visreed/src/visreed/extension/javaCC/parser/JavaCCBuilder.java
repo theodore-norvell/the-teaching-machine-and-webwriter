@@ -109,10 +109,21 @@ public class JavaCCBuilder extends VisreedBuilder {
      * @param numOfChild the child of the production node
      */
     public void buildProduction(ProductionPayload pl, int numOfChild){
+    	// subgraph automatically created in JavaCCWholeGraph.addChildrenHook()
     	buildNode(pl, numOfChild);
-    	this.pop();
+    	VisreedNode pNode = this.pop();
     	
-    	LexicalLinkPayload linkPl = new LexicalLinkPayload(pl);
+    	if(pNode.getTag().equals(JavaCCTag.REGULAR_PRODUCTION)){
+    		// search any children for RegexpSpec and attach the pNode with that
+    		List<VisreedNode> specs = pNode.searchForTag(JavaCCTag.REGEXP_SPEC);
+    		if(specs != null){
+    			for(VisreedNode spec : specs){
+    				((RegexpSpecPayload)spec.getPayload()).setProductionName(pl.getName());
+    			}
+    		}
+    	}
+    	
+    	GrammarLinkPayload linkPl = new GrammarLinkPayload(pl.getName());
     	buildNode(linkPl, 0);
     }
     

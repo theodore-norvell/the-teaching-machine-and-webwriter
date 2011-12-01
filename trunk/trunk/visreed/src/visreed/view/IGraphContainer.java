@@ -31,4 +31,10 @@ public interface IGraphContainer {
      * @param subgraph
      */
     void setSubgraph(VisreedHigraph subgraph);
+    
+    /**
+     * Gets the current displaying subgraph
+     * @return
+     */
+    VisreedHigraph getCurrentSubgraph();
 }

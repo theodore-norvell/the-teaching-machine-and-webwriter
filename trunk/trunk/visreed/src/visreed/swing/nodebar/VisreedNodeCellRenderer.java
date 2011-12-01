@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.swing;
+package visreed.swing.nodebar;
 
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,10 +20,10 @@ import visreed.swing.SwingHelper;
  * @author Xiaoyu Guo
  *
  */
-public class RegexNodeCellRenderer implements ListCellRenderer {
+public class VisreedNodeCellRenderer implements ListCellRenderer {
     private VisreedWholeGraph wholeGraph;
     
-    public RegexNodeCellRenderer(VisreedWholeGraph wg){
+    public VisreedNodeCellRenderer(VisreedWholeGraph wg){
         this.wholeGraph = wg;
     }
     
@@ -38,11 +38,11 @@ public class RegexNodeCellRenderer implements ListCellRenderer {
         boolean isSelected,
         boolean cellHasFocus
     ) {
-        RegexNodeButton result = null;
+        VisreedNodeButton result = null;
         
-        if(value instanceof RegexIconData){
-            RegexIconData data = (RegexIconData)value;
-            result = new RegexNodeButton(this.wholeGraph, data.getTag());
+        if(value instanceof VisreedNodeToolBarIconData){
+            VisreedNodeToolBarIconData data = (VisreedNodeToolBarIconData)value;
+            result = new VisreedNodeButton(this.wholeGraph, data.getTag());
             result.setToolTipText(data.getDescription());
             result.setIcon(SwingHelper.loadIcon(data.getIconFileName()));
             
@@ -62,7 +62,7 @@ public class RegexNodeCellRenderer implements ListCellRenderer {
             };
             
         } else {
-            result = new RegexNodeButton();
+            result = new VisreedNodeButton();
         }
         
         result.setPreferredSize(new Dimension(48, 48));

@@ -19,10 +19,12 @@ import visreed.pattern.IObserver;
  */
 public class VisreedSubgraph
 extends AbstractTaggedSubgraph<VisreedTag, VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge>
-implements VisreedHigraph
-{
+implements VisreedHigraph {
+	private String name;
+	
     protected VisreedSubgraph(VisreedWholeGraph wholeGraph) {
         super(wholeGraph);
+        this.name = "";
     }
     
     @Override
@@ -75,4 +77,12 @@ implements VisreedHigraph
         }
         this.notifyObservers();
     }
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 }

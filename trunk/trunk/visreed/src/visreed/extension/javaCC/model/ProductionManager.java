@@ -39,12 +39,15 @@ public class ProductionManager extends VisreedNodeManager {
 		if(node == null || !(node.getPayload() instanceof ProductionPayload)){
 			return;
 		}
-		super.registerNode(node);
-		
+		if(this.contains(node)){
+			return;
+		}
 		String name = this.getString(node);
         if(name == null){
         	return;
         }
+		
+		super.registerNode(node);
 		
         if(wholeGraph == null){
 			wholeGraph = (JavaCCWholeGraph) node.getWholeGraph();
@@ -52,6 +55,8 @@ public class ProductionManager extends VisreedNodeManager {
 
         // construct a subgraph
 		VisreedSubgraph graph = wholeGraph.constructSubgraph();
+		graph.setName(name);
+		
 		// add the node as the only top node in the subgraph
 		graph.addTop(node);
 		this.subgraphDirectory.put(name, graph);
@@ -80,6 +85,8 @@ public class ProductionManager extends VisreedNodeManager {
 		
 		VisreedPayload pl = node.getPayload();
 		if(pl.getTag().equals(JavaCCTag.REGULAR_PRODUCTION)){
+			return ((ProductionPayload)pl).getName();
+		} else if(pl.getTag().equals(JavaCCTag.BNF_PRODUCTION)){
 			return ((ProductionPayload)pl).getName();
 		} else {
 			return null;

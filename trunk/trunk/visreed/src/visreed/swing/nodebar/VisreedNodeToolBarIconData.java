@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.swing;
+package visreed.swing.nodebar;
 
 import visreed.model.VisreedTag;
 
@@ -13,12 +13,12 @@ import visreed.model.VisreedTag;
  * RegexIconData represents a button with path to icon image and description.
  * @author Xiaoyu Guo
  */
-class RegexIconData {
+public class VisreedNodeToolBarIconData {
     private String description;
     private String iconFileName;
     private VisreedTag tag;
 
-    RegexIconData(String desc, String iconFileName, VisreedTag tag){
+    public VisreedNodeToolBarIconData(String desc, String iconFileName, VisreedTag tag){
         this.description = desc;
         this.iconFileName = iconFileName;
         this.tag = tag;

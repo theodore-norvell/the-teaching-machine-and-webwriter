@@ -44,20 +44,17 @@ public class TerminalNodeView extends VisreedNodeView {
             VisreedNode node,
             BTTimeManager timeMan) {
         super(v, node, timeMan);
-        this.font = DEFAULT_FONT;
-        this.setFillColor(FILL_COLOR);
+//        this.setFillColor(FILL_COLOR);
     }
     
-    protected Font font;
-    protected static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
 
     public double getDesiredWidth(){
     	String text = this.getNode().getPayload().getDescription();
     	// assume we are not using mono fonts, so we calculate all the chars in upper 
     	// and lower case
     	double result = 0.0;
-    	final double UPPER_CASE_WIDTH = this.font.getSize() / 1.7;
-    	final double LOWER_CASE_WIDTH = this.font.getSize() / 2.0;
+    	final double UPPER_CASE_WIDTH = this.getFont().getSize() / 1.7;
+    	final double LOWER_CASE_WIDTH = this.getFont().getSize() / 2.0;
     	for(int i = 0; i < text.length(); i++){
     		if(Character.isLowerCase(text.charAt(i))){
     			result += LOWER_CASE_WIDTH;
@@ -141,7 +138,7 @@ public class TerminalNodeView extends VisreedNodeView {
         if(this.getNode() != null && this.getNode().getPayload() != null){
             Font previousFont = screen.getFont();
             
-            screen.setFont(this.font);
+            screen.setFont(this.getFont());
             GraphicsHelper.paintCenteredString(
                 screen, 
                 this.getNode().getPayload().getDescription(),

@@ -7,7 +7,11 @@
  */
 package visreed.extension.javaCC.model.tag;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import visreed.model.VisreedPayload;
+import visreed.model.VisreedTag;
 import visreed.model.payload.TerminalPayload;
 
 /**
@@ -17,6 +21,14 @@ import visreed.model.payload.TerminalPayload;
 public class GrammarTerminalTag extends GrammarTag {
 	protected GrammarTerminalTag() {
 		super(TagCategory.TERMINAL);
+	}
+
+	/* (non-Javadoc)
+	 * @see higraph.model.taggedInterfaces.Tag#defaultTagSequence()
+	 */
+	@Override
+	public List<VisreedTag> defaultTagSequence() {
+		return new ArrayList<VisreedTag>(0);
 	}
 
 	/* (non-Javadoc)
@@ -36,7 +48,7 @@ public class GrammarTerminalTag extends GrammarTag {
 	}
 
 	private static final GrammarTerminalTag instance = new GrammarTerminalTag();
-	protected static JavaCCTag getInstance(){
+	protected static VisreedTag getInstance(){
 		return instance;
 	}
 }

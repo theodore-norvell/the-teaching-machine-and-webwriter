@@ -55,15 +55,16 @@ public class SyntaxNodeView extends VisreedNodeView {
      */
     @Override
     protected void drawNode(Graphics2D screen) {
-        if (this.getOutlineOnly() == false && this.getFillColor() != null) {
+    	Color fc = this.getFillColor();
+        if (this.getOutlineOnly() == false && fc != null) {
             Paint previousPaint = screen.getPaint();
             Paint gradientPaint = new GradientPaint(
                 (float) this.getNextShapeExtent().getX(), 
                 (float) this.getNextShapeExtent().getY(),
-                GraphicsHelper.getGradientColor(getFillColor()),
+                GraphicsHelper.getGradientColor(fc),
                 (float) this.getNextShapeExtent().getX(), 
                 (float) this.getNextShapeExtent().getMaxY(),
-                this.getFillColor()
+                fc
             );
             screen.setPaint(gradientPaint);
             screen.fill(this.getShape());

@@ -114,6 +114,15 @@ implements ISelectable, IObservable<VisreedNode> {
     	}
     }
     
+    /**
+     * Just call super.insertChild()
+     * @param position
+     * @param child
+     */
+    private final void privateInsertChild(int position, VisreedNode child){
+    	super.insertChild(position, child);
+    }
+    
     @Override
     public void replace(VisreedNode node){
     	List<VisreedNode> children = new ArrayList<VisreedNode>(1);
@@ -126,13 +135,46 @@ implements ISelectable, IObservable<VisreedNode> {
     	super.replace(node);
     }
     
-    /**
-     * Just call super.insertChild()
-     * @param position
-     * @param child
-     */
-    private final void privateInsertChild(int position, VisreedNode child){
-    	super.insertChild(position, child);
+    public List<VisreedNode> searchForTag(final VisreedTag[] tags){
+    	List<VisreedNode> result = null;
+    	for(VisreedNode n : getChildren()){
+    		List<VisreedNode> childResult = n.searchForTag(tags);
+    		if(childResult != null){
+    			if(result == null){
+    				result = childResult;
+    			} else {
+    				result.addAll(childResult);
+    			}
+    		}
+    	}
+    	if(this.getTag().isOneOf(tags)){
+    		if(result == null){
+    			result = new ArrayList<VisreedNode>();
+    		}
+    		result.add(this);
+    	}
+    	return result;
+    }
+    
+    public List<VisreedNode> searchForTag(final VisreedTag tag){
+    	List<VisreedNode> result = null;
+    	for(VisreedNode n : getChildren()){
+    		List<VisreedNode> childResult = n.searchForTag(tag);
+    		if(childResult != null){
+    			if(result == null){
+    				result = childResult;
+    			} else {
+    				result.addAll(childResult);
+    			}
+    		}
+    	}
+    	if(this.getTag().equals(tag)){
+    		if(result == null){
+    			result = new ArrayList<VisreedNode>();
+    		}
+    		result.add(this);
+    	}
+    	return result;
     }
     
     /* (non-Javadoc)

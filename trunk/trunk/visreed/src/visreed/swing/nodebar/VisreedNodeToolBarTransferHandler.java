@@ -5,7 +5,7 @@
  * @author: Xiaoyu Guo
  * This file is part of the Teaching Machine project.
  */
-package visreed.extension.regex.swing;
+package visreed.swing.nodebar;
 
 import java.awt.datatransfer.Transferable;
 
@@ -15,23 +15,23 @@ import javax.swing.TransferHandler;
 import visreed.swing.VisreedNodeTransferObject;
 
 /**
- * This transfer handler installs on the {@link RegexJList}
+ * This transfer handler installs on the {@link VisreedNodeToolBar}
  * @author Xiaoyu Guo
  */
-public class RegexNodeToolBarTransferHandler extends TransferHandler {
+public class VisreedNodeToolBarTransferHandler extends TransferHandler {
 
     private static final long serialVersionUID = 6051659623878408438L;
 
     /**
      * 
      */
-    public RegexNodeToolBarTransferHandler() {
+    public VisreedNodeToolBarTransferHandler() {
     }
 
     /**
      * @param property
      */
-    public RegexNodeToolBarTransferHandler(String property) {
+    public VisreedNodeToolBarTransferHandler(String property) {
         super(property);
     }
 
@@ -41,8 +41,8 @@ public class RegexNodeToolBarTransferHandler extends TransferHandler {
     }
     
     protected Transferable createTransferable(JComponent list){
-        if(list instanceof RegexJList){
-            return new VisreedNodeTransferObject(((RegexJList)list).createSelectedNode());
+        if(list instanceof VisreedNodeToolBar){
+            return new VisreedNodeTransferObject(((VisreedNodeToolBar)list).createSelectedNode());
         } else {
             return null;
         }
@@ -51,8 +51,8 @@ public class RegexNodeToolBarTransferHandler extends TransferHandler {
     @Override
     protected void exportDone(JComponent source, Transferable data, int action){
         // de-select the source button
-        if(source instanceof RegexJList){
-            ((RegexJList)source).clearSelection();
+        if(source instanceof VisreedNodeToolBar){
+            ((VisreedNodeToolBar)source).clearSelection();
         }
     }
 }

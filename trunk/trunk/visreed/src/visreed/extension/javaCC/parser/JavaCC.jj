@@ -992,7 +992,7 @@ void regular_expression() :
 {
   image = StringLiteral()
   {
-      builder.buildNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, image), 1);
+      builder.buildNode(new TerminalPayload(JavaCCTag.LEXICAL_TERMINAL, image), 0);
       // builder.buildNode(new RegexpSpecPayload(image), 1);  }
 |
   LOOKAHEAD(3)

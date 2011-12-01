@@ -93,4 +93,9 @@ public abstract class JavaCCTag extends VisreedTag {
         return VALUES;
     }
     
+    public static final VisreedTag[] PRODUCTIONS = {
+    	REGULAR_PRODUCTION,
+    	BNF_PRODUCTION,
+    	JAVA_CODE_PRODUCTION
+    };
 }

@@ -23,12 +23,12 @@ import visreed.view.VisreedNodeView;
 
 /**
  * @author Xiaoyu Guo
- *
  */
 public class RegexpSpecPayload extends VisreedPayload {
 	
 	public static RegexpSpecPayload EOF = new RegexpSpecPayload("EOF");
     private String name = "";
+    private String productionName = "";
     private boolean isPrivate = false;
     
     public String getName(){
@@ -125,5 +125,16 @@ public class RegexpSpecPayload extends VisreedPayload {
 			HigraphView<VisreedPayload, VisreedEdgeLabel, VisreedHigraph, VisreedWholeGraph, VisreedSubgraph, VisreedNode, VisreedEdge> sgv,
 			VisreedNode node, BTTimeManager timeman) {
 		return new RegexpSpecNodeView(sgv, node, timeman);
+	}
+
+	/**
+	 * @param name
+	 */
+	public void setProductionName(String name) {
+		this.productionName = name;
+	}
+	
+	public String getProductionName(){
+		return this.productionName;
 	}
 }

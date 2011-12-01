@@ -12,6 +12,8 @@ import higraph.model.taggedInterfaces.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
+import visreed.view.PaintParameter;
+
 
 /**
  * The VisreedTag provides an extensible content model checking mechanism on
@@ -28,6 +30,16 @@ import java.util.List;
  */
 public abstract class VisreedTag 
 implements Tag<VisreedTag, VisreedPayload>, IDescribable{
+	
+	protected PaintParameter paintParameter = null;
+	
+	/**
+	 * Gets the override paint parameter for node views
+	 * @return
+	 */
+	public PaintParameter getPaintParameter(){
+		return paintParameter;
+	}
     
     /**
      * Defines the tag category. <br />
@@ -136,6 +148,18 @@ implements Tag<VisreedTag, VisreedPayload>, IDescribable{
     	
     	result &= contentModelHook(childTags);
     	return result;
+    }
+    
+    /**
+     * Give a quick hint for content model check
+     * This is checked before an operation is performed on the UI,
+     * e.g. in a drop operation, if the structure can be maintained by the tag system
+     * itself, then looseContentModel() should return {@value true}.  
+     * @param childTags
+     * @return {@value true} If the operation is allowed, {@value false} otherwise.
+     */
+    public boolean looseContentModel(List<VisreedTag> childTags){
+    	return true;
     }
     
     /**

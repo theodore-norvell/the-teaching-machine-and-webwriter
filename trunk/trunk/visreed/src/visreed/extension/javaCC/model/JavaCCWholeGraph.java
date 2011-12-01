@@ -33,6 +33,7 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
 		this.productionManager = new ProductionManager();
 		this.regexpSpecManager = new RegexpSpecManager();
 		this.rootSubgraph = constructSubgraph();
+		rootSubgraph.setName("Root");
 	}
 	
 	private VisreedSubgraph rootSubgraph;
@@ -66,6 +67,8 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
         }
         
         VisreedNode result = null;
+        wg.clearAll();
+        wg.subgraphs.add(wg.rootSubgraph);
         result = JavaCCParser.parse(wg, reader);
         return result;
     }
@@ -80,7 +83,7 @@ public class JavaCCWholeGraph extends VisreedWholeGraph {
         if(tag.equals(JavaCCTag.ROOT)){
         	this.rootSubgraph.clear();
         	this.rootSubgraph.addTop(node);
-        } else if(tag.equals(JavaCCTag.REGULAR_PRODUCTION)){
+        } else if(tag.isOneOf(JavaCCTag.PRODUCTIONS)){
         	this.productionManager.registerNode(node);
         } else if (tag.equals(JavaCCTag.REGEXP_SPEC)){
         	this.regexpSpecManager.registerNode(node);
