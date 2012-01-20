@@ -7,6 +7,6 @@ This is the home --at least for now-- for a number of projects developed at Memo
    * WebWriter++ -- A JavaScript based system for preparing course sites and lecture notes.
    * JHigraph -- A Java library for presenting and interacting with hierarchical graphs.
    * VisREED -- A visual regular expression editor based on JHigraph. VisREED for JavaCC is a visual editor for JavaCC grammars.
-   * PLAY Play is a graphical programming language.
+   * PLAY -- PLAY is a graphical programming language.
 
 Downloads  of the Teaching Machine and WebWriter++, along with several course sites that use both the Teachin Machine and WebWriter++, are at http://www.teachingmachine.org/
