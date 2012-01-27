@@ -24,13 +24,12 @@ public class DemoMainFrame extends JFrame {
     
 	private BTTimeManager timeMan = new BTTimeManager() ;
 	private DemoWholeGraph graph = new DemoWholeGraph(timeMan) ;
-	private DemoSubgraph subgraph = graph.makeSubGraph() ;
     
 
 	// Set up a tree-like display
     private HigraphJComponent graphDisplay0= new HigraphJComponent( ) ;
     private DemoViewFactory viewFactory0 = new DemoViewFactory(timeMan) ;
-	private DemoHigraphView subgraphView0 = viewFactory0.makeHigraphView(subgraph, graphDisplay0) ;
+	private DemoHigraphView subgraphView0 = viewFactory0.makeHigraphView(graph, graphDisplay0) ;
 	{ graphDisplay0.setSubgraphView( subgraphView0 ) ; }
 	private DemoLayoutManager graphLayoutManger0 = new DemoLayoutManager() ;
 	{ subgraphView0.setLayoutManager( graphLayoutManger0  ) ; }
@@ -46,7 +45,7 @@ public class DemoMainFrame extends JFrame {
     // Set up a boxes-in-boxes display
     private HigraphJComponent graphDisplay1 = new HigraphJComponent() ;
     private DemoViewFactory viewFactory1 = new DemoViewFactory(timeMan) ;
-    private DemoHigraphView subgraphView1 = viewFactory1.makeHigraphView(subgraph, graphDisplay1) ;
+    private DemoHigraphView subgraphView1 = viewFactory1.makeHigraphView(graph, graphDisplay1) ;
     { graphDisplay1.setSubgraphView( subgraphView1 ) ; }
     private DemoBoxesInBoxesLayout graphLayoutManager1 = new DemoBoxesInBoxesLayout() ;
     { subgraphView1.setLayoutManager( graphLayoutManager1  ) ; }
