@@ -22,7 +22,6 @@ import java.util.List;
 
 import higraph.model.abstractClasses.*;
 import higraph.model.interfaces.*;
-import higraph.model.interfaces.Node.NodeCategory;
 import higraph.model.taggedInterfaces.*;
 import tm.utilities.Assert;
 
@@ -61,7 +60,7 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
 
     @Override 
     public boolean canInsertChild(int position, T tag) {
-        if( 0 <= position && position < getNumberOfChildren() ) {
+        if( 0 <= position && position <= getNumberOfChildren() ) {
             List<T> tagList = getTagList() ;
             tagList.add(position, tag) ;
             return getTag().contentModel( tagList ) ; }
