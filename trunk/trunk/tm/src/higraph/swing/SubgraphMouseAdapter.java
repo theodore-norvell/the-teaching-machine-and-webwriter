@@ -70,8 +70,8 @@ implements MouseListener, MouseMotionListener{
 	protected ComponentView<NP,EP,HG,WG,SG,N,E> lastOverComponent;
 	protected boolean lastOnBoundary = false;
 	protected HigraphView<NP,EP,HG,WG,SG,N,E> theView;
-	SubgraphEventObserver<NP,EP,HG,WG,SG,N,E> observer ;
-	private SubgraphTransferHandler<NP,EP,HG,WG,SG,N,E>  myTransferHandler ;
+	private SubgraphEventObserver<NP,EP,HG,WG,SG,N,E> observer ;
+	protected SubgraphTransferHandler<NP,EP,HG,WG,SG,N,E>  myTransferHandler ;
 	
 	
 	
@@ -88,6 +88,10 @@ implements MouseListener, MouseMotionListener{
         jComponent.addMouseMotionListener( this ) ;
         jComponent.setTransferHandler( myTransferHandler ) ;
     }
+	
+	public SubgraphEventObserver<NP,EP,HG,WG,SG,N,E> getObserver() {
+		return observer;
+	}
 	
 	public void mouseMoved(MouseEvent e){
 		Stack<ComponentView<NP,EP,HG,WG,SG,N,E>> componentStack = findComponentsUnder(e.getPoint());
@@ -161,7 +165,9 @@ implements MouseListener, MouseMotionListener{
 		NodeView<NP,EP,HG,WG,SG,N,E> nodeView;
 		while(roots.hasNext()){
 			nodeView = roots.next();
-//			System.out.println("Checking root " + nodeView + " for component under (" + p.x + ", " + p.y + ")");
+			Assert.check( nodeView != null, "nodeView is null in findComponentsUnder" ) ;
+			Assert.check( nodeView.getExtent() != null, "nodeView.getExtent is null in findComponentsUnder" ) ;
+			// System.out.println("Checking root " + nodeView + " for component under (" + p.x + ", " + p.y + ")");
 			findComponentsUnder(theStack, nodeView, p);
 		}
 		return theStack;		

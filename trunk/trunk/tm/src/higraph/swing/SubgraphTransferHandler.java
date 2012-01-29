@@ -12,7 +12,7 @@ import java.util.Stack;
 
 import javax.swing.*;
 
-class SubgraphTransferHandler 
+public class SubgraphTransferHandler 
     < NP extends Payload<NP>,
       EP extends Payload<EP>,
       HG extends Higraph<NP,EP,HG,WG,SG,N,E>,
@@ -25,7 +25,7 @@ extends TransferHandler {
     
     SubgraphMouseAdapter<NP,EP,HG,WG,SG,N,E> sma ;
     
-    SubgraphTransferHandler(SubgraphMouseAdapter<NP,EP,HG,WG,SG,N,E> sma) {
+    protected SubgraphTransferHandler(SubgraphMouseAdapter<NP,EP,HG,WG,SG,N,E> sma) {
         this.sma = sma ;
     }
 
@@ -37,12 +37,12 @@ extends TransferHandler {
     
     //This is for dragging from this component. Either copy or move is allowed.
     public int getSourceActions(JComponent c) {
-        return sma.observer.getSourceActions() ;
+        return sma.getObserver().getSourceActions() ;
     }
 
     //This is for dragging from this component.
     protected Transferable createTransferable(JComponent c) {
-        return sma.observer.createTransferable( ) ;
+        return sma.getObserver().createTransferable( ) ;
     }
 
     // This is for dragging from this component.
@@ -57,7 +57,7 @@ extends TransferHandler {
         if( ! support.isDrop() ) return false ;
         Point p = support.getDropLocation().getDropPoint() ;
         Stack<ComponentView<NP,EP,HG,WG,SG,N,E>> stack = sma.findComponentsUnder(p);
-        return sma.observer.canDropHere(stack, support) ;
+        return sma.getObserver().canDropHere(stack, support) ;
         
     }
 
@@ -65,6 +65,6 @@ extends TransferHandler {
     public boolean importData(TransferHandler.TransferSupport support) {
         Point p = support.getDropLocation().getDropPoint() ;
         Stack<ComponentView<NP,EP,HG,WG,SG,N,E>> stack = sma.findComponentsUnder(p);
-        return sma.observer.importData(stack, support) ;
+        return sma.getObserver().importData(stack, support) ;
     }
 }
