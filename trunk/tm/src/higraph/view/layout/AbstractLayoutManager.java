@@ -21,6 +21,7 @@ import java.awt.geom.RectangularShape;
 import java.util.Collection;
 
 import higraph.model.interfaces.*;
+import higraph.utilities.Geometry;
 import higraph.view.BranchView;
 import higraph.view.EdgeView;
 import higraph.view.HigraphView;
@@ -201,29 +202,12 @@ public abstract class AbstractLayoutManager
          * to the correct angle
          */
         Point2D.Double cntrlPt = new Point2D.Double( srcPt.x + d/2.0, srcPt.y+d/8.0);
-        rotate(cntrlPt, srcPt, angle);
+        Geometry.rotate(cntrlPt, srcPt, angle);
         Point2D.Double intersection;
         intersection = sView.getIntersection(srcPt, cntrlPt);
         p.moveTo(intersection.x, intersection.y);
         intersection = tView.getIntersection(trgPt, cntrlPt);
         p.quadTo(cntrlPt.x, cntrlPt.y, intersection.x, intersection.y);   
     }
-    
-	/* convenience method for rotating a single point through theta degrees. Positive theta is clockwise
-	 * since positive y is downwards in computer graphics.
-	 */
-	public static void rotate(Point2D.Double p1, Point2D.Double pc, double theta){
-		rotate (p1, pc, Math.cos(theta), Math.sin(theta));
-	}
-	
-	/* Use this method with precomputed trig values to rotate multiple points through the same angle */
-	public static void rotate(Point2D.Double p1, Point2D.Double pc, double cosTheta, double sinTheta){
-		p1.x -= pc.x;
-		p1.y -= pc.y;
-		double newX = p1.x * cosTheta - p1.y * sinTheta;
-		p1.y = p1.y * cosTheta + p1.x * sinTheta;
-		p1.x = newX + pc.x;
-		p1.y += pc.y;		
-	}
 
 }

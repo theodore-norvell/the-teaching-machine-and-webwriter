@@ -14,9 +14,7 @@
 
 package higraph.view.interfaces;
 
-import higraph.view.ZoneView;
 
-import java.awt.Shape;
 /**
  * <p>Layable {@link higraph.view.ComponentView
  * view components} are designed to be laid out by a {@link

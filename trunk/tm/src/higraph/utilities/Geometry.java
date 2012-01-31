@@ -20,9 +20,6 @@ package higraph.utilities;
 import java.awt.Shape;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
-import javax.tools.Diagnostic;
 
 import tm.utilities.Assert;
 
@@ -126,7 +123,7 @@ public class Geometry {
         double totalLength = length( shape ) ;
         double targetLength = totalLength * p ;
 
-        double length = 0, x0=0, y0=0, x0p = 0, y0p = 0 ;
+        double length = 0, x0=0, y0=0 ;
         double xmr = 0, ymr = 0 ; // Most recently moved to point.
         while( ! iterator.isDone() ) {
 
@@ -134,7 +131,6 @@ public class Geometry {
             int type = iterator.currentSegment(c);
             switch( type ) {
             case PathIterator.SEG_MOVETO:
-                x0p = x0 ; y0p = y0 ;
                 x0 = c[0];
                 y0 = c[1];
                 xmr = x0;
@@ -151,7 +147,6 @@ public class Geometry {
                     return new Pair<Point2D,Double>( locn, angle ) ;
                 }
                 length = newLen ;
-                x0p = x0 ; y0p = y0 ;
                 x0 = x1;
                 y0 = y1;
             } break;
@@ -271,7 +266,8 @@ public class Geometry {
      * How far up (in direction of increasing "y") do we need to raise it so that it is just clear of the x axis.
      * @param height The (positive) height of the rectangle, i.e., the distance from bottom side to top side.
      * @param width The (positive) width of the rectangle, i.e., the length of the top and bottom side.
-     * @return A positive number representing the amount to raise the rectangle so that its lowest corner is on the x-axis.
+     * @return A positive number representing the amount to raise the rectangle so that its lowest corner
+     *         is on the x-axis.
      */
     public static double raiseBoxToClearLine( double height, double width, double alpha ) {
         // Note on coords: The term upper here means largest "y". Because of symmetry, this makes
@@ -340,7 +336,8 @@ public class Geometry {
             delta.y = 2*delta.y ;
             outPt.x = inPt.x + delta.x ;
             outPt.y = inPt.y + delta.y ; }
-        // Now outPt is on the outside. Use binary search to find a point close to the boundary.
+        // Now outPt is on the outside.
+        //  Use binary search to find a point close to the boundary.
         // Note that if the ray crosses the boundary more than once, the result is not guaranteed
         // to be close to any particular crossing.
         // Invariant: closedShape.contains(inPt) && ! closedShape.contains(outPt) && inPt + delta equals outPt
@@ -355,4 +352,21 @@ public class Geometry {
             delta.y = outPt.y - inPt.y ; }
         return outPt ;
     }
+
+	/* convenience method for rotating a single point through theta degrees. Positive theta is clockwise
+	 * since positive y is downwards in computer graphics.
+	 */
+	public static void rotate(Point2D.Double p1, Point2D.Double pc, double theta){
+		rotate (p1, pc, Math.cos(theta), Math.sin(theta));
+	}
+
+	/* Use this method with precomputed trig values to rotate multiple points through the same angle */
+	public static void rotate(Point2D.Double p1, Point2D.Double pc, double cosTheta, double sinTheta){
+		p1.x -= pc.x;
+		p1.y -= pc.y;
+		double newX = p1.x * cosTheta - p1.y * sinTheta;
+		p1.y = p1.y * cosTheta + p1.x * sinTheta;
+		p1.x = newX + pc.x;
+		p1.y += pc.y;		
+	}
 }

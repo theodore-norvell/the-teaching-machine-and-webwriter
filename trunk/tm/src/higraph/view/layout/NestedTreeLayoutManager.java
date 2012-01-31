@@ -15,14 +15,11 @@
 package higraph.view.layout;
 
 
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 
 import higraph.model.interfaces.*;
-import higraph.view.BranchView;
-import higraph.view.EdgeView;
 import higraph.view.NodeView;
 import higraph.view.HigraphView;
 
@@ -88,7 +85,7 @@ public class NestedTreeLayoutManager
 	 */
 	public void layoutLocal(HigraphView<NP,EP,HG,WG,SG,N,E> hgView) {
 		Iterator<NodeView<NP,EP,HG,WG,SG,N,E>> iterator = hgView.getTops();
-		double p = 0.0;
+		double p = 0.0 ;
 		while(iterator.hasNext()){
 			NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
 			top.doLayout();
