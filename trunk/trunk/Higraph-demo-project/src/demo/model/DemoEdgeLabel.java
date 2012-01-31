@@ -3,8 +3,6 @@
  */
 package demo.model;
 
-import higraphTests.model.TestEdgeLabel;
-import higraph.model.abstractClasses.* ;
 import higraph.model.interfaces.Payload;
 
 public class DemoEdgeLabel

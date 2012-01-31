@@ -1,14 +1,9 @@
 /*
  * Created on 2009-11-11 by Theodore S. Norvell. 
  */
-package demo;
+package demo.view;
 
-import java.awt.Color;
 import java.awt.Component;
-import java.awt.Rectangle;
-import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
 
 import tm.backtrack.BTTimeManager;
 
@@ -20,7 +15,7 @@ public class DemoViewFactory
     extends ViewFactory<DemoPayload, DemoEdgeLabel, DemoHigraph, DemoWholeGraph, DemoSubgraph, DemoNode, DemoEdge>
 {
     
-    DemoViewFactory( BTTimeManager tm ) {
+    public DemoViewFactory( BTTimeManager tm ) {
         super(tm) ;
     }
 
@@ -29,6 +24,8 @@ public class DemoViewFactory
     }
     
     @Override public DemoNodeView makeNodeView(HigraphView<DemoPayload, DemoEdgeLabel, DemoHigraph, DemoWholeGraph, DemoSubgraph, DemoNode, DemoEdge> hgv, DemoNode node) {
-        return new DemoNodeView(hgv, node, timeMan);
+    	//TODO look into a way to eliminate this cast.
+    	DemoHigraphView dhgv = (DemoHigraphView) hgv ;
+    	return new DemoNodeView(dhgv, node, timeMan);
     }
 }

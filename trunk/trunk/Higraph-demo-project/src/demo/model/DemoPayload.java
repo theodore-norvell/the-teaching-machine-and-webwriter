@@ -3,9 +3,6 @@
  */
 package demo.model;
 
-import higraphTests.model.TestPayload;
-import higraph.model.abstractClasses.* ;
-import higraph.model.interfaces.Payload;
 import higraph.model.taggedInterfaces.*;
 
 public class DemoPayload

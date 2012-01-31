@@ -1,9 +1,7 @@
 package demo;
 
 import java.awt.BorderLayout;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 import javax.swing.*;
@@ -14,6 +12,10 @@ import higraph.swing.HigraphJComponent;
 import higraph.swing.SubgraphMouseAdapter;
 
 import demo.model.*;
+import demo.view.DemoHigraphView;
+import demo.view.DemoViewFactory;
+import demo.view.layout.DemoBoxesInBoxesLayout;
+import demo.view.layout.DemoLayoutManager;
 
 
 
@@ -29,7 +31,7 @@ public class DemoMainFrame extends JFrame {
 	// Set up a tree-like display
     private HigraphJComponent graphDisplay0= new HigraphJComponent( ) ;
     private DemoViewFactory viewFactory0 = new DemoViewFactory(timeMan) ;
-	private DemoHigraphView subgraphView0 = viewFactory0.makeHigraphView(graph, graphDisplay0) ;
+    private DemoHigraphView subgraphView0 = viewFactory0.makeHigraphView(graph, graphDisplay0) ;
 	{ graphDisplay0.setSubgraphView( subgraphView0 ) ; }
 	private DemoLayoutManager graphLayoutManger0 = new DemoLayoutManager() ;
 	{ subgraphView0.setLayoutManager( graphLayoutManger0  ) ; }
@@ -59,9 +61,8 @@ public class DemoMainFrame extends JFrame {
 		
 		Action action = new AbstractAction("add root") {
 			public void actionPerformed(ActionEvent e) {
-				DemoNode n = graph.makeRootNode( new DemoPayload(Integer.toString(k++), DemoTag.SEQ) ) ;
-				subgraph.addTop( n ) ;
-                subgraphView0.refresh() ;
+				graph.makeRootNode( new DemoPayload(Integer.toString(k++), DemoTag.SEQ) ) ;
+				subgraphView0.refresh() ;
                 subgraphView1.refresh() ;
                 graphDisplay0.repaint();
                 graphDisplay1.repaint();
