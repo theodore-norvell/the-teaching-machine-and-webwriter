@@ -10,6 +10,7 @@ import java.util.Stack;
 import javax.swing.TransferHandler;
 
 import demo.model.* ;
+import demo.view.DemoHigraphView;
 import higraph.view.ComponentView;
 import higraph.view.interfaces.SubgraphEventObserver;
 import higraph.swing.ViewTransferObject;
