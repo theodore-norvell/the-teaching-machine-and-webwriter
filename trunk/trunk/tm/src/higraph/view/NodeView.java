@@ -539,8 +539,8 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 
 		// rotate control points to the desired angles
 
-		AbstractLayoutManager.rotate(P1, center, Math.PI*(axisAngle+spreadAngle/2.0)/180.);
-		AbstractLayoutManager.rotate(P2, center, Math.PI*(axisAngle-spreadAngle/2.0)/180.);
+		Geometry.rotate(P1, center, Math.PI*(axisAngle+spreadAngle/2.0)/180.);
+		Geometry.rotate(P2, center, Math.PI*(axisAngle-spreadAngle/2.0)/180.);
 		
 		/* Project back to the centre to find intersections which are start and end pts
 		 * Now starting tangents of self curve will be along spokes from centre to

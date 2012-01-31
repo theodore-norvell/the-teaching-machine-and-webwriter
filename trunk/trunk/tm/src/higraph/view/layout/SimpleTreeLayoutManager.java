@@ -14,21 +14,12 @@
 
 package higraph.view.layout;
 
-import java.awt.Color;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
 import java.util.Iterator;
-import java.util.Collection;
 
 import higraph.model.interfaces.*;
-import higraph.view.BranchView;
-import higraph.view.DropZone;
-import higraph.view.EdgeView;
 import higraph.view.NodeView;
 import higraph.view.HigraphView;
-import higraph.view.ZoneView;
 
 /** <p>An {@link SgLayoutManager} to layout a simple tree consisting of a single
  * {@link higraph.model.interfaces.Node Node} and all its descendants.</p>
