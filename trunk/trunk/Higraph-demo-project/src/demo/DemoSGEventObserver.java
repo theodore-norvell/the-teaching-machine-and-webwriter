@@ -74,7 +74,7 @@ extends SubgraphEventObserver<DemoPayload, DemoEdgeLabel, DemoHigraph, DemoWhole
     
     public boolean canDropHere( Stack<ComponentView<DemoPayload, DemoEdgeLabel, DemoHigraph, DemoWholeGraph, DemoSubgraph, DemoNode, DemoEdge>> stack,
                         TransferHandler.TransferSupport supportObj ) {
-        System.out.println( "canDropHere()" ) ;  
+        System.out.println( "canDropHere()" ) ;
         boolean result ;
         if( selectedView != null && stack.contains( selectedView ) )
             result = false ;

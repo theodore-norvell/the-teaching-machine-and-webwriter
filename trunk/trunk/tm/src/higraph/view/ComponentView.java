@@ -633,6 +633,7 @@ implements Layable {
 	 */
 	public void moveLabel(Label<NP,EP,HG,WG,SG,N,E>label){
 	}
+	
 	public void moveZone(ZoneView<NP,EP,HG,WG,SG,N,E>zone){
 	}
 
