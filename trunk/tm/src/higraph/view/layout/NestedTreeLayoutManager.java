@@ -128,8 +128,8 @@ public class NestedTreeLayoutManager
 		
 		
 		if (kids > 0) {
-			double localX = OFFSET_X*yCoef;
-			double localY = OFFSET_Y*xCoef;
+			double localX = 0;
+			double localY = 0;
 			
 			// put kids inside stepping over from left
 			for (int i = 0; i < kids; i++){
