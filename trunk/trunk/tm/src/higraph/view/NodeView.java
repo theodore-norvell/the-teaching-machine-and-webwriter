@@ -500,6 +500,13 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 		
 	}
 	
+	public void setNodeSize(int w, int h){
+		RectangularShape newShape = nextShapeVar.get();
+		Assert.check(newShape != null, "Can't set size of a null shape");
+		newShape.setFrame(newShape.getX(), newShape.getY(), w, h);
+		nextShapeVar.set(newShape);
+	}
+	
 	/* note that vertical incrementing regions are ABOVE and BELOW so numbering
 	 * scheme ensures region <= BELOW is vertical incrementing 
 	 */

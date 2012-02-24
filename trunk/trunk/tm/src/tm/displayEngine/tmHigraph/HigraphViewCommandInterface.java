@@ -137,6 +137,7 @@ public interface HigraphViewCommandInterface {
 	public void setNodeFillColor(Datum d, long c);	
 	public void setNodeShape(Datum d, long s);
 	public void setNodeStroke(Datum d, long s);
+	public void setNodeSize(Datum d, long w, long h); 
 	public void setNodeNameLabel(Datum d, String l);   // Over-ride the standard name label
 	public void setNodeNameShow(Datum d, boolean show);
 	public void setNodeNamePosition(Datum d, long position);
@@ -192,6 +193,7 @@ public interface HigraphViewCommandInterface {
 	public void setNodeFillColor(Datum d, boolean deref, long c);	
 	public void setNodeShape(Datum d, boolean deref, long s);
 	public void setNodeStroke(Datum d, boolean deref, long s);
+	public void setNodeSize(Datum d, boolean deref, long w, long h); 
 	public void setNodeNameLabel(Datum d, boolean deref, final String str);
 	public void setNodeNameShow(Datum d,  boolean deref, boolean show);
 	public void setNodeNamePosition(Datum d, boolean deref, long position);
@@ -276,6 +278,7 @@ public interface HigraphViewCommandInterface {
 
 	/*#TStr*/	
 	/************ Start of hiGraph string commands ***********************/
+	
 	/** create a string called id. id must be unique. The content
 	 *  of the string called id is null at this point.
 	 *  

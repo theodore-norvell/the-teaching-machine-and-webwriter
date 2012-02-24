@@ -54,10 +54,14 @@ public class EmbeddedArrayDemo {
     	ScriptManager.relay("HigraphManager","setNodeLayoutManager", b, "SimpleTree");
         ScriptManager.relay("HigraphManager", "placeNode", b, 600, 80);
     	ScriptManager.relay("HigraphManager","makeNode", c);
+    	ScriptManager.relay("HigraphManager","setNodeSize", c, 15, 15);
+
         ScriptManager.relay("HigraphManager","addChild", a, c);
     	ScriptManager.relay("HigraphManager","makeNode", d);
         ScriptManager.relay("HigraphManager","addChild", b, d);
     	ScriptManager.relay("HigraphManager","makeNode", e);
+    	ScriptManager.relay("HigraphManager","setNodeSize", e, 45, 45);
+
         ScriptManager.relay("HigraphManager","addChild", b, e);
     	ScriptManager.relay("HigraphManager","makeNode", f);
         ScriptManager.relay("HigraphManager","addChild", d, f);
