@@ -55,7 +55,6 @@ import tm.backtrack.BTTimeManager;
 import tm.configuration.Configuration;
 import tm.configuration.ConfigurationServer;
 import tm.displayEngine.tmHigraph.HigraphManager;
-import tm.displayEngine.tmHigraph.HigraphVisualizer;
 import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.Datum;
 import tm.interfaces.DisplayManagerInterface;
@@ -64,8 +63,6 @@ import tm.interfaces.ImageSourceInterface;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
 import tm.scripting.ScriptManager;
-import tm.subWindowPkg.SubWindow;
-import tm.subWindowPkg.WorkArea;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMException;
@@ -103,7 +100,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	// subwindows whose display objects are listed in myDisplays.
 	private JDesktopPane windowArea;
 	private JLabel status;
-	private JPanel bottomBar;
 	
 	private HigraphManager higraphManager;
 
@@ -120,10 +116,8 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		status = new JLabel();
 		status.setText("");
 		status.setPreferredSize(new Dimension(60,20));
- 		bottomBar = new JPanel();
- 		bottomBar.setBackground(Color.blue);
- 		bottomBar.add(status);
-		add("South", bottomBar);
+ 		status.setBackground(Color.white);
+		add("South", status);
 		add("Center",windowArea);
 		
 		commandProcessor = cp;

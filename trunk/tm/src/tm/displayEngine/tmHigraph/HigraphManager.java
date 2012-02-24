@@ -627,6 +627,20 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	}
 	
 	@Override
+	public void setNodeSize(Datum d, long w, long h){
+		setNodeSize(d, false, w, h);
+	}
+
+	
+	@Override
+	public void setNodeSize(Datum d, boolean deref, long w, long h){
+		for(HigraphViewTM view : activeViewSet){
+			NodeTM node = privateGetNode(d, deref);
+			view.getNodeView(node).setNodeSize((int)w, (int)h);
+		}
+		
+	}
+	@Override
 	public void setNodeNameLabel(Datum d, final String str){
 		setNodeNameLabel(d, false, str);
 	}
