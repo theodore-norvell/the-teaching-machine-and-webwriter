@@ -1,5 +1,5 @@
 /**
- * SyntaxListPanel.java - play.ide.view - PLAY
+ * SyntaxPallet.java - play.ide.view - PLAY
  *
  * Created on 2012-2-15 by Kai Zhu
  */
@@ -19,7 +19,7 @@ import play.higraph.swing.SyntaxTransferHandler;
  * @author Kai Zhu
  * 
  */
-public class SyntaxListPanel extends JPanel {
+public class SyntaxPallet extends JPanel {
 
     /**
      * 
@@ -30,20 +30,21 @@ public class SyntaxListPanel extends JPanel {
 
     private DefaultListModel<PLAYTag> syntaxListModel;
 
-    public SyntaxListPanel() {
+    public SyntaxPallet() {
 	this.syntaxList = new JList<>();
 	this.syntaxListModel = new DefaultListModel<PLAYTag>();
-	
-	this.syntaxListModel.addElement(PLAYTag.ASSIGN);
-	this.syntaxListModel.addElement(PLAYTag.SEQ);
-	
+
+	for (PLAYTag tag : PLAYTag.values()) {
+	    this.syntaxListModel.addElement(tag);
+	}
+
 	this.syntaxList.setModel(this.syntaxListModel);
 	this.syntaxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	this.syntaxList.setVisibleRowCount(-1);
 	this.syntaxList.setDropMode(DropMode.ON_OR_INSERT);
 	this.syntaxList.setDragEnabled(true);
 	this.syntaxList.setTransferHandler(new SyntaxTransferHandler());
-	
+
 	this.add(this.syntaxList);
     }
 

@@ -6,6 +6,7 @@
 package play.ide.handler;
 
 import higraph.swing.HigraphJComponent;
+import higraph.view.layout.NestedTreeLayoutManager;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -33,7 +34,7 @@ import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
-import play.ide.view.SyntaxListPanel;
+import play.ide.view.SyntaxPallet;
 import tm.backtrack.BTTimeManager;
 
 /**
@@ -53,7 +54,7 @@ public class ViewHandler {
 
     private JPanel graphPanel;
 
-    private JPanel syntaxListPanel;
+    private JPanel syntaxPallet;
 
     private BTTimeManager btTimeManager;
 
@@ -76,7 +77,7 @@ public class ViewHandler {
     public ViewHandler() {
 	this.mainFrame = new JFrame();
 	this.graphPanel = new JPanel();
-	this.syntaxListPanel = new SyntaxListPanel();
+	this.syntaxPallet = new SyntaxPallet();
 	this.btTimeManager = new BTTimeManager();
 	this.wholeGraph = new PLAYWholeGraph(this.btTimeManager);
 	this.subgraph = new PLAYSubgraph(this.wholeGraph);
@@ -84,7 +85,8 @@ public class ViewHandler {
 	this.viewFactory = new PLAYViewFactory(this.btTimeManager);
 	this.higraphView = this.viewFactory.makeHigraphView(this.wholeGraph,
 		this.higraphJComponent);
-	this.boxesInBoxesLayout = new PLAYBoxesInBoxesLayout();
+	this.boxesInBoxesLayout = new PLAYBoxesInBoxesLayout(
+		NestedTreeLayoutManager.Axis.Y);
 	this.subgraphEventObserver = new PLAYSubgraphEventObserver(
 		this.higraphView, this.wholeGraph, this.viewFactory,
 		this.subgraph);
@@ -120,7 +122,7 @@ public class ViewHandler {
 		JSplitPane.HORIZONTAL_SPLIT);
 	leftRightSplitPane.setOneTouchExpandable(true);
 	leftRightSplitPane.setDividerLocation(50);
-	leftRightSplitPane.setLeftComponent(this.syntaxListPanel);
+	leftRightSplitPane.setLeftComponent(this.syntaxPallet);
 	leftRightSplitPane.setRightComponent(this.higraphJComponent);
 
 	JPanel mainPanel = new JPanel();

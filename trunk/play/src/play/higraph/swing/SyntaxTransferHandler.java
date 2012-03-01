@@ -11,8 +11,6 @@ import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.TransferHandler;
 
-import play.higraph.model.PLAYTag;
-
 /**
  * @author Kai Zhu
  * 
@@ -39,8 +37,8 @@ public class SyntaxTransferHandler extends TransferHandler {
     protected Transferable createTransferable(JComponent c) {
 	JList<?> list = (JList<?>) c;
 	if (!list.isSelectionEmpty()) {
-	    PLAYTag tag = (PLAYTag) list.getSelectedValue();
-	    return new PLAYViewTransferObject(tag);
+	    Object object = list.getSelectedValue();
+	    return new PLAYViewTransferObject(object);
 	}
 	return null;
     }
