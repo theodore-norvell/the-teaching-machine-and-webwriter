@@ -8,6 +8,7 @@ package play.higraph.view;
 import higraph.view.ComponentView;
 import higraph.view.interfaces.SubgraphEventObserver;
 
+import java.awt.Color;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -16,6 +17,10 @@ import java.io.IOException;
 import java.util.Stack;
 
 import javax.swing.TransferHandler;
+
+import demo.model.DemoNode;
+import demo.model.DemoPayload;
+import demo.model.DemoTag;
 
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
@@ -37,7 +42,7 @@ public class PLAYSubgraphEventObserver
 
     // TODO
 
-    private ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> selectedView = null;
+    private PLAYNodeView selectedView;;
 
     private PLAYHigraphView higraphView;
 
@@ -90,11 +95,23 @@ public class PLAYSubgraphEventObserver
 	    MouseEvent e) {
 	System.out.println("Pressed on");
 	if (stack != null && stack.size() > 0) {
-	    selectedView = stack.firstElement();
+	    if (this.selectedView == null) {
+		if (stack.lastElement() instanceof PLAYNodeView) {
+		    this.selectedView = (PLAYNodeView) stack.lastElement();
+		    this.selectedView.setFillColor(Color.LIGHT_GRAY);
+		    this.higraphView.refresh();
+		    this.higraphView.getDisplay().repaint();
+		}
+	    } else {
+		this.selectedView.setFillColor(null);
+		this.higraphView.refresh();
+		this.higraphView.getDisplay().repaint();
+		this.selectedView = null;
+	    }
 	} else {
-	    selectedView = null;
+	    this.selectedView = null;
 	}
-	System.out.println("selectedView is " + selectedView);
+	System.out.println("selectedView is " + this.selectedView);
     }
 
     /** Called when a mouse button goes up. */
@@ -107,10 +124,10 @@ public class PLAYSubgraphEventObserver
     public int getSourceActions() {
 	System.out.println("getSourceActions()");
 	int result;
-	if (selectedView == null)
-	    result = java.awt.dnd.DnDConstants.ACTION_NONE;
+	if (this.selectedView == null)
+	    result = TransferHandler.NONE;
 	else
-	    result = java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE;
+	    result = TransferHandler.COPY_OR_MOVE;
 	System.out.println("...returns " + result);
 	return result;
     }
@@ -118,10 +135,11 @@ public class PLAYSubgraphEventObserver
     public Transferable createTransferable() {
 	Transferable result;
 	System.out.println("createTransferable");
-	if (selectedView == null)
+	if (this.selectedView == null)
 	    result = null;
-	else
-	    result = null;// new PLAYViewTransferObject(selectedView);
+	else {
+	    result = new PLAYViewTransferObject(this.selectedView);
+	}
 	System.out.println("...returns " + result);
 	return result;
     }
@@ -130,10 +148,70 @@ public class PLAYSubgraphEventObserver
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    TransferHandler.TransferSupport supportObj) {
 	System.out.println("canDropHere()");
-	PLAYNodeView nodeView = null;
 	PLAYTag tag = null;
+	PLAYNodeView nodeView = null;
 	boolean result = false;
-	if (selectedView != null && stack.contains(selectedView))
+
+	if (!supportObj
+		.isDataFlavorSupported(PLAYViewTransferObject.TAG_DATAFLAVOR)
+		&& !supportObj
+			.isDataFlavorSupported(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
+	    System.out.println("No support Data Flavor");
+	    return false;
+	}
+
+	try {
+	    Object object = supportObj.getTransferable().getTransferData(
+		    PLAYViewTransferObject.TAG_DATAFLAVOR);
+	    if (object != null) {
+		tag = (PLAYTag) object;
+		if (stack.isEmpty()) {
+		    return true;
+		}
+	    } else {
+		object = supportObj.getTransferable().getTransferData(
+			PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		if (object != null) {
+		    nodeView = (PLAYNodeView) object;
+		    if (stack.isEmpty()) {
+			return nodeView.getNode().canDetach();
+		    }
+		}
+	    }
+	} catch (UnsupportedFlavorException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
+	if ((tag == null) && (nodeView == null)) {
+	    result = false;
+	} else if ((nodeView != null) && (tag == null)) {
+	    if (stack.lastElement() instanceof PLAYDropZone) {
+		// TODO
+	    } else if (stack.lastElement() instanceof PLAYNodeView) {
+		PLAYNodeView parentNodeView = (PLAYNodeView) stack
+			.lastElement();
+		PLAYNode parentNode = parentNodeView.getNode();
+		if (supportObj.getDropAction() == TransferHandler.COPY) {
+		}
+	    } else {
+		result = false;
+	    }
+	} else {
+	    if (stack.lastElement() instanceof PLAYDropZone) {
+		// TODO
+	    } else if (stack.lastElement() instanceof PLAYNodeView) {
+		PLAYNodeView parentNodeView = (PLAYNodeView) stack
+			.lastElement();
+		PLAYNode parentNode = parentNodeView.getNode();
+		result = parentNode.canReplacePayload(tag.defaultPayload());
+	    } else {
+		result = false;
+	    }
+	}
+
+	if (this.selectedView != null && stack.contains(this.selectedView))
 	    result = false;
 	else if (supportObj.getDropAction() == java.awt.dnd.DnDConstants.ACTION_NONE)
 	    result = false;
@@ -142,7 +220,7 @@ public class PLAYSubgraphEventObserver
 		System.out.println("...data flavor is " + f);
 	    }
 	    result = supportObj
-		    .isDataFlavorSupported(PLAYViewTransferObject.THE_TAG_DATAFLAVOR);
+		    .isDataFlavorSupported(PLAYViewTransferObject.TAG_DATAFLAVOR);
 	}
 	System.out.println("...returns " + result);
 	return result;
@@ -152,20 +230,61 @@ public class PLAYSubgraphEventObserver
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    TransferHandler.TransferSupport support) {
 	System.out.println("Import data");
+	PLAYTag tag = null;
+	PLAYNodeView nodeView = null;
 	if (!canDropHere(stack, support)) {
 	    System.out.println("... returns false");
 	    return false;
 	}
+
 	try {
-	    PLAYTag tag = (PLAYTag) support.getTransferable().getTransferData(
-		    PLAYViewTransferObject.THE_TAG_DATAFLAVOR);
-	    wholeGraph.makeRootNode(new PLAYPayload(tag.toString(), tag));
-	    higraphView.refresh();
-	    this.higraphView.getDisplay().repaint();
-	} catch (UnsupportedFlavorException | IOException e) {
+	    Object object = support.getTransferable().getTransferData(
+		    PLAYViewTransferObject.TAG_DATAFLAVOR);
+	    if (object != null) {
+		tag = (PLAYTag) object;
+		if (support.isDrop()) {
+		    if (stack.isEmpty()) {
+			this.wholeGraph.makeRootNode(new PLAYPayload(tag
+				.toString(), tag));
+			this.higraphView.refresh();
+			this.higraphView.getDisplay().repaint();
+		    } else if (stack.lastElement() instanceof PLAYDropZone) {
+
+		    } else if (stack.lastElement() instanceof PLAYNodeView) {
+			PLAYNodeView currentNodeView = (PLAYNodeView) stack
+				.lastElement();
+			PLAYNode currentNode = currentNodeView.getNode();
+			PLAYNode newNode = this.wholeGraph
+				.makeRootNode(new PLAYPayload(tag.toString(),
+					tag));
+			if (currentNode.canInsertChild(0, newNode)) {
+			    currentNode.insertChild(0, newNode);
+			} else if (currentNode.canReplace(newNode)) {
+			    currentNode.replace(newNode);
+			}
+			this.higraphView.refresh();
+			this.higraphView.getDisplay().repaint();
+		    }
+		} else {
+		    return false;
+		}
+	    } else {
+		object = support.getTransferable().getTransferData(
+			PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		if (object != null) {
+		    nodeView = (PLAYNodeView) object;
+		    PLAYNode node = nodeView.getNode();
+		    // TODO
+		}
+	    }
+	} catch (UnsupportedFlavorException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
 	    e.printStackTrace();
 	}
+
 	System.out.println("... returns true");
 	return true;
     }
+
 }
