@@ -25,7 +25,7 @@ import tm.interfaces.Configurable;
 import tm.utilities.Debug;
 
 /** A PlugInManager is responsible for creation of plug-in factory objects.
- * It is also a respoistory for information about which plug-in factory classes to
+ * It is also a repository for information about which plug-in factory classes to
  * use for various jack names in the system.
  * 
  * <p>Creating objects using a PlugInManager is a several step process that
@@ -152,15 +152,13 @@ public class PlugInManager extends Observable implements Iterable<PlugInRegistra
                 applicable.add( r ) ;
         }
         List<T> result = new ArrayList<T>( applicable.size() ) ;
-        int i = 0 ;
         for( PlugInRegistration r : applicable ) {
             PlugInFactory plugInFactory = r.createFactoryObject() ;
             if( ! (expectedType.isAssignableFrom( plugInFactory.getClass() ) ) )
                 throw new PlugInNotFound(
                         "Factory of class '"+plugInFactory.getClass().getName()
                         +"' is not assignable to expected type '"+expectedType.getName() ) ;
-            result.add( (T)plugInFactory ) ; // Ignore the warning.
-            i += 1 ; }
+            result.add( (T)plugInFactory ) ; } // Ignore the warning.
         
         if( isMandatory && result.size() == 0 )
             throw new PlugInNotFound("Expected at least one plug-in in jack "+jackName) ;

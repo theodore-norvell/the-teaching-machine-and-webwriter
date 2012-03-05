@@ -629,7 +629,7 @@ public class PlugInManagerDialog extends JDialog {
             } break ;
             case 1 : {
                 str = userObject.toString() ;
-                // Report the number of active registations.
+                // Report the number of active registrations.
                 int activeCount = 0 ;
                 for( PlugInRegistration pir : PlugInManagerDialog.this.model ) {
                     if( pir.getJackName().equals( userObject ) )
@@ -670,7 +670,7 @@ public class PlugInManagerDialog extends JDialog {
             result.setOpaque( true ) ;
             if( icon != null ) result.setIcon( icon ) ;
             
-            Font font = result.getFont() ;
+            //Font font = result.getFont() ;
             // result.setFont( font.deriveFont( Font.PLAIN ) ) ;
             if( selected ) {
                 result.setForeground( active ? Color.BLACK : Color.LIGHT_GRAY ) ;
