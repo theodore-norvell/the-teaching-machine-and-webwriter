@@ -23,7 +23,7 @@ public class PLAYViewTransferObject implements Transferable {
 
     private PLAYTag tag;
 
-    private PLAYNodeView view;
+    private PLAYNodeView nodeView;
 
     public static final DataFlavor TAG_DATAFLAVOR = new DataFlavor(
 	    PLAYTag.class, "PLAYTag.DataFlavor");
@@ -35,7 +35,7 @@ public class PLAYViewTransferObject implements Transferable {
 	if (object instanceof PLAYTag) {
 	    this.tag = (PLAYTag) object;
 	} else if (object instanceof ComponentView) {
-	    this.view = (PLAYNodeView) object;
+	    this.nodeView = (PLAYNodeView) object;
 	}
     }
 
@@ -75,7 +75,7 @@ public class PLAYViewTransferObject implements Transferable {
 	} else if (flavor.equals(PLAYViewTransferObject.TAG_DATAFLAVOR)) {
 	    return this.tag;
 	} else if (flavor.equals(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
-	    return this.view;
+	    return this.nodeView;
 	}
 	return null;
     }

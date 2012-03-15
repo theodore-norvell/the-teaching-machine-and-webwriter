@@ -5,7 +5,7 @@
  */
 package play.higraph.model;
 
-import higraph.model.abstractClasses.AbstractSubgraph;
+import higraph.model.abstractTaggedClasses.AbstractTaggedSubgraph;
 
 /**
  * @author Kai Zhu
@@ -13,7 +13,7 @@ import higraph.model.abstractClasses.AbstractSubgraph;
  */
 public class PLAYSubgraph
 	extends
-	AbstractSubgraph<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>
+	AbstractTaggedSubgraph<PLAYTag, PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>
 	implements PLAYHigraph {
 
     public PLAYSubgraph(PLAYWholeGraph wholeGraph) {

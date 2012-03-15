@@ -5,7 +5,7 @@
  */
 package play.higraph.model;
 
-import higraph.model.abstractClasses.AbstractEdge;
+import higraph.model.abstractTaggedClasses.AbstractTaggedEdge;
 
 /**
  * @author Kai Zhu
@@ -13,7 +13,7 @@ import higraph.model.abstractClasses.AbstractEdge;
  */
 public class PLAYEdge
 	extends
-	AbstractEdge<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
+	AbstractTaggedEdge<PLAYTag, PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
     protected PLAYEdge(PLAYNode source, PLAYNode target, PLAYEdgeLabel label,
 	    PLAYWholeGraph wholeGraph) {

@@ -10,11 +10,8 @@ import higraph.view.Label;
 import higraph.view.NodeView;
 import higraph.view.ZoneView;
 
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
@@ -37,14 +34,36 @@ public class PLAYNodeView
 	    HigraphView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> v,
 	    PLAYNode node, BTTimeManager timeMan) {
 	super(v, node, timeMan);
-	super.setNodeSize(150, 50);
-	super.setColor(Color.BLACK);
-	super.setFillColor(null);
 	super.setNodeShapeType(NodeView.ROUND_RECTANGLE);
-	PLAYLabel label = new PLAYLabel(node.getPayload().toString(),
-		ZoneView.NORTHWEST, this, timeMan);
-	label.setTheLabel(label.getId());
-	super.addLabel(label);
+	super.setFillColor(null);
+    }
+
+    /**
+     * Get the index of the zone to associated node view
+     * 
+     * @param object
+     * @return
+     */
+    public int indexOfZones(Object object) {
+	return zones.toList().indexOf(object);
+    }
+
+    /**
+     * Get the size of the zones in the node view
+     * 
+     * @return
+     */
+    public int zonesSize() {
+	return super.zones.size();
+    }
+
+    /**
+     * Remove all zones from the node view
+     */
+    public void removeAllDropZones() {
+	for (ZoneView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> zoneView : super.zones) {
+	    super.removeZone(zoneView);
+	}
     }
 
     @Override
@@ -87,11 +106,8 @@ public class PLAYNodeView
 	    y = cr.getCenterY();
 	}
 	Point2D.Double p = label.getNudge();
-	// System.out.println("moved label " + getId() + " to (" + (x+p.x) +
-	// ", " + (y+p.y) + ")");
 	x += p.x;
 	y += p.y;
-	// So much for the centre, but we want the upper left corner
 	label.placeNext(x - halfW, y - halfH);
     }
 

@@ -5,10 +5,14 @@
  */
 package play.higraph.view;
 
-import java.awt.Component;
-
+import higraph.swing.HigraphJComponent;
 import higraph.view.HigraphView;
 import higraph.view.ViewFactory;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -30,6 +34,20 @@ public class PLAYHigraphView
 	    ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> viewFactory,
 	    PLAYHigraph theGraph, Component display, BTTimeManager timeMan) {
 	super(viewFactory, theGraph, display, timeMan);
+    }
+
+    /**
+     * @see higraph.view.HigraphView#refresh()
+     */
+    @Override
+    public void refresh() {
+	super.refresh();
+	HigraphJComponent higraphJComponent = (HigraphJComponent) super
+		.getDisplay();
+	Dimension dimension = higraphJComponent.getPreferredSize();
+	higraphJComponent.scrollRectToVisible(new Rectangle(0,
+		dimension.height, 100, 100));
+	this.getDisplay().revalidate();
     }
 
 }
