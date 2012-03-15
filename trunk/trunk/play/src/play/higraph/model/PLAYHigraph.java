@@ -5,7 +5,7 @@
  */
 package play.higraph.model;
 
-import higraph.model.abstractClasses.AbstractHigraph;
+import higraph.model.abstractTaggedClasses.AbstractTaggedHigraph;
 
 /**
  * @author Kai Zhu
@@ -13,6 +13,6 @@ import higraph.model.abstractClasses.AbstractHigraph;
  */
 public interface PLAYHigraph
 	extends
-	AbstractHigraph<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
+	AbstractTaggedHigraph<PLAYTag,PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
 }

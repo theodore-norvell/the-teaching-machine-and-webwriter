@@ -5,8 +5,8 @@
  */
 package play.higraph.model;
 
+import higraph.model.abstractTaggedClasses.AbstractTaggedWholeGraph;
 import tm.backtrack.BTTimeManager;
-import higraph.model.abstractClasses.AbstractWholeGraph;
 
 /**
  * @author Kai Zhu
@@ -14,7 +14,7 @@ import higraph.model.abstractClasses.AbstractWholeGraph;
  */
 public class PLAYWholeGraph
 	extends
-	AbstractWholeGraph<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>
+	AbstractTaggedWholeGraph<PLAYTag, PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>
 	implements PLAYHigraph {
 
     public PLAYWholeGraph(BTTimeManager timeMan) {

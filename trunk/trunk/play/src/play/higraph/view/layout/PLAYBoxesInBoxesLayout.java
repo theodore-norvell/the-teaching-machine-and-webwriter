@@ -5,13 +5,13 @@
  */
 package play.higraph.view.layout;
 
+import higraph.view.HigraphView;
 import higraph.view.NodeView;
 import higraph.view.layout.NestedTreeLayoutManager;
 
-import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Iterator;
 
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
@@ -20,7 +20,7 @@ import play.higraph.model.PLAYNode;
 import play.higraph.model.PLAYPayload;
 import play.higraph.model.PLAYSubgraph;
 import play.higraph.model.PLAYWholeGraph;
-import play.higraph.view.PLAYDropZone;
+import play.higraph.view.PLAYNodeView;
 
 /**
  * @author Kai Zhu
@@ -39,17 +39,39 @@ public class PLAYBoxesInBoxesLayout
     }
 
     /**
+     * @see higraph.view.layout.NestedTreeLayoutManager#layoutLocal(higraph.view.HigraphView)
+     */
+    @Override
+    public void layoutLocal(
+	    HigraphView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> hgView) {
+	Iterator<NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> iterator = hgView
+		.getTops();
+	double p = 0.0;
+	while (iterator.hasNext()) {
+	    NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> top = iterator
+		    .next();
+	    top.doLayout();
+	    Rectangle2D r = top.getNextExtent();
+	    double w = r.getWidth();
+	    double h = r.getHeight();
+	    top.translateNextHierarchy(p * xCoef, p * yCoef);
+	    p += w * xCoef + h * yCoef + 10;
+	    doDislocations(top);
+	}
+    }
+
+    /**
      * @see higraph.view.layout.NestedTreeLayoutManager#layoutLocal(higraph.view.NodeView)
      */
     @Override
     public void layoutLocal(
 	    NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> nv) {
-	final double OFFSET_X = 25;
-	final double OFFSET_Y = 25;
+	final double OFFSET_X = 5;
+	final double OFFSET_Y = 5;
 
 	int kids = nv.getNumChildren();
 
-	Rectangle2D r = new Rectangle2D.Double(0, 0, 30, 30);
+	Rectangle2D r = new Rectangle2D.Double(0, 0, 20, 20);
 
 	if (kids > 0) {
 	    double localX = 0;
@@ -59,8 +81,7 @@ public class PLAYBoxesInBoxesLayout
 	    for (int i = 0; i < kids; i++) {
 		localX += OFFSET_X * xCoef;
 		localY += OFFSET_Y * yCoef;
-		NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> kid = nv
-			.getChild(i);
+		PLAYNodeView kid = (PLAYNodeView) nv.getChild(i);
 		kid.doLayout();
 		kid.placeNextHierarchy(localX, localY);
 		Rectangle2D kidExtent = kid.getNextExtent();

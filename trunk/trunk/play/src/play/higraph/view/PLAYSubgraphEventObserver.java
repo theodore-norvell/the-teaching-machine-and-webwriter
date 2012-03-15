@@ -8,7 +8,6 @@ package play.higraph.view;
 import higraph.view.ComponentView;
 import higraph.view.interfaces.SubgraphEventObserver;
 
-import java.awt.Color;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -17,10 +16,6 @@ import java.io.IOException;
 import java.util.Stack;
 
 import javax.swing.TransferHandler;
-
-import demo.model.DemoNode;
-import demo.model.DemoPayload;
-import demo.model.DemoTag;
 
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
@@ -40,9 +35,7 @@ public class PLAYSubgraphEventObserver
 	extends
 	SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
-    // TODO
-
-    private PLAYNodeView selectedView;;
+    private ComponentView<?, ?, ?, ?, ?, ?, ?> selectedView;;
 
     private PLAYHigraphView higraphView;
 
@@ -51,6 +44,12 @@ public class PLAYSubgraphEventObserver
     private PLAYViewFactory viewFactory;
 
     private PLAYSubgraph subgraph;
+
+    private enum DropActionType {
+	TAG_NEW, TAG_REPLACE, TAG_INSERT, NODE_DETACH, NODE_MOVE, NODE_INSERT, NODE_REPLACE, NODE_COPY, NODE_DELETE, NONE
+    };
+
+    private DropActionType dropAction;
 
     /**
      * @param higraphView
@@ -66,59 +65,48 @@ public class PLAYSubgraphEventObserver
 	this.wholeGraph = wholeGraph;
 	this.viewFactory = viewFactory;
 	this.subgraph = subgraph;
+	this.dropAction = PLAYSubgraphEventObserver.DropActionType.NONE;
     }
 
     /** Called when the mouse is being moved with no buttons down. */
     public void movedOver(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	System.out.println("Moved over");
+	// System.out.println("Moved over" + e.getX() + "-" + e.getY());
     }
 
     /** Called when the mouse is being moved with one or more buttons down. */
     public void dragged(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	System.out.println("Dragged");
+	System.out.println("Dragged" + e.getX() + "-" + e.getY());
     }
 
     /** Called when the mouse button has been pressed and released. */
     public void clickedOn(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	System.out.println("Clicked on");
+	// System.out.println("Clicked on" + e.getX() + "-" + e.getY());
     }
 
     /** Called when a mouse button goes down. */
     public void pressedOn(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	System.out.println("Pressed on");
+	System.out.println("Pressed on" + e.getX() + "-" + e.getY());
 	if (stack != null && stack.size() > 0) {
-	    if (this.selectedView == null) {
-		if (stack.lastElement() instanceof PLAYNodeView) {
-		    this.selectedView = (PLAYNodeView) stack.lastElement();
-		    this.selectedView.setFillColor(Color.LIGHT_GRAY);
-		    this.higraphView.refresh();
-		    this.higraphView.getDisplay().repaint();
-		}
-	    } else {
-		this.selectedView.setFillColor(null);
-		this.higraphView.refresh();
-		this.higraphView.getDisplay().repaint();
-		this.selectedView = null;
-	    }
+	    this.selectedView = stack.lastElement();
 	} else {
 	    this.selectedView = null;
 	}
-	System.out.println("selectedView is " + this.selectedView);
+	System.out.println("selectedView is " + selectedView);
     }
 
     /** Called when a mouse button goes up. */
     public void releasedOn(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	System.out.println("Release on");
+	// System.out.println("Release on" + e.getX() + "-" + e.getY());
     }
 
     public int getSourceActions() {
@@ -127,7 +115,7 @@ public class PLAYSubgraphEventObserver
 	if (this.selectedView == null)
 	    result = TransferHandler.NONE;
 	else
-	    result = TransferHandler.COPY_OR_MOVE;
+	    result = TransferHandler.COPY;
 	System.out.println("...returns " + result);
 	return result;
     }
@@ -148,143 +136,300 @@ public class PLAYSubgraphEventObserver
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    TransferHandler.TransferSupport supportObj) {
 	System.out.println("canDropHere()");
-	PLAYTag tag = null;
-	PLAYNodeView nodeView = null;
 	boolean result = false;
 
-	if (!supportObj
-		.isDataFlavorSupported(PLAYViewTransferObject.TAG_DATAFLAVOR)
-		&& !supportObj
-			.isDataFlavorSupported(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
-	    System.out.println("No support Data Flavor");
-	    return false;
-	}
-
-	try {
-	    Object object = supportObj.getTransferable().getTransferData(
-		    PLAYViewTransferObject.TAG_DATAFLAVOR);
-	    if (object != null) {
-		tag = (PLAYTag) object;
-		if (stack.isEmpty()) {
-		    return true;
-		}
-	    } else {
-		object = supportObj.getTransferable().getTransferData(
-			PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
-		if (object != null) {
-		    nodeView = (PLAYNodeView) object;
-		    if (stack.isEmpty()) {
-			return nodeView.getNode().canDetach();
-		    }
-		}
-	    }
-	} catch (UnsupportedFlavorException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
-
-	if ((tag == null) && (nodeView == null)) {
+	if (this.selectedView != null && stack.contains(this.selectedView)) {
 	    result = false;
-	} else if ((nodeView != null) && (tag == null)) {
-	    if (stack.lastElement() instanceof PLAYDropZone) {
-		// TODO
-	    } else if (stack.lastElement() instanceof PLAYNodeView) {
-		PLAYNodeView parentNodeView = (PLAYNodeView) stack
-			.lastElement();
-		PLAYNode parentNode = parentNodeView.getNode();
-		if (supportObj.getDropAction() == TransferHandler.COPY) {
-		}
-	    } else {
-		result = false;
-	    }
+	} else if (supportObj.getDropAction() == TransferHandler.NONE) {
+	    result = false;
 	} else {
-	    if (stack.lastElement() instanceof PLAYDropZone) {
-		// TODO
-	    } else if (stack.lastElement() instanceof PLAYNodeView) {
-		PLAYNodeView parentNodeView = (PLAYNodeView) stack
-			.lastElement();
-		PLAYNode parentNode = parentNodeView.getNode();
-		result = parentNode.canReplacePayload(tag.defaultPayload());
-	    } else {
-		result = false;
-	    }
-	}
-
-	if (this.selectedView != null && stack.contains(this.selectedView))
-	    result = false;
-	else if (supportObj.getDropAction() == java.awt.dnd.DnDConstants.ACTION_NONE)
-	    result = false;
-	else {
 	    for (DataFlavor f : supportObj.getDataFlavors()) {
 		System.out.println("...data flavor is " + f);
 	    }
-	    result = supportObj
-		    .isDataFlavorSupported(PLAYViewTransferObject.TAG_DATAFLAVOR);
+	    PLAYNodeView targetNodeView = null;
+	    PLAYNode targetNode = null;
+	    PLAYDropZone targetDropZone = null;
+	    ComponentView<?, ?, ?, ?, ?, ?, ?> lastElement = null;
+	    if (supportObj
+		    .isDataFlavorSupported(PLAYViewTransferObject.TAG_DATAFLAVOR)) {
+		// Pallet
+		try {
+		    Object object = supportObj.getTransferable()
+			    .getTransferData(
+				    PLAYViewTransferObject.TAG_DATAFLAVOR);
+		    if (object != null) {
+			PLAYTag currentTag = (PLAYTag) object;
+			if (stack.isEmpty()) {
+			    result = true;
+			    this.dropAction = PLAYSubgraphEventObserver.DropActionType.TAG_NEW;
+			    System.out.println("TAG_NEW");
+			} else {
+			    lastElement = stack.lastElement();
+			    if (lastElement instanceof PLAYDropZone) {
+				targetDropZone = (PLAYDropZone) lastElement;
+				targetNodeView = (PLAYNodeView) targetDropZone
+					.getAssociatedComponent();
+				targetNode = targetNodeView.getNode();
+				result = targetNode.canInsertChild(
+					targetNodeView
+						.indexOfZones(targetDropZone),
+					currentTag);
+				if (result) {
+				    this.dropAction = PLAYSubgraphEventObserver.DropActionType.TAG_INSERT;
+				    System.out.println("TAG_INSERT");
+				}
+			    } else if (lastElement instanceof PLAYNodeView) {
+				targetNodeView = (PLAYNodeView) lastElement;
+				targetNode = targetNodeView.getNode();
+				result = targetNode.canReplace(currentTag);
+				if (result) {
+				    this.dropAction = PLAYSubgraphEventObserver.DropActionType.TAG_REPLACE;
+				    System.out.println("TAG_REPLACE");
+				}
+			    } else {
+				result = false;
+			    }
+			}
+		    } else {
+			result = false;
+		    }
+		} catch (UnsupportedFlavorException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	    } else if (supportObj
+		    .isDataFlavorSupported(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
+		// HigraphView
+		try {
+		    Object object = supportObj.getTransferable()
+			    .getTransferData(
+				    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    if (object != null) {
+			PLAYNodeView currentNodeView = (PLAYNodeView) object;
+			PLAYNode currentNode = currentNodeView.getNode();
+			if (stack.isEmpty()) {
+			    result = currentNodeView.getNode().canDetach();
+			    if (result) {
+				this.dropAction = PLAYSubgraphEventObserver.DropActionType.NODE_DETACH;
+				System.out.println("NODE_DETACH");
+			    }
+			} else {
+			    lastElement = stack.lastElement();
+			    if (lastElement instanceof PLAYDropZone) {
+				targetDropZone = (PLAYDropZone) lastElement;
+				targetNodeView = (PLAYNodeView) targetDropZone
+					.getAssociatedComponent();
+				targetNode = targetNodeView.getNode();
+				int dropZoneIndex = targetNodeView
+					.indexOfZones(targetDropZone);
+				if (supportObj.getUserDropAction() == TransferHandler.COPY) {
+				    result = targetNode.canInsertChild(
+					    dropZoneIndex, currentNode);
+				    if (result) {
+					this.dropAction = PLAYSubgraphEventObserver.DropActionType.NODE_INSERT;
+					System.out.println("NODE_INSERT");
+				    }
+				} else if (supportObj.getUserDropAction() == TransferHandler.MOVE) {
+				    result = targetNode.canInsertChild(
+					    dropZoneIndex, currentNode)
+					    && currentNode.canDetach();
+				    if (result) {
+					this.dropAction = PLAYSubgraphEventObserver.DropActionType.NODE_MOVE;
+					System.out.println("NODE_MOVE");
+				    }
+				}
+			    } else if (lastElement instanceof PLAYNodeView) {
+				targetNodeView = (PLAYNodeView) lastElement;
+				targetNode = targetNodeView.getNode();
+				if (supportObj.getUserDropAction() == TransferHandler.COPY) {
+				    result = targetNode.canReplace(currentNode);
+				    if (result) {
+					this.dropAction = PLAYSubgraphEventObserver.DropActionType.NODE_COPY;
+					System.out.println("NODE_COPY");
+				    }
+				} else if (supportObj.getUserDropAction() == TransferHandler.MOVE) {
+				    result = targetNode.canReplace(currentNode)
+					    && currentNode.canDetach();
+				    if (result) {
+					this.dropAction = PLAYSubgraphEventObserver.DropActionType.NODE_REPLACE;
+					System.out.println("NODE_REPLACE");
+				    }
+				}
+			    } else {
+				result = false;
+			    }
+			}
+		    } else {
+			result = false;
+		    }
+		} catch (UnsupportedFlavorException e) {
+		    e.printStackTrace();
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	    } else {
+		result = false;
+	    }
 	}
 	System.out.println("...returns " + result);
+	if (!result) {
+	    this.dropAction = DropActionType.NONE;
+	}
 	return result;
     }
 
     public boolean importData(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
-	    TransferHandler.TransferSupport support) {
+	    TransferHandler.TransferSupport supportObj) {
 	System.out.println("Import data");
-	PLAYTag tag = null;
-	PLAYNodeView nodeView = null;
-	if (!canDropHere(stack, support)) {
+
+	if (!canDropHere(stack, supportObj)) {
 	    System.out.println("... returns false");
 	    return false;
 	}
 
-	try {
-	    Object object = support.getTransferable().getTransferData(
-		    PLAYViewTransferObject.TAG_DATAFLAVOR);
-	    if (object != null) {
-		tag = (PLAYTag) object;
-		if (support.isDrop()) {
-		    if (stack.isEmpty()) {
-			this.wholeGraph.makeRootNode(new PLAYPayload(tag
-				.toString(), tag));
-			this.higraphView.refresh();
-			this.higraphView.getDisplay().repaint();
-		    } else if (stack.lastElement() instanceof PLAYDropZone) {
+	if (supportObj.isDrop()) {
 
-		    } else if (stack.lastElement() instanceof PLAYNodeView) {
-			PLAYNodeView currentNodeView = (PLAYNodeView) stack
-				.lastElement();
-			PLAYNode currentNode = currentNodeView.getNode();
-			PLAYNode newNode = this.wholeGraph
-				.makeRootNode(new PLAYPayload(tag.toString(),
-					tag));
-			if (currentNode.canInsertChild(0, newNode)) {
-			    currentNode.insertChild(0, newNode);
-			} else if (currentNode.canReplace(newNode)) {
-			    currentNode.replace(newNode);
-			}
-			this.higraphView.refresh();
-			this.higraphView.getDisplay().repaint();
-		    }
-		} else {
-		    return false;
+	    Object object = null;
+	    PLAYTag currentTag = null;
+	    PLAYNodeView currentNodeView = null;
+	    PLAYNode currentNode = null;
+	    PLAYNodeView targetNodeView = null;
+	    PLAYNode targetNode = null;
+	    PLAYDropZone targetDropZone = null;
+	    int index = 0;
+
+	    try {
+		switch (this.dropAction) {
+		case TAG_NEW: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.TAG_DATAFLAVOR);
+		    currentTag = (PLAYTag) object;
+		    this.wholeGraph.makeRootNode(new PLAYPayload(currentTag
+			    .toString(), currentTag));
+		    System.out.println("DOTAG_NEW");
+		    break;
 		}
-	    } else {
-		object = support.getTransferable().getTransferData(
-			PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
-		if (object != null) {
-		    nodeView = (PLAYNodeView) object;
-		    PLAYNode node = nodeView.getNode();
+		case TAG_REPLACE: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.TAG_DATAFLAVOR);
+		    currentTag = (PLAYTag) object;
+		    targetNodeView = (PLAYNodeView) stack.lastElement();
+		    targetNode = targetNodeView.getNode();
+		    targetNode.replace(currentTag);
+		    System.out.println("DOTAG_REPLACE");
+		    break;
+		}
+		case TAG_INSERT: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.TAG_DATAFLAVOR);
+		    currentTag = (PLAYTag) object;
+		    targetDropZone = (PLAYDropZone) stack.lastElement();
+		    targetNodeView = (PLAYNodeView) targetDropZone
+			    .getAssociatedComponent();
+		    targetNode = targetNodeView.getNode();
+		    index = targetNodeView.indexOfZones(targetDropZone);
+		    targetNode.insertChild(index, currentTag);
+		    System.out.println("DOTAG_INSERT"
+			    + targetNode.getNumberOfChildren() + "-" + index);
+		    break;
+		}
+		case NODE_DETACH: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    currentNodeView = (PLAYNodeView) object;
+		    currentNode = currentNodeView.getNode();
+		    currentNode.detach();
+		    System.out.println("DONODE_DETACH");
+		    break;
+		}
+		case NODE_MOVE: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    currentNodeView = (PLAYNodeView) object;
+		    currentNode = currentNodeView.getNode();
+		    targetDropZone = (PLAYDropZone) stack.lastElement();
+		    targetNodeView = (PLAYNodeView) targetDropZone
+			    .getAssociatedComponent();
+		    targetNode = targetNodeView.getNode();
+		    currentNode.detach();
+		    index = targetNodeView.indexOfZones(targetDropZone);
+		    targetNode.insertChild(index, currentNode);
+		    System.out.println("DONODE_MOVE"
+			    + targetNode.getNumberOfChildren() + "-" + index);
+		    break;
+		}
+		case NODE_INSERT: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    currentNodeView = (PLAYNodeView) object;
+		    currentNode = currentNodeView.getNode();
+		    targetDropZone = (PLAYDropZone) stack.lastElement();
+		    targetNodeView = (PLAYNodeView) targetDropZone
+			    .getAssociatedComponent();
+		    targetNode = targetNodeView.getNode();
+		    index = targetNodeView.indexOfZones(targetDropZone);
+		    targetNode.insertChild(index, currentNode);
+		    System.out.println("DONODE_INSERT"
+			    + targetNode.getNumberOfChildren() + "-" + index);
+		    break;
+		}
+		case NODE_REPLACE: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    currentNodeView = (PLAYNodeView) object;
+		    currentNode = currentNodeView.getNode();
+		    targetDropZone = (PLAYDropZone) stack.lastElement();
+		    targetNodeView = (PLAYNodeView) targetDropZone
+			    .getAssociatedComponent();
+		    targetNode = targetNodeView.getNode();
+		    currentNode.detach();
+		    targetNode.replace(currentNode);
+		    System.out.println("DONODE_REPLACE");
+		    break;
+		}
+		case NODE_COPY: {
+		    object = supportObj.getTransferable().getTransferData(
+			    PLAYViewTransferObject.NODEVIEW_DATAFLAVOR);
+		    currentNodeView = (PLAYNodeView) object;
+		    currentNode = currentNodeView.getNode();
+		    targetDropZone = (PLAYDropZone) stack.lastElement();
+		    targetNodeView = (PLAYNodeView) targetDropZone
+			    .getAssociatedComponent();
+		    targetNode = targetNodeView.getNode();
+		    targetNode.replace(currentNode);
+		    System.out.println("DONODE_REPLACE");
+		    break;
+		}
+		case NODE_DELETE: {
 		    // TODO
+		    System.out.println("DONODE_DELETE");
+		    break;
 		}
+		case NONE: {
+		    // TODO
+		    System.out.println("DONODE_DELETE");
+		    break;
+		}
+		default: {
+		    break;
+		}
+		}
+	    } catch (UnsupportedFlavorException e) {
+		e.printStackTrace();
+	    } catch (IOException e) {
+		e.printStackTrace();
 	    }
-	} catch (UnsupportedFlavorException e) {
-	    e.printStackTrace();
-	} catch (IOException e) {
-	    e.printStackTrace();
-	}
 
-	System.out.println("... returns true");
-	return true;
+	    this.higraphView.refresh();
+	    this.higraphView.getDisplay().repaint();
+
+	    System.out.println("... returns true");
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
 }

@@ -16,10 +16,17 @@ import java.util.List;
  */
 public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
-    EMPTY {
+    PLACEHOLDER {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& ((seq.indexOf(PLAYTag.EXP) == 0) || (seq
+				.indexOf(PLAYTag.PLACEHOLDER) == 0))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
@@ -30,7 +37,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public PLAYPayload defaultPayload() {
-	    return new PLAYPayload("EMPTY", PLAYTag.EMPTY);
+	    return new PLAYPayload("PLACEHOLDER", PLAYTag.PLACEHOLDER);
 	}
 
 	/**
@@ -38,7 +45,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	 */
 	@Override
 	public String toString() {
-	    return "EMPTY";
+	    return "PLACEHOLDER";
 	}
 
     },
@@ -46,7 +53,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && !seq.isEmpty()) {
+	    if (!seq.isEmpty()) {
 		if (seq.indexOf(PLAYTag.TYPE) == 0)
 		    return true;
 	    }
@@ -76,7 +83,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && seq.isEmpty()) {
+	    if (seq.isEmpty()) {
 		if ((seq.size() == 1)
 			&& (seq.contains(PLAYTag.TYPE) || seq
 				.contains(PLAYTag.SEQ))) {
@@ -112,12 +119,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && !seq.isEmpty()) {
-		if ((seq.size() == 1) && seq.contains(PLAYTag.EXP)) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1) && (seq.indexOf(PLAYTag.EXP) == 0)) {
 		    return true;
-		} else if ((seq.size() == 2)
-			&& seq.indexOf(PLAYTag.ASSIGN) == 0
-			&& seq.lastIndexOf(PLAYTag.ASSIGN) == 1) {
+		} else if ((seq.size() == 2) && (seq.indexOf(PLAYTag.EXP) == 0)
+			&& (seq.lastIndexOf(PLAYTag.EXP) == 1)) {
 		    return true;
 		}
 	    }
@@ -147,15 +153,18 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && !seq.isEmpty()) {
-		if ((seq.size() == 1) && (seq.indexOf(PLAYTag.EXP) == 0)) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)) {
 		    return true;
-		} else if ((seq.size() == 2) && (seq.indexOf(PLAYTag.EXP) == 0)
+		} else if ((seq.size() == 2)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)
 			&& (seq.indexOf(PLAYTag.SEQ) == 1)) {
 		    return true;
-		} else if ((seq.size() == 3) && (seq.indexOf(PLAYTag.EXP) == 0)
+		} else if ((seq.size() == 3)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)
 			&& (seq.indexOf(PLAYTag.SEQ) == 1)
-			&& (seq.indexOf(PLAYTag.SEQ) == 2)) {
+			&& (seq.lastIndexOf(PLAYTag.SEQ) == 2)) {
 		    return true;
 		}
 	    }
@@ -185,15 +194,18 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && !seq.isEmpty()) {
-		if ((seq.size() == 1) && (seq.indexOf(PLAYTag.EXP) == 0)) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)) {
 		    return true;
-		} else if ((seq.size() == 2) && (seq.indexOf(PLAYTag.EXP) == 0)
+		} else if ((seq.size() == 2)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)
 			&& (seq.indexOf(PLAYTag.SEQ) == 1)) {
 		    return true;
-		} else if ((seq.size() == 3) && (seq.indexOf(PLAYTag.EXP) == 0)
+		} else if ((seq.size() == 3)
+			&& (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)
 			&& (seq.indexOf(PLAYTag.SEQ) == 1)
-			&& (seq.indexOf(PLAYTag.SEQ) == 2)) {
+			&& (seq.lastIndexOf(PLAYTag.SEQ) == 2)) {
 		    return true;
 		}
 	    }
@@ -223,11 +235,6 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if ((seq != null) && !seq.isEmpty()) {
-		if (seq.contains(PLAYTag.IF) || seq.contains(PLAYTag.WHILE)) {
-		    return true;
-		}
-	    }
 	    return false;
 	}
 
@@ -254,19 +261,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if (!seq.isEmpty()) {
-		if ((seq.size() == 1) && seq.contains(PLAYTag.EMPTY)) {
-		    return true;
-		} else if ((seq.size() == 2) && (seq.indexOf(PLAYTag.EXP) == 0)
-			&& (seq.indexOf(PLAYTag.SEQ) == 1)) {
-		    return true;
-		} else if ((seq.size() == 2)
-			&& (seq.indexOf(PLAYTag.VARDECL) == 0)
-			&& (seq.indexOf(PLAYTag.SEQ) == 1)) {
-		    return true;
-		}
-	    }
-	    return false;
+	    return true;
 	}
 
 	@Override
@@ -333,9 +328,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
-	    List<PLAYTag> defaultTagSequence = new ArrayList<>();
-	    defaultTagSequence.add(PLAYTag.CLASS);
-	    return defaultTagSequence;
+	    return new ArrayList<PLAYTag>();
 	}
 
 	@Override
@@ -351,6 +344,6 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	    return "FILE";
 	}
 
-    }
+    };
 
 }

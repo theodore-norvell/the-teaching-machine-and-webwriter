@@ -24,6 +24,8 @@ public class PLAYZoneView
 	extends
 	ZoneView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
+    public static final String TYPE_STRING = "PLAYZoneView";
+
     /**
      * @param view
      * @param timeMan
@@ -39,7 +41,7 @@ public class PLAYZoneView
      */
     @Override
     public String getViewType() {
-	return null;
+	return TYPE_STRING;
     }
 
 }
