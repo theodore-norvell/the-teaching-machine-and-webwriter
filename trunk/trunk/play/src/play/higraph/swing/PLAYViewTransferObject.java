@@ -13,7 +13,6 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
 
 import play.higraph.model.PLAYTag;
-import play.higraph.view.PLAYNodeView;
 
 /**
  * @author Kai Zhu
@@ -23,19 +22,19 @@ public class PLAYViewTransferObject implements Transferable {
 
     private PLAYTag tag;
 
-    private PLAYNodeView nodeView;
+    private ComponentView<?, ?, ?, ?, ?, ?, ?> componentView;
 
     public static final DataFlavor TAG_DATAFLAVOR = new DataFlavor(
 	    PLAYTag.class, "PLAYTag.DataFlavor");
 
-    public static final DataFlavor NODEVIEW_DATAFLAVOR = new DataFlavor(
-	    PLAYNodeView.class, "PLAYNodeView.DataFlavor");
+    public static final DataFlavor COMPONENTVIEW_DATAFLAVOR = new DataFlavor(
+	    ComponentView.class, "ComponentView.DataFlavor");
 
     public PLAYViewTransferObject(Object object) {
 	if (object instanceof PLAYTag) {
 	    this.tag = (PLAYTag) object;
 	} else if (object instanceof ComponentView) {
-	    this.nodeView = (PLAYNodeView) object;
+	    this.componentView = (ComponentView<?, ?, ?, ?, ?, ?, ?>) object;
 	}
     }
 
@@ -46,7 +45,7 @@ public class PLAYViewTransferObject implements Transferable {
     public DataFlavor[] getTransferDataFlavors() {
 	return new DataFlavor[] { DataFlavor.stringFlavor,
 		PLAYViewTransferObject.TAG_DATAFLAVOR,
-		PLAYViewTransferObject.NODEVIEW_DATAFLAVOR };
+		PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR, };
     }
 
     /**
@@ -58,7 +57,8 @@ public class PLAYViewTransferObject implements Transferable {
 	    return true;
 	} else if (flavor.equals(PLAYViewTransferObject.TAG_DATAFLAVOR)) {
 	    return true;
-	} else if (flavor.equals(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
+	} else if (flavor
+		.equals(PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR)) {
 	    return true;
 	}
 	return false;
@@ -74,8 +74,9 @@ public class PLAYViewTransferObject implements Transferable {
 	    return flavor.toString();
 	} else if (flavor.equals(PLAYViewTransferObject.TAG_DATAFLAVOR)) {
 	    return this.tag;
-	} else if (flavor.equals(PLAYViewTransferObject.NODEVIEW_DATAFLAVOR)) {
-	    return this.nodeView;
+	} else if (flavor
+		.equals(PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR)) {
+	    return this.componentView;
 	}
 	return null;
     }

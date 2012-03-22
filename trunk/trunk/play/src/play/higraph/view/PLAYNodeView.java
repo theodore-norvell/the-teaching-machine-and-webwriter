@@ -10,6 +10,7 @@ import higraph.view.Label;
 import higraph.view.NodeView;
 import higraph.view.ZoneView;
 
+import java.awt.Color;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
@@ -30,12 +31,25 @@ public class PLAYNodeView
 	extends
 	NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
+    protected PLAYLabel label;
+
     public PLAYNodeView(
 	    HigraphView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> v,
 	    PLAYNode node, BTTimeManager timeMan) {
 	super(v, node, timeMan);
 	super.setNodeShapeType(NodeView.ROUND_RECTANGLE);
 	super.setFillColor(null);
+	this.label = (PLAYLabel) v.getViewFactory().makeLabel(this, "", 0);
+	this.label.setFillColor(Color.YELLOW);
+	this.label.setShow(false);
+	this.addLabel(this.label);
+    }
+
+    /**
+     * @return the label
+     */
+    public PLAYLabel getLabel() {
+	return label;
     }
 
     /**
@@ -109,6 +123,11 @@ public class PLAYNodeView
 	x += p.x;
 	y += p.y;
 	label.placeNext(x - halfW, y - halfH);
+    }
+
+    @Override
+    protected PLAYNodeView getThis() {
+	return this;
     }
 
 }

@@ -6,10 +6,10 @@
 package play.ide.handler;
 
 import higraph.model.interfaces.Node;
-import higraph.swing.HigraphJComponent;
 import higraph.view.layout.NestedTreeLayoutManager;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -28,12 +28,14 @@ import javax.swing.SwingUtilities;
 
 import play.higraph.model.PLAYSubgraph;
 import play.higraph.model.PLAYWholeGraph;
+import play.higraph.swing.PLAYHigraphJComponent;
+import play.higraph.swing.PLAYHigraphJComponentKeyAdapter;
 import play.higraph.swing.PLAYSubgraphMouseAdapter;
-import play.higraph.swing.SyntaxTransferHandler;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
+import play.ide.view.ExpsPallet;
 import play.ide.view.SyntaxPallet;
 import tm.backtrack.BTTimeManager;
 
@@ -56,44 +58,37 @@ public class ViewHandler {
 
     private JPanel syntaxPallet;
 
-    private BTTimeManager btTimeManager;
-
     private PLAYWholeGraph wholeGraph;
 
-    private PLAYSubgraph subgraph;
-
-    private HigraphJComponent higraphJComponent;
-
-    private PLAYViewFactory viewFactory;
+    private PLAYHigraphJComponent higraphJComponent;
 
     private PLAYHigraphView higraphView;
-
-    private PLAYSubgraphEventObserver subgraphEventObserver;
-
-    private PLAYSubgraphMouseAdapter subgraphMouseAdapter;
 
     public ViewHandler() {
 	this.mainFrame = new JFrame();
 	this.graphPanel = new JPanel();
 	this.syntaxPallet = new SyntaxPallet();
-	this.btTimeManager = new BTTimeManager();
-	this.wholeGraph = new PLAYWholeGraph(this.btTimeManager);
-	this.subgraph = new PLAYSubgraph(this.wholeGraph);
-	this.higraphJComponent = new HigraphJComponent();
-	this.viewFactory = new PLAYViewFactory(this.btTimeManager);
-	this.higraphView = this.viewFactory.makeHigraphView(this.wholeGraph,
+	BTTimeManager btTimeManager = new BTTimeManager();
+	this.wholeGraph = new PLAYWholeGraph(btTimeManager);
+	PLAYSubgraph subgraph = new PLAYSubgraph(this.wholeGraph);
+	this.higraphJComponent = new PLAYHigraphJComponent();
+	PLAYViewFactory viewFactory = new PLAYViewFactory(btTimeManager);
+	this.higraphView = viewFactory.makeHigraphView(this.wholeGraph,
 		this.higraphJComponent);
-	this.subgraphEventObserver = new PLAYSubgraphEventObserver(
-		this.higraphView, this.wholeGraph, this.viewFactory,
-		this.subgraph);
-	this.subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
-		this.higraphView, this.subgraphEventObserver);
+	PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
+		this.higraphView, this.wholeGraph, viewFactory, subgraph);
+	PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
+		this.higraphView, subgraphEventObserver);
 
+	this.higraphJComponent
+		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
+			this.higraphView));
+	this.higraphJComponent.setBackground(Color.WHITE);
 	this.higraphJComponent.setAutoscrolls(true);
 	this.higraphJComponent.setSubgraphView(this.higraphView);
 	this.higraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
 		NestedTreeLayoutManager.Axis.Y));
-	this.subgraphMouseAdapter.installIn(this.higraphJComponent);
+	subgraphMouseAdapter.installIn(this.higraphJComponent);
 
 	this.mainFrame.setTitle("PLAY");
 	this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,11 +111,14 @@ public class ViewHandler {
 	    }
 
 	});
+	JPanel leftPanel = new JPanel(new BorderLayout());
+	leftPanel.add(this.syntaxPallet, BorderLayout.NORTH);
+	leftPanel.add(new ExpsPallet(), BorderLayout.SOUTH);
 	JSplitPane leftRightSplitPane = new JSplitPane(
 		JSplitPane.HORIZONTAL_SPLIT);
 	leftRightSplitPane.setOneTouchExpandable(true);
-	leftRightSplitPane.setDividerLocation(100);
-	leftRightSplitPane.setLeftComponent(this.syntaxPallet);
+	leftRightSplitPane.setDividerLocation(150);
+	leftRightSplitPane.setLeftComponent(leftPanel);
 	JScrollPane scrollPane = new JScrollPane(this.higraphJComponent);
 	scrollPane.setFocusable(true);
 	leftRightSplitPane.setRightComponent(scrollPane);
@@ -134,7 +132,7 @@ public class ViewHandler {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		for (Node node : wholeGraph.getTops()) {
+		for (Node<?, ?, ?, ?, ?, ?, ?> node : wholeGraph.getTops()) {
 		    node.delete();
 		}
 		higraphJComponent.scrollRectToVisible(new Rectangle(0,

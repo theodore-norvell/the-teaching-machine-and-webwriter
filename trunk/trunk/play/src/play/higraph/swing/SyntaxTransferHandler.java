@@ -9,7 +9,9 @@ import java.awt.datatransfer.Transferable;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JTree;
 import javax.swing.TransferHandler;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * @author Kai Zhu
@@ -35,12 +37,22 @@ public class SyntaxTransferHandler extends TransferHandler {
      */
     @Override
     protected Transferable createTransferable(JComponent c) {
-	JList<?> list = (JList<?>) c;
-	if (!list.isSelectionEmpty()) {
-	    Object object = list.getSelectedValue();
-	    return new PLAYViewTransferObject(object);
+	Object object = null;
+	if (c instanceof JList) {
+	    JList<?> list = (JList<?>) c;
+	    if (!list.isSelectionEmpty()) {
+		object = list.getSelectedValue();
+	    }
+	} else if (c instanceof JTree) {
+	    JTree tree = (JTree) c;
+	    if (tree.getSelectionCount() == 1) {
+		object = ((DefaultMutableTreeNode) tree.getSelectionPath()
+			.getLastPathComponent()).getUserObject();
+	    }
+	} else {
+	    return null;
 	}
-	return null;
+	return new PLAYViewTransferObject(object);
     }
 
 }

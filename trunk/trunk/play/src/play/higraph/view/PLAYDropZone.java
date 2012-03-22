@@ -10,7 +10,6 @@ import higraph.view.NodeView;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.util.Iterator;
 
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;

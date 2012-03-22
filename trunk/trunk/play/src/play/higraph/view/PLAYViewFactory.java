@@ -49,25 +49,100 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYHigraphView higraphView = (PLAYHigraphView) hgv;
 	PLAYNodeView nodeView = null;
-	if (PLAYTag.PLACEHOLDER.defaultPayload().toString()
-		.equals(node.getPayload().toString())) {
+	if (PLAYTag.PLACEHOLDER.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
 	    nodeView = new PlaceHolderNodeView(higraphView, node, super.timeMan);
-	} else if (PLAYTag.ASSIGN.defaultPayload().toString()
-		.equals(node.getPayload().toString())) {
+	} else if (PLAYTag.ASSIGN.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeASSIGNNodeView(higraphView, node);
-	} else if (PLAYTag.SEQ.defaultPayload().toString()
-		.equals(node.getPayload().toString())) {
+	} else if (PLAYTag.SEQ.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeSEQNodeView(higraphView, node);
-	} else if (PLAYTag.IF.defaultPayload().toString()
-		.equals(node.getPayload().toString())) {
+	} else if (PLAYTag.IF.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeIFNodeView(higraphView, node);
-	} else if (PLAYTag.WHILE.defaultPayload().toString()
-		.equals(node.getPayload().toString())) {
+	} else if (PLAYTag.WHILE.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeWHILENodeView(higraphView, node);
+	} else if (PLAYTag.EXP_NUM.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeNUMNodeView(higraphView, node);
+	} else if (PLAYTag.EXP_BOOLEAN.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeBOONodeView(higraphView, node);
+	} else if (PLAYTag.EXP_STRING.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeSTRINGNodeView(higraphView, node);
+	} else if (PLAYTag.EXP_NULL.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeNULLNodeView(higraphView, node);
+	} else if (PLAYTag.EXP_VAR.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeVARNodeView(higraphView, node);
 	} else {
 	    nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
 	}
 	return nodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeBOONodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView boolNodeView = new BOOLNodeView(higraphView, node,
+		super.timeMan);
+	return boolNodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeVARNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView varNodeView = new VARNodeView(higraphView, node,
+		super.timeMan);
+	return varNodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeSTRINGNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView stringNodeView = new STRINGNodeView(higraphView, node,
+		super.timeMan);
+	return stringNodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeNULLNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView nullNodeView = new NULLNodeView(higraphView, node,
+		super.timeMan);
+	return nullNodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeNUMNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView numNodeView = new NUMNodeView(higraphView, node,
+		super.timeMan);
+	return numNodeView;
     }
 
     /**
@@ -103,23 +178,7 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYNodeView ifNodeView = new IFNodeView(higraphView, node,
 		super.timeMan);
-	PLAYNode ifNode = ifNodeView.getNode();
-	// add a place holder child node
-	PLAYNode expPlaceHolderNode = ifNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.PLACEHOLDER.toString(),
-			PLAYTag.PLACEHOLDER));
-	ifNode.insertChild(0, expPlaceHolderNode);
-	// add a seq child node for then branch
-	PLAYNode thenSeqNode = ifNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.SEQ.toString(), PLAYTag.SEQ));
-	ifNode.insertChild(1, thenSeqNode);
-	// add a seq child node for else branch
-	PLAYNode elseSeqNode = ifNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.SEQ.toString(), PLAYTag.SEQ));
-	ifNode.insertChild(2, elseSeqNode);
-
 	ifNodeView.setLayoutManager(new IFNodeViewLayout());
-
 	return ifNodeView;
     }
 
@@ -134,23 +193,7 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYNodeView whileNodeView = new WHILENodeView(higraphView, node,
 		super.timeMan);
-	PLAYNode whileNode = whileNodeView.getNode();
-	// add a place holder child node
-	PLAYNode expPlaceHolderNode = whileNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.PLACEHOLDER.toString(),
-			PLAYTag.PLACEHOLDER));
-	whileNode.insertChild(0, expPlaceHolderNode);
-	// add a seq child node for do branch
-	PLAYNode doSeqNode = whileNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.SEQ.toString(), PLAYTag.SEQ));
-	whileNode.insertChild(1, doSeqNode);
-	// add a seq child node for else branch
-	PLAYNode elseSeqNode = whileNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.SEQ.toString(), PLAYTag.SEQ));
-	whileNode.insertChild(2, elseSeqNode);
-
 	whileNodeView.setLayoutManager(new WHILENodeViewLayout());
-
 	return whileNodeView;
     }
 
@@ -165,9 +208,7 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYNodeView seqNodeView = new SEQNodeView(higraphView, node,
 		super.timeMan);
-
 	seqNodeView.setLayoutManager(new SEQNodeViewLayout());
-
 	return seqNodeView;
     }
 
@@ -182,18 +223,7 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYNodeView assignNodeView = new ASSIGNNodeView(higraphView, node,
 		super.timeMan);
-	PLAYNode assignNode = assignNodeView.getNode();
-	// add left exp node
-	PLAYNode leftExpNode = assignNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.EXP.toString(), PLAYTag.EXP));
-	assignNode.insertChild(0, leftExpNode);
-	// add right exp node
-	PLAYNode rightExpNode = assignNode.getWholeGraph().makeRootNode(
-		new PLAYPayload(PLAYTag.EXP.toString(), PLAYTag.EXP));
-	assignNode.insertChild(1, rightExpNode);
-
 	assignNodeView.setLayoutManager(new ASSIGNNodeViewLayout());
-
 	return assignNodeView;
     }
 
