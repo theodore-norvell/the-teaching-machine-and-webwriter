@@ -51,7 +51,7 @@ public class PLAYViewFactory
 	PLAYNodeView nodeView = null;
 	if (PLAYTag.PLACEHOLDER.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
-	    nodeView = new PlaceHolderNodeView(higraphView, node, super.timeMan);
+	    nodeView = this.makePlaceHolderNodeView(higraphView, node);
 	} else if (PLAYTag.ASSIGN.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeASSIGNNodeView(higraphView, node);
@@ -83,6 +83,18 @@ public class PLAYViewFactory
 	    nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
 	}
 	return nodeView;
+    }
+
+    /**
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makePlaceHolderNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView placeHolderNodeView = new PlaceHolderNodeView(higraphView,
+		node, super.timeMan);
+	return placeHolderNodeView;
     }
 
     /**

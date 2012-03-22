@@ -127,11 +127,27 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
 	    if (!seq.isEmpty()) {
-		if ((seq.size() == 1) && (seq.indexOf(PLAYTag.EXP) == 0)) {
-		    return true;
-		} else if ((seq.size() == 2) && (seq.indexOf(PLAYTag.EXP) == 0)
-			&& (seq.lastIndexOf(PLAYTag.EXP) == 1)) {
-		    return true;
+		if ((seq.indexOf(PLAYTag.PLACEHOLDER) == 0)
+			|| (seq.indexOf(PLAYTag.EXP) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_NUM) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_BOOLEAN) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_STRING) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_NULL) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_VAR) == 0)
+			|| (seq.indexOf(PLAYTag.EXP_DOT) == 0)) {
+		    if (seq.size() == 1) {
+			return true;
+		    } else if ((seq.size() == 2)
+			    && ((seq.lastIndexOf(PLAYTag.PLACEHOLDER) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP_NUM) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP_BOOLEAN) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP_STRING) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP_NULL) == 1)
+				    || (seq.lastIndexOf(PLAYTag.EXP_VAR) == 1) || (seq
+				    .lastIndexOf(PLAYTag.EXP_DOT) == 1))) {
+			return true;
+		    }
 		}
 	    }
 	    return false;
@@ -140,8 +156,8 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
 	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-	    defaultTagSequence.add(PLAYTag.EXP);
-	    defaultTagSequence.add(PLAYTag.EXP);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
 	    return defaultTagSequence;
 	}
 
@@ -178,6 +194,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 			    && (seq.indexOf(PLAYTag.SEQ) == 1)) {
 			return true;
 		    } else if ((seq.size() == 3)
+			    && (seq.indexOf(PLAYTag.SEQ) == 1)
 			    && (seq.lastIndexOf(PLAYTag.SEQ) == 2)) {
 			return true;
 		    }
@@ -228,6 +245,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 			    && (seq.indexOf(PLAYTag.SEQ) == 1)) {
 			return true;
 		    } else if ((seq.size() == 3)
+			    && (seq.indexOf(PLAYTag.SEQ) == 1)
 			    && (seq.lastIndexOf(PLAYTag.SEQ) == 2)) {
 			return true;
 		    }
@@ -263,12 +281,21 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& (seq.contains(PLAYTag.PLACEHOLDER) || seq
+				.contains(PLAYTag.EXP_NUM))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
-	    return new ArrayList<PLAYTag>();
+	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    return defaultTagSequence;
 	}
 
 	@Override

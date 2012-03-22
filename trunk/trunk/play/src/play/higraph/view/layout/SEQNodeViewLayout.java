@@ -39,7 +39,6 @@ public class SEQNodeViewLayout extends PLAYLayoutManager {
 	    PLAYViewFactory viewFactory = (PLAYViewFactory) seqNodeView
 		    .getHigraphView().getViewFactory();
 	    Rectangle2D rectangle = new Rectangle2D.Double(0, 0, 20, 20);
-
 	    if (number == 0) {
 		// the first drop zone
 		viewFactory.makeDropZone(seqNodeView);
@@ -48,16 +47,17 @@ public class SEQNodeViewLayout extends PLAYLayoutManager {
 		double y = 20;
 		// drop zone before the child
 		viewFactory.makeDropZone(seqNodeView);
-		PLAYNodeView child = (PLAYNodeView) seqNodeView.getChild(0);
+		PLAYNodeView childNodeView = (PLAYNodeView) seqNodeView
+			.getChild(0);
 		for (int i = 0; i < number; i++) {
 		    // child
-		    child = (PLAYNodeView) seqNodeView.getChild(i);
-		    child.doLayout();
-		    child.placeNextHierarchy(x, y);
-		    Rectangle2D childNextExtent = child.getNextExtent();
+		    childNodeView = (PLAYNodeView) seqNodeView.getChild(i);
+		    childNodeView.doLayout();
+		    childNodeView.placeNextHierarchy(x, y);
+		    Rectangle2D childNextExtent = childNodeView.getNextExtent();
 		    x += 20 + childNextExtent.getWidth();
 		    Rectangle2D.union(rectangle, childNextExtent, rectangle);
-		    child.getBranch().setVisibility(false);
+		    childNodeView.getBranch().setVisibility(false);
 		    // drop zone behind the child
 		    viewFactory.makeDropZone(seqNodeView);
 		}
