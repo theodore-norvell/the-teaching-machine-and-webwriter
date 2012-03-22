@@ -30,10 +30,13 @@ public class PLAYHigraphView
 	extends
 	HigraphView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
+    private PLAYNodeView currentNodeView;
+
     protected PLAYHigraphView(
 	    ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> viewFactory,
 	    PLAYHigraph theGraph, Component display, BTTimeManager timeMan) {
 	super(viewFactory, theGraph, display, timeMan);
+	this.currentNodeView = null;
     }
 
     /**
@@ -42,12 +45,27 @@ public class PLAYHigraphView
     @Override
     public void refresh() {
 	super.refresh();
-	HigraphJComponent higraphJComponent = (HigraphJComponent) super
+	HigraphJComponent playHigraphJComponent = (HigraphJComponent) super
 		.getDisplay();
-	Dimension dimension = higraphJComponent.getPreferredSize();
-	higraphJComponent.scrollRectToVisible(new Rectangle(0,
+	Dimension dimension = playHigraphJComponent.getPreferredSize();
+	playHigraphJComponent.scrollRectToVisible(new Rectangle(0,
 		dimension.height, 100, 100));
 	this.getDisplay().revalidate();
+    }
+
+    /**
+     * @return the currentNodeView
+     */
+    public PLAYNodeView getCurrentNodeView() {
+	return currentNodeView;
+    }
+
+    /**
+     * @param currentNodeView
+     *            the currentNodeView to set
+     */
+    public void setCurrentNodeView(PLAYNodeView currentNodeView) {
+	this.currentNodeView = currentNodeView;
     }
 
 }

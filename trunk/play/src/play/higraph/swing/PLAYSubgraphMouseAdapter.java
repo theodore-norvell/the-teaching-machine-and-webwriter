@@ -6,9 +6,6 @@
 package play.higraph.swing;
 
 import higraph.swing.SubgraphMouseAdapter;
-
-import javax.swing.JComponent;
-
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -34,14 +31,6 @@ public class PLAYSubgraphMouseAdapter
     public PLAYSubgraphMouseAdapter(PLAYHigraphView higraphView,
 	    PLAYSubgraphEventObserver subgraphEventObserver) {
 	super(higraphView, subgraphEventObserver);
-    }
-
-    /**
-     * @see higraph.swing.SubgraphMouseAdapter#installIn(javax.swing.JComponent)
-     */
-    @Override
-    public void installIn(JComponent jComponent) {
-	super.installIn(jComponent);
     }
 
 }
