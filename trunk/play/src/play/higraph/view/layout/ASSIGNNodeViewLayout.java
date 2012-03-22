@@ -37,14 +37,14 @@ public class ASSIGNNodeViewLayout extends PLAYLayoutManager {
 		double x = 5;
 		double y = 15;
 		for (int i = 0; i < 2; i++) {
-		    PLAYNodeView child = (PLAYNodeView) assignNodeView
+		    PLAYNodeView childNodeView = (PLAYNodeView) assignNodeView
 			    .getChild(i);
-		    child.doLayout();
-		    child.placeNextHierarchy(x, y);
-		    Rectangle2D childNextExtent = child.getNextExtent();
-		    x += 20 + childNextExtent.getHeight();
+		    childNodeView.doLayout();
+		    childNodeView.placeNextHierarchy(x, y);
+		    Rectangle2D childNextExtent = childNodeView.getNextExtent();
+		    x += 20 + childNextExtent.getWidth();
 		    Rectangle2D.union(rectangle, childNextExtent, rectangle);
-		    child.getBranch().setVisibility(false);
+		    childNodeView.getBranch().setVisibility(false);
 		}
 		rectangle.add(new Point2D.Double(rectangle.getMaxX() + 10,
 			rectangle.getMaxY() + 10));
