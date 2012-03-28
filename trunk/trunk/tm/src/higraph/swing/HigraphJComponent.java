@@ -20,17 +20,12 @@ package higraph.swing;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JComponent;
+import javax.swing.JPanel;
 
-import higraph.model.interfaces.Edge;
-import higraph.model.interfaces.Node;
-import higraph.model.interfaces.Payload;
-import higraph.model.interfaces.Subgraph;
-import higraph.model.interfaces.WholeGraph;
 import higraph.view.HigraphView;
 
 public class HigraphJComponent
-extends JComponent {
+extends JPanel {
     private static final long serialVersionUID = 4835442084275592940L;
     
     HigraphView<?,?,?,?,?,?,?> view ;
