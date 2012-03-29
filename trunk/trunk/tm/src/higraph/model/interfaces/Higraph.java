@@ -49,6 +49,35 @@ public interface Higraph
 	 */
 	List<N> getTops();
 	
+	/** Is the node a top node */
+	boolean isTop(N node) ;
+	
+	/** Get a top node.
+	 * <p><strong>precondition</strong> 0 <= position && position < getNumberOfTops() 
+	 * @param position
+	 * @return
+	 */
+	N getTop(int position) ;
+	
+	/** How many top nodes are there. */
+	int getNumberOfTops() ;
+	
+	/** Can the node be moved to the given position.
+	 * <p> result implies 0 <= position && position < getNumberOfTops() && node.isTop()
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	boolean canMoveTop(N node, int position) ;
+	
+	/** Can the node be moved to the given position.
+	 * <p><strong>precondition</strong> canMoveTop(node, position)
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	void moveTop(N node, int position) ;
+	
 	/** Get all nodes in the higraph.
 	 * <p>
 	 * A node is in a higraph iff it is a top node or a descendant of
@@ -83,8 +112,8 @@ public interface Higraph
     
    /** Return a set of all edges whose end-points are both in this subgraph,
      * but that are not INTERNAL, UP, or DOWN with respect to any node in this subgraph.
-     * This is all edges that are either loops on a top node or that
-     * or that are between trees defined by two different top nodes.  Equivalently:
+     * This is all edges that are either loops on a top node 
+     * or connect trees defined by two different top nodes.  Equivalently:
      * this is all edges that are either loops on a top node, or are between
      * top nodes that are in this higraph but that either have no common ancestor,
      * or that have a common ancestor that is not in this higraph.
