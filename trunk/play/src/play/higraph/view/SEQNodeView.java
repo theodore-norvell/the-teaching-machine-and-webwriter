@@ -48,9 +48,9 @@ public class SEQNodeView extends PLAYNodeView {
     protected void drawSelf(Graphics2D screen) {
 	double x = super.getNextX();
 	double y = super.getNextY();
-	// double width = super.getNextWidth();
-	// double height = super.getNextHeight();
 	int number = this.getNumChildren();
+
+	super.drawSelf(screen);
 
 	// draw a question mark
 	screen.drawString("\u21D2", (float) (x + 5), (float) (y + 10));
@@ -62,8 +62,6 @@ public class SEQNodeView extends PLAYNodeView {
 	    y = super.getChild(i).getNextShapeExtent().getCenterY();
 	    screen.drawString("\u27A8", (float) (x - 5), (float) y);
 	}
-
-	super.drawSelf(screen);
     }
 
     /**

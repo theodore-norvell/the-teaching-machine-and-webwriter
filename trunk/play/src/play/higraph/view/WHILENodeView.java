@@ -50,6 +50,8 @@ public class WHILENodeView extends PLAYNodeView {
 	// double height = super.getNextHeight();
 	int number = this.getNumChildren();
 
+	super.drawSelf(screen);
+
 	// draw a Circle mark
 	screen.drawString("\u25EF", (float) (x + 5), (float) (y + 10));
 
@@ -84,7 +86,6 @@ public class WHILENodeView extends PLAYNodeView {
 	    screen.drawString("\u21B7", (int) (x + 10),
 		    (int) (elseSeqNodeViewRect.getMinY() + 20));
 	}
-	super.drawSelf(screen);
     }
 
 }

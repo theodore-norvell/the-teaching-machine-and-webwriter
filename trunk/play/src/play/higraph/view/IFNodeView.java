@@ -50,6 +50,8 @@ public class IFNodeView extends PLAYNodeView {
 	// double height = super.getNextHeight();
 	int number = this.getNumChildren();
 
+	super.drawSelf(screen);
+	
 	// draw a question mark
 	screen.drawString("\uFF1F", (float) (x + 5), (float) (y + 10));
 
@@ -84,7 +86,6 @@ public class IFNodeView extends PLAYNodeView {
 	    screen.drawString("\u2718", (int) (x + 10),
 		    (int) (elseSeqNodeViewRect.getMinY() + 20));
 	}
-	super.drawSelf(screen);
     }
 
 }
