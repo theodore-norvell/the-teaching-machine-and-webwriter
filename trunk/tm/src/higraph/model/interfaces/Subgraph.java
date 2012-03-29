@@ -40,8 +40,7 @@ extends Higraph<NP,EP,HG,WG,SG,N,E>
 {
 	
 	
-	/**
-	 * Add v to the list of this subgraph's top nodes.
+	/** Add v to the list of this subgraph's top nodes.
 	 * <p>If v is already a top node, nothing is done.
 	 * <p>If v is a descendant of any top node, nothing is done.
 	 * <p>If v is an ancestor of one or more top nodes u, all such
@@ -49,7 +48,6 @@ extends Higraph<NP,EP,HG,WG,SG,N,E>
 	 * 
 	 * @param v a non-deleted node of the associated wholeGraph
 	 */
-			
 	void addTop(N v);
 	
 	/** Remove a top node from this subgraph.
@@ -57,7 +55,4 @@ extends Higraph<NP,EP,HG,WG,SG,N,E>
 	 * @param v
 	 */
 	void removeTop(N v);
-	
-	/** Does this subgraph contains 
-	boolean contains(N node) ;*/
 }

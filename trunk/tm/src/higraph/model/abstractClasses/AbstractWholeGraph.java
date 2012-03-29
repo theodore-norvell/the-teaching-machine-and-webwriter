@@ -66,7 +66,47 @@ public abstract class AbstractWholeGraph
     public List<N> getTops() {
         // Make a copy to avoid modification.
         return roots.toList() ;
-    }
+    }    /** Is the node a top node */
+	
+    public boolean isTop(N node) {
+		return roots.contains( node ) ;
+	}
+	
+	/** Get a top node.
+	 * <p><strong>precondition</strong> 0 <= position && position < getNumberOfTops() 
+	 * @param position
+	 * @return
+	 */
+	public N getTop(int position) {
+		return roots.get(position) ;
+	}
+	
+	/** How many top nodes are there. */
+	public int getNumberOfTops() {
+		return roots.size() ;
+	}
+	
+	/** Can the node be moved to the given position.
+	 * <p> result implies 0 <= position && position < getNumberOfTops() && node.isTop()
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	public boolean canMoveTop(N node, int position) {
+		return isTop(node) && 0 <= position && position < roots.size() ;
+	}
+	
+	/** Can the node be moved to the given position.
+	 * <p><strong>precondition</strong> canMoveTop(node, position)
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	public void moveTop(N node, int position) {
+		Assert.check( canMoveTop(node, position) ) ;
+		roots.remove(node) ;
+		roots.insertElementAt(node, position) ;
+	}
     
     /** Return a reference to this objects. 
      * <p>Should be implemented in any concrete nongeneric subclass by "return this" 

@@ -122,6 +122,47 @@ public abstract class AbstractSubgraph
         return topNodes.toList() ;
     }
 
+    /** Is the node a top node */
+	public boolean isTop(N node) {
+		return topNodes.contains( node ) ;
+	}
+	
+	/** Get a top node.
+	 * <p><strong>precondition</strong> 0 <= position && position < getNumberOfTops() 
+	 * @param position
+	 * @return
+	 */
+	public N getTop(int position) {
+		return topNodes.get(position) ;
+	}
+	
+	/** How many top nodes are there. */
+	public int getNumberOfTops() {
+		return topNodes.size() ;
+	}
+	
+	/** Can the node be moved to the given position.
+	 * <p> result implies 0 <= position && position < getNumberOfTops() && node.isTop()
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	public boolean canMoveTop(N node, int position) {
+		return isTop(node) && 0 <= position && position < topNodes.size() ;
+	}
+	
+	/** Can the node be moved to the given position.
+	 * <p><strong>precondition</strong> canMoveTop(node, position)
+	 * @param node
+	 * @param position
+	 * @return
+	 */
+	public void moveTop(N node, int position) {
+		Assert.check( canMoveTop(node, position) ) ;
+		topNodes.remove(node) ;
+		topNodes.insertElementAt(node, position) ;
+	}
+
     public WG getWholeGraph() {
         return wholeGraph ;
     }
