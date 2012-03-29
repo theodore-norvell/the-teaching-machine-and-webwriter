@@ -14,6 +14,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -21,9 +22,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
 import play.higraph.model.PLAYSubgraph;
@@ -36,6 +39,7 @@ import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
 import play.ide.view.ExpsPallet;
+import play.ide.view.NodesOutline;
 import play.ide.view.SyntaxPallet;
 import tm.backtrack.BTTimeManager;
 
@@ -48,17 +52,9 @@ public class ViewHandler {
     // the main frame need to be showed
     private JFrame mainFrame;
 
-    // menubar
-    private JMenuBar menuBar;
-
-    // file menu
-    private JMenu fileMenu;
-
-    private JPanel graphPanel;
-
-    private JPanel syntaxPallet;
-
     private PLAYWholeGraph wholeGraph;
+
+    private PLAYSubgraph subgraph;
 
     private PLAYHigraphJComponent higraphJComponent;
 
@@ -66,20 +62,17 @@ public class ViewHandler {
 
     public ViewHandler() {
 	this.mainFrame = new JFrame();
-	this.graphPanel = new JPanel();
-	this.syntaxPallet = new SyntaxPallet();
 	BTTimeManager btTimeManager = new BTTimeManager();
 	this.wholeGraph = new PLAYWholeGraph(btTimeManager);
-	PLAYSubgraph subgraph = new PLAYSubgraph(this.wholeGraph);
+	this.subgraph = new PLAYSubgraph(this.wholeGraph);
 	this.higraphJComponent = new PLAYHigraphJComponent();
 	PLAYViewFactory viewFactory = new PLAYViewFactory(btTimeManager);
 	this.higraphView = viewFactory.makeHigraphView(this.wholeGraph,
 		this.higraphJComponent);
 	PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
-		this.higraphView, this.wholeGraph, viewFactory, subgraph);
+		this.higraphView, this.wholeGraph, viewFactory, this.subgraph);
 	PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
 		this.higraphView, subgraphEventObserver);
-
 	this.higraphJComponent
 		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
 			this.higraphView));
@@ -111,22 +104,12 @@ public class ViewHandler {
 	    }
 
 	});
-	JPanel leftPanel = new JPanel(new BorderLayout());
-	leftPanel.add(this.syntaxPallet, BorderLayout.NORTH);
-	leftPanel.add(new ExpsPallet(), BorderLayout.SOUTH);
-	JSplitPane leftRightSplitPane = new JSplitPane(
-		JSplitPane.HORIZONTAL_SPLIT);
-	leftRightSplitPane.setOneTouchExpandable(true);
-	leftRightSplitPane.setDividerLocation(150);
-	leftRightSplitPane.setLeftComponent(leftPanel);
-	JScrollPane scrollPane = new JScrollPane(this.higraphJComponent);
-	scrollPane.setFocusable(true);
-	leftRightSplitPane.setRightComponent(scrollPane);
+	this.mainFrame.setJMenuBar(this.getMenuBar());
 
 	JPanel mainPanel = new JPanel();
 	mainPanel.setLayout(new BorderLayout());
-	mainPanel.setPreferredSize(new Dimension(800, 600));
-	mainPanel.add(leftRightSplitPane, BorderLayout.CENTER);
+	mainPanel.setPreferredSize(new Dimension(1024, 768));
+	mainPanel.add(this.getFrameSplitPane(), BorderLayout.CENTER);
 	JButton button = new JButton("Temp");
 	button.addActionListener(new ActionListener() {
 
@@ -151,6 +134,75 @@ public class ViewHandler {
 	mainPanel.add(button, BorderLayout.SOUTH);
 	this.mainFrame.getContentPane().add(mainPanel);
 	this.mainFrame.pack();
+    }
+
+    private JSplitPane getFrameSplitPane() {
+	JSplitPane frameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
+	frameSplitPane.setOneTouchExpandable(true);
+	frameSplitPane.setDividerLocation(850);
+	frameSplitPane.setLeftComponent(this.getLeftCenterSplitPane());
+	frameSplitPane.setRightComponent(this.getRightTopBottomSplitPane());
+	return frameSplitPane;
+    }
+
+    private JSplitPane getLeftCenterSplitPane() {
+	JSplitPane leftCenterSplitPane = new JSplitPane(
+		JSplitPane.HORIZONTAL_SPLIT);
+	leftCenterSplitPane.setOneTouchExpandable(true);
+	leftCenterSplitPane.setDividerLocation(150);
+	leftCenterSplitPane.setLeftComponent(this.getLeftTopBottomSplitPane());
+	JScrollPane scrollPane = new JScrollPane(this.higraphJComponent);
+	scrollPane.setFocusable(true);
+	leftCenterSplitPane.setRightComponent(scrollPane);
+	return leftCenterSplitPane;
+    }
+
+    private JSplitPane getLeftTopBottomSplitPane() {
+	JSplitPane leftTopBottomSplitPane = new JSplitPane(
+		JSplitPane.VERTICAL_SPLIT);
+	leftTopBottomSplitPane.setOneTouchExpandable(true);
+	leftTopBottomSplitPane.setDividerLocation(300);
+	leftTopBottomSplitPane.setTopComponent(new SyntaxPallet());
+	leftTopBottomSplitPane.setBottomComponent(new ExpsPallet());
+	return leftTopBottomSplitPane;
+    }
+
+    private JSplitPane getRightTopBottomSplitPane() {
+	JSplitPane rightTopBottomSplitPane = new JSplitPane(
+		JSplitPane.VERTICAL_SPLIT);
+	rightTopBottomSplitPane.setOneTouchExpandable(true);
+	rightTopBottomSplitPane.setDividerLocation(500);
+	JScrollPane scrollPane = new JScrollPane(new NodesOutline(
+		this.higraphView));
+	scrollPane.setFocusable(true);
+	rightTopBottomSplitPane.setTopComponent(scrollPane);
+	rightTopBottomSplitPane.setBottomComponent(new JPanel());
+	return rightTopBottomSplitPane;
+    }
+
+    private JMenuBar getMenuBar() {
+	JMenuBar menuBar = new JMenuBar();
+
+	JMenu fileMenu = new JMenu("File");
+	fileMenu.setMnemonic(KeyEvent.VK_F);
+	menuBar.add(fileMenu);
+
+	fileMenu.addSeparator();
+
+	JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_E);
+	exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
+		ActionEvent.ALT_MASK));
+	exitMenuItem.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		ViewHandler.this.mainFrame.dispose();
+	    }
+
+	});
+	fileMenu.add(exitMenuItem);
+
+	return menuBar;
     }
 
     public void showMainFrame() {

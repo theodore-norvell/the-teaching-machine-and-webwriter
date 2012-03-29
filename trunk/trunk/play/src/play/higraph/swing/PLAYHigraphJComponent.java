@@ -15,4 +15,8 @@ public class PLAYHigraphJComponent extends HigraphJComponent {
 
     private static final long serialVersionUID = -9153827798325676179L;
 
+    public PLAYHigraphJComponent() {
+	this.setFocusable(true);
+    }
+
 }

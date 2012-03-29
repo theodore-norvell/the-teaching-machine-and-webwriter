@@ -51,6 +51,7 @@ public class ASSIGNNodeView extends PLAYNodeView {
 	// double height = super.getNextHeight();
 	int number = this.getNumChildren();
 
+	super.drawSelf(screen);
 	// draw a assign mark
 	screen.drawString("\uFF1D", (float) (x + 5), (float) (y + 10));
 
@@ -68,7 +69,6 @@ public class ASSIGNNodeView extends PLAYNodeView {
 		    (int) (rightExpNodeViewRect.getMinY() + rightExpNodeViewRect
 			    .getHeight() / 2));
 	}
-	super.drawSelf(screen);
     }
 
 }

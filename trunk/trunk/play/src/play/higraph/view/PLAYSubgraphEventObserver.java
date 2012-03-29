@@ -8,6 +8,7 @@ package play.higraph.view;
 import higraph.view.ComponentView;
 import higraph.view.interfaces.SubgraphEventObserver;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -46,6 +47,8 @@ public class PLAYSubgraphEventObserver
 
     private PLAYSubgraph subgraph;
 
+    private PLAYNodeView lastHoverNodeView;
+
     private enum DropActionType {
 	TAG_NEW, TAG_REPLACE, TAG_INSERT, NODE_DETACH, NODE_MOVE, NODE_INSERT, NODE_REPLACE, NODE_COPY, NODE_DELETE, NONE
     };
@@ -73,13 +76,23 @@ public class PLAYSubgraphEventObserver
     public void movedOver(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
+	if (this.lastHoverNodeView != null) {
+	    this.lastHoverNodeView.setFillColor(null);
+	}
 	if (stack != null && stack.size() > 0) {
 	    System.out.println("Moved over " + e.getX() + "-" + e.getY());
 	    e.getComponent().setCursor(
 		    Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+	    if (stack.peek() instanceof PLAYNodeView) {
+		PLAYNodeView nodeView = (PLAYNodeView) stack.peek();
+		nodeView.setFillColor(Color.LIGHT_GRAY);
+		this.lastHoverNodeView = nodeView;
+	    }
 	} else {
 	    e.getComponent().setCursor(Cursor.getDefaultCursor());
 	}
+	this.higraphView.refresh();
+	this.higraphView.getDisplay().repaint();
     }
 
     /** Called when the mouse is being moved with one or more buttons down. */
@@ -115,12 +128,12 @@ public class PLAYSubgraphEventObserver
 	this.selectedView = null;
 	if (stack != null && stack.size() > 0) {
 	    this.selectedView = stack.peek();
+	    this.higraphView
+		    .setCurrentNodeView((PLAYNodeView) this.selectedView);
 	    if (this.selectedView instanceof NUMNodeView
 		    || this.selectedView instanceof BOOLNodeView
 		    || this.selectedView instanceof STRINGNodeView
 		    || this.selectedView instanceof VARNodeView) {
-		this.higraphView
-			.setCurrentNodeView((PLAYNodeView) this.selectedView);
 		if (e.getClickCount() == 2) {
 		    if (this.selectedView instanceof BOOLNodeView) {
 			this.higraphView
@@ -142,13 +155,13 @@ public class PLAYSubgraphEventObserver
 						+ "|");
 			e.getComponent().setCursor(
 				Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
-			e.getComponent().setFocusable(true);
-			e.getComponent().requestFocusInWindow();
 		    }
 		    this.higraphView.refresh();
 		    this.higraphView.getDisplay().repaint();
 		}
 	    }
+	    e.getComponent().setFocusable(true);
+	    e.getComponent().requestFocusInWindow();
 	}
 	System.out.println("selectedView is " + selectedView);
     }

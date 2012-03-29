@@ -60,6 +60,31 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent e) {
+	System.out.println("key Pressed" + e.getKeyCode() + "-"
+		+ e.getModifiersEx());
+	PLAYNodeView nodeView = this.higraphView.getCurrentNodeView();
+	if (nodeView != null) {
+	    if ((e.getKeyCode() == KeyEvent.VK_X)
+		    && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
+		if (nodeView.getNode().canDelete()) {
+		    nodeView.getNode().delete();
+		    this.higraphView.setDeletedNodeView(nodeView);
+		}
+	    } else if ((e.getKeyCode() == KeyEvent.VK_V)
+		    && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
+		PLAYNodeView deletedNodeView = this.higraphView
+			.getDeletedNodeView();
+		if (deletedNodeView != null) {
+		    this.higraphView
+			    .getHigraph()
+			    .getWholeGraph()
+			    .makeRootNode(
+				    deletedNodeView.getNode().getPayload());
+		}
+	    }
+	    this.higraphView.refresh();
+	    this.higraphView.getDisplay().repaint();
+	}
     }
 
     /**
