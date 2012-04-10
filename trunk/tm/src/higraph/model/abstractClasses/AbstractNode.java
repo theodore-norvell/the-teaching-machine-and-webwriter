@@ -503,6 +503,84 @@ public abstract class AbstractNode
                     result.add(e) ; } }
         return result ;
     }
+    
+    /** @see Higraph */
+    @Override public List<N> getTops() { return getChildren() ; }
+    
+    /** @see Higraph */
+    @Override public boolean isTop(N node)  { return node.getParent() == this ; }
+    
+    /** @see Higraph */
+    @Override public int getNumberOfTops() { return this.getNumberOfChildren() ; }
+    
+    /** @see Higraph */
+    @Override public N getTop(int position) { return getChild(position) ; }
+    
+    /** @see Higraph */
+    @Override public boolean canMoveTop(N node, int position) {
+    	int[] perm = makePermutation(node, position);
+    	return canPermuteChildren(perm) ;
+    }
+    
+    /** @see Higraph */
+    @Override public void moveTop(N node, int position) {
+    	int[] perm = makePermutation(node, position);
+    	permuteChildren( perm ) ;
+    }
+    
+    /** @see Higraph */
+    @Override public List<N> getNodes() {
+    	return getDescendants() ;
+    }
+    
+    /** @see Higraph */
+    @Override public List<E> getEdges() {
+    	Set<EdgeCategory> s = new TreeSet() ;
+    	s.add(EdgeCategory.INTERNAL) ;
+    	// TODO. See about changing the result type of getEdges( s ) to List<E>
+    	Collection<E> c = getEdges(  s ) ;
+    	List<E> result = new ArrayList(c.size()) ;
+    	for( E e : c ) result.add(e) ;
+    	return result ;
+    }
+    
+    /** @see Higraph */
+    @Override public boolean contains(N node) {
+    	NodeCategory cat = this.categorize(node) ;
+    	return cat == NodeCategory.DESCENDANT ;
+    }
+    
+    /** @see Higraph */
+    @Override public boolean contains(E edge) {
+    	EdgeCategory cat = this.categorize(edge) ;
+    	return cat == EdgeCategory.INTERNAL ;
+    }
+
+	/** make a Permutation that moves node to position p
+	 * @param node  A child of this node
+	 * @param p   A number in {0 ,.. getNumberOfChildren() }
+	 * @return
+	 */
+	int[] makePermutation(N node, int p) {
+		int n = this.getNumberOfChildren() ;
+    	Assert.check( 0 <= p && p < n ) ;
+    	int i = 0 ; 
+    	for( ; i < n && node != childNodes.get(i) ; ++ i ) ;
+    	Assert.check( i < n ) ;
+    	int [] perm = new int[n] ;
+    	if( i < p ) {
+    		for( int j = 0 ; j < i ; ++j ) perm[j] = j ;
+    		for( int j = i ; j < p ; ++j ) perm[j] = j+1 ;
+    		perm[ p ] = i ;
+    		for( int j = p+1 ; j < n ; ++j ) perm[j] = j ; }
+    	else /* position <= i */ {
+    		for( int j = 0 ; j < p ; ++j ) perm[j] = j ;
+    		perm[ p ] = i ;
+    		for( int j = p+1 ; j <= i ; ++j ) perm[j] = j-1 ;
+    		for( int j = i+1 ; j < n ; ++j ) perm[j] = j ; }
+		return perm;
+	}
+    
 	
     private void adjustDepth() {
         traverse( new Visitor<N>() {
