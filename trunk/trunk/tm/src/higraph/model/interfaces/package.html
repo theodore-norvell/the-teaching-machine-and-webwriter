@@ -7,9 +7,18 @@
 </head>
 
 <body>
+<h1>JHigraph</h1>
+This file describes the model interfaces to the JHigraph system and serves as an introduction to the JHigraph system
+as a whole.
 <h1>Higraphs</h1>
 <p>Hierarchical graphs, or higraphs, are graphs in which the nodes are arranged in one or more hierarchies -- i.e. directed trees. If all nodes are at the top of their hierarchy, we have an ordinary graph. If there are no edges, we have a forest (a set of directed trees). A complementary viewpoint is that a higraph is a set of trees with edges between their nodes. </p>
-<p>Higraphs were formalized by Harel [1988]. Harel's formulation requires the hierarchy to be  directed and acyclic, but not necessarily a forest. I.e. he allows nodes to have multiple parents. Here we are considering only hierarchies that are forests, i.e. each node has 0 or 1 parents. Furthermore, Harel's higraphs have a notion of orthogonallity, i.e. that the children of each node are partitioned. Our higraphs do not have any notion of orthogonallity. Rather, one can use two tree levels instead of one. So the higraphs of JHigraph can be considered to be inspired by rather than the same as Harel's higraphs. </p>
+<p>Higraphs were formalized by Harel [1988]. There are a couple of differences between Harel's definition and the definition used here.
+first, Harel's formulation requires the hierarchy to be  directed and acyclic, but not necessarily a forest.
+I.e. he allows nodes to have multiple parents. Here we are considering only hierarchies that are forests, i.e. each node has 0 or 1 parents.
+Secondly, Harel's higraphs have a notion of orthogonallity, i.e. that the children of each node are partitioned.
+Our higraphs do not have any notion of orthogonallity.
+Rather, one can use two tree levels instead of one.
+So the higraphs of JHigraph can be considered to be inspired by rather than the same as Harel's higraphs. </p>
 <p>For the sake of generality,  the children of each node are ordered. Graph edges are directed, edges can be loops (i.e. the source and target of an edge can be the same node), and multiple edges can occur with the same source and target. Both nodes and edges are labeled.</p>
 <p>Structures that can be represented well by higraphs abound. Here are some examples.</p>
 <ul>
@@ -17,24 +26,33 @@
   <li>Variables in a programming language. Some variables contain other variables. (Objects contain variables (fields), arrays contain variables (items).) This gives a hierarchy. In addition pointers and references provide edges from some variables to others.</li>
   <li>State-charts. Harel's statecharts are hierarchies of states, linked together by transitions.</li>
   <li>Abstract syntax trees. Edges can indicate data flow between nodes in an abstract syntax tree. </li>
-  <li>File systems. Files are arranged in trees. Symbolic links act as edges. </li>
+  <li>File systems. In many operating systems, files are arranged in trees, each tree representing a mounted volume (or drive).
+  Symbolic links act as edges. </li>
   <li>Electronic designs made from a hierarchy of modules with wires interconnecting the components.</li>
   <li>UML class diagrams in which the classes are arranged in a hierarchy of packages. </li>
 </ul>
-<h1>Edges</h1>
-<p>Edges and nodes can have several relationships. Consider a node v. The following categories of edges are disjoint and comprehensive. </p>
+<h1>Nodes</h1>
+Let <em>v</em>  be a node of a higraph. A node <em>u</em> of the higraph can bear one of the following relationship to <em>v</em>.
 <ul>
-  <li>Loops. <em>e</em> is a loop edge of <em>v</em> iff v is both source and target of <em>e</em>.</li>
+    <li>Self: <em>v</em>  and  <em>u</em>  are the same node.
+    <li>Descendant: <em>u</em> is a child of <em>v</em> or a child of a child, etc.
+    <li>Ancestor: <em>v</em> is a child of <em>u</em> or a child of a child, etc.
+    <li>Other:  <em>u</em> and <em>v</em> are in different trees or have a least common ancestor that is another node.
+</ul>
+<h1>Edges</h1>
+<p>Edges and nodes can have several relationships. Consider a node <em>v</em>. The following categories of edges are disjoint and comprehensive. </p>
+<ul>
+  <li>Loops. <em>e</em> is a loop edge of <em>v</em> iff <em>v</em> is both source and target of <em>e</em>.</li>
   <li>Down edges. <em>e</em> is a down edge of <em>v</em> iff <em>v</em> is the source of <em>e</em> and the target of <em>e</em> is a descendant of <em>v</em>.</li>
   <li>Up edges. <em>e</em> is an up edge of <em>v</em> iff <em>v</em> is the target of <em>e</em> and the source of <em>e</em> is a descendant of <em>v</em>. </li>
   <li>Out edges. <em>e</em> is an out edge of <em>v</em> iff <em>v</em> is the source of <em>e</em> and <em>e</em> is not a loop edge of <em>v</em> nor a down edge of <em>v</em>. </li>
   <li>In edges. <em>e</em> is an in edge of <em>v</em> iff <em>e</em> is the target of <em>e</em> and <em>e</em> is not a loop edge of <em>v</em> nor an up edge of <em>v</em>. </li>
-  <li>Internal edges. e is an internal edge of v iff both the source and target or e are strict descendants of v.</li>
-  <li>Deep out edge. e is a deep out edge of v iff its source is a strict descendant of v and its target is not v nor a descendant of v.</li>
-  <li>Deep in edge. e is a deep in edge of v iff its target is a strict descendant of v and its source is not v nor a descendant of v.</li>
-  <li>Other. All other edges have both source and target nodes that are not v and are not descendants of v. </li>
+  <li>Internal edges. e is an internal edge of <em>v</em> iff both the source and target or e are strict descendants of <em>v</em>.</li>
+  <li>Deep out edge. e is a deep out edge of <em>v</em> iff its source is a strict descendant of <em>v</em> and its target is not <em>v</em> nor a descendant of <em>v</em>.</li>
+  <li>Deep in edge. e is a deep in edge of <em>v</em> iff its target is a strict descendant of <em>v</em> and its source is not <em>v</em> nor a descendant of <em>v</em>.</li>
+  <li>Other. All other edges have both source and target nodes that are not <em>v</em> and are not descendants of <em>v</em>. </li>
 </ul>
-<p>Note that an edge from v to a strict ancestor of v is simply an out edge of v and an edge from a strict ancestor of v is simply an in edge of v. There is no special categorization for these edges, although one could imagine separating them into separate categories.</p>
+<p>Note that an edge from <em>v</em> to a strict ancestor of <em>v</em> is simply an out edge of <em>v</em> and an edge from a strict ancestor of <em>v</em> is simply an in edge of <em>v</em>. There is no special categorization for these edges, although one could imagine separating them into separate categories.</p>
 <p>The following tables summarizes edge classification </p>
 <table width="200" border="1">
   <tr>
@@ -141,25 +159,35 @@
   <li>Target node. One node is the edge's target</li>
   <li>Others. No other nodes directly relate to the edge.</li>
 </ul>
+<p>These categories are not disjoint, of course, as the same node can be both source and target of the same edge.</p>
 <p>For a given node we can speak of the following</p>
 <ul>
-  <li>exiting edges of v. The set of all out edges, down edges, and loops of v.</li>
-  <li>entering edges of v. The set of all in edges, up edges, and loop edges of v. </li>
+  <li><em>exiting</em> edges of <em>v</em>. The set of all out edges, down edges, and loops of <em>v</em>.</li>
+  <li><em>entering</em> edges of <em>v</em>. The set of all in edges, up edges, and loop edges of <em>v</em>. </li>
 </ul>
-<p>The intersection of the exiting and entering edge sets is of course the loop edges of v. </p>
-<p>We can also speak of contained edges.</p>
-<ul>
-  <li>e is a contained edge of v if it is an up edge, a down edge, or an internal edge of v.</li>
-</ul>
-<p>The motivation for contained edges is this. If v is displayed in a collapsed (elided) way, then its contained edges will not be displayed. Note that edges from one tree to another are contained by no node. </p>
-<p>&nbsp;</p>
+<p>The intersection of the exiting and entering edge sets is of course the <em>loop</em> edges of <em>v</em>. </p>
+<p>Finally, there is a notion of the <em>governed</em> edges of a node.
+This notion is particularly used during layout.
+The views of the governed edges of a node are laid-out by a layout manager associated with the node's view. It is important that each edge be governed
+at most one node. (Edges governed by no node are laid-out by a layout manager associated with the whole higraph.)
+The governed edges of a node <em>v</em> are all edges that are up, down or internal with respect to <em>v</em>,
+but not up, down, or internal with respect to any descendant of <em>v</em>.</p>
+<p>Note, in particular, that loops are not governed by their source/target node, but rather by
+its parent (if any).
+This may seem anomalous, but it is in keeping with the idea that a higraph without hierarchy is just a graph; when a graph has no hierarchy,
+all the edges should be laid out by a single layout manager, including its loops.</p>
 <h1>Well-formedness</h1>
-<p>One thing to note about all these example is that there is generally some notion of well-formedness.</p>
+<p>One thing to note about all the examples resented above is that there is generally some notion of well-formedness.</p>
 <ul>
   <li>In well-formed HTML, the root must be tagged &quot;html&quot; and its children must be tagged &quot;head&quot; and &quot;body&quot;; &quot;p&quot; elements can appear in the &quot;body&quot;, but not in the &quot;head&quot;; &quot;br&quot; elements can have no children. There are numerous other restrictions, which are set out in the document type definition for HTML.</li>
   <li>In Java, objects can contain only primitive variables and references; references can only target objects and arrays.</li>
   <li>In statecharts, AND nodes can be children only of OR nodes.</li>
   <li>In abstract syntax trees for most languages, ASSIGN nodes can be children of WHILE nodes, but WHILE nodes can not be children of ASSIGN nodes.</li>
+  <li>Consider a file system consisting of drives, directories, and ordinary files.
+      Only drives can appear as roots and drives can not be children of other nodes.
+      Only directories and drives may have children; ordinary files must have no children.
+      If symbolic links (aliases) are represented by edges, then the source of an edge can only be a directory
+      or a drive.
 </ul>
 <p>Typically well-formedness is a local property; i.e. a higraph is well-formed if it has appropriate roots and each node is well-formed. A node is well-formed if its child sequence obeys some constraint that does not involve the children's children. There might also be well-formedness constraints involving edges.</p>
 <p>It would seem desirable to restrict changes to the higraph to preserve well-formedness. The JHigraph package provides hooks to allow this, especially when it comes to ensuring that the child sequence of each node is valid for that node. To accomplish this, we borrow HTML's notion of tags. (See <a href="#tags">Tags</a>.) </p>
@@ -185,7 +213,7 @@
 <ul>
   <li>WholeGraph. The whole graph is represented by a WholeGraph object.</li>
   <li>Subgraph. Portions of the whole graph are represented by Subgraph objects.</li>
-  <li>Higraph. A base interface that both WholeGraph and Subgraph extend. </li>
+  <li>Higraph. A base interface that WholeGraph, Subgraph, and Node all extend. </li>
   <li>Node. Each node is represented by a Node object.</li>
   <li>Edge. Each edge is represented by an Edge object.</li>
   <li>Payload. Labels on nodes are represented by Payload objects.</li>
@@ -193,7 +221,8 @@
 </ul>
 <p>WholeGraph objects act as factories for Node objects, Edge objects, and Subgraph objects. (From here on &quot;node&quot; will mean &quot;Node object&quot; etc.) </p>
 <p>Each WholeGraph object is an island. Nodes, Edges, and Subgraphs created by one WholeGraph can not be mixed with Nodes, Edges, and Subgraphs from another WholeGraph in any way. See <a href="#parts">Subgraphs</a>. </p>
-<p>When nodes are first created, they are created as roots and are thus in the WholeGraph.  Such nodes are in their &quot;initial&quot; state. After being created, nodes can be moved elsewhere in the graph.</p>
+<p>When nodes are first created, they are created as roots and are thus in the WholeGraph.
+Such nodes are in their &quot;initial&quot; state. (Nodes and edges have two states: &quot;initial&quot; and &quot;deleted&quot;.) After being created, nodes can be moved elsewhere in the graph.</p>
 <p>Nodes in the &quot;initial&quot; state can be &quot;detached&quot; which moves them to be roots. Roots can be &quot;inserted&quot;, which moves them to under another node. Roots can also &quot;replace&quot; other nodes. (The replaced node is deleted.). Nodes can be &quot;duplicated&quot;, which creates a copy of the node and all its descendants; the copy becomes a new root of the WholeGraph. Duplicating also duplicates edges. Nodes in the &quot;initial&quot; state can be used as the source and/or target of edges. </p>
 <p>The only other state for nodes is &quot;deleted&quot;. Nodes in the &quot;deleted&quot; state are not in the graph: They are not roots; they do not have parents or children; and they are not the source or target of any edge. Once deleted, a node can not return to its initial state. When a node is deleted, the graph will delete all pointers to the node and so it will become garbage unless some client is keeping a pointer to it. </p>
 <p>Any client that keeps pointers to nodes should be careful not to ever use a deleted node. Consider an object that represents a user's selection of nodes. What happens if one of those nodes is deleted (perhaps via a second GUI)? There are three ways to solve the problem.</p>
@@ -204,6 +233,11 @@
 </ul>
 <p>The situation is the same for edges. They are created as part of the graph. (And are &quot;initial&quot;.) Once an edge becomes &quot;deleted&quot;, it is there forever and can not be used for anything. </p>
 <p>Sending a &quot;delete&quot; message to a node has the following effects: The node and all its descendents become deleted. Also all edges that have any of these nodes as either source or target become deleted. Edges can also be deleted by sending them a &quot;delete&quot; message. </p>
+<p>(Aside: One might wonder about the wisdom of requiring nodes and edges to be explicitly deleted, especially in a garbage collected language like Java.
+The obvious alternative is to have no master object (the Wholegraph object in our case) from which all current edges and nodes can be reached;
+when a node or edge is no longer connected to anything we care about it is forgotten and may be garbage collected. Such a design works
+fine for trees, but when a node may be connected by edges as will as parent-child links, we will need some sort of definitive way to get rid of it anyway.)
+
 <h1>Summary of Mutations</h1>
 <p>Mutations on whole graphs:</p>
 <ul>
@@ -228,23 +262,35 @@
   <li>Change the source or the target of an edge</li>
 </ul>
 <p>Mutations on subgraphs and the interactions between the above mutations and subgraphs are discussed below in the section on subgraphs. </p>
+<p>The exact interpretation of these mutators is not fixed and can be varied by the application. For example, copying a node (duplicate then insert)
+representing a row from one table to another might cause the copy of the node to lose or gain children, if the tables have different numbers of columns.</p>
 <h1></h1>
 <h1>Drag-and-drop</h1>
-<p>Given this interface, we can support drag-and-drop move as follows. We assume that the each node's graphical representation (its view) has zones that can be used to grab it and also (optionally) one or more drop zones. Each drop zone in a node view represents either inserting into the node or replacing the node. </p>
+<p>Given this interface, we can support drag-and-drop moves and copies as follows. We assume that the each node's graphical representation (its view)
+has zones that can be used to grab it and also (optionally) one or more drop zones. Each drop zone in a node view represents either inserting into the node or replacing the node. </p>
 <p>Drag-and-drop  is as follows. (I assume the following cursor shapes are available: Drop-not-possible, copy-drop, move-drop).</p>
 <p>At the start of a drag operation, there is no change to the graph. The cursor is set to show that a drag is in progress (&quot;drop not possible&quot;).</p>
 <p>When the cursor hovers over a &quot;replace&quot; drop zone, the target node is high-lighted and the cursor is set: to &quot;move-drop&quot; if a detach followed by replace is possible, to &quot;copy-drop&quot; if a detach is not possible but a duplicate followed by a replace is possible, and to &quot;drop-not-possible&quot; otherwise.</p>
-<p>When the cursor hovers over an &quot;insert&quot; drop zone, the zone is high-lighted and the cursor is set to: move-drop if a detach followed by insertChild is possible, by a copy-drop if a detach is not possible but a duplicate followed by a insertChild is possible, and by a drop-not-possible otherwise. An exception is when the drop zone is in the parent of the dragged node; in that case a permuteChildren is considered.</p>
-<p>When the mouse is released over a drop zone, the appropriate sequence takes place</p>
+<p>When the cursor hovers over an &quot;insert&quot; drop zone, the zone is high-lighted and the cursor is set:
+to move-drop if a detach followed by insertChild is possible,
+to copy-drop if a detach is not possible but a duplicate followed by an insertChild is possible,
+and to drop-not-possible otherwise.
+An exception is when the drop zone is in the parent of the dragged node; in that case a permuteChildren is considered.</p>
+<p>When the mouse is released over a drop zone, the appropriate sequence takes place. This could be one of the following</p>
 <ul>
-  <li>detach; replace</li>
-  <li>duplicate; replace</li>
-  <li>detach; insertChild</li>
-  <li>duplicate; insertChild</li>
+  <li>detach; replace,</li>
+  <li>duplicate; replace,</li>
+  <li>detach; insertChild,</li>
+  <li>duplicate; insertChild, or</li>
   <li>permuteChildren</li>
 </ul>
 <p>Support for cut/copy/paste is similar, but involves the cut buffer. These are discussed later.</p>
 <p>Node creation can also depend on drop zones. Here are three ways of building a node. One is to drag an icon representing the new node to a drop zone. The second is to select a tool and click on a drop zone. The third is to click on a drop zone whereupon a menu of creatable node-types appears. </p>
+<p>The sequences are either </p>
+<ul>
+  <li>make root node; replace or</li>
+  <li>make root node; insertChild</li>
+</ul>
 <h1><a name="parts"></a>Subgraphs</h1>
 <p>In order to support cut/copy/paste and trash cans and editors that display only part of the graph, we have a notion of <em>subgraphs</em>. The nodes in a subgraph must be a &quot;downward closed&quot; set of nodes belonging to the same WholeGraph as the Subgraph. I.e., if <em>v</em> is in a subgraph, then all of <em>v</em>'s children are also in the subgraph. The edges of a subgraph are exactly those graph edges that connect two nodes in the subgraph. </p>
 <p>If <em>v</em> is in a subgraph <em>s</em> and is either a root or has a parent that is not in <em>s</em>, then we call <em>v</em> a top node of the <em>subgraph</em>. Note that if <em>v</em> is a top node of <em>s</em> then no ancestor nor descendant of <em>v</em> can be a top node of <em>s</em>.</p>
@@ -257,21 +303,40 @@
 </ul>
 <p>Nodes can also be implicitly added or removed as top nodes as follows.</p>
 <ul>
-  <li>detach. Detaching a node does not change whether it is a top node or not. Thus a detaching a node that is in the subgraph, but not a top node, removes it from the subgraph. </li>
+  <li>detach. Detaching a node does not change whether it is a top node or not.
+  Thus a detaching a node that is in the subgraph, but not a top node, removes it and all its descendants from the subgraph. </li>
   <li>duplicate. The newly created root and its newly created descendants are not in any subgraph.</li>
-  <li>insertChild. The inserted node and its descendants retain their status as a top node, unless the new parent is already in the subgraph. In such a case, the inserted node (or descendant) loses its status as a top node. </li>
-  <li>replace. The replacing node becomes a top node of any subgraph that the replaced node was a top node of. This means that any descendants of the replacing node must lose their place as top nodes of any such subgraph. If the node being replaced was not a root, then the replacing node acquires a parent. The replacing (and it descendants) node must be removed as top node from any subgraph that the parent is in. </li>
+  <li>insertChild. The inserted node and its descendants retain their status as a top node, unless the new parent is already in the subgraph.
+  In such a case, the inserted node (or descendant) loses its status as a top node. </li>
+  <li>replace. The replacing node becomes a top node of any subgraph that the replaced node was a top node of.
+  This means that any descendants of the replacing node must lose their place as top nodes of any such subgraph.
+  If the node being replaced was not a root, then the replacing node acquires a parent.
+  The replacing (and it descendants) node must be removed as top node from any subgraph that the parent is in. </li>
   <li>permuteChildren. No effect on subgraphs. </li>
   <li>delete. The deleted node and all its descendants are removed from all subgraphs. </li>
 </ul>
-<p>In a typical application we might use one subgraph as the main &quot;document&quot; to be displayed and edited and use other subgraphs as cut buffers and trash cans.</p>
+<p>In a typical application we might use one subgraph as the main &quot;document&quot;
+to be displayed and edited and use other subgraphs as cut buffers and/or trash cans.
+(Actually it's not a bad idea to use one subgraph as both cut buffer and trash can.)</p>
 <p>An editor might focus on only a subgraph of the the main document. For example in a statechart, we might have an editor that displays only one node (and its descendants). In this case the node is put in a subgraph and an editor is created that edits that subgraph.</p>
 <p>The figure below shows a UI &quot;Cut&quot; operation. First the initial contents of the cut buffer are deleted. Second the node to be cut is made a root (detached) and is moved to the cut buffer subgraph. (Note that if the cut node is a top node of the main part, it will have to be explicitly removed from the main part.) </p>
 <p><img src="doc-files/cut.png" width="524" height="530"></p>
+<p>(For the picture above, I assumed that it is an invariant that the cut buffer contains 0 or 1 nodes; hence the
+&quot;delete&quot; operation. If the cut buffer were not initially full, then the delete operation would not be done.
+When the cut buffer also serves as a trash can, then a limit larger than 1, or no limit, would be appropriate;
+for example the trash can might hold the last 10 deleted nodes.)</p>
+<p>TBD: Currently missing from the picture is an operation to add the detached node to the cut buffer subgraph; this should come after the detach.</p>
 <p>The figure below shows a subsequent &quot;Paste&quot; UI operation. First, the content of the cut buffer is duplicated (duplicate operation). (Note that the duplicate is not initially in any subgraph.) Second, the duplicate is inserted (insert) and implicitly becomes in the main subgraph. </p>
 <p><img src="doc-files/paste.png" width="527" height="670"></p>
 <p>If the paste is into the editor, but not as a child of any node, then, instead of an insert operation, the duplicate node will be explicitly added to the main subpart. </p>
+<h1><a name="higraphs"></a>Higraphs</h1>
+<p>The Higraph interface is a superinterface of interfaces WholeGraph, Subgraph, and Node. Each of these represents a forest of trees:
+For the WholeGraph, the forest is defined by the set of all roots. For a Subgraph, the forest is defined by its top nodes. For a Node, the forest is defined by its
+set of children. The Higraph interface captures what is common to all these interfaces.
+The intention is that layout and view classes can be built that are indifferent to whether the higraph they are laying out or visualizing
+is defined by a Wholegraph, a Subgraph, or a Node.
 <h1><a name="tags"></a>Tags</h1>
+[TBD]
 <h1>Bibliography</h1>
 <p>[Harel 1988] David Harel, `On Visual Formalisms', CACM, vol 31, #5.</p>
 </body>

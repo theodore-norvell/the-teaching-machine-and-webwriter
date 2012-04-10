@@ -18,19 +18,24 @@ import java.util.Collection;
 import java.util.List;
 
 /**An interface for hierarchical graphs.
- * <p> A higraph is simply a forest (set of trees) with
- * edges between the nodes.
- * <p> Higraphs are either WholeGraphs or Subgraphs.
+ * <p> A higraph consists of a set of trees and edges that run between nodes of those trees.
+ * <p> There are three interfaces in JHigraph that extend Higraph.
+ * <ul><li>WholeGraph: The trees are defined by the root (i.e. parentless) nodes of the WholeGraph.
+ *     <li>Subgraph: A collection of nodes, none of which is an ancestor of another.
+ *     The trees are defined by these nodes.
+ *     <li>Node: Each Node can be seen as a Higraph in which the trees are defined by
+ *     the node's children.
+ * <ul>
  * 
  * @author Theodore S. Norvell & Michael Bruce-Lockhart
  *
  * @param <NP> The node payload type. Each node carries a payload.
  * @param <EP> The edge payload type. Each edge carries a payload.
- * @param <HG> The higraph type. This is an interface that both WG and SG should extend.
- * @param <WG> The wholeGraph type.
- * @param <SG> The subgraph type. 
- * @param <N> The node type.
- * @param <E> The edge type.
+ * @param <HG> The Higraph type. This is an interface that WG, SG, and N should extend.
+ * @param <WG> The WholeGraph type.
+ * @param <SG> The Subgraph type. 
+ * @param <N> The Node type.
+ * @param <E> The Edge type.
  */
 public interface Higraph
     < NP extends Payload<NP>,
@@ -101,23 +106,34 @@ public interface Higraph
 	WG getWholeGraph() ;
     
     /** Is a node contained in a higraph.
+     * <p>A node is considered to be contained by the higraph if it is a top node or a
+     * descendant of a top node in the higraph.
      * @return true if the node is in the higraph.
      */
     boolean contains(N node) ;
     
     /** Is an edge contained in a higraph.
+     * <p>A an edge is contained within a higraph exactly if both its end points are contained in
+     * the higraph.
      * @return true if the edge is in the higraph.
      */
     boolean contains(E edge) ;
     
-   /** Return a set of all edges whose end-points are both in this subgraph,
+   /** Return a set of all edges whose end-points are both in this higraph,
      * but that are not INTERNAL, UP, or DOWN with respect to any node in this subgraph.
-     * This is all edges that are either loops on a top node 
-     * or connect trees defined by two different top nodes.  Equivalently:
-     * this is all edges that are either loops on a top node, or are between
-     * top nodes that are in this higraph but that either have no common ancestor,
-     * or that have a common ancestor that is not in this higraph.
+     * When this higraph is itself a node, we also include edges that 
+     * are UP or DOWN with respect to this node.
+     * 
+     * This is all edges that 
+     * <ul><li>are loops on a top node ,
+     *     <li>connect trees defined by two different top nodes, or
+     *     <li>connect this higraph with a node in this higraph (when the higraph is itself a node).
+     * </ul> 
+     * Note that the third category is not "contained in" the higraph as defined by
+     *   higraph.model.interfaces.Higraph.contains.
      * @see higraph.model.interfaces.Edge.EdgeCategory
+     * @see higraph.model.interfaces.Higraph#contains
+     * @see higraph.model.interfaces.Node#getGovernedEdges 
      * */
     Collection<E> getGovernedEdges() ;
 

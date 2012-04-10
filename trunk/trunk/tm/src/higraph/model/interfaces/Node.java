@@ -38,7 +38,7 @@ public interface Node
     SG extends Subgraph<NP,EP,HG,WG,SG,N,E>,
     N extends Node<NP,EP,HG,WG,SG,N,E>, 
     E extends Edge<NP,EP,HG,WG,SG,N,E> >
-
+extends Higraph<NP, EP, HG, WG, SG, N, E>
 {
 	
     /** The node category of n with respect to p is
@@ -411,6 +411,8 @@ public interface Node
      * <p>
      * This is for access only. Changing the collection does not change the model.
      * @see higraph.model.interfaces.Edge.EdgeCategory
+     * @see higraph.model.interfaces.Higraph#getGovernedEdges() 
+     * 
      * */
     Collection<E> getGovernedEdges() ;
     
