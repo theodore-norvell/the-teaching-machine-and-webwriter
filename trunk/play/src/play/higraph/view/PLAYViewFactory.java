@@ -64,19 +64,19 @@ public class PLAYViewFactory
 	} else if (PLAYTag.WHILE.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeWHILENodeView(higraphView, node);
-	} else if (PLAYTag.EXP_NUM.defaultPayload().getTag()
+	} else if (PLAYTag.NUMBER.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeNUMNodeView(higraphView, node);
-	} else if (PLAYTag.EXP_BOOLEAN.defaultPayload().getTag()
+	} else if (PLAYTag.BOOLEAN.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeBOONodeView(higraphView, node);
-	} else if (PLAYTag.EXP_STRING.defaultPayload().getTag()
+	} else if (PLAYTag.STRING.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeSTRINGNodeView(higraphView, node);
-	} else if (PLAYTag.EXP_NULL.defaultPayload().getTag()
+	} else if (PLAYTag.NULL.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeNULLNodeView(higraphView, node);
-	} else if (PLAYTag.EXP_VAR.defaultPayload().getTag()
+	} else if (PLAYTag.VAR.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeVARNodeView(higraphView, node);
 	} else {

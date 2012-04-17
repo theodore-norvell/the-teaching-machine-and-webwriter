@@ -83,7 +83,7 @@ public class ViewHandler {
 		NestedTreeLayoutManager.Axis.Y));
 	subgraphMouseAdapter.installIn(this.higraphJComponent);
 
-	this.mainFrame.setTitle("PLAY");
+	this.mainFrame.setTitle("PLAY - PLAY Language IDE");
 	this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.mainFrame.addWindowListener(new WindowAdapter() {
 

@@ -56,11 +56,11 @@ public class SEQNodeView extends PLAYNodeView {
 	screen.drawString("\u21D2", (float) (x + 5), (float) (y + 10));
 
 	for (int i = 0; i < number - 1; i++) {
-	    x = super.getChild(i).getNextShapeExtent().getMaxX()
-		    + (super.getChild(i + 1).getNextShapeExtent().getMinX() - super
-			    .getChild(i).getNextShapeExtent().getMaxX()) / 2;
-	    y = super.getChild(i).getNextShapeExtent().getCenterY();
-	    screen.drawString("\u27A8", (float) (x - 5), (float) y);
+	    x = super.getChild(i).getNextShapeExtent().getCenterX();
+	    y = super.getChild(i).getNextShapeExtent().getMaxY()
+		    + (super.getChild(i + 1).getNextShapeExtent().getMinY() - super
+			    .getChild(i).getNextShapeExtent().getMaxY()) / 2;
+	    screen.drawString("\u21D3", (float) x, (float) (y + 5));
 	}
     }
 
@@ -82,26 +82,26 @@ public class SEQNodeView extends PLAYNodeView {
 	    if (index == 0) {
 		PLAYNodeView childNodeView = (PLAYNodeView) nodeView
 			.getChild(0);
-		x = 0;
-		y = childNodeView.getNextShapeExtent().getMinY();
-		width = childNodeView.getNextShapeExtent().getMinX();
-		height = childNodeView.getNextShapeExtent().getHeight();
+		x = childNodeView.getNextShapeExtent().getMinX();
+		y = nodeView.getNextShapeExtent().getMinY();
+		width = childNodeView.getNextShapeExtent().getWidth();
+		height = childNodeView.getNextShapeExtent().getMinY() - y;
 	    } else if ((index != 0) && (index < number)) {
 		PLAYNodeView leftChildNodeView = (PLAYNodeView) nodeView
 			.getChild(index - 1);
 		PLAYNodeView rightChildNodeView = (PLAYNodeView) nodeView
 			.getChild(index);
-		x = leftChildNodeView.getNextShapeExtent().getMaxX();
-		y = leftChildNodeView.getNextShapeExtent().getMinY();
-		width = rightChildNodeView.getNextShapeExtent().getMinX() - x;
-		height = leftChildNodeView.getNextShapeExtent().getHeight();
+		x = leftChildNodeView.getNextShapeExtent().getMinX();
+		y = leftChildNodeView.getNextShapeExtent().getMaxY();
+		width = rightChildNodeView.getNextShapeExtent().getWidth();
+		height = rightChildNodeView.getNextShapeExtent().getMinY() - y;
 	    } else if (index == number) {
 		PLAYNodeView childNodeView = (PLAYNodeView) nodeView
 			.getChild(number - 1);
-		x = childNodeView.getNextShapeExtent().getMaxX();
-		y = childNodeView.getNextShapeExtent().getMinY();
-		width = nodeView.getNextShapeExtent().getMaxX() - x;
-		height = childNodeView.getNextShapeExtent().getHeight();
+		x = childNodeView.getNextShapeExtent().getMinX();
+		y = childNodeView.getNextShapeExtent().getMaxY();
+		width = childNodeView.getNextShapeExtent().getWidth();
+		height = nodeView.getNextShapeExtent().getMaxY() - y;
 	    }
 
 	} else {
