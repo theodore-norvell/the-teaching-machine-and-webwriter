@@ -31,16 +31,16 @@ public class ExpsPallet extends JPanel {
 
     public ExpsPallet() {
 	DefaultMutableTreeNode expsRootTreeNode = new DefaultMutableTreeNode(
-		"Exps");
+		"Expressions");
 	this.expTreeModel = new DefaultTreeModel(expsRootTreeNode);
 	this.expTree = new JTree(this.expTreeModel);
 
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_NUM));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_BOOLEAN));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_STRING));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_NULL));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_VAR));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.EXP_DOT));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NUMBER));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.BOOLEAN));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.STRING));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NULL));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.VAR));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.DOT));
 
 	this.expTree.getSelectionModel().setSelectionMode(
 		TreeSelectionModel.SINGLE_TREE_SELECTION);

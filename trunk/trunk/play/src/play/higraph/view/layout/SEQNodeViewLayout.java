@@ -55,7 +55,7 @@ public class SEQNodeViewLayout extends PLAYLayoutManager {
 		    childNodeView.doLayout();
 		    childNodeView.placeNextHierarchy(x, y);
 		    Rectangle2D childNextExtent = childNodeView.getNextExtent();
-		    x += 20 + childNextExtent.getWidth();
+		    y += 20 + childNextExtent.getHeight();
 		    Rectangle2D.union(rectangle, childNextExtent, rectangle);
 		    childNodeView.getBranch().setVisibility(false);
 		    // drop zone behind the child
