@@ -8,29 +8,41 @@
 
 <body>
 <h1>Programs and data in PLAY .</h1>
+<ul>
+  <li>Version 1 -- 2012 May</li>
+  <li>Version 0 -- from the depths of time. Circa 2007.</li>
+</ul>
 <h2>Data model</h2>
-<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot;, which may be a string, a reference to an object, or the special null value.</p>
+<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot; (or &quot;state&quot;), which may be a string, a reference to an object, or the special null value. (In fact, as we will soon see, null and strings are also objects, and so we may say that the value (or state) of a field is a reference two an object.</p>
 <h3>Values</h3>
 <p>Each value is a reference to an object. (At least this is as much as the typical programmer needs to know. There may be some special values that are not reflected as objects in the usual sense. Possible examples: values representing method bodies and types that are not classes.)</p>
-<p>Null</p>
+<h3>Objects: primitive and complex</h3>
+<p>Objects come in two varieties. Primitive objects have no fields. Objects of type Null or String are primitive, for example. The state of a primitive object is immutable.</p>
+<p>Objects made up of 1 or more fields are complex objects. The state of an complex object is determined by the states of its fields. As mentioned above, fields are locations that contain references to objects.</p>
+<h3>Null</h3>
 <p>There is exactly one null object. Any reference to the null object is called a null reference.</p>
 <h3>Numbers, strings, and boolean</h3>
 <p align="left">Certain objects are strings.</p>
 <p align="left">A string object represents any sequence of zero or more unicode characters. A number is just a string that obeys some special syntax restrictions. For example a string that consists only of digits is also considered a number. Certain operators require that their operands be numbers. E.g., </p>
 <p align="center">world.x + world.y</p>
-<p align="left">will result in an &quot;error&quot; if the value of world.x is a reference to the string &quot;bogart&quot; or if the value of world.y is the null reference. </p>
+<p align="left">will result in an &quot;error&quot; if the value of wor	ld.x is a reference to the string &quot;bogart&quot; or if the value of world.y is the null reference. </p>
 <p align="left">Boolean values are the two strings &quot;true&quot; and &quot;false&quot;. Certain operators and statements will result in an &quot;error&quot; if an operand is neither of these particular strings. </p>
 <h3 align="left">Types</h3>
 <p align="left">Types are objects that describe a set of values. Some values may belong to more than one type.</p>
-<p align="left">Each class is a type. If C is a class then as a type C describes all references to objects of type C. </p>
+<p align="left">Each class is a type. If C is a class then, as a type C describes all references to objects of type C. </p>
 <p align="left">I addition there are the following types</p>
 <ul>
   <li>Boolean -- describes only references to the strings &quot;true&quot; and &quot;false&quot;.</li>
   <li>Number -- describes all strings that conform to the syntax of a number</li>
   <li>String -- describes all strings </li>
   <li>Any -- describes all values</li>
-  <li>Null -- describes only the null reference.</li>
-  <li>Comm -- describes one value.. Used for commands. </li>
+  <li>Null -- describes only the null reference.
+    <ul>
+      <ul>
+        <li>Comm -- describes one value. Used for commands. </li>
+      </ul>
+    </ul>
+  </li>
 </ul>
 <p>There are also a number of method types</p>
 <ul>
