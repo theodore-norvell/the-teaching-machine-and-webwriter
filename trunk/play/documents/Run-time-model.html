@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+<link href="playStyle.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>Run Time Data Representation of data in PLAY</h1>
+<h2>Object representation</h2>
+<p>Objects are represented as nodes. We'll call these object nodes. The payload indicates the class of the object and in the case of primitive objects also its value. (Alternatively, perhaps we could have an edge to the class.) Nodes representing complex objects have children which are called location nodes.  Similarly arrays are nodes whose children are location nodes representing the array's items.</p>
+<p>The payload of a location node holds the name of the field (or the number of an array item). An edge leaves the location node and targets the node's value.</p>
+<p>Here is a picture. Objects are blue. Locations are pink.</p>
+<p><img src="drawings/some-objects.png" width="587" height="384" /></p>
+<h2>Execution structures</h2>
+<p>When a new execution is started (e.g. by clicking on a &quot;Play&quot; button), a copy of the world graph is made and a new evaluation stack is created to represent the main routine.</p>
+<p>The <em>evaluation stack</em> represents control information as well as information about the value of already evaluated expressions. Each item on the evaluation stack has a copy of a method body. Edges connect the nodes of the (copy of the) method body to objects. These edges need to be erased once they are no longer needed. Because of recursive calls, we need to use copies of the method bodies, not the originals. In addition to the copy of the method body, each item of the evaluation stack also has a stack of edges to selected nodes. The target of the top of this stack is known as the <em>currently selected node</em>. As a payload, these edges have some additional information. Typically this is the number of step messages that have been sent to the node since it was selected and so the default is 0. </p>
+<p>Let's look at the evaluation of a single method. Note these pictures are just meant to indicate structure, not presentation</p>
+<p>I'll assume the message is absdiff(3, 4.5).</p>
+<p>Initially the parameters are set, as shown. The SEQ node is selected.</p>
+<p><img src="drawings/exec-eg-0.png" width="556" height="483" /></p>
+<p>After three steps, we have the following situation where the currently selected node is ready to obtain a value.</p>
+<p><img src="drawings/exec-eg-1.png" width="556" height="483" /></p>
+<p>After one more step, the x node has a value. At this point the &lt; node is the currently selected node. After another step, the y node is selected.</p>
+<p><img src="drawings/exec-eg-2.png" width="556" height="483" /></p>
+<p>In the next step, the y node is evaluated and deselected.</p>
+<p><img src="drawings/exec-eg-3.png" width="556" height="483" /></p>
+<p>Now the &quot;&lt;&quot; node is evaluated and deselected. Note that the &quot;x&quot; and &quot;y&quot; nodes lose their edges in the same step. The general rule is that, once such an edge is used, it isn't needed any more and so it is deleted from the graph.</p>
+<p><img src="drawings/exec-eg-4.png" width="551" height="483" /></p>
+<p>In the next step, the second child of the alternation (&quot;?&quot;) node is selected and the edge from the selection expression is deleted. After two more steps we are in the following situation.</p>
+<p><img src="drawings/exec-eg-5.png" width="551" height="483" /></p>
+<p>Now we evaluate the &quot;y-x&quot; expression, much as we evaluated the &quot;x &lt; y&quot; expression...</p>
+<p><img src="drawings/exec-eg-6.png" width="551" height="483" /></p>
+<p>... arriving at the following.</p>
+<p><img src="drawings/exec-eg-7.png" width="553" height="483" /></p>
+<p>Once the final child of a SEQ is evaluated, its value becomes the value of the SEQ.</p>
+<p><img src="drawings/exec-eg-8.png" width="553" height="483" /></p>
+<p>Once the selected SEQ of an alternation node has a value, that SEQ's value become the alternation node's value.</p>
+<p><img src="drawings/exec-eg-9.png" width="553" height="483" /></p>
+<p>Here we have another SEQ whose final child has been evaluated and so, after another step, we have:</p>
+<p><img src="drawings/exec-eg-10.png" width="509" height="483" /></p>
+<p>At this point the body of the method has a value and so we are done.</p>
+<p>&nbsp;</p>
+</body>
+</html>

@@ -1,3 +1,5 @@
 /* CSS Document */
 
-.kbd {font: "Courier New", Courier, mono }
+.kbd {font: "Courier New", Courier, mono }p {
+	font-family: Verdana, Geneva, sans-serif;
+}
