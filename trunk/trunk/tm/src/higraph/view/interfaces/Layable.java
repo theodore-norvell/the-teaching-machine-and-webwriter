@@ -122,17 +122,5 @@ public interface Layable {
 	 * @param y the y co-ordinate of the next location
 	 */
 	public void placeNext(double x, double y);
-	
-	/**
-	 *  Note that the next state is used for laying out while the current state is used for drawing.
-	 *  Thus layable is only concerned with the next state except for this method.
-	 *  
-	 *  At the end of the transition (which may take time so as to produce transition effects)
-	 *  the next state is used to update the current state. Immediately after the transition, the next
-	 *  state and the current state are the same, unless the layable object has been destructed.
-	 *  
-	 */
-	
-	public void doTransition();
 
 }

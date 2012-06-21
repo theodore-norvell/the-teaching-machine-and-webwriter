@@ -97,15 +97,39 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 	}
 
 	@Override
-	public void doTransition() {
+	public void startTransition() {
+		// TODO
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> parentDec = parentDecoratorVar.get();
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> childDec = childDecoratorVar.get();
+	    if (parentDec != null)
+	    	parentDec.startTransition();
+	    if (childDec != null)
+	    	childDec.startTransition();
+		super.finishTransition();
+	}
+	
+	@Override
+	public void advanceTransition(double degree) {
+		// TODO
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> parentDec = parentDecoratorVar.get();
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> childDec = childDecoratorVar.get();
+	    if (parentDec != null)
+	    	parentDec.advanceTransition( degree);
+	    if (childDec != null)
+	    	childDec.advanceTransition( degree );
+		super.finishTransition();
+	}
+	
+	@Override
+	public void finishTransition() {
 	    shapeVar.set( nextShapeVar.get() ) ;
 	    PointDecorator<NP,EP,HG,WG,SG,N,E> parentDec = parentDecoratorVar.get();
 	    PointDecorator<NP,EP,HG,WG,SG,N,E> childDec = childDecoratorVar.get();
 	    if (parentDec != null)
-	    	parentDec.doTransition();
+	    	parentDec.finishTransition();
 	    if (childDec != null)
-	    	childDec.doTransition();
-		super.doTransition();
+	    	childDec.finishTransition();
+		super.finishTransition();
 	}
 	
 	protected BranchView<NP,EP,HG,WG,SG,N,E> getThis(){return this;}

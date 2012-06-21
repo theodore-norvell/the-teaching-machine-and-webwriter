@@ -47,13 +47,13 @@ EdgeTM >{
 		defaultNodeValueColorVar = new BTVar<Color>(timeMan, DEFAULT_NODE_LABEL_COLOR);
 	}
 	@Override
-	public void refresh(){
+	public void startTransition(){
 		for(NodeTM node : getHigraph().getNodes()){
 			LabelTM label = (LabelTM)getNodeView(node).findLabel("value");
 			if (label != null)
 				label.setTheLabel(node.getPayload().getValue());
 		}
-		super.refresh();
+		super.startTransition();
 	}
 	
 	public void setDefaultNodeNameShow(boolean show, int position){

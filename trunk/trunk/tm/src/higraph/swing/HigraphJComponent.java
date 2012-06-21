@@ -30,17 +30,28 @@ extends JPanel {
     
     HigraphView<?,?,?,?,?,?,?> view ;
     
-    public HigraphJComponent( ) {
+    Animator animator  ;
+    
+    int lengthIn_ms ;
+   
+    public HigraphJComponent( int lengthOfAnimationIn_ms ) {
+    	lengthIn_ms = lengthOfAnimationIn_ms ; 
     }
     
-    public
-    void setSubgraphView( HigraphView<?,?,?,?,?,?,?> view )
+    public HigraphJComponent( ) {
+    	this( 500 ) ; // 1/2 a second animation time.
+    }
+    
+    public void setSubgraphView( HigraphView<?,?,?,?,?,?,?> view )
     {
         this.view = view ;
+        animator =  new Animator(view) ;
     }
     
-    
-    
+    public void refresh() {
+    	animator.start( lengthIn_ms ) ;
+    }
+  
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

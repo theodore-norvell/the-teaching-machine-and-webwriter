@@ -19,6 +19,7 @@ import java.awt.Graphics2D;
 import tm.backtrack.BTVar;
 import tm.displayEngine.DisplayAdapter;
 import tm.displayEngine.DisplayManager;
+import higraph.swing.Animator;
 import higraph.view.HigraphView;
 import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
@@ -33,9 +34,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 	private static final long serialVersionUID = -7382595374129821180L;
 	
-	private BTVar<HigraphView<NodePayloadTM,EdgePayloadTM,
-			HigraphTM, WholeGraphTM,SubgraphTM,
-			NodeTM,EdgeTM>> myViewVar;
+	private HigraphView<?,?,?,?,?,?,?> myView;
+	
+	private Animator animator  ;
 	
 
 	/**
@@ -46,9 +47,6 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 	public HigraphVisualizer(DisplayManager dm, String configId){
 		super(dm, configId);
-		myViewVar = new BTVar<HigraphView<NodePayloadTM,EdgePayloadTM,
-		HigraphTM, WholeGraphTM,SubgraphTM,
-		NodeTM,EdgeTM>>(dm.getTimeManager());
 		SmallButton buttons[] = new SmallButton[2];
 		ImageSourceInterface imageSource = context.getImageSource();
 		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);
@@ -64,13 +62,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 		public void refresh() {
 //			System.out.println("refreshing " + this);
-			HigraphView<NodePayloadTM,EdgePayloadTM,
-			HigraphTM, WholeGraphTM,SubgraphTM,
-			NodeTM,EdgeTM> view = myViewVar.get();
-			if ( view != null) {
-				this.mySubWindow.setTitle(view.getTitle());
-				view.refresh();
-			}
+			if ( myView != null) {
+				this.mySubWindow.setTitle(myView.getTitle());
+				animator.start( 500 ) ; }
 			
 			super.refresh(); 
 		}
@@ -93,10 +87,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 * with tm plugin model
 	 * @param view
 	 */
-	public void setView(HigraphView<NodePayloadTM,EdgePayloadTM,
-			HigraphTM, WholeGraphTM,SubgraphTM,
-			NodeTM,EdgeTM> view){
-		if (myViewVar.get() == null)	myViewVar.set(view);
+	public void setView(HigraphView<?,?,?,?,?,?,?> view){
+		myView = view ;
+		animator = new Animator(view) ;
 		tm.utilities.Debug.getInstance().msg(Debug.DISPLAY, "SubgraphVisualizer set view. ");
 //		System.out.println("SubgraphVisualizer " + this + " set view to " + myView);
 
@@ -104,9 +97,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	
 	public void dispose(){
 //		System.out.println("disposing " + myView );
-		if (myViewVar.get() != null){
+		if (myView != null){
 			tm.utilities.Debug.getInstance().msg(Debug.DISPLAY, "disposing HigraphView.");
-			myViewVar.get().dispose();
+			myView.dispose();
 		}
 
 		super.dispose();
@@ -115,8 +108,8 @@ public class HigraphVisualizer	extends DisplayAdapter {
 
 	@Override
 	public void drawArea(Graphics2D screen) {
-		if (myViewVar.get() != null)
-			myViewVar.get().drawArea(screen);
+		if (myView != null)
+			myView.drawArea(screen);
 	}
 	
 	public String toString() {return "Subgraph Visualizer " + configId + " @" + hashCode();}

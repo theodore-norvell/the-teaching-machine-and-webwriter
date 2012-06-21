@@ -37,14 +37,16 @@
 
 	  <target name="compile" depends="init"
 	        description="compile the source " >
-	    <!-- The next task is intended to print the version, not to compile -->
-	  	<javac srcdir="${src}" destdir="${build}">
+	    <!-- The next task is intended to print the compiler version, not to compile -->
+	    <!-- Note includeantruntime="false" is there to make ant quite. I'm not sure what it does. -->
+	  	<javac srcdir="${src}" destdir="${build}" includeantruntime="false">
 	  	    <compilerarg value="-verbose"/>
 	  	    <compilerarg value="-version"/>
 	    </javac>
 	    <!-- Compile the java code from ${src} into ${build} -->
 	    <!-- Should have fork=true if compiler is javac -->
-	  	<javac srcdir="${src}" destdir="${build}"  source="${source.version}" target="${target.version}">
+	    <!-- Note includeantruntime="false" is there to make ant quite. I'm not sure what it does. -->
+	  	<javac srcdir="${src}" destdir="${build}"  source="${source.version}" target="${target.version}" includeantruntime="false">
 	    	<compilerarg  value="-g:lines"/>
 	    	<compilerarg  value="-nowarn"/>
 	    	<compilerarg  value="-deprecation"/>
