@@ -147,9 +147,20 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 
 
 	@Override
-	public void doTransition() {
-		Assert.check(nextShapeVar.get() != null, "trying to update to a null nextShape");
-		shapeVar.set((RectangularShape)(nextShapeVar.get().clone()));
+	public void startTransition() {
+		//TODO
+	}
+	
+	@Override
+	public void advanceTransition(double degree) {
+		//TODO
+	}
+	
+	@Override
+	public void finishTransition() {
+		RectangularShape shape = nextShapeVar.get() ;
+		Assert.check(shape != null, "trying to update to a null nextShape");
+		shapeVar.set(shape); // Used to clone.  Why?
 	}
 
 	/**

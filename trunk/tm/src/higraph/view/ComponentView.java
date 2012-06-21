@@ -515,22 +515,34 @@ implements Layable {
 		}
 		return null;
 	}
+		
+	/**
+	 * Prepare this view to receive tick messages
+	 */
+	protected void startTransition(){
+		for(ZoneView<NP,EP,HG,WG,SG,N,E>zone : zones)
+			zone.startTransition();		
+		for(Label<NP,EP,HG,WG,SG,N,E>label : labels)
+			label.startTransition();		
+	}
 	
-	
-
+	/** Advance the position according to the degree.
+	 * @param degree in [0.0, 1.0] */
+	protected void advanceTransition( double degree ) {
+		for(ZoneView<NP,EP,HG,WG,SG,N,E>zone : zones)
+			zone.advanceTransition( degree );		
+		for(Label<NP,EP,HG,WG,SG,N,E>label : labels)
+			label.advanceTransition( degree );
+	}
 	
 	/**
-	 * Update {@link java.awt.Shape shape} to the next {@link java.awt.Shape
-	 * shape}. This only handles updating associated {@link ZoneView zones}.
-	 * Should be over-ridden for transition of specific components (and
-	 * super.doTransition() should be called).
-	 * @post nextShape and shape have the same location and size
+	 * Finalize the transition by moving to the final position.
 	 */
-	public void doTransition(){
+	protected void finishTransition(){
 		for(ZoneView<NP,EP,HG,WG,SG,N,E>zone : zones)
-			zone.doTransition();		
+			zone.finishTransition();		
 		for(Label<NP,EP,HG,WG,SG,N,E>label : labels)
-			label.doTransition();		
+			label.finishTransition();		
 	}
 	
 	/**

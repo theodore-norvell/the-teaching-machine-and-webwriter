@@ -188,7 +188,15 @@ implements Layable
 		return nextYVar.get();
 	}
 	
-	public void doTransition(){
+	protected void startTransition() {
+		//TODO
+	}
+	
+	protected void advanceTransition(double degree) {
+		// TODO
+	}
+	
+	protected void finishTransition(){
 		xVar.set(nextXVar.get());
 		yVar.set(nextYVar.get());
 		thetaVar.set(nextThetaVar.get());

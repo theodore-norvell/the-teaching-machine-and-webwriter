@@ -15,6 +15,7 @@
 package higraph.view;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
@@ -22,7 +23,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RectangularShape;
 import java.awt.geom.RoundRectangle2D;
-import java.awt.geom.Point2D.Double;
 import java.util.Collection;
 
 import tm.backtrack.* ;
@@ -72,11 +72,12 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 	private final BTVar<AbstractLayoutManager<NP,EP,HG,WG,SG,N,E>> layoutManagerVar;
 	private final BTVar<BranchView<NP,EP,HG,WG,SG,N,E>> branchViewVar;
 	
-	// Invariant: The values of shapeVar and nextShapeVar are local to this object in the
+	// Invariant: The values of shapeVar, oldShapeVar, and nextShapeVar are local to this object in the
     // sense that they are not shared with other objects.
     // Thus we always clone when setting or getting these.
-	// The shapeVar and nextShapeVar may however have values that are the same object.
-    private final BTVar<RectangularShape> shapeVar;
+	// The shapeVar, oldShapeVar and nextShapeVar may however have values that are the same object.
+    private final BTVar<RectangularShape> oldShapeVar ;
+	private final BTVar<RectangularShape> shapeVar;
 	private final BTVar<RectangularShape> nextShapeVar;
 	private final BTVar<Rectangle2D> extentVar;
 //	private final BTVar<Rectangle2D> nextExtentVar;
@@ -114,6 +115,7 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 		layoutManagerVar = new BTVar<AbstractLayoutManager<NP,EP,HG,WG,SG,N,E>>( timeMan ) ; // initially null.
 		branchViewVar = new BTVar<BranchView<NP,EP,HG,WG,SG,N,E>>( timeMan ) ; // initially null. 
 		shapeVar = new BTVar<RectangularShape>( timeMan ) ; // there is no existing shape
+		oldShapeVar = new BTVar<RectangularShape>( timeMan ) ;
 		nextShapeVar = new BTVar<RectangularShape>( timeMan, v.getDefaultNodeShape()) ;
 		extentVar = new BTVar<Rectangle2D>( timeMan ) ; // initially next
 //		nextExtentVar = new BTVar<Rectangle2D>( timeMan, nextShapeVar.get().getBounds() ) ; 
@@ -297,48 +299,79 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
         // So much for the centre, but we want the upper left corner
         label.placeNext(x - halfW, y - halfH);
      }
-
-
-
-	/**
-	 * Move the top left corner of the node to (x, y)
-	 * @param x new co-ordinate of top left corner on the x axis
-	 * @param y new co-ordinate of top left corner on the y axis
-	 
-
-	public void moveTo(double x, double y){
-		Assert.check(x >= 0. && y >= 0., "Can't move nodes out of the 1st quadrant");
-		Rectangle2D ne = nextExtentVar.get();
-		if (ne == null)
-			translate(x, y);
-		else
-			translate(x-ne.getMinX(), y - ne.getMinY());
-	}*/
-
-
 	
 	@Override
-	public void doTransition() {
-		if ( pinnedVar.get() ) return ;
-		
+	protected void startTransition() {
+		RectangularShape shape = shapeVar.get() ;
+		if( shape == null ) {
+			shape = (RectangularShape) nextShapeVar.get().clone() ;
+			Rectangle2D frame = shape.getFrame() ;
+			Rectangle2D framePrime = new Rectangle2D.Double(frame.getX(), frame.getY(), 0, 0) ;
+			shape.setFrame( framePrime ) ;
+			oldShapeVar.set( shape ) ;
+			shapeVar.set( shape ) ;
+		} else {
+			oldShapeVar.set( shape ) ; }
+
 		for(int i = 0; i < getNumChildren(); i++)
-			getChild(i).doTransition();
-		
-		Assert.check( nextShapeVar.get() != null, "trying to update to a null nextShape" );
-		
-		shapeVar.set( (RectangularShape)(nextShapeVar.get().clone()) ) ;
+			getChild(i).startTransition();
 		
 		if (branchViewVar.get() !=null)
-			branchViewVar.get().doTransition();
+			branchViewVar.get().startTransition();
+
+		extentVar.set(getNextExtent()) ;
+		super.startTransition();
+	}
+
+	@Override
+	protected void advanceTransition( double degree ) {	
+		if ( ! pinnedVar.get() ) {
+			RectangularShape oldShape = oldShapeVar.get() ;
+			Assert.check(  oldShape != null, "trying to update from a null oldShape" );
+			double x0 = oldShape.getX() ; 
+			double y0 = oldShape.getY();
+			double w0 = oldShape.getWidth() ;
+			double h0 = oldShape.getHeight() ;
+			RectangularShape nextShape = nextShapeVar.get() ;
+			Assert.check(  nextShape != null, "trying to update to a null nextShape" );
+			double x1 = nextShape.getX() ;
+			double y1 = nextShape.getY() ;
+			double w1 = nextShape.getWidth() ;
+			double h1 = nextShape.getHeight() ;
+			double x = x0 + (x1-x0) * degree ;
+			double y = y0 + (y1-y0) * degree ;
+			double w = w0 + (w1-w0) * degree ;
+			double h = h0 + (h1-h0) * degree ;
+			RectangularShape shape = shapeVar.get() ;
+			Assert.check(  shape != null, "trying to update a null shapeVar" );
+			shape.setFrame(x, y, w, h) ; }
 		
-/*		for(E edge : myNodeVar.get().exitingEdges())
-		    hgViewVar.get().getEdgeView(edge).doTransition();*/
+		for(int i = 0; i < getNumChildren(); i++)
+			getChild(i).advanceTransition(degree);
+		
+		if (branchViewVar.get() !=null)
+			branchViewVar.get().advanceTransition( degree );
 		
 		extentVar.set(getNextExtent()) ;
-//		nextExtentVar.set(null); // nextExtent is no longer valid
-		super.doTransition();
-	}
+		super.advanceTransition( degree );	}
+
+	@Override
+	protected void finishTransition() {
+		if ( ! pinnedVar.get() ) {
+			RectangularShape next = nextShapeVar.get() ;
+			Assert.check(  next != null, "trying to update to a null nextShape" );
+			shapeVar.set( next ) ;
+		}
 		
+		for(int i = 0; i < getNumChildren(); i++)
+			getChild(i).finishTransition();
+		
+		if (branchViewVar.get() !=null)
+			branchViewVar.get().finishTransition();
+		
+		extentVar.set(getNextExtent()) ;
+		super.finishTransition();
+	}
 
 	public void setDislocation(int dx, int dy){	
 		dislocationVar.set( dx ==0 && dy == 0 ? null : new Point2D.Double(dx, dy));

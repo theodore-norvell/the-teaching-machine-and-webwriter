@@ -122,18 +122,39 @@ extends ComponentView<NP,EP,HG,WG,SG,N,E>
 	public GeneralPath getShape() {
 		return (shapeVar.get() == null) ? null : (GeneralPath) shapeVar.get().clone();
 	}
-	
 
 	@Override
-	public void doTransition() {
+	protected void startTransition() {
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> sourceDec = sourceDecoratorVar.get();
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> targetDec = targetDecoratorVar.get();
+	    if (sourceDec != null)
+	    	sourceDec.startTransition();
+	    if (targetDec != null)
+	    	targetDec.startTransition();
+		super.startTransition();
+	}
+	
+	@Override
+	protected void advanceTransition(double degree) {
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> sourceDec = sourceDecoratorVar.get();
+	    PointDecorator<NP,EP,HG,WG,SG,N,E> targetDec = targetDecoratorVar.get();
+	    if (sourceDec != null)
+	    	sourceDec.advanceTransition(degree);
+	    if (targetDec != null)
+	    	targetDec.advanceTransition(degree);
+		super.advanceTransition(degree);
+	}
+
+	@Override
+	protected void finishTransition() {
 	    shapeVar.set( nextShapeVar.get() ) ;
 	    PointDecorator<NP,EP,HG,WG,SG,N,E> sourceDec = sourceDecoratorVar.get();
 	    PointDecorator<NP,EP,HG,WG,SG,N,E> targetDec = targetDecoratorVar.get();
 	    if (sourceDec != null)
-	    	sourceDec.doTransition();
+	    	sourceDec.finishTransition();
 	    if (targetDec != null)
-	    	targetDec.doTransition();
-		super.doTransition();
+	    	targetDec.finishTransition();
+		super.finishTransition();
 	}
 	
 

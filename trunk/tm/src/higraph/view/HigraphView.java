@@ -154,7 +154,6 @@ public class HigraphView
 	private final BTVar<Stroke> defaultZoneStrokeVar;
 	private final BTVar<RectangularShape> defaultZoneShapeVar;
 	private final BTVar<Boolean> countZonesVar;
-
 	
 	private class DisplayString{
 		public String id;
@@ -179,6 +178,10 @@ public class HigraphView
 	private final BTVar<Rectangle2D> nextExtentVar;
 	private final BTVector<DisplayString> myStringVector;
 	private final BTVector<Line2D.Double> lineVector;
+	
+	static final int STATIC=42, TRANSITIONING=13 ;
+	final BTVar<Integer> animationState ;
+	private final BTVar<Double> animationDegree ;
 
 
 	protected HigraphView(ViewFactory<NP,EP,HG,WG,SG,N,E> viewFactory, HG theGraph, Component display, BTTimeManager timeMan) {
@@ -229,6 +232,10 @@ public class HigraphView
 		nextExtentVar = new BTVar<Rectangle2D>( timeMan ) ; 
 		myStringVector = new BTVector<DisplayString>( timeMan ) ;
 		lineVector = new BTVector<Line2D.Double>(timeMan);
+		
+		animationState = new BTVar<Integer>(timeMan, STATIC) ;
+		animationDegree = new BTVar<Double>(timeMan, 1.0) ;
+		
 	}
 
 	
@@ -276,7 +283,13 @@ public class HigraphView
 		return extentVar.get();
 	} */
 	
-	public void refresh(){
+	/** Get ready to animate. This means doing layout.
+	 * 
+	 */
+	public void startTransition(){
+		if( animationState.get() == TRANSITIONING ) {
+			finishTransition() ; }
+		// Animation state is STATIC
 		if (layoutManagerVar.get() != null){
 			layoutManagerVar.get().layoutLocal(this);
 			
@@ -285,13 +298,40 @@ public class HigraphView
 			while(iterator.hasNext()){
 				NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
 				Rectangle2D.union(viewExtent, top.getNextExtent(), viewExtent);
-				top.doTransition();
+				top.startTransition();
 			}
 			for(E edge:myGraph.getEdges())
-				getEdgeView(edge).doTransition();
+				getEdgeView(edge).startTransition();
 			myDisplayVar.get().setPreferredSize(new Dimension((int)(viewExtent.getWidth()+0.5), (int)(viewExtent.getHeight()+0.5)));
+			animationState.set( TRANSITIONING ) ;
 		}
 //		myDisplayVar.get().repaint() ;
+	}
+	
+	public void advanceTransition( double degree ) {
+		int state = animationState.get() ;
+		if( state == STATIC ) {
+			startTransition() ; }
+		Iterator<NodeView<NP,EP,HG,WG,SG,N,E>> iterator = getTops();
+		while(iterator.hasNext()){
+			NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
+			top.advanceTransition( degree ); }
+		for(E edge:myGraph.getEdges())
+			getEdgeView(edge).advanceTransition(degree);
+		myDisplayVar.get().repaint() ;
+	}
+	
+	public void finishTransition() {
+		if( animationState.get() == TRANSITIONING) {
+			Iterator<NodeView<NP,EP,HG,WG,SG,N,E>> iterator = getTops();
+			while(iterator.hasNext()){
+				NodeView<NP,EP,HG,WG,SG,N,E> top = iterator.next();
+				top.finishTransition(); }
+			
+			for(E edge:myGraph.getEdges())
+				getEdgeView(edge).finishTransition(); }
+		animationState.set(STATIC) ;
+		myDisplayVar.get().repaint() ;
 	}
 	
 	/** Return null if the argument is null or there is no existing view and none can be made,
@@ -668,8 +708,6 @@ public class HigraphView
 		}
 		
 	}
-	
-	
 
 	private DisplayString getDisplayString(String id){
 		Iterator<DisplayString> iter = myStringVector.iterator();
@@ -680,9 +718,6 @@ public class HigraphView
 		}
 		return null;			
 	}
-	
-	
-
 	
 	public void setLine(double x1, double y1, double x2, double y2){
 		lineVector.add(new Line2D.Double(x1, y1, x2, y2));
