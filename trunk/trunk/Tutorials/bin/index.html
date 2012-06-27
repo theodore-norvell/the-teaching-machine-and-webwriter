@@ -37,7 +37,8 @@
 			EdgeFunctions.initialize = function(tm) {
 				tm.loadRemoteFile( ".", "ElasticArray.java" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x600.tmcfg" ) ;
-				tm.go("4*i");
+				tm.initializeTheState() ;
+				tm.go("4*s");
 			}
 		 //]]></script>
 		<div class = "vertex" id="v0">
@@ -47,7 +48,7 @@
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					tm.go("16 * s") ;
+					tm.go("12 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -60,7 +61,7 @@
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					tm.go("8 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -122,7 +123,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
@@ -133,7 +134,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
