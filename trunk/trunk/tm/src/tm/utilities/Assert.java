@@ -254,7 +254,7 @@ public class Assert {
         apology (proposition, (new MessageFormat( message ).format( args )));
     }
     
-
+    public static void toBeDone( ) { apology(false, "To be done" ) ; }
     
     /**
      * Throws a <code>RunTimeException</code> containing the message

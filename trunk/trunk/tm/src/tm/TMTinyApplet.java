@@ -128,6 +128,9 @@ public class TMTinyApplet extends JApplet
     public void goBack() {
         if( tmMainFrame != null ) tmMainFrame.goBack() ; }
 
+    public void go( String commandString ) {
+    	if( tmMainFrame != null ) tmMainFrame.go( commandString ) ; }
+    
     public void goForward(){
         if( tmMainFrame != null ) tmMainFrame.goForward() ; }
 
@@ -145,15 +148,16 @@ public class TMTinyApplet extends JApplet
 
     public void toCursor( String fileName, int cursor ){
         if( tmMainFrame != null ) tmMainFrame.toCursor( fileName, cursor ) ; }
+    
+    public void toBreakPoint() {
+        if( tmMainFrame != null ) tmMainFrame.toBreakPoint() ; }
 
     public void autoStep() {
         if( tmMainFrame != null ) tmMainFrame.autoStep() ;
-        
     }
 
     public void autoStep(String fileName, int lineNo) {
-        if( tmMainFrame != null ) tmMainFrame.autoStep( fileName, lineNo ) ;
-        
+        if( tmMainFrame != null ) tmMainFrame.autoStep( fileName, lineNo ) ; 
     }
 
     public void setAutoStepRate(int rateConstant) {

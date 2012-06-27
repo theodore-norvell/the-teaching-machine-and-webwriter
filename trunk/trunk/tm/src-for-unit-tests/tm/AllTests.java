@@ -1,4 +1,5 @@
 package tm;
+import tm.evaluator.TestCommandStringInterpreter;
 import tm.plugins.TestPluginManagerDialog;
 import junit.framework.*;
 import junit.runner.BaseTestRunner;
@@ -81,6 +82,9 @@ public class AllTests
         
         // Plugin system
         suite.addTestSuite( TestPluginManagerDialog.class ) ;
+        
+        // Command string interpretation
+        suite.addTestSuite( TestCommandStringInterpreter.class ) ;
 
         return suite;
     }

@@ -643,6 +643,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }
     }
+    
+    public void go( final String commandString ) {
+        go( new Command() {
+            public void doIt() { evaluator.go(commandString); } ; } ) ; }
 
     public void goForward(){
         go( new Command() {
@@ -663,6 +667,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     public void intoSub() {
         go( new Command() {
                 public void doIt() { evaluator.intoSub(); } ; } ) ; }
+    
+    public void toBreakPoint() {
+        go( new Command() {
+            public void doIt() { evaluator.toBreakPoint(); } ; } ) ; }
 
     public void toCursor( final String fileName, final int cursor ) {
         go( new Command() {
