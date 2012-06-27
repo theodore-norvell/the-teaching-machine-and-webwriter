@@ -586,6 +586,9 @@ public class TMMainFrame extends JFrame
     public void goBack() {
         tmBigApplet.goBack() ; }
 
+    public void go( String commandString ) {
+    	tmBigApplet.go( commandString ) ; }
+
     public void goForward(){
         tmBigApplet.goForward() ; }
 
@@ -600,6 +603,9 @@ public class TMMainFrame extends JFrame
 
     public void intoSub(){
         tmBigApplet.intoSub() ; }
+    
+    public void toBreakPoint() {
+    	tmBigApplet.toBreakPoint() ; }
 
     public void toCursor( String fileName, int cursor ){
         tmBigApplet.toCursor( fileName, cursor ) ; }

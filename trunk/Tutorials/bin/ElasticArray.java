@@ -20,7 +20,7 @@ public class ElasticArray {
         size = 0 ;  /*#I ScriptManager.relay("HigraphManager","makeNode", size);
         				  ScriptManager.relay("HigraphManager","placeNode", size, X0, Y0);
         				  ScriptManager.relay("HigraphManager","setNodeNameShow", size, true);*/
-        a = new int[1] ;  /*#I makeNodes(a); colorArray(a, PDV.BLUE);  placeArray(a, X0+40, Y0); */
+        a = new int[1] ;  /*#I makeNodes(a); colorArray(a, PDV.BLUE);  placeArray(a, X0+70, Y0); */
     }    /*#TS*/
     
     /*#TB*//****** Visualization routines ***********/
@@ -57,14 +57,14 @@ public class ElasticArray {
 /*#I    
     public void makeNewArray(int[] array){
         makeNodes(array);
-        placeArray(array, X0+40, Y0 + 80);
+        placeArray(array, X0+70, Y0 + 80);
         colorArray(array, PDV.RED);
     }
     
     public void replaceArray(int[] oldArray, int[] newArray){
         deleteNodes(oldArray);
         colorArray(newArray, PDV.BLUE);
-        placeArray(newArray, X0, Y0);
+        placeArray(newArray, X0+70, Y0);
     }*//*#/TB*/
     
     /*#T setup*/ /*#I public static void setup(){

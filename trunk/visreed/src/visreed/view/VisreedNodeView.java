@@ -289,11 +289,25 @@ implements ISelectable, IRotatable, IInteractable, IObserver<VisreedNode> {
         getLayoutManager().layoutNode(this);
     }
     
-    public void doTransition(){
+    protected void startTransition(){
         for(VisreedDropZone zone : this.zoneMap.values()){
-            zone.doTransition();
+            zone.startTransition();
         }
-        super.doTransition();
+        super.startTransition();
+    }
+    
+    protected void advanceTransition(double degree){
+        for(VisreedDropZone zone : this.zoneMap.values()){
+            zone.advanceTransition(degree);
+        }
+        super.advanceTransition( degree );
+    }
+    
+    protected void finishTransition(){
+        for(VisreedDropZone zone : this.zoneMap.values()){
+            zone.finishTransition();
+        }
+        super.finishTransition();
     }
     
     /**

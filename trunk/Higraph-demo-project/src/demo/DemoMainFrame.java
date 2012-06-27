@@ -29,7 +29,7 @@ public class DemoMainFrame extends JFrame {
     
 
 	// Set up a tree-like display
-    private HigraphJComponent graphDisplay0= new HigraphJComponent( ) ;
+    private HigraphJComponent graphDisplay0 = new HigraphJComponent( ) ;
     private DemoViewFactory viewFactory0 = new DemoViewFactory(timeMan) ;
     private DemoHigraphView subgraphView0 = viewFactory0.makeHigraphView(graph, graphDisplay0) ;
 	{ graphDisplay0.setSubgraphView( subgraphView0 ) ; }
@@ -62,10 +62,8 @@ public class DemoMainFrame extends JFrame {
 		Action action = new AbstractAction("add root") {
 			public void actionPerformed(ActionEvent e) {
 				graph.makeRootNode( new DemoPayload(Integer.toString(k++), DemoTag.SEQ) ) ;
-				subgraphView0.refresh() ;
-                subgraphView1.refresh() ;
-                graphDisplay0.repaint();
-                graphDisplay1.repaint();
+				graphDisplay0.refresh() ;
+				graphDisplay1.refresh() ;
 			}} ;
 		toolBar.add( action ) ;
 		
@@ -76,10 +74,8 @@ public class DemoMainFrame extends JFrame {
 				    DemoNode root = tops.get(0) ;
 				    if( root.canDelete() ) {
 				        root.delete() ; } }
-				subgraphView0.refresh() ;
-                subgraphView1.refresh() ;
-                graphDisplay0.repaint();
-                graphDisplay1.repaint();
+                graphDisplay0.refresh();
+                graphDisplay1.refresh();
 			}} ;
 		toolBar.add( action ) ;
 		
@@ -91,10 +87,8 @@ public class DemoMainFrame extends JFrame {
                     DemoNode newNode = graph.makeRootNode(  new DemoPayload(Integer.toString(k), DemoTag.SEQ ) ) ;
                     if( root.canInsertChild(0, newNode) ) {
                         root.insertChild(0, newNode) ; } }
-                subgraphView0.refresh() ;
-                subgraphView1.refresh() ;
-                graphDisplay0.repaint();
-                graphDisplay1.repaint();
+                graphDisplay0.refresh();
+                graphDisplay1.refresh();
 			}} ;
 		toolBar.add( action ) ;
 		

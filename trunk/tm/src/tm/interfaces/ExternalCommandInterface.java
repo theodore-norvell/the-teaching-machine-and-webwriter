@@ -120,8 +120,38 @@ public interface ExternalCommandInterface extends StatusProducer {
       */
     public void initializeTheState() ;
 
+   
     /** Undo the previous advance. */
     public void goBack();
+    
+    
+    /** Advance a number of steps as specified by the following grammar.
+     * There will be only one refresh and the whole command can be undone with
+     * 1 "goBack" command.
+     * <pre>
+     *     command &rarr; WS [ simpleCommand WS [ ";" command ] ]
+     *     simpleCommand &rarr; [integer WS "*" WS] primaryCommand 
+     *     primaryCommand &rarr; "s" | "e" | "o" | "f" | "b" | "m"
+     * </pre>
+     * where WS is any number (0 of more) of white space characters.
+     * The letters are interpreted as follows.
+     *      <table>
+     *        <tr><td>s</td><td> means step to next expression, even if it is
+     *                           in a deeper Subroutine.</td></tr>
+     *        <tr><td>e</td><td> means step to next Expression, stepping over
+     *        					subroutine calls.</td></tr>
+     *        <tr><td>o</td><td> means step Out of this subroutine invocation.
+     *                           </td></tr>
+     *        <tr><td>f</td><td> means step Forward to the next operation.
+     *                           </td></tr>
+     *        <tr><td>b</td><td> means step until the next Break point.
+     *                           </td></tr>
+     *        <tr><td>m</td><td> means Microstep -- the smallest possible step..
+     *                           </td></tr>
+     *       </table>
+     *                 
+     */
+    public void go( String commandString ) ;
     
     /** Advance the state by one operation, such as a lookup, store, fetch,
      * or an arithmetic operation. */
@@ -140,6 +170,9 @@ public interface ExternalCommandInterface extends StatusProducer {
     
     /** Advance up to the start of the next expression. */
     public void intoSub();  // change to stepOver
+    
+    /** Step to the next break-point. */
+    public void toBreakPoint() ;
 
     /** Execute until the given line number in the given file.
      * Line numbers are relative to the start of the

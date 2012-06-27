@@ -5,10 +5,13 @@
 	<title>Tutorials</title>
 	<meta name="description" content="" />
 	<script src="Tutorials.js"></script>
+    <style>
+		#graph { display:none ; }
+	</style>
 </head>
 <body onload="Main.onLoad()">
 	
-<table width="100%" border="0">
+<table width="90%" border="0">
     <tr>
       <td valign="top" ><table width="100%" border="0">
         <tr>
@@ -19,7 +22,7 @@
           <td id="instructions">&nbsp;</td>
         </tr>
       </table></td>
-      <td><applet
+      <td style="width:820px"><applet
           code="tm/TMBigApplet.class" name="tm_applet"
           width="800"
           height="600"
@@ -34,8 +37,7 @@
 			EdgeFunctions.initialize = function(tm) {
 				tm.loadRemoteFile( ".", "ElasticArray.java" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x600.tmcfg" ) ;
-				var i ;
-				for( i=0 ; i<5 ; ++i) tm.intoExp() ;
+				tm.go("4*i");
 			}
 		 //]]></script>
 		<div class = "vertex" id="v0">
@@ -45,8 +47,7 @@
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					var i ;
-					for(i=0 ; i < 12 ; ++i ) tm.intoSub() ;
+					tm.go("16 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -59,8 +60,7 @@
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					var i ;
-					for(i=0 ; i < 7 ; ++i ) tm.intoSub() ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -71,8 +71,7 @@
 		     data-label="next" data-function="edge2to3">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
-					var i ;
-					for(i=0 ; i < 3 ; ++i ) tm.intoSub() ;
+					tm.go("3 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -83,8 +82,7 @@
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					var i ;
-					for(i=0 ; i < 12 ; ++i ) tm.intoSub() ;
+					tm.go("12 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -113,8 +111,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					var i ;
-					for(i=0 ; i < 4 ; ++i ) tm.intoSub() ;
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
@@ -125,8 +122,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					var i ;
-					for(i=0 ; i < 7 ; ++i ) tm.intoSub() ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
@@ -137,8 +133,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					var i ;
-					for(i=0 ; i < 7 ; ++i ) tm.intoSub() ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >

@@ -17,6 +17,7 @@ package tm.evaluator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.Timer;
@@ -199,7 +200,7 @@ class toCursorTest extends StopTest {
                 && doneOrSelectedAndInteresting(vms) ; } }
 
 
-public class Evaluator implements EvaluatorInterface
+public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.CommandsI
 {
     
     Language lang ;
@@ -321,19 +322,33 @@ public class Evaluator implements EvaluatorInterface
         if( autoStepTimer != null ) return ;
         vms.undo() ;
         refresh() ; }
+    
+    public void go(String commandString ) {
+        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+    	if( autoStepTimer != null ) return ;
+    	vms.checkpoint() ;
+    	new CommandStringInterpreter(commandString, this).interpretGoCommand(  ) ;
+    	refresh() ;
+    }
 
-    public void microStep() {
+	public void microStep() {
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
-        stepForward ( new microStepTest() ) ; 
+        microStepCommand() ;
         refresh() ;}
+	
+	/** Not really for public use*/
+	public void microStepCommand() { stepForward ( new microStepTest() ) ; }
 
     public void goForward() {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
-        stepForward ( new goForwardTest() ) ; 
-        refresh() ;}
+        goForwardCommand() ; 
+        refresh() ; }
+	
+	/** Not really for public use*/
+	public void goForwardCommand() { stepForward ( new goForwardTest() ) ;  }
 
     private void initialSteps() {
         Assert.check( statusReporter.getStatusCode() == StatusProducer.READY )  ;
@@ -346,22 +361,31 @@ public class Evaluator implements EvaluatorInterface
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
-        stepForward( new intoExpTest() ) ;
+        intoExpCommand() ;
         refresh() ; }
+	
+	/** Not really for public use*/
+	public void intoExpCommand() { stepForward ( new intoExpTest() ) ;  }
 
     public void intoSub() {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
-        stepForward( new intoSubTest() ) ;
+        intoSubCommand() ;
         refresh() ; }
+	
+	/** Not really for public use*/
+	public void intoSubCommand() { stepForward ( new intoSubTest() ) ;  }
 
     public void overAll() {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
-        stepForward( new overAllTest() ) ;
+        overAllCommand() ;
         refresh() ; }
+	
+	/** Not really for public use*/
+	public void overAllCommand() { stepForward ( new overAllTest() ) ;  }
 
     public void toCursor(String fileName, int lineNumOneBased) {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
@@ -369,6 +393,14 @@ public class Evaluator implements EvaluatorInterface
         vms.checkpoint() ;
         stepForward( new toCursorTest(fileName, lineNumOneBased) ) ;
         refresh() ; }
+    
+    public void toBreakPoint() {
+    	// TODO
+    	toBreakPointCommand() ;
+    }
+	
+	/** Not really for public use*/
+	public void toBreakPointCommand() { Assert.toBeDone() ;  }
     
     public void autoStep() {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;

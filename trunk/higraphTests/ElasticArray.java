@@ -7,8 +7,8 @@ import tm.scripting.PDV ;
  */
 public class ElasticArray {
 
-	public static final int X0 = 20;     // Starting position for array displays
-	public static final int Y0 = 20;  
+	/*#I public static final int X0 = 20; 
+	public static final int Y0 = 20; */ 
     // Represents; a sequence of integers s
     // Invariant: a != null and a.length > 0 
     // Invariant: a.length/4 <= size and size <= a.length
@@ -17,8 +17,10 @@ public class ElasticArray {
     private int[] a ;
 
     public ElasticArray() {
-        size = 0 ;
-        a = new int[1] ;  /*#I makeNodes(a); colorArray(a, PDV.BLUE);  placeArray(a, X0, Y0);*/
+        size = 0 ;  /*#I ScriptManager.relay("HigraphManager","makeNode", size);
+        				  ScriptManager.relay("HigraphManager","placeNode", size, X0, Y0);
+        				  ScriptManager.relay("HigraphManager","setNodeNameShow", size, true);*/
+        a = new int[1] ;  /*#I makeNodes(a); colorArray(a, PDV.BLUE);  placeArray(a, X0+40, Y0); */
     }    /*#TS*/
     
     /*#TB*//****** Visualization routines ***********/
@@ -55,7 +57,7 @@ public class ElasticArray {
 /*#I    
     public void makeNewArray(int[] array){
         makeNodes(array);
-        placeArray(array, X0, Y0 + 80);
+        placeArray(array, X0+40, Y0 + 80);
         colorArray(array, PDV.RED);
     }
     
@@ -84,10 +86,10 @@ public class ElasticArray {
     
     public void grow() {
         if( size == a.length ) {
-            int[] b = new int[ 2* a.length] ;/*#TS*/ makeNewArray(b);/*#/TS*/
+            int[] b = new int[ 2* a.length] ;/*#I makeNewArray(b);*/
             for(int i=0 ; i<a.length ; ++i )
-                b[i] = a[i] ;/*#TC*/ /*#I replaceArray(a, b);*/ /*#/TC*/
-            a = b ; }
+                b[i] = a[i] ;
+            /*#I replaceArray(a, b);*/ a = b ;   }
         a[size] = 0 ;
         ++size ;
     }
