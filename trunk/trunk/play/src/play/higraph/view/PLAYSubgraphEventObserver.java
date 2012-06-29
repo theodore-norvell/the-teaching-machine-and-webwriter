@@ -19,6 +19,7 @@ import java.util.Stack;
 
 import javax.swing.TransferHandler;
 
+import play.controller.Controller;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -39,15 +40,15 @@ public class PLAYSubgraphEventObserver
 
     private ComponentView<?, ?, ?, ?, ?, ?, ?> selectedView;;
 
-    private PLAYHigraphView higraphView;
+    private PLAYHigraphView playHigraphView;
 
-    private PLAYWholeGraph wholeGraph;
+    private PLAYWholeGraph playWholeGraph;
 
     private PLAYViewFactory viewFactory;
 
     private PLAYSubgraph subgraph;
 
-    private PLAYNodeView lastHoverNodeView;
+    private Controller controller;
 
     private enum DropActionType {
 	TAG_NEW, TAG_REPLACE, TAG_INSERT, NODE_DETACH, NODE_MOVE, NODE_INSERT, NODE_REPLACE, NODE_COPY, NODE_DELETE, NONE
@@ -65,8 +66,9 @@ public class PLAYSubgraphEventObserver
 	    PLAYWholeGraph wholeGraph, PLAYViewFactory viewFactory,
 	    PLAYSubgraph subgraph) {
 	super();
-	this.higraphView = higraphView;
-	this.wholeGraph = wholeGraph;
+	this.controller = Controller.getInstance();
+	this.playHigraphView = higraphView;
+	this.playWholeGraph = wholeGraph;
 	this.viewFactory = viewFactory;
 	this.subgraph = subgraph;
 	this.dropAction = PLAYSubgraphEventObserver.DropActionType.NONE;
@@ -76,8 +78,9 @@ public class PLAYSubgraphEventObserver
     public void movedOver(
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
-	if (this.lastHoverNodeView != null) {
-	    this.lastHoverNodeView.setFillColor(null);
+	PLAYNodeView lastHoverNodeView = this.controller.getLastHoverNodeView();
+	if (lastHoverNodeView != null) {
+	    lastHoverNodeView.setColor(Color.BLACK);
 	}
 	if (stack != null && stack.size() > 0) {
 	    System.out.println("Moved over " + e.getX() + "-" + e.getY());
@@ -85,14 +88,13 @@ public class PLAYSubgraphEventObserver
 		    Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 	    if (stack.peek() instanceof PLAYNodeView) {
 		PLAYNodeView nodeView = (PLAYNodeView) stack.peek();
-		nodeView.setFillColor(Color.LIGHT_GRAY);
-		this.lastHoverNodeView = nodeView;
+		nodeView.setColor(Color.RED);
+		this.controller.setLastHoverNodeView(nodeView);
 	    }
 	} else {
 	    e.getComponent().setCursor(Cursor.getDefaultCursor());
 	}
-	this.higraphView.refresh();
-	this.higraphView.getDisplay().repaint();
+	this.controller.refresh();
     }
 
     /** Called when the mouse is being moved with one or more buttons down. */
@@ -107,14 +109,13 @@ public class PLAYSubgraphEventObserver
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
 	System.out.println("Clicked on " + e.getX() + "-" + e.getY());
-	if (this.higraphView.getCurrentNodeView() != null) {
-	    String text = this.higraphView.getCurrentNodeView().getLabel()
+	if (this.controller.getCurrentNodeView() != null) {
+	    String text = this.controller.getCurrentNodeView().getLabel()
 		    .getTheLabel();
 	    if (text.endsWith("|")) {
-		this.higraphView.getCurrentNodeView().getLabel()
+		this.controller.getCurrentNodeView().getLabel()
 			.setTheLabel(text.substring(0, text.length() - 1));
-		this.higraphView.refresh();
-		this.higraphView.getDisplay().repaint();
+		this.controller.refresh();
 	    }
 	}
     }
@@ -124,11 +125,14 @@ public class PLAYSubgraphEventObserver
 	    Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 	    MouseEvent e) {
 	System.out.println("Pressed on " + e.getX() + "-" + e.getY());
+	if (this.controller.getCurrentNodeView() != null) {
+	    this.controller.getCurrentNodeView().setFillColor(null);
+	}
 	e.getComponent().setFocusable(false);
 	this.selectedView = null;
 	if (stack != null && stack.size() > 0) {
 	    this.selectedView = stack.peek();
-	    this.higraphView
+	    this.controller
 		    .setCurrentNodeView((PLAYNodeView) this.selectedView);
 	    if (this.selectedView instanceof NUMNodeView
 		    || this.selectedView instanceof BOOLNodeView
@@ -136,30 +140,30 @@ public class PLAYSubgraphEventObserver
 		    || this.selectedView instanceof VARNodeView) {
 		if (e.getClickCount() == 2) {
 		    if (this.selectedView instanceof BOOLNodeView) {
-			this.higraphView
+			this.controller
 				.getCurrentNodeView()
 				.getLabel()
 				.setTheLabel(
 					Boolean.toString(!Boolean
-						.parseBoolean(this.higraphView
+						.parseBoolean(this.controller
 							.getCurrentNodeView()
 							.getLabel()
 							.getTheLabel())));
 		    } else {
-			this.higraphView
+			this.controller
 				.getCurrentNodeView()
 				.getLabel()
 				.setTheLabel(
-					this.higraphView.getCurrentNodeView()
+					this.controller.getCurrentNodeView()
 						.getLabel().getTheLabel()
 						+ "|");
 			e.getComponent().setCursor(
 				Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 		    }
-		    this.higraphView.refresh();
-		    this.higraphView.getDisplay().repaint();
+		    this.controller.refresh();
 		}
 	    }
+	    this.controller.getCurrentNodeView().setFillColor(Color.LIGHT_GRAY);
 	    e.getComponent().setFocusable(true);
 	    e.getComponent().requestFocusInWindow();
 	}
@@ -372,13 +376,14 @@ public class PLAYSubgraphEventObserver
 	PLAYDropZone targetDropZone = null;
 	int index = 0;
 
+	this.controller.setCheckPoint(this.dropAction.name());
 	try {
 	    switch (this.dropAction) {
 	    case TAG_NEW: {
 		object = supportObj.getTransferable().getTransferData(
 			PLAYViewTransferObject.TAG_DATAFLAVOR);
 		currentTag = (PLAYTag) object;
-		this.wholeGraph.makeRootNode(new PLAYPayload(currentTag
+		this.playWholeGraph.makeRootNode(new PLAYPayload(currentTag
 			.toString(), currentTag));
 		System.out.println("DOTAG_NEW");
 		break;
@@ -481,7 +486,7 @@ public class PLAYSubgraphEventObserver
 	    }
 	    case NONE: {
 		// TODO
-		System.out.println("DONODE_DELETE");
+		System.out.println("DONODE_NONE");
 		break;
 	    }
 	    default: {
@@ -494,8 +499,7 @@ public class PLAYSubgraphEventObserver
 	    e.printStackTrace();
 	}
 
-	this.higraphView.refresh();
-	this.higraphView.getDisplay().repaint();
+	this.controller.refresh();
 
 	System.out.println("... returns true");
 	return true;

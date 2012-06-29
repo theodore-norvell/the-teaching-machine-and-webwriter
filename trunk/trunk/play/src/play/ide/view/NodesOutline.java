@@ -23,13 +23,13 @@ import play.ide.util.Observer;
  * @author Kai Zhu
  * 
  */
-public class NodesOutline extends JTree implements Observer {
+public class NodesOutline extends JTree {
 
     private static final long serialVersionUID = -6060878672788658126L;
 
     private DefaultMutableTreeNode root;
 
-    private DefaultMutableTreeNode playTreeNode;
+    private DefaultMutableTreeNode worldTreeNode;
 
     private DefaultMutableTreeNode trashTreeNode;
 
@@ -37,11 +37,10 @@ public class NodesOutline extends JTree implements Observer {
 
     public NodesOutline(PLAYHigraphView higraphView) {
 	this.higraphView = higraphView;
-	this.higraphView.addObserver(this);
-	this.root = new DefaultMutableTreeNode("World");
+	this.root = new DefaultMutableTreeNode("PLAY");
 	this.setModel(new DefaultTreeModel(this.root));
-	this.playTreeNode = new DefaultMutableTreeNode("PLAY");
-	this.root.add(this.playTreeNode);
+	this.worldTreeNode = new DefaultMutableTreeNode("World");
+	this.root.add(this.worldTreeNode);
 	this.trashTreeNode = new DefaultMutableTreeNode("Trash");
 	this.root.add(this.trashTreeNode);
 	this.setCellRenderer(new NodesTreeCellRender());
@@ -52,21 +51,16 @@ public class NodesOutline extends JTree implements Observer {
 	this.setShowsRootHandles(true);
     }
 
-    /**
-     * @see play.ide.util.Observer#update(play.ide.util.Observable,
-     *      java.lang.Object)
-     */
-    @Override
     public void update(Observable o, Object arg) {
-	this.playTreeNode.removeAllChildren();
+	this.worldTreeNode.removeAllChildren();
 	((DefaultTreeModel) super.treeModel)
-		.removeNodeFromParent(this.playTreeNode);
-	((DefaultTreeModel) super.treeModel).insertNodeInto(this.playTreeNode,
+		.removeNodeFromParent(this.worldTreeNode);
+	((DefaultTreeModel) super.treeModel).insertNodeInto(this.worldTreeNode,
 		this.root, 0);
 	Iterator<?> iterator = this.higraphView.getTops();
 	while (iterator.hasNext()) {
 	    PLAYNodeView nodeView = (PLAYNodeView) iterator.next();
-	    this.addPlayTreeNode(nodeView, this.playTreeNode);
+	    this.addPlayTreeNode(nodeView, this.worldTreeNode);
 	}
 	this.trashTreeNode.removeAllChildren();
 	((DefaultTreeModel) super.treeModel)

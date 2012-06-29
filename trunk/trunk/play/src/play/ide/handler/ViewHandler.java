@@ -23,21 +23,25 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
+import play.controller.Controller;
 import play.higraph.model.PLAYSubgraph;
 import play.higraph.model.PLAYWholeGraph;
 import play.higraph.swing.PLAYHigraphJComponent;
 import play.higraph.swing.PLAYHigraphJComponentKeyAdapter;
 import play.higraph.swing.PLAYSubgraphMouseAdapter;
 import play.higraph.view.PLAYHigraphView;
+import play.higraph.view.PLAYNodeView;
 import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
+import play.higraph.view.model.NodeViewSelectionModel;
 import play.ide.view.ExpsPallet;
 import play.ide.view.NodesOutline;
 import play.ide.view.SyntaxPallet;
@@ -52,36 +56,45 @@ public class ViewHandler {
     // the main frame need to be showed
     private JFrame mainFrame;
 
-    private PLAYWholeGraph wholeGraph;
+    private PLAYWholeGraph playWholeGraph;
 
-    private PLAYSubgraph subgraph;
+    private PLAYSubgraph playSubgraph;
 
-    private PLAYHigraphJComponent higraphJComponent;
+    private PLAYHigraphJComponent playHigraphJComponent;
 
-    private PLAYHigraphView higraphView;
+    private PLAYHigraphView playHigraphView;
 
-    public ViewHandler() {
+    private NodeViewSelectionModel nodeViewSelectionModel;
+
+    private NodesOutline nodesOutline;
+
+    private JMenuItem undoMenuItem;
+
+    public ViewHandler(BTTimeManager btTimeManager) {
 	this.mainFrame = new JFrame();
-	BTTimeManager btTimeManager = new BTTimeManager();
-	this.wholeGraph = new PLAYWholeGraph(btTimeManager);
-	this.subgraph = new PLAYSubgraph(this.wholeGraph);
-	this.higraphJComponent = new PLAYHigraphJComponent();
+	this.playWholeGraph = new PLAYWholeGraph(btTimeManager);
+	this.playSubgraph = new PLAYSubgraph(this.playWholeGraph);
+	this.playHigraphJComponent = new PLAYHigraphJComponent();
 	PLAYViewFactory viewFactory = new PLAYViewFactory(btTimeManager);
-	this.higraphView = viewFactory.makeHigraphView(this.wholeGraph,
-		this.higraphJComponent);
+	this.playHigraphView = viewFactory.makeHigraphView(this.playWholeGraph,
+		this.playHigraphJComponent);
 	PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
-		this.higraphView, this.wholeGraph, viewFactory, this.subgraph);
+		this.playHigraphView, this.playWholeGraph, viewFactory,
+		this.playSubgraph);
 	PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
-		this.higraphView, subgraphEventObserver);
-	this.higraphJComponent
+		this.playHigraphView, subgraphEventObserver);
+	this.nodesOutline = new NodesOutline(this.playHigraphView);
+	this.playHigraphJComponent
 		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
-			this.higraphView));
-	this.higraphJComponent.setBackground(Color.WHITE);
-	this.higraphJComponent.setAutoscrolls(true);
-	this.higraphJComponent.setSubgraphView(this.higraphView);
-	this.higraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
+			this.playHigraphView));
+	this.playHigraphJComponent.setBackground(Color.WHITE);
+	this.playHigraphJComponent.setAutoscrolls(true);
+	this.playHigraphJComponent.setSubgraphView(this.playHigraphView);
+	this.playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
 		NestedTreeLayoutManager.Axis.Y));
-	subgraphMouseAdapter.installIn(this.higraphJComponent);
+	subgraphMouseAdapter.installIn(this.playHigraphJComponent);
+
+	this.nodeViewSelectionModel = new NodeViewSelectionModel();
 
 	this.mainFrame.setTitle("PLAY - PLAY Language IDE");
 	this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -115,19 +128,22 @@ public class ViewHandler {
 
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
-		for (Node<?, ?, ?, ?, ?, ?, ?> node : wholeGraph.getTops()) {
+		for (Node<?, ?, ?, ?, ?, ?, ?> node : playWholeGraph.getTops()) {
 		    node.delete();
 		}
-		higraphJComponent.scrollRectToVisible(new Rectangle(0,
-			(int) higraphJComponent.getSize().getHeight() - 50,
+		playHigraphJComponent.scrollRectToVisible(new Rectangle(0,
+			(int) playHigraphJComponent.getSize().getHeight() - 50,
 			100, 100));
-		higraphJComponent.setPreferredSize(new Dimension(
-			(int) higraphJComponent.getSize().getWidth() + 100,
-			(int) higraphJComponent.getSize().getHeight() + 100));
-		higraphView.refresh();
+		playHigraphJComponent
+			.setPreferredSize(new Dimension(
+				(int) playHigraphJComponent.getSize()
+					.getWidth() + 100,
+				(int) playHigraphJComponent.getSize()
+					.getHeight() + 100));
+		playHigraphView.refresh();
 
-		higraphJComponent.revalidate();
-		higraphJComponent.repaint();
+		playHigraphJComponent.revalidate();
+		playHigraphJComponent.repaint();
 	    }
 
 	});
@@ -151,7 +167,7 @@ public class ViewHandler {
 	leftCenterSplitPane.setOneTouchExpandable(true);
 	leftCenterSplitPane.setDividerLocation(150);
 	leftCenterSplitPane.setLeftComponent(this.getLeftTopBottomSplitPane());
-	JScrollPane scrollPane = new JScrollPane(this.higraphJComponent);
+	JScrollPane scrollPane = new JScrollPane(this.playHigraphJComponent);
 	scrollPane.setFocusable(true);
 	leftCenterSplitPane.setRightComponent(scrollPane);
 	return leftCenterSplitPane;
@@ -172,8 +188,7 @@ public class ViewHandler {
 		JSplitPane.VERTICAL_SPLIT);
 	rightTopBottomSplitPane.setOneTouchExpandable(true);
 	rightTopBottomSplitPane.setDividerLocation(500);
-	JScrollPane scrollPane = new JScrollPane(new NodesOutline(
-		this.higraphView));
+	JScrollPane scrollPane = new JScrollPane(this.nodesOutline);
 	scrollPane.setFocusable(true);
 	rightTopBottomSplitPane.setTopComponent(scrollPane);
 	rightTopBottomSplitPane.setBottomComponent(new JPanel());
@@ -202,6 +217,25 @@ public class ViewHandler {
 	});
 	fileMenu.add(exitMenuItem);
 
+	JMenu editMenu = new JMenu("Edit");
+	editMenu.setMnemonic(KeyEvent.VK_E);
+	menuBar.add(editMenu);
+
+	this.undoMenuItem = new JMenuItem("Undo", KeyEvent.VK_U);
+	this.undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
+		ActionEvent.CTRL_MASK));
+	this.undoMenuItem.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		Controller.getInstance().undo();
+		Controller.getInstance().refresh();
+	    }
+
+	});
+	editMenu.add(this.undoMenuItem);
+	editMenu.addSeparator();
+
 	return menuBar;
     }
 
@@ -213,6 +247,79 @@ public class ViewHandler {
 	    }
 
 	});
+    }
+
+    public void updatePLAYHigraphView() {
+	this.playHigraphView.refresh();
+	this.playHigraphView.getDisplay().repaint();
+    }
+
+    /**
+     * @param o
+     */
+    public void updateNodesOutline() {
+	this.nodesOutline.update(null,
+		this.playHigraphView.getDeletedNodeViewList());
+    }
+
+    /**
+     * @param string
+     */
+    public void showMessage(String string) {
+	JOptionPane.showMessageDialog(this.playHigraphJComponent, string);
+    }
+
+    /**
+     * @param currentDescription
+     */
+    public void modifyUndoMenuItem(String description) {
+	if (description != null) {
+	    this.undoMenuItem.setEnabled(true);
+	    this.undoMenuItem.setText("Undo " + description);
+	} else {
+	    this.undoMenuItem.setText("Undo");
+	    this.undoMenuItem.setEnabled(false);
+	}
+    }
+
+    /**
+     * @return the currentNodeView
+     */
+    public PLAYNodeView getCurrentNodeView() {
+	return this.nodeViewSelectionModel.getSelectedNodeView();
+    }
+
+    /**
+     * @param currentNodeView
+     *            the currentNodeView to set
+     */
+    public void setCurrentNodeView(PLAYNodeView currentNodeView) {
+	this.nodeViewSelectionModel.setSelectedNodeView(currentNodeView);
+    }
+
+    /**
+     * 
+     */
+    public void getNextNodeView() {
+	this.nodeViewSelectionModel.getNextNodeView(this.playHigraphView);
+    }
+
+    public void getPreviousNodeView() {
+	this.nodeViewSelectionModel.getPreviousNodeView(this.playHigraphView);
+    }
+
+    /**
+     * @return
+     */
+    public PLAYNodeView getLastHoverNodeView() {
+	return this.nodeViewSelectionModel.getLastHoverNodeView();
+    }
+
+    /**
+     * @param nodeView
+     */
+    public void setLastHoverNodeView(PLAYNodeView nodeView) {
+	this.nodeViewSelectionModel.setLastHoverNodeView(nodeView);
     }
 
 }

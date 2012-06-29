@@ -29,7 +29,6 @@ public class SyntaxPallet extends JPanel {
 	this.syntaxList = new JList<>();
 	this.syntaxListModel = new DefaultListModel<PLAYTag>();
 
-	this.syntaxListModel.addElement(PLAYTag.FILE);
 	this.syntaxListModel.addElement(PLAYTag.CLASS);
 	this.syntaxListModel.addElement(PLAYTag.SEQ);
 	this.syntaxListModel.addElement(PLAYTag.ASSIGN);

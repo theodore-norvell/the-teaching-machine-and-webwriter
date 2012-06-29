@@ -5,9 +5,12 @@
  */
 package play.higraph.swing;
 
+import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import play.controller.Controller;
+import play.higraph.model.PLAYNode;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
 
@@ -19,8 +22,11 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 
     private PLAYHigraphView higraphView;
 
+    private Controller controller;
+
     public PLAYHigraphJComponentKeyAdapter(PLAYHigraphView higraphView) {
 	this.higraphView = higraphView;
+	this.controller = Controller.getInstance();
     }
 
     /**
@@ -29,7 +35,7 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 	System.out.println("key typed" + e.getKeyChar() + "-" + e.getKeyCode());
-	PLAYNodeView nodeView = this.higraphView.getCurrentNodeView();
+	PLAYNodeView nodeView = this.controller.getCurrentNodeView();
 	if (nodeView != null) {
 	    StringBuffer expBuffer = new StringBuffer(nodeView.getLabel()
 		    .getTheLabel());
@@ -50,8 +56,7 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 		}
 	    }
 	    nodeView.getLabel().setTheLabel(expBuffer.toString() + '|');
-	    this.higraphView.refresh();
-	    this.higraphView.getDisplay().repaint();
+	    this.controller.refresh();
 	}
     }
 
@@ -62,8 +67,9 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
     public void keyPressed(KeyEvent e) {
 	System.out.println("key Pressed" + e.getKeyCode() + "-"
 		+ e.getModifiersEx());
-	PLAYNodeView nodeView = this.higraphView.getCurrentNodeView();
+	PLAYNodeView nodeView = this.controller.getCurrentNodeView();
 	if (nodeView != null) {
+	    this.controller.setCheckPoint("KeyPressed");
 	    if ((e.getKeyCode() == KeyEvent.VK_X)
 		    && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
 		if (nodeView.getNode().canDelete()) {
@@ -81,9 +87,35 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 			    .makeRootNode(
 				    deletedNodeView.getNode().getPayload());
 		}
+	    } else if ((((e.getKeyCode() == KeyEvent.VK_DOWN) || (e
+		    .getKeyCode() == KeyEvent.VK_RIGHT)))
+		    && (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
+		this.controller.getNextNodeView();
+		nodeView = this.controller.getCurrentNodeView();
+		this.controller.getCurrentNodeView().setFillColor(
+			Color.LIGHT_GRAY);
+	    } else if ((((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_LEFT)))
+		    && (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
+		this.controller.getPreviousNodeView();
+		nodeView = this.controller.getCurrentNodeView();
+		this.controller.getCurrentNodeView().setFillColor(
+			Color.LIGHT_GRAY);
+	    } else if ((e.getKeyCode() == KeyEvent.VK_DOWN)
+		    || (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
+		this.controller.getCurrentNodeView().setFillColor(null);
+		this.controller.getNextNodeView();
+		nodeView = this.controller.getCurrentNodeView();
+		this.controller.getCurrentNodeView().setFillColor(
+			Color.LIGHT_GRAY);
+	    } else if ((e.getKeyCode() == KeyEvent.VK_UP)
+		    || (e.getKeyCode() == KeyEvent.VK_LEFT)) {
+		this.controller.getCurrentNodeView().setFillColor(null);
+		this.controller.getPreviousNodeView();
+		nodeView = this.controller.getCurrentNodeView();
+		this.controller.getCurrentNodeView().setFillColor(
+			Color.LIGHT_GRAY);
 	    }
-	    this.higraphView.refresh();
-	    this.higraphView.getDisplay().repaint();
+	    this.controller.refresh();
 	}
     }
 

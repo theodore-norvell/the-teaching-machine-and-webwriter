@@ -28,7 +28,8 @@ public class Application {
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	Controller controller = new Controller();
+	Controller controller = Controller.getInstance();
+	controller.init();
 	controller.startApplication();
     }
 
