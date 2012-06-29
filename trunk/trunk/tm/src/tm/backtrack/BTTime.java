@@ -17,13 +17,15 @@ package tm.backtrack;
 /** A record of a past or present value of a backtrackable object.
  */
 class BTTime {
-    int epoch ;     // The number of preceeding times on this line
+    int epoch ;     // The number of preceding times on this line
     BTTime prev ;   // The previous time
+    String description ;
 
-    BTTime( BTTime p ) {
+    BTTime( BTTime p, String description ) {
         if( p==null) epoch = 0 ;
         else epoch = p.epoch + 1 ;
-        prev = p ; }
+        prev = p ;
+        this.description = description ; }
 
     static BTTime leastCommonTime( BTTime a, BTTime b ) {
         while( a.epoch > b.epoch ) a = a.prev ;

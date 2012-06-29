@@ -27,7 +27,7 @@ public class BTTimeManager {
     private Vector<Backtrackable> registrants ; // Registered objects
 
     public BTTimeManager( ) {
-        currentTime = new BTTime( null ) ;
+        currentTime = new BTTime( null, "none" ) ;
         registrants = new Vector<Backtrackable>(1) ;
     }
 
@@ -36,11 +36,16 @@ public class BTTimeManager {
         
     /** Checkpoint is used to establish a new checkpoint */
     public void checkpoint() {
-        currentTime = new BTTime( currentTime ) ;
-        
-        for( int i=0, sz = registrants.size() ; i<sz ; ++i ) {
-            Backtrackable registrant = registrants.elementAt(i) ;
-            registrant.checkpoint() ; }
+	checkpoint( "" ) ;
+    }
+    
+    /** Checkpoint is used to establish a new checkpoint */
+    public void checkpoint(String description) {
+	currentTime = new BTTime( currentTime, description ) ;
+
+	for( int i=0, sz = registrants.size() ; i<sz ; ++i ) {
+	    Backtrackable registrant = registrants.elementAt(i) ;
+	    registrant.checkpoint() ; }
     }
 
     /** Undo is used to back up to the last checkpoint */
@@ -52,8 +57,13 @@ public class BTTimeManager {
                 Backtrackable registrant = registrants.elementAt(i) ;
                 registrant.undo() ; } }
     }
+    
+    public String getCurrentDescription(){return currentTime.description; }
+    
+    public boolean canUndo() { return currentTime.epoch != 0 ; }
 
     BTTime getCurrentTime() {
         return currentTime ;
     }
+    
 }
