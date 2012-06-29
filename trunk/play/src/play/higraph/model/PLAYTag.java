@@ -372,37 +372,6 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	}
 
     },
-    FILE {
-
-	@Override
-	public boolean contentModel(List<PLAYTag> seq) {
-	    if (!seq.isEmpty()) {
-		if (seq.contains(PLAYTag.CLASS)) {
-		    return true;
-		}
-	    }
-	    return false;
-	}
-
-	@Override
-	public List<PLAYTag> defaultTagSequence() {
-	    return new ArrayList<PLAYTag>();
-	}
-
-	@Override
-	public PLAYPayload defaultPayload() {
-	    return new PLAYPayload("FILE", PLAYTag.FILE);
-	}
-
-	/**
-	 * @see java.lang.Enum#toString()
-	 */
-	@Override
-	public String toString() {
-	    return "FILE";
-	}
-
-    },
     NUMBER {
 
 	@Override
