@@ -52,6 +52,14 @@
 				}
 			//]]></script>
 		</div>
+		<div class="edge" id="edge1to0" data-source="v1" data-target="v0"
+		     data-label="back" data-function="edge1to0">
+			<script>//<![CDATA[
+				EdgeFunctions.edge1to0 = function(tm) {
+					tm.goBack() ;
+				}
+			//]]></script>
+		</div>
 		<div class = "vertex" id="v1" >
 			<p>The structure consists of a size field and an array that is at least as long as the size. </p>
 			<p>Items of the array past the first 'size' are ignored.</p>

@@ -10,6 +10,7 @@ import js.Dom ;
 class Main {
 
 	static var tmProxy : TMProxy ;
+	static var vertexStack : List<TutorialVertex> = new List<TutorialVertex>() ;
 	
 	// The following declaration is a trick to ensure that the EdgeFunctions class
 	// is linked in.
@@ -146,25 +147,49 @@ class Main {
 	}
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
+		
 		var instructionNode = Lib.document.getElementById("instructions") ;
 		while ( instructionNode.firstChild != null )
 			instructionNode.removeChild( instructionNode.firstChild ) ;
-		instructionNode.insertBefore(  vertex.htmlNode, null ) ;
+		instructionNode.insertBefore( vertex.htmlNode, null ) ;
 		
 		var buttonsNode = Lib.document.getElementById("buttons") ;
 		while ( buttonsNode.firstChild != null )
 			buttonsNode.removeChild( buttonsNode.firstChild ) ;
 		for ( id in vertex.outGoingEdges.keys()  ) {
 			var edge = vertex.outGoingEdges.get( id ) ;
-			var target = edge.target ;
-			var functionName = edge.functionName ;
-			var labelNode = Lib.document.createTextNode(edge.label) ;
-			var button = Lib.document.createElement("button") ;
-			button.insertBefore( labelNode, null ) ;
-			button.onclick = function(event : Event ) {
-				executeFunction( functionName ) ;
-				switchToVertex( target ) ; }
-			buttonsNode.insertBefore( button, null ) ; }
+			if (edge.label == "back")
+			{
+				if (edge.target.id == vertexStack.first().id)
+				{
+					var target = edge.target ;
+					var functionName = edge.functionName ;
+					var labelNode = Lib.document.createTextNode(edge.label) ;
+					var button = Lib.document.createElement("button") ;
+					button.insertBefore( labelNode, null ) ;
+					button.onclick = function(event : Event ) {
+						executeFunction( functionName ) ;
+						vertexStack.pop(); 
+						switchToVertex( target ) ; }
+					buttonsNode.insertBefore( button, null ) ;
+				}
+				else
+					continue;
+			}
+			else
+			{
+				var target = edge.target ;
+				var functionName = edge.functionName ;
+				var labelNode = Lib.document.createTextNode(edge.label) ;
+				var button = Lib.document.createElement("button") ;
+				button.insertBefore( labelNode, null ) ;
+				button.onclick = function(event : Event ) {
+					executeFunction( functionName ) ;
+					vertexStack.push(vertex); 
+					switchToVertex( target ) ; }
+				buttonsNode.insertBefore( button, null ) ; }
+		
+			}
 	}
 	
 }
