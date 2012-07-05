@@ -11,12 +11,14 @@ class TutorialVertex {
 	
 	public var id(default,null) : String ;
 	public var outGoingEdges(default,null) : Hash<TutorialEdge> ;
-	public var htmlNode(default,null) : HtmlDom ; 
+	public var htmlNode(default, null) : HtmlDom ; 
+	//public var inComingEdges(default, null) : Hash<TutorialEdge>;
 
 	public function new( id : String, htmlNode : HtmlDom) {
 		this.id = id ;
 		this.htmlNode = htmlNode ;
 		this.outGoingEdges = new Hash<TutorialEdge>() ;
+		//this.inComingEdges = new Hash<TutorialEdge>() ;
 	}
 	
 }
