@@ -73,6 +73,14 @@
 				}
 			//]]></script>
 		</div>
+		<div class="edge" id="edge2to1" data-source="v2" data-target="v1"
+		     data-label="back" data-function="edge2to1">
+			<script>//<![CDATA[
+				EdgeFunctions.edge2to1 = function(tm) {
+					tm.goBack() ;
+				}
+			//]]></script>
+		</div>
 	  <div class = "vertex" id="v2" >
 			<p>The 'grow' method may be called to make the array larger by one</p>
 		</div>
@@ -81,6 +89,30 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
 					tm.go("3 * s") ;
+				}
+			//]]></script>
+		</div>
+		<div class="edge" id="edge2to4" data-source="v2" data-target="v4"
+		     data-label="next2" data-function="edge2to4">
+			<script>//<![CDATA[
+				EdgeFunctions.edge2to4 = function(tm) {
+					tm.go("15 * s") ;
+				}
+			//]]></script>
+		</div>
+		<div class="edge" id="edge3to2" data-source="v3" data-target="v2"
+		     data-label="back" data-function="edge3to2">
+			<script>//<![CDATA[
+				EdgeFunctions.edge3to2 = function(tm) {
+					tm.goBack() ;
+				}
+			//]]></script>
+		</div>
+		<div class="edge" id="edge4to2" data-source="v4" data-target="v2"
+		     data-label="back" data-function="edge4to2">
+			<script>//<![CDATA[
+				EdgeFunctions.edge4to2 = function(tm) {
+					tm.goBack() ;
 				}
 			//]]></script>
 		</div>
@@ -95,6 +127,14 @@
 				}
 			//]]></script>
 		</div>
+		<div class="edge" id="edge4to3" data-source="v4" data-target="v3"
+		     data-label="back" data-function="edge4to3">
+			<script>//<![CDATA[
+				EdgeFunctions.edge4to3 = function(tm) {
+					tm.goBack() ;
+				}
+			//]]></script>
+		</div>
 	  <div class = "vertex" id="v4" >
 			<p>The grow function is about to be called for the second time.</p>
 		</div>
@@ -103,6 +143,14 @@
 			<script>//<![CDATA[
 				EdgeFunctions.intoSub = function(tm) {
 					tm.intoSub() ;
+				}
+			//]]></script>
+		</div>
+		<div class="edge" id="edge5to4" data-source="v5" data-target="v4"
+		     data-label="back" data-function="edge5to4">
+			<script>//<![CDATA[
+				EdgeFunctions.edge5to4 = function(tm) {
+					tm.goBack() ;
 				}
 			//]]></script>
 		</div>
