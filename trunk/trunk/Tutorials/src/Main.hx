@@ -102,7 +102,7 @@ class Main {
 			else {
 				edge.source = graph.vertices.get( sourceId ) ;
 				if( edgeLabel != null )
-					graph.vertices.get( sourceId ).outGoingEdges.set( edgeLabel, edge ) ;  }
+					graph.vertices.get( sourceId ).outGoingEdges.set( edge.id, edge ) ;  }
 			
 			var targetId = edge.htmlNode.getAttribute("data-target") ;
 			if ( targetId == null ) {
@@ -158,8 +158,21 @@ class Main {
 			buttonsNode.removeChild( buttonsNode.firstChild ) ;
 		for ( id in vertex.outGoingEdges.keys()  ) {
 			var edge = vertex.outGoingEdges.get( id ) ;
+			//trace("Edge id " + id);
+			/*var target = vertexStack.first() ;
+			var functionName = "goBack" ;
+			var labelNode = Lib.document.createTextNode("Back") ;
+			var button = Lib.document.createElement("button") ;
+			button.insertBefore( labelNode, null ) ;
+				button.onclick = function(event : Event ) {
+					executeFunction( functionName ) ;
+					var temp = vertexStack.pop(); 
+					//trace(temp.id + "popped from stack\n Going to switch to :" + target.id);
+					switchToVertex( target ) ; }
+				buttonsNode.insertBefore( button, null ) ;*/
 			if (edge.label == "back")
 			{
+				//trace("In back, comparing : " + edge.target.id + "& stack top : " + vertexStack.first().id);
 				if (edge.target.id == vertexStack.first().id)
 				{
 					var target = edge.target ;
@@ -169,7 +182,8 @@ class Main {
 					button.insertBefore( labelNode, null ) ;
 					button.onclick = function(event : Event ) {
 						executeFunction( functionName ) ;
-						vertexStack.pop(); 
+						var temp = vertexStack.pop(); 
+						//trace(temp.id + "popped from stack\n Going to switch to :" + target.id);
 						switchToVertex( target ) ; }
 					buttonsNode.insertBefore( button, null ) ;
 				}
@@ -177,7 +191,7 @@ class Main {
 					continue;
 			}
 			else
-			{
+			{*/
 				var target = edge.target ;
 				var functionName = edge.functionName ;
 				var labelNode = Lib.document.createTextNode(edge.label) ;
@@ -186,6 +200,7 @@ class Main {
 				button.onclick = function(event : Event ) {
 					executeFunction( functionName ) ;
 					vertexStack.push(vertex); 
+					//trace(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
 					switchToVertex( target ) ; }
 				buttonsNode.insertBefore( button, null ) ; }
 		

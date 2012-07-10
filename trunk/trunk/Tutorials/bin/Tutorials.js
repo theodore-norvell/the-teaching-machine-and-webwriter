@@ -270,7 +270,7 @@ Main.buildGraph = function(doc) {
 			graphBuilt = false;
 		} else {
 			edge.source = graph.vertices.get(sourceId);
-			if(edgeLabel != null) graph.vertices.get(sourceId).outGoingEdges.set(edgeLabel,edge);
+			if(edgeLabel != null) graph.vertices.get(sourceId).outGoingEdges.set(edge.id,edge);
 		}
 		var targetId = edge.htmlNode.getAttribute("data-target");
 		if(targetId == null) {
@@ -320,7 +320,9 @@ Main.switchToVertex = function(vertex) {
 	while( $it0.hasNext() ) {
 		var id = $it0.next();
 		var edge = vertex.outGoingEdges.get(id);
+		haxe.Log.trace("Edge id " + id,{ fileName : "Main.hx", lineNumber : 161, className : "Main", methodName : "switchToVertex"});
 		if(edge.label == "back") {
+			haxe.Log.trace("In back, comparing : " + edge.target.id + "& stack top : " + Main.vertexStack.first().id,{ fileName : "Main.hx", lineNumber : 164, className : "Main", methodName : "switchToVertex"});
 			if(edge.target.id == Main.vertexStack.first().id) {
 				var target = [edge.target];
 				var functionName = [edge.functionName];
@@ -330,7 +332,8 @@ Main.switchToVertex = function(vertex) {
 				button.onclick = (function(functionName,target) {
 					return function(event) {
 						Main.executeFunction(functionName[0]);
-						Main.vertexStack.pop();
+						var temp = Main.vertexStack.pop();
+						haxe.Log.trace(temp.id + "popped from stack\n Going to switch to :" + target[0].id,{ fileName : "Main.hx", lineNumber : 175, className : "Main", methodName : "switchToVertex"});
 						Main.switchToVertex(target[0]);
 					};
 				})(functionName,target);
@@ -346,6 +349,7 @@ Main.switchToVertex = function(vertex) {
 				return function(event) {
 					Main.executeFunction(functionName[0]);
 					Main.vertexStack.push(vertex);
+					haxe.Log.trace(vertex.id + "pushed  on stack\nAbout to switch to target: " + target[0].id,{ fileName : "Main.hx", lineNumber : 192, className : "Main", methodName : "switchToVertex"});
 					Main.switchToVertex(target[0]);
 				};
 			})(functionName,target);
