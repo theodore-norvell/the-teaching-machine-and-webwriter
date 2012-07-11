@@ -22,7 +22,7 @@
 <p><img src="drawings/exec-eg-0.png" width="556" height="483" /></p>
 <p>After three steps, we have the following situation where the currently selected node is ready to obtain a value.</p>
 <p><img src="drawings/exec-eg-1.png" width="556" height="483" /></p>
-<p>After one more step, the x node has a value. At this point the &lt; node is the currently selected node. After another step, the y node is selected.</p>
+<p>After one more step, the x node has a value. At this point the &lt; node is again the currently selected node. After another step, the y node is selected.</p>
 <p><img src="drawings/exec-eg-2.png" width="556" height="483" /></p>
 <p>In the next step, the y node is evaluated and deselected.</p>
 <p><img src="drawings/exec-eg-3.png" width="556" height="483" /></p>
@@ -42,14 +42,155 @@
 <p><img src="drawings/exec-eg-10.png" width="509" height="483" /></p>
 <p>At this point the body of the method has a value and so we are done.</p>
 <p>From the above example we can see the desired behaviour at each step for four categories of nodes.</p>
-<p>Variable look up nodes.</p>
+<h3>Local variable look up nodes. local<sub>id</sub></h3>
 <ul>
-  <li>When stepped the value is looked up and associated with the node. The selected node stack is popped</li>
+  <li>
+    <p>When stepped the value is looked up and mapped to the current node. The selected node stack is popped </p>
+  </li>
 </ul>
-<p>Binary operation nodes</p>
+<h3>n-ary operation nodes op(ch<sub>0</sub>, ch<sub>1</sub>, ..., ch<sub>n-1</sub>)</h3>
 <ul>
-  <li>When stepped the first time, a</li>
+  <li>
+    <p>When stepped:</p>
+    <ul>
+      <li>
+        <p>If there is an unmapped child node, push a new selection edge targetting the leftmost such child.</p>
+      </li>
+      <li>        
+        <p>Otherwise. Do the operation. Map the current node to the result. Unmap all the children. Pop the selected node stack.      </p>
+      </li>
+    </ul>
+  </li>
 </ul>
+<h3>Seq nodes. seq(ch<sub>0</sub>, ch<sub>1</sub>, ..., ch<sub>n-1</sub>)</h3>
+<p>(It is an invariant that at most one child of a seq can be mapped.)</p>
+<ul>
+  <li>
+    <p>When stepped:
+    </p>
+    <ul>
+      <li>
+        <p>If there are no children, map the node to the null value.</p>
+      </li>
+      <li>
+        <p>Otherwise: If no child is mapped, select the first child.</p>
+      </li>
+      <li>
+        <p>Otherwise: If the last child is mapped: Map this node to the value of the last child. Unmap the last child.</p>
+      </li>
+      <li>        
+        <p>Otheriwise. (Some child that is not last is mapped): Unmap the mapped child. Select the following child.      </p>
+      </li>
+    </ul>
+  </li>
+</ul>
+<h3>If nodes. if(g, t, e)</h3>
+<p>It is an invariant that at most one child of a seq can be mapped.)</p>
+<ul>
+  <li>
+    <p>When stepped:</p>
+    <ul>
+      <li>
+        <p>If no child is mapped: Map the first child.</p>
+      </li>
+      <li>
+        <p>If the first child is mapped: It should be the case that the value is either true or false. This should have been checked by type checking. Just in case, flag an error in case the value is neither true nor false.
+        </p>
+        <ul>
+          <li>
+            <p>Unmap the child.</p>
+          </li>
+          <li>
+            <p>Select the second (in case of true) or third (in case of false) child.</p>
+          </li>
+        </ul>
+      </li>
+      <li>        
+        <p>If the second or third child is mapped. Unmap the child. Map this node to the same value.      </p>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>Similar evaluation strategies can be developed for other node types.</p>
+<h3>While loops  while(g, b)</h3>
+<p> (It is an invariant that at most one child of a seq can be mapped.)</p>
+<ul>
+  <li>
+    <p>When stepped  </p>
+  </li>
+  <li>
+    <p>If no child is mapped: Map the first child.</p>
+  </li>
+  <li>
+    <p>If the first child is mapped: It should be the case that the value is either true or false. This should have been checked by type checking. Just in case, flag an error in case the value is neither true nor false. </p>
+    <ul>
+      <li>
+        <p>Unmap the child.</p>
+      </li>
+      <li>
+        <p>If the value was true: Select the second child</p>
+      </li>
+      <li>
+        <p>If the value was false: Map the while node to the null value. Pop the selection stack.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>If the second child is mapped. Unmap the child. Select the first child.</p>
+  </li>
+</ul>
+<h3>Message send commands: mess<sub><em>m</em></sub>(recip, ch<sub>1</sub>, ch<sub>2</sub>, ch<sub>n</sub>)</h3>
+<p>This is very similar to an n-ary operation at the start</p>
+<ul>
+  <li>
+    <p>When stepped:
+    </p>
+    <ul>
+      <li>
+        <p>If there is an unmapped child node, push a new selection edge targetting the leftmost such child.</p>
+      </li>
+      <li>
+        <p>If all children are mapped and the label on the selection edge is 0.</p>
+        <ul>
+          <li>
+            <p>Find field <em>m</em> in that object. (Error if there is none.)</p>
+          </li>
+          <li>
+            <p>If the value of the field is not a method value, then Error.</p>
+          </li>
+          <li>
+            <p>Make a copy of the method. Push it on the method stack.</p>
+          </li>
+          <li>
+            <p>Select the method copy's body.</p>
+          </li>
+          <li>
+            <p>Replace the 0 with a 1</p>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <p>If all children are mapped and the label on the selection edge is 1.
+        </p>
+        <ul>
+          <li>
+            <p>There should be one method above this one and its body <em>b</em> should be mapped.</p>
+          </li>
+          <li>
+            <p>Map this node to the value that <em>b</em> is mapped to.</p>
+          </li>
+          <li>
+            <p>Unmap <em>b</em>.</p>
+          </li>
+          <li>
+            <p>Unselect this node.</p>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 </body>
 </html>
