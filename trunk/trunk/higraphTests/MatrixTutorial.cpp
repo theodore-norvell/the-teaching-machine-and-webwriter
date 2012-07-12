@@ -18,9 +18,10 @@ int main()
      ScriptManager::relay("HigraphManager", "setDefaultNodeFillColor", WHITE);
      ScriptManager::relay("HigraphManager", "setDefaultNodeValueShow", true, CENTER);
      ScriptManager::relay("HigraphManager", "setDefaultNodeValueColor", BLACK);
-     ScriptManager::relay("HigraphManager", "setDefaultNodeNameShow", true, EAST);
+     ScriptManager::relay("HigraphManager", "setDefaultNodeNameShow", true, WEST);
      ScriptManager::relay("HigraphManager", "setDefaultNodeNameColor", MAGENTA);
-	 ScriptManager::relay("HigraphManager","setDefaultNodeSize", 50, 50);
+	 ScriptManager::relay("HigraphManager", "setDefaultNodeShape", RECTANGLE);
+	 ScriptManager::relay("HigraphManager","setDefaultNodeSize", 40, 40);
        
      /*#/TS*/
      const int rows = 2;
@@ -53,19 +54,38 @@ int main()
 	
 	 add1(matrix, rows, cols);
 	 
+	 
+	 
 	 //See that the values of the original matrix have changed
      
      /*#TS*/
+	 //ScriptManager::relay("HigraphManager","setNodeNameLabel",matrix,"matrix[]");
      /*#/TS*/
      return 0;
 }
 
 void add1(int func_matrix[], int rows, int columns)
 {
-	/* char name[15]="func_matrix";
-	ScriptManager::relay("HigraphManager","createString",name); 
-	ScriptManager::relay("HigraphManager","setStringBaseColor",name,MAGENTA);
-	*/
+	/*#TS*/ int name;
+	int target;
+	ScriptManager::relay("HigraphManager","makeNode",name); 
+	ScriptManager::relay("HigraphManager","setNodeColor",name,WHITE);
+	ScriptManager::relay("HigraphManager","setNodeNameLabel",name,"func_matrix[]");
+	ScriptManager::relay("HigraphManager","setNodeNameShow",name,true);
+	ScriptManager::relay("HigraphManager","setNodeValueShow",name,false);
+	ScriptManager::relay("HigraphManager","setNodeNamePosition",name,CENTER);
+	ScriptManager::relay("HigraphManager","placeNode",name,180,355);
+	ScriptManager::relay("HigraphManager","makeNode",target); 
+	ScriptManager::relay("HigraphManager","setNodeColor",target,WHITE);
+	ScriptManager::relay("HigraphManager","setNodeNameShow",target,false);
+	ScriptManager::relay("HigraphManager","setNodeValueShow",target,false);
+	ScriptManager::relay("HigraphManager","placeNode",target,232,150);
+	ScriptManager::relay("HigraphManager","makeEdge", name, target);
+	ScriptManager::relay("HigraphManager", "setTargetDecorator", name, target, ARROWHEAD);
+	ScriptManager::relay("HigraphManager", "setEdgeColor", name, target, BLACK);
+	//ScriptManager::relay("HigraphManager","setStringBaseColor",name,MAGENTA);
+	/*ScriptManager::relay("HigraphManager","setNodeNameLabel",func_matrix,true,"func_matrix[]");*/
+	/*#/TS*/
 	
 	/*#TS*///ScriptManager::relay("HigraphManager","setNodeNameLabel", matrix, "func_matrix");
     /*#/TS*/
