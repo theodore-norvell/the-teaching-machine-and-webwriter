@@ -52,14 +52,6 @@
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge1to0" data-source="v1" data-target="v0"
-		     data-label="back" data-function="edge1to0">
-			<script>//<![CDATA[
-				EdgeFunctions.edge1to0 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
 		<div class = "vertex" id="v1" >
 			<p>The structure consists of a size field and an array that is at least as long as the size. </p>
 			<p>Items of the array past the first 'size' are ignored.</p>
@@ -70,18 +62,11 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
 					tm.go("7 * s") ;
+					tm.goForward();
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge2to1" data-source="v2" data-target="v1"
-		     data-label="back" data-function="edge2to1">
-			<script>//<![CDATA[
-				EdgeFunctions.edge2to1 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
-	  <div class = "vertex" id="v2" >
+		<div class = "vertex" id="v2" >
 			<p>The 'grow' method may be called to make the array larger by one</p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
@@ -89,6 +74,7 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
 					tm.go("3 * s") ;
+					tm.microStep();
 				}
 			//]]></script>
 		</div>
@@ -100,22 +86,8 @@
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge3to2" data-source="v3" data-target="v2"
-		     data-label="back" data-function="edge3to2">
-			<script>//<![CDATA[
-				EdgeFunctions.edge3to2 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
-		<div class="edge" id="edge4to2" data-source="v4" data-target="v2"
-		     data-label="back" data-function="edge4to2">
-			<script>//<![CDATA[
-				EdgeFunctions.edge4to2 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
+
+		
 	  <div class = "vertex" id="v3" >
 			<p>In this case the array is bigger than the 'size' field, so we only need to increment the size field.</p>
 		</div>
@@ -124,17 +96,13 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
 					tm.go("12 * s") ;
+					tm.goForward();
+					tm.goBack();
+					tm.go("1 * s");
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge4to3" data-source="v4" data-target="v3"
-		     data-label="back" data-function="edge4to3">
-			<script>//<![CDATA[
-				EdgeFunctions.edge4to3 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
+		
 	  <div class = "vertex" id="v4" >
 			<p>The grow function is about to be called for the second time.</p>
 		</div>
@@ -143,17 +111,11 @@
 			<script>//<![CDATA[
 				EdgeFunctions.intoSub = function(tm) {
 					tm.intoSub() ;
+					tm.reStart();
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge5to4" data-source="v5" data-target="v4"
-		     data-label="back" data-function="edge5to4">
-			<script>//<![CDATA[
-				EdgeFunctions.edge5to4 = function(tm) {
-					tm.goBack() ;
-				}
-			//]]></script>
-		</div>
+		
 		<div class = "vertex" id="v5" >
 			<p>This time the size is already as big as the array.</p>
 			<p>We need a bigger array.</p>
