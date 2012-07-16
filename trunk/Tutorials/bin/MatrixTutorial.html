@@ -46,7 +46,7 @@
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					tm.go("12 * s") ;
+					tm.go("10 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -59,8 +59,7 @@
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					tm.go("7 * s") ;
-					tm.goForward();
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -72,7 +71,6 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
 					tm.go("3 * s") ;
-					tm.microStep();
 				}
 			//]]></script>
 		</div>
@@ -80,7 +78,7 @@
 		     data-label="next2" data-function="edge2to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to4 = function(tm) {
-					tm.go("15 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -93,10 +91,7 @@
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("12 * s") ;
-					tm.goForward();
-					tm.goBack();
-					tm.go("1 * s");
+					tm.go("5 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -105,11 +100,10 @@
 			<p>The grow function is about to be called for the second time.</p>
 		</div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
-		     data-label="next" data-function="intoSub">
+		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.intoSub = function(tm) {
-					tm.intoSub() ;
-					tm.reStart();
+					tm.go("2 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -119,7 +113,7 @@
 			<p>We need a bigger array.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
-		     data-label="next" data-function="intoSub"></div>
+		     data-label="next" data-function="edge1to2"></div>
 		<div class = "vertex" id="v6" >
 			<p>Allocate a new array that is twice the length.</p>
 		</div>
@@ -128,7 +122,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("4 * s") ;
+					tm.go("2 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
@@ -139,7 +133,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
@@ -150,7 +144,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("4 * s") ;
+					tm.go("2 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >

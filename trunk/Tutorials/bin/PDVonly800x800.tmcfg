@@ -67,8 +67,8 @@
 <config id="mainFrame">
 <param name="Position.x">-2</param>
 <param name="Position.y">0</param>
-<param name="Width">799</param>
-<param name="Height">653</param>
+<param name="Width">816</param>
+<param name="Height">661</param>
 </config>
 
 <config id="Display Manager">
@@ -84,8 +84,8 @@
 <config id="Code">
 <param name="Position.x">0</param>
 <param name="Position.y">0</param>
-<param name="Width">280</param>
-<param name="Height">572</param>
+<param name="Width">278</param>
+<param name="Height">580</param>
 <param name="fontMapper[NORMAL]">0</param>
 <param name="fontMapper[KEYWORD]">0</param>
 <param name="fontMapper[COMMENT]">2</param>
@@ -102,7 +102,7 @@
 <param name="tabSpaces">4</param>
 <param name="lineNumbers">false</param>
 <param name="Visible">true</param>
-<param name="WindowTitle">Matrix_C.cpp</param>
+<param name="WindowTitle">MatrixTutorial.cpp</param>
 </config>
 
 <config id="Console">
@@ -193,8 +193,8 @@
 <config id="Higraph.PDV">
 <param name="Position.x">278</param>
 <param name="Position.y">0</param>
-<param name="Width">505</param>
-<param name="Height">572</param>
+<param name="Width">522</param>
+<param name="Height">580</param>
 <param name="WindowTitle">A Simple Forest</param>
 <param name="Visible">true</param>
 </config>
