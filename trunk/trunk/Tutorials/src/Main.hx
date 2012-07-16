@@ -36,6 +36,7 @@ class Main {
 	}
 	
 	private static function buildGraph( doc : HtmlDom ) : TutorialGraph {
+		var pageno: Int = 1;
 		var graph = new TutorialGraph() ;
 		var graphBuilt = true ;
 		var graphDomNode : HtmlDom ;
@@ -67,7 +68,8 @@ class Main {
 						 graphBuilt = false ; }
 					else {
 						trace( "Building vertex " + id) ;
-						var vertex = new TutorialVertex( id, child ) ;
+						var vertex = new TutorialVertex( id, child, pageno++ ) ;
+						trace(vertex.pageno);
 						graph.vertices.set( id, vertex ) ; 
 						if ( graph.startVertex == null ) {
 							graph.setStartVertex( vertex ) ; } } }
@@ -145,7 +147,7 @@ class Main {
 			return ; }
 		trace( "Applet is " + applet ) ;
 		tmProxy = new TMProxy( applet ) ;
-		trace("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
+		//trace("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
 		var temp : EdgeFunc = new EdgeFunc();
 		temp.edgeId = graph.startFunctionName;
 		edgeFunctionStack.push(temp);
@@ -155,21 +157,22 @@ class Main {
 	}
 	
 	static function executeFunction( name : String ) {
-		trace("At the beginning of executeFunction");
+		//trace("At the beginning of executeFunction");
 		var klass = Type.resolveClass("EdgeFunctions") ;
 		if ( klass == null ) {
 			trace("No class 'EdgeFunctions' found.") ; }
 		else {
 			var fun = Reflect.field( klass, name ) ;
 			if ( fun == null ) {
-				trace( "Function named '" +name + "' not found." ) ; }
+				//trace( "Function named '" +name + "' not found." ) ; 
+				}
 			else {
 				Reflect.callMethod( klass, fun, [tmProxy] ) ; } }
-		trace("At the end of executeFunction");
+		//trace("At the end of executeFunction");
 	}
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
-		
+		//trace(vertex.id);
 		var instructionNode = Lib.document.getElementById("instructions") ;
 		while ( instructionNode.firstChild != null )
 			instructionNode.removeChild( instructionNode.firstChild ) ;
@@ -178,117 +181,112 @@ class Main {
 		var buttonsNode = Lib.document.getElementById("buttons") ;
 		while ( buttonsNode.firstChild != null )
 			buttonsNode.removeChild( buttonsNode.firstChild ) ;
+			
+		var pageNumberNode = Lib.document.getElementById("pageno") ;
+		pageNumberNode.removeChild( pageNumberNode.firstChild ) ;
+		var label = Lib.document.createTextNode("Page: " + vertex.pageno);
+		//trace("Page: " + vertex.pageno);
+		pageNumberNode.insertBefore(label, null);
 		
-			//////////////////////////////////////////////////////////////
-			if (!vertexStack.isEmpty())
-			{
+		if (!vertexStack.isEmpty())
+		{
 			var undoList = edgeFunctionStack.first();
 			
-			var labelNode = Lib.document.createTextNode("back") ;
+			
+			//BACK TO FIRST
+			var labelNode = Lib.document.createTextNode("back to first") ;
 			var button = Lib.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
-				button.onclick = function(event : Event ) {
-					if (undoList.type < 0)
-					{
-						trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
-						var temp = vertexStack.pop(); 
-						edgeFunctionStack.pop();
-						var forward_stack: List<String> = new List<String>();
-						for (edge in edgeFunctionStack)
-						{
-							forward_stack.push(edge.edgeId);
-						}
-						_flag = 1;
-						for (id in forward_stack)
-						{
-							trace("Executing: " + id);
-							executeFunction(id);
-						}
-						_flag = 0;
-						switchToVertex(temp);
-					}
-					else
-					{
-						var count = undoList.type;
-						trace("Count: " + count);
-						while(count--!=0)
-						{
-							tmProxy.goBack();
-						}
-						trace(vertexStack.first().id + " popped from stack \n" +  edgeFunctionStack.first().edgeId + " popped from stack\n" +  " Going to switch to : " + vertexStack.first().id);
-						edgeFunctionStack.pop();
-						var temp = vertexStack.pop();
-						switchToVertex(temp);
-					}
-				}
-			buttonsNode.insertBefore( button, null ) ;
-			}	
-		//////////////////////////////////////////////////////////////////////////	
-		
-		//trace("Here");
-		var flag = 0;
-		for ( id in vertex.outGoingEdges.keys()  ) {
-			var edge = vertex.outGoingEdges.get( id ) ;
-			//trace("Edge id " + id);
-			//var target = vertexStack.first() ;
-			/*if (edge.label == "back")
-			{
-				//trace("In back, comparing : " + edge.target.id + "& stack top : " + vertexStack.first().id);
-				if (edge.target.id == vertexStack.first().id)
+			button.onclick = function(event : Event ) {
+				var temp = vertexStack.last();
+				while (!vertexStack.isEmpty())
 				{
-					var target = edge.target ;
-					var functionName = edge.functionName ;
-					var labelNode = Lib.document.createTextNode(edge.label) ;
-					var button = Lib.document.createElement("button") ;
-					button.insertBefore( labelNode, null ) ;
-					button.onclick = function(event : Event ) {
-						executeFunction( functionName ) ;
-						var temp = vertexStack.pop(); 
-						//trace(temp.id + "popped from stack\n Going to switch to :" + target.id);
-						switchToVertex( target ) ; }
-					buttonsNode.insertBefore( button, null ) ;
+					temp = vertexStack.pop();
+					edgeFunctionStack.pop();
+				}
+				//trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
+				_flag = 1;
+				executeFunction(edgeFunctionStack.first().edgeId);
+				_flag = 0;
+				switchToVertex(temp);
+			}
+			buttonsNode.insertBefore( button, null ) ;
+			
+			
+			//BACK
+			labelNode = Lib.document.createTextNode("back") ;
+			button = Lib.document.createElement("button") ;
+			button.insertBefore( labelNode, null ) ;
+			button.onclick = function(event : Event ) {
+				if (undoList.type < 0)
+				{
+					//trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
+					var temp = vertexStack.pop(); 
+					edgeFunctionStack.pop();
+					var forward_stack: List<String> = new List<String>();
+					for (edge in edgeFunctionStack)
+					{
+						forward_stack.push(edge.edgeId);
+					}
+					_flag = 1;
+					for (id in forward_stack)
+					{
+						//trace("Executing: " + id);
+						executeFunction(id);
+					}
+					_flag = 0;
+					switchToVertex(temp);
 				}
 				else
-					continue;
+				{
+					var count = undoList.type;
+					//trace("Count: " + count);
+					while(count--!=0)
+					{
+						tmProxy.goBack();
+					}
+					//trace(vertexStack.first().id + " popped from stack \n" +  edgeFunctionStack.first().edgeId + " popped from stack\n" +  " Going to switch to : " + vertexStack.first().id);
+					edgeFunctionStack.pop();
+					var temp = vertexStack.pop();
+					switchToVertex(temp);
+				}
 			}
-			else
-			{*/
-				var temp : EdgeFunc = new EdgeFunc();		
-				temp.edgeId = edge.functionName;
-				var target = edge.target ;
-				var functionName = edge.functionName ;
-				var labelNode = Lib.document.createTextNode(edge.label) ;
-				var button = Lib.document.createElement("button") ;
-				button.insertBefore( labelNode, null ) ;
-				button.onclick = function(event : Event ) {
-					trace("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);
-					edgeFunctionStack.push(temp);
-					executeFunction( functionName ) ;
-					vertexStack.push(vertex); 
-					//trace(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
-					switchToVertex( target ) ; }
-				buttonsNode.insertBefore( button, null ) ; 
-				flag++;
-			}
-		if (flag==0)
+			
+			buttonsNode.insertBefore( button, null ) ;
+			
+			
+		}
+		else
 		{
 			var labelNode = Lib.document.createTextNode("back to first") ;
 			var button = Lib.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
-				button.onclick = function(event : Event ) {
-					var temp = vertexStack.last();
-					while (!vertexStack.isEmpty())
-					{
-						temp = vertexStack.pop();
-						edgeFunctionStack.pop();
-					}
-					trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
-					_flag = 1;
-					executeFunction(edgeFunctionStack.first().edgeId);
-					_flag = 0;
-					switchToVertex(temp);
-				}
+			button.setAttribute('disabled','true');
 			buttonsNode.insertBefore( button, null ) ;
+			labelNode = Lib.document.createTextNode("back") ;
+			button = Lib.document.createElement("button") ;
+			button.insertBefore( labelNode, null ) ;
+			button.setAttribute('disabled','true');
+			buttonsNode.insertBefore( button, null ) ;
+		}
+		//////////////////////////////////////////////////////////////////////////	
+		for ( id in vertex.outGoingEdges.keys()  ) {
+			var edge = vertex.outGoingEdges.get( id ) ;
+			var temp : EdgeFunc = new EdgeFunc();		
+			temp.edgeId = edge.functionName;
+			var target = edge.target ;
+			var functionName = edge.functionName ;
+			var labelNode = Lib.document.createTextNode(edge.label) ;
+			var button = Lib.document.createElement("button") ;
+			button.insertBefore( labelNode, null ) ;
+			button.onclick = function(event : Event ) {
+				//trace("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);
+				edgeFunctionStack.push(temp);
+				executeFunction( functionName ) ;
+				vertexStack.push(vertex); 
+				//trace(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
+				switchToVertex( target ) ; }
+			buttonsNode.insertBefore( button, null ) ; 
 		}
 	}
 }
