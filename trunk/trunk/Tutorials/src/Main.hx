@@ -26,8 +26,8 @@ class Main {
 
 	static var tmProxy : TMProxy ;
 	static var vertexStack : List<TutorialVertex> = new List<TutorialVertex>() ;
-	public static var edgeFunctionStack : List <EdgeFunc> = new List <EdgeFunc>();
-	public static var _flag = 0;
+	static var edgeFunctionStack : List <EdgeFunc> = new List <EdgeFunc>();
+	//public static var _flag = 0;
 	// The following declaration is a trick to ensure that the EdgeFunctions class
 	// is linked in.
 	static var neverUsed : EdgeFunctions ;
@@ -69,7 +69,7 @@ class Main {
 					else {
 						trace( "Building vertex " + id) ;
 						var vertex = new TutorialVertex( id, child, pageno++ ) ;
-						trace(vertex.pageno);
+						//trace(vertex.pageno);
 						graph.vertices.set( id, vertex ) ; 
 						if ( graph.startVertex == null ) {
 							graph.setStartVertex( vertex ) ; } } }
@@ -152,6 +152,8 @@ class Main {
 		temp.edgeId = graph.startFunctionName;
 		edgeFunctionStack.push(temp);
 		executeFunction( graph.startFunctionName ) ;
+		edgeFunctionStack.first().type = tmProxy.count;
+		tmProxy.count = 0;
 		switchToVertex( graph.startVertex ) ;
 		trace( "onLoad ends" ) ;
 	}
@@ -205,9 +207,11 @@ class Main {
 					edgeFunctionStack.pop();
 				}
 				//trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
-				_flag = 1;
+				tmProxy.replaying = true;
 				executeFunction(edgeFunctionStack.first().edgeId);
-				_flag = 0;
+				edgeFunctionStack.first().type = tmProxy.count;
+				tmProxy.count = 0;
+				tmProxy.replaying = false;
 				switchToVertex(temp);
 			}
 			buttonsNode.insertBefore( button, null ) ;
@@ -220,6 +224,7 @@ class Main {
 			button.onclick = function(event : Event ) {
 				if (undoList.type < 0)
 				{
+					//trace("Count: " + undoList.type);
 					//trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
 					var temp = vertexStack.pop(); 
 					edgeFunctionStack.pop();
@@ -228,23 +233,25 @@ class Main {
 					{
 						forward_stack.push(edge.edgeId);
 					}
-					_flag = 1;
+					tmProxy.replaying = true;
 					for (id in forward_stack)
 					{
 						//trace("Executing: " + id);
 						executeFunction(id);
 					}
-					_flag = 0;
+					tmProxy.replaying = false;
 					switchToVertex(temp);
 				}
 				else
 				{
 					var count = undoList.type;
 					//trace("Count: " + count);
+					tmProxy.replaying = true;
 					while(count--!=0)
 					{
 						tmProxy.goBack();
 					}
+					tmProxy.replaying = false;
 					//trace(vertexStack.first().id + " popped from stack \n" +  edgeFunctionStack.first().edgeId + " popped from stack\n" +  " Going to switch to : " + vertexStack.first().id);
 					edgeFunctionStack.pop();
 					var temp = vertexStack.pop();
@@ -283,6 +290,9 @@ class Main {
 				//trace("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);
 				edgeFunctionStack.push(temp);
 				executeFunction( functionName ) ;
+				//trace("tmProxy.count" + tmProxy.count);
+				edgeFunctionStack.first().type = tmProxy.count;
+				tmProxy.count = 0;
 				vertexStack.push(vertex); 
 				//trace(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
 				switchToVertex( target ) ; }

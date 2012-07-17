@@ -9,15 +9,20 @@ package ;
 class TMProxy implements TMExternalCommandInterface {
 	
 	var theTM : TMExternalCommandInterface ;
+	public var replaying : Bool;
+	public var count : Int;
+	
 	public function new( applet : TMExternalCommandInterface) {
 		theTM = applet ;
+		count = 0;
+		replaying = false;
 	}
 	
 	
     public function loadString( fileName : String, programSource: String ) : Void {
 		 theTM.loadString( fileName, programSource ) ;
-		 if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		 if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Load a remote file into the TM and compile it.
@@ -37,8 +42,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function loadRemoteFile( root : String, fileName : String ) : Void {
 		theTM.loadRemoteFile( root, fileName ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
 
     /** Uses the Applet method documentBase() and the file name to construct a URL for
@@ -46,8 +51,9 @@ class TMProxy implements TMExternalCommandInterface {
       *       <kbd>new URL( this.getDocumentBase(), fileName )</kbd>
       *  Reads the configuration in that file. */
     public function readRemoteConfiguration( fileName : String ) : Void {
-		theTM.readRemoteConfiguration( fileName ) ;if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		theTM.readRemoteConfiguration( fileName ) ;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Register that a remote file is to be accessible as as a data file.
@@ -66,8 +72,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function registerRemoteDataFile( fileName : String ) : Void  {
 		theTM.registerRemoteDataFile( fileName ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Clear the list of remote data files.
@@ -75,16 +81,16 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function clearRemoteDataFiles() : Void  {
 		theTM.clearRemoteDataFiles() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
 
     /** Adds input to the input buffer for standard input (cin) 
      * <p>It must be called after the program is loaded.*/
     public function addInputString( input : String ) : Void  {
 		theTM.addInputString( input ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Add a program argument.  This add a new argument to main.
@@ -92,15 +98,15 @@ class TMProxy implements TMExternalCommandInterface {
      * it has started executing main. */
     public function addProgramArgument( argument : String ) : Void {
 		theTM.addProgramArgument( argument ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Get output */
     public function getOutputString( ) : String {
 		return theTM.getOutputString() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     //-------------------------------------------------------------------------
 
@@ -109,23 +115,23 @@ class TMProxy implements TMExternalCommandInterface {
       * It is an error, if no previous load was done. */
     public function reStart() : Void {
 		theTM.reStart() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
 
     /** Start an editor to edit the current file. */
     public function editCurrentFile() : Void {
 		theTM.editCurrentFile() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Terminates the application. In the case of an applet,
      * it may only hide the applet's frame or it may do nothing at all. */
     public function quit() : Void {
 		theTM.quit() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Initialize the state of an interpreted program.
@@ -133,8 +139,8 @@ class TMProxy implements TMExternalCommandInterface {
       */
     public function initializeTheState() : Void {
 		theTM.initializeTheState() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type = -2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
 	/** Advance a number of steps as specified by the following grammar.
@@ -165,36 +171,36 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function go( commandString : String ) : Void {
 		theTM.go( commandString ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     /** Undo the previous advance. */
     public function goBack() : Void {
 		theTM.goBack() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type--;
+		if (!replaying && count>=0)
+			count--;
 	}
     
     /** Advance the state by one operation, such as a lookup, store, fetch,
      * or an arithmetic operation. */
     public function goForward() : Void {
 		theTM.goForward() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     
     /** Advance by the tiniest possible amount. */
     public function microStep() : Void {
 		theTM.microStep() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     
     /** Advance until the currently top subroutine returns. */
     public function overAll() : Void {
 		theTM.overAll() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
 
     /** Advance up to the start of the next expression at the same or a lower
@@ -202,22 +208,22 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function intoExp() : Void {
 		theTM.intoExp() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     
     /** Advance up to the start of the next expression. */
     public function intoSub() : Void {
 		theTM.intoSub() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     
     /** Step to the next break-point. */
     public function toBreakPoint() : Void {
 		theTM.toBreakPoint() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
 
     /** Execute until the given line number in the given file.
@@ -230,8 +236,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function toCursor(  fileName : String, cursor : Int ) : Void {
 		theTM.toCursor( fileName, cursor ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type++;
+		if (!replaying && count>=0)
+			count++;
 	}
     
     /** 
@@ -239,8 +245,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function autoRun() : Void {
 		theTM.autoRun() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /**
@@ -252,8 +258,8 @@ class TMProxy implements TMExternalCommandInterface {
     
     public function showTM( visible : Bool) : Void {
 		theTM.showTM( visible ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /**
@@ -280,8 +286,8 @@ class TMProxy implements TMExternalCommandInterface {
 			theTM.autoStep() ; }
 		else {
 			theTM.autoStep( fileName, lineNo ) ; }
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
 
     /**
@@ -299,8 +305,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function stopAuto() : Void {
 		theTM.stopAuto() ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
         
     /**
@@ -312,8 +318,8 @@ class TMProxy implements TMExternalCommandInterface {
      */
     public function setAutoStepRate( rateConstant : Int ) : Void {
 		theTM.setAutoStepRate( rateConstant ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
          
     public function getSnap( plugIn : String, id : String) : Image {
@@ -344,8 +350,8 @@ class TMProxy implements TMExternalCommandInterface {
 	 * For default use "!L & !S". To select all lines, use "true". */
     public function setSelectionString( str : String ) : Void {
 		theTM.setSelectionString( str ) ;
-		if (Main._flag==0)
-			Main.edgeFunctionStack.first().type=-2000;
+		if (!replaying && count>=0)
+			count = -2000;
 	}
     
     /** Get the current selection. */
