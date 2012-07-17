@@ -74,16 +74,7 @@
 				}
 			//]]></script>
 		</div>
-		<div class="edge" id="edge2to4" data-source="v2" data-target="v4"
-		     data-label="next2" data-function="edge2to4">
-			<script>//<![CDATA[
-				EdgeFunctions.edge2to4 = function(tm) {
-					tm.go("8 * s") ;
-				}
-			//]]></script>
-		</div>
-
-		
+			
 	  <div class = "vertex" id="v3" >
 			<p>In this case the array is bigger than the 'size' field, so we only need to increment the size field.</p>
 		</div>
@@ -102,7 +93,7 @@
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
-				EdgeFunctions.intoSub = function(tm) {
+				EdgeFunctions.edge4to5 = function(tm) {
 					tm.go("2 * s") ;
 				}
 			//]]></script>
@@ -113,11 +104,19 @@
 			<p>We need a bigger array.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
-		     data-label="next" data-function="edge1to2"></div>
+		     data-label="next" data-function="edge5to6">
+			 <script>//<![CDATA[
+				EdgeFunctions.edge5to6 = function(tm) {
+					tm.go("6 * s") ;
+				}
+			//]]></script>
+		</div>
+		
 		<div class = "vertex" id="v6" >
 			<p>Allocate a new array that is twice the length.</p>
 		</div>
-	    <div class="edge" id="edge6to7" data-source="v6" data-target="v7"
+	    
+		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
 		     data-label="next" data-function="edge6to7">
         </div>
 			<script>//<![CDATA[
@@ -133,7 +132,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("4 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
@@ -149,6 +148,150 @@
 			//]]></script>
 		<div class = "vertex" id="v9" >
 			<p>Finally. Increment the size.</p>
+		</div>
+		
+		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
+		     data-label="next" data-function="edge9to10">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge9to10 = function(tm) {
+					tm.go("10 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v10" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
+		     data-label="next" data-function="edge10to11">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge10to11 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v11" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
+		     data-label="next" data-function="edge11to12">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge11to12 = function(tm) {
+					tm.go("6 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v12" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
+		     data-label="next" data-function="edge12to13">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge12to13 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v13" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
+		     data-label="next" data-function="edge13to14">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge13to14 = function(tm) {
+					tm.go("6 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v14" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge14to15" data-source="v14" data-target="v15"
+		     data-label="next" data-function="edge14to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge14to15 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v15" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge15to16" data-source="v15" data-target="v16"
+		     data-label="next" data-function="edge15to16">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge15to16 = function(tm) {
+					tm.go("7 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v16" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge16to17" data-source="v16" data-target="v17"
+		     data-label="next" data-function="edge16to17">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge16to17 = function(tm) {
+					tm.go("5 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v17" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge17to18" data-source="v17" data-target="v18"
+		     data-label="next" data-function="edge17to18">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge17to18 = function(tm) {
+					tm.go("8 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v18" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge18to19" data-source="v18" data-target="v19"
+		     data-label="next" data-function="edge18to19">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge18to19 = function(tm) {
+					tm.go("6 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v19" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge19to20" data-source="v19" data-target="v20"
+		     data-label="skip ahead" data-function="edge19to20">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge19to20 = function(tm) {
+					tm.go("34 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v20" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
+		</div>
+		
+		<div class="edge" id="edge20to21" data-source="v20" data-target="v21"
+		     data-label="next" data-function="edge20to21">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge20to21 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v21" >
+			<p>Next.  Copy the first 'size' items to the new array.</p>
 		</div>
 </div>
 	<div id="haxe:trace"></div>

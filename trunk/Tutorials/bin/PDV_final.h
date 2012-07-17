@@ -13,12 +13,23 @@ const int TRANSPARENT = -1;
 const int AQUA = 0x00ffff;
 const int MAGENTA = 0x660000;
 const int YELLOW = 0xffff00;
+const int LIGHT_GREEN = 0x33FF66;
+const int BEIGE = 0xFFCC99;
 
 const int MARKER_RED = 0xffff;	
 const int MARKER_BLUE = 0xfffe;	
 const int MARKER_BLACK = 0xfffd;	
 const int MARKER_GREEN = 0xfffc;
 const int END_MARKER = 0xfff0;
+
+int color_lookup(int a)
+{
+	switch (a)
+	{
+		case 0: return LIGHT_GREEN;
+		case 1: return BEIGE;
+	}
+}
 
 // predefined node shapes
 const int ELLIPSE = 0;
@@ -227,9 +238,10 @@ void makeArray(int array[], int length, char* name){
     makeArray(array, length, true, name);
 }
 */	
-void makeArray(int array[], int length, bool showCells, char* name){
+void makeArray(int array[], int rows, int cols, bool showCells, char* name){
+	int length = rows*cols;
     ScriptManager::relay("HigraphManager","makeNode", array);
-    ScriptManager::relay("HigraphManager", "placeNode", array, 305, 0);
+    ScriptManager::relay("HigraphManager", "placeNode", array, 350, 0);
     ScriptManager::relay("HigraphManager","setNodeNamePosition", array, SOUTH);
     if (strcmp(name,"")!=0)
       	ScriptManager::relay("HigraphManager","setNodeNameLabel", array, name);
@@ -260,10 +272,15 @@ void makeArray(int array[], int length, bool showCells, char* name){
             if(!showCells){
                 ScriptManager::relay("HigraphManager","setNodeColor", array[i], TRANSPARENT);
                 ScriptManager::relay("HigraphManager","setNodeFillColor", array[i], TRANSPARENT);
-            }  
+            }
+			else
+			{
+				ScriptManager::relay("HigraphManager","setNodeFillColor", array[i], color_lookup(i/cols));
+			}
            	ScriptManager::relay("HigraphManager","setNodeNamePosition", array[i], SOUTH);
             ScriptManager::relay("HigraphManager", "setNodeShape", array[i], RECTANGLE);
             ScriptManager::relay("HigraphManager","addChild", array, array[i]);
+			array[i]=(rand()%1479)+1;
      	}
    }
 	
@@ -346,7 +363,7 @@ void makeMatrix(int** matrix, int length, int width, bool showCells, char* name)
                 ScriptManager::relay("HigraphManager","setNodeNamePosition", matrix[i][j], SOUTH);
                 ScriptManager::relay("HigraphManager","setNodeValueShow", matrix[i][j], true);
                 ScriptManager::relay("HigraphManager","setNodeValuePosition", matrix[i][j], CENTER );
-                //ScriptManager::relay("HigraphManager", "setNodeShape", matrix[i][j], RECTANGLE);
+                ScriptManager::relay("HigraphManager", "setNodeFillColor", matrix[i][j], color_lookup(i));
                 ScriptManager::relay("HigraphManager","addChild", matrix[i], matrix[i][j]);
 				//ScriptManager::relay("HigraphManager","dislocate", matrix[i][j], 2, 0);
                 /*if( i == 0 ) {
