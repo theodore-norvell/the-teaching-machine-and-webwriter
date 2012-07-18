@@ -1,0 +1,48 @@
+@charset "UTF-8";
+/* CSS Document */
+
+/* Vertices are positioned absolutely within the instructions div. 
+Use the style attriute to customize the width, height, top, and bottom
+of individual vertices.
+*/
+.vertex { z-index: 999 ;
+        background-color:rgba(200,200,200,0.5) ;
+		visibility: visible;
+		display: block ;
+		position: absolute ;
+		width: 400px ;
+		height: 150px ; 
+		bottom: 20px;
+		right: 30px;
+		overflow: auto ;
+		border:thick ;
+		border-color:black;
+}
+
+/* The appletContainer should be parent to both the applet and the instructions node.
+It is relative to establish a context for absolute positioning of the applet,
+instructions, and vertices. 
+*/
+#appletContainer {
+	position: relative;
+	background-color: #906
+
+}
+
+.applet {
+	position: absolute ;
+	display: block ;
+	left: 0px ;
+	top: 0px ;
+}
+
+/* The instructions div is a container for the vertices. It sits in front of the applet and should be the same size.*/
+#instructions {
+	z-index: 99 ;
+	display: block ;
+	visibility: hidden ;
+	position: absolute ;
+	top: 0 ;
+	left: 0 ;
+}
+
