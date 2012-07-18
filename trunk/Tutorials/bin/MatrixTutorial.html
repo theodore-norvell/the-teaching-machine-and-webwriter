@@ -8,28 +8,39 @@
 	<style>
 		#graph { display:none ; }
 	</style>
+<link href="tutorials.css" rel="stylesheet" type="text/css">
 </head>
 <body onload="Main.onLoad()">
+<h1>Matrix Tutorial</h1>
 <table width="90%" border="0">
     <tr>
-      <td valign="top" ><table width="100%" border="0">
-        <tr>
-          <td id="buttons" width = "250">
-		  </td>
-		  <td id="pageno" align = "center"> </td>
-		</tr>
-        <tr>
-	      <td id="instructions" colspan = "2">&nbsp;</td>
-        </tr>
-      </table></td>
-      <td style="width:820px"><applet
-          code="tm/TMBigApplet.class" name="tm_applet"
-          width="800"
-          height="600"
-          align="bottom"
-          archive="tm.jar" id="tm_applet"
+      <td valign="top" >
+        <table width="100%" border="0">
+          <tr>
+            <td id="buttons" width = "250">
+		    </td>
+		    <td id="pageno" align = "center"> </td>
+		  </tr>
+          <tr>
+	        <td colspan = "2">&nbsp;</td>
+          </tr>
+        </table>
+      </td>
+      <td>
+        <div id="appletContainer" style="width:800px;height:600px;">
+          <div id="instructions" style="width:800px;height:600px;"></div>
+          <applet 
+            code="tm/TMBigApplet.class"
+            name="tm_applet"
+            width="800"
+            height="600"
+            align="bottom"
+            archive="tm.jar" id="tm_applet"
+            class="applet"
           >
-      </applet></td>
+          </applet>
+        </div>
+      </td>
     </tr>
   </table>
 	<div id="graph" data-function="initialize">
