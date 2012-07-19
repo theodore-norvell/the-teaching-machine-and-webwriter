@@ -147,11 +147,12 @@ class Main {
 			return ; }
 		trace( "Applet is " + applet ) ;
 		tmProxy = new TMProxy( applet ) ;
-		//trace("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
 		var temp : EdgeFunc = new EdgeFunc();
 		temp.edgeId = graph.startFunctionName;
 		edgeFunctionStack.push(temp);
+		trace("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
 		executeFunction( graph.startFunctionName ) ;
+		trace( "Back from execute function" );
 		edgeFunctionStack.first().type = tmProxy.count;
 		tmProxy.count = 0;
 		switchToVertex( graph.startVertex ) ;
@@ -174,7 +175,7 @@ class Main {
 	}
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
-		//trace(vertex.id);
+		trace("Switching to vertex " + vertex.id);
 		var instructionNode = Lib.document.getElementById("instructions") ;
 		while ( instructionNode.firstChild != null )
 			instructionNode.removeChild( instructionNode.firstChild ) ;
