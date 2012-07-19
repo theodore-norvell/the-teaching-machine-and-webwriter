@@ -25,8 +25,9 @@ instructions, and vertices.
 */
 #appletContainer {
 	position: relative;
-	background-color: #906
-
+	background-color: #906;
+	width:800px;
+	height:600px;
 }
 
 .applet {
@@ -44,5 +45,7 @@ instructions, and vertices.
 	position: absolute ;
 	top: 0 ;
 	left: 0 ;
+	width:800px;
+	height:600px;
 }
 
