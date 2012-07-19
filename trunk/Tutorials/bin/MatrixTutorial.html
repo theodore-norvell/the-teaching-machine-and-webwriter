@@ -11,13 +11,13 @@
 <link href="tutorials.css" rel="stylesheet" type="text/css">
 </head>
 <body onload="Main.onLoad()">
-<h1>Matrix Tutorial</h1>
+<h1>Matrix Tutorial Part I</h1>
 <table width="90%" border="0">
     <tr>
       <td valign="top" >
         <table width="100%" border="0">
           <tr>
-            <td id="buttons" width = "250">
+            <td id="buttons" width = "400">
 		    </td>
 		    <td id="pageno" align = "center"> </td>
 		  </tr>
@@ -29,8 +29,8 @@
       </tr>
       <tr>
       <td>
-        <div id="appletContainer" style="width:800px;height:600px;">
-          <div id="instructions" style="width:800px;height:600px;"></div>
+        <div id="appletContainer">
+         <iframe id="instructions"> </iframe>
           <applet 
             code="tm/TMBigApplet.class"
             name="tm_applet"
@@ -41,7 +41,7 @@
             class="applet"
           >
           </applet>
-        </div>
+		</div>
       </td>
     </tr>
   </table>
@@ -231,6 +231,87 @@
 					tm.go("2 * s") ;
 				}
 			//]]></script>
+		<div class="edge" id="edge5to15" data-source="v5" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge5to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge5to15 = function(tm) {
+					tm.go("44 * s") ;
+				}
+			//]]></script> 
+		
+		<div class="edge" id="edge6to15" data-source="v6" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge6to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge5to15 = function(tm) {
+					tm.go("38 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge7to15" data-source="v7" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge7to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge7to15 = function(tm) {
+					tm.go("36 * s") ;
+				}
+			//]]></script>
+
+		<div class="edge" id="edge8to15" data-source="v8" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge8to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge8to15 = function(tm) {
+					tm.go("30 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge9to15" data-source="v9" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge9to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge9to15 = function(tm) {
+					tm.go("28 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge10to15" data-source="v10" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge10to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge10to15 = function(tm) {
+					tm.go("18 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge11to15" data-source="v11" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge11to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge11to15 = function(tm) {
+					tm.go("16 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge12to15" data-source="v12" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge12to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge12to15 = function(tm) {
+					tm.go("10 * s") ;
+				}
+			//]]></script>
+			
+		<div class="edge" id="edge13to15" data-source="v13" data-target="v15"
+		     data-label="skip to end of loop" data-function="edge13to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge13to15 = function(tm) {
+					tm.go("8 * s") ;
+				}
+			//]]></script>
+			
 		<div class = "vertex" id="v15" >
 			<p>Next.  Copy the first 'size' items to the new array.</p>
 		</div>
@@ -243,68 +324,9 @@
 					tm.go("7 * s") ;
 				}
 			//]]></script>
+			
 		<div class = "vertex" id="v16" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		<div class="edge" id="edge16to17" data-source="v16" data-target="v17"
-		     data-label="next" data-function="edge16to17">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge16to17 = function(tm) {
-					tm.go("5 * s") ;
-				}
-			//]]></script>
-		<div class = "vertex" id="v17" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		<div class="edge" id="edge17to18" data-source="v17" data-target="v18"
-		     data-label="next" data-function="edge17to18">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge17to18 = function(tm) {
-					tm.go("8 * s") ;
-				}
-			//]]></script>
-		<div class = "vertex" id="v18" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		<div class="edge" id="edge18to19" data-source="v18" data-target="v19"
-		     data-label="next" data-function="edge18to19">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge18to19 = function(tm) {
-					tm.go("6 * s") ;
-				}
-			//]]></script>
-		<div class = "vertex" id="v19" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		<div class="edge" id="edge19to20" data-source="v19" data-target="v20"
-		     data-label="skip ahead" data-function="edge19to20">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge19to20 = function(tm) {
-					tm.go("34 * s") ;
-				}
-			//]]></script>
-		<div class = "vertex" id="v20" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		<div class="edge" id="edge20to21" data-source="v20" data-target="v21"
-		     data-label="next" data-function="edge20to21">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge20to21 = function(tm) {
-					tm.go("3 * s") ;
-				}
-			//]]></script>
-		<div class = "vertex" id="v21" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>Excellent! Click <a href = "MatrixTutorial2.html"> here </a> to go to the next part</p>
 		</div>
 </div>
 	<div id="haxe:trace"></div>

@@ -238,7 +238,7 @@ void makeArray(int array[], int length, char* name){
     makeArray(array, length, true, name);
 }
 */	
-void makeArray(int array[], int rows, int cols, bool showCells, char* name){
+/*void makeArray(int array[], int rows, int cols, bool showCells, char* name){
 	int length = rows*cols;
     ScriptManager::relay("HigraphManager","makeNode", array);
     ScriptManager::relay("HigraphManager", "placeNode", array, 350, 0);
@@ -282,8 +282,53 @@ void makeArray(int array[], int rows, int cols, bool showCells, char* name){
             ScriptManager::relay("HigraphManager","addChild", array, array[i]);
 			array[i]=(rand()%1479)+1;
      	}
-   }
+   }*/
 	
+void makeArray(double array[], int rows, int cols, bool showCells, char* name, int x, int y){
+	int length = rows*cols;
+    ScriptManager::relay("HigraphManager","makeNode", array);
+    ScriptManager::relay("HigraphManager", "placeNode", array, x, y);
+    ScriptManager::relay("HigraphManager","setNodeNamePosition", array, SOUTH);
+    if (strcmp(name,"")!=0)
+      	ScriptManager::relay("HigraphManager","setNodeNameLabel", array, name);
+    ScriptManager::relay("HigraphManager","setNodeValueShow", array, false);
+    ScriptManager::relay("HigraphManager","setNodeLayoutManager", array, "VertNestedTree");
+	char s[6];
+	int k,j,l;
+    for (int i = 0; i < length; i++){
+            ScriptManager::relay("HigraphManager","makeNode", array[i]);
+			char temp[10];
+			j=0;l=i;
+			s[0]='(';
+			while(l/10!=0)
+			{
+				temp[j++]=(char)(48+(l%10));
+				l=l/10;
+			}
+			s[1]=(char)(48+l);
+			
+			for(k=1;k<=j;k++)
+			{
+				s[k+1]=temp[j-k];
+			}
+			s[k+1]=')';
+			s[k+2]='\0';
+				ScriptManager::relay("HigraphManager","setNodeNameLabel", array[i], s);
+            ScriptManager::relay("HigraphManager", "dislocate", array[i], 2, 0);
+            if(!showCells){
+                ScriptManager::relay("HigraphManager","setNodeColor", array[i], TRANSPARENT);
+                ScriptManager::relay("HigraphManager","setNodeFillColor", array[i], TRANSPARENT);
+            }
+			else
+			{
+				ScriptManager::relay("HigraphManager","setNodeFillColor", array[i], color_lookup(i/cols));
+			}
+           	ScriptManager::relay("HigraphManager","setNodeNamePosition", array[i], SOUTH);
+            ScriptManager::relay("HigraphManager", "setNodeShape", array[i], RECTANGLE);
+            ScriptManager::relay("HigraphManager","addChild", array, array[i]);
+			array[i]=((rand()%9999));
+     	}
+   }
 	
 /*void makeMatrix(int* matrix[], int length, int width){
     makeMatrix(matrix, length, width, true, "");
@@ -317,7 +362,72 @@ char* convert(int num)
 	return s;
 }
 
-void makeMatrix(int** matrix, int length, int width, bool showCells, char* name){
+/*void makeMatrix(int** matrix, int length, int width, bool showCells, char* name){
+     ScriptManager::relay("HigraphManager","makeNode", matrix);
+	 ScriptManager::relay("HigraphManager", "placeNode", matrix, 25, 100);
+     ScriptManager::relay("HigraphManager","setNodeValueShow", matrix, false);
+     ScriptManager::relay("HigraphManager","setNodeNameLabel", matrix, name);
+     ScriptManager::relay("HigraphManager","setNodeLayoutManager", matrix, "VertNestedTree");
+     ScriptManager::relay("HigraphManager", "setNodeShape", matrix, RECTANGLE);
+     ScriptManager::relay("HigraphManager","setNodeNamePosition", matrix, SOUTH);
+	 
+	 int i,j;
+	 char *name2 = new char[10];
+	 for(i = 0; i < length; i++)
+     {
+        
+        
+        ScriptManager::relay("HigraphManager","makeNode", matrix[i]);
+		ScriptManager::relay("HigraphManager","addChild", matrix, matrix[i]);
+        ScriptManager::relay("HigraphManager","dislocate", matrix[i], 2, 0);
+		//ScriptManager::relay("HigraphManager", "setNodeShape", matrix[i], RECTANGLE);
+        ScriptManager::relay("HigraphManager", "setNodeColor", matrix[i], WHITE);
+        ScriptManager::relay("HigraphManager","setNodeNameShow", matrix[i], false);
+        ScriptManager::relay("HigraphManager","setNodeNamePosition", matrix[i], CENTER);
+        ScriptManager::relay("HigraphManager","setNodeValueShow", matrix[i], false);
+        ScriptManager::relay("HigraphManager","setNodeLayoutManager", matrix[i], "HorizNestedTree");
+        
+        
+         
+        
+            for(j = 0; j < width; j++)
+            {
+                ScriptManager::relay("HigraphManager","makeNode", matrix[i][j]);
+                /*if( !showCells){
+                    ScriptManager::relay("HigraphManager","setNodeColor", matrix[i][j], TRANSPARENT);
+                    ScriptManager::relay("HigraphManager","setNodeFillColor", matrix[i][j], TRANSPARENT);
+                    }*//*
+				name2[0]="(";
+				name2[1]=(char)(48+i);
+				name2[2]=",";
+				name2[3]=(char)(48+j);
+				name2[4]=")";
+				name2[5]="\0";
+				ScriptManager::relay("HigraphManager","setNodeNameLabel", matrix[i][j], name2);
+				ScriptManager::relay("HigraphManager","setNodeNameShow", matrix[i][j], true);
+                ScriptManager::relay("HigraphManager","setNodeNamePosition", matrix[i][j], SOUTH);
+                ScriptManager::relay("HigraphManager","setNodeValueShow", matrix[i][j], true);
+                ScriptManager::relay("HigraphManager","setNodeValuePosition", matrix[i][j], CENTER );
+                ScriptManager::relay("HigraphManager", "setNodeFillColor", matrix[i][j], color_lookup(i));
+                ScriptManager::relay("HigraphManager","addChild", matrix[i], matrix[i][j]);
+				//ScriptManager::relay("HigraphManager","dislocate", matrix[i][j], 2, 0);
+                /*if( i == 0 ) {
+                    ScriptManager::relay("HigraphManager", "createNodeExtraLabel", matrix[i][j], "column", NORTH ) ;
+                    char* jString =  "";
+                    convert(j,jString);
+                    cout<<jString;
+                    string work (jString);
+                    ScriptManager::relay("HigraphManager", "setNodeExtraLabel", matrix[i][j], "column", work ) ;}
+                if( j == 0 ) {
+                ScriptManager::relay("HigraphManager", "createNodeExtraLabel", matrix[i][j], "row", WEST ) ;
+                char* iString;
+                convert(i,iString);
+                ScriptManager::relay("HigraphManager", "setNodeExtraLabel", matrix[i][j], "row", iString ) ;}*/
+            /*}
+   }
+}*/
+
+void makeMatrix(double** matrix, int length, int width, bool showCells, char* name){
      ScriptManager::relay("HigraphManager","makeNode", matrix);
 	 ScriptManager::relay("HigraphManager", "placeNode", matrix, 25, 100);
      ScriptManager::relay("HigraphManager","setNodeValueShow", matrix, false);
@@ -390,7 +500,7 @@ void drawLine(double x1, double y1, double x2, double y2){
     ScriptManager::relay("HigraphManager", "drawLine", x1, y1, x2, y2);
 }
     
-void setupval(int& val){
+void setupval(double& val){
 	 ScriptManager::relay("HigraphManager","makeNode", val);
 	 ScriptManager::relay("HigraphManager","placeNode", val, 5, 0);
 	 //ScriptManager::relay("HigraphManager","setNodeSize", 40, 40);
