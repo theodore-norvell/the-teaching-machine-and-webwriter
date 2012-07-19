@@ -2,7 +2,7 @@
 
 #include<stdlib.h>
 
-
+int temp;
 const int WHITE = 0xffffff;
 const int BLACK = 0x000000;
 const int GREY = 0x808080;
@@ -489,7 +489,13 @@ void makeMatrix(double** matrix, int length, int width, bool showCells, char* na
                 convert(i,iString);
                 ScriptManager::relay("HigraphManager", "setNodeExtraLabel", matrix[i][j], "row", iString ) ;}*/
             }
-   }
+    }
+	ScriptManager::relay("HigraphManager","makeNode", temp);
+	ScriptManager::relay("HigraphManager","addChild", temp, matrix);
+    ScriptManager::relay("HigraphManager","setNodeColor", temp, TRANSPARENT);
+    ScriptManager::relay("HigraphManager","setNodeNameShow", temp, false);
+    ScriptManager::relay("HigraphManager","setNodeValueShow", temp, false);
+	
 }
 
 void setTitle(char* viewId, char* title){

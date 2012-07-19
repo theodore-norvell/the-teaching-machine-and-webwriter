@@ -57,9 +57,9 @@ int main()
 	 //Let's pass another 2*2 matrix into the scale function
 	 double C[2*2];
 	 /*#TS*/makeArray(C,2,2,true,"C[]", 400, 0);
-	 for(int k=0;k<rows;k++)
-		for(int l=0;l<cols;l++)
-			ScriptManager::relay("HigraphManager","deleteNode",mat[k][l]);
+	 //for(int k=0;k<rows;k++)
+		//for(int l=0;l<cols;l++)
+			ScriptManager::relay("HigraphManager","deleteNode", temp);
 	 //ScriptManager::relay("HigraphManager","deleteNode",mat[0], true);
 	 //ScriptManager::relay("HigraphManager","deleteNode",mat[1], true);
 	 delete[] mat;
@@ -85,8 +85,9 @@ int main()
      }
 	 
 	 scale(C, 2, 2, scale_factor);
-	
-     return 0;
+	 
+	 /*#TS*/  ScriptManager::relay("HigraphManager","deleteNode", temp); /*#/TS*/
+	 return 0;
 }
 
 void scale(double B[], int rows, int columns, double factor)
@@ -98,6 +99,7 @@ void scale(double B[], int rows, int columns, double factor)
 	ScriptManager::relay("HigraphManager","setNodeNameShow",name,true);
 	ScriptManager::relay("HigraphManager","setNodeValueShow",name,false);
 	ScriptManager::relay("HigraphManager","setNodeNamePosition",name,CENTER);
+	ScriptManager::relay("HigraphManager","setNodeNameLabel",name,"B[]");
 	ScriptManager::relay("HigraphManager","placeNode",name,400,380);
 	ScriptManager::relay("HigraphManager","makeNode",target); 
 	ScriptManager::relay("HigraphManager","setNodeSize", target, 1, 1);
@@ -105,11 +107,9 @@ void scale(double B[], int rows, int columns, double factor)
 	ScriptManager::relay("HigraphManager","setNodeNameShow",target,false);
 	ScriptManager::relay("HigraphManager","setNodeValueShow",target,false);
 	if(columns==3)
-		{ScriptManager::relay("HigraphManager","placeNode",target,320,367);
-		ScriptManager::relay("HigraphManager","setNodeNameLabel",name,"B[]");}
+		ScriptManager::relay("HigraphManager","placeNode",target,320,367);
 	else
-		{ScriptManager::relay("HigraphManager","placeNode",target,389,260);
-		ScriptManager::relay("HigraphManager","setNodeNameLabel",name,"C[]");}
+		ScriptManager::relay("HigraphManager","placeNode",target,389,260);
 	ScriptManager::relay("HigraphManager","makeEdge", name, target);
 	ScriptManager::relay("HigraphManager", "setTargetDecorator", name, target, ARROWHEAD);
 	ScriptManager::relay("HigraphManager", "setEdgeColor", name, target, BLACK);
