@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
+	
 	<meta charset="utf-8"/>
 	<title>Tutorials</title>
 	<meta name="description" content="" />
@@ -18,9 +19,9 @@
       <td valign="top" >
         <table width="100%" border="0">
           <tr>
-            <td id="buttons" width = "400">
+            <td id="buttons" width = "740">
 		    </td>
-		    <td id="pageno" align = "center"> </td>
+		    <td id="pageno" align = "left"> </td>
 		  </tr>
           <tr>
 	        <td colspan = "2">
@@ -51,13 +52,24 @@
 				tm.loadRemoteFile( ".", "MatrixTutorial.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;
-				tm.go("77 * s") ;
+				tm.go("75 * s") ;
 			}
 		 //]]></script>
-		 
-		<div class = "vertex" id="v1" >
+		 <div class = "vertex" id="v0" >
 			<p>This tutorial looks at passing a two-dimensional matrix to a function.
 			   (Click <a href = "MatrixTutorial.html"> here </a> to go to part I) </p>
+		</div>
+		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
+		     data-label="next" data-function="edge0to1">
+			<script>//<![CDATA[
+				EdgeFunctions.edge0to1 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		</div>
+		 
+		<div class = "vertex" id="v1" >
+			<p>Let's pass the matrix into a function that will scale it using a scale factor we have defined. We also need to tell the function the dimensions of the matrix and the scale factor itself, so we'll pass those in as arguments to the function as well.</p>
 		</div>
 		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
 		     data-label="next" data-function="edge1to2">
@@ -68,7 +80,7 @@
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
-			<p>The 'grow' method may be called to make the array larger by one</p>
+			<p>The matrix is refered to by the name B within the scale function.</p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
@@ -80,44 +92,43 @@
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>In this case the array is bigger than the 'size' field, so we only need to increment the size field.</p>
+			<p>We'll use the lookup formula you learned in Part I to traverse the matrix. The value of each cell needs to be multiplied by the scale factor.</p>
 		</div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>The grow function is about to be called for the second time.</p>
+			<p>You can iterate through the rest of the matrix cell-by-cell, or skip ahead if you've got the hang of traversing and assigning values to the matrix.</p>
 		</div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.edge4to5 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>This time the size is already as big as the array.</p>
-			<p>We need a bigger array.</p>
+			<p></p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
 			 <script>//<![CDATA[
 				EdgeFunctions.edge5to6 = function(tm) {
-					tm.go("10 * s") ;
+					tm.go("11 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			<p>Allocate a new array that is twice the length.</p>
+			<p></p>
 		</div>
 	    
 		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
@@ -125,33 +136,33 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p></p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p>Next. Replace the current array with the new one.</p>
+			<p></p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
-			<p>Finally. Increment the size.</p>
+			<p>We're now at the end of the scale function. It's time to return to the main function.</p>
 		</div>
 		
 		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
@@ -163,7 +174,8 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>Back in main, the matrix is refered to by A again. The name B had it's scope limited only to the scale function and can no longer be used.</p>
+			<p>Let's pass another matrix  into the scale function. This time, we'll make it a 2x2 matrix.</p>
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -175,7 +187,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v11" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>Once again, we'll pass in the matrix (this time, matrix C), it's dimensions, and the scale factor.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -183,11 +195,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to12 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v12" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>This time, matrix C is refered to by the name B within the scale function. Let's skip to the end of the function, since you now know how to iterate over a matrix.</p>
 		</div>
 		
 		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
@@ -195,11 +207,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge12to13 = function(tm) {
-					tm.go("37 * s") ;
+					tm.go("39 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v13" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>Time to return to main.</p>
 		</div>
 		
 		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
@@ -211,88 +223,37 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v14" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
+			<p>Back in main, the name B for the matrix is lost again.</p>
+			<p>And that's it, we're done!</p>
 		</div>
 		
-		<div class="edge" id="edge6to15" data-source="v6" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge6to15">
+		<div class="edge" id="edge4to8" data-source="v4" data-target="v8"
+		     data-label="skip to end of loop" data-function="edge4to8">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge5to15 = function(tm) {
-					tm.go("38 * s") ;
+				EdgeFunctions.edge4to8 = function(tm) {
+					tm.go("32 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge7to15" data-source="v7" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge7to15">
+		<div class="edge" id="edge5to8" data-source="v5" data-target="v8"
+		     data-label="skip to end of loop" data-function="edge5to8">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge7to15 = function(tm) {
-					tm.go("36 * s") ;
+				EdgeFunctions.edge5to8 = function(tm) {
+					tm.go("25 * s") ;
 				}
 			//]]></script>
 
-		<div class="edge" id="edge8to15" data-source="v8" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge8to15">
+		<div class="edge" id="edge6to8" data-source="v6" data-target="v8"
+		     data-label="skip to end of loop" data-function="edge6to8">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge8to15 = function(tm) {
-					tm.go("30 * s") ;
+				EdgeFunctions.edge6to8 = function(tm) {
+					tm.go("14 * s") ;
 				}
 			//]]></script>
-			
-		<div class="edge" id="edge9to15" data-source="v9" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge9to15">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge9to15 = function(tm) {
-					tm.go("28 * s") ;
-				}
-			//]]></script>
-			
-		<div class="edge" id="edge10to15" data-source="v10" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge10to15">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge10to15 = function(tm) {
-					tm.go("18 * s") ;
-				}
-			//]]></script>
-			
-		<div class="edge" id="edge11to15" data-source="v11" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge11to15">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge11to15 = function(tm) {
-					tm.go("16 * s") ;
-				}
-			//]]></script>
-			
-		<div class="edge" id="edge12to15" data-source="v12" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge12to15">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge12to15 = function(tm) {
-					tm.go("10 * s") ;
-				}
-			//]]></script>
-			
-		<div class="edge" id="edge13to15" data-source="v13" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge13to15">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge13to15 = function(tm) {
-					tm.go("8 * s") ;
-				}
-			//]]></script>
-			
-		<div class = "vertex" id="v15" >
-			<p>Next.  Copy the first 'size' items to the new array.</p>
-		</div>
-		
-		
-		
-		
+				
 </div>
 	<div id="haxe:trace"></div>
 </body>

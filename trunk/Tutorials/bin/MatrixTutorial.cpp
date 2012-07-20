@@ -2,6 +2,7 @@
 #include<string>
 /*#TS*/
 #include"PDV_final.h"
+double **mat;
 /*#/TS*/
 
 void scale(double B[], int rows, int columns, double factor);
@@ -24,12 +25,12 @@ int main()
      const int cols = 3;
 	 double val = 10.0;/*#TS*/ setupval(val);
 	 /*#/TS*/
-     double scale_factor = .25;
-     double A[rows*cols];
-     /*#TS*/makeArray(A,rows,cols,true,"A[]", 320, 0);/*#/TS*/
+     
+     double A[rows*cols];/*#TS*/makeArray(A,rows,cols,true,"A[]", 320, 0);/*#/TS*/
+     
 	 int i,j;/*#TS*//*nodes for i & j*/setup_i_j(i,j);/*#/TS*/
 	 
-	 /*#TS*/double **mat = new double*[rows];
+	 /*#TS*/mat = new double*[rows];
      for(int k=0;k<rows;k++)
         mat[k]=new double[cols];
      makeMatrix(mat,rows,cols,true,"Matrix Form of A[]");
@@ -51,6 +52,12 @@ int main()
      }
 	 
 	 //Call module to add 1 to each element of matrix
+	 double scale_factor = .25;
+	 /*#TS*/ScriptManager::relay("HigraphManager","makeNode", scale_factor);
+	 ScriptManager::relay("HigraphManager","placeNode", scale_factor, 5, 320);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow", scale_factor, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", scale_factor, "scale_factor");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",scale_factor,-10,0);/*#/TS*/
 	 scale(A, rows, cols, scale_factor);
 	 //See that the values of the original matrix have changed
 	
@@ -63,7 +70,7 @@ int main()
 	 //ScriptManager::relay("HigraphManager","deleteNode",mat[0], true);
 	 //ScriptManager::relay("HigraphManager","deleteNode",mat[1], true);
 	 delete[] mat;
-	 double **mat = new double*[2];
+	 mat = new double*[2];
      for(int k=0;k<2;k++)
         mat[k]=new double[2];
      makeMatrix(mat,2,2,true,"Matrix Form of C[]");
@@ -121,9 +128,12 @@ void scale(double B[], int rows, int columns, double factor)
 	{
 		for(j=0;j<columns;j++)
 		{
-			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, YELLOW);/*#/TS*/
+			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW);
+			ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, YELLOW);/*#/TS*/
+			/*#TS*/	mat[i][j]=mat[i][j]*factor;/*#/TS*/
 			B[(i*columns)+j] = (B[(i*columns)+j])  *  (factor);
-			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, color_lookup(i));/*#/TS*/
+			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
+			ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, color_lookup(i));/*#/TS*/
 		}
 	}
 	
