@@ -101,32 +101,34 @@
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>We'll assign the matrix location represented by ((i x number of columns) + j) the cureent value of the variable val and then increase val by 1.5.</p>
+			<p>We'll assign the matrix location represented by ((i x number of columns) + j) the current value of the variable val and then increase val by 1.5.</p>
 			<p>As you'll see, using this formula allows us to traverse the entire matrix while iterating over i and j.</p>
+			<p>Here, the formula gives us: (0 x 3) + 0 = 0.</p>
 		</div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.edge4to5 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("2 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>The first element of the matrix is assigned the value of 10.0 and val is updated to 11.5.</p>
+			<p>The zeroth element of the matrix has been assigned the value of 10.0 and val has been updated to 11.5.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
 			 <script>//<![CDATA[
 				EdgeFunctions.edge5to6 = function(tm) {
-					tm.go("5 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v6" >
 			<p>Work out the locations accessed for the rest of matrix as the loops continue, or skip ahead if you feel you're comfortable with the matrix lookups.</p>
+			<p>Here, the formula gives us: (0 x 3) + 1 = 1.</p>
 		</div>
 	    
 		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
@@ -138,7 +140,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p></p>
+			<p>The first element of the matrix has been assigned the value of 11.5 and val has been updated to 13.0.</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
@@ -149,7 +151,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p></p>
+			<p>(0 x 3) + 2 = 2.</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
@@ -160,7 +162,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
-			<p></p>
+			<p>The second element of the matrix has been assigned the value of 13.0 and val has been updated to 14.5.</p>
 		</div>
 		
 		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
@@ -172,7 +174,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p></p>
+			<p>(1 x 3) + 0 = 3.</p>
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -184,7 +186,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v11" >
-			<p></p>
+			<p>The third element of the matrix has been assigned the value of 14.5 and val has been updated to 16.0.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -196,7 +198,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v12" >
-			<p></p>
+			<p>(1 x 3) + 1 = 4.</p>
 		</div>
 		
 		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
@@ -208,7 +210,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v13" >
-			<p></p>
+			<p>The fourth element of the matrix has been assigned the value of 16.0 and val has been updated to 17.5.</p>
 		</div>
 		
 		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
@@ -220,7 +222,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v14" >
-			<p></p>
+			<p>(1 x 3) + 2 = 5.</p>
 		</div>
 		
 		<div class="edge" id="edge14to15" data-source="v14" data-target="v15"
@@ -231,89 +233,98 @@
 					tm.go("2 * s") ;
 				}
 			//]]></script>
-		<div class="edge" id="edge5to15" data-source="v5" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge5to15">
+		<div class="edge" id="edge5to16" data-source="v5" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge5to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge5to15 = function(tm) {
-					tm.go("44 * s") ;
+				EdgeFunctions.edge5to16 = function(tm) {
+					tm.go("51 * s") ;
 				}
 			//]]></script> 
 		
-		<div class="edge" id="edge6to15" data-source="v6" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge6to15">
+		<div class="edge" id="edge6to16" data-source="v6" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge6to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge5to15 = function(tm) {
-					tm.go("38 * s") ;
+				EdgeFunctions.edge5to16 = function(tm) {
+					tm.go("45 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge7to15" data-source="v7" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge7to15">
+		<div class="edge" id="edge7to16" data-source="v7" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge7to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge7to15 = function(tm) {
-					tm.go("36 * s") ;
+				EdgeFunctions.edge7to16 = function(tm) {
+					tm.go("43 * s") ;
 				}
 			//]]></script>
 
-		<div class="edge" id="edge8to15" data-source="v8" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge8to15">
+		<div class="edge" id="edge8to16" data-source="v8" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge8to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge8to15 = function(tm) {
-					tm.go("30 * s") ;
+				EdgeFunctions.edge8to16 = function(tm) {
+					tm.go("37 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge9to15" data-source="v9" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge9to15">
+		<div class="edge" id="edge9to16" data-source="v9" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge9to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge9to15 = function(tm) {
-					tm.go("28 * s") ;
+				EdgeFunctions.edge9to16 = function(tm) {
+					tm.go("35 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge10to15" data-source="v10" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge10to15">
+		<div class="edge" id="edge10to16" data-source="v10" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge10to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge10to15 = function(tm) {
-					tm.go("18 * s") ;
+				EdgeFunctions.edge10to16 = function(tm) {
+					tm.go("25 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge11to15" data-source="v11" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge11to15">
+		<div class="edge" id="edge11to16" data-source="v11" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge11to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge11to15 = function(tm) {
-					tm.go("16 * s") ;
+				EdgeFunctions.edge11to16 = function(tm) {
+					tm.go("23 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge12to15" data-source="v12" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge12to15">
+		<div class="edge" id="edge12to16" data-source="v12" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge12to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge12to15 = function(tm) {
-					tm.go("10 * s") ;
+				EdgeFunctions.edge12to16 = function(tm) {
+					tm.go("17 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge13to15" data-source="v13" data-target="v15"
-		     data-label="skip to end of loop" data-function="edge13to15">
+		<div class="edge" id="edge13to16" data-source="v13" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge13to16">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge13to15 = function(tm) {
-					tm.go("8 * s") ;
+				EdgeFunctions.edge13to16 = function(tm) {
+					tm.go("15 * s") ;
+				}
+			//]]></script>
+		
+		<div class="edge" id="edge14to16" data-source="v14" data-target="v16"
+		     data-label="skip to end of loop" data-function="edge14to16">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge14to16 = function(tm) {
+					tm.go("9 * s") ;
 				}
 			//]]></script>
 			
 		<div class = "vertex" id="v15" >
-			<p></p>
+			<p>The fifth element of the matrix has been assigned the value of 17.5 and val has been updated to 19.0.</p>
 		</div>
 		
 		<div class="edge" id="edge15to16" data-source="v15" data-target="v16"
@@ -321,12 +332,12 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge15to16 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 			
 		<div class = "vertex" id="v16" >
-			<p>Excellent! Click <a href = "MatrixTutorial2.html"> here </a> to go to the next part</p>
+			<p>Excellent! Click <a href = "MatrixTutorial2.html"> here </a> to go to the next part.</p>
 		</div>
 </div>
 	<div id="haxe:trace"></div>
