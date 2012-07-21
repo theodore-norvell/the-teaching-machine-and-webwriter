@@ -52,7 +52,7 @@
 				tm.loadRemoteFile( ".", "MatrixTutorial.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;
-				tm.go("75 * s") ;
+				tm.go("74 * s") ;
 			}
 		 //]]></script>
 		 <div class = "vertex" id="v0" >
@@ -63,7 +63,7 @@
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					tm.go("2 * s") ;
+					tm.go("3 * s") ;
 				}
 			//]]></script>
 		</div>
@@ -75,60 +75,63 @@
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
 			<p>The matrix is refered to by the name B within the scale function.</p>
+			<p>Keep in mind that the variables i & j within the scale function are different from the variables with the same names in the main function. Each set has different scope, local to their respective function. The same goes for the variables scale_factor and rows.</p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("9 * s") ;
 				}
 			//]]></script>
 		</div>
 			
 	  <div class = "vertex" id="v3" >
 			<p>We'll use the lookup formula you learned in Part I to traverse the matrix. The value of each cell needs to be multiplied by the scale factor.</p>
+			<p>Using the formula: (0 x 3) + 0  =  0.</p>
 		</div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 	  <div class = "vertex" id="v4" >
 			<p>You can iterate through the rest of the matrix cell-by-cell, or skip ahead if you've got the hang of traversing and assigning values to the matrix.</p>
+			<p>Using the formula: (0 x 3) + 1  =  1.</p>
 		</div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.edge4to5 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p></p>
+			<p>(0 x 3) + 2  =  2.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
 			 <script>//<![CDATA[
 				EdgeFunctions.edge5to6 = function(tm) {
-					tm.go("11 * s") ;
+					tm.go("12 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			<p></p>
+			<p>(1 x 3) + 0  =  3.</p>
 		</div>
 	    
 		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
@@ -136,29 +139,29 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p></p>
+			<p>(1 x 3) + 1  =  4.</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p></p>
+			<p>(1 x 3) + 2  =  5.</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("8 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
@@ -174,8 +177,9 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p>Back in main, the matrix is refered to by A again. The name B had it's scope limited only to the scale function and can no longer be used.</p>
-			<p>Let's pass another matrix  into the scale function. This time, we'll make it a 2x2 matrix.</p>
+			<p>Back in main, the matrix is refered to by A again. The name B had its scope limited only to the scale function and can no longer be used.</p>
+			<p>Note how the values of the original matrix A <b> have </b> been modified. The values of the other variables such as i and j, however <b> have not </b> and continue to store the value they did before we entered the function.</p> 
+			<p>Let's pass another matrix into the scale function. This time, we'll make it a 2x2 matrix.</p>
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -183,11 +187,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge10to11 = function(tm) {
-					tm.go("45 * s") ;
+					tm.go("49 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v11" >
-			<p>Once again, we'll pass in the matrix (this time, matrix C), it's dimensions, and the scale factor.</p>
+			<p>Once again, we'll pass in the matrix (this time, matrix C), its dimensions, and the scale factor.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -195,7 +199,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to12 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v12" >
@@ -207,7 +211,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge12to13 = function(tm) {
-					tm.go("39 * s") ;
+					tm.go("43 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v13" >
@@ -219,7 +223,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge13to14 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v14" >
@@ -227,34 +231,43 @@
 			<p>And that's it, we're done!</p>
 		</div>
 		
-		<div class="edge" id="edge4to8" data-source="v4" data-target="v8"
-		     data-label="skip to end of loop" data-function="edge4to8">
+		<div class="edge" id="edge4to9" data-source="v4" data-target="v9"
+		     data-label="skip to end of loop" data-function="edge4to9">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge4to8 = function(tm) {
-					tm.go("32 * s") ;
+				EdgeFunctions.edge4to9 = function(tm) {
+					tm.go("42 * s") ;
 				}
 			//]]></script>
 			
-		<div class="edge" id="edge5to8" data-source="v5" data-target="v8"
-		     data-label="skip to end of loop" data-function="edge5to8">
+		<div class="edge" id="edge5to9" data-source="v5" data-target="v9"
+		     data-label="skip to end of loop" data-function="edge5to9">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge5to8 = function(tm) {
-					tm.go("25 * s") ;
+				EdgeFunctions.edge5to9 = function(tm) {
+					tm.go("34 * s") ;
 				}
 			//]]></script>
 
-		<div class="edge" id="edge6to8" data-source="v6" data-target="v8"
-		     data-label="skip to end of loop" data-function="edge6to8">
+		<div class="edge" id="edge6to9" data-source="v6" data-target="v9"
+		     data-label="skip to end of loop" data-function="edge6to9">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge6to8 = function(tm) {
+				EdgeFunctions.edge6to9 = function(tm) {
+					tm.go("22 * s") ;
+				}
+			//]]></script>
+		
+		<div class="edge" id="edge7to9" data-source="v7" data-target="v9"
+		     data-label="skip to end of loop" data-function="edge7to9">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge7to9 = function(tm) {
 					tm.go("14 * s") ;
 				}
 			//]]></script>
-				
-</div>
+			
+	</div>
 	<div id="haxe:trace"></div>
 </body>
 </html>

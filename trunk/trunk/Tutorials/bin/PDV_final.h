@@ -528,6 +528,7 @@ void setup_i_j(int& i,int& j)
      ScriptManager::relay("HigraphManager","setNodeValueShow", i, true);
 	 ScriptManager::relay("HigraphManager","setNodeNameLabel", i, "i");
 	 ScriptManager::relay("HigraphManager","setNodeNameNudge",i,-10,0);
+	 i=rand()%1249;
      //ScriptManager::relay("HigraphManager","setNodeShape", i, ELLIPSE);
 	 //ScriptManager::relay("HigraphManager","setNodeColor", i, BLACK);
      //ScriptManager::relay("HigraphManager","setNodeFillColor", i, YELLOW);
@@ -544,6 +545,7 @@ void setup_i_j(int& i,int& j)
      //ScriptManager::relay("HigraphManager","setNodeFillColor", j, YELLOW);
      //ScriptManager::relay("HigraphManager", "setNodeShape", j, ELLIPSE);
 	 //ScriptManager::relay("HigraphManager","setNodeNamePosition", j, WEST);
+	 j=rand()%3230;
 	 
 }
 /*#/TS*/

@@ -3,13 +3,13 @@
 /*#TS*/
 #include"PDV_final.h"
 double **mat;
+int *p1, *p2;
 /*#/TS*/
 
-void scale(double B[], int rows, int columns, double factor);
+void scale(double B[], int rows, int cols, double factor);
 
 int main()
-{
-     /*#TS*/
+{    /*#TS*/
      makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode");
      setTitle("mainView", "Matrices PDV");
      setDefaultNodeValueShow(true, CENTER);
@@ -22,53 +22,49 @@ int main()
        
      /*#/TS*/
      const int rows = 2;
-     const int cols = 3;
+     const int columns = 3;
 	 double val = 10.0;/*#TS*/ setupval(val);
 	 /*#/TS*/
      
-     double A[rows*cols];/*#TS*/makeArray(A,rows,cols,true,"A[]", 320, 0);/*#/TS*/
+     double A[rows*columns];/*#TS*/makeArray(A,rows,columns,true,"A[]", 320, 0);/*#/TS*/
      
-	 int i,j;/*#TS*//*nodes for i & j*/setup_i_j(i,j);/*#/TS*/
-	 
-	 /*#TS*/mat = new double*[rows];
+	 int i,j;/*#TS*//*nodes for i & j*/setup_i_j(i,j);/*#/TS*//*#TS*/mat = new double*[rows];
      for(int k=0;k<rows;k++)
-        mat[k]=new double[cols];
-     makeMatrix(mat,rows,cols,true,"Matrix Form of A[]");
+        mat[k]=new double[columns];
+     makeMatrix(mat,rows,columns,true,"Matrix Form of A[]");
 	 for(int k=0;k<rows;k++)
-		for(int l=0;l<cols;l++)
-			mat[k][l]=A[(k*cols)+l];/*#/TS*/
-	 
-     for(i = 0; i < rows; i++)
+		for(int l=0;l<columns;l++)
+			mat[k][l]=A[(k*columns)+l];/*#/TS*/
+	 for(i = 0; i < rows; i++)
      {
-        for(j = 0; j < cols; j++)
+        for(j = 0; j < columns; j++)
             {	/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW);
-					ScriptManager::relay("HigraphManager","setNodeFillColor", A[(i*cols)+j], YELLOW);/*#/TS*/
+					ScriptManager::relay("HigraphManager","setNodeFillColor", A[(i*columns)+j], YELLOW);/*#/TS*/
 				/*#TS*/	mat[i][j]=val;/*#/TS*/
-                A[(i*cols)+j]=val;
-				val+=1.5;
-				/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
-					ScriptManager::relay("HigraphManager","setNodeFillColor", A[(i*cols)+j], color_lookup(i));/*#/TS*/
+                A[(i*columns)+j]=val;
+				val+=1.5;/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
+					ScriptManager::relay("HigraphManager","setNodeFillColor", A[(i*columns)+j], color_lookup(i));/*#/TS*/
 			}
      }
 	 
-	 //Call module to add 1 to each element of matrix
 	 double scale_factor = .25;
 	 /*#TS*/ScriptManager::relay("HigraphManager","makeNode", scale_factor);
 	 ScriptManager::relay("HigraphManager","placeNode", scale_factor, 5, 320);
 	 ScriptManager::relay("HigraphManager","setNodeValueShow", scale_factor, true);
 	 ScriptManager::relay("HigraphManager","setNodeNameLabel", scale_factor, "scale_factor");
-	 ScriptManager::relay("HigraphManager","setNodeNameNudge",scale_factor,-10,0);/*#/TS*/
-	 scale(A, rows, cols, scale_factor);
-	 //See that the values of the original matrix have changed
-	
-	 //Let's pass another 2*2 matrix into the scale function
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",scale_factor,-5,0);
+	 /*#/TS*//*#TS*/p1=&i;p2=&j;/*#/TS*/
+	 scale(A, rows, columns, scale_factor);
+	   /*#TS*/ //UnHiding  i  and j 
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",i, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", i, true);
+	 ScriptManager::relay("HigraphManager","setNodeColor", i, BLACK);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",j, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", j, true);
+	 ScriptManager::relay("HigraphManager","setNodeColor", j, BLACK);/*#/TS*/
 	 double C[2*2];
 	 /*#TS*/makeArray(C,2,2,true,"C[]", 400, 0);
-	 //for(int k=0;k<rows;k++)
-		//for(int l=0;l<cols;l++)
-			ScriptManager::relay("HigraphManager","deleteNode", temp);
-	 //ScriptManager::relay("HigraphManager","deleteNode",mat[0], true);
-	 //ScriptManager::relay("HigraphManager","deleteNode",mat[1], true);
+	 ScriptManager::relay("HigraphManager","deleteNode", temp);
 	 delete[] mat;
 	 mat = new double*[2];
      for(int k=0;k<2;k++)
@@ -77,33 +73,38 @@ int main()
 	 for(int k=0;k<2;k++)
 		for(int l=0;l<2;l++)
 			mat[k][l]=C[(k*2)+l];/*#/TS*/
-	 
 	 for(i = 0; i < 2; i++)
      {
         for(j = 0; j < 2; j++)
-            {	/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW);
-					ScriptManager::relay("HigraphManager","setNodeFillColor", C[(i*2)+j], YELLOW);/*#/TS*/
-				/*#TS*/	mat[i][j]=val;/*#/TS*/
+            {	/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW);ScriptManager::relay("HigraphManager","setNodeFillColor", C[(i*2)+j], YELLOW);/*#/TS*/ /*#TS*/	mat[i][j]=val;/*#/TS*/
                 C[(i*2)+j]=val;
-				val+=1.5;
-				/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
+				val+=1.5; /*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
 					ScriptManager::relay("HigraphManager","setNodeFillColor", C[(i*2)+j], color_lookup(i));/*#/TS*/
 			}
      }
 	 
-	 scale(C, 2, 2, scale_factor);
-	 
-	 /*#TS*/  ScriptManager::relay("HigraphManager","deleteNode", temp); /*#/TS*/
+	 scale(C, 2, 2, scale_factor);  /*#TS*/ //UnHiding  i  and j 
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",i, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", i, true);
+	 ScriptManager::relay("HigraphManager","setNodeColor", i, BLACK);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",j, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", j, true);
+	 ScriptManager::relay("HigraphManager","setNodeColor", j, BLACK);/*#/TS*/ /*#TS*/  ScriptManager::relay("HigraphManager","deleteNode", temp); /*#/TS*/
 	 return 0;
 }
 
-void scale(double B[], int rows, int columns, double factor)
-{	/*#TS*/ int name;
+void scale(double B[], int rows, int cols, double scale_factor)
+{	/*#TS*/ //Hiding  i  and j for now
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",p1, true, false);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", p1, true, false);
+	 ScriptManager::relay("HigraphManager","setNodeColor", p1, true, TRANSPARENT);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow",p2, true,  false);
+	 ScriptManager::relay("HigraphManager","setNodeNameShow", p2, true, false);
+	 ScriptManager::relay("HigraphManager","setNodeColor", p2, true, TRANSPARENT);
+	int name;
 	int target;
 	ScriptManager::relay("HigraphManager","makeNode",name); 
 	ScriptManager::relay("HigraphManager","setNodeColor",name,WHITE);
-	
-	ScriptManager::relay("HigraphManager","setNodeNameShow",name,true);
 	ScriptManager::relay("HigraphManager","setNodeValueShow",name,false);
 	ScriptManager::relay("HigraphManager","setNodeNamePosition",name,CENTER);
 	ScriptManager::relay("HigraphManager","setNodeNameLabel",name,"B[]");
@@ -113,29 +114,36 @@ void scale(double B[], int rows, int columns, double factor)
 	ScriptManager::relay("HigraphManager","setNodeColor",target,WHITE);
 	ScriptManager::relay("HigraphManager","setNodeNameShow",target,false);
 	ScriptManager::relay("HigraphManager","setNodeValueShow",target,false);
-	if(columns==3)
+	if(cols==3)
 		ScriptManager::relay("HigraphManager","placeNode",target,320,367);
 	else
 		ScriptManager::relay("HigraphManager","placeNode",target,389,260);
 	ScriptManager::relay("HigraphManager","makeEdge", name, target);
 	ScriptManager::relay("HigraphManager", "setTargetDecorator", name, target, ARROWHEAD);
 	ScriptManager::relay("HigraphManager", "setEdgeColor", name, target, BLACK);
-	//ScriptManager::relay("HigraphManager","setStringBaseColor",name,MAGENTA);
-	/*ScriptManager::relay("HigraphManager","setNodeNameLabel",B,true,"B[]");*/
+	
+	 ScriptManager::relay("HigraphManager","makeNode", rows);
+	 ScriptManager::relay("HigraphManager","placeNode", rows, 125, 320);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow", rows, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", rows, "rows");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",rows,-5,0);
+	 
+	 ScriptManager::relay("HigraphManager","makeNode", cols);
+	 ScriptManager::relay("HigraphManager","placeNode", cols, 210, 320);
+	 ScriptManager::relay("HigraphManager","setNodeValueShow", cols, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", cols, "cols");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",cols,-5,0);
 	/*#/TS*/
-	int i,j;
+	int i,j;/*#TS*//*nodes for i & j*/setup_i_j(i,j);/*#/TS*/
 	for(i=0;i<rows;i++)
 	{
-		for(j=0;j<columns;j++)
-		{
-			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW);
-			ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, YELLOW);/*#/TS*/
-			/*#TS*/	mat[i][j]=mat[i][j]*factor;/*#/TS*/
-			B[(i*columns)+j] = (B[(i*columns)+j])  *  (factor);
-			/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
-			ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*columns)+j), true, color_lookup(i));/*#/TS*/
+		for(j=0;j<cols;j++)
+		{	/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], YELLOW); ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*cols)+j), true, YELLOW);/*#/TS*/ /*#TS*/mat[i][j]=mat[i][j]*scale_factor;/*#/TS*/
+			B[(i*cols)+j] = (B[(i*cols)+j])  *  (scale_factor);/*#TS*/ScriptManager::relay("HigraphManager","setNodeFillColor", mat[i][j], color_lookup(i));
+			ScriptManager::relay("HigraphManager","setNodeFillColor", (B+(i*cols)+j), true, color_lookup(i));/*#/TS*/
 		}
 	}
-	
-	/*#TS*/ScriptManager::relay("HigraphManager", "deleteNode", target);	ScriptManager::relay("HigraphManager", "deleteNode", name);/*#/TS*/
+	/*#TS*/ScriptManager::relay("HigraphManager", "deleteNode", target);	ScriptManager::relay("HigraphManager", "deleteNode", name);
+	ScriptManager::relay("HigraphManager", "deleteNode", rows);		ScriptManager::relay("HigraphManager", "deleteNode", cols);
+	ScriptManager::relay("HigraphManager", "deleteNode", i);		ScriptManager::relay("HigraphManager", "deleteNode", j);/*#/TS*/
 }
