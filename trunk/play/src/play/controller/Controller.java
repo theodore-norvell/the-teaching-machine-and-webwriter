@@ -5,7 +5,9 @@
  */
 package play.controller;
 
-import play.higraph.view.PLAYNodeView;
+import java.awt.Color;
+
+import play.higraph.view.PLAYHigraphView;
 import play.ide.handler.ViewHandler;
 import tm.backtrack.BTTimeManager;
 
@@ -86,53 +88,41 @@ public class Controller {
 
     /**
      * Refresh the application modified
-     */
-    public void refresh() {
-	this.viewHandler.updateNodesOutline();
-	this.viewHandler.updatePLAYHigraphView();
-    }
-
-    /**
-     * @return
-     */
-    public PLAYNodeView getLastHoverNodeView() {
-	PLAYNodeView playNodeView = this.viewHandler.getLastHoverNodeView();
-	return playNodeView;
-    }
-
-    /**
-     * @param nodeView
-     */
-    public void setLastHoverNodeView(PLAYNodeView nodeView) {
-	this.viewHandler.setLastHoverNodeView(nodeView);
-    }
-
-    /**
-     * @return
-     */
-    public PLAYNodeView getCurrentNodeView() {
-	return this.viewHandler.getCurrentNodeView();
-    }
-
-    /**
-     * @param selectedView
-     */
-    public void setCurrentNodeView(PLAYNodeView selectedView) {
-	this.viewHandler.setCurrentNodeView(selectedView);
-    }
-
-    /**
      * 
+     * @param higraphView
      */
-    public void getNextNodeView() {
-	this.viewHandler.getNextNodeView();
+    public void refresh(PLAYHigraphView higraphView) {
+	if (higraphView != null) {
+	    higraphView.refresh();
+	    higraphView.getDisplay().repaint();
+	    this.viewHandler.updateNodesOutline(higraphView);
+	    this.viewHandler.updataPropertyPanel(higraphView.getHigraph()
+		    .getWholeGraph().getPLAYViewSelectionModel());
+	}
     }
 
-    /**
-     * 
-     */
-    public void getPreviousNodeView() {
-	this.viewHandler.getPreviousNodeView();
+    public void run() {
+	// TODO
+    }
+
+    public void createNewClass() {
+	this.viewHandler.addPLAYHigraphJComponent();
+    }
+
+    public Color getViewDrawColor() {
+	return this.viewHandler.getViewPropertiesPanel().getDrawColor();
+    }
+
+    public Color getViewFillColor() {
+	return this.viewHandler.getViewPropertiesPanel().getFillColor();
+    }
+
+    public int getViewStroke() {
+	return this.viewHandler.getViewPropertiesPanel().getStroke();
+    }
+
+    public boolean isViewFilled() {
+	return this.viewHandler.getViewPropertiesPanel().isFilled();
     }
 
 }
