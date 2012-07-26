@@ -5,20 +5,18 @@
  */
 package play.ide.handler;
 
-import higraph.model.interfaces.Node;
 import higraph.view.layout.NestedTreeLayoutManager;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -27,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
@@ -37,14 +36,16 @@ import play.higraph.swing.PLAYHigraphJComponent;
 import play.higraph.swing.PLAYHigraphJComponentKeyAdapter;
 import play.higraph.swing.PLAYSubgraphMouseAdapter;
 import play.higraph.view.PLAYHigraphView;
-import play.higraph.view.PLAYNodeView;
 import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
-import play.higraph.view.model.NodeViewSelectionModel;
+import play.higraph.view.model.PLAYViewSelectionModel;
+import play.ide.view.ClosableTabPanel;
 import play.ide.view.ExpsPallet;
 import play.ide.view.NodesOutline;
+import play.ide.view.PropertyPanel;
 import play.ide.view.SyntaxPallet;
+import play.ide.view.ViewPropertiesPanel;
 import tm.backtrack.BTTimeManager;
 
 /**
@@ -56,46 +57,33 @@ public class ViewHandler {
     // the main frame need to be showed
     private JFrame mainFrame;
 
+    private JTabbedPane tabbedPane;
+
     private PLAYWholeGraph playWholeGraph;
 
     private PLAYSubgraph playSubgraph;
 
     private PLAYHigraphJComponent playHigraphJComponent;
 
-    private PLAYHigraphView playHigraphView;
+    private PLAYViewFactory viewFactory;
 
-    private NodeViewSelectionModel nodeViewSelectionModel;
+    private PLAYHigraphView playHigraphView;
 
     private NodesOutline nodesOutline;
 
+    private PropertyPanel propertyPanel;
+
     private JMenuItem undoMenuItem;
 
+    private BTTimeManager btTimeManager;
+
     public ViewHandler(BTTimeManager btTimeManager) {
+	this.btTimeManager = btTimeManager;
 	this.mainFrame = new JFrame();
-	this.playWholeGraph = new PLAYWholeGraph(btTimeManager);
-	this.playSubgraph = new PLAYSubgraph(this.playWholeGraph);
-	this.playHigraphJComponent = new PLAYHigraphJComponent();
-	PLAYViewFactory viewFactory = new PLAYViewFactory(btTimeManager);
-	this.playHigraphView = viewFactory.makeHigraphView(this.playWholeGraph,
-		this.playHigraphJComponent);
-	PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
-		this.playHigraphView, this.playWholeGraph, viewFactory,
-		this.playSubgraph);
-	PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
-		this.playHigraphView, subgraphEventObserver);
-	this.nodesOutline = new NodesOutline(this.playHigraphView);
-	this.playHigraphJComponent
-		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
-			this.playHigraphView));
-	this.playHigraphJComponent.setBackground(Color.WHITE);
-	this.playHigraphJComponent.setAutoscrolls(true);
-	this.playHigraphJComponent.setSubgraphView(this.playHigraphView);
-	this.playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
-		NestedTreeLayoutManager.Axis.Y));
-	subgraphMouseAdapter.installIn(this.playHigraphJComponent);
-
-	this.nodeViewSelectionModel = new NodeViewSelectionModel();
-
+	this.tabbedPane = new JTabbedPane();
+	this.tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+	this.addPLAYHigraphJComponent();
+	this.nodesOutline = new NodesOutline();
 	this.mainFrame.setTitle("PLAY - PLAY Language IDE");
 	this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.mainFrame.addWindowListener(new WindowAdapter() {
@@ -119,35 +107,12 @@ public class ViewHandler {
 	});
 	this.mainFrame.setJMenuBar(this.getMenuBar());
 
+	this.propertyPanel = new PropertyPanel();
+
 	JPanel mainPanel = new JPanel();
 	mainPanel.setLayout(new BorderLayout());
 	mainPanel.setPreferredSize(new Dimension(1024, 768));
 	mainPanel.add(this.getFrameSplitPane(), BorderLayout.CENTER);
-	JButton button = new JButton("Temp");
-	button.addActionListener(new ActionListener() {
-
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		for (Node<?, ?, ?, ?, ?, ?, ?> node : playWholeGraph.getTops()) {
-		    node.delete();
-		}
-		playHigraphJComponent.scrollRectToVisible(new Rectangle(0,
-			(int) playHigraphJComponent.getSize().getHeight() - 50,
-			100, 100));
-		playHigraphJComponent
-			.setPreferredSize(new Dimension(
-				(int) playHigraphJComponent.getSize()
-					.getWidth() + 100,
-				(int) playHigraphJComponent.getSize()
-					.getHeight() + 100));
-		playHigraphView.refresh();
-
-		playHigraphJComponent.revalidate();
-		playHigraphJComponent.repaint();
-	    }
-
-	});
-	mainPanel.add(button, BorderLayout.SOUTH);
 	this.mainFrame.getContentPane().add(mainPanel);
 	this.mainFrame.pack();
     }
@@ -155,7 +120,7 @@ public class ViewHandler {
     private JSplitPane getFrameSplitPane() {
 	JSplitPane frameSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
 	frameSplitPane.setOneTouchExpandable(true);
-	frameSplitPane.setDividerLocation(850);
+	frameSplitPane.setDividerLocation(750);
 	frameSplitPane.setLeftComponent(this.getLeftCenterSplitPane());
 	frameSplitPane.setRightComponent(this.getRightTopBottomSplitPane());
 	return frameSplitPane;
@@ -167,9 +132,7 @@ public class ViewHandler {
 	leftCenterSplitPane.setOneTouchExpandable(true);
 	leftCenterSplitPane.setDividerLocation(150);
 	leftCenterSplitPane.setLeftComponent(this.getLeftTopBottomSplitPane());
-	JScrollPane scrollPane = new JScrollPane(this.playHigraphJComponent);
-	scrollPane.setFocusable(true);
-	leftCenterSplitPane.setRightComponent(scrollPane);
+	leftCenterSplitPane.setRightComponent(this.tabbedPane);
 	return leftCenterSplitPane;
     }
 
@@ -191,7 +154,7 @@ public class ViewHandler {
 	JScrollPane scrollPane = new JScrollPane(this.nodesOutline);
 	scrollPane.setFocusable(true);
 	rightTopBottomSplitPane.setTopComponent(scrollPane);
-	rightTopBottomSplitPane.setBottomComponent(new JPanel());
+	rightTopBottomSplitPane.setBottomComponent(this.propertyPanel);
 	return rightTopBottomSplitPane;
     }
 
@@ -204,7 +167,7 @@ public class ViewHandler {
 
 	fileMenu.addSeparator();
 
-	JMenuItem exitMenuItem = new JMenuItem("Exit", KeyEvent.VK_E);
+	JMenuItem exitMenuItem = new JMenuItem("Exit");
 	exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4,
 		ActionEvent.ALT_MASK));
 	exitMenuItem.addActionListener(new ActionListener() {
@@ -221,7 +184,7 @@ public class ViewHandler {
 	editMenu.setMnemonic(KeyEvent.VK_E);
 	menuBar.add(editMenu);
 
-	this.undoMenuItem = new JMenuItem("Undo", KeyEvent.VK_U);
+	this.undoMenuItem = new JMenuItem("Undo");
 	this.undoMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z,
 		ActionEvent.CTRL_MASK));
 	this.undoMenuItem.addActionListener(new ActionListener() {
@@ -229,14 +192,62 @@ public class ViewHandler {
 	    @Override
 	    public void actionPerformed(ActionEvent e) {
 		Controller.getInstance().undo();
-		Controller.getInstance().refresh();
+		Controller.getInstance().refresh(playHigraphView);
 	    }
 
 	});
 	editMenu.add(this.undoMenuItem);
 	editMenu.addSeparator();
 
+	JMenu runMenu = new JMenu("Run");
+	runMenu.setMnemonic(KeyEvent.VK_R);
+	menuBar.add(runMenu);
+
+	JMenuItem runMenuItem = new JMenuItem("Run");
+	runMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F11,
+		ActionEvent.CTRL_MASK));
+	runMenuItem.addActionListener(new ActionListener() {
+
+	    @Override
+	    public void actionPerformed(ActionEvent e) {
+		Controller.getInstance().run();
+	    }
+
+	});
+	runMenu.add(runMenuItem);
+
 	return menuBar;
+    }
+
+    public void addPLAYHigraphJComponent() {
+	PLAYWholeGraph playWholeGraph = new PLAYWholeGraph(this.btTimeManager);
+	PLAYViewFactory viewFactory = new PLAYViewFactory(this.btTimeManager);
+	PLAYSubgraph playSubgraph = new PLAYSubgraph(playWholeGraph);
+	PLAYHigraphJComponent playHigraphJComponent = new PLAYHigraphJComponent();
+	PLAYHigraphView playHigraphView = viewFactory.makeHigraphView(
+		playWholeGraph, playHigraphJComponent);
+	PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
+		playHigraphView, playWholeGraph, viewFactory, playSubgraph);
+	PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
+		playHigraphView, subgraphEventObserver);
+	playHigraphJComponent
+		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
+			playHigraphView));
+	playHigraphJComponent.setBackground(Color.WHITE);
+	playHigraphJComponent.setAutoscrolls(true);
+	playHigraphJComponent.setSubgraphView(playHigraphView);
+	playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
+		NestedTreeLayoutManager.Axis.Y));
+	subgraphMouseAdapter.installIn(playHigraphJComponent);
+	JScrollPane scrollPane = new JScrollPane(playHigraphJComponent);
+	scrollPane.setFocusable(true);
+	this.tabbedPane
+		.add("Class" + this.tabbedPane.getTabCount(), scrollPane);
+	this.tabbedPane.setTabComponentAt(
+		this.tabbedPane.getTabCount() - 1,
+		new ClosableTabPanel(this.tabbedPane, "Class"
+			+ this.tabbedPane.getTabCount()));
+	this.tabbedPane.setSelectedIndex(this.tabbedPane.getTabCount() - 1);
     }
 
     public void showMainFrame() {
@@ -249,17 +260,11 @@ public class ViewHandler {
 	});
     }
 
-    public void updatePLAYHigraphView() {
-	this.playHigraphView.refresh();
-	this.playHigraphView.getDisplay().repaint();
-    }
-
-    /**
-     * @param o
-     */
-    public void updateNodesOutline() {
-	this.nodesOutline.update(null,
-		this.playHigraphView.getDeletedNodeViewList());
+    public void updateNodesOutline(PLAYHigraphView higraphView) {
+	if (higraphView != null) {
+	    this.nodesOutline.update(higraphView,
+		    higraphView.getDeletedNodeViewList());
+	}
     }
 
     /**
@@ -282,44 +287,14 @@ public class ViewHandler {
 	}
     }
 
-    /**
-     * @return the currentNodeView
-     */
-    public PLAYNodeView getCurrentNodeView() {
-	return this.nodeViewSelectionModel.getSelectedNodeView();
+    public void updataPropertyPanel(
+	    PLAYViewSelectionModel playViewSelectionModel) {
+	List<Object> list = playViewSelectionModel.getSelectedViewList();
+	this.propertyPanel.update(list);
     }
 
-    /**
-     * @param currentNodeView
-     *            the currentNodeView to set
-     */
-    public void setCurrentNodeView(PLAYNodeView currentNodeView) {
-	this.nodeViewSelectionModel.setSelectedNodeView(currentNodeView);
-    }
-
-    /**
-     * 
-     */
-    public void getNextNodeView() {
-	this.nodeViewSelectionModel.getNextNodeView(this.playHigraphView);
-    }
-
-    public void getPreviousNodeView() {
-	this.nodeViewSelectionModel.getPreviousNodeView(this.playHigraphView);
-    }
-
-    /**
-     * @return
-     */
-    public PLAYNodeView getLastHoverNodeView() {
-	return this.nodeViewSelectionModel.getLastHoverNodeView();
-    }
-
-    /**
-     * @param nodeView
-     */
-    public void setLastHoverNodeView(PLAYNodeView nodeView) {
-	this.nodeViewSelectionModel.setLastHoverNodeView(nodeView);
+    public ViewPropertiesPanel getViewPropertiesPanel() {
+	return this.propertyPanel.getViewPropertiesPanel();
     }
 
 }

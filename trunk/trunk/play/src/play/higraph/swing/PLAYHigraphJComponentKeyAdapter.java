@@ -5,14 +5,16 @@
  */
 package play.higraph.swing;
 
+import higraph.view.ComponentView;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import play.controller.Controller;
-import play.higraph.model.PLAYNode;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
+import play.higraph.view.model.PLAYViewSelectionModel;
 
 /**
  * @author Kai Zhu
@@ -20,13 +22,17 @@ import play.higraph.view.PLAYNodeView;
  */
 public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 
-    private PLAYHigraphView higraphView;
+    private PLAYHigraphView playHigraphView;
 
     private Controller controller;
 
-    public PLAYHigraphJComponentKeyAdapter(PLAYHigraphView higraphView) {
-	this.higraphView = higraphView;
+    private PLAYViewSelectionModel playViewSelectionModel;
+
+    public PLAYHigraphJComponentKeyAdapter(PLAYHigraphView playHigraphView) {
+	this.playHigraphView = playHigraphView;
 	this.controller = Controller.getInstance();
+	this.playViewSelectionModel = this.playHigraphView.getHigraph()
+		.getWholeGraph().getPLAYViewSelectionModel();
     }
 
     /**
@@ -35,7 +41,10 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
 	System.out.println("key typed" + e.getKeyChar() + "-" + e.getKeyCode());
-	PLAYNodeView nodeView = this.controller.getCurrentNodeView();
+	PLAYNodeView nodeView = (PLAYNodeView) this.playViewSelectionModel
+		.getSelectedViewList().get(
+			this.playViewSelectionModel.getSelectedViewList()
+				.size() - 1);
 	if (nodeView != null) {
 	    StringBuffer expBuffer = new StringBuffer(nodeView.getLabel()
 		    .getTheLabel());
@@ -45,7 +54,7 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 		    expBuffer.delete((expBuffer.length() - 2),
 			    expBuffer.length());
 		} else {
-		    expBuffer.deleteCharAt(expBuffer.length() - 1);
+		    expBuffer.deleteCharAt(0);
 		}
 	    } else {
 		if (expBuffer.length() > 0) {
@@ -56,7 +65,7 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 		}
 	    }
 	    nodeView.getLabel().setTheLabel(expBuffer.toString() + '|');
-	    this.controller.refresh();
+	    this.controller.refresh(this.playHigraphView);
 	}
     }
 
@@ -67,56 +76,89 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
     public void keyPressed(KeyEvent e) {
 	System.out.println("key Pressed" + e.getKeyCode() + "-"
 		+ e.getModifiersEx());
-	PLAYNodeView nodeView = this.controller.getCurrentNodeView();
-	if (nodeView != null) {
-	    this.controller.setCheckPoint("KeyPressed");
-	    if ((e.getKeyCode() == KeyEvent.VK_X)
-		    && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
-		if (nodeView.getNode().canDelete()) {
-		    nodeView.getNode().delete();
-		    this.higraphView.setDeletedNodeView(nodeView);
+
+	this.controller.setCheckPoint("KeyPressed");
+	if (((e.getKeyCode() == KeyEvent.VK_X) && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK))
+		|| (e.getKeyCode() == KeyEvent.VK_DELETE)
+		|| (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
+	    for (Object object : this.playViewSelectionModel
+		    .getSelectedViewList()) {
+		PLAYNodeView nodeView = (PLAYNodeView) object;
+		if (nodeView != null) {
+		    if (nodeView.getNode().canDelete()) {
+			nodeView.getNode().delete();
+			this.playHigraphView.setDeletedNodeView(nodeView);
+		    }
 		}
-	    } else if ((e.getKeyCode() == KeyEvent.VK_V)
-		    && (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
-		PLAYNodeView deletedNodeView = this.higraphView
-			.getDeletedNodeView();
-		if (deletedNodeView != null) {
-		    this.higraphView
-			    .getHigraph()
-			    .getWholeGraph()
-			    .makeRootNode(
-				    deletedNodeView.getNode().getPayload());
-		}
-	    } else if ((((e.getKeyCode() == KeyEvent.VK_DOWN) || (e
-		    .getKeyCode() == KeyEvent.VK_RIGHT)))
-		    && (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
-		this.controller.getNextNodeView();
-		nodeView = this.controller.getCurrentNodeView();
-		this.controller.getCurrentNodeView().setFillColor(
-			Color.LIGHT_GRAY);
-	    } else if ((((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_LEFT)))
-		    && (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
-		this.controller.getPreviousNodeView();
-		nodeView = this.controller.getCurrentNodeView();
-		this.controller.getCurrentNodeView().setFillColor(
-			Color.LIGHT_GRAY);
-	    } else if ((e.getKeyCode() == KeyEvent.VK_DOWN)
-		    || (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
-		this.controller.getCurrentNodeView().setFillColor(null);
-		this.controller.getNextNodeView();
-		nodeView = this.controller.getCurrentNodeView();
-		this.controller.getCurrentNodeView().setFillColor(
-			Color.LIGHT_GRAY);
-	    } else if ((e.getKeyCode() == KeyEvent.VK_UP)
-		    || (e.getKeyCode() == KeyEvent.VK_LEFT)) {
-		this.controller.getCurrentNodeView().setFillColor(null);
-		this.controller.getPreviousNodeView();
-		nodeView = this.controller.getCurrentNodeView();
-		this.controller.getCurrentNodeView().setFillColor(
-			Color.LIGHT_GRAY);
 	    }
-	    this.controller.refresh();
+	} else if ((e.getKeyCode() == KeyEvent.VK_V)
+		&& (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)) {
+	    PLAYNodeView deletedNodeView = this.playHigraphView
+		    .getDeletedNodeView();
+	    if (deletedNodeView != null) {
+		this.playHigraphView.getHigraph().getWholeGraph()
+			.makeRootNode(deletedNodeView.getNode().getPayload());
+	    }
+	} else if ((((e.getKeyCode() == KeyEvent.VK_DOWN) || (e.getKeyCode() == KeyEvent.VK_RIGHT)))
+		&& (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
+	    this.playViewSelectionModel.setFocus(this.playViewSelectionModel
+		    .getFocus() + 1);
+	    this.playViewSelectionModel
+		    .setMultipleSelectedVideList(this.playHigraphView);
+	    for (Object object : this.playViewSelectionModel
+		    .getSelectedViewList()) {
+		((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
+			.setFillColor(Color.LIGHT_GRAY);
+	    }
+	} else if ((((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_LEFT)))
+		&& (e.getModifiersEx() == KeyEvent.SHIFT_DOWN_MASK)) {
+	    this.playViewSelectionModel.setFocus(this.playViewSelectionModel
+		    .getFocus() - 1);
+	    this.playViewSelectionModel
+		    .setMultipleSelectedVideList(this.playHigraphView);
+	    for (Object object : this.playViewSelectionModel
+		    .getSelectedViewList()) {
+		((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
+			.setFillColor(Color.LIGHT_GRAY);
+	    }
+	} else if ((e.getKeyCode() == KeyEvent.VK_DOWN)
+		|| (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
+	    this.playViewSelectionModel.setAnchor(this.playViewSelectionModel
+		    .getAnchor() + 1);
+	    this.playViewSelectionModel.setFocus(this.playViewSelectionModel
+		    .getFocus() + 1);
+	    for (Object object : this.playViewSelectionModel
+		    .getSelectedViewList()) {
+		((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
+			.setFillColor(null);
+	    }
+	    this.playViewSelectionModel
+		    .setSelectedViewList(this.playHigraphView);
+	    ((ComponentView<?, ?, ?, ?, ?, ?, ?>) this.playViewSelectionModel
+		    .getSelectedViewList().get(
+			    this.playViewSelectionModel.getSelectedViewList()
+				    .size() - 1))
+		    .setFillColor(Color.LIGHT_GRAY);
+	} else if ((e.getKeyCode() == KeyEvent.VK_UP)
+		|| (e.getKeyCode() == KeyEvent.VK_LEFT)) {
+	    this.playViewSelectionModel.setAnchor(this.playViewSelectionModel
+		    .getAnchor() - 1);
+	    this.playViewSelectionModel.setFocus(this.playViewSelectionModel
+		    .getFocus() - 1);
+	    for (Object object : this.playViewSelectionModel
+		    .getSelectedViewList()) {
+		((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
+			.setFillColor(null);
+	    }
+	    this.playViewSelectionModel
+		    .setSelectedViewList(this.playHigraphView);
+	    ((ComponentView<?, ?, ?, ?, ?, ?, ?>) this.playViewSelectionModel
+		    .getSelectedViewList().get(
+			    this.playViewSelectionModel.getSelectedViewList()
+				    .size() - 1))
+		    .setFillColor(Color.LIGHT_GRAY);
 	}
+	this.controller.refresh(this.playHigraphView);
     }
 
     /**

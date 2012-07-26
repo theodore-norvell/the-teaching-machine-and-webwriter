@@ -5,6 +5,7 @@
  */
 package play.higraph.model;
 
+import play.higraph.view.model.PLAYViewSelectionModel;
 import higraph.model.abstractTaggedClasses.AbstractTaggedWholeGraph;
 import tm.backtrack.BTTimeManager;
 
@@ -17,8 +18,11 @@ public class PLAYWholeGraph
 	AbstractTaggedWholeGraph<PLAYTag, PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>
 	implements PLAYHigraph {
 
+    private PLAYViewSelectionModel playViewSelectionModel;
+
     public PLAYWholeGraph(BTTimeManager timeMan) {
 	super(timeMan);
+	this.playViewSelectionModel = new PLAYViewSelectionModel();
     }
 
     @Override
@@ -45,6 +49,10 @@ public class PLAYWholeGraph
     @Override
     protected PLAYSubgraph constructSubGraph() {
 	return new PLAYSubgraph(this);
+    }
+
+    public PLAYViewSelectionModel getPLAYViewSelectionModel() {
+	return this.playViewSelectionModel;
     }
 
 }

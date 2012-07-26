@@ -16,8 +16,6 @@ import javax.swing.tree.TreeSelectionModel;
 
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
-import play.ide.util.Observable;
-import play.ide.util.Observer;
 
 /**
  * @author Kai Zhu
@@ -33,10 +31,7 @@ public class NodesOutline extends JTree {
 
     private DefaultMutableTreeNode trashTreeNode;
 
-    private PLAYHigraphView higraphView;
-
-    public NodesOutline(PLAYHigraphView higraphView) {
-	this.higraphView = higraphView;
+    public NodesOutline() {
 	this.root = new DefaultMutableTreeNode("PLAY");
 	this.setModel(new DefaultTreeModel(this.root));
 	this.worldTreeNode = new DefaultMutableTreeNode("World");
@@ -51,13 +46,13 @@ public class NodesOutline extends JTree {
 	this.setShowsRootHandles(true);
     }
 
-    public void update(Observable o, Object arg) {
+    public void update(PLAYHigraphView higraphView, Object arg) {
 	this.worldTreeNode.removeAllChildren();
 	((DefaultTreeModel) super.treeModel)
 		.removeNodeFromParent(this.worldTreeNode);
 	((DefaultTreeModel) super.treeModel).insertNodeInto(this.worldTreeNode,
 		this.root, 0);
-	Iterator<?> iterator = this.higraphView.getTops();
+	Iterator<?> iterator = higraphView.getTops();
 	while (iterator.hasNext()) {
 	    PLAYNodeView nodeView = (PLAYNodeView) iterator.next();
 	    this.addPlayTreeNode(nodeView, this.worldTreeNode);

@@ -11,6 +11,7 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.util.List;
 
 import play.higraph.model.PLAYTag;
 
@@ -24,15 +25,23 @@ public class PLAYViewTransferObject implements Transferable {
 
     private ComponentView<?, ?, ?, ?, ?, ?, ?> componentView;
 
+    private List<?> viewList;
+
     public static final DataFlavor TAG_DATAFLAVOR = new DataFlavor(
 	    PLAYTag.class, "PLAYTag.DataFlavor");
 
     public static final DataFlavor COMPONENTVIEW_DATAFLAVOR = new DataFlavor(
 	    ComponentView.class, "ComponentView.DataFlavor");
 
+    public static final DataFlavor VIEWLIST_DATAFLAVOR = new DataFlavor(
+	    List.class, "LIST.DataFlavor");
+
     public PLAYViewTransferObject(Object object) {
 	if (object instanceof PLAYTag) {
 	    this.tag = (PLAYTag) object;
+	} else if (object instanceof List) {
+	    this.viewList = (List<?>) object;
+
 	} else if (object instanceof ComponentView) {
 	    this.componentView = (ComponentView<?, ?, ?, ?, ?, ?, ?>) object;
 	}
@@ -45,7 +54,8 @@ public class PLAYViewTransferObject implements Transferable {
     public DataFlavor[] getTransferDataFlavors() {
 	return new DataFlavor[] { DataFlavor.stringFlavor,
 		PLAYViewTransferObject.TAG_DATAFLAVOR,
-		PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR, };
+		PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR,
+		PLAYViewTransferObject.VIEWLIST_DATAFLAVOR };
     }
 
     /**
@@ -59,6 +69,8 @@ public class PLAYViewTransferObject implements Transferable {
 	    return true;
 	} else if (flavor
 		.equals(PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR)) {
+	    return true;
+	} else if (flavor.equals(PLAYViewTransferObject.VIEWLIST_DATAFLAVOR)) {
 	    return true;
 	}
 	return false;
@@ -77,6 +89,8 @@ public class PLAYViewTransferObject implements Transferable {
 	} else if (flavor
 		.equals(PLAYViewTransferObject.COMPONENTVIEW_DATAFLAVOR)) {
 	    return this.componentView;
+	} else if (flavor.equals(PLAYViewTransferObject.VIEWLIST_DATAFLAVOR)) {
+	    return this.viewList;
 	}
 	return null;
     }
