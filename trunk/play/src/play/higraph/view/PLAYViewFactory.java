@@ -23,6 +23,7 @@ import play.higraph.model.PLAYWholeGraph;
 import play.higraph.view.layout.ASSIGNNodeViewLayout;
 import play.higraph.view.layout.IFNodeViewLayout;
 import play.higraph.view.layout.SEQNodeViewLayout;
+import play.higraph.view.layout.SIGNNodeViewLayout;
 import play.higraph.view.layout.WHILENodeViewLayout;
 import tm.backtrack.BTTimeManager;
 
@@ -79,6 +80,18 @@ public class PLAYViewFactory
 	} else if (PLAYTag.VAR.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeVARNodeView(higraphView, node);
+	} else if (PLAYTag.PLUS.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makePLUSNodeView(higraphView, node);
+	} else if (PLAYTag.MINUS.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeMINUSNodeView(higraphView, node);
+	} else if (PLAYTag.MULTIPLICATION.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeMULTIPLICATIONNodeView(higraphView, node);
+	} else if (PLAYTag.DIVISION.defaultPayload().getTag()
+		.equals(node.getPayload().getTag())) {
+	    nodeView = this.makeDIVISIONNodeView(higraphView, node);
 	} else {
 	    nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
 	}
@@ -237,6 +250,66 @@ public class PLAYViewFactory
 		super.timeMan);
 	assignNodeView.setLayoutManager(new ASSIGNNodeViewLayout());
 	return assignNodeView;
+    }
+
+    /**
+     * Create a plus node view
+     * 
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makePLUSNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	PLAYNodeView plusNodeView = new PLUSNodeView(higraphView, node,
+		super.timeMan);
+	plusNodeView.setLayoutManager(new SIGNNodeViewLayout());
+	return plusNodeView;
+    }
+
+    /**
+     * Create a minus node view
+     * 
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeMINUSNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	MINUSNodeView minusNodeView = new MINUSNodeView(higraphView, node,
+		super.timeMan);
+	minusNodeView.setLayoutManager(new SIGNNodeViewLayout());
+	return minusNodeView;
+    }
+
+    /**
+     * Create a multiplication node view
+     * 
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeMULTIPLICATIONNodeView(
+	    PLAYHigraphView higraphView, PLAYNode node) {
+	MULTIPLICATIONNodeView multiplicationNodeView = new MULTIPLICATIONNodeView(
+		higraphView, node, super.timeMan);
+	multiplicationNodeView.setLayoutManager(new SIGNNodeViewLayout());
+	return multiplicationNodeView;
+    }
+
+    /**
+     * Create a division node view
+     * 
+     * @param higraphView
+     * @param node
+     * @return
+     */
+    private PLAYNodeView makeDIVISIONNodeView(PLAYHigraphView higraphView,
+	    PLAYNode node) {
+	DIVISIONNodeView divisionNodeView = new DIVISIONNodeView(higraphView,
+		node, super.timeMan);
+	divisionNodeView.setLayoutManager(new SIGNNodeViewLayout());
+	return divisionNodeView;
     }
 
 }

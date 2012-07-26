@@ -35,6 +35,11 @@ public class ExpsPallet extends JPanel {
 	this.expTreeModel = new DefaultTreeModel(expsRootTreeNode);
 	this.expTree = new JTree(this.expTreeModel);
 
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.PLUS));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.MINUS));
+	expsRootTreeNode
+		.add(new DefaultMutableTreeNode(PLAYTag.MULTIPLICATION));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.DIVISION));
 	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NUMBER));
 	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.BOOLEAN));
 	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.STRING));
