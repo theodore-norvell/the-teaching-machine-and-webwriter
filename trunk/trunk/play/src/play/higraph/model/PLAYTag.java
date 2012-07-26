@@ -28,7 +28,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 				|| (seq.indexOf(PLAYTag.STRING) == 0)
 				|| (seq.indexOf(PLAYTag.NULL) == 0)
 				|| (seq.indexOf(PLAYTag.VAR) == 0)
-				|| (seq.indexOf(PLAYTag.DOT) == 0) || (seq
+				|| (seq.indexOf(PLAYTag.DOT) == 0)
+				|| (seq.indexOf(PLAYTag.PLUS) == 0)
+				|| (seq.indexOf(PLAYTag.MINUS) == 0)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 0)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 0) || (seq
 				.indexOf(PLAYTag.PLACEHOLDER) == 0))) {
 		    return true;
 		}
@@ -144,7 +148,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 				    || (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
 				    || (seq.lastIndexOf(PLAYTag.STRING) == 1)
 				    || (seq.lastIndexOf(PLAYTag.NULL) == 1)
-				    || (seq.lastIndexOf(PLAYTag.VAR) == 1) || (seq
+				    || (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				    || (seq.indexOf(PLAYTag.PLUS) == 1)
+				    || (seq.indexOf(PLAYTag.MINUS) == 1)
+				    || (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				    || (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
 				    .lastIndexOf(PLAYTag.DOT) == 1))) {
 			return true;
 		    }
@@ -371,6 +379,114 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	    return "CLASS";
 	}
 
+    },
+    PLUS {
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+	    return false;
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    return defaultTagSequence;
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("\uFF0B", PLAYTag.PLUS);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "\uFF0B";
+	}
+    },
+    MINUS {
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+	    return false;
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    return defaultTagSequence;
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("\uFF0D", PLAYTag.MINUS);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "\uFF0D";
+	}
+    },
+    MULTIPLICATION {
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+	    return false;
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    return defaultTagSequence;
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("\u2715", PLAYTag.MULTIPLICATION);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "\u2715";
+	}
+    },
+    DIVISION {
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+	    return false;
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    defaultTagSequence.add(PLAYTag.PLACEHOLDER);
+	    return defaultTagSequence;
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("\u00F7", PLAYTag.DIVISION);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "\u00F7";
+	}
     },
     NUMBER {
 
