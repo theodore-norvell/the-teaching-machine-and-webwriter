@@ -154,7 +154,8 @@ public class ViewHandler {
 	JScrollPane scrollPane = new JScrollPane(this.nodesOutline);
 	scrollPane.setFocusable(true);
 	rightTopBottomSplitPane.setTopComponent(scrollPane);
-	rightTopBottomSplitPane.setBottomComponent(this.propertyPanel);
+	// TODO
+	rightTopBottomSplitPane.setBottomComponent(new JPanel());
 	return rightTopBottomSplitPane;
     }
 
