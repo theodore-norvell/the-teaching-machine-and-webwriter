@@ -96,8 +96,8 @@ public class Controller {
 	    higraphView.refresh();
 	    higraphView.getDisplay().repaint();
 	    this.viewHandler.updateNodesOutline(higraphView);
-	    this.viewHandler.updataPropertyPanel(higraphView.getHigraph()
-		    .getWholeGraph().getPLAYViewSelectionModel());
+	    // this.viewHandler.updataPropertyPanel(higraphView.getHigraph()
+	    //    .getWholeGraph().getPLAYViewSelectionModel());
 	}
     }
 
@@ -114,7 +114,8 @@ public class Controller {
     }
 
     public Color getViewFillColor() {
-	return this.viewHandler.getViewPropertiesPanel().getFillColor();
+	return Color.LIGHT_GRAY;
+	//return this.viewHandler.getViewPropertiesPanel().getFillColor();
     }
 
     public int getViewStroke() {

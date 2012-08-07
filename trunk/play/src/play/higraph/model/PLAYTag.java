@@ -195,6 +195,10 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 			|| (seq.indexOf(PLAYTag.NULL) == 0)
 			|| (seq.indexOf(PLAYTag.VAR) == 0)
 			|| (seq.indexOf(PLAYTag.DOT) == 0)
+			|| (seq.indexOf(PLAYTag.PLUS) == 0)
+			|| (seq.indexOf(PLAYTag.MINUS) == 0)
+			|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 0)
+			|| (seq.indexOf(PLAYTag.DIVISION) == 0)
 			|| (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)) {
 		    if (seq.size() == 1) {
 			return true;
@@ -246,6 +250,10 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 			|| (seq.indexOf(PLAYTag.NULL) == 0)
 			|| (seq.indexOf(PLAYTag.VAR) == 0)
 			|| (seq.indexOf(PLAYTag.DOT) == 0)
+			|| (seq.indexOf(PLAYTag.PLUS) == 0)
+			|| (seq.indexOf(PLAYTag.MINUS) == 0)
+			|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 0)
+			|| (seq.indexOf(PLAYTag.DIVISION) == 0)
 			|| (seq.indexOf(PLAYTag.PLACEHOLDER) == 0)) {
 		    if (seq.size() == 1) {
 			return true;
@@ -383,6 +391,37 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     PLUS {
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& ((seq.indexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		} else if ((seq.size() == 2)
+			&& ((seq.lastIndexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
@@ -410,6 +449,37 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     MINUS {
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& ((seq.indexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		} else if ((seq.size() == 2)
+			&& ((seq.lastIndexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
@@ -437,6 +507,37 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     MULTIPLICATION {
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& ((seq.indexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		} else if ((seq.size() == 2)
+			&& ((seq.lastIndexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
@@ -464,6 +565,37 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     DIVISION {
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+	    if (!seq.isEmpty()) {
+		if ((seq.size() == 1)
+			&& ((seq.indexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		} else if ((seq.size() == 2)
+			&& ((seq.lastIndexOf(PLAYTag.PLACEHOLDER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.EXP) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NUMBER) == 1)
+				|| (seq.lastIndexOf(PLAYTag.BOOLEAN) == 1)
+				|| (seq.lastIndexOf(PLAYTag.STRING) == 1)
+				|| (seq.lastIndexOf(PLAYTag.NULL) == 1)
+				|| (seq.lastIndexOf(PLAYTag.VAR) == 1)
+				|| (seq.indexOf(PLAYTag.PLUS) == 1)
+				|| (seq.indexOf(PLAYTag.MINUS) == 1)
+				|| (seq.indexOf(PLAYTag.MULTIPLICATION) == 1)
+				|| (seq.indexOf(PLAYTag.DIVISION) == 1) || (seq
+				.lastIndexOf(PLAYTag.DOT) == 1))) {
+		    return true;
+		}
+	    }
 	    return false;
 	}
 
