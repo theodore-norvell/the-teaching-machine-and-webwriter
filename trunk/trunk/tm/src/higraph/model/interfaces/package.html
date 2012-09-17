@@ -171,7 +171,7 @@ This notion is particularly used during layout.
 The views of the governed edges of a node are laid-out by a layout manager associated with the node's view. It is important that each edge be governed
 at most one node. (Edges governed by no node are laid-out by a layout manager associated with the whole higraph.)
 The governed edges of a node <em>v</em> are all edges that are up, down or internal with respect to <em>v</em>,
-but not up, down, or internal with respect to any descendant of <em>v</em>. Notice that in the example above, all the <font color="green"><b>green</b></font> edges are governed by node <em>v</em> but <font color="red"><b>red</b></font> are not governed by node <em>v</em>.</p>
+but not up, down, or internal with respect to any descendant of <em>v</em>. Notice that in the example above, all the <font color="green"><b>green</b></font> edges are governed by node <em>v</em> but <font color="red"><b>red</b></font> and <b>black</b> are not governed by node <em>v</em>.</p>
 <p>Note, in particular, that loops are not governed by their source/target node, but rather by
 its parent (if any).
 This may seem anomalous, but it is in keeping with the idea that a higraph without hierarchy is just a graph; when a graph has no hierarchy,
