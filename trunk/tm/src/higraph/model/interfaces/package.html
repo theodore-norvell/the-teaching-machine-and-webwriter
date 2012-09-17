@@ -46,7 +46,7 @@ Let <em>v</em>  be a node of a higraph. A node <em>u</em> of the higraph can bea
   <li>Down edges. <em>e</em> is a down edge of <em>v</em> iff <em>v</em> is the source of <em>e</em> and the target of <em>e</em> is a descendant of <em>v</em>.</li>
   <li>Up edges. <em>e</em> is an up edge of <em>v</em> iff <em>v</em> is the target of <em>e</em> and the source of <em>e</em> is a descendant of <em>v</em>. </li>
   <li>Out edges. <em>e</em> is an out edge of <em>v</em> iff <em>v</em> is the source of <em>e</em> and <em>e</em> is not a loop edge of <em>v</em> nor a down edge of <em>v</em>. </li>
-  <li>In edges. <em>e</em> is an in edge of <em>v</em> iff <em>e</em> is the target of <em>e</em> and <em>e</em> is not a loop edge of <em>v</em> nor an up edge of <em>v</em>. </li>
+  <li>In edges. <em>e</em> is an in edge of <em>v</em> iff <em>v</em> is the target of <em>e</em> and <em>e</em> is not a loop edge of <em>v</em> nor an up edge of <em>v</em>. </li>
   <li>Internal edges. e is an internal edge of <em>v</em> iff both the source and target or e are strict descendants of <em>v</em>.</li>
   <li>Deep out edge. e is a deep out edge of <em>v</em> iff its source is a strict descendant of <em>v</em> and its target is not <em>v</em> nor a descendant of <em>v</em>.</li>
   <li>Deep in edge. e is a deep in edge of <em>v</em> iff its target is a strict descendant of <em>v</em> and its source is not <em>v</em> nor a descendant of <em>v</em>.</li>
@@ -171,7 +171,7 @@ This notion is particularly used during layout.
 The views of the governed edges of a node are laid-out by a layout manager associated with the node's view. It is important that each edge be governed
 at most one node. (Edges governed by no node are laid-out by a layout manager associated with the whole higraph.)
 The governed edges of a node <em>v</em> are all edges that are up, down or internal with respect to <em>v</em>,
-but not up, down, or internal with respect to any descendant of <em>v</em>.</p>
+but not up, down, or internal with respect to any descendant of <em>v</em>. Notice that in the example above, all the <font color="green"><b>green</b></font> edges are governed by node <em>v</em> but <font color="red"><b>red</b></font> are not governed by node <em>v</em>.</p>
 <p>Note, in particular, that loops are not governed by their source/target node, but rather by
 its parent (if any).
 This may seem anomalous, but it is in keeping with the idea that a higraph without hierarchy is just a graph; when a graph has no hierarchy,
