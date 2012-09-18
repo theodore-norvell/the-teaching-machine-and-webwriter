@@ -152,7 +152,7 @@ public abstract class AbstractNode
         Assert.check( canDelete() ) ;
         privateDelete() ; }
 
-    private void privateDelete() {
+    void privateDelete() {
         if( deleted.get() ) return ;
         
         // Note the following loops iterate over copies of the vectors.
@@ -211,7 +211,7 @@ public abstract class AbstractNode
         return newRoot ;
     }
     
-    private N dupNode(N parent, HashMap<N,N> map) {
+    N dupNode(N parent, HashMap<N,N> map) {
         N copy = wholeGraph.constructNode( getThis(), parent ) ;
         map.put( getThis(), copy ) ;
         for( N child : childNodes ) {
@@ -582,7 +582,7 @@ public abstract class AbstractNode
 	}
     
 	
-    private void adjustDepth() {
+    void adjustDepth() {
         traverse( new Visitor<N>() {
             void previsit(N node) {
                 if( node.parent.get() == null) node.depth.set( 0 );
