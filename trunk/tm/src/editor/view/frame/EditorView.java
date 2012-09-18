@@ -41,7 +41,6 @@ import editor.controller.listeners.TabbedPaneChangeListener;
 import editor.model.DocumentBase;
 import editor.model.EditorModel;
 import editor.model.IEditorModel;
-import editor.model.DocumentBase.Type;
 import editor.utility.EditState;
 import editor.utility.EditorInitializeUtility;
 import editor.utility.LoggerUtility;
@@ -215,7 +214,7 @@ public class EditorView extends EditorViewBase {
         }else{
             //Open an empty file
             LoggerUtility.logOnConsole("No known document!");
-            editorModel.addDocumentToEditor(null, EditState.NEW,Type.JAVA);
+            editorModel.addDocumentToEditor(null, EditState.NEW,DocumentBase.Type.JAVA);
         }
         
         JLabel editPanelRightLabel=new JLabel("  ");

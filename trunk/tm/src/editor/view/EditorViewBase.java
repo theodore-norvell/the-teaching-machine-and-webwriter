@@ -25,7 +25,6 @@ import editor.controller.actions.EditorRedoAction;
 import editor.controller.actions.EditorUndoAction;
 import editor.model.DocumentBase;
 import editor.model.IEditorModel;
-import editor.model.DocumentBase.Type;
 import editor.utility.EditState;
 import editor.view.component.TextPane;
 
@@ -100,7 +99,7 @@ abstract public class EditorViewBase extends JFrame implements EditorViewConstan
      */
     public void makeNewDocumentView(){
         if(getModel()!=null){
-            getModel().addDocumentToEditor(null, EditState.NEW,Type.JAVA);
+            getModel().addDocumentToEditor(null, EditState.NEW,DocumentBase.Type.JAVA);
         }
     }
     
