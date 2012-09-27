@@ -6,7 +6,7 @@ var generator = "WebWriter++";
 var bottomMark ="<em>Object-oriented software engineering with Java</em>";
 var courseNo = "Engi-9859";
 
-var copyright = "&copy; 2011, Theodore Norvell";
+var copyright = "&copy; 2004--2012, Theodore Norvell";
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
 var authorRef = "http://www.teachingMachine.org";
