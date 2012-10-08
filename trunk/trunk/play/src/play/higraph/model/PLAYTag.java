@@ -94,7 +94,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if (seq.isEmpty()) {
+	    if (!seq.isEmpty()) {
 		if ((seq.size() == 1)
 			&& (seq.contains(PLAYTag.TYPE) || seq
 				.contains(PLAYTag.SEQ))) {
