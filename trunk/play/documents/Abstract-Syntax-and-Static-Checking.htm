@@ -9,52 +9,74 @@
 
 <body>
 <h1>Abstract Syntax</h1>
+<p>Notation. Identifiers starting with lower case </p>
 <h2>Classes</h2>
 <p>Each class has a unique name, optionally a superclass, and a finite set of field descriptions:</p>
-<pre>   Class --&gt; <strong>class</strong> Id Fd0 Fd1 ... Seq <strong>end</strong></pre>
-<p>Each field description is a quadruple</p>
-<pre>   Fd --&gt; (<strong>var</strong> | <strong>con</strong>) Id [: Type] [:= Exp]</pre>
-<p>The names are unique within the class.</p>
-<p>A var field can be changed by assignment, whereas a con field can not.</p>
-<p>The type and the expression are optional, but one must be present. If the expression is missing, it is considered to be null. If the type is missing, it must be inferrable from the expression on checking pass 0. </p>
-<h2>Types</h2>
-<p>Types can be primitive, classes, or finite unions of primitive types.</p>
-<pre>   Type --&gt; Id | Type + Type
+<pre>   Class --&gt; class[Id]( Fd* Seq)</pre>
+<p>Each field description is a VarDecl</p>
+<pre>   Fd --&gt; VarDecl
 </pre>
-<p>Each Id must be the name of a class or one of the following: <span class="kbd">Boolean</span>, <span class="kbd">Number</span>, <span class="kbd">String</span>, <span class="kbd">Any</span>, <span class="kbd">Null</span>, or <span class="kbd">Comm</span>. </p>
+<p>&nbsp;</p>
+<h2>Types</h2>
+<p>Types can be primitive, classes, or finite unions of types.</p>
+<pre>   Type --&gt; boolean | string | number | any | null | comm | alt( Type+ )
+ | class[Id]</pre>
+<p>&nbsp;</p>
 <h2>Expressions</h2>
 <h3>Literal expressions</h3>
-<pre>   Exp --&gt; NumberLiteral(val)
-</pre>
-<p>val must be a string of one or more digits, possibly preceeded with a + or - sign. The value is a normalized string. For example if val is 0123 the value is the string &quot;123&quot;. </p>
+<pre>   Exp --&gt; numberLiteral[val]</pre>
+<p>val must be a string of one or more digits, possibly preceeded with a + or - sign. The value is a normalized string. For example, if val is 0123 the value is the string &quot;123&quot;. In theory, at least, every number is also a string.</p>
 <pre>   Exp --&gt; <strong>true</strong> | <strong>false</strong></pre>
 <p>The value is either the string &quot;true&quot; or the string &quot;false&quot;. </p>
-<pre>   Exp --&gt; StringLiteral(val)</pre>
+<pre>   Exp --&gt; StringLiteral[val]</pre>
 <p>The value is the string val.</p>
 <pre>
    Exp --&gt; null</pre>
 <h3>Variables</h3>
-<pre>   Exp --&gt; <strong>this</strong>.Id | <strong>local</strong>.Id | <strong>world</strong>.Id</pre>
+<pre>   Exp --&gt; Var
+   Var --&gt; <strong>this</strong>[Id] | <strong>local</strong>[Id] | <strong>world</strong>[Id]</pre>
 <h3>Dot</h3>
-<pre>   Exp --&gt; Exp . Id</pre>
+<pre>   Exp --&gt; dot[Id]( Exp) </pre>
 <h3>This</h3>
-<pre>   Exp --&gt; <strong>this</strong></pre>
+<pre>   Exp --&gt; <strong>this</strong>
+</pre>
 <h3>Calls</h3>
-<pre>   Exp --&gt; Exp0 &lt;- Id( Exp1, Exp2, ..., Exp<sub>n</sub> )</pre>
-<p>Above is a call to an explicit recipient.</p>
-<pre>   Exp --&gt; Id( Exp1, Exp2, ..., Exp<sub>n</sub> )</pre>
-<p>The call here has the world as its recipient. The Id could be an operator such as + or *. </p>
+<pre>   Exp --&gt; callClosure( Exp0, Exp1, Exp2, ..., Exp<sub>n</sub> )
+</pre>
+<p>Here Exp0 should be a &quot;bound method&quot; (which is essentially a method value together with an object reference).</p>
+<p>A less general form of call finds the method as a field of an object</p>
+<pre>   Exp --&gt; call[Id]( Exp0, Exp1, Exp2, ..., Exp<sub>n</sub> )
+</pre>
+<p>Here Exp0 is the recipient. Finally a call to world object has a special syntax</p>
+<pre>   Exp --&gt; callWorld[Id]( Exp0, Exp1, Exp2, ..., Exp<sub>n-1</sub> )
+</pre>
+<p>In this case, the children are all arguments.
+</p>
 <h3>Allocation</h3>
-<pre>   Exp --&gt; <strong>new</strong> Id( Exp1, Exp2, ..., Expn )</pre>
-<h3>Methods</h3>
-<pre>   Exp --&gt; <strong>method</strong> (v<sub>1</sub> : type<sub>1</sub>, v2 : type<sub>2</sub>, ..., v<sub>n</sub> : type<sub>n</sub>) : type<sub>0</sub> Seq <strong>end</strong></pre>
+<pre>   Exp --&gt; <strong>new</strong>( Type, Exp1, Exp2, ..., Expn )
+</pre>
+<h3>Method literals</h3>
+<pre>   Exp --&gt; <strong>method</strong>(VarDecl*<sub></sub>, OptType, Seq)
+</pre>
+<p>  The value of a method literal is a closure. Free Variables of the Seq are treated as follows. this[Id] refer to the fields of the current object at the time of the method literals evaluation. When the scope of the method is a class --i.e. when method literal is evaluated as part of object construction-- the current object is considered to be the one that is being contructed. Local variables may include the parameters, but may also include local variables of any containing scopes.</p>
 <h3>Control constructs</h3>
-<pre>   Seq --&gt; empty | Exp Seq | VarDecl Seq 
-   Exp --&gt; <strong>if</strong> Exp <strong>then</strong> Seq <strong>else</strong> Seq <strong>end</strong>
-   Exp --&gt; <strong>while</strong> Exp <strong>do</strong> Seq <strong>else</strong> Seq <strong>end</strong>
-   VarDecl --&gt; (<strong>var</strong> | <strong>con</strong>) Id [:Type] [:=Exp]</pre>
+<pre>   Seq --&gt; seq( SeqMember, SeqMember, ... ) 
+   SeqMember --&gt; Exp | VarDecl
+
+   Exp --&gt; <strong>if(</strong> Exp, <strong></strong>Seq,<strong></strong> Seq)<strong></strong>
+   Exp --&gt; <strong>while(</strong> Exp, Seq )<strong></strong>
+
+   VarDecl --&gt; vardecl[Id]( OptType, Seq ) | condecl[Id](OptType, Seq)
+</pre>
+<p>OptTypes are optional types. If the type of a VarDecl is noType, then the checker will try to fill in the type.</p>
+<pre>   OptType --&gt; noType | Type
+</pre>
 <h3>Assignment</h3>
-<pre>   Exp --&gt; Exp := Exp</pre>
+<pre>   Exp --&gt; assign( Exp, Exp )
+</pre>
+<h3>  Place holders</h3>
+<p>Place holder expressions are used where expressions are required by the content model, but where there is no obvious candidate for a default value.</p>
+<pre>   Exp --&gt; expPlaceHolder</pre>
 <h1>Static Checking Overview</h1>
 <h2>Pass 0  </h2>
 <p>The aim of the first pass of static checking is to determine the types for all fields and methods using  type inference rules that don't depend on any information that can't be determined directly from the syntax or from pass 0 checking that has already happened earlier in the same class. For example if we have</p>
