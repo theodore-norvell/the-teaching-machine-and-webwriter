@@ -13,12 +13,12 @@
   <li>Version 0 -- from the depths of time. Circa 2007.</li>
 </ul>
 <h2>Data model</h2>
-<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot; (or &quot;state&quot;), which may be a string, a reference to an object, or the special null value. (In fact, as we will soon see, null and strings are also objects, and so we may say that the value (or state) of a field is a reference two an object.</p>
+<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot; (or &quot;state&quot;), which may be a string, a reference to an object, or the special null value. (In fact, as we will soon see, null and strings are also objects, and so we may say that the value (or state) of a field is a reference to an object.</p>
 <h3>Values</h3>
-<p>Each value is a reference to an object. (At least this is as much as the typical programmer needs to know. There may be some special values that are not reflected as objects in the usual sense. Possible examples: values representing method bodies and types that are not classes.)</p>
+<p>Each value is a reference to an object.</p>
 <h3>Objects: primitive and complex</h3>
 <p>Objects come in two varieties. Primitive objects have no fields. Objects of type Null or String are primitive, for example. The state of a primitive object is immutable.</p>
-<p>Objects made up of 1 or more fields are complex objects. The state of an complex object is determined by the states of its fields. As mentioned above, fields are locations that contain references to objects.</p>
+<p>Objects made up of 1 or more fields are complex objects. The state of an complex object is determined by the states of its fields. As mentioned above, fields are locations that contain references to objects. If any of the fields are variables, the object's state may change over time.</p>
 <h3>Null</h3>
 <p>There is exactly one null object. Any reference to the null object is called a null reference.</p>
 <h3>Numbers, strings, and boolean</h3>
@@ -32,17 +32,12 @@
 <p align="left">Each class is a type. If C is a class then, as a type C describes all references to objects of type C. </p>
 <p align="left">I addition there are the following types</p>
 <ul>
-  <li>Boolean -- describes only references to the strings &quot;true&quot; and &quot;false&quot;.</li>
+  <li>Boolean -- describes only the strings &quot;true&quot; and &quot;false&quot;.</li>
   <li>Number -- describes all strings that conform to the syntax of a number</li>
   <li>String -- describes all strings </li>
   <li>Any -- describes all values</li>
-  <li>Null -- describes only the null reference.
-    <ul>
-      <ul>
-        <li>Comm -- describes one value. Used for commands. </li>
-      </ul>
-    </ul>
-  </li>
+  <li>Null -- describes only the null reference.  </li>
+  <li>Comm -- describes one value. Used for commands. </li>
 </ul>
 <p>There are also a number of method types</p>
 <ul>
@@ -65,13 +60,13 @@
 <p align="left">where <em>object</em> is an expression that evaluates to an object reference, <em>name</em> is a name. For example </p>
 <p align="center">world . fred</p>
 <p align="left">is an  expression for a field or method named &quot;fred&quot; in  world object.</p>
-<p align="left">[Aside on &quot;textual notations&quot;. The PLAY language is intended to be mostly visual. However, we will also provide a textual notation that can be textually edited. The textual notations in this document are tentative, but over time will become fixed.]]</p>
+<p align="left">[Aside on &quot;textual notations&quot;. The PLAY language is intended to be mostly visual. However, we might also provide a textual notation that can be textually edited. The textual notations in this document are tentative, but over time will become fixed.]]</p>
 <p align="left">The value of a field is found by first looking at the object. If the object does not supply a value, then the value is the default for the class. If the class does not supply the value, one goes to the classes superclass and so on. </p>
 <h3 align="left">The World class </h3>
 <p align="left">The class of the world is a class called World. When the user adds objects (i.e. attributes) to world, it may be necessary to add new field descriptions to World.</p>
 <h3 align="left">Methods</h3>
-<p align="left">Methods are objects. The class of a method is Method. Each method object has attributes that specify: an associated with a class -- called the method's activation class--, the number of parameters is has, a return type, a recipient type, and a method body. The field descriptions of the activation class describe the local variables of the method. If the number of parameters is n, there must be at least n local variables and the first n are the parameters (in order). </p>
-<p align="left">Methods may also be &quot;built-in&quot;, in which case the method body is absent and something else is present -- perhaps an ActionScript function.</p>
+<p align="left">Methods are objects. The class of a method is Method. Each method object has attributes that specify: an associated  class -- called the method's activation class--, the number of parameters is has, a return type, a recipient type, and a method body. The field descriptions of the activation class describe the local variables of the method. If the number of parameters is n, there must be at least n local variables and the first n are the parameters (in order). </p>
+<p align="left">Methods may also be &quot;built-in&quot;, in which case the method body is absent.</p>
 <h2 align="left">Language Model</h2>
 <h3 align="left">Commands and expressions </h3>
 <p align="left">In terms of syntax, the language makes no distinction between commands and expressions. In a sense commands are just expressions that always return a value of type Comm.</p>
@@ -200,6 +195,6 @@
 <p align="center">while exp<sub>0</sub> do seq <sub>1</sub></p>
 <p align="left">The compile-time and execution semantics are straight-forward as the language (as of yet) has no exceptions. The value in each case is the last expression executed, except for the for loop, which has a type of Comm. </p>
 <p align="left">Variable declarations.</p>
-<p align="left">Local variable declarations are allowed only on sequences in place. Local variable declarations are expressions of type Comm that have the effect of declaring a variable in the local activation record (i.e. the local frame. </p>
+<p align="left">Local variable declarations are allowed only within sequences. Local variable declarations are expressions of type Comm that have the effect of declaring a variable in the local activation record (i.e. the local frame. </p>
 </body>
 </html>
