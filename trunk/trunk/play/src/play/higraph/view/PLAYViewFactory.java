@@ -50,7 +50,7 @@ public class PLAYViewFactory
 	    PLAYNode node) {
 	PLAYHigraphView higraphView = (PLAYHigraphView) hgv;
 	PLAYNodeView nodeView = null;
-	if (PLAYTag.PLACEHOLDER.defaultPayload().getTag()
+	if (PLAYTag.EXPPLACEHOLDER.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makePlaceHolderNodeView(higraphView, node);
 	} else if (PLAYTag.ASSIGN.defaultPayload().getTag()
