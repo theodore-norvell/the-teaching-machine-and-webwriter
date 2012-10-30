@@ -35,7 +35,7 @@ public class SyntaxPallet extends JPanel {
 	this.syntaxListModel.addElement(PLAYTag.VARDECL);
 	this.syntaxListModel.addElement(PLAYTag.IF);
 	this.syntaxListModel.addElement(PLAYTag.WHILE);
-	this.syntaxListModel.addElement(PLAYTag.PLACEHOLDER);
+	this.syntaxListModel.addElement(PLAYTag.EXPPLACEHOLDER);
 
 	this.syntaxList.setModel(this.syntaxListModel);
 	this.syntaxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
