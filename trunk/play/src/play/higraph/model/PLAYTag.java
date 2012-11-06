@@ -20,19 +20,21 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-		    	for(int i=0;i<seq.size();i++){
-		    		if( seq.get(i).equals(VARDECL)||
-		    			seq.get(i).equals(CONDECL)||
-		    			(seq.get(i).equals(SEQ)&&i==seq.size()-1)   )
-		    			continue;
-		    		else
-		    			return false;	// containing some tag illegal
-		    	}
-		    	return true;
-		    }
-		    return false;// empty
+		    if (!seq.isEmpty())
+		    	return false;
+		    
+	    	for(int i=0;i<seq.size();i++){
+	    		if( seq.get(i).equals(VARDECL)||seq.get(i).equals(CONDECL)
+	    			||(i==seq.size()-1 && seq.get(i).equals(METHOD))
+	    			   )
+	    			continue;
+	    		else
+	    			return false;	// containing some tag illegal
+	    	}
+	    	return true;
 		}
+		    
+		
 
 		@Override
 		public List<PLAYTag> defaultTagSequence() {
@@ -53,25 +55,22 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		}
 
 	},
+	
 	    
     VARDECL {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    	    if (!seq.isEmpty()) {
-	    		if ((seq.size() == 2)
-	    			&& (seq.indexOf(TYPE) == 0 || seq.indexOf(NOTYPE) == 0)
-	    			&& (seq.indexOf(SEQ) == 1) ) {
-	    		    return true;
-	    		}
-    	    }
-    	    return false;
+	   		return (seq.size() == 2
+	   				&& ( seq.get(0).equals(NOTYPE)||isType(seq.get(0)) )
+	   				&& seq.get(1).equals(SEQ));
+	    	
     	}
 
     	@Override
     	public List<PLAYTag> defaultTagSequence() {
     		 List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-    		 defaultTagSequence.add(TYPE);
+    		 defaultTagSequence.add(NOTYPE);
     		 defaultTagSequence.add(SEQ);
     		 return defaultTagSequence;
     	}
@@ -90,25 +89,20 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	}
 
     },
-	        
+	  	        
     CONDECL {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		if (!seq.isEmpty()) {
-	    		if ((seq.size() == 2)
-	    			&& (seq.indexOf(TYPE) == 0 || seq.indexOf(NOTYPE) == 0)
-	    			&& (seq.indexOf(SEQ) == 1) ) {
-	    		    return true;
-	    		}
-    	    }
-    	    return false;
+    		return (seq.size() == 2
+	   				&& ( seq.get(0).equals(NOTYPE)||isType(seq.get(0)) )
+	   				&& seq.get(1).equals(SEQ));
     	}
 
     	@Override
     	public List<PLAYTag> defaultTagSequence() {
     		 List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-    		 defaultTagSequence.add(TYPE);
+    		 defaultTagSequence.add(NOTYPE);
     		 defaultTagSequence.add(SEQ);
     		 return defaultTagSequence;
     	}
@@ -128,27 +122,22 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
     
-    TYPE {
+   
+    ALTTYPE {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {	    
-    	    if (!seq.isEmpty()) {
-		    	for(PLAYTag pt : seq){
-		    		if(pt.equals(BOOLEAN)
-		    			||pt.equals(STRING)
-		    			||pt.equals(NUMBER)
-		    			||pt.equals(ANY)
-		    			||pt.equals(NULL)
-		    			||pt.equals(COMM)
-		    			||pt.equals(CLASS)
-		    			)
-		    			continue;
-		    		else
-		    			return false;
-		    	}
-		    	return true;
-		    }
-		    return false;
+    	    if (!seq.isEmpty()) 
+    	    	return false;
+    	    	
+	    	for(PLAYTag pt : seq){
+	    		if(isType(pt))
+	    			continue;
+	    		else
+	    			return false;
+	    	}
+	    	return true;
+  
     	}
 
     	@Override
@@ -158,7 +147,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("TYPE", TYPE);
+    	    return new PLAYPayload("ALTTYPE", ALTTYPE);
     	}
 
     	/**
@@ -166,11 +155,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "TYPE";
+    	    return "ALTTYPE";
     	}
 
     },
     
+      
     NOTYPE {
     	
 		@Override
@@ -198,7 +188,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
     
-    BOOLEAN {
+    BOOLEANTYPE {
     	
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -212,7 +202,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("BOOLEAN", BOOLEAN);
+    	    return new PLAYPayload("BOOLEANTYPE", BOOLEANTYPE);
     	}
     	
     	/**
@@ -220,12 +210,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "BOOLEAN";
+    	    return "BOOLEANTYPE";
     	}
 
     },
     
-    STRING {
+    STRINGTYPE {
         
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -239,7 +229,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("STRING", STRING);
+    	    return new PLAYPayload("STRINGTYPE", STRINGTYPE);
     	}
     	
     	/**
@@ -247,12 +237,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "STRING";
+    	    return "STRINGTYPE";
     	}
 
     },
     
-    NUMBER{
+    NUMBERTYPE{
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -266,7 +256,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("NUMBER", NUMBER);
+    	    return new PLAYPayload("NUMBERTYPE", NUMBERTYPE);
     	}
 
     	/**
@@ -274,12 +264,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "NUMBER";
+    	    return "NUMBERTYPE";
     	}
 
     },
     
-    ANY {
+    ANYTYPE {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -293,7 +283,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("ANY", ANY);
+    	    return new PLAYPayload("ANYTYPE", ANYTYPE);
     	}
 
     	/**
@@ -301,12 +291,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "ANY";
+    	    return "ANYTYPE";
     	}
 
     },
     
-    NULL {
+    NULLTYPE {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -320,7 +310,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("NULL", NULL);
+    	    return new PLAYPayload("NULLTYPE", NULLTYPE);
     	}
 
     	/**
@@ -328,12 +318,12 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "NULL";
+    	    return "NULLTYPE";
     	}
 
     },
     
-    COMM {
+    COMMTYPE {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
@@ -347,7 +337,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("COMM", COMM);
+    	    return new PLAYPayload("COMMTYPE", COMMTYPE);
     	}
 
     	/**
@@ -355,28 +345,55 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "COMM";
+    	    return "COMMTYPE";
     	}
 
     },
-        
+    
+    CLASSTYPE {
+
+    	@Override
+    	public boolean contentModel(List<PLAYTag> seq) {
+    	    return false;
+    	}
+
+    	@Override
+    	public List<PLAYTag> defaultTagSequence() {
+    	    return new ArrayList<PLAYTag>();
+    	}
+
+    	@Override
+    	public PLAYPayload defaultPayload() {
+    	    return new PLAYPayload("CLASSTYPE", CLASSTYPE);
+    	}
+
+    	/**
+    	 * @see java.lang.Enum#toString()
+    	 */
+    	@Override
+    	public String toString() {
+    	    return "CLASSTYPE";
+    	}
+
+    },
+    
     SEQ {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		if (!seq.isEmpty()) {
-		    	for(PLAYTag pt : seq){
-		    		if(pt.equals(EXP)
-		    			||pt.equals(VARDECL)
-		    			||pt.equals(CONDECL)
-		    			)
-		    			continue;
-		    		else
-		    			return false;
-		    	}
-		    	return true;
-		    }
-		    return false;		
+    		if (!seq.isEmpty())
+    			return false;
+    		
+	    	for(PLAYTag pt : seq){
+	    		if(isExp(pt)
+	    			 ||pt.equals(VARDECL)
+	    	  		 ||pt.equals(CONDECL))
+	    			continue;
+	    		else
+	    			return false;
+	    	}
+	    	return true;
+		    		
     	}
 
     	@Override
@@ -398,59 +415,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	}
 
     },
-    
-    EXP {
-
-    	@Override
-    	public boolean contentModel(List<PLAYTag> seq) {
-    	    if (!seq.isEmpty()) {
-	    		if ( (seq.size() == 1)
-	    			 &&( seq.contains(NUMBERLITERAL)
-	    				 || seq.contains(STRINGLITERAL)  
-	    				 || seq.contains(TRUE)
-	    				 || seq.contains(FALSE)
-	    				 || seq.contains(NULL)
-	    				 || seq.contains(VAR)
-	    				 || seq.contains(DOT)
-	    				 || seq.contains(THIS)
-	    				 || seq.contains(CALLCLOSURE)
-	    				 || seq.contains(CALL)
-	    				 || seq.contains(CALLWORLD)
-	    				 || seq.contains(IF)
-	    				 || seq.contains(WHILE)
-	    				 || seq.contains(NEW)
-	    				 || seq.contains(METHOD)
-	    				 || seq.contains(ASSIGN)
-	    				 || seq.contains(EXPPLACEHOLDER) ) 
-	    			) {
-	    		    return true;    
-	    		}
-    	    }
-    	    return false;
-    	}
-
-    	@Override
-    	public List<PLAYTag> defaultTagSequence() {
-    	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-    	    defaultTagSequence.add(EXPPLACEHOLDER);
-    	    return defaultTagSequence;
-    	}
-
-    	@Override
-    	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("EXP", EXP);
-    	}
-
-    	/**
-    	 * @see java.lang.Enum#toString()
-    	 */
-    	@Override
-    	public String toString() {
-    	    return "EXP";
-    	}
-
-    },
-    
+  
     NUMBERLITERAL{
 
     	@Override
@@ -547,20 +512,10 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
     
-    VAR {
+    NULL {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		if (!seq.isEmpty()) {
-	    		if ( (seq.size() == 1)
-	    			 &&( seq.contains(THIS)
-	    				 || seq.contains(LOCAL)  
-	    				 || seq.contains(WORLD)
-	    				) 
-	    			) {
-	    		    return true;
-	    		}
-    	    }
     	    return false;
     	}
 
@@ -571,7 +526,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public PLAYPayload defaultPayload() {
-    	    return new PLAYPayload("VAR", VAR);
+    	    return new PLAYPayload("NULL", NULL);
     	}
 
     	/**
@@ -579,8 +534,119 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	 */
     	@Override
     	public String toString() {
-    	    return "VAR";
+    	    return "NULL";
     	}
+
+    },
+  
+    THISVAR {
+
+		@Override
+		public boolean contentModel(List<PLAYTag> seq) {
+		    return false;
+		}
+	
+		@Override
+		public List<PLAYTag> defaultTagSequence() {
+		    return new ArrayList<PLAYTag>();
+		}
+	
+		@Override
+		public PLAYPayload defaultPayload() {
+		    return new PLAYPayload("THISVAR", THISVAR);
+		}
+	
+		/**
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+		    return "THISVAR";
+		}
+
+    },
+    
+    LOCALVAR {
+
+		@Override
+		public boolean contentModel(List<PLAYTag> seq) {
+		    return false;
+		}
+	
+		@Override
+		public List<PLAYTag> defaultTagSequence() {
+		    return new ArrayList<PLAYTag>();
+		}
+	
+		@Override
+		public PLAYPayload defaultPayload() {
+		    return new PLAYPayload("LOCALVAR", LOCALVAR);
+		}
+	
+		/**
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+		    return "LOCALVAR";
+		}
+
+    },
+    
+    WORLDVAR {
+
+		@Override
+		public boolean contentModel(List<PLAYTag> seq) {
+		    return false;
+		}
+	
+		@Override
+		public List<PLAYTag> defaultTagSequence() {
+		    return new ArrayList<PLAYTag>();
+		}
+	
+		@Override
+		public PLAYPayload defaultPayload() {
+		    return new PLAYPayload("WORLDVAR", WORLDVAR);
+		}
+	
+		/**
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+		    return "WORLDVAR";
+		}
+
+    },
+  
+    DOT {
+
+		@Override
+		public boolean contentModel(List<PLAYTag> seq) {
+			
+	    	return seq.size() == 1 && isExp(seq.get(0));
+    	   
+		}
+	
+		@Override
+		public List<PLAYTag> defaultTagSequence() {
+		    return new ArrayList<PLAYTag>();
+		}
+	
+		@Override
+		public PLAYPayload defaultPayload() {
+		    return new PLAYPayload("DOT", DOT);
+		}
+	
+		/**
+		 * @see java.lang.Enum#toString()
+		 */
+		@Override
+		public String toString() {
+		    return "DOT";
+		}
+
     },
     
     THIS {
@@ -610,106 +676,21 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
     
-    LOCAL {
+   CALLCLOSURE {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    return new ArrayList<PLAYTag>();
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("LOCAL", LOCAL);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "LOCAL";
-		}
-
-    },
-    
-    WORLD {
-
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    return new ArrayList<PLAYTag>();
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("WORLD", WORLD);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "WORLD";
-		}
-
-    },
-      
-    DOT {
-
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-	    		if ( seq.size() == 1 && seq.contains(EXP) ) {
-	    		    return true;
-	    		}
-    	    }
-    	    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    return new ArrayList<PLAYTag>();
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("DOT", DOT);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "DOT";
-		}
-
-    },
-    
-    CALLCLOSURE {
-
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-		    	for(PLAYTag pt : seq){
-		    		if(pt.equals(EXP) )
-		    			continue;
-		    		else
-		    			return false;
-		    	}
-		    	return true;
-		    }
-		    return false;
+			if (!seq.isEmpty())
+				return false;
+			
+    		for ( PLAYTag pt:seq ){
+    			if(isExp(pt))
+    				continue;
+    			else
+    				return false;
+    		}
+    		return true;
+    	    
 		}
 	
 		@Override
@@ -732,56 +713,20 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
     
-    CALL {
-
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-		    	for(PLAYTag pt : seq){
-		    		if(pt.equals(EXP) )
-		    			continue;
-		    		else
-		    			return false;
-		    	}
-		    	return true;
-		    }
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    return new ArrayList<PLAYTag>();
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("CALL", CALL);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "CALL";
-		}
-
-    },
-    
     CALLWORLD {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-		    	for(PLAYTag pt : seq){
-		    		if(pt.equals(EXP) )
-		    			continue;
-		    		else
-		    			return false;
-		    	}
-		    	return true;
-		    }
-		    return false;
+			if (!seq.isEmpty())
+				return false;
+			
+    		for ( PLAYTag pt:seq ){
+    			if(isExp(pt))
+    				continue;
+    			else
+    				return false;
+    		}
+    		return true;
 		}
 	
 		@Override
@@ -808,14 +753,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		if (!seq.isEmpty()) {
-	    		if (seq.size() == 2
-	    			&& seq.get(0).equals(EXP)
-	    			&& seq.get(1).equals(EXP) ) {
-	    		    return true;
-	    		}
-    	    }
-    	    return false;
+    		
+	    	return (seq.size() == 2
+	    			&& isExp(seq.get(0))
+	    			&& isExp(seq.get(1)) );
+
     	}
 
     	@Override
@@ -845,15 +787,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-		    	if (seq.size() == 3 &&
-		    		seq.get(0).equals(EXP) && 
+
+		    return seq.size() == 3 &&
+		    		isExp(seq.get(0)) && 
 		    		seq.get(1).equals(SEQ) &&
-		    		seq.get(2).equals(SEQ)) {
-				return true;
-			    }
-		    }
-		    return false;
+		    		seq.get(2).equals(SEQ);
 		}
 	
 		@Override
@@ -879,18 +817,14 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		}
 
     },
+    
     WHILE {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-		    	if (seq.size() == 2 &&
-		    		seq.get(0).equals(EXP) && 
-		    		seq.get(2).equals(SEQ)) {
-				return true;
-			    }
-		    }
-		    return false;
+			return seq.size() == 2 &&
+		    		isExp(seq.get(0)) && 
+		    		seq.get(1).equals(SEQ);
 		}
 	
 		@Override
@@ -920,12 +854,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-				if (seq.size() == 1 && seq.indexOf(EXP) == 0) {
-				    return true;
-				}
-		    }
-		    return false;
+		    return seq.size() == 1 && isExp(seq.get(0));
 		}
 	
 		@Override
@@ -953,20 +882,20 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-				if (seq.size() >=2) {
-					if(seq.get(0).equals(TYPE)){
-						for(int i=1;i<seq.size();i++){
-							if(seq.get(i).equals(EXP))
-								continue;
-							else
-								return false;
-						}
-						return true;
-					}
-				}
-		    }
-		    return false;
+			if(seq.size() <2)
+				return false;
+			
+			if(!seq.get(0).equals(CLASSTYPE))
+				return false;
+
+			for(int i=1;i<seq.size();i++){
+				if(isExp(seq.get(i)))
+					continue;
+				else
+					return false;
+			}
+			return true;
+
 		}
 	
 		@Override
@@ -977,7 +906,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	
 		@Override
 		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("METHOD", METHOD);
+		    return new PLAYPayload("NEW", NEW);
 		}
 	
 		/**
@@ -985,7 +914,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		 */
 		@Override
 		public String toString() {
-		    return "METHOD";
+		    return "NEW";
 		}
 
     },
@@ -994,30 +923,25 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-				if (seq.size() >=2) {
-					for(int i=0;i<seq.size()-2;i++){
-						if(seq.get(i).equals(VARDECL)||seq.get(i).equals(CONDECL)){
-							continue;
-						}else
-							return false;
-					}
-					if((seq.get(seq.size()-2).equals(TYPE)||
-						seq.get(seq.size()-2).equals(NOTYPE)  )
-						&&
-						(seq.get(seq.size()-1).equals(SEQ))
-																){
-						return true;
-					}
-				}
-		    }
-		    return false;
+			if (seq.size() <2) 
+				return false;
+			
+			for(int i=0;i<seq.size()-2;i++){
+				if(seq.get(i).equals(VARDECL)||seq.get(i).equals(CONDECL)){
+					continue;
+				}else
+					return false;
+			}
+			
+			return (isType(seq.get(seq.size()-2))||seq.get(seq.size()-2).equals(NOTYPE))
+					&&
+					seq.get(seq.size()-1).equals(SEQ);
+	    
 		}
 	
 		@Override
 		public List<PLAYTag> defaultTagSequence() {
-		    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-		    return defaultTagSequence;
+		    return new ArrayList<PLAYTag>();
 		}
 	
 		@Override
@@ -1033,248 +957,38 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		    return "METHOD";
 		}
 
-    },
+    };
     
-    
-    
-//////////////////Following is to be revised///////////////////////////////////////////////////////////    
-   
-        
-    
-	PLUS {
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-				if ((seq.size() == 1)
-						&& ((seq.indexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-		    		return true;
-				} else if ((seq.size() == 2)
-					&& ((seq.lastIndexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				}
-		    }
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    return defaultTagSequence;
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("\uFF0B", PLUS);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "\uFF0B";
-		}
-    },
-    
-    MINUS {
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty()) {
-				if ((seq.size() == 1)
-					&& ((seq.indexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				} else if ((seq.size() == 2)
-					&& ((seq.lastIndexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				}
-		    }
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    return defaultTagSequence;
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("\uFF0D", MINUS);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "\uFF0D";
-		}
-    },
-    
-    MULTIPLICATION {
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-				if ((seq.size() == 1)
-					&& ((seq.indexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				} else if ((seq.size() == 2)
-					&& ((seq.lastIndexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				}
-		    }
-		    return false;
-		}
-	
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    return defaultTagSequence;
-		}
-	
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("\u2715", MULTIPLICATION);
-		}
-	
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "\u2715";
-		}
-    },
-    
-    DIVISION{
-		@Override
-		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty()) {
-				if ((seq.size() == 1)
-					&& ((seq.indexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				} else if ((seq.size() == 2)
-					&& ((seq.lastIndexOf(EXPPLACEHOLDER) == 1)
-						|| (seq.lastIndexOf(EXP) == 1)
-						|| (seq.lastIndexOf(NUMBER) == 1)
-						|| (seq.lastIndexOf(BOOLEAN) == 1)
-						|| (seq.lastIndexOf(STRING) == 1)
-						|| (seq.lastIndexOf(NULL) == 1)
-						|| (seq.lastIndexOf(VAR) == 1)
-						|| (seq.indexOf(PLUS) == 1)
-						|| (seq.indexOf(MINUS) == 1)
-						|| (seq.indexOf(MULTIPLICATION) == 1)
-						|| (seq.indexOf(DIVISION) == 1) || (seq
-						.lastIndexOf(DOT) == 1))) {
-				    return true;
-				}
-		    }
-		    return false;
-		}
-		
-		@Override
-		public List<PLAYTag> defaultTagSequence() {
-		    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    defaultTagSequence.add(EXPPLACEHOLDER);
-		    return defaultTagSequence;
-		}
-		
-		@Override
-		public PLAYPayload defaultPayload() {
-		    return new PLAYPayload("\u00F7", DIVISION);
-		}
-		
-		/**
-		 * @see java.lang.Enum#toString()
-		 */
-		@Override
-		public String toString() {
-		    return "\u00F7";
-		}
-	};
+	public boolean isExp(PLAYTag pt){
+		return pt.equals(NUMBERLITERAL)
+				||pt.equals(STRINGLITERAL)
+		    	||pt.equals(TRUE)
+		    	||pt.equals(FALSE)
+		    	||pt.equals(NULL)
+		    	||pt.equals(THISVAR)
+		    	||pt.equals(LOCALVAR)
+		   		||pt.equals(WORLDVAR)
+		   		||pt.equals(DOT)
+		   		||pt.equals(THIS)
+		   		||pt.equals(CALLCLOSURE)
+	    		||pt.equals(CALLWORLD)
+		    	||pt.equals(NEW)
+		    	||pt.equals(METHOD)
+		    	||pt.equals(IF)
+		   		||pt.equals(WHILE)
+		   		||pt.equals(ASSIGN)
+		   		||pt.equals(EXPPLACEHOLDER)	;  
+	}
+	  
+	public boolean isType(PLAYTag pt){
+		return pt.equals(BOOLEANTYPE)
+		  		||pt.equals(STRINGTYPE)
+		  		||pt.equals(NUMBERTYPE)
+		  		||pt.equals(ANYTYPE)
+		  		||pt.equals(NULLTYPE)
+		  		||pt.equals(COMMTYPE)
+		  		||pt.equals(ALTTYPE)
+		  		||pt.equals(CLASSTYPE);
+	}
 
 }

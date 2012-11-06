@@ -35,16 +35,15 @@ public class ExpsPallet extends JPanel {
 	this.expTreeModel = new DefaultTreeModel(expsRootTreeNode);
 	this.expTree = new JTree(this.expTreeModel);
 
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.PLUS));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.MINUS));
-	expsRootTreeNode
-		.add(new DefaultMutableTreeNode(PLAYTag.MULTIPLICATION));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.DIVISION));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NUMBER));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.BOOLEAN));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.STRING));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NULL));
-	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.VAR));
+	//expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.PLUS));
+	//expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.MINUS));
+	//expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.MULTIPLICATION));
+	//expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.DIVISION));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NUMBERTYPE));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.BOOLEANTYPE));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.STRINGTYPE));
+	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.NULLTYPE));
+	//expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.VAR));
 	expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.DOT));
 
 	this.expTree.getSelectionModel().setSelectionMode(
