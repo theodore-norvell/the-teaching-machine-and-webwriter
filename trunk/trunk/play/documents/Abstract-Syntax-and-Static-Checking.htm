@@ -11,17 +11,20 @@
 <h1>Abstract Syntax</h1>
 <p>Notation. Identifiers starting with lower case </p>
 <h2>Classes</h2>
-<p>Each class has a unique name, optionally a superclass, and a finite set of field descriptions:</p>
-<pre>   Class --&gt; class[Id]( Fd* Seq)</pre>
+<p>Each class has a unique name, , and a finite set of field descriptions:</p>
+<pre>   Class --&gt; class[Id]( Fd* Method? )
+
+[Changed Seq to Method.]</pre>
 <p>Each field description is a VarDecl</p>
 <pre>   Fd --&gt; VarDecl
 </pre>
-<p>&nbsp;</p>
+<p>  [Superclasses?]</p>
 <h2>Types</h2>
 <p>Types can be primitive, classes, or finite unions of types.</p>
-<pre>   Type --&gt; boolean | string | number | any | null | comm | alt( Type+ )
- | class[Id]</pre>
-<p>&nbsp;</p>
+<pre>   Type --&gt; booleanType | stringType | numberType | anyType | nullType | commType | altType( Type+ )
+ | ClassType
+    ClassType --&gt; classType[Id]</pre>
+<p>[Need type for methods]</p>
 <h2>Expressions</h2>
 <h3>Literal expressions</h3>
 <pre>   Exp --&gt; numberLiteral[val]</pre>
@@ -34,9 +37,13 @@
    Exp --&gt; null</pre>
 <h3>Variables</h3>
 <pre>   Exp --&gt; Var
-   Var --&gt; <strong>this</strong>[Id] | <strong>local</strong>[Id] | <strong>world</strong>[Id]</pre>
+   Var --&gt; <strong>thisVar</strong>[Id] | <strong>local</strong>Var[Id] | <strong>worldVar</strong>[Id]</pre>
 <h3>Dot</h3>
-<pre>   Exp --&gt; dot[Id]( Exp) </pre>
+<pre>   Exp --&gt; dot[Id]( Exp) 
+</pre>
+<p>[Question: Should we have an analog to JavaScript's exp[exp] notation? like this:</p>
+<pre>   Exp --&gt; dot2( Exp, Exp )</pre>
+<p>  ]</p>
 <h3>This</h3>
 <pre>   Exp --&gt; <strong>this</strong>
 </pre>
@@ -44,19 +51,18 @@
 <pre>   Exp --&gt; callClosure( Exp0, Exp1, Exp2, ..., Exp<sub>n</sub> )
 </pre>
 <p>Here Exp0 should be a &quot;bound method&quot; (which is essentially a method value together with an object reference).</p>
-<p>A less general form of call finds the method as a field of an object</p>
-<pre>   Exp --&gt; call[Id]( Exp0, Exp1, Exp2, ..., Exp<sub>n</sub> )
-</pre>
 <p>Here Exp0 is the recipient. Finally a call to world object has a special syntax</p>
 <pre>   Exp --&gt; callWorld[Id]( Exp0, Exp1, Exp2, ..., Exp<sub>n-1</sub> )
 </pre>
 <p>In this case, the children are all arguments.
 </p>
 <h3>Allocation</h3>
-<pre>   Exp --&gt; <strong>new</strong>( Type, Exp1, Exp2, ..., Expn )
-</pre>
+<pre>   Exp --&gt; <strong>new</strong>( ClassType, Exp1, Exp2, ..., Expn )
+
+[Changed Type to ClassType.]</pre>
 <h3>Method literals</h3>
-<pre>   Exp --&gt; <strong>method</strong>(VarDecl*<sub></sub>, OptType, Seq)
+<pre>   Exp --&gt; Method
+   Method --&gt; <strong>method</strong>(VarDecl*<sub></sub>, OptType, Seq)
 </pre>
 <p>  The value of a method literal is a closure. Free Variables of the Seq are treated as follows. this[Id] refer to the fields of the current object at the time of the method literals evaluation. When the scope of the method is a class --i.e. when method literal is evaluated as part of object construction-- the current object is considered to be the one that is being contructed. Local variables may include the parameters, but may also include local variables of any containing scopes.</p>
 <h3>Control constructs</h3>
