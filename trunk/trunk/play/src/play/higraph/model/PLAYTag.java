@@ -20,18 +20,20 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-		    if (!seq.isEmpty())
+		    if (seq.isEmpty())
 		    	return false;
 		    
-	    	for(int i=0;i<seq.size();i++){
-	    		if( seq.get(i).equals(VARDECL)||seq.get(i).equals(CONDECL)
-	    			||(i==seq.size()-1 && seq.get(i).equals(METHOD))
-	    			   )
+	    	for(int i=0;i<seq.size()-1;i++){
+	    		if( seq.get(i).equals(VARDECL)||seq.get(i).equals(CONDECL) )
 	    			continue;
 	    		else
-	    			return false;	// containing some tag illegal
+	    			return false;
 	    	}
-	    	return true;
+
+	    	return seq.get(seq.size()-1).equals(VARDECL)
+	    			||seq.get(seq.size()-1).equals(CONDECL)
+	    			||seq.get(seq.size()-1).equals(METHOD);
+	    			//METHOD is optional but must be at last
 		}
 		    
 		
@@ -61,9 +63,9 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-	   		return (seq.size() == 2
+	   		return seq.size() == 2
 	   				&& ( seq.get(0).equals(NOTYPE)||isType(seq.get(0)) )
-	   				&& seq.get(1).equals(SEQ));
+	   				&& seq.get(1).equals(SEQ);
 	    	
     	}
 
@@ -94,9 +96,9 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		return (seq.size() == 2
+    		return seq.size() == 2
 	   				&& ( seq.get(0).equals(NOTYPE)||isType(seq.get(0)) )
-	   				&& seq.get(1).equals(SEQ));
+	   				&& seq.get(1).equals(SEQ);
     	}
 
     	@Override
@@ -127,7 +129,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {	    
-    	    if (!seq.isEmpty()) 
+    	    if (seq.isEmpty()) 
     	    	return false;
     	    	
 	    	for(PLAYTag pt : seq){
@@ -381,7 +383,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
-    		if (!seq.isEmpty())
+    		if (seq.isEmpty())
     			return false;
     		
 	    	for(PLAYTag pt : seq){
@@ -680,7 +682,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty())
+			if (seq.isEmpty())
 				return false;
 			
     		for ( PLAYTag pt:seq ){
@@ -717,7 +719,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 		@Override
 		public boolean contentModel(List<PLAYTag> seq) {
-			if (!seq.isEmpty())
+			if (seq.isEmpty())
 				return false;
 			
     		for ( PLAYTag pt:seq ){
@@ -754,9 +756,9 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
     	@Override
     	public boolean contentModel(List<PLAYTag> seq) {
     		
-	    	return (seq.size() == 2
+	    	return seq.size() == 2
 	    			&& isExp(seq.get(0))
-	    			&& isExp(seq.get(1)) );
+	    			&& isExp(seq.get(1));
 
     	}
 
