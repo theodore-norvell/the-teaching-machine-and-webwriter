@@ -55,13 +55,14 @@ public class WHILENodeView extends PLAYNodeView {
 	// draw a Circle mark
 	screen.drawString("\u25EF", (float) (x + 5), (float) (y + 10));
 
-	if (number == 3) {
+	if (number == 2) {
 	    Rectangle2D expPlaceHolderNodeVieRect = ((PLAYNodeView) this
 		    .getChild(0)).getNextExtent();
 	    Rectangle2D doSeqNodeViewRect = ((PLAYNodeView) this.getChild(1))
 		    .getNextExtent();
-	    Rectangle2D elseSeqNodeViewRect = ((PLAYNodeView) this.getChild(2))
-		    .getNextExtent();
+	    // Rectangle2D elseSeqNodeViewRect = ((PLAYNodeView)
+	    // this.getChild(2))
+	    // .getNextExtent();
 
 	    // draw a line between place hold area and do branch
 	    screen.drawLine(
@@ -76,15 +77,15 @@ public class WHILENodeView extends PLAYNodeView {
 	    screen.drawString("\u21BA", (int) (x + 10),
 		    (int) (doSeqNodeViewRect.getMinY() + 20));
 	    // draw a line between then branch and else branch
-	    screen.drawLine((int) x,
-		    (int) (doSeqNodeViewRect.getMaxY() + (elseSeqNodeViewRect
-			    .getMinY() - doSeqNodeViewRect.getMaxY()) / 2),
-		    (int) (x + width),
-		    (int) (doSeqNodeViewRect.getMaxY() + (elseSeqNodeViewRect
-			    .getMinY() - doSeqNodeViewRect.getMaxY()) / 2));
-	    // draw an image of else branch
-	    screen.drawString("\u21B7", (int) (x + 10),
-		    (int) (elseSeqNodeViewRect.getMinY() + 20));
+	    // screen.drawLine((int) x,
+	    // (int) (doSeqNodeViewRect.getMaxY() + (elseSeqNodeViewRect
+	    // .getMinY() - doSeqNodeViewRect.getMaxY()) / 2),
+	    // (int) (x + width),
+	    // (int) (doSeqNodeViewRect.getMaxY() + (elseSeqNodeViewRect
+	    // .getMinY() - doSeqNodeViewRect.getMaxY()) / 2));
+	    // // draw an image of else branch
+	    // screen.drawString("\u21B7", (int) (x + 10),
+	    // (int) (elseSeqNodeViewRect.getMinY() + 20));
 	}
     }
 
