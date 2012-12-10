@@ -54,7 +54,9 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 		    expBuffer.delete((expBuffer.length() - 2),
 			    expBuffer.length());
 		} else {
-		    expBuffer.deleteCharAt(0);
+		    if (expBuffer.length() > 0) {
+			expBuffer.deleteCharAt(0);
+		    }
 		}
 	    } else {
 		if (expBuffer.length() > 0) {
@@ -83,8 +85,8 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 		|| (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)) {
 	    for (Object object : this.playViewSelectionModel
 		    .getSelectedViewList()) {
-		PLAYNodeView nodeView = (PLAYNodeView) object;
-		if (nodeView != null) {
+		if (object instanceof PLAYNodeView) {
+		    PLAYNodeView nodeView = (PLAYNodeView) object;
 		    if (nodeView.getNode().canDelete()) {
 			nodeView.getNode().delete();
 			this.playHigraphView.setDeletedNodeView(nodeView);

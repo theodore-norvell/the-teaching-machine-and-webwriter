@@ -16,21 +16,20 @@ public class PLAYPayload implements TaggedPayload<PLAYTag, PLAYPayload> {
     private String name;
 
     private final PLAYTag tag;
-    
-    /*Field payloadValue is used for different purposes in different tags.*/
+
+    /* Field payloadValue is used for different purposes in different tags. */
     private String payloadValue;
-    
-    
-	public PLAYPayload(String name, PLAYTag tag) {
-    	this.name = name;
-    	this.tag = tag;
-    	this.payloadValue = "";
+
+    public PLAYPayload(String name, PLAYTag tag) {
+	this.name = name;
+	this.tag = tag;
+	this.payloadValue = "";
     }
 
-    public PLAYPayload(String name, PLAYTag tag, String payloadValue ) {
-		this.name = name;
-		this.tag = tag;
-		this.payloadValue = payloadValue;
+    public PLAYPayload(String name, PLAYTag tag, String payloadValue) {
+	this.name = name;
+	this.tag = tag;
+	this.payloadValue = payloadValue;
     }
 
     /**
@@ -56,13 +55,13 @@ public class PLAYPayload implements TaggedPayload<PLAYTag, PLAYPayload> {
     public String toString() {
 	return this.name;
     }
-    
-    public String getPayloadValue() {
-		return payloadValue;
-	}
 
-	public void setPayloadValue(String payloadValue) {
-		this.payloadValue = payloadValue;
-	}
+    public String getPayloadValue() {
+	return payloadValue;
+    }
+
+    public void setPayloadValue(String payloadValue) {
+	this.payloadValue = payloadValue;
+    }
 
 }

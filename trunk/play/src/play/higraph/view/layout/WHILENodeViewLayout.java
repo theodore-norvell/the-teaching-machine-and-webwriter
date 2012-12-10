@@ -35,10 +35,10 @@ public class WHILENodeViewLayout extends PLAYLayoutManager {
 	if (nodeView instanceof WHILENodeView) {
 	    WHILENodeView whileNodeView = (WHILENodeView) nodeView;
 	    Rectangle2D rectangle = new Rectangle2D.Double(0, 0, 20, 20);
-	    if (whileNodeView.getNumChildren() == 3) {
+	    if (whileNodeView.getNumChildren() == 2) {
 		double x = 30;
 		double y = 0;
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 2; i++) {
 		    PLAYNodeView childNodeView = (PLAYNodeView) whileNodeView
 			    .getChild(i);
 		    childNodeView.doLayout();
