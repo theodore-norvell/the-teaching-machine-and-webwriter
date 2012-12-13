@@ -1,5 +1,11 @@
 /* CSS Document */
 
-.kbd {font: "Courier New", Courier, mono }p {
-	font-family: Verdana, Geneva, sans-serif;
+
+
+* { font-size: large ;
+	font-family: "Lucide Bright" "Palatino Linotype", "Book Antiqua", Palatino, serif ;
 }
+
+.kbd {font: "Lucida Console", Monaco, monospace }
+
+.centre { text-align:center; }
