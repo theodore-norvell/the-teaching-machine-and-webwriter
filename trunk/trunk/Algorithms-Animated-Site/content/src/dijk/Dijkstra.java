@@ -193,7 +193,7 @@ public class Dijkstra {
             ScriptManager.relay("HigraphManager", "setNodeNamePosition", d[i], g.namePosn[i] ) ;
             ScriptManager.relay("HigraphManager", "createNodeExtraLabel", d[i], "var", g.varPosn[i]  ) ;
             ScriptManager.relay("HigraphManager", "placeNode", d[i], g.x[i], g.y[i]) ; }
-        for(int i=0 ; i < g.N ; ++i ) {
+        for( int i=0 ; i < g.N ; ++i ) {
             Edge [] outgoing = g.edges[i] ;
             for( int j=0 ; j < outgoing.length ; ++j ) {
                 Edge e = outgoing[j] ;
