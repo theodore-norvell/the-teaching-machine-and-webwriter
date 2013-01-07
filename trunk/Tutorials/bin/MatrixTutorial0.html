@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Matrix tutorial 0</title>
+<link href="tutorials.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Matrix tutorial</h1>
+<p>This tutorial looks at the representation and usage of  two-dimensional matrices. </p>
+<p>The matrix is represented by array A[] is a  2 row by 3 column matrix. Notice that the representation of row 1 begins at 1*cols. In general the representation of each row begins at item i*cols of the array. The size of the array is 2*3, i.e. 6.</p>
+<p><img src="Drawing-matrix-rep.png" width="465" height="338"></p>
+<p>&nbsp;</p>
+<p>Here 2 row by 3 column matrix is declared and initialized to the sequence 10, 11.5, 13.5, ...</p>
+<pre>    const int rows = 2;
+    const int cols = 3;
+    double A[rows*columns];
+    double val = 10.0 ;
+    for(int i = 0; i < rows; i++)
+     {
+        for(int j = 0; j < columns; j++)
+            {	
+                A[(i*columns)+j]=val;
+                val+=1.5;
+			}
+
+     }</pre>
+<p>Each matrix item (i,j) is represented by item ((i * number of columns) + j) of the array.</p>
+<p>As you see, using this formula allows us to traverse the entire matrix by iterating over the rows and columns.</p>
+<p>Next, this tutorial looks at passing a two-dimensional matrix to a function as an argument.</p>
+<p>Let's pass the matrix into a function that will scale it using a scale factor we have defined. We also need to tell the function the dimensions of the matrix and the scale factor itself, so we'll pass those in as arguments to the function as well.</p>
+<p>Here is the function call</p>
+<pre>    scale(A, rows, columns, scale_factor);
+</pre>
+<p>And here is the function definition
+</p>
+<pre>void scale(double B[], int rows, int cols, double scale_factor)
+{
+	for(int i=0;i &lt; rows;i++)
+	{
+		for(int j=0;j&lt; cols;j++)
+		{
+			B[(i*cols)+j] = B[(i*cols)+j] * scale_factor;
+		}
+	}
+}</pre>
+<p>The parameter for the array is called B. Within the function we use B as the name for the array.	Although it is known by the name B within the scale function and the name A within the main function, there is only one array.</p>
+<p>Item B[ (i*cols)+j] of the array represents matrix item (i,j).</p>
+<p>Functions, such as scale, that operate on matrices represented as arrays in this way, can be reused with other matrices, even if the dimensions are different.</p>
+<p>Here we declare another array. This one represents a 2 row by 2 column matrix</p>
+<pre>    double C[2 * 2] ;
+    ....initialization of C omitted...
+<img src="Drawing-matrix-rep-C.png" width="357" height="258">
+</pre>
+<p>We call scale again, this time passing in C and its dimensions.</p>
+<pre>
+    scale( C, 2, 2, 0.5 ) ;
+</pre>
+<p>This time when scale executes, parameter B will represnt matrix C. Effectively B is the name of array C for the duration of the function's execution.</p>
+<p>Upon returning from the scale function, the contents of array C will have been changed.</p>
+<p><em>This is the end of the tutorial. You may review any part of the tutorial. When you are ready, we will move on to the next part of the experiment.</em></p>
+</body>
+</html>
