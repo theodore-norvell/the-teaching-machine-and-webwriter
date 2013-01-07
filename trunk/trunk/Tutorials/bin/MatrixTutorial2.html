@@ -3,7 +3,7 @@
 <head>
 	
 	<meta charset="utf-8"/>
-	<title>Tutorials</title>
+	<title>Matrix tutorial 2</title>
 	<meta name="description" content="" />
 	
 	<script src="Tutorials.js"></script>
@@ -56,7 +56,7 @@
 			}
 		 //]]></script>
 		 <div class = "vertex" id="v0" >
-			<p>This tutorial looks at passing a two-dimensional matrix to a function.
+			<p>This tutorial looks at passing a two-dimensional matrix to a function as an argument.
 			   (Click <a href = "MatrixTutorial.html"> here </a> to go to part I) </p>
 		</div>
 		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
@@ -80,8 +80,7 @@
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
-			<p>The matrix is refered to by the name B within the scale function.</p>
-			<p>Keep in mind that the variables i & j within the scale function are different from the variables with the same names in the main function. Each set has different scope, local to their respective function. The same goes for the variables scale_factor and rows.</p>
+			<p>The parameter for the array is called B. Within the function we use B as the name for the array.	Although it is known by the name B within the scale function and the name A within the main function, there is only one array.</p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
@@ -93,8 +92,8 @@
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>We'll use the lookup formula you learned in Part I to traverse the matrix. The value of each cell needs to be multiplied by the scale factor.</p>
-			<p>Using the formula: (0 x 3) + 0  =  0.</p>
+			<p>We'll use the lookup formula B[(i*cols)+j] you learned in Part I to identify item (i,j) of the matrix.. </p>
+			<p>Using the formula: (0 * 3) + 0  =  0.</p>
 		</div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
@@ -107,7 +106,7 @@
 		
 	  <div class = "vertex" id="v4" >
 			<p>You can iterate through the rest of the matrix cell-by-cell, or skip ahead if you've got the hang of traversing and assigning values to the matrix.</p>
-			<p>Using the formula: (0 x 3) + 1  =  1.</p>
+			<p>Using the formula: (0 * 3) + 1  =  1.</p>
 		</div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
@@ -119,7 +118,7 @@
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>(0 x 3) + 2  =  2.</p>
+			<p>(0 * 3) + 2  =  2.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
@@ -131,7 +130,7 @@
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			<p>(1 x 3) + 0  =  3.</p>
+			<p>(1 * 3) + 0  =  3.</p>
 		</div>
 	    
 		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
@@ -143,7 +142,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>(1 x 3) + 1  =  4.</p>
+			<p>(1 * 3) + 1  =  4.</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
@@ -154,7 +153,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p>(1 x 3) + 2  =  5.</p>
+			<p>(1 * 3) + 2  =  5.</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
@@ -228,7 +227,7 @@
 			//]]></script>
 		<div class = "vertex" id="v14" >
 			<p>Back in main, the name B for the matrix is lost again.</p>
-			<p>And that's it, we're done!</p>
+			<p><em>This is the end of the tutorial. You may review any part of the tutorial. When you are ready, we will move on to the next part of the experiment.</em></p>
 		</div>
 		
 		<div class="edge" id="edge4to9" data-source="v4" data-target="v9"

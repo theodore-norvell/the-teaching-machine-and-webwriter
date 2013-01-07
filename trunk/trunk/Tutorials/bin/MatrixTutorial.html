@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<title>Tutorials</title>
+	<title>Matrix tutorial 1</title>
 	<meta name="description" content="" />
 	
 	<script src="Tutorials.js"></script>
@@ -40,6 +40,7 @@
             align="bottom"
             archive="tm.jar" id="tm_applet"
             class="applet"
+            mayscript="true"
           >
           </applet>
       </td>
@@ -55,7 +56,7 @@
 			}
 		 //]]></script>
 		<div class = "vertex" id="v0">
-			This tutorial looks at the construction and usage of a two-dimensional matrix. </div>
+			This tutorial looks at the representation and usage of a two-dimensional matrix. </div>
 		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
@@ -65,7 +66,7 @@
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v1" >
-			<p>The matrix is created as an array with it's number of cells equal to the product of the number of rows and the number of columns.</p>
+			<p>The matrix is represented by an array with its number of items equal to the product of the number of rows and the number of columns. </p>
 			<p>Notice the arbitrary values stored at all the matrix locations when it is declared.</p>
 		</div>
 		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
@@ -89,8 +90,8 @@
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>The matrix form of array A[] is a standard 2x3 matrix.</p>
-		</div>
+			<p>The matrix represented by array A[] is a  2 row by 3 column matrix. Notice that the representation of row 1 begins at 1*cols. In general the representation of each row begins at item i*cols of the array. The size of the array is 2*3, i.e. 6.</p>
+	  </div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
@@ -101,10 +102,11 @@
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>We'll assign the matrix location represented by ((i x number of columns) + j) the current value of the variable val and then increase val by 1.5.</p>
-			<p>As you'll see, using this formula allows us to traverse the entire matrix while iterating over i and j.</p>
-			<p>Here, the formula gives us: (0 x 3) + 0 = 0.</p>
-		</div>
+			<p>Each matrix item (i,j) is represented by item ((i * number of columns) + j) of the array.</p>
+		<p>As you'll see, using this formula allows us to traverse the entire matrix by iterating over the rows and columns.</p>
+			<p>Here, the formula gives us: (0 * 3) + 0 = 0.</p>
+			<p>This loop initializes the matrix to values 10, 11.5, 13, ... .</p>
+	  </div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
@@ -115,7 +117,7 @@
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>The zeroth element of the matrix has been assigned the value of 10.0 and val has been updated to 11.5.</p>
+			<p>Item (0,0) of the matrix has been assigned the value of 10.0 and val has been updated to 11.5.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
@@ -324,7 +326,7 @@
 			//]]></script>
 			
 		<div class = "vertex" id="v15" >
-			<p>The fifth element of the matrix has been assigned the value of 17.5 and val has been updated to 19.0.</p>
+			<p>The final item of the matrix has been assigned the value of 17.5 and now the initialization is complete.</p>
 		</div>
 		
 		<div class="edge" id="edge15to16" data-source="v15" data-target="v16"
