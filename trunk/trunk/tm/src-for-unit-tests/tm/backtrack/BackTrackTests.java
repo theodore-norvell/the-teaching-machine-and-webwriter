@@ -185,18 +185,36 @@ public class BackTrackTests  {
 	
 	@Test public void testBTByteArray() {			
 			BTByteArray ba = new BTByteArray(timeMan, 10) ;
+			// Time 0
 			for( int i = 0 ; i < 10 ; ++i ) ba.putByte(i, (byte)i) ;
+			for( int i = 0 ; i < 10 ; ++i) assertEquals(i, ba.getByte(i) ) ;
 			timeMan.checkpoint() ;
+			// Time 1
 			timeMan.checkpoint() ; 
+			// Time 2
 			for( int i = 0 ; i < 10 ; ++i) ba.putByte(i, (byte)(i+10)) ;
 			for( int i = 0 ; i < 10 ; ++i) assertEquals(i+10, ba.getByte(i)) ;
 			timeMan.undo() ;
+			// Back to time 1
 			for( int i = 0 ; i < 10 ; ++i) assertEquals(i, ba.getByte(i) ) ;
 
 			for( int i = 0 ; i < 10 ; ++i ) ba.putByte(i, (byte)(20+i)) ;
 			for( int i = 0 ; i < 10 ; ++i) assertEquals(i+20, ba.getByte(i) ) ;
 			timeMan.undo() ;
+			// Back to time 0
 			for( int i = 0 ; i < 10 ; ++i) assertEquals(i, ba.getByte(i) ) ;
+			timeMan.undo() ;
+			// Still in time 0
+			for( int i = 0 ; i < 10 ; ++i) assertEquals(i, ba.getByte(i) ) ;
+			// Change values to i+13
+			for( int i = 0 ; i < 10 ; ++i ) ba.putByte(i, (byte)(i+13)) ;
+			timeMan.checkpoint();
+			// Time 1a
+			// Change values to i+42
+			for( int i = 0 ; i < 10 ; ++i ) ba.putByte(i, (byte)(i+42)) ;
+			timeMan.undo();
+			// Time 0 again.
+			for( int i = 0 ; i < 10 ; ++i) assertEquals(i+13, ba.getByte(i) ) ;
 		}
 	
 }
