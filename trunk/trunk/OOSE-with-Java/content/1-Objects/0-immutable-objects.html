@@ -70,7 +70,7 @@ insertCode("Book.java", true, "code", "default.cfg", "A");
 </ul>
 <h2>Syntax </h2>
 <p>Recall the syntax for classes is </p>
-<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* }<br>
+<p class="syntaxDef"><span class="stxNonterminal">ClassDeclaration</span> --&gt; <span class="stxNonterminal">Modifiers</span> <span class="codeInline"></span><span class="codeKeyword">class</span> <span class="stxTerminal">Identifier</span> <span class="codeInline">{</span> <span class="stxMeta">(</span><span class="stxNonterminal">ClassMember</span><span class="stxMeta">)</span>* <span class="codeInline">}</span><br>
     <span class="stxNonterminal">ClassMember</span><span class="stxMeta"></span> --&gt; <span class="stxNonterminal">MethodDeclaration<br>
     </span><span class="stxNonterminal">Modifiers</span> --&gt; <span class="stxMeta">(</span> <span class="stxNonterminal">Modifier</span> <span class="stxMeta">)*</span><br>
     <span class="stxNonterminal">Modifier</span> --&gt; <span class="codeKeyword">private</span><br>
@@ -246,7 +246,7 @@ insertDefLink("method","method")
 <p>Methods as we've seen are declared using the following syntax</p>
 <p></p>
 <p class="syntaxDef"><span class="stxNonterminal">MethodDeclaration --&gt; MethodSignature</span> <span class="stxNonterminal">Block</span><br>
-    <span class="stxNonterminal">MethodSignature --&gt; Modifiers ReturnType </span><span class="stxTerminal">Identifier</span> ( <span class="stxNonterminal">Parameters</span> )<br>
+    <span class="stxNonterminal">MethodSignature --&gt; Modifiers ReturnType </span><span class="stxTerminal">Identifier</span> <span class="codeInline">(</span> <span class="stxNonterminal">Parameters</span> <span class="codeInline">)</span><br>
     <span class="stxNonterminal">ReturnType</span> --&gt; <span class="codeKeyword">void</span><br>
     <span class="stxNonterminal">ReturnType</span> --&gt; <span class="stxNonterminal">Type</span><br>
     <span class="stxNonterminal">Parameters</span> --&gt; <span class="stxMeta">(</span><span class="stxNonterminal"> ParameterDecl </span><span class="stxMeta">(</span> <span class="codeInline">,</span><span class="stxNonterminal">ParameterDecl</span><span class="stxMeta">)</span>*<span class="stxMeta"> )</span><sup>?</sup><br>

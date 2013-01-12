@@ -93,7 +93,7 @@ endNote();
 <p>In such a case we can use a block</p>
 <p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="stxNonterminal">Block</span><span class="codeInline"><br>
   </span><span class="stxNonterminal">Block</span> --&gt; <span class="codeInline">{</span> <span class="stxMeta">( </span><span class="stxNonterminal">BlockMember </span><span class="stxMeta">)*</span> <span class="codeInline">}</span> <br>
-  <span class="stxNonterminal"> BlockMember</span>--&gt;<span class="stxNonterminal"> Statement </span></p>
+  <span class="stxNonterminal"> BlockMember </span>--&gt;<span class="stxNonterminal"> Statement </span></p>
 <p>[Here I'm using some new meta-notation to describe the syntax. When I put something between the symbols <span class="stxMeta">(</span> and <span class="stxMeta">)*</span> that means that there can be zero or more repetitions of that something. </p>
 <p>So the above definition says that</p>
 <ul>
@@ -207,7 +207,7 @@ insertCode("../src/While1.java", true, "code", "default.cfg", "A");
 <p><span class="codeKeyword">for</span> loops give us a slightly more compact way to write the same thing. Using a <span class="codeKeyword">for</span> loop, we would write </p>
 <p class="code"><span class="codeKeyword">for</span>( <span class="pseudoCode">D</span> <span class="pseudoCode">B</span> ; <span class="pseudoCode">E</span> ) { <span class="pseudoCode">S</span> } </p>
 <p>The syntax is as follows </p>
-<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeInline"></span><span class="codeKeyword">for</span><span class="codeInline">( </span><span class="stxNonterminal">VariableDeclaration Expression ; Expression</span> <span class="codeInline">) </span><span class="stxNonterminal">Statement</span> </p>
+<p class="syntaxDef"><span class="stxNonterminal">Statement</span> --&gt; <span class="codeKeyword">for</span><span class="codeInline">( </span><span class="stxNonterminal">VariableDeclaration Expression </span><span class="codeInline">;</span><span class="stxNonterminal"> Expression</span> <span class="codeInline">) </span><span class="stxNonterminal">Statement</span> </p>
 <p>When the variable is an integer, the update is often to increment it by one, e.g.</p>
 <p class="code">i = i + 1</p>
 <p>There is a convenient abbreviation for this, which is</p>
