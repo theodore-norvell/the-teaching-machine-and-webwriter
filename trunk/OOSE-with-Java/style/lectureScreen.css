@@ -163,19 +163,23 @@ code {
 
 /* Styles used to color stain code */
 .codeComment{
-		 color: #009240;
+	font-family: "courier new", monospace;
+	color: #009240;
 }
 
 .codePreprocessor{
+	font-family: "courier new", monospace;
 	color:#000000; 
 	font-weight: bold;
 }
 
 .codeKeyword{
+	font-family: "courier new", monospace;
 	color: #000000;
 	font-weight: bold;
 }
 .codeConstant{
+	font-family: "courier new", monospace;
 	color:#3399FF; 
 }
 .codeHighlight{
@@ -381,23 +385,29 @@ pre {font-family: "Courier New", Courier, mono;
 }
 /* These styles together define syntax definitions. Use with syntax def code snippet*/
 .syntaxDef {
-	background-color: #FFCC66;
+	background-color:  rgb(255,204,153);
 	border: thin solid #FF0000;
 	position: relative;
-	left: .5in;
-	right: .5in;
+	left: 0.5in;
+	right: 0.5in;
 	padding: 5px;
-	width: 75%;
+	width: 90%;
+	color: rgb(0,102,255);
 }
 .stxTerminal {
-	font-family: "Courier New", Courier, mono;
-	font-weight: bold;
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: normal;
+	font-style: normal;
 }
 .stxNonterminal {
+	font-family: Verdana, Geneva, sans-serif;
+	font-weight: normal;
 	font-style: italic;
 }
 .stxMeta {
+	font-family: Verdana, Geneva, sans-serif;
 	font-weight: bold;
+	font-style: normal ;
 }
 .insetClause {
 	margin-left: 1in;

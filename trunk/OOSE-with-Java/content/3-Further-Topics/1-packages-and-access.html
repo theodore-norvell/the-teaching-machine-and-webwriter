@@ -54,15 +54,56 @@
 <p>Packages and compilation units form a tree.</p>
 <p>In Unix and Windows (at least), packages are represented by directories and compilation units by files.</p>
 <p>Compilation units contain declarations of classes and interfaces:</p>
-<p class="syntaxDef"><span class="stxNonterminal">CompilationUnit</span> --&gt; <span class="stxMeta">( </span><span class="stxNonterminal">PackageDeclaration </span><span class="stxMeta">)<sup>?</sup></span> <span class="stxMeta">( </span><span class="stxNonterminal">Import </span><span class="stxMeta">)*</span><span class="stxNonterminal"> CompilationUnitDeclarations<br>
-  PackageDeclaration</span><span class="style6"> --&gt; <span class="codeKeyword">package</span></span><span class="stxNonterminal"> PackageName</span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
-  Import</span><span class="style6"> --&gt; <span class="codeKeyword">import</span></span><span class="stxNonterminal"> ClassName</span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
-  Import</span><span class="style6"> --&gt; <span class="codeKeyword">import</span></span><span class="stxNonterminal"> PackageName<span class="codeInline"> . *</span></span><span class="style6"><span class="codeInline"> ;</span></span><span class="stxNonterminal"><br>
-  Import<span class="style6"> --&gt; </span></span><span class="style12"><span class="style6"><span class="codeKeyword">import</span></span></span><span class="stxNonterminal"> ClassName</span><span class="style12"><span class="style6"><span class="codeInline"> . * ;</span></span></span><span class="stxNonterminal"><br>
-  <span class="style6">PackageName </span></span><span class="style6">--&gt;</span> <span class="stxTerminal">Identifier</span> <span class="stxMeta">(</span><span class="stxTerminal"><span class="codeInline"> . </span>Identifier</span> <span class="stxMeta">)*</span> <span class="stxNonterminal"><br>
-  CompilationUnitDeclarations </span><span class="style6">--&gt; </span><span class="stxNonterminal">CompilationUnitDeclaration </span><span class="stxMeta">(</span> <span class="stxNonterminal">CompilationUnitDeclaration</span><span class="stxMeta">)*<br>
-  </span><span class="style11"><span class="pseudoCode style8">CompilationUnitDeclaration</span></span> --&gt; <span class="stxNonterminal">ClassDeclaration<br>
-  <span class="style11"><span class="pseudoCode style8">CompilationUnitDeclaration</span></span> --&gt; InterfaceDeclaration</span></p>
+<p class="syntaxDef"><span class="stxNonterminal">CompilationUnit</span>
+ --&gt;
+ <span class="stxMeta">(</span>
+ <span class="stxNonterminal">PackageDeclaration</span>
+ <span class="stxMeta">)<sup>?</sup></span> 
+ <span class="stxMeta">(</span>
+ <span class="stxNonterminal">Import</span>
+ <span class="stxMeta">)*</span>
+ <span class="stxNonterminal"> CompilationUnitDeclarations</span><br>
+  PackageDeclaration --&gt;
+  <span class="codeKeyword">package</span>  <span class="stxNonterminal"> PackageName</span>
+  <span class="codeInline"> ;</span>
+  <br>
+  <span class="stxNonterminal">Import</span> --&gt;
+  <span class="codeKeyword">import</span>
+  <span class="stxNonterminal"> ClassName</span>
+  <span class="codeInline">;</span>
+  <br>
+  <span class="stxNonterminal">Import</span>
+  --&gt;
+ <span class="codeKeyword">import</span>
+ <span class="stxNonterminal"> PackageName</span>
+ <span class="codeInline">. *</span>
+ <span class="codeInline">;</span>
+ <br>
+ <span class="stxNonterminal">
+  Import</span>
+  --&gt;
+  <span class="codeKeyword">import</span>
+  <span class="stxNonterminal">ClassName</span><span class="codeInline"> . * ;</span>  <br>
+  <span class="stxNonterminal">PackageName</span>
+  --&gt;
+  <span class="stxTerminal">Identifier</span>
+  <span class="stxMeta">(</span>
+  <span class="codeInline"> . </span>
+  <span class="stxTerminal">Identifier</span>
+  <span class="stxMeta">)*</span>
+  <br>
+  <span class="stxNonterminal">CompilationUnitDeclarations </span>
+  --&gt;
+  <span class="stxNonterminal"> CompilationUnitDeclaration</span>
+  <span class="stxMeta">(</span>
+  <span class="stxNonterminal">CompilationUnitDeclaration</span>
+  <span class="stxMeta">)*</span>
+  <span class="stxNonterminal">CompilationUnitDeclaration</span>
+  --&gt;
+ <span class="stxNonterminal">ClassDeclaration</span><br>
+ <span class="stxNonterminal">CompilationUnitDeclaration</span>
+ --&gt;
+<span class="stxNonterminal">InterfaceDeclaration</span></p>
 <p>It is a good idea for each compilation unit to contain only one class or interface declaration.</p>
 <p>(In any case only one class or interface declaration per compilation unit can have the modifier <span class="codeKeyword">public</span>. ) </p>
 <p>Classes and interfaces declared in compilation units are called top-level types</p>
@@ -129,9 +170,13 @@ endNote();
 </div>
 <p>&nbsp;</p>
 <h1>Imports and Names</h1>
-<p>Top-level classes and interfaces can be referred to in one of two ways </p>
-<p class="syntaxDef"><span class="stxNonterminal">TypeName</span> --&gt; <span class="stxNonterminal"><span class="stxTerminal">Identifier</span><br>
-  TypeName --&gt; PackageName</span><span class="style6"><span class="stxNonterminal"><span class="stxTerminal"><span class="codeInline"></span><span class="codeInline"> . </span>Identifier</span></span></span></p>
+<p>Top-level classes and interfaces can be referred to in one of two ways.</p>
+<p>Short (or unqualified):</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassName</span> --&gt; <span class="stxTerminal">Identifier</span><br>
+<span class="stxNonterminal">InterfaceName</span> --&gt; <span class="stxTerminal">Identifier</span></p>
+<p>Long (or fully qualified):</p>
+<p class="syntaxDef"><span class="stxNonterminal">ClassName</span> --&gt; <span class="stxNonterminal">PackageName</span><span class="codeInline"> . </span><span class="stxTerminal">Identifier</span><br>
+  <span class="stxNonterminal">InterfaceName</span> --&gt; <span class="stxNonterminal">PackageName</span><span class="codeInline"> . </span><span class="stxTerminal">Identifier</span></p>
 <p>The short form is used within the same package.</p>
 <p>The short form can be used for classes and interfaces in package <span class="codeInline">java.lang</span></p>
 <ul>
@@ -153,7 +198,22 @@ endNote();
       </ul>
   </li>
 </ul>
-<p>Import declarations affect how we refer to a type, not whether we can refer to a type.</p>
+<p>Import declarations affect only whether we can use the short form, not whether we can refer to a type.</p>
+<div class="breakoutBox"> 
+  <p><strong>Extra information</strong>
+    <script language="JavaScript" type="text/JavaScript">
+       startNote();
+      </script>
+    You can see, from the syntax  of <span class="stxNonterminal">className</span>, <span class="stxNonterminal">interfaceName</span>, and <span class="stxNonterminal">packageName</span>, that there is an ambiguity between package names, class names, and interface names. For example <span class="codeInline">a.b.c</span> could be a package name, the name of class (or interface) <span class="codeInline">c</span> in package <span class="codeInline">a.b</span>, or the
+name of a static field  <span class="codeInline">c</span> declared within class <span class="codeInline">b</span> in package <span class="codeInline">c</span>, among other possibilities. To distinguish between all these possibilities, the compiler needs to take a look to see what actually has been declared.</p>
+  <p>There is a convention that class names are capitalized, while package and field names are not. This makes names with dots in them easier for people to understand. E.g. <span class="codeInline">a.b.c</span> is likely a package name, <span class="codeInline">a.B.c</span> is likely a field of class <span class="codeInline">a.B</span>, and <span class="codeInline">a.b.C</span> is likely a class or interface. However, this is only a human convention, not a rule of the language. Many people (though not the designers of the standard libraries) use the further convention of ending interface names with a capital <span class="codeInline">I</span>.</p>
+  <p><strong>End of Extra Information.</strong>
+    <script language="JavaScript" type="text/JavaScript">
+endNote();    
+    </script>
+</div>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <!-- InstanceEndEditable -->
 <p>

@@ -300,7 +300,7 @@ pre {font-family: "Courier New", Courier, mono;
 /* These styles together define syntax definitions. Use with syntax def code snippet*/
 .syntaxDef {
 	background-color: #FFCC66;
-	border: thin solid #FF0000;
+	border: thin solid #0000FF;
 	position: relative;
 	left: 0.5in;
 	right: .5in;

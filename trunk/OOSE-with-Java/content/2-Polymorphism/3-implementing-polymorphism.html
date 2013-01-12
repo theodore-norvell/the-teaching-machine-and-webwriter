@@ -92,7 +92,7 @@ class</span> D  {
  </pre>
 <h2>Dynamic Dispatch</h2>
 <p>The calls <span class="codeInline">a.hello()</span> and <span class="codeInline">a.goodbye()</span> in class <span class="codeInline">D</span> are polymorphic. The compiler can not compile them to call instructions with a constant addresses, nor can it inline them. </p>
-<p>Instead the compiler looks up the address of the subroutine in a table. Which table is used depends on which class the object is a direct instance of. This is called <em>dynamic dispatch</em>. </p>
+<p>Instead, at run time, the computer looks up the address of the subroutine in a table. Which table is used depends on which class the object is a direct instance of. This is called <em>dynamic dispatch</em>. </p>
 <p>The figure below shows <em>one way</em> objects and methods can be represented at run time.</p>
 <p><img src="v-tables.png" width="566" height="521"></p>
 <p>I've assumed that each object is represented by a chunk of memory, of which the first 4 bytes is the address of a structure called a V-table and the subsequent bytes hold the values of the object's fields. We need one V-table for each nonabstract class. The V-table has one entry for each method that the class and its superclasses implement. Each entry has two parts. The first points to an object representing the method's signature. The second is the address of the machine code for the method's implementation.</p>
