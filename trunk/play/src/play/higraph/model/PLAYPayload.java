@@ -6,6 +6,7 @@
 package play.higraph.model;
 
 import higraph.model.taggedInterfaces.TaggedPayload;
+import play.ide.checker.symbolTable.Constness;
 
 /**
  * @author Kai Zhu, Shiwei Han
@@ -19,17 +20,21 @@ public class PLAYPayload implements TaggedPayload<PLAYTag, PLAYPayload> {
 
     /* Field payloadValue is used for different purposes in different tags. */
     private String payloadValue;
+    
+    private Constness constness;
 
-    public PLAYPayload(String name, PLAYTag tag) {
+	public PLAYPayload(String name, PLAYTag tag) {
 	this.name = name;
 	this.tag = tag;
 	this.payloadValue = "";
+	constness = Constness.VAR;
     }
 
     public PLAYPayload(String name, PLAYTag tag, String payloadValue) {
 	this.name = name;
 	this.tag = tag;
 	this.payloadValue = payloadValue;
+	constness = Constness.VAR;
     }
 
     /**
@@ -63,5 +68,14 @@ public class PLAYPayload implements TaggedPayload<PLAYTag, PLAYPayload> {
     public void setPayloadValue(String payloadValue) {
 	this.payloadValue = payloadValue;
     }
+    
+
+    public Constness getConstness() {
+		return constness;
+	}
+
+	public void setConstness(Constness constness) {
+		this.constness = constness;
+	}
 
 }

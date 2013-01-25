@@ -1,0 +1,309 @@
+
+package play.ide.checker;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import play.higraph.model.*;
+import play.ide.checker.symbolTable.Constness;
+import play.ide.checker.symbolTable.Kind;
+import play.ide.checker.symbolTable.SymbolTable;
+import play.ide.checker.type.Type;
+import play.ide.checker.type.typeAtoms.AnyAtom;
+import play.ide.checker.type.typeAtoms.BooleanAtom;
+import play.ide.checker.type.typeAtoms.ClassAtom;
+import play.ide.checker.type.typeAtoms.NullAtom;
+import play.ide.checker.type.typeAtoms.NumberAtom;
+import play.ide.checker.type.typeAtoms.StringAtom;
+import play.ide.checker.type.typeAtoms.UnknownAtom;
+
+/**
+ * 
+ * @author Shiwei Han
+ * 
+ */
+public class Checker {
+	
+	PLAYWholeGraph whole;
+	SymbolTable st;
+	HashMap<PLAYNode,Type> map;
+	
+	public Checker(PLAYWholeGraph whole){
+		this.whole = whole;
+		st = new SymbolTable();
+		map = new HashMap<PLAYNode,Type>();
+	}
+	
+	public void check(){
+		pass0();
+		pass1();
+	}
+	
+	private void pass0(){
+		
+		checkClass0(whole.getTop(0), st, map);
+	}
+	
+	private void pass1(){
+		
+	}
+	
+	private void checkClass0(PLAYNode n, SymbolTable st, HashMap<PLAYNode,Type> map){
+		switch(n.getTag()) {
+		case CLASS:
+			List<PLAYNode> fields = n.getChildren();//get all VARDECL nodes
+			int numOfFields = fields.size();
+			
+			/**check that all the field names are distinct*/
+			java.lang.String[] names = new java.lang.String[numOfFields];
+			System.out.print("Names of all fields: ");
+			for(int i=0;i<numOfFields;i++){
+				names[i] = n.getChild(i).getPayload().getPayloadValue();
+				System.out.print(names[i]+"  ");
+			}
+			System.out.println();
+			boolean repeat = false;
+			for(int i=0;i<names.length;i++){
+				for(int j=i+1;j<names.length;j++){
+					if(names[i].equals(names[j])){
+						System.out.println("Name Repetition Error:");
+						System.out.println("Field " +i+" and Field "
+											+j+" have the \nidentical names in Class "
+											+n.getPayload().getPayloadValue());
+						repeat = true;
+					}
+				}
+			}
+			
+			if(repeat)
+				break;
+			else
+				System.out.println("No Name Repetitions Detected.");
+			
+			/**Done--check that all the field names are distinct*/
+
+			st.pushFrame();
+
+			for(PLAYNode pn:fields){
+				st.put(pn.getPayload().getPayloadValue(), Kind.THIS, 
+						pn.getPayload().getConstness(), checkType0(pn.getChild(0)));
+				map.put(pn, checkType0(pn.getChild(0)));
+			}
+
+			for(PLAYNode pn:fields){
+				if(map.get(pn).isUnknown()){
+					System.out.println("YES");
+					checkField0(pn, st, map);
+				}	
+			}
+			st.popFrame();
+
+			System.out.println("Map content:");
+			for(PLAYNode pn:fields){
+				System.out.print(pn.getPayload().getPayloadValue()+"\t");
+				System.out.println(map.get(pn));	
+			}
+		
+			break;
+			
+		default:
+			System.out.println("Error: not a class");
+			break;
+		}
+	}
+
+	private void checkField0(PLAYNode pn, SymbolTable st,
+			HashMap<PLAYNode, Type> map) {
+		// TODO Auto-generated method stub
+		Type t = checkVar0(pn, st, map);
+		map.put(pn, t);
+	}
+
+	private Type checkVar0(PLAYNode pn, SymbolTable st,
+			HashMap<PLAYNode, Type> map) {
+		// TODO Auto-generated method stub
+		if(pn.getChild(0).getTag().equals(PLAYTag.NOTYPE)){
+			return checkExp0(pn.getChild(1).getChild(0), st, map);
+		}else{
+			return checkType0(pn.getChild(0));
+		}	
+	}
+
+	private Type checkExp0(PLAYNode pn, SymbolTable st,
+			HashMap<PLAYNode, Type> map) {
+		// TODO Auto-generated method stub
+		switch(pn.getTag()){
+		case NUMBERLITERAL:
+			return new Type(NumberAtom.getInstance());
+		case TRUE:
+		case FALSE:
+			return new Type(BooleanAtom.getInstance());
+		case STRINGLITERAL:
+			return new Type(StringAtom.getInstance());
+		case NULL:
+			return new Type(NullAtom.getInstance());
+		case THISVAR:
+			return st.get(pn.getPayload().getPayloadValue(), Kind.THIS);
+		case LOCALVAR:
+			return st.get(pn.getPayload().getPayloadValue(), Kind.LOCAL);
+		case WORLDVAR:
+			return st.get(pn.getPayload().getPayloadValue(), Kind.WORLD);
+		case DOT:
+			return new Type(UnknownAtom.getInstance());
+		case THIS:
+			PLAYNode n = pn;
+			while(!n.getTag().equals(PLAYTag.CLASS)){
+				if(!whole.isTop(n))
+					n=n.getParent();
+				else{
+					System.out.println("Error: Cannot find THIS Class");
+					break;
+				}
+			}
+			return new Type(new ClassAtom(n.getPayload().getPayloadValue()));		
+		case CALLCLOSURE:
+		case CALLWORLD:
+			return new Type(UnknownAtom.getInstance());
+		case NEW:
+			String i2 = pn.getChild(0).getPayload().getPayloadValue();
+			return new Type(new ClassAtom(i2));
+		case METHOD:
+			List<Type> types = new ArrayList<Type>();
+			List<Constness> cs = new ArrayList<Constness>();
+			PLAYNode param = pn.getChild(0);
+			PLAYNode ot = pn.getChild(1);
+			PLAYNode seq = pn.getChild(2);
+			
+			types.add(new Type(UnknownAtom.getInstance()));//temporary value
+			cs.add(Constness.VAR);//temporary value
+			
+			for(int i=1;i<param.getChildren().size();i++){
+				PLAYNode n2 = param.getChild(i);
+				Type t = checkVar0(n2, st, map);
+				if(t.isUnknown())
+					return new Type(UnknownAtom.getInstance());
+				else{
+					types.add(t);
+					cs.add(n2.getPayload().getConstness());
+				}
+			}
+			
+			if(!ot.getTag().equals(PLAYTag.NOTYPE)){
+				types.set(0, checkType0(ot));
+			}else{
+				st.pushFrame();
+				for(int i=0;i<types.size();i++){
+					st.put( param.getChild(i).getPayload().getPayloadValue(), 
+							Kind.LOCAL, cs.get(i), types.get(i) );
+				}		
+				types.set(0, checkSeq0(seq,st,map) );
+				st.popFrame();
+			}
+			if(types.get(0).isUnknown())
+				return new Type(UnknownAtom.getInstance());
+			else
+				return method(types);
+		case SEQ:
+			return checkSeq0(pn,st,map);
+		case IF:
+			Type t0=checkSeq0(pn.getChild(1),st,map);
+			Type t1=checkSeq0(pn.getChild(2),st,map);
+			Type t = t0.merge(t1);
+			t.canonicalize();
+			return t;
+		case WHILE:
+		case ASSIGN:	
+			return new Type(NullAtom.getInstance());
+		case EXPPLACEHOLDER:
+			return new Type(UnknownAtom.getInstance());		
+
+		default:
+			return null;
+		}
+		
+	}
+	
+	//not sure yet
+	private Type method(List<Type> types) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private Type checkSeq0(PLAYNode seq, SymbolTable st2,
+			HashMap<PLAYNode, Type> map2) {
+		// TODO Auto-generated method stub
+		if(seq.getChildren().size()==0)
+			return new Type(NullAtom.getInstance());
+		st.pushFrame();
+		int c=0;
+		Type t=null;
+		for(PLAYNode pn:seq.getChildren()){
+			switch(pn.getTag()){
+			case VARDECL:
+				t = checkVar0(pn,st,map);
+				Constness co = pn.getPayload().getConstness();
+				st.pushFrame();
+				c++;
+				st.put(pn.getPayload().getPayloadValue(), Kind.LOCAL, co, t);
+				break;
+			default:
+				t = checkExp0(pn,st,map);
+				break;
+			}
+		}
+		for(int i=0;i<c;i++){
+			st.popFrame();
+		}
+		return t;
+	}
+
+	/**
+	 * 
+	 * @param n a PLAYTag node
+	 * @return the type corresponding to this tag
+	 */
+	private Type checkType0(PLAYNode n) {
+		
+		Type t = new Type();
+		
+		switch(n.getTag()){
+		case NOTYPE:
+			t.addTypeAtom(UnknownAtom.getInstance());
+			break;
+		case BOOLEANTYPE:
+			t.addTypeAtom(BooleanAtom.getInstance());
+			break;
+		case STRINGTYPE:
+			t.addTypeAtom(StringAtom.getInstance());
+			break;
+		case NUMBERTYPE:
+			t.addTypeAtom(NumberAtom.getInstance());
+			break;
+		case ANYTYPE:
+			t.addTypeAtom(AnyAtom.getInstance());
+			break;
+		case NULLTYPE:
+			t.addTypeAtom(NullAtom.getInstance());
+			break;
+		case ALTTYPE:
+			List<PLAYNode> nodes = n.getChildren();
+			for(PLAYNode pn: nodes){
+				Type tempT = checkType0(pn);
+				t=tempT.merge(t);
+			}
+			t.canonicalize();	
+			break;
+			
+		//not sure yet
+		case CLASSTYPE:
+			t.addTypeAtom(new ClassAtom(n.getPayload().getPayloadValue()));
+			break;
+		
+		default:
+			t=null;
+			break;
+		}
+		return t;
+		
+	}
+}

@@ -128,10 +128,10 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		return false;
 
 	    for (PLAYTag pt : seq) {
-		if (isType(pt))
-		    continue;
-		else
-		    return false;
+			if (isType(pt))
+			    continue;
+			else
+			    return false;
 	    }
 	    return true;
 
@@ -912,18 +912,13 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if (seq.size() < 2)
-		return false;
+	    if (seq.size() < 3||!seq.get(0).equals(PARAMS))
+	    	return false;
 
-	    for (int i = 0; i < seq.size() - 2; i++) {
-		if (seq.get(i).equals(VARDECL)) {
-		    continue;
-		} else
-		    return false;
-	    }
-
-	    return (isType(seq.get(seq.size() - 2)) || seq.get(seq.size() - 2)
-		    .equals(NOTYPE)) && seq.get(seq.size() - 1).equals(SEQ);
+	    return ( isType(seq.get(seq.size() - 2)) 
+	    		 || seq.get(seq.size() - 2) .equals(NOTYPE) 
+	    		) //OptType
+	    		&& seq.get(seq.size() - 1).equals(SEQ);//Seq
 
 	}
 
@@ -945,6 +940,39 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	    return "METHOD";
 	}
 
+    },
+    
+    PARAMS {
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+		
+		if(seq.size()>0){
+			for(PLAYTag t:seq){
+				if(!t.equals(VARDECL))
+					return false;
+			}
+		}
+		return true;
+
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    return new ArrayList<PLAYTag>();
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("PARAMS", PARAMS);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "PARAMS";
+	}
     };
 
     public boolean isExp(PLAYTag pt) {
