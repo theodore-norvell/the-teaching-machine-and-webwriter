@@ -150,7 +150,7 @@
                 let t be the type node for the declaration
                 let T be checkType0( t )
                 st.put( n, this, c, T) 
-                add (fd_i,t) to the map
+                add (fd_i, (T,c) ) to the map
             for each fd_i in order of declaration
                if fd_i is mapped to  {&perp;},
                    checkField0( fd0, st, map )
@@ -216,7 +216,7 @@ checkField0( n : Node, st : SymTab, map : Map )
 
 checkVar0( vardecl[i, c]( ot, seq ) : Node, st : SymTab, map : Map )
     if ot is NoType then
-        T := checkExp0( seq , st, map )
+        T := checkSeq0( seq , st, map )
     else
         T := checkType0( ot )
     return (c,T)
@@ -231,6 +231,7 @@ checkType0( n : Node )
     case nullType: return {Null}
     case altType(t[0], t[1], ... t[n]) :
          for i : T[i] := checkType( t[i] )
-         return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]</pre>
+         return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]
+    case classType[i]: return ClassType[i]</pre>
 </body>
 </html>
