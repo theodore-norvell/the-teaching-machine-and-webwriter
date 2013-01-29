@@ -13,9 +13,9 @@ public class NullAtom extends AnyAtom {
 	}
 	
 	@Override
-	public boolean canonicalOver(TypeAtom t) {
+	public boolean canonicalOver(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(t.equals(NullAtom.getInstance())){
+		if(ta.equals(NullAtom.getInstance())){
 			return true;
 		}else
 			return false;		

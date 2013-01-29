@@ -150,7 +150,7 @@
                 let t be the type node for the declaration
                 let T be checkType0( t )
                 st.put( n, this, c, T) 
-                add (fd_i, (T,c) ) to the map
+                add (fd_i, (c,T) ) to the map
             for each fd_i in order of declaration
                if fd_i is mapped to  {&perp;},
                    checkField0( fd0, st, map )
@@ -212,7 +212,8 @@ checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
 
 checkField0( n : Node, st : SymTab, map : Map )
     (c,T) := checkVar0( n, st, map )
-    change the value of n in the map to (T, c)
+    change the value of n in the map to (c,T)
+    update st
 
 checkVar0( vardecl[i, c]( ot, seq ) : Node, st : SymTab, map : Map )
     if ot is NoType then

@@ -2,6 +2,8 @@ package play.ide.checker.type;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import play.ide.checker.type.typeAtoms.BooleanAtom;
 import play.ide.checker.type.typeAtoms.TypeAtom;
 import play.ide.checker.type.typeAtoms.UnknownAtom;
 
@@ -65,6 +67,10 @@ public class Type {
 		return atoms.size();
 	}
 	
+	public List<TypeAtom> getAtomsList(){
+		return atoms;
+	}
+	
 	@Override
 	public boolean equals(Object o){
 		Type t = (Type)o;
@@ -81,9 +87,36 @@ public class Type {
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
 		for(TypeAtom ta:atoms){
-			sb.append(ta+"  ");
+			sb.append(ta+"+");
 		}
+		sb.deleteCharAt(sb.length()-1);
 		return sb.toString();
 	}
+	
+	public boolean canonicalOver(Type t) {
+		// TODO Auto-generated method stub
+		boolean[] flags = new boolean[t.getAtomsAmount()];//all false
+		
+		for(int i=0;i<t.getAtomsAmount();i++){
+			TypeAtom ta=t.atoms.get(i);
+			for(TypeAtom ta2:this.atoms){
+				if(ta2.canonicalOver(ta)){
+					flags[i]=true;
+				}
+			}
+		}
+		
+		int i=0;
+		while(i<flags.length){
+			if(!flags[i])
+				return false;
+			i++;
+		}
+		
+		return true;
+		
+	}
+	
+	
 	
 }

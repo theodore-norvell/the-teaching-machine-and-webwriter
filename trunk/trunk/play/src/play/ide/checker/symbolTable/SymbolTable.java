@@ -14,7 +14,7 @@ import play.ide.checker.type.typeAtoms.UnknownAtom;
  */
 public class SymbolTable {
 
-	public List<HashMap<FieldKey,FieldValue>> frames;
+	private List<HashMap<FieldKey,FieldValue>> frames;
 	
 	
 	public SymbolTable() {
@@ -47,45 +47,10 @@ public class SymbolTable {
 		frames.remove(frames.size()-1);
 	}
 
-	public class FieldKey{
-		String i;
-		Kind k;
-		
-		FieldKey(String i, Kind k){
-			this.i=i;
-			this.k=k;
-		}
-		
-		@Override
-		public int hashCode(){
-			return i.hashCode()+k.hashCode();
-		}
-		
-		@Override
-		public boolean equals(Object o){
-			FieldKey fk = (FieldKey)o;
-			if(i.equals(fk.i)&&k.equals(fk.k))
-				return true;
-			else 
-				return false;
-
-			/*if(this.hashCode()==fk.hashCode())
-				return true;
-			else 
-				return false;*/
-		}
-		
+	public boolean topFrameContains(String i, Kind k){
+		int top=frames.size()-1;
+		FieldKey fk=new FieldKey(i,k);
+		return frames.get(top).containsKey(fk);
 	}
 	
-	public class FieldValue {
-		Constness c;
-		
-		Type t;
-		
-		FieldValue(Constness c, Type t){
-			this.c=c;
-			this.t=t;
-		}
-
-	}
 }
