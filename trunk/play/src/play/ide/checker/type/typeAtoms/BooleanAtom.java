@@ -13,9 +13,9 @@ public class BooleanAtom extends StringAtom {
 	}
 	
 	@Override
-	public boolean canonicalOver(TypeAtom t) {
+	public boolean canonicalOver(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(t.equals(BooleanAtom.getInstance())){
+		if(ta.equals(BooleanAtom.getInstance())){
 			return true;
 		}else
 			return false;		

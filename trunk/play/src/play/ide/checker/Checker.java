@@ -6,12 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import play.higraph.model.*;
 import play.ide.checker.symbolTable.Constness;
+import play.ide.checker.symbolTable.FieldValue;
 import play.ide.checker.symbolTable.Kind;
 import play.ide.checker.symbolTable.SymbolTable;
 import play.ide.checker.type.Type;
 import play.ide.checker.type.typeAtoms.AnyAtom;
 import play.ide.checker.type.typeAtoms.BooleanAtom;
 import play.ide.checker.type.typeAtoms.ClassAtom;
+import play.ide.checker.type.typeAtoms.MethodAtom;
 import play.ide.checker.type.typeAtoms.NullAtom;
 import play.ide.checker.type.typeAtoms.NumberAtom;
 import play.ide.checker.type.typeAtoms.StringAtom;
@@ -24,14 +26,16 @@ import play.ide.checker.type.typeAtoms.UnknownAtom;
  */
 public class Checker {
 	
+	
+	
 	PLAYWholeGraph whole;
 	SymbolTable st;
-	HashMap<PLAYNode,Type> map;
+	HashMap<PLAYNode,FieldValue> map;
 	
 	public Checker(PLAYWholeGraph whole){
 		this.whole = whole;
 		st = new SymbolTable();
-		map = new HashMap<PLAYNode,Type>();
+		map = new HashMap<PLAYNode,FieldValue>();
 	}
 	
 	public void check(){
@@ -48,7 +52,8 @@ public class Checker {
 		
 	}
 	
-	private void checkClass0(PLAYNode n, SymbolTable st, HashMap<PLAYNode,Type> map){
+	private void checkClass0(PLAYNode n, SymbolTable st, HashMap<PLAYNode,FieldValue> map){
+
 		switch(n.getTag()) {
 		case CLASS:
 			List<PLAYNode> fields = n.getChildren();//get all VARDECL nodes
@@ -70,13 +75,13 @@ public class Checker {
 						System.out.println("Field " +i+" and Field "
 											+j+" have the \nidentical names in Class "
 											+n.getPayload().getPayloadValue());
+						
 						repeat = true;
 					}
 				}
 			}
-			
 			if(repeat)
-				break;
+				return;
 			else
 				System.out.println("No Name Repetitions Detected.");
 			
@@ -85,14 +90,16 @@ public class Checker {
 			st.pushFrame();
 
 			for(PLAYNode pn:fields){
+				FieldValue fv = new FieldValue( pn.getPayload().getConstness(),
+												checkType0(pn.getChild(0))	);
 				st.put(pn.getPayload().getPayloadValue(), Kind.THIS, 
-						pn.getPayload().getConstness(), checkType0(pn.getChild(0)));
-				map.put(pn, checkType0(pn.getChild(0)));
+						fv.getConstness(), fv.getType());
+				
+				map.put(pn, fv);
 			}
 
 			for(PLAYNode pn:fields){
-				if(map.get(pn).isUnknown()){
-					System.out.println("YES");
+				if(map.get(pn).getType().isUnknown()){
 					checkField0(pn, st, map);
 				}	
 			}
@@ -101,39 +108,52 @@ public class Checker {
 			System.out.println("Map content:");
 			for(PLAYNode pn:fields){
 				System.out.print(pn.getPayload().getPayloadValue()+"\t");
-				System.out.println(map.get(pn));	
+				System.out.print(map.get(pn).getConstness()+"\t");
+				System.out.println(map.get(pn).getType());	
 			}
 		
 			break;
 			
 		default:
 			System.out.println("Error: not a class");
-			break;
+			return;
 		}
 	}
 
 	private void checkField0(PLAYNode pn, SymbolTable st,
-			HashMap<PLAYNode, Type> map) {
+			HashMap<PLAYNode, FieldValue> map) {
 		// TODO Auto-generated method stub
-		Type t = checkVar0(pn, st, map);
-		map.put(pn, t);
+		FieldValue fv = checkVar0(pn, st, map);
+		
+		map.put(pn, fv);
+		//not sure
+		st.put(pn.getPayload().getPayloadValue(), Kind.THIS, fv.getConstness(), fv.getType());
 	}
 
-	private Type checkVar0(PLAYNode pn, SymbolTable st,
-			HashMap<PLAYNode, Type> map) {
-		// TODO Auto-generated method stub
+	private FieldValue checkVar0(PLAYNode pn, SymbolTable st,
+			HashMap<PLAYNode, FieldValue> map) {
+		Type t;
 		if(pn.getChild(0).getTag().equals(PLAYTag.NOTYPE)){
-			return checkExp0(pn.getChild(1).getChild(0), st, map);
+			t = checkExp0(pn.getChild(1).getChild(0), st, map);	
 		}else{
-			return checkType0(pn.getChild(0));
-		}	
+			t = checkType0(pn.getChild(0));
+		}
+		return new FieldValue(pn.getPayload().getConstness(),t);
 	}
 
 	private Type checkExp0(PLAYNode pn, SymbolTable st,
-			HashMap<PLAYNode, Type> map) {
+			HashMap<PLAYNode, FieldValue> map) {
 		// TODO Auto-generated method stub
+		String payloadStr=pn.getPayload().getPayloadValue();
 		switch(pn.getTag()){
 		case NUMBERLITERAL:
+			try {
+				Double.parseDouble(payloadStr);
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error: Value in NUMBERLITERAL cannot be converted.");
+			}
+			
 			return new Type(NumberAtom.getInstance());
 		case TRUE:
 		case FALSE:
@@ -142,12 +162,16 @@ public class Checker {
 			return new Type(StringAtom.getInstance());
 		case NULL:
 			return new Type(NullAtom.getInstance());
-		case THISVAR:
-			return st.get(pn.getPayload().getPayloadValue(), Kind.THIS);
+		case THISVAR:		
+			if(!st.topFrameContains(payloadStr, Kind.THIS)){
+				System.out.println("Error: Field "+payloadStr
+									+" not found!");
+			}
+			return st.get(payloadStr, Kind.THIS);
 		case LOCALVAR:
-			return st.get(pn.getPayload().getPayloadValue(), Kind.LOCAL);
+			return st.get(payloadStr, Kind.LOCAL);
 		case WORLDVAR:
-			return st.get(pn.getPayload().getPayloadValue(), Kind.WORLD);
+			return st.get(payloadStr, Kind.WORLD);
 		case DOT:
 			return new Type(UnknownAtom.getInstance());
 		case THIS:
@@ -158,8 +182,10 @@ public class Checker {
 				else{
 					System.out.println("Error: Cannot find THIS Class");
 					break;
+					
 				}
 			}
+			
 			return new Type(new ClassAtom(n.getPayload().getPayloadValue()));		
 		case CALLCLOSURE:
 		case CALLWORLD:
@@ -168,41 +194,51 @@ public class Checker {
 			String i2 = pn.getChild(0).getPayload().getPayloadValue();
 			return new Type(new ClassAtom(i2));
 		case METHOD:
-			List<Type> types = new ArrayList<Type>();
-			List<Constness> cs = new ArrayList<Constness>();
+			List<FieldValue> fvs = new ArrayList<FieldValue>();
+			
 			PLAYNode param = pn.getChild(0);
 			PLAYNode ot = pn.getChild(1);
 			PLAYNode seq = pn.getChild(2);
 			
-			types.add(new Type(UnknownAtom.getInstance()));//temporary value
-			cs.add(Constness.VAR);//temporary value
+			//temporary type value at 0
+			fvs.add(new FieldValue(param.getChild(0).getPayload().getConstness(),
+									checkType0(param.getChild(0).getChild(0))
+									));
 			
 			for(int i=1;i<param.getChildren().size();i++){
 				PLAYNode n2 = param.getChild(i);
-				Type t = checkVar0(n2, st, map);
-				if(t.isUnknown())
+				FieldValue fv = checkVar0(n2, st, map);
+				if(fv.getType().isUnknown())
 					return new Type(UnknownAtom.getInstance());
 				else{
-					types.add(t);
-					cs.add(n2.getPayload().getConstness());
+					fvs.add(new FieldValue(n2.getPayload().getConstness(),
+											fv.getType()));
 				}
 			}
 			
 			if(!ot.getTag().equals(PLAYTag.NOTYPE)){
-				types.set(0, checkType0(ot));
+				fvs.set(0, new FieldValue(fvs.get(0).getConstness(),checkType0(ot)));
 			}else{
 				st.pushFrame();
-				for(int i=0;i<types.size();i++){
+				for(int i=0;i<fvs.size();i++){
 					st.put( param.getChild(i).getPayload().getPayloadValue(), 
-							Kind.LOCAL, cs.get(i), types.get(i) );
-				}		
-				types.set(0, checkSeq0(seq,st,map) );
+							Kind.LOCAL, fvs.get(i).getConstness(), fvs.get(i).getType()
+							);
+				}
+				fvs.set(0, new FieldValue(fvs.get(0).getConstness(),
+											checkSeq0(seq,st,map) ));
 				st.popFrame();
 			}
-			if(types.get(0).isUnknown())
+			if(fvs.get(0).getType().isUnknown())
 				return new Type(UnknownAtom.getInstance());
-			else
-				return method(types);
+			else{
+				List<Type> types = new ArrayList<Type>();
+				for(int i=0;i<fvs.size();i++){
+					types.add(fvs.get(i).getType());
+				}
+				return new Type(new MethodAtom(types));
+			}
+				
 		case SEQ:
 			return checkSeq0(pn,st,map);
 		case IF:
@@ -222,39 +258,33 @@ public class Checker {
 		}
 		
 	}
-	
-	//not sure yet
-	private Type method(List<Type> types) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	private Type checkSeq0(PLAYNode seq, SymbolTable st2,
-			HashMap<PLAYNode, Type> map2) {
+	private Type checkSeq0(PLAYNode seq, SymbolTable st,
+			HashMap<PLAYNode, FieldValue> map) {
 		// TODO Auto-generated method stub
 		if(seq.getChildren().size()==0)
 			return new Type(NullAtom.getInstance());
 		st.pushFrame();
 		int c=0;
-		Type t=null;
+		FieldValue fv=null;
 		for(PLAYNode pn:seq.getChildren()){
 			switch(pn.getTag()){
 			case VARDECL:
-				t = checkVar0(pn,st,map);
-				Constness co = pn.getPayload().getConstness();
+				fv = checkVar0(pn,st,map);
 				st.pushFrame();
 				c++;
-				st.put(pn.getPayload().getPayloadValue(), Kind.LOCAL, co, t);
+				st.put(pn.getPayload().getPayloadValue(), Kind.LOCAL, 
+						fv.getConstness(), fv.getType());
 				break;
 			default:
-				t = checkExp0(pn,st,map);
+				fv = new FieldValue(Constness.VAR,checkExp0(pn,st,map));
 				break;
 			}
 		}
 		for(int i=0;i<c;i++){
 			st.popFrame();
 		}
-		return t;
+		return fv.getType();
 	}
 
 	/**
@@ -294,7 +324,6 @@ public class Checker {
 			t.canonicalize();	
 			break;
 			
-		//not sure yet
 		case CLASSTYPE:
 			t.addTypeAtom(new ClassAtom(n.getPayload().getPayloadValue()));
 			break;

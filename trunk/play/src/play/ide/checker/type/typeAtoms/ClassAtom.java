@@ -22,9 +22,9 @@ public class ClassAtom extends AnyAtom {
 	}
 	
 	@Override
-	public boolean canonicalOver(TypeAtom t) {
+	public boolean canonicalOver(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(t.equals(ClassAtom.getInstance())){
+		if(ta.equals(ClassAtom.getInstance())){
 			return true;
 		}else
 			return false;		
