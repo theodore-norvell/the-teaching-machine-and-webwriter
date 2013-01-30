@@ -25,9 +25,7 @@ import play.ide.checker.type.typeAtoms.UnknownAtom;
  * 
  */
 public class Checker {
-	
-	
-	
+
 	PLAYWholeGraph whole;
 	SymbolTable st;
 	HashMap<PLAYNode,FieldValue> map;
@@ -147,12 +145,12 @@ public class Checker {
 		String payloadStr=pn.getPayload().getPayloadValue();
 		switch(pn.getTag()){
 		case NUMBERLITERAL:
-			try {
+			/*try {
 				Double.parseDouble(payloadStr);
 			} catch (NumberFormatException e) {
 				// TODO Auto-generated catch block
 				System.out.println("Error: Value in NUMBERLITERAL cannot be converted.");
-			}
+			}*/
 			
 			return new Type(NumberAtom.getInstance());
 		case TRUE:
@@ -163,10 +161,6 @@ public class Checker {
 		case NULL:
 			return new Type(NullAtom.getInstance());
 		case THISVAR:		
-			if(!st.topFrameContains(payloadStr, Kind.THIS)){
-				System.out.println("Error: Field "+payloadStr
-									+" not found!");
-			}
 			return st.get(payloadStr, Kind.THIS);
 		case LOCALVAR:
 			return st.get(payloadStr, Kind.LOCAL);
@@ -179,11 +173,11 @@ public class Checker {
 			while(!n.getTag().equals(PLAYTag.CLASS)){
 				if(!whole.isTop(n))
 					n=n.getParent();
-				else{
+				/*else{
 					System.out.println("Error: Cannot find THIS Class");
 					break;
 					
-				}
+				}*/
 			}
 			
 			return new Type(new ClassAtom(n.getPayload().getPayloadValue()));		

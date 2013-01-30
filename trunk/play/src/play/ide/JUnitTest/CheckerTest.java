@@ -263,56 +263,6 @@ public class CheckerTest {
 		Checker checker = new Checker(whole);
 		checker.check();
 		System.out.println("====================================");
-	}
+	}	
 	
-	@Test
-	public void testCheckClass10() {
-		
-		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
-		whole.makeRootNode(new PLAYPayload("Class10", PLAYTag.CLASS, "Class10"));
-		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
-		
-		//VARDECL x
-		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("abc");
-		
-		System.out.println("Test Sample: Class10   "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
-	}
-	
-	@Test
-	public void testCheckClass11() {
-		
-		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
-		whole.makeRootNode(new PLAYPayload("Class11", PLAYTag.CLASS, "Class11"));
-		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
-		
-		//VARDECL x
-		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.STRINGTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
-		
-		//VARDECL y
-		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
-		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("x");
-		
-		System.out.println("Test Sample: Class11    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
-	}
 }
