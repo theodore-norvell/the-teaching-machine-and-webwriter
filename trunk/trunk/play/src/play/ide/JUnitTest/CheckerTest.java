@@ -35,13 +35,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
 		
-		System.out.println("Test Sample: Class1    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -59,13 +53,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
 		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
 		
-		System.out.println("Test Sample: Class2    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -83,13 +71,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
 		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
 		
-		System.out.println("Test Sample: Class3    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -115,12 +97,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
 						
 		
-		System.out.println("Test Sample: Class4    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	
 	}
 	
@@ -137,13 +114,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
 		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
 		
-		System.out.println("Test Sample: Class5    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -167,13 +138,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
 		
-		System.out.println("Test Sample: Class6    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -197,13 +162,7 @@ public class CheckerTest {
 		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("x");
 		
-		System.out.println("Test Sample: Class7    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -222,18 +181,12 @@ public class CheckerTest {
 		//VARDECL y
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.STRINGTYPE);
 		whole.getTop(0).getChild(1).getPayload().setConstness(Constness.CON);
 		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("z");
 		
-		System.out.println("Test Sample: Class8    "+"Total nodes:"+whole.getNodes().size());
-
-		System.out.println("------------------------------------");
-		
-		Checker checker = new Checker(whole);
-		checker.check();
-		System.out.println("====================================");
+		checkAndPrint(whole);
 	}
 	
 	@Test
@@ -256,13 +209,102 @@ public class CheckerTest {
 		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
 		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("x");
 		
-		System.out.println("Test Sample: Class9    "+"Total nodes:"+whole.getNodes().size());
+		checkAndPrint(whole);
+	}	
+	
+	@Test
+	public void testCheckClass10() {
+		
+		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
+		whole.makeRootNode(new PLAYPayload("Class10", PLAYTag.CLASS, "Class10"));
+		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
+		
+		//VARDECL x
+		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
+		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NUMBERTYPE);
+		
+		checkAndPrint(whole);
+	}	
+	
+	@Test
+	public void testCheckClass11() {
+		
+		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
+		whole.makeRootNode(new PLAYPayload("Class11", PLAYTag.CLASS, "Class11"));
+		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
+		
+		//VARDECL x
+		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
+		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.STRINGTYPE);
+		
+		checkAndPrint(whole);
+	}	
+	
+	@Test
+	public void testCheckClass12() {
+		
+		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
+		whole.makeRootNode(new PLAYPayload("Class12", PLAYTag.CLASS, "Class12"));
+		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
+		
+		//VARDECL x
+		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
+		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).getChild(0).getPayload().setPayloadValue("y");
+		checkAndPrint(whole);
+	}
+	
+	
+	
+	@Test
+	public void testCheckClass13() {
+		
+		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
+		whole.makeRootNode(new PLAYPayload("Class13", PLAYTag.CLASS, "Class13"));
+		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
+		
+		//VARDECL x
+		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
+		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NOTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).getChild(0).getPayload().setPayloadValue("y");
+		checkAndPrint(whole);
+	}
+	
+	private void checkAndPrint(PLAYWholeGraph whole){
+		System.out.println("Test Sample: "+whole.getTop(0).getPayload().getPayloadValue()+"    "+"Total nodes:"+whole.getNodes().size());
 
-		System.out.println("------------------------------------");
+		System.out.println("--------------------------------------");
 		
 		Checker checker = new Checker(whole);
 		checker.check();
-		System.out.println("====================================");
-	}	
+		System.out.println("======================================");
+	}
+	
 	
 }
