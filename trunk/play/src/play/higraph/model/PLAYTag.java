@@ -924,7 +924,11 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
-	    return new ArrayList<PLAYTag>();
+		List<PLAYTag> l = new ArrayList<PLAYTag>();
+		l.add(PARAMS);
+		l.add(NOTYPE);
+		l.add(SEQ);
+	    return l;
 	}
 
 	@Override
