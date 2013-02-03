@@ -73,11 +73,13 @@
    Exp --&gt; <strong>if(</strong> Exp, <strong></strong>Seq,<strong></strong> Seq)<strong></strong>
    Exp --&gt; <strong>while(</strong> Exp, Seq )<strong></strong>
 
-   VarDecl --&gt; vardecl[Id,c]( OptType, Seq )
+   VarDecl --&gt; vardecl[Id,c]( OptType, OpExp )
 (Id is an identifier and c is either &quot;con&quot; or &quot;var&quot;)
 
-[eliminated condelc nodes]
-</pre>
+
+[changed Seq to OptExp]
+
+OptExp --&gt; noExp | Exp</pre>
 <p>OptTypes are optional types. If the type of a VarDecl is noType, then the checker will try to fill in the type.</p>
 <pre>   OptType --&gt; noType | Type
 </pre>
@@ -121,7 +123,7 @@
 <p>For two method types with the same number of parameters,</p>
 <p class="centre">method(T0, T1, ..., Tn) &lt;: method(S0, S1, ..., Sn)</p>
 <p class="centre">iff</p>
-<p class="centre">T0&lt;:S0 and T1 &lt;: S1 and ... and Tn &lt;: Sn .</p>
+<p class="centre">T0&lt;:S0 and S1 &lt;: T1 and ... and Sn &lt;: Tn .</p>
 <p>Types are finite sets of type atoms with the property that the set is canonical. A canonical set does not contain two distinct type atoms a and b such that a is a subtype of b. That is a canonical type is a set of type atoms obeying the law canonicalize(S)=S where canonicalize is a function that repeatedly replaces each pair of atoms a and b where  a is a subtype of b with just b. For example</p>
 <ul>
   <li> canonicalize( { Number, String, Boolean } ) = {String}</li>
@@ -158,6 +160,7 @@
 
 checkExp0( n : Node, st : SymTab, map : Map ) is
     match n 
+    case noExp: return   {&perp;}
     case numberLiteral: return {number}
     case true: return {boolean}
     case false: return {boolean}
@@ -171,16 +174,15 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
     case callClosure( ... ): return  {&perp;}
     case callWorld( ... ):  return  {&perp;}
     case new( ct, ... ): return the type assocciated with ct
-    case method( param[0], ..., param[n], ot, seq ) {
-        run checkVar0 on the parameters to get (c[1],T[1]), (c[2],T[2]), ..., (c[n],T[n])
-        if any of these are  {&perp;} , return {&perp;}
-        if ot is a type, run checkType0( ot ) to get T[0]
+    case method( param[0], .. param[n], ot, seq ) {
+        run checkVar0 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
+       if any of these are  {&perp;} , return {&perp;}
+        if ot is a type, run checkType0( ot ) to get T
         else st.pushFrame()
-               for each i, st.put( param[i].name, local, c[i], T[i] )
-               run checkSeq0( seq, st, map ) to get T[0]
+               for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
+               run checkSeq0( seq, st, map ) to get T
                st.pop()
-        if T[0] is {&perp;} , return {&perp;}
-        else return method( T0, T1, ..., Tn )
+        return method( T, T0, T1, ..., Tn )
     case seq( ... )
         return checkSeq0( n, st, map )
     case if( e, s0, s1 )
@@ -196,7 +198,6 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
         
 checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
     if n=0 return {Null}
-    st.pushFrame() ;
     c := 0
     for each i
         match m[i]
@@ -215,9 +216,9 @@ checkField0( n : Node, st : SymTab, map : Map )
     change the value of n in the map to (c,T)
     update st
 
-checkVar0( vardecl[i, c]( ot, seq ) : Node, st : SymTab, map : Map )
+checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
     if ot is NoType then
-        T := checkSeq0( seq , st, map )
+        T := checkExp0( oe , st, map )
     else
         T := checkType0( ot )
     return (c,T)
