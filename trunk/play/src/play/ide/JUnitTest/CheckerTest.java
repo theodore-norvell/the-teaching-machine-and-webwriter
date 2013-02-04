@@ -24,16 +24,16 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		//VARDECL y
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
 		whole.getTop(0).getChild(1).getPayload().setConstness(Constness.CON);
 		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.STRINGTYPE);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
+		whole.getTop(0).getChild(1).getChild(1).replace( PLAYTag.STRINGLITERAL);
+		whole.getTop(0).getChild(1).getChild(1).getPayload().setPayloadValue("hello");
 		
 		checkAndPrint(whole);
 	}
@@ -50,8 +50,8 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.ALTTYPE);
 		whole.getTop(0).getChild(0).getChild(0).insertChild(0, PLAYTag.NUMBERTYPE);
 		whole.getTop(0).getChild(0).getChild(0).insertChild(1, PLAYTag.STRINGTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		checkAndPrint(whole);
 	}
@@ -68,8 +68,8 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.ALTTYPE);
 		whole.getTop(0).getChild(0).getChild(0).insertChild(0, PLAYTag.NUMBERTYPE);
 		whole.getTop(0).getChild(0).getChild(0).insertChild(1, PLAYTag.BOOLEANTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace(PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		checkAndPrint(whole);
 	}
@@ -85,16 +85,16 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.CLASSTYPE);
 		whole.getTop(0).getChild(0).getChild(0).getPayload().setPayloadValue("MyClass");
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		//VARDECL y
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
 		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.CLASSTYPE);
 		whole.getTop(0).getChild(1).getChild(0).getPayload().setPayloadValue("My2ndClass");
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
+		whole.getTop(0).getChild(1).getChild(1).replace( PLAYTag.STRINGLITERAL);
+		whole.getTop(0).getChild(1).getChild(1).getPayload().setPayloadValue("hello");
 						
 		
 		checkAndPrint(whole);
@@ -110,9 +110,8 @@ public class CheckerTest {
 		
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		checkAndPrint(whole);
 	}
@@ -127,16 +126,16 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		//VARDECL X
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(1).getPayload().setConstness(Constness.CON);
 		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.STRINGTYPE);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.STRINGLITERAL);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("hello");
+		whole.getTop(0).getChild(1).getChild(1).replace( PLAYTag.STRINGLITERAL);
+		whole.getTop(0).getChild(1).getChild(1).getPayload().setPayloadValue("hello");
 		
 		checkAndPrint(whole);
 	}
@@ -151,16 +150,15 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		//VARDECL y
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.NOTYPE);
 		whole.getTop(0).getChild(1).getPayload().setConstness(Constness.CON);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(1).getChild(1).replace( PLAYTag.THISVAR);
+		whole.getTop(0).getChild(1).getChild(1).getPayload().setPayloadValue("x");
 		
 		checkAndPrint(whole);
 	}
@@ -171,20 +169,14 @@ public class CheckerTest {
 		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
 		whole.makeRootNode(new PLAYPayload("Class8", PLAYTag.CLASS, "Class8"));
 		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
-		
+
 		//VARDECL y
-		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.STRINGTYPE);
-		whole.getTop(0).getChild(1).getPayload().setConstness(Constness.CON);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("z");
+		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.NUMBERTYPE);
 		
 		checkAndPrint(whole);
 	}
@@ -198,16 +190,14 @@ public class CheckerTest {
 		
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.NUMBERLITERAL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getPayload().setPayloadValue("1");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.NUMBERLITERAL);
+		whole.getTop(0).getChild(0).getChild(1).getPayload().setPayloadValue("1");
 		
 		//VARDECL y
 		whole.getTop(0).insertChild(1, PLAYTag.VARDECL);
 		whole.getTop(0).getChild(1).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(1).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(1).getChild(1).insertChild(0, PLAYTag.THISVAR);
-		whole.getTop(0).getChild(1).getChild(1).getChild(0).getPayload().setPayloadValue("x");
+		whole.getTop(0).getChild(1).getChild(1).replace( PLAYTag.THISVAR);
+		whole.getTop(0).getChild(1).getChild(1).getPayload().setPayloadValue("x");
 		
 		checkAndPrint(whole);
 	}	
@@ -223,11 +213,11 @@ public class CheckerTest {
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
 		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(1).replace(PLAYTag.NUMBERTYPE);
 		
 		checkAndPrint(whole);
 	}	
@@ -242,12 +232,11 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.STRINGTYPE);
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(1).replace(PLAYTag.STRINGTYPE);
 		
 		checkAndPrint(whole);
 	}	
@@ -262,14 +251,12 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NUMBERTYPE);
+		whole.getTop(0).getChild(0).getChild(1).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
+		whole.getTop(0).getChild(0).getChild(1).getChild(2).getChild(0).getPayload().setPayloadValue("y");
 		checkAndPrint(whole);
 	}
 	
@@ -285,14 +272,11 @@ public class CheckerTest {
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
-		whole.getTop(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).insertChild(0, PLAYTag.METHOD);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).insertChild(0, PLAYTag.VARDECL);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getPayload().setPayloadValue("y");
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getChild(0).getChild(0).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(1).replace(PLAYTag.NOTYPE);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
-		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(2).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).replace( PLAYTag.METHOD);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).insertChild(0, PLAYTag.VARDECL);
+		whole.getTop(0).getChild(0).getChild(1).getChild(0).getChild(0).getPayload().setPayloadValue("y");
+		whole.getTop(0).getChild(0).getChild(1).getChild(2).insertChild(0, PLAYTag.LOCALVAR);
+		whole.getTop(0).getChild(0).getChild(1).getChild(2).getChild(0).getPayload().setPayloadValue("y");
 		checkAndPrint(whole);
 	}
 	

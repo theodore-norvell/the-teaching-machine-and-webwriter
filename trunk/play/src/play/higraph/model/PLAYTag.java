@@ -61,7 +61,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	public boolean contentModel(List<PLAYTag> seq) {
 	    return seq.size() == 2
 		    && (seq.get(0).equals(NOTYPE) || isType(seq.get(0)))
-		    && seq.get(1).equals(SEQ);
+		    && (seq.get(1).equals(NOEXP) || isExp(seq.get(1)));
 
 	}
 
@@ -69,7 +69,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	public List<PLAYTag> defaultTagSequence() {
 	    List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
 	    defaultTagSequence.add(NOTYPE);
-	    defaultTagSequence.add(SEQ);
+	    defaultTagSequence.add(NOEXP);
 	    return defaultTagSequence;
 	}
 
@@ -977,7 +977,33 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	public String toString() {
 	    return "PARAMS";
 	}
-    };
+    },
+    
+    NOEXP {
+    	@Override
+    	public boolean contentModel(List<PLAYTag> seq) {
+    		return false;
+
+    	}
+
+    	@Override
+    	public List<PLAYTag> defaultTagSequence() {
+    	    return new ArrayList<PLAYTag>();
+    	}
+
+    	@Override
+    	public PLAYPayload defaultPayload() {
+    	    return new PLAYPayload("NOEXP", NOEXP);
+    	}
+
+    	/**
+    	 * @see java.lang.Enum#toString()
+    	 */
+    	@Override
+    	public String toString() {
+    	    return "NOEXP";
+    	}
+        };
 
     public boolean isExp(PLAYTag pt) {
 	return pt.equals(NUMBERLITERAL) || pt.equals(STRINGLITERAL)

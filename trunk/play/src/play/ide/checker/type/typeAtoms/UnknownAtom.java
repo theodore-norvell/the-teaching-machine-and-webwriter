@@ -13,9 +13,13 @@ public class UnknownAtom extends TypeAtom{
 	}
 
 	@Override
-	public boolean canonicalOver(TypeAtom ta) {
+	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		return true;
+		if(ta.equals(AnyAtom.getInstance())||AnyAtom.getInstance().isSuperAtomOf(ta)
+				){
+				return true;
+			}else
+				return false;
 	}
 	
 	@Override

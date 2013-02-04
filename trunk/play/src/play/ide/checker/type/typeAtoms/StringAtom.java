@@ -13,7 +13,7 @@ public class StringAtom extends AnyAtom{
 	}
 	
 	@Override
-	public boolean canonicalOver(TypeAtom ta) {
+	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
 		if(ta.equals(NumberAtom.getInstance())
 			||ta.equals(BooleanAtom.getInstance())

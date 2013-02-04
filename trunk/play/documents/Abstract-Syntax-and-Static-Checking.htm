@@ -176,15 +176,12 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
     case new( ct, ... ): return the type assocciated with ct
     case method( param[0], .. param[n], ot, seq ) {
         run checkVar0 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
-       if any of these are  {&perp;} , return {&perp;}
         if ot is a type, run checkType0( ot ) to get T
         else st.pushFrame()
                for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
                run checkSeq0( seq, st, map ) to get T
                st.pop()
         return method( T, T0, T1, ..., Tn )
-    case seq( ... )
-        return checkSeq0( n, st, map )
     case if( e, s0, s1 )
         T0 := checkSeq0( s0, st, map )
         T1 := checkSeq0( s1, st, map )
@@ -201,7 +198,7 @@ checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
     c := 0
     for each i
         match m[i]
-        case vardecl[i, k]( OptType, Seq )
+        case vardecl[i, k]( OptType, OptExp )
            (c[i],T[i]) := checkVar0( m[i], st, map )
             st.pushFrame()
             c := c+1

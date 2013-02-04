@@ -28,9 +28,6 @@ public class Type {
 		atoms.add(ta);
 	}
 	
-	public void removeTypeAtom(TypeAtom ta){
-		atoms.remove(ta);
-	}
 	
 	public boolean containsAtom(TypeAtom ta){
 		if(atoms.contains(ta))
@@ -46,14 +43,18 @@ public class Type {
 	}
 	
 	public void canonicalize(){
+		
 		for(int i=0;i<getAtomsAmount()-1;i++){
 			for(int j=i+1;j<getAtomsAmount();j++){
-				if(atoms.get(i).canonicalOver(atoms.get(j)))
-					removeTypeAtom(atoms.get(j));
-				else if(atoms.get(j).canonicalOver(atoms.get(i)))
-					removeTypeAtom(atoms.get(i));		
+				if(atoms.get(i).isSuperAtomOf(atoms.get(j))){
+					atoms.remove(j);
+					j--;
+				}else if(atoms.get(j).isSuperAtomOf(atoms.get(i))){
+					atoms.remove(i);
+					j=i;
+				}					
 			}
-		}
+		}	
 	}
 	
 	public boolean isUnknown(){
@@ -93,14 +94,14 @@ public class Type {
 		return sb.toString();
 	}
 	
-	public boolean canonicalOver(Type t) {
+	public boolean isSuperTypeOf(Type t) {
 		// TODO Auto-generated method stub
 		boolean[] flags = new boolean[t.getAtomsAmount()];//all false
 		
 		for(int i=0;i<t.getAtomsAmount();i++){
 			TypeAtom ta=t.atoms.get(i);
 			for(TypeAtom ta2:this.atoms){
-				if(ta2.canonicalOver(ta)){
+				if(ta2.isSuperAtomOf(ta)){
 					flags[i]=true;
 				}
 			}

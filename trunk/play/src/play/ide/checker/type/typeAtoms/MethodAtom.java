@@ -36,15 +36,17 @@ public class MethodAtom extends TypeAtom{
 	}
 	
 	@Override
-	public boolean canonicalOver(TypeAtom ta){
+	public boolean isSuperAtomOf(TypeAtom ta){
 		MethodAtom ma = (MethodAtom)ta;
 		int size=this.getAmountOfTypes();
 		if(size!=ma.getAmountOfTypes()){
 			return false;
 		}
-		
-		for(int i=0;i<size;i++){
-			if(!this.getTypeAt(i).canonicalOver(ma.getTypeAt(i)))
+		if(!this.getTypeAt(0).isSuperTypeOf(ma.getTypeAt(0))){
+			return false;
+		}
+		for(int i=1;i<size;i++){
+			if(!ma.getTypeAt(i).isSuperTypeOf(this.getTypeAt(i)))
 				return false;
 		}
 		return true;
@@ -63,7 +65,9 @@ public class MethodAtom extends TypeAtom{
 			}
 			sb.deleteCharAt(sb.length()-1);
 			sb.append("}");
+			sb.append(",");
 		}
+		sb.deleteCharAt(sb.length()-1);
 		sb.append(" )");
 		return sb.toString();
 	}
