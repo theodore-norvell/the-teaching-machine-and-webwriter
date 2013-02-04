@@ -125,15 +125,14 @@ public class Checker {
 		
 		map.put(pn, fv);
 
-		st.put(pn.getPayload().getPayloadValue(), Kind.THIS, fv.getConstness(), fv.getType());
+		st.put(pn.getPayload().getPayloadValue(),Kind.THIS, fv.getConstness(), fv.getType());
 	}
 
 	private FieldValue checkVar0(PLAYNode pn, SymbolTable st,
 			HashMap<PLAYNode, FieldValue> map) {
 		Type t;
 		if(pn.getChild(0).getTag().equals(PLAYTag.NOTYPE)){
-			
-			t = checkSeq0(pn.getChild(1), st, map);	
+			t = checkExp0(pn.getChild(1), st, map);	
 		}else{
 			t = checkType0(pn.getChild(0));
 		}
@@ -146,6 +145,8 @@ public class Checker {
 		String payloadStr=pn.getPayload().getPayloadValue();
 		
 		switch(pn.getTag()){
+		case NOEXP:
+			return new Type(UnknownAtom.getInstance());
 		case NUMBERLITERAL:
 			/*try {
 				Double.parseDouble(payloadStr);
@@ -196,28 +197,18 @@ public class Checker {
 			PLAYNode ot = pn.getChild(1);
 			PLAYNode seq = pn.getChild(2);
 			
-			/*//temporary type value at 0
-			fvs.add(new FieldValue(param.getChild(0).getPayload().getConstness(),
-									checkType0(param.getChild(0).getChild(0))
-									));*/
-			
 			for(int i=0;i<param.getChildren().size();i++){
-				
 				PLAYNode n2 = param.getChild(i);
-				
 				FieldValue fv = checkVar0(n2, st, map);
-
-				if(fv.getType().isUnknown()){
-					System.out.println("HERE");
-					return new Type(UnknownAtom.getInstance());
-				}else{
-					fvs.add(new FieldValue(n2.getPayload().getConstness(),
-											fv.getType()));
-				}
+				//if(fv.getType().isUnknown()){
+				//	return new Type(UnknownAtom.getInstance());
+				//}else{
+				fvs.add(new FieldValue(n2.getPayload().getConstness(),fv.getType()));
+				//}
 			}
-			
+			Type t;
 			if(!ot.getTag().equals(PLAYTag.NOTYPE)){
-				fvs.set(0, new FieldValue(fvs.get(0).getConstness(),checkType0(ot)));
+				t=checkType0(ot);
 			}else{
 				st.pushFrame();
 				
@@ -225,34 +216,28 @@ public class Checker {
 					
 					st.put( param.getChild(i).getPayload().getPayloadValue(), 
 							Kind.LOCAL, fvs.get(i).getConstness(), fvs.get(i).getType()
-							);
-					
-					
+							);					
 				}
 				
-				fvs.set(0, new FieldValue(fvs.get(0).getConstness(),
-											checkSeq0(seq,st,map) ));
+				t=checkSeq0(seq,st,map);
 				
 				st.popFrame();
 			}
-			if(fvs.get(0).getType().isUnknown())
-				return new Type(UnknownAtom.getInstance());
-			else{
-				List<Type> types = new ArrayList<Type>();
-				for(int i=0;i<fvs.size();i++){
-					types.add(fvs.get(i).getType());
-				}
-				return new Type(new MethodAtom(types));
+			List<Type> types = new ArrayList<Type>();
+			types.add(t);
+			for(int i=0;i<fvs.size();i++){
+				types.add(fvs.get(i).getType());
 			}
+			return new Type(new MethodAtom(types));
 				
 		case SEQ:
 			return checkSeq0(pn,st,map);
 		case IF:
 			Type t0=checkSeq0(pn.getChild(1),st,map);
 			Type t1=checkSeq0(pn.getChild(2),st,map);
-			Type t = t0.merge(t1);
-			t.canonicalize();
-			return t;
+			Type t2 = t0.merge(t1);
+			t2.canonicalize();
+			return t2;
 		case WHILE:
 		case ASSIGN:	
 			return new Type(NullAtom.getInstance());
@@ -260,7 +245,7 @@ public class Checker {
 			return new Type(UnknownAtom.getInstance());		
 
 		default:
-			System.out.println("default");
+			System.out.println("Error: default exp");
 			return null;
 		}
 		
@@ -272,7 +257,6 @@ public class Checker {
 		
 		if(seq.getChildren().size()==0)
 			return new Type(NullAtom.getInstance());
-		//st.pushFrame(); //to be sure
 		int c=0;
 		FieldValue fv=null;
 		

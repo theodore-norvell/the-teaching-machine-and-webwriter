@@ -6,5 +6,5 @@ package play.ide.checker.type.typeAtoms;
  * 
  */
 public abstract class TypeAtom {
-	public abstract boolean canonicalOver(TypeAtom ta);
+	public abstract boolean isSuperAtomOf(TypeAtom ta);
 }
