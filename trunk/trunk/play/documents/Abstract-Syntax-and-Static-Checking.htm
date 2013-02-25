@@ -112,7 +112,7 @@ OptExp --&gt; noExp | Exp</pre>
 <h2>Type atoms and types</h2>
 <p>Type atoms. We assume there is a set of type atoms <em>T</em>={Any, Null, String, Number, Boolean, &perp;} &cup; {Class<sub>i</sub>|? <em>i</em> &isin; <em>I</em>} &cup; M where <em>I</em> is the set of all identifiers and M is the set of all structures method(T0, T1, ..., Tn) where Ti are types as defined below. (T0 is the result type.)</p>
 <p>The type atom &perp; represents an unknown type; it is used during checking to indicate that the type of an expression in not known. By contrast Any is used to indicate that the type is known to be any type at all.</p>
-<p>Type atoms are partially ordered by a reflexive andtransitive subtype relation &lt;:</p>
+<p>Type atoms are partially ordered by a reflexive and transitive subtype relation &lt;:</p>
 <blockquote>
   <p><em>x</em> &lt;: <em>x</em>, for any type atom <em>x</em></p>
   <p>if <em>x</em> &lt;: <em>y</em> and <em>y</em> &lt;: <em>z</em> then <em>x</em> &lt;: <em>z</em>, for any type atoms <em>x</em>, <em>y</em>, and <em>z</em>.</p>
@@ -146,7 +146,10 @@ OptExp --&gt; noExp | Exp</pre>
 <h2>Pass 0 algorithm</h2>
 <p>Pass 0 computes a mapping from AST nodes to types. At the end of pass 0, each varDecl and conDecl node within a class should be mapped to some element of <em>Type</em>.</p>
 <p>To keep track of the types of identifiers, we use a symbol table <em>st</em>, which is represents a map from<em> I</em>&times;{this, local, world} to <em>C&times;Type</em>. Operations on symbol table include</p>
-<p>st.get(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : <em>T </em>-- Gives the current value of i. If nothing is found, the unknown type {&perp;} is returned.</p>
+<p>st.hasEntry(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : Boolean -- returns true if the identifier has an entry</p>
+<p>(TBD Explain this better.) </p>
+<p>st.get(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : <em>T </em>-- Precondition st.hasEntre( <em>i</em>, <em>k</em> ). Gives the type of i.</p>
+<p>st.getConst(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : <em>C </em>--  Precondition st.hasEntre( <em>i</em>, <em>k</em> ). Returns the var or con</p>
 <p>st.put(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>, c : C, <em>T</em> : <em>Type</em>) -- puts a new value for i in the current frame</p>
 <p>st.pushFrame() </p>
 <p>st.popFrame() </p>
@@ -156,11 +159,11 @@ OptExp --&gt; noExp | Exp</pre>
             check that all the field names are distinct
             st.pushFrame()
             for each fd_i: 
-                let n be the name of fd_i
+                let name be the name of fd_i
                 let c be the constness of the declaration
                 let t be the type node for the declaration
-                let T be checkType0( t )
-                st.put( n, this, c, T) 
+                let T be checkType( t )
+                st.put( name, this, c, T) 
                 add (fd_i, (c,T) ) to the map
             for each fd_i in order of declaration
                if fd_i is mapped to  {&perp;},
@@ -175,9 +178,9 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
     case false: return {boolean}
     case stringLiteral[v]: return {string}
     case null: return {Null}
-    case thisVar[i]: return st.get(i,this)
-    case localVar[i]: return st.get(i,local)
-    case worldVar[i]: return st.get(i,world)
+    case thisVar[i]: if st.hasEntry(i,this) then return st.get(i,this) else return {&perp;}
+    case localVar[i]:  if st.hasEntry(i, local) then return st.get(i,local) else  return {&perp;}
+    case worldVar[i]:  if st.hasEntry(i, world) then return return st.get(i,world) else  return {&perp;}
     case dot[i]( e ): return {&perp;}
     case this: return the type of the class being checked.
     case callClosure( ... ): return  {&perp;}
@@ -185,7 +188,7 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
     case new( ct, ... ): return the type assocciated with ct
     case method( param[0], .. param[n], ot, seq ) {
         run checkVar0 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
-        if ot is a type, run checkType0( ot ) to get T
+        if ot is a type, run checkType( ot ) to get T
         else st.pushFrame()
                for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
                run checkSeq0( seq, st, map ) to get T
@@ -202,7 +205,7 @@ checkExp0( n : Node, st : SymTab, map : Map ) is
     case expPlaceHolder
         return {&perp;}
         
-checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
+checkSeq0( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Map )
     if n=0 return {Null}
     c := 0
     for each i
@@ -215,7 +218,7 @@ checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
         default
             T[i] := checkExp0( m[i], st, map )
     for each i in {0,..c} st.pop()
-    return T[n]     
+    return T[n-1]     
 
 checkField0( n : Node, st : SymTab, map : Map )
     (c,T) := checkVar0( n, st, map )
@@ -226,7 +229,7 @@ checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
     if ot is NoType then
         T := checkExp0( oe , st, map )
     else
-        T := checkType0( ot )
+        T := checkType( ot )
     return (c,T)
 
 checkType( n : Node )
@@ -252,20 +255,19 @@ checkType( n : Node )
             check that all the field names are distinct, if not add error to errorMap.
             st.pushFrame()
             for each fd_i: 
-                let n be the name of fd_i
+                let name be the name of fd_i
                 let c be the constness of the declaration
                 let t be the type node for the declaration
                 let T be the type for t in the map
-                map
-                fetch the type for T from 
                 add (fd_i, (c,T) ) to the map
+                st.put( name, this, c, T) 
             for each fd_i in order of declaration
                if fd_i is mapped to  {&perp;},
-                   checkField0( fd0, st, map )
+                   checkField1( fd0, st, map, errorMap )
             st.popFrame()
 
-checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
-   var T
+checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
+    var T
     match n 
     case noExp: T :=  {&perp;}
     case numberLiteral: T :=   {number}
@@ -273,9 +275,18 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
     case false: T :=   {boolean}
     case stringLiteral[v]: T :=   {string}
     case null: T :=   {Null}
-    case thisVar[i]: T :=   st.get(i,this)
-    case localVar[i]: T :=   st.get(i,local)
-    case worldVar[i]: T :=   st.get(i,world)
+    case thisVar[i]:  if st.hasEntry( i, this) then T := st.get(i,this)
+                                else add new error to errorMap(n)
+                       						         &quot;field not found&quot;
+                                        T :=  {&perp;}
+    case localVar[i]: if st.hasEntry( i, this) then T := st.get(i,this)
+                                else add new error to errorMap(n)
+                       						    &quot;local variable not found&quot; 
+                                         T :=  {&perp;}
+    case worldVar[i]:  if st.hasEntry( i, world) then T := st.get(i,world)
+                                    else add new error to errorMap(n)
+                       						    &quot;world variable not found&quot; 
+                                             T :=  {&perp;}
     case dot[i]( e ): 
         val T0 := checkExp1( e, st, map, errorMap )
          if T0 = {&perp;} then
@@ -290,15 +301,30 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
                             &quot;Class &quot; +c+ &quot; does not have a field named &quot; +i
                   T := {&perp;}
     case this: T :=   the type of the class being checked.
-    case callClosure( Exp<span class="sub">0</span>, Exp<span class="sub">1</span>, Exp<span class="sub">2</span>, ..., Exp<span class="sub">n</span>  ): 
-        val Tm := checkExp1( Exp<span class="sub">0</span>, st, map, errorMap )
-        val P1 := checkExp1( Exp<span class="sub">1</span>, st, map, errorMap )
-        ...
-        val Pn := checkExp1( Exp<span class="sub">n</span>, st, map, errorMap )
-        if tm is of the form {method(Tr, T<span class="sub">1</span>, T<span class="sub">2</span>, ..., T<span class="sub">m</span> )} for some m
+    case callClosure( Exp[<span class="sub">0]</span>, Exp[<span class="sub">1]</span>, Exp[<span class="sub">2]</span>, ..., Exp[<span class="sub">n]</span>  ): 
+        val Tm := checkExp1( Exp<span class="sub">[0]</span>, st, map, errorMap )
+        val P[1] := checkExp1( Exp<span class="sub">[1]</span>, st, map, errorMap )
+        ,...,
+        val P[n] := checkExp1( Exp<span class="sub">[n]</span>, st, map, errorMap )
+        if tm is of the form {method(Tr, T<span class="sub">A[1]</span>, TA<span class="sub">[2]</span>, ..., TA[<span class="sub">m]</span> )} for some m then
+           if  m not= n then
+               add new error to errorMap(n)
+                            n+ &quot; arguments were expected, but there are&quot; +m+ &quot;.&quot; 
+           else
+               for i : {1,..,n}
+                   if not( P[i] &lt;: TA[i]) then  add new error to errorMap(Exp[i])
+                            &quot;The type of argument does not match the type of the parameter&quot;
+        else
+            add new error to errorMap(n)
+                            &quot;Only methods may be called. &quot;
     case callWorld( ... ): TBD
     case new( ct, ... ): T :=   the type assocciated with ct
     case method( param[0], .. param[n], ot, seq ) {
+        for each parameter i: 
+            if the param[i] has an initialization expression then add new error to errorMap(Param[i])
+                            &quot;Parameters can not be initialized&quot;
+            if param[i] has noType as its type then then add new error to errorMap(Param[i])
+                            &quot;Parameters must have a type&quot;
         run checkVar1 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
         st.pushFrame()
         for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
@@ -307,8 +333,9 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
         val Tr
         if( ot is noType ) Tr := Tb
         else
-            Tr := checkType1(ot ) 
+            Tr := checkType(ot ) 
              if Tb &lt;: Tr then skip 
+             else if Tb = {&perp;} then skip
              else add a new error to errorMap(n)
                          &quot;method body results in type &quot; +Tb+ &quot;. But the declared result type is &quot; +Tr
           T :=   {method( Tr, T0, T1, ..., Tn })
@@ -330,54 +357,54 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
         val T1 := checkExp1( e1, st, map, errorMap )
         if not( T1 &lt;: T0 ) then add new error to errorMap(n)
                 &quot;Type error in assignment.&quot;
+        if not isAssignable( e0 ) then add new error to errorMap(e0)
+                &quot;This expression may not be assigned to.&quot;
         T :=   {Null}
     case expPlaceHolder
         add new error to errorMap(n)
                 &quot;missing code&quot;
         T :=   {&perp;}
         
-checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
+isAssignable( n : Node, st : SymTab )
+    match n 
+    case thisVar[i]: return st.hasEntry( i, this) and st.getConst(i,this) == var
+    case localVar[i]: return st.hasEntry( i, this) and st.getConst(i,local) == var
+    case worldVar[i]: return st.hasEntry( i, this) and st.getConst(i,world) == var
+    default: return false
+
+
+checkSeq1( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Mpa, errorMap :  errorMap )
     if n=0 return {Null}
     c := 0
     for each i
         match m[i]
         case vardecl[i, k]( OptType, OptExp )
-           (c[i],T[i]) := checkVar0( m[i], st, map )
+            if OptType = noType and OptExp = noExp then
+                add new error to errorMap(m[i])
+                    &quot;variable does needs either an initialization or a type&quot;
+            (c[i],T[i]) := checkVar1( m[i], st, map, errorMap :  errorMap )
             st.pushFrame()
             c := c+1
             st.put( i, local, c[i], T[i] )
         default
-            T[i] := checkExp0( m[i], st, map )
+            T[i] := checkExp1( m[i], st, map, errorMap :  errorMap )
     for each i in {0,..c} st.pop()
-    return T[n]     
+    return T[n-1]     
 
-checkField0( n : Node, st : SymTab, map : Map )
-    (c,T) := checkVar0( n, st, map )
-    change the value of n in the map to (c,T)
-    update st
+checkField1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )
+    (c,T) := checkVar1( n, st, map )
 
-checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
+checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  errorMap )
+    val T
     if ot is NoType then
-        T := checkExp0( oe , st, map )
+        T := checkExp1( oe , st, map, errorMap )
     else
-        T := checkType0( ot )
+        T := checkType( ot )
+        val Te := checkExp1( oe , st, map, errorMap )
+        if Te not= {&perp;} and not( Te &lt;: T ) then add new error to errorMap(n)
+                &quot;type of initializer does not match the declared type&quot;
     return (c,T)
-
-checkType0( n : Node )
-    match n 
-    case noType : return {&perp;}
-    case booleanType : return {Boolean}
-    case stringType: return {String}
-    case numberType: return {Number}
-    case anyType: return {Any}
-    case nullType: return {Null}
-    case altType(t[0], t[1], ... t[n]) :
-         for i : T[i] := checkType( t[i] )
-         return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]
-    case classType[i]: return ClassType[i]
 </pre>
-<h2><br>
-</h2>
 <pre>&nbsp;</pre>
 </body>
 </html>
