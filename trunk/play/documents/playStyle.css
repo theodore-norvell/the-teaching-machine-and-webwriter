@@ -2,10 +2,13 @@
 
 
 
-* { font-size: large ;
-	font-family: "Lucide Bright" "Palatino Linotype", "Book Antiqua", Palatino, serif ;
+* { font-family: "Lucide Bright" "Palatino Linotype", "Book Antiqua", Palatino, serif ;
 }
 
 .kbd {font: "Lucida Console", Monaco, monospace }
 
 .centre { text-align:center; }
+
+pre { font-size:inherit ; }
+
+.sub { vertical-align:sub ; }

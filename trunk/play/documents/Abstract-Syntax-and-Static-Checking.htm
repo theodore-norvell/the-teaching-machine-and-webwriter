@@ -50,7 +50,7 @@
 <h3>Calls</h3>
 <pre>   Exp --&gt; callClosure( Exp0, Exp1, Exp2, ..., Exp<sub>n</sub> )
 </pre>
-<p>Here Exp0 should be a &quot;bound method&quot; (which is essentially a method value together with an object reference).</p>
+<p>Here Exp0 should be a method.</p>
 <p>Here Exp0 is the recipient. Finally a call to world object has a special syntax</p>
 <pre>   Exp --&gt; callWorld[Id]( Exp0, Exp1, Exp2, ..., Exp<sub>n-1</sub> )
 </pre>
@@ -89,15 +89,16 @@ OptExp --&gt; noExp | Exp</pre>
 <h3>  Place holders</h3>
 <p>Place holder expressions are used where expressions are required by the content model, but where there is no obvious candidate for a default value.</p>
 <pre>   Exp --&gt; expPlaceHolder</pre>
-<h1>Static Checking Overview</h1>
-<h2>Pass 0  </h2>
+<h1>Static Checking</h1>
+<h2>Overview</h2>
+<h3>Pass 0  </h3>
 <p>The aim of the first pass of static checking is to determine the types for all fields and methods using  type inference rules that don't depend on any information that can't be determined directly from the syntax or from pass 0 checking that has already happened earlier in the same class. For example if we have</p>
 <pre>   <strong>class</strong> Fred <strong>var</strong> a := 1 ()-&gt;{} <strong>end</strong></pre>
 <p>Then pass 0 checking will determine that field a has type Number. Likewise in </p>
 <pre>   <strong>class</strong> Fred <strong>var</strong> a := 1 <strong>var</strong> b := <strong>this</strong>.a+1 ()-&gt;{} <strong>end</strong></pre>
 <p>pass 0 checking will determine a type of Number for field b. However, references to variables other than earlier variables in the same class are not allowed. </p>
 <p>It is an error if a field is missing a type and pass 0 fails to determine a type for it.</p>
-<h2>Pass 1</h2>
+<h3>Pass 1</h3>
 <p>Pass 1 checking assumes that all classes have already undergone pass 0 checking. Therefore each field in each class has a type. Pass 1 is responsible for all further static checks. </p>
 <p>By the end of pass 1 checking there should be a warning message generated for each of the following</p>
 <ul>
@@ -108,23 +109,26 @@ OptExp --&gt; noExp | Exp</pre>
     <p>Name errors. E.g. referring to the name of a variable that does not exist.</p>
   </li>
 </ul>
-<h1>Pass 0 algorithm</h1>
+<h2>Type atoms and types</h2>
 <p>Type atoms. We assume there is a set of type atoms <em>T</em>={Any, Null, String, Number, Boolean, &perp;} &cup; {Class<sub>i</sub>|? <em>i</em> &isin; <em>I</em>} &cup; M where <em>I</em> is the set of all identifiers and M is the set of all structures method(T0, T1, ..., Tn) where Ti are types as defined below. (T0 is the result type.)</p>
 <p>The type atom &perp; represents an unknown type; it is used during checking to indicate that the type of an expression in not known. By contrast Any is used to indicate that the type is known to be any type at all.</p>
-<p>Type atoms are partially ordered by a subtype relation &lt;:</p>
+<p>Type atoms are partially ordered by a reflexive andtransitive subtype relation &lt;:</p>
 <blockquote>
+  <p><em>x</em> &lt;: <em>x</em>, for any type atom <em>x</em></p>
+  <p>if <em>x</em> &lt;: <em>y</em> and <em>y</em> &lt;: <em>z</em> then <em>x</em> &lt;: <em>z</em>, for any type atoms <em>x</em>, <em>y</em>, and <em>z</em>.</p>
   <p>Number &lt;: String</p>
   <p>Boolean &lt;: String</p>
   <p>String &lt;: Any</p>
   <p>Null &lt;: Any</p>
   <p>Class<sub>i</sub> &lt;: Any</p>
+  <p><span class="centre">method(T0, T1, ..., Tn)</span> &lt;: Any</p>
   <p>Any &lt;: &perp;</p>
 </blockquote>
 <p>For two method types with the same number of parameters,</p>
 <p class="centre">method(T0, T1, ..., Tn) &lt;: method(S0, S1, ..., Sn)</p>
 <p class="centre">iff</p>
-<p class="centre">T0&lt;:S0 and S1 &lt;: T1 and ... and Sn &lt;: Tn .</p>
-<p>Types are finite sets of type atoms with the property that the set is canonical. A canonical set does not contain two distinct type atoms a and b such that a is a subtype of b. That is a canonical type is a set of type atoms obeying the law canonicalize(S)=S where canonicalize is a function that repeatedly replaces each pair of atoms a and b where  a is a subtype of b with just b. For example</p>
+<p class="centre">T0 &lt;: S0 and S1 &lt;: T1 and ... and Sn &lt;: Tn .</p>
+<p>Types are finite sets of type atoms with the property that the set is canonical. A canonical set does not contain two distinct type atoms a and b such that a is a subtype of b. That is a canonical type is a set of type atoms obeying the law canonicalize(S)=S where canonicalize is a function that repeatedly replaces each pair of atoms a and b where  a &lt;: b with just b. For example</p>
 <ul>
   <li> canonicalize( { Number, String, Boolean } ) = {String}</li>
   <li>canonicalize( { Number, Boolean } ) = {Number, Boolean}</li>
@@ -134,10 +138,15 @@ OptExp --&gt; noExp | Exp</pre>
 <p class="centre">T &or; S = canonicalize( T &cup; S ) .</p>
 <p>The subtype relation can be extended to types:</p>
 <p class="centre">T &lt;: S iff T &or; S = S .</p>
+<p>Note that {&perp;} <span class="centre">&or; <em>T</em></span> = {&perp;} for ever <em>T</em> and therefore <em>T</em> &lt;: {&perp;} for any type <em>T</em>. We use {&perp;} to indicate errors. When something is given the type {&perp;}, it should be because there is compile time error somewhere in the program.</p>
+<p>To avoid circularity, we require that the types involved in method type atoms don't involve the type atom itself. For example there is no type atom x such that</p>
+<p class="centre">x = method( {x} )</p>
+<p>The typing rules of the language should ensure that such type atoms never need to be created.</p>
 <p>Variables come in three kinds. <em>K</em>={this, local, world}. Variable come in two constnesses C = {con, var}.</p>
+<h2>Pass 0 algorithm</h2>
 <p>Pass 0 computes a mapping from AST nodes to types. At the end of pass 0, each varDecl and conDecl node within a class should be mapped to some element of <em>Type</em>.</p>
 <p>To keep track of the types of identifiers, we use a symbol table <em>st</em>, which is represents a map from<em> I</em>&times;{this, local, world} to <em>C&times;Type</em>. Operations on symbol table include</p>
-<p>st.get(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : <em>T </em>-- Gives the current value of i. If nothing is found the unknown type &perp; is returned.</p>
+<p>st.get(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>) : <em>T </em>-- Gives the current value of i. If nothing is found, the unknown type {&perp;} is returned.</p>
 <p>st.put(<em>i</em> : <em>I</em>, <em>k</em> : <em>K</em>, c : C, <em>T</em> : <em>Type</em>) -- puts a new value for i in the current frame</p>
 <p>st.pushFrame() </p>
 <p>st.popFrame() </p>
@@ -220,6 +229,140 @@ checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
         T := checkType0( ot )
     return (c,T)
 
+checkType( n : Node )
+    match n 
+    case noType : return {&perp;}
+    case booleanType : return {Boolean}
+    case stringType: return {String}
+    case numberType: return {Number}
+    case anyType: return {Any}
+    case nullType: return {Null}
+    case altType(t[0], t[1], ... t[n]) :
+         for i : T[i] := checkType( t[i] )
+         return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]
+    case classType[i]: return ClassType[i]
+</pre>
+<h2><br> 
+  Pass 1 algorithm
+</h2>
+<p>Pass 1's main job is to complete the map started in pass 0. Every node that can be associated with a type is mapped to some type. Pass 1 also finds and reports errors. The error map maps </p>
+<pre>checkClass1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
+    match n
+    case  class[Id]( fd0 fd1 ... method ) :
+            check that all the field names are distinct, if not add error to errorMap.
+            st.pushFrame()
+            for each fd_i: 
+                let n be the name of fd_i
+                let c be the constness of the declaration
+                let t be the type node for the declaration
+                let T be the type for t in the map
+                map
+                fetch the type for T from 
+                add (fd_i, (c,T) ) to the map
+            for each fd_i in order of declaration
+               if fd_i is mapped to  {&perp;},
+                   checkField0( fd0, st, map )
+            st.popFrame()
+
+checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )) is
+   var T
+    match n 
+    case noExp: T :=  {&perp;}
+    case numberLiteral: T :=   {number}
+    case true: T :=   {boolean}
+    case false: T :=   {boolean}
+    case stringLiteral[v]: T :=   {string}
+    case null: T :=   {Null}
+    case thisVar[i]: T :=   st.get(i,this)
+    case localVar[i]: T :=   st.get(i,local)
+    case worldVar[i]: T :=   st.get(i,world)
+    case dot[i]( e ): 
+        val T0 := checkExp1( e, st, map, errorMap )
+         if T0 = {&perp;} then
+             T := {&perp;}
+         else if  not (T0 = {c}, for some class type c) then 
+             add new error to errorMap(n)
+                       &quot;expected a class type, but found &quot; +T0+ &quot; instead&quot;
+                 T := {&perp;}
+         else (there is a class c such that T0={c}) if class c has a field named i then
+                  T := the type of field i in class c // This can be found from the map.
+         else  add new error to errorMap(n)
+                            &quot;Class &quot; +c+ &quot; does not have a field named &quot; +i
+                  T := {&perp;}
+    case this: T :=   the type of the class being checked.
+    case callClosure( Exp<span class="sub">0</span>, Exp<span class="sub">1</span>, Exp<span class="sub">2</span>, ..., Exp<span class="sub">n</span>  ): 
+        val Tm := checkExp1( Exp<span class="sub">0</span>, st, map, errorMap )
+        val P1 := checkExp1( Exp<span class="sub">1</span>, st, map, errorMap )
+        ...
+        val Pn := checkExp1( Exp<span class="sub">n</span>, st, map, errorMap )
+        if tm is of the form {method(Tr, T<span class="sub">1</span>, T<span class="sub">2</span>, ..., T<span class="sub">m</span> )} for some m
+    case callWorld( ... ): TBD
+    case new( ct, ... ): T :=   the type assocciated with ct
+    case method( param[0], .. param[n], ot, seq ) {
+        run checkVar1 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
+        st.pushFrame()
+        for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
+        val Tb :=  checkSeq1( seq, st, map, errorMap )
+        st.pop()
+        val Tr
+        if( ot is noType ) Tr := Tb
+        else
+            Tr := checkType1(ot ) 
+             if Tb &lt;: Tr then skip 
+             else add a new error to errorMap(n)
+                         &quot;method body results in type &quot; +Tb+ &quot;. But the declared result type is &quot; +Tr
+          T :=   {method( Tr, T0, T1, ..., Tn })
+    case if( e, s0, s1 )
+        val Te := checkExp1( seq, st, map, errorMap )
+        if Te /= {boolean} then add new error to errorMap(n)
+                &quot;condition may not be boolean&quot;
+        val T0 := checkSeq1( s0, st, map, errorMap )
+        val T1 := checkSeq1( s1, st, map, errorMap )
+         T :=   T0 <span class="centre"> &or; </span>T1
+    case while( e, s0 )
+        val Te := checkExp1( e, st, map, errorMap )
+        if Te /= {boolean} then add new error to errorMap(n)
+                &quot;condition may not be boolean&quot;
+        val T0 := checkSeq1( s0, st, map, errorMap )
+        T :=   {Null}
+    case assign( e0, e1 )
+        val T0 := checkExp1( e0, st, map, errorMap )
+        val T1 := checkExp1( e1, st, map, errorMap )
+        if not( T1 &lt;: T0 ) then add new error to errorMap(n)
+                &quot;Type error in assignment.&quot;
+        T :=   {Null}
+    case expPlaceHolder
+        add new error to errorMap(n)
+                &quot;missing code&quot;
+        T :=   {&perp;}
+        
+checkSeq0( seq( m[0], m[1], ..., m[n] ): Node, st : SymTab, map : Map )
+    if n=0 return {Null}
+    c := 0
+    for each i
+        match m[i]
+        case vardecl[i, k]( OptType, OptExp )
+           (c[i],T[i]) := checkVar0( m[i], st, map )
+            st.pushFrame()
+            c := c+1
+            st.put( i, local, c[i], T[i] )
+        default
+            T[i] := checkExp0( m[i], st, map )
+    for each i in {0,..c} st.pop()
+    return T[n]     
+
+checkField0( n : Node, st : SymTab, map : Map )
+    (c,T) := checkVar0( n, st, map )
+    change the value of n in the map to (c,T)
+    update st
+
+checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
+    if ot is NoType then
+        T := checkExp0( oe , st, map )
+    else
+        T := checkType0( ot )
+    return (c,T)
+
 checkType0( n : Node )
     match n 
     case noType : return {&perp;}
@@ -231,6 +374,10 @@ checkType0( n : Node )
     case altType(t[0], t[1], ... t[n]) :
          for i : T[i] := checkType( t[i] )
          return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]
-    case classType[i]: return ClassType[i]</pre>
+    case classType[i]: return ClassType[i]
+</pre>
+<h2><br>
+</h2>
+<pre>&nbsp;</pre>
 </body>
 </html>
