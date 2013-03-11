@@ -17,7 +17,7 @@ import java.util.HashMap;
 public class Manager extends Instrumentor {
 
     /** proxyHash maps names (Strings) to weak pointers to proxy objects */
-    private HashMap proxyHash ;
+    private HashMap<String,WeakReference<?>> proxyHash ;
     /** recording indicates whether a record should be made of the events */
     private boolean recording ;
     /** trace is a sequence of Events
@@ -39,7 +39,7 @@ public class Manager extends Instrumentor {
     }
 
     private Manager() {
-        proxyHash = new HashMap() ;
+        proxyHash = new HashMap<String,WeakReference<?>>() ;
         recording = false ;
     }
 
@@ -79,23 +79,24 @@ public class Manager extends Instrumentor {
      *
      */
     synchronized Object getProxy( String name ) {
-        WeakReference wrp = (WeakReference) proxyHash.get( name ) ;
+        WeakReference<?> wrp = proxyHash.get( name ) ;
         if( wrp == null ) {
             return null ; }
         else {
             return wrp.get() ; } }
 
-    synchronized public Object instrument( String name,
-                                          Object baseObject,
-                                          Class[] interfacesToInstrument ) {
+    @Override synchronized public <T> T instrument( String name,
+                                          T baseObject,
+                                          Class<?>[] interfacesToInstrument,
+                                          Class<T> resultType ) {
 
         InvocationHandler handler = new RecordingInvocationHandler( name, baseObject ) ;
-        Object proxy = Proxy.newProxyInstance(interfacesToInstrument[0].getClassLoader(),
+        T proxy = (T) Proxy.newProxyInstance(interfacesToInstrument[0].getClassLoader(),
                                               interfacesToInstrument,
                                               handler);
         // Save a weak pointer to the proxy for replay.
         // QUESTION: Should we worry about the case where the name is already in use?
-            WeakReference wrp = new WeakReference( proxy ) ;
+            WeakReference<T> wrp = new WeakReference<T>( proxy ) ;
             proxyHash.put( name, wrp ) ;
         // TODO Fire event to alert listeners.
         return proxy ;

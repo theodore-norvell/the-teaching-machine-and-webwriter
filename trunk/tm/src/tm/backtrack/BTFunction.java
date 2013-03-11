@@ -18,7 +18,6 @@ import java.util.* ;
 
 /** A BTFunction is a function that can be backed up to a
     previous state */
-
 public class BTFunction<K,E> {
 	private Hashtable<K,BTValManager<E>> hash ;
 	private BTTimeManager timeMan ;

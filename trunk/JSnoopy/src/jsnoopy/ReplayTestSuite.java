@@ -17,7 +17,7 @@ import jsnoopy.parser.Parser;
 
 abstract public class ReplayTestSuite implements Test {
 
-    private Vector /* of String */ testFileNames = new Vector();
+    private Vector<String> testFileNames = new Vector<String>();
 
     public void addFile( String fileName ) {
         testFileNames.addElement( fileName ); }

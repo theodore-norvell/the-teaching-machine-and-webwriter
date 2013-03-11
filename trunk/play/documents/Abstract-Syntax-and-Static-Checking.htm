@@ -156,7 +156,6 @@ OptExp --&gt; noExp | Exp</pre>
 <pre>checkClass0( n : Node, st : SymTab, map : Map ) is
     match n
     case  class[Id]( fd0 fd1 ... method ) :
-            check that all the field names are distinct
             st.pushFrame()
             for each fd_i: 
                 let name be the name of fd_i
@@ -232,7 +231,7 @@ checkVar0( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map )
         T := checkType( ot )
     return (c,T)
 
-checkType( n : Node )
+checkType( n : Node, errorMap : ErrorMap )
     match n 
     case noType : return {&perp;}
     case booleanType : return {Boolean}
@@ -243,7 +242,12 @@ checkType( n : Node )
     case altType(t[0], t[1], ... t[n]) :
          for i : T[i] := checkType( t[i] )
          return T[0] <span class="centre">&or;</span> T[1] <span class="centre">&or;</span> ... <span class="centre">&or;</span> T[n]
-    case classType[i]: return ClassType[i]
+    case classType[i]:
+             if there is a class declaration for a class named i then
+                    return ClassType[i]
+             else
+                  report the error (pass 1 only)
+                  return {&perp;}
 </pre>
 <h2><br> 
   Pass 1 algorithm
@@ -262,8 +266,7 @@ checkType( n : Node )
                 add (fd_i, (c,T) ) to the map
                 st.put( name, this, c, T) 
             for each fd_i in order of declaration
-               if fd_i is mapped to  {&perp;},
-                   checkField1( fd0, st, map, errorMap )
+                checkField1( fd_i, st, map, errorMap )
             st.popFrame()
 
 checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
@@ -364,6 +367,7 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
         add new error to errorMap(n)
                 &quot;missing code&quot;
         T :=   {&perp;}
+    return T
         
 isAssignable( n : Node, st : SymTab )
     match n 
@@ -392,7 +396,13 @@ checkSeq1( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Mpa, errorMap :
     return T[n-1]     
 
 checkField1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )
-    (c,T) := checkVar1( n, st, map )
+    // Should pass 1 use information about fields that is computed in pass 1
+    // or only information that comes from pass 0. If the former, then the 
+    // order that classes are checked in pass 1 may make a difference to
+    // whether errors are reported. To implement the latter, perhps we
+    // need to pass around 2 map variables, one with info from pass 0 and
+    // the other being build, but not used (between classes) in pass 1.
+    checkVar1( n, st, map )
 
 checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  errorMap )
     val T
@@ -403,7 +413,6 @@ checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  e
         val Te := checkExp1( oe , st, map, errorMap )
         if Te not= {&perp;} and not( Te &lt;: T ) then add new error to errorMap(n)
                 &quot;type of initializer does not match the declared type&quot;
-    return (c,T)
 </pre>
 <pre>&nbsp;</pre>
 </body>
