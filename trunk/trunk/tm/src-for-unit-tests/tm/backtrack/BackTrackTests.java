@@ -30,31 +30,43 @@ public class BackTrackTests  {
 	
 	@Test public void testBTVar() {
 		BTVar<Integer> x = new BTVar<Integer>(timeMan, 13) ;
+		BTVar<Integer> y = new BTVar<Integer>(timeMan, 14) ;
 		
 		assertTrue( ! timeMan.canUndo() ) ;
 		assertEquals(13, x.get().intValue() ) ;
+		assertEquals(14, y.get().intValue() ) ;
 		
 		timeMan.checkpoint() ;
 		
 		assertEquals(13, x.get().intValue() ) ;
+		assertEquals(14, y.get().intValue() ) ;
+		
 		assertTrue( timeMan.canUndo() );
 		
 		x.set( 42 ) ;
+		y.set( 43 ) ;
+		timeMan.checkpoint() ;
+		timeMan.undo() ;
 		
 		assertEquals(42, x.get().intValue() ) ;
+		assertEquals(43, y.get().intValue() ) ;
+		
 		assertTrue( timeMan.canUndo() );
 		
 		timeMan.undo() ; 
 		
 		assertTrue( ! timeMan.canUndo() ) ;
 		assertEquals(13, x.get().intValue() ) ;
+		assertEquals(14, y.get().intValue() ) ;
 		
 		x.set(20) ;
+		y.set(21) ;
 		
 		timeMan.checkpoint() ;
 		timeMan.checkpoint() ;
 		
 		x.set(40) ;
+		y.set(41) ;
 
 		timeMan.checkpoint() ;
 		
@@ -63,6 +75,7 @@ public class BackTrackTests  {
 		timeMan.checkpoint() ;
 
 		assertEquals(20, x.get().intValue() ) ;
+		assertEquals(21, y.get().intValue() ) ;
 	}
 	
 	@Test public void testBTArray() {

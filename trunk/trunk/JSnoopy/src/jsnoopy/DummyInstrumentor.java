@@ -10,12 +10,13 @@ import java.lang.reflect.* ;
 
 class DummyInstrumentor extends Instrumentor {
 
-    synchronized public Object instrument( String name,
-                                          Object baseObject,
-                                          Class[] interfacesToInstrument ) {
+    @Override synchronized public <T> T instrument( String name,
+            										T baseObject,
+            										Class<?>[] interfacesToInstrument,
+            										Class<T> resultType ) {
         return baseObject ;
     }
 
-    synchronized public void appendComment( String str ) {
+    @Override synchronized public void appendComment( String str ) {
     }
 }
