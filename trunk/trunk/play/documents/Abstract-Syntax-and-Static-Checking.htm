@@ -22,9 +22,9 @@
 <h2>Types</h2>
 <p>Types can be primitive, classes, or finite unions of types.</p>
 <pre>   Type --&gt; booleanType | stringType | numberType | anyType | nullType | commType | altType( Type+ )
- | ClassType
+ | ClassType | methodType( Type+ )
     ClassType --&gt; classType[Id]</pre>
-<p>[Need type for methods]</p>
+<p>A method type has a sequence of types as its children. The <strong>final</strong> of these is the return type. All the others are parameter types.</p>
 <h2>Expressions</h2>
 <h3>Literal expressions</h3>
 <pre>   Exp --&gt; numberLiteral[val]</pre>
@@ -110,7 +110,7 @@ OptExp --&gt; noExp | Exp</pre>
   </li>
 </ul>
 <h2>Type atoms and types</h2>
-<p>Type atoms. We assume there is a set of type atoms <em>T</em>={Any, Null, String, Number, Boolean, &perp;} &cup; {Class<sub>i</sub>|? <em>i</em> &isin; <em>I</em>} &cup; M where <em>I</em> is the set of all identifiers and M is the set of all structures method(T0, T1, ..., Tn) where Ti are types as defined below. (T0 is the result type.)</p>
+<p>Type atoms. We assume there is a set of type atoms <em>T</em>={Any, Null, String, Number, Boolean, &perp;} &cup; {Class<sub>i</sub>|? <em>i</em> &isin; <em>I</em>} &cup; M where <em>I</em> is the set of all identifiers and M is the set of all structures Method(T0, T1, ..., Tn) where Ti are types as defined below. (Note T0 is the result type, whereas in the syntax, the final type is the result type. So a node methodType(stringType, boolType) is represented by an atom Method({Boolean}, {String}).)</p>
 <p>The type atom &perp; represents an unknown type; it is used during checking to indicate that the type of an expression in not known. By contrast Any is used to indicate that the type is known to be any type at all.</p>
 <p>Type atoms are partially ordered by a reflexive and transitive subtype relation &lt;:</p>
 <blockquote>
@@ -261,12 +261,13 @@ checkType( n : Node, errorMap : ErrorMap )
             for each fd_i: 
                 let name be the name of fd_i
                 let c be the constness of the declaration
-                let t be the type node for the declaration
-                let T be the type for t in the map
-                add (fd_i, (c,T) ) to the map
+                let T be the type for fd_i in the map // this was computed in pass 0
                 st.put( name, this, c, T) 
             for each fd_i in order of declaration
-                checkField1( fd_i, st, map, errorMap )
+                (c',T') := checkVar1( fd_i, st, map, errorMap )
+                // At this point, (c', T') should agree with what was computed in pass 0.
+                // (I.e. with what is in the map). If they do not, we may have to rethink
+                // this algorithm.
             st.popFrame()
 
 checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
@@ -329,6 +330,7 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
             if param[i] has noType as its type then then add new error to errorMap(Param[i])
                             &quot;Parameters must have a type&quot;
         run checkVar1 on the parameters to get (c[0],T[0]), (c[1],T[1]), ... (c[n],T[n])
+        for each i, add (param[i] +&gt; (c[i],T[i])) to the map
         st.pushFrame()
         for each i in {0,..n}, st.put( param[i].name, local, c[i], T[i] )
         val Tb :=  checkSeq1( seq, st, map, errorMap )
@@ -341,9 +343,9 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
              else if Tb = {&perp;} then skip
              else add a new error to errorMap(n)
                          &quot;method body results in type &quot; +Tb+ &quot;. But the declared result type is &quot; +Tr
-          T :=   {method( Tr, T0, T1, ..., Tn })
+          T :=   {method( Tr, T0, T1, ... Tn })
     case if( e, s0, s1 )
-        val Te := checkExp1( seq, st, map, errorMap )
+        val Te := checkExp1( e, st, map, errorMap )
         if Te /= {boolean} then add new error to errorMap(n)
                 &quot;condition may not be boolean&quot;
         val T0 := checkSeq1( s0, st, map, errorMap )
@@ -367,6 +369,7 @@ checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
         add new error to errorMap(n)
                 &quot;missing code&quot;
         T :=   {&perp;}
+    add (n +&gt; (con,T)) to map
     return T
         
 isAssignable( n : Node, st : SymTab )
@@ -376,9 +379,9 @@ isAssignable( n : Node, st : SymTab )
     case worldVar[i]: return st.hasEntry( i, this) and st.getConst(i,world) == var
     default: return false
 
-
-checkSeq1( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Mpa, errorMap :  errorMap )
-    if n=0 return {Null}
+checkSeq1( s: Node, st : SymTab, map : Mpa, errorMap :  errorMap )
+    let seq( m[0], m[1], ... m[n] ) = s
+    if n=0 then add( s +&gt; (con,{null}) ) to the map ; return {null}
     c := 0
     for each i
         match m[i]
@@ -387,22 +390,15 @@ checkSeq1( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Mpa, errorMap :
                 add new error to errorMap(m[i])
                     &quot;variable does needs either an initialization or a type&quot;
             (c[i],T[i]) := checkVar1( m[i], st, map, errorMap :  errorMap )
+            add (m[i] +&gt; (c[i],T[i]) to the map
             st.pushFrame()
             c := c+1
             st.put( i, local, c[i], T[i] )
         default
             T[i] := checkExp1( m[i], st, map, errorMap :  errorMap )
     for each i in {0,..c} st.pop()
+    add (con,{null}) to the map
     return T[n-1]     
-
-checkField1( n : Node, st : SymTab, map : Map, errorMap :  errorMap )
-    // Should pass 1 use information about fields that is computed in pass 1
-    // or only information that comes from pass 0. If the former, then the 
-    // order that classes are checked in pass 1 may make a difference to
-    // whether errors are reported. To implement the latter, perhps we
-    // need to pass around 2 map variables, one with info from pass 0 and
-    // the other being build, but not used (between classes) in pass 1.
-    checkVar1( n, st, map )
 
 checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  errorMap )
     val T
@@ -412,7 +408,8 @@ checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  e
         T := checkType( ot )
         val Te := checkExp1( oe , st, map, errorMap )
         if Te not= {&perp;} and not( Te &lt;: T ) then add new error to errorMap(n)
-                &quot;type of initializer does not match the declared type&quot;
+                &quot;type of initializer does not match the declared type
+        return (T, c)
 </pre>
 <pre>&nbsp;</pre>
 </body>
