@@ -26,6 +26,7 @@ public class Type {
 	
 	public void addTypeAtom(TypeAtom ta){
 		atoms.add(ta);
+		canonicalize();
 	}
 	
 	
@@ -41,22 +42,7 @@ public class Type {
 		}
 		return t;
 	}
-	
-	public void canonicalize(){
 		
-		for(int i=0;i<getAtomsAmount()-1;i++){
-			for(int j=i+1;j<getAtomsAmount();j++){
-				if(atoms.get(i).isSuperAtomOf(atoms.get(j))){
-					atoms.remove(j);
-					j--;
-				}else if(atoms.get(j).isSuperAtomOf(atoms.get(i))){
-					atoms.remove(i);
-					j=i;
-				}					
-			}
-		}	
-	}
-	
 	public boolean isUnknown(){
 		if(getAtomsAmount()==1&&atoms.get(0).equals(UnknownAtom.getInstance()))
 			return true;
@@ -98,10 +84,12 @@ public class Type {
 		// TODO Auto-generated method stub
 		boolean[] flags = new boolean[t.getAtomsAmount()];//all false
 		
+		
 		for(int i=0;i<t.getAtomsAmount();i++){
 			TypeAtom ta=t.atoms.get(i);
 			for(TypeAtom ta2:this.atoms){
 				if(ta2.isSuperAtomOf(ta)){
+					
 					flags[i]=true;
 				}
 			}
@@ -109,6 +97,7 @@ public class Type {
 		
 		int i=0;
 		while(i<flags.length){
+			
 			if(!flags[i])
 				return false;
 			i++;
@@ -118,6 +107,20 @@ public class Type {
 		
 	}
 	
-	
+
+	private void canonicalize(){
+		
+		for(int i=0;i<getAtomsAmount()-1;i++){
+			for(int j=i+1;j<getAtomsAmount();j++){
+				if(atoms.get(i).isSuperAtomOf(atoms.get(j))){
+					atoms.remove(j);
+					j--;
+				}else if(atoms.get(j).isSuperAtomOf(atoms.get(i))){
+					atoms.remove(i);
+					j=i;
+				}					
+			}
+		}
+	}
 	
 }

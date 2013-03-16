@@ -373,6 +373,42 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
     },
 
+    METHODTYPE {
+
+	@Override
+	public boolean contentModel(List<PLAYTag> seq) {
+		
+		if(seq!=null && seq.size()>0){
+			for (PLAYTag pt : seq) {
+				if (isType(pt))
+				    continue;
+				else
+				    return false;
+		    }
+		}	
+	    return true;
+	}
+
+	@Override
+	public List<PLAYTag> defaultTagSequence() {
+	    return new ArrayList<PLAYTag>();
+	}
+
+	@Override
+	public PLAYPayload defaultPayload() {
+	    return new PLAYPayload("METHODTYPE", METHODTYPE);
+	}
+
+	/**
+	 * @see java.lang.Enum#toString()
+	 */
+	@Override
+	public String toString() {
+	    return "METHODTYPE";
+	}
+
+    },
+    
     SEQ {
 
 	@Override
@@ -1020,7 +1056,8 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	return pt.equals(BOOLEANTYPE) || pt.equals(STRINGTYPE)
 		|| pt.equals(NUMBERTYPE) || pt.equals(ANYTYPE)
 		|| pt.equals(NULLTYPE) || pt.equals(COMMTYPE)
-		|| pt.equals(ALTTYPE) || pt.equals(CLASSTYPE);
+		|| pt.equals(ALTTYPE) || pt.equals(CLASSTYPE)
+		|| pt.equals(METHODTYPE);
     }
 
 }

@@ -15,9 +15,9 @@ public class NullAtom extends AnyAtom {
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(ta.equals(NullAtom.getInstance())){
+		if(ta.equals(NullAtom.getInstance()))
 			return true;
-		}else
+		else
 			return false;		
 	}
 	
