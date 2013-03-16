@@ -7,6 +7,8 @@ package play.ide.checker.type.typeAtoms;
  */
 public class ClassAtom extends AnyAtom {
 	private  String i;
+	
+
 	private static ClassAtom instance = new ClassAtom();
 	
 	public ClassAtom(){
@@ -21,13 +23,19 @@ public class ClassAtom extends AnyAtom {
 		return instance;
 	}
 	
+	public String getI() {
+		return i;
+	}
+	
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
 		if(ta.equals(ClassAtom.getInstance())){
-			return true;
-		}else
-			return false;		
+			ClassAtom ca = (ClassAtom)ta;
+			if(i.equals(ca.getI()))
+				return true;
+		}
+		return false;		
 	}
 	
 	@Override

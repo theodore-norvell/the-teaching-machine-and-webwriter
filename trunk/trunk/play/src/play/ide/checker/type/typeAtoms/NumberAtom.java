@@ -15,14 +15,16 @@ public class NumberAtom extends StringAtom {
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(ta.equals(NumberAtom.getInstance())){
+
+		if(ta.equals(NumberAtom.getInstance()))
 			return true;
-		}else
-			return false;		
+		else
+			return false;	
 	}
 	
 	@Override
 	public String toString(){
 		return "Number";
 	}
+
 }

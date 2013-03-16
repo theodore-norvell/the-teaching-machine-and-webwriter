@@ -7,4 +7,6 @@ package play.ide.checker.type.typeAtoms;
  */
 public abstract class TypeAtom {
 	public abstract boolean isSuperAtomOf(TypeAtom ta);
+		
+	
 }

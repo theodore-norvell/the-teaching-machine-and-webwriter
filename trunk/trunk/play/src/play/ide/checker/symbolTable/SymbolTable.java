@@ -23,15 +23,34 @@ public class SymbolTable {
 	
 	public Type get(String i, Kind k){
 		
-		int top=frames.size()-1;
 		FieldKey fk=new FieldKey(i,k);
-		if(frames.get(top).containsKey(fk))
-			return frames.get(top).get(fk).t;
-		else{
-			Type t =new Type();
-			t.addTypeAtom(UnknownAtom.getInstance());
-			return t;
+		
+		//TBD: Order matters? i.e. check top frame first or last?
+		for(HashMap<FieldKey,FieldValue> frame: frames ){
+			if(frame.containsKey(fk)){
+				return frame.get(fk).t;
+			}
 		}
+		
+		Type t =new Type();
+		t.addTypeAtom(UnknownAtom.getInstance());
+		return t;
+			
+	}
+	
+	public Constness getConst(String i, Kind k){
+		
+		FieldKey fk=new FieldKey(i,k);
+		
+		//TBD: Order matters? i.e. check top frame first or last?
+		for(HashMap<FieldKey,FieldValue> frame: frames ){
+			if(frame.containsKey(fk)){
+				return frame.get(fk).c;
+			}
+		}
+		
+		//TBD
+		return null;
 			
 	}
 	
@@ -47,10 +66,16 @@ public class SymbolTable {
 		frames.remove(frames.size()-1);
 	}
 
-	public boolean topFrameContains(String i, Kind k){
-		int top=frames.size()-1;
+	public boolean hasEntry(String i, Kind k){
+
 		FieldKey fk=new FieldKey(i,k);
-		return frames.get(top).containsKey(fk);
+
+		for(HashMap<FieldKey,FieldValue> frame: frames ){
+			if(frame.containsKey(fk))
+				return true;
+		}
+		
+		return false;
 	}
 	
 }

@@ -15,7 +15,8 @@ public class UnknownAtom extends TypeAtom{
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(ta.equals(AnyAtom.getInstance())||AnyAtom.getInstance().isSuperAtomOf(ta)
+		if( ta.equals(UnknownAtom.getInstance())
+				||ta.equals(AnyAtom.getInstance())||AnyAtom.getInstance().isSuperAtomOf(ta)
 				){
 				return true;
 			}else

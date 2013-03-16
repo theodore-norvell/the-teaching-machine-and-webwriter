@@ -15,9 +15,9 @@ public class BooleanAtom extends StringAtom {
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta) {
 		// TODO Auto-generated method stub
-		if(ta.equals(BooleanAtom.getInstance())){
+		if(ta.equals(BooleanAtom.getInstance()))
 			return true;
-		}else
+		else
 			return false;		
 	}
 	

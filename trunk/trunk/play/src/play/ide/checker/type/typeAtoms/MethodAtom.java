@@ -13,39 +13,40 @@ import play.ide.checker.type.Type;
 public class MethodAtom extends TypeAtom{
 	
 	private List<Type> tlist;
-	private static MethodAtom instance = new MethodAtom();
-	
-	public MethodAtom(){
-		tlist = new ArrayList<Type>();
-	}
-	
-	public MethodAtom(List<Type> l){
+	private Type returnType;
+
+	public MethodAtom(Type rType, List<Type> l){
+		returnType=rType;
 		tlist=l;
 	}
 	
-	public static synchronized MethodAtom getInstance(){
-		return instance;
+	public Type getReturnType() {
+		return returnType;
 	}
 	
 	public Type getTypeAt(int i){
 		return tlist.get(i);
 	}
 	
-	public int getAmountOfTypes(){
+	public int getParamListSize(){
 		return tlist.size();
 	}
-	
+
+	public void setReturnType(Type returnType) {
+		this.returnType = returnType;
+	}
+
 	@Override
 	public boolean isSuperAtomOf(TypeAtom ta){
 		MethodAtom ma = (MethodAtom)ta;
-		int size=this.getAmountOfTypes();
-		if(size!=ma.getAmountOfTypes()){
+		int size=this.getParamListSize();
+		if(size!=ma.getParamListSize()){
 			return false;
 		}
-		if(!this.getTypeAt(0).isSuperTypeOf(ma.getTypeAt(0))){
+		if(!this.getReturnType().isSuperTypeOf(ma.getReturnType())){
 			return false;
 		}
-		for(int i=1;i<size;i++){
+		for(int i=0;i<size;i++){
 			if(!ma.getTypeAt(i).isSuperTypeOf(this.getTypeAt(i)))
 				return false;
 		}
@@ -57,10 +58,14 @@ public class MethodAtom extends TypeAtom{
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
 		sb.append("method( ");
+		sb.append("{");
+		sb.append(returnType);
+		sb.append("}");
+		sb.append(",");
 		for(Type t:tlist){
 			sb.append("{");
 			for(TypeAtom ta:t.getAtomsList()){
-				sb.append(ta.toString());
+				sb.append(ta);
 				sb.append(",");
 			}
 			sb.deleteCharAt(sb.length()-1);
@@ -78,8 +83,12 @@ public class MethodAtom extends TypeAtom{
 			return false;
 		
 		MethodAtom ma = (MethodAtom)o;
-		int size=this.getAmountOfTypes();
-		if(size!=ma.getAmountOfTypes()){
+		int size=this.getParamListSize();
+		if(size!=ma.getParamListSize()){
+			return false;
+		}
+		
+		if(!this.getReturnType().equals(ma.getReturnType())){
 			return false;
 		}
 		
