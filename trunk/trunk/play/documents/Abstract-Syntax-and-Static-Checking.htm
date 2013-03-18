@@ -165,6 +165,10 @@ OptExp --&gt; noExp | Exp</pre>
                 st.put( name, this, c, T) 
                 add (fd_i, (c,T) ) to the map
             for each fd_i in order of declaration
+               // Rather than order of declaration, we might want to use 
+               // an order that repects the depence between the fields and their
+               // initialization expressions. E.g.  var x:=y ; var y :=z ; var z:=1
+               // would be precessed in order [z, y, x]
                if fd_i is mapped to  {&perp;},
                    checkField0( fd0, st, map )
             st.popFrame()
@@ -221,6 +225,7 @@ checkSeq0( seq( m[0], m[1], ... m[n] ): Node, st : SymTab, map : Map )
 
 checkField0( n : Node, st : SymTab, map : Map )
     (c,T) := checkVar0( n, st, map )
+    if T =  {&perp;} then add to errorMap for n &quot;Could not deduce the type of this field&quot;
     change the value of n in the map to (c,T)
     update st
 
@@ -265,16 +270,16 @@ checkType( n : Node, errorMap : ErrorMap )
                 st.put( name, this, c, T) 
             for each fd_i in order of declaration
                 (c',T') := checkVar1( fd_i, st, map, errorMap )
-                // At this point, (c', T') should agree with what was computed in pass 0.
-                // (I.e. with what is in the map). If they do not, we may have to rethink
-                // this algorithm.
             st.popFrame()
 
 checkExp1( n : Node, st : SymTab, map : Map, errorMap :  errorMap ) is
     var T
     match n 
     case noExp: T :=  {&perp;}
-    case numberLiteral: T :=   {number}
+    case numberLiteral[v]:
+        if v can't be converted to a number, then add error to errorMap(n)
+                                                  &quot;Syntax error in number&quot;
+        T :=   {number}
     case true: T :=   {boolean}
     case false: T :=   {boolean}
     case stringLiteral[v]: T :=   {string}
@@ -397,12 +402,14 @@ checkSeq1( s: Node, st : SymTab, map : Mpa, errorMap :  errorMap )
         default
             T[i] := checkExp1( m[i], st, map, errorMap :  errorMap )
     for each i in {0,..c} st.pop()
-    add (con,{null}) to the map
+    add ( s +&gt; (con,{null})) to the map
     return T[n-1]     
 
 checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  errorMap )
     val T
     if ot is NoType then
+        if oe is noExp then add error to errorMap for this varDecl node
+                        &quot;Can not determine the type of this variable&quot;
         T := checkExp1( oe , st, map, errorMap )
     else
         T := checkType( ot )
@@ -411,6 +418,5 @@ checkVar1( vardecl[i, c]( ot, oe ) : Node, st : SymTab, map : Map, errorMap :  e
                 &quot;type of initializer does not match the declared type
         return (T, c)
 </pre>
-<pre>&nbsp;</pre>
 </body>
 </html>
