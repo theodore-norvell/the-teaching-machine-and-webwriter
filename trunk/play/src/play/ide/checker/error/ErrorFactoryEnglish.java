@@ -17,7 +17,7 @@ public class ErrorFactoryEnglish extends ErrorFactory {
     
 	@Override
     public PLAYError typeOfInitializerMismatchTheDeclaredType( Type lhsType, Type rhsType) {
-        return new PLAYError(  "type of initializer "+ lhsType+" does not match the declared type "+ rhsType) ; }
+        return new PLAYError(  "type of initializer "+ lhsType+" does not match the declared var type "+ rhsType) ; }
 	
 	@Override
 	public PLAYError fieldNotFound(String fieldName) {
@@ -64,7 +64,7 @@ public class ErrorFactoryEnglish extends ErrorFactory {
 	@Override
 	public PLAYError methodTypeMismatch(Type tb, Type tr) {
 		// TODO Auto-generated method stub
-		return new PLAYError("method body result is type " +tb+ ". But the declared result type is " +tr);
+		return new PLAYError("method body result is type " +tb+ ". But the declared method result type is " +tr);
 	}
 	
 	@Override
@@ -82,7 +82,56 @@ public class ErrorFactoryEnglish extends ErrorFactory {
 	@Override
 	public PLAYError parsingNumber(String str) {
 		// TODO Auto-generated method stub
-		return new PLAYError("Literal "+str+" cannot be parsed to Type Number");
+		return new PLAYError("Syntax error in number "+str);
+	}
+	
+	@Override
+	public PLAYError missingCode() {
+		// TODO Auto-generated method stub
+		return new PLAYError("Missing code");
+	}
+
+	@Override
+	public PLAYError typeErrorInAssignment(Type te0, Type te1) {
+		// TODO Auto-generated method stub
+		return new PLAYError( "Type error in assignment. "+ te1 +" is not a subtype of "+te0);
+	}
+
+	@Override
+	public PLAYError expNotAssignable() {
+		// TODO Auto-generated method stub
+		return new PLAYError( "Expression not assignable.");
+		
+	}
+	
+	@Override
+	public PLAYError cannotDeduceTypeForField(String payloadValue) {
+		// TODO Auto-generated method stub
+		return new PLAYError("Could not deduce the type of field "+payloadValue);
+	}
+
+	@Override
+	public PLAYError cannotDetermineTypeForVar(String payloadValue) {
+		// TODO Auto-generated method stub
+		return new PLAYError( "Can not determine the type for variable "+payloadValue);
+	}
+
+	@Override
+	public PLAYError paramlistLenNotMatch(int n1, int m) {
+		// TODO Auto-generated method stub
+		return new PLAYError(n1+ " arguments were expected, but there are" +m+ "." );
+	}
+
+	@Override
+	public PLAYError paramTypeNotMatch() {
+		// TODO Auto-generated method stub
+		return new PLAYError("The type of argument does not match the type of the parameter.");
+	}
+
+	@Override
+	public PLAYError onlyMethodsMayBeCalled() {
+		// TODO Auto-generated method stub
+		return new PLAYError( "Only methods may be called.");
 	}
 
 

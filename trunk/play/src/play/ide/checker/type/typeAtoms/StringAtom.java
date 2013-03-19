@@ -27,6 +27,6 @@ public class StringAtom extends AnyAtom{
 	
 	@Override
 	public String toString(){
-		return "String";
+		return "STRING";
 	}
 }

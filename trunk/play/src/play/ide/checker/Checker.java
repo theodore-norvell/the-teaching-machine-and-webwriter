@@ -78,6 +78,7 @@ public class Checker {
 
 			for(PLAYNode pn:vardecls){
 				if(map.get(pn).getType().isUnknown()){
+					
 					checkField0(pn, st, map);
 				}	
 			}
@@ -104,6 +105,9 @@ public class Checker {
 		
 		FieldValue fv = checkVar0(pn, st, map);
 		
+		if(fv.getType().isUnknown()){
+			errorMap.addError(pn, errFTYEng.cannotDeduceTypeForField(pn.getPayload().getPayloadValue()));
+		}
 		map.put(pn, fv);
 		st.put(pn.getPayload().getPayloadValue(),Kind.THIS, fv.getConstness(), fv.getType());
 	
@@ -180,7 +184,7 @@ public class Checker {
 			PLAYNode ot = pn.getChild(1);
 			PLAYNode seq = pn.getChild(2);
 			
-			for(int i=0;i<param.getChildren().size();i++){
+			for(int i=0;i<param.getNumberOfChildren();i++){
 				PLAYNode n2 = param.getChild(i);
 				FieldValue fv = checkVar0(n2, st, map);
 				fvs.add(new FieldValue(n2.getPayload().getConstness(),fv.getType()));
@@ -249,11 +253,8 @@ public class Checker {
 				st.put(pn.getPayload().getPayloadValue(), Kind.LOCAL, 
 						fv.getConstness(), fv.getType());
 				break;
-			default:
-				
+			default:			
 				fv = new FieldValue(pn.getPayload().getConstness(),checkExp0(pn,st,map));
-				
-				break;
 			}
 		}
 		for(int i=0;i<c;i++){
@@ -343,7 +344,6 @@ public class Checker {
 		default:
 			System.out.println("checkType error!!!");
 			t=null;
-			break;
 		}
 		return t;
 		
@@ -351,7 +351,8 @@ public class Checker {
 	
 	//=====================================================================
 	
-	private void checkClass1(PLAYNode n, SymbolTable st, HashMap<PLAYNode,FieldValue> map, ErrorMap errorMap){
+	private void checkClass1(PLAYNode n, SymbolTable st, 
+			HashMap<PLAYNode,FieldValue> map, ErrorMap errorMap){
 
 		switch(n.getTag()) {
 		case CLASS:
@@ -381,19 +382,19 @@ public class Checker {
 			for(PLAYNode pn:fields){
 				FieldValue fv = map.get(pn);
 				
-				map.put(pn, fv);
+				
 				st.put(pn.getPayload().getPayloadValue(), Kind.THIS, 
 						fv.getConstness(), fv.getType());
 			}
 			
-			for(PLAYNode pn:fields){				
-				FieldValue fv = checkVar1( pn, st, map, errorMap );
+			for(PLAYNode pn:fields){
+				checkVar1( pn, st, map, errorMap );
+				//FieldValue fv = checkVar1( pn, st, map, errorMap );
 				
-				if(!fv.getConstness().equals(map.get(pn).getConstness())||
+				/*if(!fv.getConstness().equals(map.get(pn).getConstness())||
 						!fv.getType().equals(map.get(pn).getType())){
-					System.out.println("Sth wrong in checkClass1 algorithm!!!");
-					
-				}
+					System.out.println("Sth wrong in checkClass1 algorithm!!!");	
+				}*/
 			}
 			st.popFrame();
 
@@ -405,18 +406,15 @@ public class Checker {
 
 	}
 
-/*	private void checkField1(PLAYNode pn, SymbolTable st,
-			HashMap<PLAYNode, FieldValue> map, ErrorMap errorMap) {
-		
-		checkVar1(pn, st, map, errorMap);
-		
-	}*/
-
 	private FieldValue checkVar1(PLAYNode pn, SymbolTable st,
 			HashMap<PLAYNode, FieldValue> map, ErrorMap errorMap) {
 		
 		Type t;
 		if(pn.getChild(0).getTag().equals(PLAYTag.NOTYPE)){
+			
+			if(pn.getChild(1).getTag().equals(PLAYTag.NOEXP)){
+				errorMap.addError(pn,errFTYEng.cannotDetermineTypeForVar(pn.getPayload().getPayloadValue()));
+			}
 			
 			t = checkExp1(pn.getChild(1), st, map, errorMap);	
 		}else{
@@ -442,16 +440,6 @@ public class Checker {
 		
 		switch(pn.getTag()){
 		case NOEXP:
-			//TBD
-			if(map.containsKey(pn.getParent())){
-				Type parentType=map.get(pn.getParent()).getType();
-				if(parentType.equals(new Type(UnknownAtom.getInstance()))){
-					errorMap.addError(pn,errFTYEng.incompleteDeclaration(
-										pn.getParent().getPayload().getPayloadValue() ) 
-								  	);
-				}
-			}
-			
 			t=new Type(UnknownAtom.getInstance());
 			break;
 		case NUMBERLITERAL:
@@ -479,16 +467,19 @@ public class Checker {
 				errorMap.addError(pn,errFTYEng.fieldNotFound(i) );
 				t= new Type(UnknownAtom.getInstance());
 			}	
-			break;
-		case LOCALVAR:
 			
+			break;
+			
+		case LOCALVAR:
 			if(st.hasEntry(i, Kind.LOCAL)){
 				t= st.get(i, Kind.LOCAL);
 			}else{
 				errorMap.addError(pn, errFTYEng.localVarNotFound(i));
 				t= new Type(UnknownAtom.getInstance());
 			}
+			
 			break;
+			
 		case WORLDVAR:
 			if(st.hasEntry(i, Kind.WORLD)){
 				t= st.get(i, Kind.WORLD);
@@ -496,9 +487,10 @@ public class Checker {
 				errorMap.addError(pn, errFTYEng.worldVarNotFound(i));
 				t= new Type(UnknownAtom.getInstance());
 			}
-			break;
-		case DOT:
 			
+			break;
+			
+		case DOT:
 			Type t0=checkExp1(pn.getChild(0),st,map,errorMap);
 			if(t0.isUnknown()){
 				t= new Type(UnknownAtom.getInstance()); 
@@ -531,7 +523,9 @@ public class Checker {
 					}	
 				}	
 			}
+			
 			break;
+			
 		case THIS:
 			PLAYNode n = pn;
 			while(!n.getTag().equals(PLAYTag.CLASS)){
@@ -541,7 +535,9 @@ public class Checker {
 			}
 			
 			t= new Type(new ClassAtom(n.getPayload().getPayloadValue()));
+			
 			break;
+			
 		case METHOD:
 			
 			List<FieldValue> fvs = new ArrayList<FieldValue>();
@@ -609,7 +605,7 @@ public class Checker {
 		case IF:
 
 			Type te = checkExp1( pn.getChild(0), st, map, errorMap );
-			
+
 			if(!te.equals(new Type(BooleanAtom.getInstance()))){
 				errorMap.addError(pn, errFTYEng.conditionNotBoolean());
 			}
@@ -621,19 +617,87 @@ public class Checker {
 			break;
 			
 		case WHILE:
-		case ASSIGN:			
+			Type tee = checkExp1( pn.getChild(0), st, map, errorMap );
+			if(!tee.equals(new Type(BooleanAtom.getInstance()))){
+				errorMap.addError(pn, errFTYEng.conditionNotBoolean());
+			}
+	        checkSeq1( pn.getChild(1), st, map, errorMap );
+	        t=new Type(NullAtom.getInstance());
+	        
+	        break;
+	        
 		case EXPPLACEHOLDER:
-		case CALLCLOSURE:
-		case CALLWORLD:
+			errorMap.addError(pn, errFTYEng.missingCode());
+			t=new Type(UnknownAtom.getInstance());
+			break;
 		
-		case SEQ:
+		case ASSIGN:	
+			Type te0 = checkExp1( pn.getChild(0), st, map, errorMap );
+			Type te1 = checkExp1( pn.getChild(1), st, map, errorMap );
+			if(!te0.isSuperTypeOf(te1)){
+				errorMap.addError(pn, errFTYEng.typeErrorInAssignment(te0,te1));
+			}
+			if(!isAssignable(pn.getChild(0),st)){
+				errorMap.addError(pn.getChild(0), errFTYEng.expNotAssignable());
+			}
+
+	        t =  new Type(NullAtom.getInstance());
+			break;
+			
+		case CALLCLOSURE:
+	        
+	       	List<Type> p = new ArrayList<Type>();
+	        int n1 = pn.getNumberOfChildren()-1;
+	        for(int j=0;j<=n1;j++){
+	        	p.set(j, checkExp1( pn.getChild(1), st, map, errorMap ));
+	        }
+	        Type tm = p.get(0);
+	        if(tm.getAtomsAmount()==1 
+	        		&&tm.toString().contains("METHOD")){
+	        	MethodAtom ma = (MethodAtom)tm.getAtomsList().get(0);
+	        	int m = ma.getParamListSize();
+	        	if(m!=n1){
+	        		errorMap.addError(pn, errFTYEng.paramlistLenNotMatch(n1,m));
+	        	}else{	
+	        		for(int j=1;j<=m;j++){
+	        			if(!ma.getParamTypeAt(j-1).isSuperTypeOf(p.get(j))){
+	        				errorMap.addError(pn.getChild(j), errFTYEng.paramTypeNotMatch());
+	        			}
+	        		}
+	        	}
+	        }else{
+	        	errorMap.addError(pn, errFTYEng.onlyMethodsMayBeCalled());
+	        }
+
+			break;
+			
+		case CALLWORLD:
+			break;
 		default:
 			System.out.println("TBD");
-			break;
 		}
-		
+
+		map.put(pn, new FieldValue(Constness.CON,t));
 		return t;
 
+	}
+
+	private boolean isAssignable(PLAYNode n, SymbolTable st) {
+		String i = n.getPayload().getPayloadValue();
+		switch(n.getTag()){
+		case THISVAR: 
+			return st.hasEntry( i, Kind.THIS) 
+					&& st.getConst(i,Kind.THIS).equals(Constness.VAR);
+    	case LOCALVAR: 
+    		return st.hasEntry( i, Kind.LOCAL) 
+					&& st.getConst(i,Kind.LOCAL).equals(Constness.VAR);
+    	case WORLDVAR: 
+    		return st.hasEntry( i, Kind.WORLD) 
+					&& st.getConst(i,Kind.WORLD).equals(Constness.VAR);
+    	default: 
+    		return false;
+		}
+    	
 	}
 
 	private Type checkSeq1(PLAYNode seq, SymbolTable st,
@@ -665,17 +729,14 @@ public class Checker {
 				break;
 				
 			default:
-				
-				fv = new FieldValue(pn.getPayload().getConstness(),checkExp1(pn,st,map, errorMap));
-				
-				break;
+				fv = new FieldValue(pn.getPayload().getConstness(),checkExp1(pn,st,map, errorMap));	
 			}
 		}
 		
 		for(int i=0;i<c;i++){
 			st.popFrame();
 		}
-		//TBD
+		
 		map.put(seq, new FieldValue(Constness.CON, new Type(NullAtom.getInstance())));
 		return fv.getType();
 	}

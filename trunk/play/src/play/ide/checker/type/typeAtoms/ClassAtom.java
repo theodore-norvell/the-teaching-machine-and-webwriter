@@ -40,7 +40,7 @@ public class ClassAtom extends AnyAtom {
 	
 	@Override
 	public String toString(){
-		return "Class "+i;
+		return "CLASS "+i;
 	}
 	
 	@Override

@@ -23,6 +23,6 @@ public class AnyAtom extends UnknownAtom{
 	
 	@Override
 	public String toString(){
-		return "Any";
+		return "ANY";
 	}
 }

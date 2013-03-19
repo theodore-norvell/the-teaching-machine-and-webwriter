@@ -23,6 +23,6 @@ public class NullAtom extends AnyAtom {
 	
 	@Override
 	public String toString(){
-		return "Null";
+		return "NULL";
 	}
 }

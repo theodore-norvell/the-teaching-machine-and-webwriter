@@ -25,6 +25,6 @@ public class UnknownAtom extends TypeAtom{
 	
 	@Override
 	public String toString(){
-		return "Unknown";
+		return "UNKNOWN";
 	}
 }
