@@ -26,7 +26,8 @@ public class ErrorMap {
 		map.get(n).add(e);
 
 		/*print errors*/
-		System.out.println(e.getMessage());	
+		System.out.println("ERROR: "+e.getMessage());	
+		//System.err.println(e.getMessage());
 		
 	}
 	

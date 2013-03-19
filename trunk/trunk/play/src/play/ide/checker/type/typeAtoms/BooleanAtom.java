@@ -23,6 +23,6 @@ public class BooleanAtom extends StringAtom {
 	
 	@Override
 	public String toString(){
-		return "Boolean";
+		return "BOOLEAN";
 	}
 }

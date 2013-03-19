@@ -24,12 +24,12 @@ public class MethodAtom extends TypeAtom{
 		return returnType;
 	}
 	
-	public Type getTypeAt(int i){
-		return tlist.get(i);
-	}
-	
 	public int getParamListSize(){
 		return tlist.size();
+	}
+	
+	public Type getParamTypeAt(int i){
+		return tlist.get(i);
 	}
 
 	public void setReturnType(Type returnType) {
@@ -47,7 +47,7 @@ public class MethodAtom extends TypeAtom{
 			return false;
 		}
 		for(int i=0;i<size;i++){
-			if(!ma.getTypeAt(i).isSuperTypeOf(this.getTypeAt(i)))
+			if(!ma.getParamTypeAt(i).isSuperTypeOf(this.getParamTypeAt(i)))
 				return false;
 		}
 		return true;
@@ -57,7 +57,7 @@ public class MethodAtom extends TypeAtom{
 	@Override
 	public String toString(){
 		StringBuffer sb = new StringBuffer();
-		sb.append("method( ");
+		sb.append("METHOD( ");
 		sb.append("{");
 		sb.append(returnType);
 		sb.append("}");
@@ -79,7 +79,7 @@ public class MethodAtom extends TypeAtom{
 	
 	@Override
 	public boolean equals(Object o){
-		if(!o.toString().contains("method"))
+		if(!o.toString().contains("METHOD"))
 			return false;
 		
 		MethodAtom ma = (MethodAtom)o;

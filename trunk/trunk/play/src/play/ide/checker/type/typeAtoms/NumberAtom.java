@@ -24,7 +24,7 @@ public class NumberAtom extends StringAtom {
 	
 	@Override
 	public String toString(){
-		return "Number";
+		return "NUMBER";
 	}
 
 }

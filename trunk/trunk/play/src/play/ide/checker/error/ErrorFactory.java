@@ -23,4 +23,12 @@ public abstract class ErrorFactory {
     public abstract PLAYError incompleteDeclaration(String str);
     public abstract PLAYError conditionNotBoolean();
     public abstract PLAYError parsingNumber(String str);
+    public abstract PLAYError missingCode();
+    public abstract PLAYError typeErrorInAssignment(Type te0, Type te1);
+	public abstract PLAYError expNotAssignable();
+	public abstract PLAYError cannotDeduceTypeForField(String payloadValue);
+	public abstract PLAYError cannotDetermineTypeForVar(String payloadValue);
+	public abstract PLAYError paramlistLenNotMatch(int n1, int m);
+	public abstract PLAYError paramTypeNotMatch();
+	public abstract PLAYError onlyMethodsMayBeCalled();
 }
