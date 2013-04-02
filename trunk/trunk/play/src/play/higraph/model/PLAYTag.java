@@ -20,8 +20,8 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
-	    if (seq.isEmpty())
-		return false;
+/*	    if (seq.isEmpty())
+	    	return false;*/
 
 	    for (int i = 0; i < seq.size() - 1; i++) {
 		if (seq.get(i).equals(VARDECL))
@@ -29,15 +29,15 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 		else
 		    return false;
 	    }
-
-	    return seq.get(seq.size() - 1).equals(VARDECL)
-		    || seq.get(seq.size() - 1).equals(METHOD);
-	    // METHOD is optional but must be at last
+	    
+	    return seq.get(seq.size() - 1).equals(METHOD);
 	}
 
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
-	    return new ArrayList<PLAYTag>();
+		List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+	    defaultTagSequence.add(METHOD);
+	    return defaultTagSequence;
 	}
 
 	@Override

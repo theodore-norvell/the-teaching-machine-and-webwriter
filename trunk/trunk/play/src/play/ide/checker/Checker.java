@@ -63,7 +63,7 @@ public class Checker {
 		switch(n.getTag()) {
 		case CLASS:
 			List<PLAYNode> vardecls = n.getChildren();//get all VARDECL nodes
-
+			vardecls.remove(vardecls.size()-1);
 			st.pushFrame();
 
 			for(PLAYNode vardecl:vardecls){
@@ -342,6 +342,7 @@ public class Checker {
 			break;
 		
 		default:
+			System.out.println(n.getTag());
 			System.out.println("checkType error!!!");
 			t=null;
 		}
@@ -357,6 +358,7 @@ public class Checker {
 		switch(n.getTag()) {
 		case CLASS:
 			List<PLAYNode> fields = n.getChildren();//get all VARDECL nodes
+			fields.remove(fields.size()-1);
 			int numOfFields = fields.size();
 			
 			/**check that all the field names are distinct*/
