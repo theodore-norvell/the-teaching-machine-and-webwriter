@@ -38,6 +38,7 @@ public class CheckerTest {
 		
 		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
 		whole.makeRootNode(new PLAYPayload("Class1", PLAYTag.CLASS, "Class1"));
+		
 		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
 		
 		//VARDECL x
@@ -614,7 +615,7 @@ public class CheckerTest {
 		PLAYWholeGraph whole = new PLAYWholeGraph(new BTTimeManager());
 		whole.makeRootNode(new PLAYPayload("Class24", PLAYTag.CLASS, "Class24"));
 		whole.getTop(0).insertChild(0, PLAYTag.VARDECL);
-		
+		 
 		//VARDECL x
 		whole.getTop(0).getChild(0).getPayload().setPayloadValue("x");
 		whole.getTop(0).getChild(0).getPayload().setConstness(Constness.CON);
