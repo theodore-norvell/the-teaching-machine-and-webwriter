@@ -25,7 +25,6 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.FileDialog;
 import java.awt.Font;
 import java.awt.Image;
@@ -37,7 +36,6 @@ import java.awt.event.WindowEvent;
 
 import tm.configuration.Configuration;
 import tm.configuration.ConfigurationServer;
-import tm.interfaces.CommandInterface;
 import tm.interfaces.Configurable;
 import tm.interfaces.ExternalCommandInterface;
 import tm.interfaces.ImageSourceInterface;
@@ -208,7 +206,11 @@ public class TMMainFrame extends JFrame
             goItem = new JMenuItem( goAction ) ;
             menuGo.add( goItem ) ;
 
-            goAction = new goAction("Backward", GOBACK ) ;
+            goAction = new goAction("Undo", GOBACK ) ;
+            goItem = new JMenuItem( goAction ) ;
+            menuGo.add( goItem ) ;
+
+            goAction = new goAction("Redo", REDO ) ;
             goItem = new JMenuItem( goAction ) ;
             menuGo.add( goItem ) ;
 
@@ -586,6 +588,9 @@ public class TMMainFrame extends JFrame
     public void goBack() {
         tmBigApplet.goBack() ; }
 
+    public void redo() {
+        tmBigApplet.redo() ; }
+
     public void go( String commandString ) {
     	tmBigApplet.go( commandString ) ; }
 
@@ -711,7 +716,7 @@ public class TMMainFrame extends JFrame
             clearRootDir( ) ; } }
 
     public static final int GOFORWARD=0, GOBACK=1,
-            OVERALL = 2, MICROSTEP = 3, INTOEXP = 4, INTOSUB = 5 ;
+            OVERALL = 2, MICROSTEP = 3, INTOEXP = 4, INTOSUB = 5, REDO = 6 ;
 
     class goAction extends AbstractAction {
 
@@ -723,6 +728,7 @@ public class TMMainFrame extends JFrame
             switch( howMuch ) {
                 case TMMainFrame.GOFORWARD : goForward() ; break ;
                 case TMMainFrame.GOBACK : goBack() ; break ;
+                case TMMainFrame.REDO : redo() ; break ;
                 case TMMainFrame.OVERALL : overAll() ; break ;
                 case TMMainFrame.MICROSTEP : microStep() ; break ;
                 case TMMainFrame.INTOEXP : intoExp() ; break ;

@@ -27,7 +27,6 @@ import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
-import java.util.Scanner;
 
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
@@ -624,6 +623,16 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                 @Override public void run() {
                     if( evaluator != null ) {
                         evaluator.goBack() ; }
+                }} ) ; }
+        catch (InvocationTargetException e1) {
+            e1.getTargetException().printStackTrace(); } }
+
+    public void redo() {
+        try {
+            ConcurUtilities.doOnSwingThread( new Runnable() {
+                @Override public void run() {
+                    if( evaluator != null ) {
+                        evaluator.redo() ; }
                 }} ) ; }
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); } }

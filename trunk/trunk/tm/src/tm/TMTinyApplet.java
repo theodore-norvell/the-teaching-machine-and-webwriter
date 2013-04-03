@@ -128,6 +128,9 @@ public class TMTinyApplet extends JApplet
     public void goBack() {
         if( tmMainFrame != null ) tmMainFrame.goBack() ; }
 
+    public void redo() {
+        if( tmMainFrame != null ) tmMainFrame.redo() ; }
+
     public void go( String commandString ) {
     	if( tmMainFrame != null ) tmMainFrame.go( commandString ) ; }
     

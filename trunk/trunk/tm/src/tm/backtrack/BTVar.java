@@ -1,4 +1,4 @@
-//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+//     Copyright 1998--2013 Michael Bruce-Lockhart and Theodore S. Norvell
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. 
@@ -14,32 +14,52 @@
 
 package tm.backtrack;
 
-/** A class for objects that can be backed up
- */
+import tm.utilities.Assert;
+
 public class BTVar<T> {
-    private BTTimeManager timeMan ;
-    private BTValManager<T> valMan ;
+    final BTTimeManager timeMan ;
+    Object currentValue ;
+    boolean alive ;
 
 	public BTVar(BTTimeManager tm) {
 		timeMan = tm ;
-		valMan = null ;
+		alive = true ;
+		timeMan.noteBirth( this ) ;
     }
 
     public BTVar(BTTimeManager tm, T initialValue) {
-        timeMan = tm ;
-        valMan = new BTValManager<T>( ) ;
-        valMan.set( timeMan.getCurrentTime(), initialValue ) ;
+		timeMan = tm ;
+		alive = true ;
+		timeMan.noteBirth( this ) ;
+		currentValue = initialValue ;
+
     }
 
 	public void set(T o) {
-	    if( valMan == null ) {
-	        valMan = new BTValManager<T>( ) ; }
-		valMan.set( timeMan.getCurrentTime(), o ) ; }
-
-	public T get() {
-	    if( valMan == null ) {
-	        return null ; }
-	    else {
-		    return valMan.get( timeMan.getCurrentTime() ) ; }
+		if(!alive) Assert.check(false, "Dead variable is modified.") ;
+		timeMan.noteUpdate( this ) ;
+		currentValue = o ;
 	}
+
+	public void kill() {
+		if(!alive) Assert.check(false, "Dead variable is killed again.") ;
+		timeMan.noteDeath( this ) ;
+		currentValue = null ;
+		alive = false ;
+	}
+
+	public void revive(T o) {
+		if(alive) Assert.check(false, "Live variable is revived.") ;
+		timeMan.noteBirth( this ) ;
+		currentValue = o ;
+		alive = true ;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T get() {
+		if(!alive) Assert.check(false, "Dead variable is accessed.") ;
+		return (T) currentValue ;
+	}
+
+	public boolean alive() { return alive; }
 }

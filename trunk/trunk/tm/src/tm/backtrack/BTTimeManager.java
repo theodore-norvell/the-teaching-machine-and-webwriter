@@ -1,4 +1,4 @@
-//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+//     Copyright 1998--2013 Michael Bruce-Lockhart and Theodore S. Norvell
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. 
@@ -14,56 +14,75 @@
 
 package tm.backtrack;
 
-import java.util.Vector ;
+import java.util.ArrayList;
 
-/** A manager for checkpointing. All objects that are to be
-    checkpointed together must share the same manager.
-    The manager is consulted when an object needs to know
-    the current time.
- */
+import tm.utilities.Assert;
+
 public class BTTimeManager {
-    private BTTime currentTime ; // The current time line.
-    
-    private Vector<Backtrackable> registrants ; // Registered objects
-
-    public BTTimeManager( ) {
-        currentTime = new BTTime( null, "none" ) ;
-        registrants = new Vector<Backtrackable>(1) ;
-    }
-
-    public void register( Backtrackable btObj ) {
-        registrants.addElement( btObj ) ; }
-        
+	boolean canRedo = false ;
+	Transaction currentTransaction = new Transaction() ;
+	ArrayList<Transaction> undoStack = new ArrayList<Transaction>() ;
+	ArrayList<Transaction> redoStack = new ArrayList<Transaction>() ;
+	
+	public BTTimeManager( ) {
+	}
+	
+	void noteBirth( BTVar<?> var) {
+		if( canRedo ) { redoStack.clear() ; canRedo = false ; }
+		currentTransaction.noteBirth( var ) ;
+	}
+	
+	void noteDeath( BTVar<?> var) {
+		if( canRedo ) { redoStack.clear() ; canRedo = false ; }
+		currentTransaction.noteDeath( var ) ;
+	}
+	
+	void noteUpdate( BTVar<?> var) {
+		if( canRedo ) { redoStack.clear() ; canRedo = false ; }
+		currentTransaction.noteUpdate(var) ;
+	}
+	
+	void notePutByte( BTByteArray ba, int i ) {
+		if( canRedo ) { redoStack.clear() ; canRedo = false ; }
+		currentTransaction.notePutByte( ba, i ) ;
+	}
+	
     /** Checkpoint is used to establish a new checkpoint */
     public void checkpoint() {
-	checkpoint( "" ) ;
+    	checkpoint("") ;
     }
     
     /** Checkpoint is used to establish a new checkpoint */
-    public void checkpoint(String description) {
-	currentTime = new BTTime( currentTime, description ) ;
-
-	for( int i=0, sz = registrants.size() ; i<sz ; ++i ) {
-	    Backtrackable registrant = registrants.elementAt(i) ;
-	    registrant.checkpoint() ; }
+    public void checkpoint(String description) { 
+    	undoStack.add( currentTransaction ) ;
+    	currentTransaction = new Transaction() ;
     }
 
     /** Undo is used to back up to the last checkpoint */
     public void undo() {
-        if( currentTime.prev != null ) {
-            currentTime = currentTime.prev ;
-        
-            for( int i=0, sz = registrants.size() ; i<sz ; ++i ) {
-                Backtrackable registrant = registrants.elementAt(i) ;
-                registrant.undo() ; } }
+    	if( ! undoStack.isEmpty() ) {
+    		currentTransaction.apply() ; 
+    		redoStack.add( currentTransaction ) ; canRedo = true ; 
+    		currentTransaction = undoStack.remove( undoStack.size() - 1 ) ; }
     }
     
-    public String getCurrentDescription(){return currentTime.description; }
-    
-    public boolean canUndo() { return currentTime.epoch != 0 ; }
-
-    BTTime getCurrentTime() {
-        return currentTime ;
+    public String getCurrentDescription(){
+    	Assert.toBeDone() ;
+    	return null ;
     }
     
+    public boolean canUndo() { 
+    	return  ! undoStack.isEmpty() ;
+    }
+    
+    public boolean canRedo() { return canRedo ; }
+    
+    public void redo() {
+    	if( canRedo ) {
+    		Assert.check( redoStack.size() > 0 ) ;
+    		undoStack.add( currentTransaction ) ;
+    		currentTransaction = redoStack.remove( redoStack.size() - 1 ) ;
+    		currentTransaction.apply() ;
+    		canRedo = redoStack.size() > 0 ; }
+    }
 }

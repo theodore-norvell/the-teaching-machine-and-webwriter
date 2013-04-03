@@ -1,4 +1,4 @@
-//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+//     Copyright 1998--2013 Michael Bruce-Lockhart and Theodore S. Norvell
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. 
@@ -14,80 +14,29 @@
 
 package tm.backtrack;
 
-import java.util.Vector ;
-
-import tm.utilities.Assert;
-//
-//
-// BTByteArray
-//
-//
-public class BTByteArray implements Backtrackable {
-	private byte[] a ;
-	private boolean[] changed ;
-	private int size ;
-	private Vector< Vector<Entry> > stack ;
+import tm.utilities.Assert ;
+/** An array of bytes that can support undo and redo */
+public class BTByteArray {
+	BTTimeManager timeMan ;
+	byte[] a ;
+	int size ;
 
 	public BTByteArray(BTTimeManager tm, int s) {
-	    tm.register( this ) ;
-	    size = s ;
-	    
-	    a = new byte[size] ;
-	    for( int i=0 ; i<size ; ++i ) {
-	        a[i] = (byte) (i-100) ; }
-	    
-	    changed = new boolean[size] ;
-	    for( int i=0 ; i<size ; ++i ) changed[i] = false ;
-	    
-	    stack = new Vector< Vector<Entry> >() ;
-	    stack.addElement( new Vector<Entry>() ) ;
-}
+		timeMan = tm ;
+		size = s ;
+		a = new byte[size] ;
+	}
 
 	public void putByte(int i, byte b) {
-	    Assert.check( 0 <= i && i < size ) ;
-	    if( ! changed[i] ) save( i, a[i] ) ;
-	    a[i] = b ;
+		//if( !alive ) Assert.check(false) ; 
+		if(! ( 0 <= i && i < size) ) Assert.check( false ) ;
+		timeMan.notePutByte(this, i ) ;
+		a[i] =  b ;
 	}
 
 	public byte getByte(int i) {
-	    Assert.check( 0 <= i && i < size ) ;
-	    return a[i] ;
-    }
-    
-    private void save( int i, byte b ) {
-        Vector<Entry> top = stack.lastElement() ;
-        top.addElement( new Entry( i, b ) ) ;
-        changed[i] = true ;
-    }
-        
-    /* callback for time manager */
-    public void undo() {
-        Vector<Entry> top = stack.lastElement() ;
-        for(int i=0, sz=top.size() ; i<sz ; ++i ) {
-            Entry e = top.elementAt(i) ;
-            a[ e.i ] = e.b ;
-            changed[ e.i ] = false ; }
-        
-        stack.removeElementAt( stack.size() - 1 ) ;
-        
-        top = stack.lastElement() ;
-        for(int i=0, sz=top.size() ; i<sz ; ++i ) {
-            Entry e = (Entry) top.elementAt(i) ;
-            changed[ e.i ] = true ; } }
-    
-    public void checkpoint() {
-        Vector<Entry> top = stack.lastElement() ;
-        for(int i=0, sz=top.size() ; i<sz ; ++i ) {
-            Entry e = top.elementAt(i) ;
-            changed[ e.i ] = false ; }
-            
-        Vector<Entry> newTop = new Vector<Entry>() ;
-        stack.addElement( newTop ) ; }
-}
-
-class Entry {
-    int i ;
-    byte b ;
-    
-    Entry(int _i, byte _b ) { i = _i ; b = _b ; } ;
+		//if( !alive ) Assert.check(false) ; 
+		if(! ( 0 <= i && i < size) ) Assert.check( false ) ;
+		return a[i] ;
+	}
 }

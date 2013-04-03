@@ -123,6 +123,10 @@ public interface ExternalCommandInterface extends StatusProducer {
    
     /** Undo the previous advance. */
     public void goBack();
+
+   
+    /** Redo. */
+    public void redo();
     
     
     /** Advance a number of steps as specified by the following grammar.
