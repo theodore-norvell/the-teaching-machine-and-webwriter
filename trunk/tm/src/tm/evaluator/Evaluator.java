@@ -323,6 +323,11 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         vms.undo() ;
         refresh() ; }
     
+    public void redo() {
+        if( autoStepTimer != null ) return ;
+        vms.redo() ;
+        refresh() ; }
+    
     public void go(String commandString ) {
         if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
     	if( autoStepTimer != null ) return ;

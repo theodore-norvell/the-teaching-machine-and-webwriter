@@ -213,6 +213,8 @@ public class VMState {
 
     public void undo() { timeMan.undo() ; }
 
+    public void redo() { timeMan.redo() ; }
+
     /* Associate an object with a name (not backtrackable!) */
     public void setProperty( String name, Object info ) {
         properties.setProperty( name, info ) ; }

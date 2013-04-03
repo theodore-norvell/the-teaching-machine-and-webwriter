@@ -1,4 +1,4 @@
-//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+//     Copyright 1998--2013 Michael Bruce-Lockhart and Theodore S. Norvell
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License. 
@@ -17,7 +17,7 @@ package tm.backtrack;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector ;
+import java.util.Vector;
 
 import tm.utilities.Assert;
 
@@ -28,6 +28,9 @@ import tm.utilities.Assert;
 public class BTVector<E> implements Iterable<E> {
     private Vector<BTVar<E>> v ;
     private BTVar<Integer> sizeVar ;
+    
+    // Invariant: v is a vector of at least sizeVar.get() BTVars.
+    // The first sizeVar.get() of them are alive while the rest (if any) are dead.
     private BTTimeManager timeMan ;
 
     public BTVector(BTTimeManager tm) {
@@ -64,12 +67,18 @@ public class BTVector<E> implements Iterable<E> {
     public void insertElementAt(E o, int locn) {
         int size = size() ;
         Assert.check( 0 <= locn && locn <= size ) ;
-        if( v.size() == size ) v.add( new BTVar<E>( timeMan ) ) ;
+        int vSize = v.size() ;
+        if(  vSize == size ) { 
+        	v.add( new BTVar<E>( timeMan ) ) ;
+        } else {
+        	// We reuse a dead BTVar. So make it alive.
+        	v.get(size).revive( null) ;
+        }
         Assert.check( size < v.size() ) ;
         for( int i = size-1 ; i >= locn ; --i ) {
             v.get(i+1).set( v.get(i).get() ) ; }
         v.get(locn).set( o ) ;
-        sizeVar.set( new Integer( size+1 ) ) ;
+        sizeVar.set( size+1 ) ;
     }
 
     public void removeElementAt( int locn ) {
@@ -77,8 +86,8 @@ public class BTVector<E> implements Iterable<E> {
         Assert.check( 0 <= locn && locn < size ) ;
         for( int i = locn ; i < size-1 ; ++i ) {
             v.get(i).set( v.get(i+1).get() ) ; }
-        v.get(size-1).set( null ) ;
-        sizeVar.set( new Integer( size-1 ) ) ;
+        v.get(size-1).kill() ;
+        sizeVar.set( size-1 ) ;
     }
     
     public void add( E o ) {
