@@ -16,6 +16,7 @@ import tm.TMMainFrame;
 import tm.TMMainFrameAppletStub;
 import tm.interfaces.ExternalCommandInterface;
 import tm.interfaces.StatusProducer ;
+import tm.interfaces.TMStatusCode;
 import tm.utilities.Assert;
 
 /** Represent the TM to the conformance tester.
@@ -83,7 +84,7 @@ class TMCompilerAdapter implements CompilerAdapter {
         Assert.check( state == INIT ) ;
         try {
             theMainFrame.loadLocalFile( directory, fileName ) ;
-            if( theMainFrame.getStatusCode() == StatusProducer.FILE_LOADED ) {
+            if( theMainFrame.getStatusCode() == TMStatusCode.COMPILED) {
                 state = READY_TO_RUN ; }
             else {
                 state = COMPILE_FAILED ;
@@ -106,16 +107,16 @@ class TMCompilerAdapter implements CompilerAdapter {
                 theMainFrame.intoSub() ;
                 tmStatus = theMainFrame.getStatusCode() ;
                 count++ ;
-            } while( (   tmStatus == StatusProducer.FILE_LOADED 
-                     || tmStatus == StatusProducer.READY )
+            } while( (   tmStatus == TMStatusCode.COMPILED 
+                     || tmStatus == TMStatusCode.READY )
                    && count < LIMIT ) ; 
             if( count == LIMIT ) {
                 state = RUN_FAILED ;
                 executeErrorString = "Infinite loop?" ; }
-            else if( tmStatus == StatusProducer.EXECUTION_COMPLETE ) {
+            else if( tmStatus == TMStatusCode.EXECUTION_COMPLETE ) {
                 state = RUN_SUCCEEDED ;
                 executeOutputString = theMainFrame.getOutputString() ; }
-            else if( tmStatus == StatusProducer.EXECUTION_FAILED ) {
+            else if( tmStatus == TMStatusCode.EXECUTION_FAILED ) {
                 state = RUN_FAILED ;
                 executeErrorString = theMainFrame.getStatusMessage() ; }
             else {
@@ -134,7 +135,7 @@ class TMCompilerAdapter implements CompilerAdapter {
         Assert.check( state == RUN_FAILED || state == RUN_SUCCEEDED ) ;
         try {
             theMainFrame.reStart() ;
-            if( theMainFrame.getStatusCode() == StatusProducer.FILE_LOADED ) {
+            if( theMainFrame.getStatusCode() == TMStatusCode.COMPILED ) {
                 state = READY_TO_RUN ; }
             else {
                 Assert.check( false ) ; } }
