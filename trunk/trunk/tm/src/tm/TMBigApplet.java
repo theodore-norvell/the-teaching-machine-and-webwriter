@@ -14,8 +14,10 @@
 
 package tm;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.io.InputStream;
@@ -29,6 +31,7 @@ import java.util.Observer;
 import java.util.Properties;
 
 import javax.swing.JApplet;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -40,14 +43,13 @@ import tm.interfaces.CommandInterface;
 import tm.interfaces.DisplayManagerPIFactoryIntf;
 import tm.interfaces.EditorPIFactoryInterface;
 import tm.interfaces.EditorPIInterface;
-import tm.interfaces.ExternalCommandInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.Scriptable;
 import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
-import tm.interfaces.StatusProducer;
+import tm.interfaces.TMStatusCode;
 import tm.languageInterface.Language;
 import tm.languageInterface.LanguagePIFactoryIntf;
 import tm.plugins.PlugInManager;
@@ -76,16 +78,19 @@ parts of the Teaching Machine
 
     States:
     <pre>
-    NO_FILE_LOADED
-    FILE_LOADED
+    NO_EVALUATOR
+    READY_TO_COMPILE
+    DID_NOT_COMPILE
+    COMPILED
     READY
+	BUSY_EVALUATIING
     EXECUTION_COMPLETE
     EXECUTION_FAILED
     </pre>
    
     State transitions:
     <pre>
-    init --> NO_FILE_LOADED
+    init --> NO_EVALUATOR
     
     any state
     |
@@ -96,15 +101,30 @@ parts of the Teaching Machine
     |  build display manager ;
     |  compile 
     |
-    | if any errors
-    <>----------------> NO_FILE_LOADED
+    | if any error before compilation
+    <>---------------------------------> NO_EVALUATOR
     |
-    |if no errors
+    | if any errors during compilation
+    <>---------------------------------> DID_NOT_COMPILE
+    |
+    | if no errors
     V
-    FILE LOADED
+    COMPILED
   
-                   any go-forward operation
-   NO_FILE_LOADED --------------------> NO_FILE_LOADED
+                   any go-forward operation,goBack, redo
+   NO_EVALUATOR ------------------------------------------> NO_FILE_LOADED
+   
+                                     go_back [if undo is possible]
+   (any state but no evaluator) ----------------------------------->(the previous state)
+   
+                                        go_back [if undo is not possible]
+   (any state but no evaluator) ----------------------------------->(the same state)
+   
+                                     redo [if redo is possible]
+   (any state but no evaluator) ----------------------------------->(the next state)
+   
+                                        redo  [if redo is not possible]
+   (any state but no evaluator) ----------------------------------->(the same state)
    
                     any go-forward operation
    EXECUTION_COMPLETE ------------------------------->EXECUTION_COMPLETE
@@ -113,7 +133,7 @@ parts of the Teaching Machine
    EXECUTION_FAILED ---------------------------------> EXECUTION_FAILED
                 
                 any go-forward operation / initialize
-   FILE_LOADED ---------------------------------------> READY or
+   COMPILED ---------------------------------------> READY or
                                                         EXECUTION_COMPLETE or
                                                         EXECUTION_FAILED
    
@@ -129,9 +149,6 @@ parts of the Teaching Machine
      |
      V
    READY or EXECUTION_COMPLETE or EXECUTION_FAILED
-   
-               go_back
-   any state ----------------> the same state
    
    </PRE>
 */
@@ -152,8 +169,9 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 
     // The following var is used by reConfigure
     private TMFile latestConfigurationFile = null ;
-
-
+    
+	private JLabel status;
+	
     private Refreshable refreshMole = new Refreshable() {
             public void refresh() { TMBigApplet.this.refresh() ; }
         } ;
@@ -186,7 +204,9 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         viewMenu = view;
         evaluator = null ;
         setBackground(Color.WHITE) ;
-        getContentPane().setBackground(Color.CYAN) ;
+        getContentPane().setBackground(Color.DARK_GRAY) ;
+        setUpStatusLine() ;
+        
         this.argPackage = argPackage ;
 
         { // Set up debug output
@@ -225,6 +245,15 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                     catch( Throwable e ) {}                    
                 }} ) ;
             pingThread.start() ;
+    }
+    
+    private void setUpStatusLine() {
+		status = new JLabel();
+		status.setText("Welcome to the TM.");
+		status.setPreferredSize(new Dimension(60,20));
+		getContentPane().add(BorderLayout.SOUTH, status);
+		status.setOpaque(true) ;
+ 		status.setBackground(Color.GRAY);
     }
 
 // OVERIDES OF APPLET //
@@ -277,15 +306,16 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 //  Implementing StatusConsumer  //
 ///////////////////////////////////
 
-    private int statusCode = StatusConsumer.NO_FILE_LOADED ;
-    private String statusMessage = "Welcome to the Teaching Machine" ;
     private DataFiles dataFiles = new DataFiles() ;
 
     public void setStatus(int statusCode, String message) {
-        this.statusCode = statusCode ;
-        this.statusMessage = message ;
-        if( dispMan != null ) {
-            dispMan.setStatus( message ) ; } }
+    	if( statusCode == TMStatusCode.NO_EVALUATOR ) {
+    		removeTheDisplayManagerAndEvaluator() ;
+    		status.setText(message) ;
+    	} else {
+    		evaluator.setStatusCode( statusCode ) ; 
+    		evaluator.setStatusMessage(message) ; 
+    		status.setText( evaluator.getStatusMessage() ) ; } }
     
     public void attention(String message, Throwable th ) {
         if( ! testMode ) {
@@ -301,10 +331,13 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     }
     
     public int getStatusCode() {
-        return statusCode ; }
+    	if( evaluator==null ) return TMStatusCode.NO_EVALUATOR ;
+    	else return evaluator.getStatusCode() ;
+    }
     
     public String getStatusMessage() {
-        return statusMessage ; }
+        if( evaluator==null) return status.getText() ;
+        else return evaluator.getStatusMessage() ; }
 
 // Implementing ExternalCommandInterface //
 ///////////////////////////////////////////
@@ -347,11 +380,14 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
                 @Override public void run() {
+                    /*dbg */Debug.getInstance().msg(Debug.CURRENT, "loadRemoteFile "+root+" "+fileName) ;/*dbg*/
+                    URL url = null ;
                     try {
-                        /*dbg */Debug.getInstance().msg(Debug.CURRENT, "loadRemoteFile "+root+" "+fileName) ;/*dbg*/
-                        loadRemoteFile( new URL( getDocumentBase(), root ), fileName ) ; }
+                    	url = new URL( getDocumentBase(), root ) ; }
                     catch( MalformedURLException e ) {
-                        setStatus( StatusProducer.NO_FILE_LOADED, "Malformed URL" ) ; }
+                        setStatus( TMStatusCode.NO_EVALUATOR, "Malformed URL" ) ; 
+                        return ; }
+                    loadRemoteFile( url, fileName ) ;
                 }} ) ; }
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }
@@ -463,8 +499,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                 @Override public void run() {
                     if( evaluator != null ) {
                         evaluator.addInputString( input ) ; }
-                    if( dispMan != null ) {
-                        dispMan.refresh() ; } 
+                    refresh() ;
                 }} ) ; }
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }}
@@ -552,7 +587,8 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
                 @Override public Boolean run() {
-                    return getStatusCode() == StatusProducer.EXECUTION_COMPLETE;
+                	int statusCode = getStatusCode() ;
+                    return  statusCode == TMStatusCode.EXECUTION_COMPLETE || statusCode == TMStatusCode.EXECUTION_FAILED ;
                 }} ) ; }
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace();
@@ -610,7 +646,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
                 @Override public void run() {
-                    if( evaluator != null && statusCode == StatusConsumer.FILE_LOADED)
+                    if( getStatusCode() ==  TMStatusCode.COMPILED )
                         evaluator.initialize() ;
                 }} ) ; }
         catch (InvocationTargetException e1) {
@@ -642,11 +678,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             ConcurUtilities.doOnSwingThread( new Runnable() {
                 @Override public void run() {
                     if( evaluator != null ) {
-                        if( statusCode == StatusConsumer.FILE_LOADED ) {
+                    	int statusCode = getStatusCode() ;
+                        if( statusCode == TMStatusCode.COMPILED ) {
                             evaluator.initialize() ; }
-                        else if( statusCode == StatusProducer.READY
-                                || statusCode == StatusProducer.EXECUTION_COMPLETE
-                                || statusCode == StatusProducer.EXECUTION_FAILED ){
+                        else if( statusCode == TMStatusCode.READY ){
                             command.doIt() ; } }
                 }} ) ; }
         catch (InvocationTargetException e1) {
@@ -770,7 +805,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     }
     
     private void refresh() {
-        if( dispMan != null ) dispMan.refresh() ; }
+        if( dispMan != null )
+        	dispMan.refresh() ; 
+        if( evaluator != null ) 
+    		status.setText( evaluator.getStatusMessage() ) ; }
 
     public void setSelection(SelectionInterface selection) {
         if( evaluator != null ) {
@@ -970,7 +1008,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                     Assert.error( "Unknown language." ) ; } }
             catch( PlugInNotFound e ) {
                     String errMess = "Sorry "+languageName+" is not supported in this release." ;
-                    setStatus( StatusConsumer.NO_FILE_LOADED, errMess ) ;
+                    setStatus( TMStatusCode.NO_EVALUATOR, errMess ) ;
                     attention( errMess, e ) ;
                     System.out.println( errMess ) ;
                     System.out.println( e.getMessage() ) ;
@@ -988,11 +1026,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             
             
             // Remove the display manager if any.
-            if( dispMan != null ) {
-            	dispMan.dispose();
-            	remove( dispMan.getComponent() ) ;
-            	dispMan = null ;
-            }
+            removeTheDisplayManagerAndEvaluator() ;
             
             // Create the Evaluator.
             // There must be an Evaluator if there is an DisplayManager.
@@ -1003,13 +1037,9 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                                     boStatic, toStatic,
                                     boHeap, toHeap,
                                     boStack, toStack,
-                                    boScratch, toScratch ) ;
-
-
-                setStatus( StatusProducer.NO_FILE_LOADED,
-                           lang.getName()+" Evaluator Built") ; }
+                                    boScratch, toScratch ) ; }
             catch( Throwable e ) {
-                setStatus( StatusConsumer.NO_FILE_LOADED, "Could not build evaluator" ) ;
+                setStatus( TMStatusCode.NO_EVALUATOR, "Could not build evaluator" ) ;
                 reportException( e, "a failure while building the evaluator" ) ;
                 return false ; }
 
@@ -1023,23 +1053,33 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                         (tm.interfaces.ImageSourceInterface) this,
                         this,
                         viewMenu ) ;        
-                getContentPane().add( dispMan.getComponent(), "Center" ) ;}
+                getContentPane().add( dispMan.getComponent(), "Center" ) ;
+                setStatus( TMStatusCode.READY_TO_COMPILE,
+                        lang.getName()+" Display and evaluator built. Ready to compile") ;}
             catch( PlugInNotFound ex ) {
-                setStatus( StatusConsumer.NO_FILE_LOADED, "Could not build display manager" ) ;
+                setStatus( TMStatusCode.NO_EVALUATOR, "Could not build display manager" ) ;
                 reportException( ex, "a failure while building the display manager" ) ;
                 return false ;
             }
             dispMan.createAllDisplays() ;
             validate();
-            dispMan.refresh() ;
+            refresh() ;
             // This reConfigure is a bit annoying as it creates all the displays again.
             reConfigure() ;
             return true ; }
         catch( Throwable e ) {
-            setStatus( StatusConsumer.NO_FILE_LOADED,
+            setStatus( TMStatusCode.NO_EVALUATOR,
                     "Could not start project. Error: "+e.getMessage() ) ;
             reportException( e, "an exception" ) ;
             return false ; }
+    }
+    
+    private void removeTheDisplayManagerAndEvaluator() {
+    	if( dispMan != null ) {
+        	dispMan.dispose();
+        	remove( dispMan.getComponent() ) ;
+        	dispMan = null ; }
+    	evaluator = null ;
     }
 
     private void compile( TMFile tmFile) {
@@ -1056,7 +1096,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 
     /** Convenience method for projects that have only one file */
     private void loadTMFile( int language, TMFile tmFile ) {
-        setStatus( StatusProducer.NO_FILE_LOADED, "Loading..." ) ;
+        setStatus( TMStatusCode.NO_EVALUATOR, "Loading..." ) ;
         boolean ok = startNewProject( language ) ;
         if( ok ) {
             currentFileManager.setCurrentFile( tmFile, language ) ;

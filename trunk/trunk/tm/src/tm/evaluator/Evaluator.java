@@ -17,9 +17,6 @@ package tm.evaluator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
-import java.util.Scanner;
-import java.util.Vector;
-
 import javax.swing.Timer;
 
 import tm.backtrack.BTTimeManager;
@@ -30,7 +27,7 @@ import tm.interfaces.SelectionInterface;
 import tm.interfaces.STEntry;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
-import tm.interfaces.StatusProducer;
+import tm.interfaces.TMStatusCode;
 import tm.interfaces.ViewableST;
 import tm.languageInterface.ExpressionInterface;
 import tm.languageInterface.Language;
@@ -245,15 +242,15 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     }
 
     public void compile( TMFile tmFile ) {
-        Assert.check( statusReporter.getStatusCode() == StatusProducer.NO_FILE_LOADED ) ;
+        Assert.check( statusReporter.getStatusCode() == TMStatusCode.READY_TO_COMPILE ) ;
         try {
-            statusReporter.setStatus( StatusProducer.NO_FILE_LOADED,
+            statusReporter.setStatus( TMStatusCode.READY_TO_COMPILE,
                                       lang.getName()+" Compiling " + tmFile ) ;
             /*dbg */Debug.getInstance().msg(Debug.CURRENT, "Compiling "+tmFile ) ;/* */
         
             lang.compile( tmFile, vms ) ;
-            statusReporter.setStatus( StatusProducer.FILE_LOADED,
-                                      lang.getName()+" No errors") ;
+            statusReporter.setStatus( TMStatusCode.COMPILED,
+                                      lang.getName()+" Compiled with no errors.") ;
             /*dbg */Debug.getInstance().msg(Debug.CURRENT, "Done cmpiling "+tmFile ) ;/* */
             vms.setDefaultLine( new SourceCoords( tmFile, 1 ) );
         }
@@ -261,12 +258,12 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             if( e.getSourceCoords() != SourceCoords.UNKNOWN ) {
                 vms.setDefaultLine( e.getSourceCoords() ) ; }
             e.printStackTrace( System.out ) ;
-            statusReporter.setStatus(StatusProducer.NO_FILE_LOADED, lang.getName()+"Error: "+e.getMessage() ) ;
+            statusReporter.setStatus(TMStatusCode.DID_NOT_COMPILE, lang.getName()+"Error: "+e.getMessage() ) ;
             statusReporter.attention( e.getMessage(), e ) ;
         }
         catch( Throwable e ) {
             e.printStackTrace( System.out ) ;
-            statusReporter.setStatus(StatusProducer.NO_FILE_LOADED,
+            statusReporter.setStatus(TMStatusCode.DID_NOT_COMPILE,
                                      lang.getName()+" Unexpected Exception: "+e.getMessage() ) ;
             statusReporter.attention( "Unexpected exception: "+e.getMessage(), e ) ; }
     }
@@ -280,10 +277,10 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 
     public void initialize() {
         int status = statusReporter.getStatusCode() ;
-        Assert.check( status == StatusProducer.FILE_LOADED ) ;
+        Assert.check( status == TMStatusCode.COMPILED ) ;
         try {
             lang.initializeTheState( vms ) ;
-            statusReporter.setStatus( StatusProducer.READY,
+            statusReporter.setStatus( TMStatusCode.READY,
                                       lang.getName()+" Ready") ; }
         catch (TMException e) {
             if( e.getSourceCoords() != SourceCoords.UNKNOWN ) {
@@ -291,7 +288,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             else {
                 e.setSourceCoords( vms.getCurrentCoords() ) ; }
                 
-            statusReporter.setStatus( StatusProducer.EXECUTION_FAILED,
+            statusReporter.setStatus( TMStatusCode.EXECUTION_FAILED,
                                       lang.getName()+"Error: "+e.getMessage() ) ;
             statusReporter.attention( e.getMessage() ) ;
             // Dump the exception
@@ -299,7 +296,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             return ;
         }
         catch( Throwable e ) {
-            statusReporter.setStatus( StatusProducer.EXECUTION_FAILED,
+            statusReporter.setStatus( TMStatusCode.EXECUTION_FAILED,
                                       lang.getName()+" Unexpected Exception." ) ;
             e.printStackTrace( System.out ) ;
             statusReporter.attention( "Unexpected exception:"+e.getMessage(), e ) ; 
@@ -329,7 +326,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         refresh() ; }
     
     public void go(String commandString ) {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
     	if( autoStepTimer != null ) return ;
     	vms.checkpoint() ;
     	new CommandStringInterpreter(commandString, this).interpretGoCommand(  ) ;
@@ -346,7 +343,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void microStepCommand() { stepForward ( new microStepTest() ) ; }
 
     public void goForward() {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         goForwardCommand() ; 
@@ -356,14 +353,14 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void goForwardCommand() { stepForward ( new goForwardTest() ) ;  }
 
     private void initialSteps() {
-        Assert.check( statusReporter.getStatusCode() == StatusProducer.READY )  ;
+        Assert.check( statusReporter.getStatusCode() == TMStatusCode.READY )  ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         stepForward ( new initialTest() ) ; 
         refresh() ;}
 
     public void intoExp() {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         intoExpCommand() ;
@@ -373,7 +370,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void intoExpCommand() { stepForward ( new intoExpTest() ) ;  }
 
     public void intoSub() {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         intoSubCommand() ;
@@ -383,7 +380,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void intoSubCommand() { stepForward ( new intoSubTest() ) ;  }
 
     public void overAll() {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         overAllCommand() ;
@@ -393,7 +390,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void overAllCommand() { stepForward ( new overAllTest() ) ;  }
 
     public void toCursor(String fileName, int lineNumOneBased) {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         stepForward( new toCursorTest(fileName, lineNumOneBased) ) ;
@@ -408,7 +405,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 	public void toBreakPointCommand() { Assert.toBeDone() ;  }
     
     public void autoStep() {
-        if( statusReporter.getStatusCode() != StatusProducer.READY ) return ;
+        if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         autoStepStopRequested = false ;
@@ -445,11 +442,11 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
                     break RUNLOOP ;
                 int status = statusReporter.getStatusCode() ;
                 switch( status ) {
-                case StatusProducer.EXECUTION_COMPLETE:
-                case StatusProducer.EXECUTION_FAILED:
+                case TMStatusCode.EXECUTION_COMPLETE:
+                case TMStatusCode.EXECUTION_FAILED:
                     break RUNLOOP ;
-                case StatusProducer.READY:
-                    if( vms.getEvaluationState() != vms.EVALUATION_STATE_RUNNING )
+                case TMStatusCode.READY:
+                    if( vms.getEvaluationState() != VMState.EVALUATION_STATE_RUNNING )
                         break RUNLOOP ;
                     else
                         break ;
@@ -459,7 +456,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     public void stop( ) {
         if( autoStepTimer != null ) {
             autoStepStopRequested = true ; }
-        else if( statusReporter.getStatusCode() == StatusProducer.BUSY_EVALUATING ) {
+        else if( statusReporter.getStatusCode() == TMStatusCode.BUSY_EVALUATING ) {
             // This request must come from a callback.
             runStopRequested = true ;
         }
@@ -566,15 +563,15 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     
     private void autoStepAdvance() {
         Assert.check( autoStepTimer != null ) ;
-        long now = System.currentTimeMillis() ;
+        //long now = System.currentTimeMillis() ;
         //System.out.println("Step: "+now ) ;
         if( autoStepStopRequested  ) {
             killOffTheTimer() ;  }
         else {
             stepForward ( new intoSubTest() ) ;
             int status = statusReporter.getStatusCode() ;
-            if( status == StatusProducer.READY 
-            && vms.getEvaluationState() == vms.EVALUATION_STATE_RUNNING) {
+            if( status == TMStatusCode.READY 
+            && vms.getEvaluationState() == VMState.EVALUATION_STATE_RUNNING) {
                 //System.out.println( "next delay = "+delay) ;
                 autoStepTimer.setDelay( delay ) ; }
             else {
@@ -585,7 +582,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     private void stepForward( StopTest stopTest) {
         // Step until the stopTest object says to stop.
         int status = statusReporter.getStatusCode() ;
-        Assert.check( status == StatusProducer.READY )  ;
+        Assert.check( status == TMStatusCode.READY )  ;
         String langName = lang.getName() ;
         try {
             // TODO This limit should be configurable.
@@ -595,12 +592,12 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             int initStackSize = vms.stackSize() ;
             Evaluation initialTop = vms.isEmpty() ? null : vms.top() ;
             TMFile latestFile = null ;
-            vms.setEvaluationState( vms.EVALUATION_STATE_RUNNING ) ;
-            statusReporter.setStatus( StatusProducer.BUSY_EVALUATING, langName +" Evaluating" ) ;
+            vms.setEvaluationState( VMState.EVALUATION_STATE_RUNNING ) ;
+            statusReporter.setStatus( TMStatusCode.BUSY_EVALUATING, langName +" Evaluating" ) ;
 
             // Advance until stop0
             while(   ! vms.isEmpty()
-                  && vms.getEvaluationState() == vms.EVALUATION_STATE_RUNNING
+                  && vms.getEvaluationState() == VMState.EVALUATION_STATE_RUNNING
                   && safetyCounter < SAFETY_COUNTER_LIMIT
                   && ! stopTest.stop0(vms, initStackSize, initialTop) ) {
                 latestFile = getCodeFocus().getFile() ;
@@ -610,7 +607,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 
             // Optional extra advance
             if(       ! vms.isEmpty()
-                   && vms.getEvaluationState() == vms.EVALUATION_STATE_RUNNING
+                   && vms.getEvaluationState() == VMState.EVALUATION_STATE_RUNNING
                    && safetyCounter < SAFETY_COUNTER_LIMIT
                    && stopTest.midstep(vms, initStackSize, initialTop) ) {
                 latestFile = getCodeFocus().getFile() ;
@@ -618,7 +615,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 
             // Advance until stop1
             while(   ! vms.isEmpty()
-                  && vms.getEvaluationState() == vms.EVALUATION_STATE_RUNNING
+                  && vms.getEvaluationState() == VMState.EVALUATION_STATE_RUNNING
                   && safetyCounter < SAFETY_COUNTER_LIMIT
                   && ! stopTest.stop1(vms, initStackSize, initialTop) ) {
                 latestFile = getCodeFocus().getFile() ;
@@ -627,28 +624,28 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
                 ++ safetyCounter ; }
             
             if( vms.isEmpty() ) {
-                statusReporter.setStatus( StatusProducer.EXECUTION_COMPLETE,
+                statusReporter.setStatus( TMStatusCode.EXECUTION_COMPLETE,
                                           langName+" Execution complete") ;
                 if( latestFile != null ) {
                     SourceCoords lastLine = vms.getCodeStore().getCoordsOfLastLine(latestFile) ;
                     vms.setDefaultLine( lastLine ); } }
-            else if( vms.getEvaluationState() != vms.EVALUATION_STATE_RUNNING ) {
+            else if( vms.getEvaluationState() != VMState.EVALUATION_STATE_RUNNING ) {
                 switch( vms.getEvaluationState() ) {
                 case VMState.EVALUATION_STATE_NEEDINPUT :
                     // Prompt the user with a nonmodal input frame.
                     InputFrame inputFrame = new InputFrame( this ) ;
-                    statusReporter.setStatus( StatusProducer.READY,
+                    statusReporter.setStatus( TMStatusCode.READY,
                             langName+" Waiting for input") ;
                     break;
                 case VMState.EVALUATION_STATE_TERMINATED:
-                    statusReporter.setStatus( StatusProducer.EXECUTION_COMPLETE,
+                    statusReporter.setStatus( TMStatusCode.EXECUTION_COMPLETE,
                             langName+" Program has self terminated") ;
                 } }
             else if( safetyCounter >= SAFETY_COUNTER_LIMIT ) {
-                statusReporter.setStatus( StatusProducer.READY,
+                statusReporter.setStatus( TMStatusCode.READY,
                                           langName+" Step limit exceeded. Possible infinite loop.") ; }
             else {
-                statusReporter.setStatus( StatusProducer.READY,
+                statusReporter.setStatus( TMStatusCode.READY,
                                           langName+" Ready") ; } }
         catch( tm.utilities.TMException e ) {
             if( e.getSourceCoords() != SourceCoords.UNKNOWN ) {
@@ -656,13 +653,13 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             else {
                 e.setSourceCoords( vms.getCurrentCoords() ) ; }
             e.printStackTrace( System.out ) ;
-            statusReporter.setStatus( StatusProducer.EXECUTION_FAILED,
+            statusReporter.setStatus( TMStatusCode.EXECUTION_FAILED,
                                       langName+" Error: "+e.getMessage() ) ;
             statusReporter.attention( e.getMessage(), e ) ;
             // vms.undo() ; // 2011 July 4. Not sure why we used to do an undo here. TSN.
         }
         catch( Throwable e ) {
-            statusReporter.setStatus( StatusProducer.EXECUTION_FAILED,
+            statusReporter.setStatus( TMStatusCode.EXECUTION_FAILED,
                                       langName+" Unexpected exception "+e.getMessage() ) ;
             e.printStackTrace(System.out) ;
             statusReporter.attention( "Unexpected exception: "+e.getMessage(), e ) ; } }
@@ -676,7 +673,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             TriggeredCall callInfo = vms.getTriggeredCall() ;
             lang.callSubroutine(vms, callInfo.functionName, callInfo.args) ;
             while( vms.stackSize() > initialStackSize
-                && vms.getEvaluationState() == vms.EVALUATION_STATE_RUNNING) {
+                && vms.getEvaluationState() == VMState.EVALUATION_STATE_RUNNING) {
                 vms.advance() ; }
         }
     }
@@ -691,4 +688,20 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     public interface Refreshable {
         public void refresh() ;
     }
+
+	public void setStatusCode(int statusCode) {
+		vms.setStatusCode( statusCode ) ;
+	}
+
+	public int getStatusCode() {
+		return vms.getStatusCode() ;
+	}
+
+	public void setStatusMessage(String message) {
+		vms.setStatusMessage(message) ;
+	}
+
+	public String getStatusMessage() {
+		return vms.getStatusMessage() ;
+	}
 }

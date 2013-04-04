@@ -23,39 +23,16 @@ package tm.interfaces;
  *
  */
 public interface StatusProducer {
-
-    /** Status Code -- There is no file loaded into the TM */
-    public static final int NO_FILE_LOADED = 0 ;
-    
-    /**  Status Code -- A file is loaded and compiled. The state is not initialized.  */
-    public static final int FILE_LOADED = 2 ;
-    
-    /**  Status Code -- The state has been initialized and the TM is ready for a go-forward type command */
-    public static final int READY = 4 ;
-    
-    /**  Status Code -- The evaluator is busy executing code. This state is transitory
-     * in that the TM should not be in this state while awaiting user input (e.g. button pushes).
-     * However it will be in this state while any evaluation is going on. So in particular
-     * any call-backs from script code embedded in interpreted code will find the TM in this
-     * state.  The TMBigApplet might find itself in this state if it is invoked by a call-back.
-     */
-    public static final int BUSY_EVALUATING = 5 ;
-    
-    /**  Status Code -- The program has run to completion. */
-    public static final int EXECUTION_COMPLETE = 6 ;
-    
-    /**  Status Code -- The program has crashed or otherwise completed in an unpleasant way. */
-    public static final int EXECUTION_FAILED = 7 ; 
     
 
     /** Return a status code indicating the current status of the TM.
-     * @see tm.interfaces.StatusConsumer */
+     * @see tm.interfaces.TMStatusCode */
     public int getStatusCode() ;
     
     /** Return a user friendly message explaining why that status is what it is.
      * In the case of a compiler error or an execution error, it should be the
      * text of the message.
-     */
+     * @see tm.interfaces.TMStatusCode */
     public String getStatusMessage() ;
 
 }

@@ -27,7 +27,6 @@ import java.awt.Component;
 public interface DisplayManagerInterface extends PlugIn, Configurable{
 	public void createAllDisplays();
     public void refresh();
-    public void setStatus(String s);
     public Component getComponent();
     /** Clean up after your self. Called when display manager is about to be destroyed.*/
     public void dispose() ;

@@ -20,6 +20,7 @@ import tm.backtrack.BTStack;
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.BTVar;
 import tm.backtrack.BTVector;
+import tm.interfaces.TMStatusCode;
 import tm.interfaces.Datum;
 import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
@@ -69,7 +70,9 @@ public class VMState {
     public static final int EVALUATION_STATE_RUNNING = 0 ;
     public static final int EVALUATION_STATE_TERMINATED = 1 ;
     public static final int EVALUATION_STATE_NEEDINPUT = 2 ;
-    private int evaluationState  = EVALUATION_STATE_RUNNING ;
+    private BTVar<Integer> evaluationState  ;
+    private BTVar<Integer> statusCode ;
+	private BTVar<String> statusMessage;
 
     ///////////////////// P U B L I C  P A R T /////////////////////
     public VMState( BTTimeManager tm,
@@ -82,6 +85,9 @@ public class VMState {
         // Assert tm == time manager of syms.
         timeMan = tm ;
         properties = new PropertyList( timeMan ) ;
+        evaluationState = new BTVar<Integer>(tm, EVALUATION_STATE_RUNNING) ;
+        statusCode = new BTVar<Integer>( tm, TMStatusCode.READY_TO_COMPILE ) ;
+        statusMessage = new BTVar<String>( tm, "...") ;
         stk = new BTStack<Evaluation>( timeMan ) ;
         mem = new Memory( timeMan, toScratch ) ;
         sto = new Store( timeMan, mem, boStatic, toStatic, boHeap, toHeap,
@@ -108,6 +114,18 @@ public class VMState {
 //    public void popResultDatum() {
 //        resultDatums.pop() ; }
 
+    public void setStatusCode( int statusCode ) { this.statusCode.set( statusCode ) ; }
+    
+    public int getStatusCode() { return this.statusCode.get(); }
+
+	public void setStatusMessage(String message) {
+		statusMessage.set( message ) ;
+	}
+	
+	public String getStatusMessage() {
+		return statusMessage.get();
+	}
+    
     public void pushNewArgumentList() {
         argumentLists.push( new Vector<Datum>() ) ; }
 
@@ -203,9 +221,9 @@ public class VMState {
 
     public Datum getDatumFocus() { return datumFocus.get() ; }
 
-    public void setEvaluationState( int newVal ) { evaluationState = newVal ; }
+    public void setEvaluationState( int newVal ) { evaluationState.set(newVal) ; }
 
-    public int getEvaluationState() { return evaluationState ; }
+    public int getEvaluationState() { return evaluationState.get() ; }
 
     public CodeStore getCodeStore() { return codeStore ; }
 

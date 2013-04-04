@@ -99,7 +99,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	// length of the myDisplays array and the component children of the windowArea are
 	// subwindows whose display objects are listed in myDisplays.
 	private JDesktopPane windowArea;
-	private JLabel status;
 	
 	private HigraphManager higraphManager;
 
@@ -112,13 +111,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
  		windowArea.setBackground(Color.LIGHT_GRAY);
  		windowArea.setDoubleBuffered(true);
  		windowArea.setOpaque(true);
-
-		status = new JLabel();
-		status.setText("");
-		status.setPreferredSize(new Dimension(60,20));
- 		status.setBackground(Color.white);
-		add("South", status);
-		add("Center",windowArea);
+ 		add("Center",windowArea);
 		
 		commandProcessor = cp;
 		imageSource = is;
@@ -202,7 +195,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	        
         }
         catch( PlugInNotFound ex ) {
-            setStatus( "DisplayManager could not find display plug-ins." ) ;
             ex.printStackTrace( System.err ) ;
             /*attention( "The Teaching Machine could not execute your\n"
                       +"request because of " + explanation + ".\n"
@@ -228,10 +220,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
     public DisplayInterface[] getDisplays(){
     	return myDisplays;
     }
-
-	public void setStatus(String s) {
-		status.setText(s);
-	}
 
 	/* refresh
        =======   Refresh all displays.

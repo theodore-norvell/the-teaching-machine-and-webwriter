@@ -58,7 +58,7 @@ public class TMMainFrame extends JFrame
                                     Configurable
 {
 
-    private static final String COPYRIGHT = "(C) 1997--2008 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
+    private static final String COPYRIGHT = "(C) 1997--2013 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
     private static final String PROGRAMMERS = "Designed and coded by\n"
                                             + "Michael Bruce-Lockhart\n"
                                             + "Sun Hao\n"
