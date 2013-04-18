@@ -170,7 +170,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     // The following var is used by reConfigure
     private TMFile latestConfigurationFile = null ;
     
-	private JLabel status;
+	private JLabel statusLine;
 	
     private Refreshable refreshMole = new Refreshable() {
             public void refresh() { TMBigApplet.this.refresh() ; }
@@ -248,12 +248,12 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     }
     
     private void setUpStatusLine() {
-		status = new JLabel();
-		status.setText("Welcome to the TM.");
-		status.setPreferredSize(new Dimension(60,20));
-		getContentPane().add(BorderLayout.SOUTH, status);
-		status.setOpaque(true) ;
- 		status.setBackground(Color.GRAY);
+		statusLine = new JLabel();
+		statusLine.setText("Welcome to the TM.");
+		statusLine.setPreferredSize(new Dimension(60,20));
+		getContentPane().add(BorderLayout.SOUTH, statusLine);
+		statusLine.setOpaque(true) ;
+ 		statusLine.setBackground(Color.LIGHT_GRAY);
     }
 
 // OVERIDES OF APPLET //
@@ -311,11 +311,11 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     public void setStatus(int statusCode, String message) {
     	if( statusCode == TMStatusCode.NO_EVALUATOR ) {
     		removeTheDisplayManagerAndEvaluator() ;
-    		status.setText(message) ;
+    		statusLine.setText(message) ;
     	} else {
     		evaluator.setStatusCode( statusCode ) ; 
     		evaluator.setStatusMessage(message) ; 
-    		status.setText( evaluator.getStatusMessage() ) ; } }
+    		statusLine.setText( evaluator.getStatusMessage() ) ; } }
     
     public void attention(String message, Throwable th ) {
         if( ! testMode ) {
@@ -336,7 +336,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     }
     
     public String getStatusMessage() {
-        if( evaluator==null) return status.getText() ;
+        if( evaluator==null) return statusLine.getText() ;
         else return evaluator.getStatusMessage() ; }
 
 // Implementing ExternalCommandInterface //
@@ -808,7 +808,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         if( dispMan != null )
         	dispMan.refresh() ; 
         if( evaluator != null ) 
-    		status.setText( evaluator.getStatusMessage() ) ; }
+    		statusLine.setText( evaluator.getStatusMessage() ) ; }
 
     public void setSelection(SelectionInterface selection) {
         if( evaluator != null ) {

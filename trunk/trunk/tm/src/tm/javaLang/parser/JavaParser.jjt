@@ -164,7 +164,7 @@ TOKEN_MGR_DECLS : {
                         { //colourClass = MARKUP ;
                           colourizer.endSelection(
                               CommonParserHelper.extractTagName( matchedToken.image ) ) ; }
-|   <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >
+|   <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >   // TODO Should this be a skip ?
                        { //colourClass = MARKUP ;
                           colourizer.startSelection("s") ; }
                        : INVISIBLE 
