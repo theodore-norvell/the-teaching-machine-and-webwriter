@@ -45,7 +45,7 @@ public class Preprocessor implements PreprocessorConstants {
             includedFile = new TMFile( stdFileSource, fileName ) ;
             reader = includedFile.toReader() ;
             Assert.error( reader != null,
-                "Can not find include file \"" + fileName + "\"" ) ; }
+                "Can not find include file \u005c"" + fileName + "\u005c"" ) ; }
         includeFile( sb, includedFile, reader ) ; }
 
     void includeFile( StringBuffer sb, TMFile includedFile, Reader reader  )
@@ -53,7 +53,7 @@ public class Preprocessor implements PreprocessorConstants {
         Preprocessor pp = new Preprocessor( reader, includedFile, fileMap, codeStore, stdFileSource ) ;
         pp.translation_unit( sb ) ;
 
-        sb.append( "#line "+ getToken(1).beginLine + " \"" +file.getUniqueNumber() +"\"\n" ) ;
+        sb.append( "#line "+ getToken(1).beginLine + " \u005c"" +file.getUniqueNumber() +"\u005c"\u005cn" ) ;
     }
 
 
@@ -63,11 +63,11 @@ public class Preprocessor implements PreprocessorConstants {
         if (keep.beginLine > currentLine) {
                 if (keep.beginLine > currentLine + 1) {
                         // emit line directive
-                        sb.append ("\n"); sb.append ("#line ");
+                        sb.append ("\u005cn"); sb.append ("#line ");
                         sb.append (keep.beginLine);
                 }
                 // emit a newline
-                sb.append ("\n");
+                sb.append ("\u005cn");
         }
         // emit the token image
         sb.append (keep.image);
@@ -86,10 +86,10 @@ public class Preprocessor implements PreprocessorConstants {
 
 // translation_unit --> group ? EOF
   final public void translation_unit(StringBuffer sb) throws ParseException {
-      sb.append( "#line "+ 1 + " \"" +file.getUniqueNumber() +"\"\n" ) ;
+      sb.append( "#line "+ 1 + " \u005c"" +file.getUniqueNumber() +"\u005c"\u005cn" ) ;
     opt_group(true, sb);
     jj_consume_token(0);
-      sb.append( "\n" ) ;
+      sb.append( "\u005cn" ) ;
   }
 
 // opt_group --> group_part *
@@ -97,9 +97,6 @@ public class Preprocessor implements PreprocessorConstants {
     label_1:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PEDAGOGICALMARKUP2:
-      case PEDAGOGICALMARKUP3:
-      case PEDAGOGICALMARKUP4:
       case KEEP_SPACE:
       case CSTYLECOMMENTSTART:
       case NEWLINE:
@@ -123,9 +120,6 @@ public class Preprocessor implements PreprocessorConstants {
 // group_part --> pp-token | new_line | if-section | control-line
   final public void group_part(boolean record, StringBuffer sb) throws ParseException {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case PEDAGOGICALMARKUP2:
-    case PEDAGOGICALMARKUP3:
-    case PEDAGOGICALMARKUP4:
     case KEEP_SPACE:
     case CSTYLECOMMENTSTART:
     case LINECOMMENTSTART:
@@ -307,18 +301,6 @@ public class Preprocessor implements PreprocessorConstants {
       keep = jj_consume_token(LINECOMMENTSTART);
                                       keep.image = " " ; output_token( keep, sb) ;
       break;
-    case PEDAGOGICALMARKUP2:
-      keep = jj_consume_token(PEDAGOGICALMARKUP2);
-                                        keep.image = " " ; output_token( keep, sb) ;
-      break;
-    case PEDAGOGICALMARKUP3:
-      keep = jj_consume_token(PEDAGOGICALMARKUP3);
-                                        keep.image = " " ; output_token( keep, sb) ;
-      break;
-    case PEDAGOGICALMARKUP4:
-      keep = jj_consume_token(PEDAGOGICALMARKUP4);
-                                        keep.image = " " ; output_token( keep, sb) ;
-      break;
     default:
       jj_la1[5] = jj_gen;
       jj_consume_token(-1);
@@ -364,121 +346,125 @@ public class Preprocessor implements PreprocessorConstants {
     }
   }
 
-  final private boolean jj_2_1(int xla) {
+  private boolean jj_2_1(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_1(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(0, xla); }
   }
 
-  final private boolean jj_2_2(int xla) {
+  private boolean jj_2_2(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_2(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(1, xla); }
   }
 
-  final private boolean jj_2_3(int xla) {
+  private boolean jj_2_3(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_3(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(2, xla); }
   }
 
-  final private boolean jj_2_4(int xla) {
+  private boolean jj_2_4(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_4(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(3, xla); }
   }
 
-  final private boolean jj_2_5(int xla) {
+  private boolean jj_2_5(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_5(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(4, xla); }
   }
 
-  final private boolean jj_2_6(int xla) {
+  private boolean jj_2_6(int xla) {
     jj_la = xla; jj_lastpos = jj_scanpos = token;
     try { return !jj_3_6(); }
     catch(LookaheadSuccess ls) { return true; }
     finally { jj_save(5, xla); }
   }
 
-  final private boolean jj_3_1() {
-    if (jj_scan_token(STARTDIRECTIVE)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_scan_token(18)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(19)) {
-    jj_scanpos = xsp;
-    if (jj_scan_token(20)) return true;
-    }
-    }
-    return false;
-  }
-
-  final private boolean jj_3_4() {
-    if (jj_scan_token(STARTDIRECTIVE)) return true;
-    if (jj_scan_token(PPIF)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_6() {
-    if (jj_scan_token(STARTDIRECTIVE)) return true;
-    if (jj_scan_token(PPIFNDEF)) return true;
-    return false;
-  }
-
-  final private boolean jj_3_5() {
+  private boolean jj_3_5() {
     if (jj_scan_token(STARTDIRECTIVE)) return true;
     if (jj_scan_token(PPIFDEF)) return true;
     return false;
   }
 
-  final private boolean jj_3_3() {
+  private boolean jj_3_3() {
     if (jj_scan_token(STARTDIRECTIVE)) return true;
     if (jj_scan_token(PPELSE)) return true;
     return false;
   }
 
-  final private boolean jj_3_2() {
+  private boolean jj_3_2() {
     if (jj_scan_token(STARTDIRECTIVE)) return true;
     if (jj_scan_token(PPELIF)) return true;
     return false;
   }
 
+  private boolean jj_3_1() {
+    if (jj_scan_token(STARTDIRECTIVE)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_scan_token(20)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(21)) {
+    jj_scanpos = xsp;
+    if (jj_scan_token(22)) return true;
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3_4() {
+    if (jj_scan_token(STARTDIRECTIVE)) return true;
+    if (jj_scan_token(PPIF)) return true;
+    return false;
+  }
+
+  private boolean jj_3_6() {
+    if (jj_scan_token(STARTDIRECTIVE)) return true;
+    if (jj_scan_token(PPIFNDEF)) return true;
+    return false;
+  }
+
+  /** Generated Token Manager. */
   public PreprocessorTokenManager token_source;
   SimpleCharStream jj_input_stream;
-  public Token token, jj_nt;
+  /** Current token. */
+  public Token token;
+  /** Next token. */
+  public Token jj_nt;
   private int jj_ntk;
   private Token jj_scanpos, jj_lastpos;
   private int jj_la;
-  public boolean lookingAhead = false;
-  private boolean jj_semLA;
   private int jj_gen;
   final private int[] jj_la1 = new int[8];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
-      jj_la1_0();
-      jj_la1_1();
+      jj_la1_init_0();
+      jj_la1_init_1();
    }
-   private static void jj_la1_0() {
-      jj_la1_0 = new int[] {0xf8e,0x78e,0x800,0x17020200,0xc0000000,0x58e,0x580,0x580,};
+   private static void jj_la1_init_0() {
+      jj_la1_0 = new int[] {0x3e00,0x1e00,0x2000,0x5c080800,0x0,0x1600,0x1600,0x1600,};
    }
-   private static void jj_la1_1() {
-      jj_la1_1 = new int[] {0x60103,0x60103,0x0,0x0,0x0,0x60103,0x0,0x0,};
+   private static void jj_la1_init_1() {
+      jj_la1_1 = new int[] {0x18040c,0x18040c,0x0,0x0,0x3,0x18040c,0x0,0x0,};
    }
   final private JJCalls[] jj_2_rtns = new JJCalls[6];
   private boolean jj_rescan = false;
   private int jj_gc = 0;
 
+  /** Constructor with InputStream. */
   public Preprocessor(java.io.InputStream stream) {
      this(stream, null);
   }
+  /** Constructor with InputStream and supplied encoding */
   public Preprocessor(java.io.InputStream stream, String encoding) {
     try { jj_input_stream = new SimpleCharStream(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source = new PreprocessorTokenManager(jj_input_stream);
@@ -489,9 +475,11 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(java.io.InputStream stream) {
      ReInit(stream, null);
   }
+  /** Reinitialise. */
   public void ReInit(java.io.InputStream stream, String encoding) {
     try { jj_input_stream.ReInit(stream, encoding, 1, 1); } catch(java.io.UnsupportedEncodingException e) { throw new RuntimeException(e); }
     token_source.ReInit(jj_input_stream);
@@ -502,6 +490,7 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Constructor. */
   public Preprocessor(java.io.Reader stream) {
     jj_input_stream = new SimpleCharStream(stream, 1, 1);
     token_source = new PreprocessorTokenManager(jj_input_stream);
@@ -512,6 +501,7 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(java.io.Reader stream) {
     jj_input_stream.ReInit(stream, 1, 1);
     token_source.ReInit(jj_input_stream);
@@ -522,6 +512,7 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Constructor with generated Token Manager. */
   public Preprocessor(PreprocessorTokenManager tm) {
     token_source = tm;
     token = new Token();
@@ -531,6 +522,7 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
+  /** Reinitialise. */
   public void ReInit(PreprocessorTokenManager tm) {
     token_source = tm;
     token = new Token();
@@ -540,7 +532,7 @@ public class Preprocessor implements PreprocessorConstants {
     for (int i = 0; i < jj_2_rtns.length; i++) jj_2_rtns[i] = new JJCalls();
   }
 
-  final private Token jj_consume_token(int kind) throws ParseException {
+  private Token jj_consume_token(int kind) throws ParseException {
     Token oldToken;
     if ((oldToken = token).next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -566,7 +558,7 @@ public class Preprocessor implements PreprocessorConstants {
 
   static private final class LookaheadSuccess extends java.lang.Error { }
   final private LookaheadSuccess jj_ls = new LookaheadSuccess();
-  final private boolean jj_scan_token(int kind) {
+  private boolean jj_scan_token(int kind) {
     if (jj_scanpos == jj_lastpos) {
       jj_la--;
       if (jj_scanpos.next == null) {
@@ -587,6 +579,8 @@ public class Preprocessor implements PreprocessorConstants {
     return false;
   }
 
+
+/** Get the next Token. */
   final public Token getNextToken() {
     if (token.next != null) token = token.next;
     else token = token.next = token_source.getNextToken();
@@ -595,8 +589,9 @@ public class Preprocessor implements PreprocessorConstants {
     return token;
   }
 
+/** Get the specific Token. */
   final public Token getToken(int index) {
-    Token t = lookingAhead ? jj_scanpos : token;
+    Token t = token;
     for (int i = 0; i < index; i++) {
       if (t.next != null) t = t.next;
       else t = t.next = token_source.getNextToken();
@@ -604,14 +599,14 @@ public class Preprocessor implements PreprocessorConstants {
     return t;
   }
 
-  final private int jj_ntk() {
+  private int jj_ntk() {
     if ((jj_nt=token.next) == null)
       return (jj_ntk = (token.next=token_source.getNextToken()).kind);
     else
       return (jj_ntk = jj_nt.kind);
   }
 
-  private java.util.Vector jj_expentries = new java.util.Vector();
+  private java.util.List<int[]> jj_expentries = new java.util.ArrayList<int[]>();
   private int[] jj_expentry;
   private int jj_kind = -1;
   private int[] jj_lasttokens = new int[100];
@@ -626,31 +621,26 @@ public class Preprocessor implements PreprocessorConstants {
       for (int i = 0; i < jj_endpos; i++) {
         jj_expentry[i] = jj_lasttokens[i];
       }
-      boolean exists = false;
-      for (java.util.Enumeration e = jj_expentries.elements(); e.hasMoreElements();) {
-        int[] oldentry = (int[])(e.nextElement());
+      jj_entries_loop: for (java.util.Iterator<?> it = jj_expentries.iterator(); it.hasNext();) {
+        int[] oldentry = (int[])(it.next());
         if (oldentry.length == jj_expentry.length) {
-          exists = true;
           for (int i = 0; i < jj_expentry.length; i++) {
             if (oldentry[i] != jj_expentry[i]) {
-              exists = false;
-              break;
+              continue jj_entries_loop;
             }
           }
-          if (exists) break;
+          jj_expentries.add(jj_expentry);
+          break jj_entries_loop;
         }
       }
-      if (!exists) jj_expentries.addElement(jj_expentry);
       if (pos != 0) jj_lasttokens[(jj_endpos = pos) - 1] = kind;
     }
   }
 
+  /** Generate ParseException. */
   public ParseException generateParseException() {
-    jj_expentries.removeAllElements();
-    boolean[] la1tokens = new boolean[51];
-    for (int i = 0; i < 51; i++) {
-      la1tokens[i] = false;
-    }
+    jj_expentries.clear();
+    boolean[] la1tokens = new boolean[53];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -667,11 +657,11 @@ public class Preprocessor implements PreprocessorConstants {
         }
       }
     }
-    for (int i = 0; i < 51; i++) {
+    for (int i = 0; i < 53; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
-        jj_expentries.addElement(jj_expentry);
+        jj_expentries.add(jj_expentry);
       }
     }
     jj_endpos = 0;
@@ -679,18 +669,20 @@ public class Preprocessor implements PreprocessorConstants {
     jj_add_error_token(0, 0);
     int[][] exptokseq = new int[jj_expentries.size()][];
     for (int i = 0; i < jj_expentries.size(); i++) {
-      exptokseq[i] = (int[])jj_expentries.elementAt(i);
+      exptokseq[i] = jj_expentries.get(i);
     }
     return new ParseException(token, exptokseq, tokenImage);
   }
 
+  /** Enable tracing. */
   final public void enable_tracing() {
   }
 
+  /** Disable tracing. */
   final public void disable_tracing() {
   }
 
-  final private void jj_rescan_token() {
+  private void jj_rescan_token() {
     jj_rescan = true;
     for (int i = 0; i < 6; i++) {
     try {
@@ -714,7 +706,7 @@ public class Preprocessor implements PreprocessorConstants {
     jj_rescan = false;
   }
 
-  final private void jj_save(int index, int xla) {
+  private void jj_save(int index, int xla) {
     JJCalls p = jj_2_rtns[index];
     while (p.gen > jj_gen) {
       if (p.next == null) { p = p.next = new JJCalls(); break; }

@@ -152,6 +152,8 @@ TOKEN_MGR_DECLS : {
                      MARKUP = Colourizer.MARKUP ;
     
     private int colourClass = PLAIN ;  // Used to communicate from lex actions
+
+    private boolean invisible = false ; // This is true when we are within invisible code. I.e. between /*#I and */
     
     void CommonTokenAction(Token token) {
         colourizer.addToken( token.image, colourClass ) ;
@@ -166,7 +168,7 @@ TOKEN_MGR_DECLS : {
 
 // The following set of productions is duplicated in JavaParser.jjt
 // Except for the first line
-<DEFAULT, MIDLINE> TOKEN :
+<DEFAULT, MIDLINE> SKIP :
 {
 //    <PEDAGOGICALMARKUP0: "/*#D*/" | "/*#/H*/" >
 //                        { colourClass = MARKUP ;
@@ -176,16 +178,32 @@ TOKEN_MGR_DECLS : {
 //                          colourizer.endAllSelections() ; }
 //|
     <PEDAGOGICALMARKUP2: "/*#T" (" ")* (["a"-"z","A"-"Z","0"-"9"])+ (" ")* "*/" >
-                        { colourClass = MARKUP ;
+                        { //colourClass = MARKUP ;
                           colourizer.startSelection(
                               CommonParserHelper.extractTagName( matchedToken.image ) ) ; }
 |   <PEDAGOGICALMARKUP3: "/*#/T" (" ")* (["a"-"z","A"-"Z","0"-"9"])+ (" ")* "*/" >
-                        { colourClass = MARKUP ;
+                        { //colourClass = MARKUP ;
                           colourizer.endSelection(
                               CommonParserHelper.extractTagName( matchedToken.image ) ) ; }
 |   <PEDAGOGICALMARKUP4: "/*#" >
-                        { colourClass = MARKUP ; }
+                        // { colourClass = MARKUP ; }
                         : IN_PEDAGOGICAL_COMMENT
+}
+
+<DEFAULT,MIDLINE> SKIP  :
+{
+    // Here we differ from Java. Instead of using and INVISBLE state, we simply have an invisible flag.
+    <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >
+    { colourizer.startSelection("s") ;
+      invisible = true ; }
+}
+
+
+// Catch the end of an invisible section.
+<DEFAULT, MIDLINE >SKIP :
+{
+  "*/" { if( invisible ) { colourizer.endSelection( "s" ) ; invisible = false ; }
+         else { throw new ParseException( "Stray */ in code." ) ; } }
 }
 
 <IN_PEDAGOGICAL_COMMENT> SKIP:
@@ -207,11 +225,11 @@ TOKEN_MGR_DECLS : {
 <IN_PEDAGOGICAL_COMMENT> SKIP:
 {
   < ~[] >
-}
+}  
 
 <DEFAULT, MIDLINE> TOKEN :
 {
-  <KEEP_SPACE : " " | "\t" > 
+  <KEEP_SPACE : " " | "\t" | "\f" > 
 | 
   <CSTYLECOMMENTSTART : "/*" > {colourClass = COMMENT ; }
   : IN_C_COMMENT
@@ -453,8 +471,7 @@ TOKEN_MGR_DECLS : {
      : MIDLINE
 }
 
-// Finally a catch all to collect tokens with 'default' colouring, and to 
-// prevent token manager errors
+// Finally a catch all to collect tokens with 'default' colouring
 <DEFAULT, MIDLINE>TOKEN :
 {
   <  KEEP_REST : ~[] >
@@ -613,9 +630,9 @@ void pp_token( boolean record, StringBuffer sb ) :
         | keep = <LINECOMMENTSTART> { keep.image = " " ; output_token( keep, sb) ; }
 //        | keep = <PEDAGOGICALMARKUP0> { keep.image = " " ; output_token( keep, sb) ; }
 //        | keep = <PEDAGOGICALMARKUP1> { keep.image = " " ; output_token( keep, sb) ; }
-        | keep = <PEDAGOGICALMARKUP2> { keep.image = " " ; output_token( keep, sb) ; }
-        | keep = <PEDAGOGICALMARKUP3> { keep.image = " " ; output_token( keep, sb) ; }
-        | keep = <PEDAGOGICALMARKUP4> { keep.image = " " ; output_token( keep, sb) ; }
+//        | keep = <PEDAGOGICALMARKUP2> { keep.image = " " ; output_token( keep, sb) ; }
+//        | keep = <PEDAGOGICALMARKUP3> { keep.image = " " ; output_token( keep, sb) ; }
+//        | keep = <PEDAGOGICALMARKUP4> { keep.image = " " ; output_token( keep, sb) ; }
         
 }
 
