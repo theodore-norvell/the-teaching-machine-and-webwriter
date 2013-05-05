@@ -34,6 +34,10 @@
 								9. Reskinned TM display with title barincluding buttons.
 								
 	July, 2007: Refactored to support the quizWriter add-on.
+	May, 2013: Eliminated the need for the URL2String Applet.
+	           Using XMLHttpRequest instead.
+	May, 2013: Eliminated the MarkUp applet. Using JavaScript for
+	           marking up.
 
 ************************************************************************************/ 
 
@@ -72,8 +76,8 @@
 //	alert("isIE is " + (isIE ? "true" : "false"));
 
 
-var loadApplet=null;
-var parseApplet=null;
+//var loadApplet=null;
+//var parseApplet=null;
 var TMApplet = null;
 
 // Technically this is no applets as well. An effort to force reload to behave because I figured && top.navBarFrame.appletsLoaded
@@ -83,7 +87,7 @@ var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
 var isLoaded = false;
 var thisDoc = self.location.href;
 
-var debugging = false;   // set to false to turn off logging
+var debugging = true;   // set to false to turn off logging
 
 /* This is temporary and should move to document. I would love to automate it but it we have to contend
  	with the possibility that the page may have been loaded directly in which case the frames are not
@@ -150,12 +154,39 @@ function initialize(){
 		
 
 /*************************************************************************************/
-/* Functions to load a document using the url2String applet which must be loaded into
-the applets frame by the time these functions are called
+/** Read a file using XMLHttpRequest.
+* @param url  A URL relative to the root directory of the site. 
+* (i.e. the directory holding default.htm).
+  @returns The contents of the file as a string object.
 */
 
 function fileToString(url){
-//alert(url + " requested. Window at " + window.location + " and document at " + document.URL);
+    consoleDebug(url + " requested. Window at " + window.location + " and document at " + document.URL);
+    // Adjust the URL to be relative to the directory this HTML page is in.
+    url = nestingDepth + url ;
+    var ok = false ;
+    var xhr ;
+    // Try to make and send a request for the file.
+    try {
+        xhr = new XMLHttpRequest() ;
+        xhr.open("GET",url,false);
+        xhr.send();
+        ok = true ; }
+    catch( e ) {
+        // Failed to make, open, or send the request.
+        consoleError( "Function fileToString failed to fetch " +url+
+                    ". Exception is "+e ) ;
+        return "File could not be read. Exception is "+e ; }
+    var DONE = 4 ;
+    if( ok && xhr.readyState == DONE ) {
+        // Success ;
+        return xhr.responseText ; }
+    else if( ok ) {
+        // Request sent ok, but not successfully satified.
+        consoleError( "Function fileToString failed to fetch " +url+ "XMLHttpRequest state code is " + xhr.readyState ) ;  
+        return "File could not be read. XMLHttpRequest state code is " + xhr.readyState ; }
+    
+    /*
 	var url_contents = null;
 	if (loadApplet == null) {
 		loadApplet = getApplet("url2String");
@@ -173,6 +204,7 @@ function fileToString(url){
 	// url_contents is a JavaObject. Force it to a script String
 	// This cures bug between Sun Java 1.5 and JScript
 	return new String(url_contents.toString());	
+	*/
 }
 
 /*	Puts up a window 
@@ -302,7 +334,7 @@ function createDataFileSet(/* any number of file names */){
 
 /* Insert a code example into the document. It will be automatically marked for syntax colouring
  and annotations will be inserted as needed.
-	relativeURL: the file holding the code
+	relativeURL: the file holding the code. Relative to the root directory.
 	buttonSet: boolean. if true, insert the buttonSet (which must be already defined)
 	className: user defined class to allow appearance to be controlled by a cascading style sheet
 	configurationFile: relative path to configuration file to be used with TM
@@ -350,86 +382,81 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 //	var javaURL = getJavaURL(theURL);
 //	rawCode = fileToString(javaURL);
 	if (rawCode != null) {
-		if (parseApplet == null) {
-			parseApplet = getApplet("markUp");
+		document.write('<div class="tmContainer">');
+		document.write('<table class="tmBar" width = "100%"> <tr><td width="120px" align="left">');
+		document.write('<img src="', getToImages() + "greenBoard.gif" + '"></td><td align="left">');
+		if(buttonSet) {
+    		document.write('<div id="buttonContainer', currentCode, '"></div>');
+    		var buttonSetArray = new Array();
+    		var setButtons = 0;
+    
+    		if ((TMLink||editLink) && (TMApplet == null))
+    			TMApplet = parent.navBarFrame.document.teachingMachine;
+    		if (TMLink){
+    			var linkButtonDef = new ButtonDef("runButton" + currentCode);
+    			linkButtonDef.gifBase = "runButton";
+    			linkButtonDef.actionString = "invokeTM(" + currentCode + ")";
+    			linkButtonDef.tooltip = "Run " + theURL + " in the Teaching Machine";
+    			buttonSetArray[setButtons++] = linkButtonDef;
+    		}
+    		if (videoLink) {
+    			var videoButtonDef = new ButtonDef("videoButton" + currentCode);
+    			videoButtonDef.gifBase = "videoButton";
+    			videoButtonDef.actionString = "invokeVideo('" + videoRef +"')" ;
+    			videoButtonDef.tooltip = "See a video of " + theURL + " being run in the Teaching Machine";
+    			buttonSetArray[setButtons++] = videoButtonDef;
+    		}
+    		if (editLink) {
+    			var editButtonDef = new ButtonDef("editButton" + currentCode);
+    			editButtonDef.gifBase = "editButton";
+    			editButtonDef.actionString = "invokeEdit(" + currentCode +")" ;
+    			editButtonDef.tooltip = "Change the example temporarily";
+    			buttonSetArray[setButtons++] = editButtonDef;
+    		}
+    		if (buttonSetArray.length > 0) {
+    			var TMButtons = new ButtonSet("TMButtons" + currentCode, buttonSetArray, true);
+    			//TMButtons.append(document.getElementById("buttonContainer" + currentCode));
+    		}
 		}
-		if (parseApplet != null) {
-//			alert("rawCode is " + rawCode);
-		// In business! Is a TM link wanted?
-//			currentCode++;		// track no of examples on this page
-//			exampleURL[currentCode] = javaURL;
-			document.write('<div class="tmContainer">');
-			document.write('<table class="tmBar" width = "100%"> <tr><td width="120px" align="left">');
-			document.write('<img src="', getToImages() + "greenBoard.gif" + '"></td><td align="left">');
-			if(buttonSet) {
-				document.write('<div id="buttonContainer', currentCode, '"></div>');
-				var buttonSetArray = new Array();
-				var setButtons = 0;
-
-				if ((TMLink||editLink) && (TMApplet == null))
-					TMApplet = parent.navBarFrame.document.teachingMachine;
-				if (TMLink){
-					var linkButtonDef = new ButtonDef("runButton" + currentCode);
-					linkButtonDef.gifBase = "runButton";
-					linkButtonDef.actionString = "invokeTM(" + currentCode + ")";
-					linkButtonDef.tooltip = "Run " + theURL + " in the Teaching Machine";
-					buttonSetArray[setButtons++] = linkButtonDef;
-				}
-				if (videoLink) {
-					var videoButtonDef = new ButtonDef("videoButton" + currentCode);
-					videoButtonDef.gifBase = "videoButton";
-					videoButtonDef.actionString = "invokeVideo('" + videoRef +"')" ;
-					videoButtonDef.tooltip = "See a video of " + theURL + " being run in the Teaching Machine";
-					buttonSetArray[setButtons++] = videoButtonDef;
-				}
-				if (editLink) {
-					var editButtonDef = new ButtonDef("editButton" + currentCode);
-					editButtonDef.gifBase = "editButton";
-					editButtonDef.actionString = "invokeEdit(" + currentCode +")" ;
-					editButtonDef.tooltip = "Change the example temporarily";
-					buttonSetArray[setButtons++] = editButtonDef;
-				}
-				if (buttonSetArray.length > 0) {
-					var TMButtons = new ButtonSet("TMButtons" + currentCode, buttonSetArray, true);
-//					TMButtons.append(document.getElementById("buttonContainer" + currentCode));
-				}
-			}
-			document.write('</td> <td align="right">', relativeURL,'</td></tr></table>');
-			document.write('<div class="',className,'" style="position:relative;">');
-		//Mark it as code and as preformatted
-			document.write('<pre>');
-		//	alert("RAW CODE\n" + rawCode);
-		// have parser applet return HTML for syntax colouring
-//		static public String markUpString(String str, String lang) Where lang should equal "C++" or "Java". It's been tested a little.
-			try {
-				var language = ((theURL.search(/.jav/i) == -1 ) ? "C++" : "Java");
-				//alert("languge is " + language + "\nparseApplet is " + parseApplet.tostring());
-				/* new String is required to convert Java String Object to JavaScript one
-				   Or Safari won't apply native methods like match to it. */
-				var stainedCode = new String(parseApplet.markUpString(rawCode, relativeURL));
-		//document.write("STAINED CODE<pre>" + stainedCode + "</pre>------ END OF STAINED CODE -----------------");
-			// Now write it dynamically, handling notations, then close off block
-				writeAnnotated(stainedCode, parseTree);
-			} catch(e) {
-				document.write('<p class="error">Error retrieving code\n' + e + "</p>");
-			}
-			finally {
-				document.write('</pre></div></div>');
-			}
-		}
-	else alert("Can't find markUp Applet");
+	    document.write('</td> <td align="right">', relativeURL,'</td></tr></table>');
+	    // End of buttons.
+	    // Now the text of the code file goes in a DIV and a PRE
+		document.write('<div class="',className,'" style="position:relative;">');
+		document.write('<pre>');
+	    var language = ((theURL.search(/\.jav/i) == -1 ) ? "C++" : "Java");
+		consoleDebug("language is " + language );
+		consoleDebug("The raw code is <<" + rawCode + ">>" ) ;
+		var stainedCode = stain( rawCode, language ) ;
+		consoleDebug("The stained code is <<" + stainedCode + ">>" ) ;
+	    // Now write it dynamically, handling notations, then close off block
+		writeAnnotated(stainedCode, parseTree);
+		document.write('</pre></div></div>');
+	} else {
+	    document.write('<p>Error in insertCode: rawCode is null!</p>') ;
+	    consolError('WW++: rawCode is null in insertCode');
 	}
 }
 
-/* Hoisted out of invokeCode in June, 2007, to allow code sharing with new runCode routine.
-	This function fetches the raw code for the new example. It also loads the TM version of
+/** Convert a string of C++ or Java code to HTML */
+function stain( rawCode, language ) {
+    var result ;
+    try {
+    result = (language == "C++" ? markUpCPP.markUp : markUpJava.markUp)
+                ( rawCode ) ;
+    } catch ( e ) {
+        consoleError('WW++: Exception during mark up. Exception is ' + e ) ; 
+        result = "WW++: Exception while marking up the code. See javascript console." ; }
+    return result ;
+}
+
+/** Fetch the raw code for the new example. It also loads the TM version of
 	of the code (plus associated information) to the array of examples for this page and
 	updates the page global variable currentCode
 */
 function loadCode(theURL, configurationFile, tmParseString){
-	var javaURL = getJavaURL(theURL);
-	rawCode = fileToString(javaURL);
+	rawCode = fileToString(theURL);
 	currentCode++;		// track no of examples on this page
+	var javaURL = getJavaURL(theURL);
 	exampleURL[currentCode] = javaURL;
 	baseCode[currentCode] = getTMCode(rawCode);
 	dataFileSet[currentCode] = lastDataSet;
@@ -1678,10 +1705,10 @@ function consoleError(message){
 
 function consoleDebug(message){
 	if (debugging) {
-	if (typeof console == 'undefined')
-		alert(message);
-	else
-		console.debug(message);
+	    if (typeof console == 'undefined')
+	    	alert(message);
+	    else
+		    console.debug(message);
 	}
 }
 

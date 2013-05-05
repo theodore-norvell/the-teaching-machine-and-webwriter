@@ -1,6 +1,7 @@
 // JavaScript Document
 
 var appletsLoaded = false;
+var javaIsEnabled ;
 window.onload = doneLoading;
 
 
@@ -118,7 +119,9 @@ if (!navigator.javaEnabled() ){
 	alert("Java is not enabled on your browser. Extensive use is made of Applets, which require Java." + 
 		  "\n It will run with Java set to any degree of safety including high (which is what we use)." +
 		  "\nThe Teaching Machine Design Team: Michael Bruce-Lockhart & Theo Norvell");
-}
+	javaIsEnabled = false ;
+} else {
+	javaIsEnabled = true ; }
 
 /*	else if(parent.contents.location.search) { // document started to load before this window loaded (reload?)
 		startPoint = parent.contents.location.search.substring(1);
