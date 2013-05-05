@@ -33,7 +33,7 @@
 								8. Added notes which can be turned off (e.g. for lectures) / turned on.
 								9. Reskinned TM display with title barincluding buttons.
 								
-	July, 2007: Refactored to support the quizWriter add-on.
+	July, 2007: Refactored to support the quizWriter add-on
 
 ************************************************************************************/ 
 
@@ -156,23 +156,28 @@ the applets frame by the time these functions are called
 
 function fileToString(url){
 //alert(url + " requested. Window at " + window.location + " and document at " + document.URL);
+	consoleDebug( "fileToString('" +url+ "'" ) ;
 	var url_contents = null;
 	if (loadApplet == null) {
 		loadApplet = getApplet("url2String");
 	}
-	if (loadApplet != null) {
+	if (loadApplet) {
 //		consoleDebug("Found applet! " + loadApplet);
 		
 		url_contents = loadApplet.read_relative_URL(url);
-//		consoleDebug(url + " contains " + url_contents);
+		consoleDebug(url + " contains " + url_contents);
 		//alert("here!");
-   		if (!loadApplet.success())
+   		if (loadApplet.success())
+   			// url_contents is a JavaObject. Force it to a script String
+   			// This cures bug between Sun Java 1.5 and JScript
+   			return new String(url_contents.toString());	
+   		else {
        		consoleError( "Sorry couldn't read URL " + url );
+       		return "" ; }
 	}
-	else consoleError("Couldn't load applet at " + url);
-	// url_contents is a JavaObject. Force it to a script String
-	// This cures bug between Sun Java 1.5 and JScript
-	return new String(url_contents.toString());	
+	else {
+		consoleError("Couldn't load applet at " + url);
+	    return "" ; }
 }
 
 /*	Puts up a window 
