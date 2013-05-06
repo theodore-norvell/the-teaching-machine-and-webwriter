@@ -116,9 +116,6 @@ if (!is_ie6up && !is_nav6up && !is_gecko) {
 }
 
 if (!navigator.javaEnabled() ){
-	alert("Java is not enabled on your browser. Extensive use is made of Applets, which require Java." + 
-		  "\n It will run with Java set to any degree of safety including high (which is what we use)." +
-		  "\nThe Teaching Machine Design Team: Michael Bruce-Lockhart & Theo Norvell");
 	javaIsEnabled = false ;
 } else {
 	javaIsEnabled = true ; }
