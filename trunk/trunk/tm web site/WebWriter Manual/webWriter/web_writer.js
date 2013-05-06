@@ -207,7 +207,7 @@ function fileToString(url){
 	*/
 }
 
-/*	Puts up a window 
+/*	Try to find a specific applet. 
 */
 function getApplet(appletName){
 	if (noAppletFrame) return;
@@ -234,8 +234,6 @@ function getApplet(appletName){
 directly from a cpp file. The code is assumed to be standard code EXCEPT that it may have been annotated for
 teaching purposes. Annotations are embedded in c style comments so that they may be made by an instructor
 without affecting the compilability of the code.
-
-	The JAVA parser from the Teaching Machine has been ammended to provide HTML syntax colouring.
 
 Annotations are handled by JavaScript functions.
 
@@ -390,8 +388,8 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
     		var buttonSetArray = new Array();
     		var setButtons = 0;
     
-    		if ((TMLink||editLink) && (TMApplet == null))
-    			TMApplet = parent.navBarFrame.document.teachingMachine;
+    		//if ((TMLink||editLink) && (TMApplet == null))
+    		//	TMApplet = parent.navBarFrame.document.teachingMachine;
     		if (TMLink){
     			var linkButtonDef = new ButtonDef("runButton" + currentCode);
     			linkButtonDef.gifBase = "runButton";
@@ -489,34 +487,49 @@ function getTMCode(rawCode){
 	return processedCode;  //splitUp.join("");
 }
 
+function getTMApplet() {
+	consoleDebug("Getting applet") ;
+	if (TMApplet == null) {
+		consoleDebug("Checking on JavaScript") ;
+		if( ! parent.navBarFrame.javaIsEnabled ) {
+			alert( "WebWriter++ was unable to detect a Java plugin for your browser. "
+		    	 + "To run the Teaching Machine, Java is required. "
+			 	 + "Java can be obtained from Oracle corporation: "
+			 	 +" http://java.com/en/download/index.jsp ." ) ; 
+			return; }
+		consoleDebug("TMApplet is null but we have Java.") ;
+		TMApplet = getApplet("teachingMachine");
+		if (TMApplet == null)
+			alert("Sorry. Unable to locate the Teaching Machine Applet");
+		else consoleDebug("TMApplet not null") ; }
+}
+
 // Configuration added 2001.12.31
 function invokeTM(example){
-	if (TMApplet == null)
-		TMApplet = getApplet("teachingMachine");
-	if (TMApplet == null)
-		alert("Sorry. Unable to locate the Teaching Machine Applet");
-	else {
-		if(dataFileSet[example] != null) {
-			var fileSet = dataFileSet[example];
-			for (var i = 0; i < fileSet.length; i++) {
-				var fileLoc = peelName(getBaseToHere()) + fileSet[i];
-//				alert ("fileLoc is " + fileLoc);
-				TMApplet.registerRemoteDataFile( fileLoc );
-			}
+	consoleDebug("About to get applet. b") ;
+	getTMApplet() ;
+	if (TMApplet == null) return ;
+	consoleDebug("GotApplet") ;
+	if(dataFileSet[example] != null) {
+		var fileSet = dataFileSet[example];
+		for (var i = 0; i < fileSet.length; i++) {
+			var fileLoc = peelName(getBaseToHere()) + fileSet[i];
+//			alert ("fileLoc is " + fileLoc);
+			TMApplet.registerRemoteDataFile( fileLoc );
 		}
-//	 alert(exampleURL[example]);
-	// String language, String fileName, String programSource
-		TMApplet.loadRemoteFile(exampleURL[example]);
+	}
+// alert(exampleURL[example]);
+// String language, String fileName, String programSource
+	TMApplet.loadRemoteFile(exampleURL[example]);
 		
 // Changed March, 2008, to use sitewide default config file if none was specified originally
-		var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
-//		alert(useConfigFile);
-		TMApplet.readRemoteConfiguration(useConfigFile);
+	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
+//	alert(useConfigFile);
+	TMApplet.readRemoteConfiguration(useConfigFile);
 			
-		if (selection[example] != null) {
-	//		alert(selection[example]);
-			TMApplet.setSelectionString(selection[example]);
-		}
+	if (selection[example] != null) {
+//		alert(selection[example]);
+		TMApplet.setSelectionString(selection[example]);
 	}
 }
 
@@ -549,20 +562,17 @@ function formLoaded(){
 
 // Called by input form window once editing is done
 function changeCode(newCode){
-	if (TMApplet == null)
-		TMApplet = getApplet("teachingMachine");
-	if (TMApplet == null)
-		alert("Sorry. Unable to locate the Teaching Machine Applet");
-	else {
+	getTMApplet() ;
+	if (TMApplet == null) return;
 //	 alert(exampleURL[example]);
 	// String language, String fileName, String programSource
-		TMApplet.loadString( '.cpp',newCode);
-		if (config[currentExample] != null) {
-//			alert(config[example]);
-			TMApplet.readRemoteConfiguration(config[currentExample]);
-		}
-		else TMApplet.readRemoteConfiguration(oneTimeScript.getDefaultConfig());
+	// TODO Why is this for .cpp only?
+	TMApplet.loadString( '.cpp',newCode);
+	if (config[currentExample] != null) {
+//		alert(config[example]);
+		TMApplet.readRemoteConfiguration(config[currentExample]);
 	}
+	else TMApplet.readRemoteConfiguration(oneTimeScript.getDefaultConfig());
 }
 
 
