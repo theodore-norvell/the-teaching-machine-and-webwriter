@@ -422,10 +422,10 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 		document.write('<div class="',className,'" style="position:relative;">');
 		document.write('<pre>');
 	    var language = ((theURL.search(/\.jav/i) == -1 ) ? "C++" : "Java");
-		consoleDebug("language is " + language );
-		consoleDebug("The raw code is <<" + rawCode + ">>" ) ;
+		//consoleDebug("language is " + language );
+		//consoleDebug("The raw code is <<" + rawCode + ">>" ) ;
 		var stainedCode = stain( rawCode, language ) ;
-		consoleDebug("The stained code is <<" + stainedCode + ">>" ) ;
+		//consoleDebug("The stained code is <<" + stainedCode + ">>" ) ;
 	    // Now write it dynamically, handling notations, then close off block
 		writeAnnotated(stainedCode, parseTree);
 		document.write('</pre></div></div>');
@@ -487,48 +487,71 @@ function getTMCode(rawCode){
 	return processedCode;  //splitUp.join("");
 }
 
+/**  getTMApplet()
+     Pre: if TMApplet != null, then it points to a good applet.
+     Post: either TMApplet' != null and it points to a good applet
+	       or TMApplet' == null and the user has been alerted to
+		      the problem 
+*/
 function getTMApplet() {
 	consoleDebug("Getting applet") ;
-	if (TMApplet == null) {
-		consoleDebug("Checking on JavaScript") ;
-		if( ! parent.navBarFrame.javaIsEnabled ) {
-			alert( "WebWriter++ was unable to detect a Java plugin for your browser. "
-		    	 + "To run the Teaching Machine, Java is required. "
+	var alertMessage = "WebWriter++ was unable start the Teaching Machine. "
+	             + "The problem may be that you do not have the "
+				 + "Java Runtime Environment intalled on your computer. "
 			 	 + "Java can be obtained from Oracle corporation: "
-			 	 +" http://java.com/en/download/index.jsp ." ) ; 
-			return; }
-		consoleDebug("TMApplet is null but we have Java.") ;
-		TMApplet = getApplet("teachingMachine");
-		if (TMApplet == null)
-			alert("Sorry. Unable to locate the Teaching Machine Applet");
-		else consoleDebug("TMApplet not null") ; }
+			 	 +" http://java.com/en/download/index.jsp ."
+	
+	if (TMApplet != null) {
+		consoleDebug("Looks like we got it already") ;
+		return ; }
+		
+	consoleDebug("Checking on whether java is supported.") ;
+	if( ! parent.navBarFrame.javaIsEnabled ) {
+		consoleError("Looks like Java is not supported.") ;
+		alert( alertMessage ) ; 
+		return; }
+		
+	consoleDebug("Looks like Java is supported.") ;
+	TMApplet = getApplet("teachingMachine");
+	if (TMApplet == null) {
+		consoleError('getApplet("teachingMachine") has failed.') ;
+		alert(alertMessage); 
+		return ; }
+	
+	consoleDebug('getApplet("teachingMachine") has succeeded.') ;
+	
+	if( ! TMApplet.loadRemoteFile ) {
+		TMApplet = null ;
+		consoleError("TMApplet does not have a loadRemoteFile function") ; 
+		alert(alertMessage);  }
 }
 
-// Configuration added 2001.12.31
+
 function invokeTM(example){
-	consoleDebug("About to get applet. b") ;
+	consoleDebug("About to get applet. d") ;
 	getTMApplet() ;
-	if (TMApplet == null) return ;
+	if (TMApplet == null) {
+		consoleError("TMApplet could not be got.") ;
+		return ; }
 	consoleDebug("GotApplet") ;
 	if(dataFileSet[example] != null) {
 		var fileSet = dataFileSet[example];
 		for (var i = 0; i < fileSet.length; i++) {
 			var fileLoc = peelName(getBaseToHere()) + fileSet[i];
-//			alert ("fileLoc is " + fileLoc);
+			consoleDebug("TMApplet.registerRemoteDataFile(" +fileLoc+ ")") ;
 			TMApplet.registerRemoteDataFile( fileLoc );
 		}
 	}
-// alert(exampleURL[example]);
-// String language, String fileName, String programSource
+    consoleDebug('TMApplet.loadRemoteFile('+ exampleURL[example] +')' );
 	TMApplet.loadRemoteFile(exampleURL[example]);
-		
-// Changed March, 2008, to use sitewide default config file if none was specified originally
-	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
-//	alert(useConfigFile);
+
+	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() 
+	                                           : config[example]);
+    consoleDebug('TMApplet.readRemoteConfiguration(' +useConfigFile+ ')' ) ;
 	TMApplet.readRemoteConfiguration(useConfigFile);
 			
 	if (selection[example] != null) {
-//		alert(selection[example]);
+        consoleDebug('TMApplet..setSelectionString(' +selection[example]+ ')' ) ;
 		TMApplet.setSelectionString(selection[example]);
 	}
 }
@@ -562,17 +585,19 @@ function formLoaded(){
 
 // Called by input form window once editing is done
 function changeCode(newCode){
+	consoleDebug("About to get applet. (changeCode)") ;
 	getTMApplet() ;
-	if (TMApplet == null) return;
-//	 alert(exampleURL[example]);
-	// String language, String fileName, String programSource
+	if (TMApplet == null) {
+		consoleError("TMApplet could not be got.") ;
+		return ; }
+	consoleDebug("GotApplet") ;
 	// TODO Why is this for .cpp only?
+    consoleDebug('TMApplet.loadString(".cpp", ...)' );
 	TMApplet.loadString( '.cpp',newCode);
-	if (config[currentExample] != null) {
-//		alert(config[example]);
-		TMApplet.readRemoteConfiguration(config[currentExample]);
-	}
-	else TMApplet.readRemoteConfiguration(oneTimeScript.getDefaultConfig());
+	
+	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
+    consoleDebug('TMApplet.readRemoteConfiguration(' +useConfigFile+ ')' ) ;
+	TMApplet.readRemoteConfiguration(useConfigFile);
 }
 
 

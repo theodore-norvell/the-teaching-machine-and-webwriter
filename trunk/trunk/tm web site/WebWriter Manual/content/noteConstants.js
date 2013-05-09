@@ -6,13 +6,13 @@ var generator = "DreamWeaver CS3 & WebWriter++";
 var bottomMark ="<em>WebWriter++ Manual</em>";
 var courseNo = "";
 
-var copyright = "&copy; 2006, 2009, Michael Bruce-Lockhart.";
+var copyright = "&copy; 2002, 2004, 2008, 2010, 2013 Michael Bruce-Lockhart.";
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
 var authorRef = "http://www.teachingMachine.org";
 var licenseRef = authorRef;
 
-var copyRightDates = "2002, 2004, 2008, 2010";
+var copyRightDates = "2002, 2004, 2008, 2010, 2013";
 var creativeCommons = true;
 
 var tmArchive = "tm.jar, ArrayBarDisplay.class, ArrayBarPIFactory.class";

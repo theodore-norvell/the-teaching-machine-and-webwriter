@@ -81,15 +81,12 @@ markUp.flush = function() {
     
 markUp.digestToken = function(image, colour, forceEndAfter ) {
         forceEndAfter = forceEndAfter ? true : false ;
-        console.debug("digesting " +image+ " color: " +colour+ " forceEndAfter: " + forceEndAfter ) ;
         if( markUp.currentColour != colour ) {
-            console.debug("Ending color " + markUp.currentColour) ;
             markUp.endColour() ; }
 
         for( var i = 0 ; i < image.length ; ++i ) {
 
             if( markUp.currentColour != colour ) {
-                console.debug("starting color " + colour) ;
                 markUp.startColour( colour ) ; }
 
             var ch = image.charAt( i ) ;
@@ -115,7 +112,6 @@ markUp.digestToken = function(image, colour, forceEndAfter ) {
                break ;
 
               case "\n" : {
-                console.debug("ending color " + markUp.currentColour) ;
                 markUp.endColour() ;
                 markUp.currentLine += "\n" ;
                 markUp.flush() ;}
