@@ -107,6 +107,10 @@ public class SelectionParser
                                     return new Token( str, Category.ATOM, Selection.TokenType.TRUE ) ;
                                 else if( str.equals("false") )
                                     return new Token( str, Category.ATOM, Selection.TokenType.FALSE ) ;
+                                else if( str.equals("script") )
+                                    return new Token( "s", Category.ATOM, Selection.TokenType.TAG ) ;
+                                else if( str.equals("lib") )
+                                    return new Token( "l", Category.ATOM, Selection.TokenType.TAG ) ;
                                 else
                                     return new Token( str, Category.ATOM, Selection.TokenType.TAG ) ;
                        }} ),
