@@ -53,7 +53,7 @@ options {
         ERROR_REPORTING = true ;
         COMMON_TOKEN_ACTION = true ;
         // DEBUG_PARSER = true ;
-        //DEBUG_TOKEN_MANAGER = true ;
+        // DEBUG_TOKEN_MANAGER = true ;
 }
 
 PARSER_BEGIN(Preprocessor)
@@ -168,7 +168,7 @@ TOKEN_MGR_DECLS : {
 
 // The following set of productions is duplicated in JavaParser.jjt
 // Except for the first line
-<DEFAULT, MIDLINE> SKIP :
+<DEFAULT, MIDLINE> SPECIAL_TOKEN :
 {
 //    <PEDAGOGICALMARKUP0: "/*#D*/" | "/*#/H*/" >
 //                        { colourClass = MARKUP ;
@@ -192,7 +192,6 @@ TOKEN_MGR_DECLS : {
 
 <DEFAULT,MIDLINE> SKIP  :
 {
-    // Here we differ from Java. Instead of using and INVISBLE state, we simply have an invisible flag.
     <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >
     { colourizer.startSelection("s") ;
       invisible = true ; }
