@@ -52,7 +52,7 @@ public abstract class DisplayAdapter extends WorkArea implements DisplayInterfac
 
 /**
  * 
- * @param dc the display context provided by the object managing this display
+ * @param dm the display manager that will display this adapter.
  * @param configId the id used in the config file for this display
  */
 	public DisplayAdapter(DisplayManager dm, String configId) {

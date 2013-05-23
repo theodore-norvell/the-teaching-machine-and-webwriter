@@ -14,9 +14,7 @@
 
 package tm.displayEngine;
 
-import tm.interfaces.DisplayContextInterface;
 import tm.plugins.Requirement;
-import tm.subWindowPkg.SubWindow;
 
 
 public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{

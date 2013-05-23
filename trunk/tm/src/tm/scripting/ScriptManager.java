@@ -100,7 +100,14 @@ public class ScriptManager implements Scriptable{
 	 * 
 	 */
 	public void register(Scriptable comp){
+		// Ensure there is no already one with the same name.
+		String id = comp.getId() ;
+		Scriptable old = find(id) ;
+		if( old != null ) deRegister(old) ;
+		
+		// Add this one.
 		registrees.add(comp);
+		
 //		System.out.println("ScriptManager registering " + comp.getId());
 		if (comp.getId().equals("TMBigApplet"))
 			cp = (CommandInterface)comp;
@@ -201,7 +208,7 @@ public class ScriptManager implements Scriptable{
 		// This is read only. the scripting stepper handles
 		// adjusting the vm state appropriately
 //		System.out.println("relayCall");
-    	String componentId = getStringArg(nd, vms, 0); //"MUN.PlugIn.ArrayBar"; //extractString(datum);
+    	String componentId = getStringArg(nd, vms, 0);
     	String targetMethodName = getStringArg(nd, vms, 1);//"setColor" ; //extractString(datum);
 //  	System.out.println("looking for method " + targetMethodName + " in " + componentId);
     	Scriptable targetComponent = find(componentId);

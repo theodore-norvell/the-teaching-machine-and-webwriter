@@ -266,6 +266,7 @@ public abstract class DataVisualizerAdapter extends DisplayAdapter{
 	
 	
 	protected AbstractArrayDatum extractArrayDatum(int i) {
+		if( !(0 <= i &&  i < myGenerator.getNumChildren()) ) return null ;
 		Datum datum = myGenerator.getChildAt(i);
 		if (datum == null) return null;
 		/* It's possible the datum is a reference to an array 
