@@ -108,6 +108,8 @@ TOKEN_MGR_DECLS : {
     
     private int colourClass = PLAIN ;  // Used to communicate from lex actions
     
+    private boolean invisible = false ; // This is true when we are within invisible code. I.e. between /*#I and */
+    
     void CommonTokenAction(Token token) {
         colourizer.addToken( token.image, colourClass ) ;
         colourClass = PLAIN ;
@@ -117,22 +119,25 @@ TOKEN_MGR_DECLS : {
 ////////////
 // STATES //
 ////////////
-//       /---------------------------------------------------\
+//       /-------------------------------------------------<-\
 //       |                                                   |
 //       V        /*#                               */       |
-//    DEFAULT   ---------> IN_PEDAGOGICAL_COMMENT -----------+
+//    DEFAULT -----------> IN_PEDAGOGICAL_COMMENT --------->-+
 //    |                                                      |
 //    |           //                                 newline |
-//    +------------------> IN_SINGLE_LINE_COMMENT -----------+
+//    +------------------> IN_SINGLE_LINE_COMMENT --------->-+
 //    |                                                      |
 //    |      /*                                      */      |
-//    +-------------------> IN_MULTI_LINE_COMMENT -----------+
-//    |                                                      |
-//    |     /*#I                              */             |
-//    +--------------------> INVISIBLE-----------------------+
+//    +-------------------> IN_MULTI_LINE_COMMENT --------->-+
 //    |                                                      |
 //    |        /**                                  */       |
-//    \--------------------> IN_FORMAL_COMMENT --------------/
+//    +--------------------> IN_FORMAL_COMMENT ------------>-+
+//    |                                                      |
+//    |        /*#I               invisible:=true            |
+//    +---------------------------------------------------->-+
+//    |                                                      |
+//    |   */   if invisible then invisible:=false else error |
+//    \---------------------------------------------------->-/
 
 
 /////////////////
@@ -164,18 +169,24 @@ TOKEN_MGR_DECLS : {
                         { //colourClass = MARKUP ;
                           colourizer.endSelection(
                               CommonParserHelper.extractTagName( matchedToken.image ) ) ; }
-|   <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >   // TODO Should this be a skip ?
-                       { //colourClass = MARKUP ;
-                          colourizer.startSelection("s") ; }
-                       : INVISIBLE 
 |   <PEDAGOGICALMARKUP_OTHER: "/*#" >
                         // { colourClass = MARKUP ; }
                         : IN_PEDAGOGICAL_COMMENT
 }
 
-<IN_PEDAGOGICAL_COMMENT> SKIP:
+<DEFAULT> SKIP  :
 {
-   "*/" : DEFAULT
+    <PEDAGOGICALMARKUP_INVISIBLE_ALL: "/*#I" >
+    { colourizer.startSelection("s") ;
+      invisible = true ; }
+}
+
+
+// Catch the end of an invisible section.
+<DEFAULT>SKIP :
+{
+  "*/" { if( invisible ) { colourizer.endSelection( "s" ) ; invisible = false ; }
+         else { throw new ParseException( "Stray */ in code." ) ; } }
 }
 
 // Newlines in Pedagogical comments are a bit special. To keep
@@ -192,14 +203,9 @@ TOKEN_MGR_DECLS : {
 {
   < ~[] >
 }
-
-<INVISIBLE> SKIP:
-{
-   "*/" { colourizer.endSelection( "s" ) ; }: DEFAULT
-}
 /* WHITE SPACE */
 
-<DEFAULT,INVISIBLE> SPECIAL_TOKEN :
+<DEFAULT> SPECIAL_TOKEN :
 {
   " "   {CommonTokenAction( matchedToken );}
 | "\t"  {CommonTokenAction( matchedToken );}
@@ -251,7 +257,7 @@ MORE :
 
 /* RESERVED WORDS AND LITERALS */
 
-<DEFAULT,INVISIBLE> TOKEN :
+<DEFAULT> TOKEN :
 {
   < ABSTRACT: "abstract" >  { colourClass = KEYWORD ; }
 | < ASSERT: "assert" >  { colourClass = KEYWORD ; }
@@ -309,7 +315,7 @@ MORE :
 
 /* LITERALS */
 
-<DEFAULT,INVISIBLE> TOKEN :
+<DEFAULT> TOKEN :
 {
   < DECIMAL_LITERAL: (["1"-"9"] (["0"-"9"])* | "0") (["l","L"])? >
   { colourClass = CONSTANT ; } 
@@ -355,7 +361,7 @@ MORE :
 
 /* IDENTIFIERS */
 
-<DEFAULT,INVISIBLE> TOKEN :
+<DEFAULT> TOKEN :
 {
   < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
 |
@@ -400,7 +406,7 @@ MORE :
 
 /* SEPARATORS */
 
-<DEFAULT,INVISIBLE> TOKEN :
+<DEFAULT> TOKEN :
 {
   < LPAREN: "(" >
 | < RPAREN: ")" >
@@ -415,7 +421,7 @@ MORE :
 
 /* OPERATORS */
 
-<DEFAULT,INVISIBLE> TOKEN :
+<DEFAULT> TOKEN :
 {
   < ASSIGN: "=" >
 | < GT: ">" >

@@ -4233,7 +4233,7 @@ static final long[] jjtoSkip = {
    0x541feL, 
 };
 static final long[] jjtoSpecial = {
-   0x54080L, 
+   0x5408eL, 
 };
 static final long[] jjtoMore = {
    0x28000L, 
