@@ -1,5 +1,5 @@
 package ;
-import js.Dom ;
+import js.html.Node ;
 
 /**
  * One node of a tutorial. The vertex coresponds to a div element that
@@ -10,15 +10,15 @@ import js.Dom ;
 class TutorialVertex {
 	
 	public var id(default,null) : String ;
-	public var outGoingEdges(default,null) : Hash<TutorialEdge> ;
-	public var htmlNode(default, null) : HtmlDom ; 
+	public var outGoingEdges(default,null) : Map<String,TutorialEdge> ;
+	public var htmlNode(default, null) : Node ; 
 	public var pageno: Int;
 	//public var inComingEdges(default, null) : Hash<TutorialEdge>;
 
-	public function new( id : String, htmlNode : HtmlDom, pageno: Int) {
+	public function new( id : String, htmlNode : Node, pageno: Int) {
 		this.id = id ;
 		this.htmlNode = htmlNode ;
-		this.outGoingEdges = new Hash<TutorialEdge>() ;
+		this.outGoingEdges = new  Map<String,TutorialEdge>() ;
 		this.pageno = pageno;
 		//this.inComingEdges = new Hash<TutorialEdge>() ;
 	}
