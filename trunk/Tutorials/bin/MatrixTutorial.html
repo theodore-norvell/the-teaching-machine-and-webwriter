@@ -48,8 +48,8 @@
   </table>
 	<div id="graph" data-function="initialize">
 		<script>//<![CDATA[
-			EdgeFunctions.initialize = function(tm) {
-				haxe.Log.trace("in initialize") ;
+			Main.initialize = function(tm) {
+				EdgeFunctions.trace("in initialize") ;
 				tm.loadRemoteFile( ".", "MatrixTutorial.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;

@@ -5,6 +5,7 @@ import js.html.Node ;
 import js.html.Document ;
 import js.html.Element ;
 import js.html.Event;
+import haxe.Log ;
 
 
 /** Tutorials
@@ -35,6 +36,10 @@ import js.html.Event;
 	// The following declaration is a trick to ensure that the EdgeFunctions class
 	// is linked in.
 	static var neverUsed : EdgeFunctions ;
+	
+	public static function trace( mess : String ) {
+		 Log.trace( mess ) ;
+	 }
 
 	static function main() {
 	}
