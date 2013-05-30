@@ -56,12 +56,12 @@ public class HTMLBuilder implements TokenClassConstants {
         currentColour = PLAIN ;
     }
 
-    public void flush() {
-        if( currentColour != PLAIN ) endColour() ;
-        if( currentLine.length() != 0 ) {
-            currentLine.append( '\n' ) ;
-            codeLines.append( currentLine.toString() ) ; }
-    }
+ //   public void flush() {
+ //       if( currentColour != PLAIN ) endColour() ;
+ //       if( currentLine.length() != 0 ) {
+ //           currentLine.append( '\n' ) ;
+ //          codeLines.append( currentLine.toString() ) ; }
+ //   }
 
     public void digestToken(Token token, int colourClass, boolean forceEndAfter ) {
 

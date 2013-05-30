@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript">
+    //<![CDATA[
+    (function() {
+        var method;
+        var noop = function () {};
+        var methods = [
+            'assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error',
+            'exception', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log',
+            'markTimeline', 'profile', 'profileEnd', 'table', 'time', 'timeEnd',
+            'timeStamp', 'trace', 'warn'
+        ];
+        var length = methods.length;
+        var console = (window.console = window.console || {});
+
+        while (length--) {
+            method = methods[length];
+    
+            // Only stub undefined methods.
+            if (!console[method]) {
+                console[method] = noop;
+            }
+        }
+    }());
+    function go() {
+        var c = document.getElementById("container") ;
+        var ok = false ;
+        var xhr ;
+        try {
+            var xhr = new XMLHttpRequest() ;
+            xhr.open("GET","hello.txt",false);
+            xhr.send();
+            ok = true ; }
+        catch( e ) {
+            alert( "Exception "+e ) ; }
+        var DONE = 4 ;
+        if( ok && xhr.readyState == DONE ) {
+            var txt = xhr.responseText; 
+            c.innerHTML = txt ; }
+        else if( ok ) {
+            alert("xhr.readyState == "+xhr.readyState ) ; }
+    }
+    //]]>
+  </script> 
+</head>
+<body >
+  <input type="button" value="Click me" onclick="go()">
+  <p id="container"/>
+</body>
+</html> 
