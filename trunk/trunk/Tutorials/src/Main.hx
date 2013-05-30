@@ -1,7 +1,11 @@
 package ;
 
-import js.Lib;
-import js.Dom ;
+import js.Browser;
+import js.html.Node ;
+import js.html.Document ;
+import js.html.Element ;
+import js.html.Event ;
+
 
 /** Tutorials
  * @author Theodore Norvell
@@ -20,7 +24,7 @@ import js.Dom ;
 		}
 	}
 
-class Main {
+@:expose class Main {
 	
 	
 
@@ -35,12 +39,12 @@ class Main {
 	static function main() {
 	}
 	
-	private static function buildGraph( doc : HtmlDom ) : TutorialGraph {
+	private static function buildGraph( doc : Document ) : TutorialGraph {
 		var pageno: Int = 1;
 		var graph = new TutorialGraph() ;
 		var graphBuilt = true ;
-		var graphDomNode : HtmlDom ;
-		untyped{ graphDomNode = doc.getElementById("graph") ; }
+		var graphDomNode : Element ;
+		graphDomNode = doc.getElementById("graph") ;
 		if (graphDomNode == null ) {
 			trace("No element in the html file has id 'graph'") ;
 			return null ; }
@@ -53,13 +57,14 @@ class Main {
 			//trace( "Current child is  " + child ) ;
 			//trace( "Node name is " + child.nodeName ) ;
 			if ( child.nodeType == NodeTypes.ELEMENT_NODE && child.nodeName == "DIV" ) {
-				var klass = child.getAttribute("class")  ;
+				var childAsElement : Element = cast(child, Element) ;
+				var klass = childAsElement.getAttribute("class")  ;
 				// Collect all vertices
 				if ( klass == null ) {
 					trace("A child of the 'graph' element has no class" ) ;
 					graphBuilt = false ;  }
 				else if ( klass == "vertex" ) {
-					var id : String = child.getAttribute("id") ;
+					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
 						trace("There is a vertex with no id" ) ;
 						graphBuilt = false ;}
@@ -68,14 +73,14 @@ class Main {
 						 graphBuilt = false ; }
 					else {
 						trace( "Building vertex " + id) ;
-						var vertex = new TutorialVertex( id, child, pageno++ ) ;
+						var vertex = new TutorialVertex( id, childAsElement, pageno++ ) ;
 						//trace(vertex.pageno);
 						graph.vertices.set( id, vertex ) ; 
 						if ( graph.startVertex == null ) {
 							graph.setStartVertex( vertex ) ; } } }
 				// Collect all edges
 				else if ( klass == "edge" ) {
-					var id : String = child.getAttribute("id") ;
+					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
 						trace("There is an edge with no id" ) ; 
 						graphBuilt = false ; } 
@@ -84,7 +89,7 @@ class Main {
 						graphBuilt = false ; }
 					else {
 						trace( "Building edge " + id) ;
-						var edge = new TutorialEdge( id, child ) ;
+						var edge = new TutorialEdge( id, childAsElement ) ;
 						graph.edges.set( id, edge ) ; } }
 				else {
 					trace("A child of the 'graph' node has a class '"
@@ -138,10 +143,10 @@ class Main {
 	}
 	static function onLoad() {
 		trace( "onLoad starts") ;
-		var graph = buildGraph( Lib.document ) ;
+		var graph = buildGraph( Browser.document ) ;
 		if ( graph == null ) { trace("Failed to build graph"); return ; }
 		var applet : TMExternalCommandInterface ;
-		untyped { applet = Lib.document.applets["tm_applet"]  ;  }
+		untyped { applet = Browser.document.applets["tm_applet"]  ;  }
 		if ( applet == null ) {
 			trace( "Applet not found" ) ;
 			return ; }
@@ -176,18 +181,18 @@ class Main {
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
 		trace("Switching to vertex " + vertex.id);
-		var instructionNode = Lib.document.getElementById("instructions") ;
+		var instructionNode = Browser.document.getElementById("instructions") ;
 		while ( instructionNode.firstChild != null )
 			instructionNode.removeChild( instructionNode.firstChild ) ;
 		instructionNode.insertBefore( vertex.htmlNode, null ) ;
 		
-		var buttonsNode = Lib.document.getElementById("buttons") ;
+		var buttonsNode = Browser.document.getElementById("buttons") ;
 		while ( buttonsNode.firstChild != null )
 			buttonsNode.removeChild( buttonsNode.firstChild ) ;
 			
-		var pageNumberNode = Lib.document.getElementById("pageno") ;
+		var pageNumberNode = Browser.document.getElementById("pageno") ;
 		pageNumberNode.removeChild( pageNumberNode.firstChild ) ;
-		var label = Lib.document.createTextNode("Page: " + vertex.pageno);
+		var label = Browser.document.createTextNode("Page: " + vertex.pageno);
 		//trace("Page: " + vertex.pageno);
 		pageNumberNode.insertBefore(label, null);
 		
@@ -197,8 +202,8 @@ class Main {
 			
 			
 			//BACK TO FIRST
-			var labelNode = Lib.document.createTextNode("back to first") ;
-			var button = Lib.document.createElement("button") ;
+			var labelNode = Browser.document.createTextNode("back to first") ;
+			var button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.onclick = function(event : Event ) {
 				var temp = vertexStack.last();
@@ -219,8 +224,8 @@ class Main {
 			
 			
 			//BACK
-			labelNode = Lib.document.createTextNode("back") ;
-			button = Lib.document.createElement("button") ;
+			labelNode = Browser.document.createTextNode("back") ;
+			button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.onclick = function(event : Event ) {
 				if (undoList.type < 0)
@@ -266,13 +271,13 @@ class Main {
 		}
 		else
 		{
-			var labelNode = Lib.document.createTextNode("back to first") ;
-			var button = Lib.document.createElement("button") ;
+			var labelNode = Browser.document.createTextNode("back to first") ;
+			var button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.setAttribute('disabled','true');
 			buttonsNode.insertBefore( button, null ) ;
-			labelNode = Lib.document.createTextNode("back") ;
-			button = Lib.document.createElement("button") ;
+			labelNode = Browser.document.createTextNode("back") ;
+			button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.setAttribute('disabled','true');
 			buttonsNode.insertBefore( button, null ) ;
@@ -284,8 +289,8 @@ class Main {
 			temp.edgeId = edge.functionName;
 			var target = edge.target ;
 			var functionName = edge.functionName ;
-			var labelNode = Lib.document.createTextNode(edge.label) ;
-			var button = Lib.document.createElement("button") ;
+			var labelNode = Browser.document.createTextNode(edge.label) ;
+			var button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.onclick = function(event : Event ) {
 				//trace("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);

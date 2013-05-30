@@ -6,14 +6,14 @@ package ;
  */
 
 class TutorialGraph {
-	public var vertices(default, null) : Hash<TutorialVertex>;
-	public var edges(default, null) : Hash<TutorialEdge> ;
+	public var vertices(default, null) : Map<String,TutorialVertex>;
+	public var edges(default, null) : Map<String,TutorialEdge> ;
 	public var startVertex( default, null) : TutorialVertex ;
 	public var startFunctionName : String ;
 
 	public function new() {
-		this.vertices = new Hash<TutorialVertex>()  ;
-		this.edges = new Hash<TutorialEdge>()  ;
+		this.vertices = new Map<String,TutorialVertex>()  ;
+		this.edges = new Map<String,TutorialEdge>()  ;
 		startVertex = null ;
 		startFunctionName = null ;
 	}
