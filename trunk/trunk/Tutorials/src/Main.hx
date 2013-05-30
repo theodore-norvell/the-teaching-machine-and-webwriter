@@ -4,7 +4,7 @@ import js.Browser;
 import js.html.Node ;
 import js.html.Document ;
 import js.html.Element ;
-import js.html.Event ;
+import js.html.Event;
 
 
 /** Tutorials
