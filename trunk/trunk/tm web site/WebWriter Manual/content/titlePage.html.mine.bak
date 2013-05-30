@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html401/sgml/dtd.html"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 <script language="JavaScript">
-nestingDepth = "../";
+    nestingDepth = "../";
 </script>
 <script language="JavaScript" src="noteConstants.js"></script>
 <script language="JavaScript" src="../webWriter/buttonClass.js"></script>
@@ -16,12 +16,12 @@ nestingDepth = "../";
    <p><span class="WW"><font size="+4">WebWriter++
 </font></span></p>
    <p><font size="+4">Authoring Manual</font></p>
-   <p><font size="+4">5th Edition </font></p>
+   <p><font size="+4">4th Edition </font></p>
    <p>by Michael Bruce-Lockhart</p>
    <p>Professor of Computer Engineering (Retired)</p>
    <p>Memorial University of Newfoundland</p>
    <p>&nbsp;</p>
-   <p>May, 2013</p>
+   <p>July, 2010</p>
 </div>
 
 <script language="JavaScript" >bottomStamp(true, true);</script>

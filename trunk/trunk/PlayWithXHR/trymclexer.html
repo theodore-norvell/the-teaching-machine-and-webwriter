@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="mclexer.js"></script>
+  <script type="text/javascript" src="markUp.js"></script>
+  <script type="text/javascript" src="markUpCPP.js"></script>
+  <script type="text/javascript" src="markUpJava.js"></script>
+  <style type="text/css">
+     .codeKeyword { color: blue ; }
+     .codeComment { color: green ; }
+     .codeConstant { color: red ; }
+     .codePreprocessor { color: purple ; }
+     .code{ font-family: monospace ; }
+  </style>
+</head>
+<body >
+  <p>hello</p>
+  <pre class="code"><script type="text/javascript">
+   document.write( markUpCPP.markUp(
+       "#include <stdio>\n"
+       + "using namespace std ;\n"
+       + "/* say\n"
+       + "   hello\n"
+       + "*/\n"
+       + "int main() {\n"
+       + "\t//A comment\n"
+       + "\tcout << \"hello world \\n\" + -0xabc0.12e+99f + '\\n' + '\\0' + '\\01' + '\\012' + '\\0123' + '\\01234' ;\n"
+       + "}" ) ) ;
+  </script>
+  </pre>
+  
+  
+  <pre class="code"><script type="text/javascript">
+   document.write( markUpJava.markUp(
+         "/** a class */\n"
+       + "class Hello {\n"
+       + "\t//This is a very tired example\n"
+       + "\tstatic void main( String[] args) {\n"
+       + "\t\tSystem.out.println(\"Hello\" + 'w' + 0 + \"rld\"  + '\\n' + '\\0' + '\\01' + '\\012' + '\\\\' + '\\'') ;\n"
+       + "\t}\n"
+       + "}" ) ) ;
+  </script>
+  </pre>
+  <p>goodbye</p>
+</body>
+</html> 
