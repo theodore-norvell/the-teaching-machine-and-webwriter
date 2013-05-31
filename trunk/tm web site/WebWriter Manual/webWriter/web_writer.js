@@ -87,7 +87,7 @@ var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
 var isLoaded = false;
 var thisDoc = self.location.href;
 
-var debugging = true;   // set to false to turn off logging
+var debugging = false;   // set to false to turn off logging
 
 /* This is temporary and should move to document. I would love to automate it but it we have to contend
  	with the possibility that the page may have been loaded directly in which case the frames are not
@@ -256,20 +256,18 @@ var TMLink = false;			// boolean-true if a TM link button wanted
 var videoLink = false;		// boolean-true if a video link button wanted
 var editLink = false;		// boolean-true if a edit link button wanted
 var videoRef = null;
-var editRef = null;			// probably not needed - hangover from guidedLink which was not being used
 
 /* popups inside of code must be restored to html: added 01/11/01 */
 var insidePopup = false;
 
 
 // This could be redone as an object - in fact, it effectively is
-function setButtons(TM, video, edit, videoR, editR){
+function setButtons(TM, video, edit, videoR){
 //	if (noAppletFrame) return; // Most images loaded rel to parent which ain't there
 	TMLink = TM;
 	videoLink = video;
 	editLink = edit;
-   if (video) videoRef = videoR;
-	if (edit) editRef = editR;
+    if (video) videoRef = videoR;
 }
 
 /* Definitions required to set up parsing of tmand ww selection strings for
@@ -344,19 +342,21 @@ function createDataFileSet(/* any number of file names */){
 
 function insertCode(relativeURL, buttonSet, className, configurationFile, wwSelection, tmSelection){
 	if(noAppletFrame) return;
-	if(!wwSelection || wwSelection == "" || wwSelection.toUpperCase() == "DEFAULT") wwSelection = defaultString;
-	if(!tmSelection || tmSelection == "" || tmSelection.toUpperCase() == "DEFAULT") tmSelection = defaultString;
+	
+	if(!wwSelection || wwSelection == "" || wwSelection.toUpperCase() == "DEFAULT")
+		wwSelection = defaultString;
+	
+	if(!tmSelection || tmSelection == "" || tmSelection.toUpperCase() == "DEFAULT")
+		tmSelection = defaultString;
+		
+	// Parse the TM selection so that errors are reported up front.
 	parser.setParseString(tmSelection.toUpperCase());
-	var parseTree = parser.eParser();
-	var tmParseString = parseTree.toString();
+	parser.eParser();
 	
-	/* Current system. Delete these lines to switch once TM is ready ***************/
 	tmParseString = tmSelection;  
-	/* Current system. Delete these lines to switch once TM is ready ***************/
-	
 	
 	parser.setParseString(wwSelection.toUpperCase());
-	parseTree = parser.eParser();
+	var parseTree = parser.eParser();
 	/* This is for backward compatability with the old H and D switches which are now deprecated. */
 	{
 		var stringRep = parseTree.toString();
@@ -388,8 +388,6 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
     		var buttonSetArray = new Array();
     		var setButtons = 0;
     
-    		//if ((TMLink||editLink) && (TMApplet == null))
-    		//	TMApplet = parent.navBarFrame.document.teachingMachine;
     		if (TMLink){
     			var linkButtonDef = new ButtonDef("runButton" + currentCode);
     			linkButtonDef.gifBase = "runButton";
@@ -526,32 +524,37 @@ function getTMApplet() {
 		alert(alertMessage);  }
 }
 
-
 function invokeTM(example){
-	consoleDebug("About to get applet. d") ;
+
+	// Try to get the TM applet. Return if the applet could not be found.
+	consoleDebug("About to get applet. f") ;
 	getTMApplet() ;
 	if (TMApplet == null) {
 		consoleError("TMApplet could not be got.") ;
 		return ; }
 	consoleDebug("GotApplet") ;
+	
+	//Load the TM with data files.
+	// (This should really be checked. What if there are 2 examples that use
+	// data files? Will they interfere?)
 	if(dataFileSet[example] != null) {
 		var fileSet = dataFileSet[example];
 		for (var i = 0; i < fileSet.length; i++) {
 			var fileLoc = peelName(getBaseToHere()) + fileSet[i];
-			consoleDebug("TMApplet.registerRemoteDataFile(" +fileLoc+ ")") ;
-			TMApplet.registerRemoteDataFile( fileLoc );
-		}
-	}
-    consoleDebug('TMApplet.loadRemoteFile('+ exampleURL[example] +')' );
+			consoleDebug('TMApplet.registerRemoteDataFile("' +fileLoc+ '")') ;
+			TMApplet.registerRemoteDataFile( fileLoc ); } }
+			
+	// Load the example.
+    consoleDebug('TMApplet.loadRemoteFile("'+ exampleURL[example] +'")' );
 	TMApplet.loadRemoteFile(exampleURL[example]);
 
 	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() 
 	                                           : config[example]);
-    consoleDebug('TMApplet.readRemoteConfiguration(' +useConfigFile+ ')' ) ;
+    consoleDebug('TMApplet.readRemoteConfiguration("' +useConfigFile+ '")' ) ;
 	TMApplet.readRemoteConfiguration(useConfigFile);
 			
 	if (selection[example] != null) {
-        consoleDebug('TMApplet..setSelectionString(' +selection[example]+ ')' ) ;
+        consoleDebug('TMApplet.setSelectionString("' +selection[example]+ '")' ) ;
 		TMApplet.setSelectionString(selection[example]);
 	}
 }
@@ -696,6 +699,8 @@ function writeAnnotation(annotation, tree, tagSet, closing){
 			else
 				startBlockLink(getAnnotationArg(annotation));
 			break;
+		case "I": // Invisible code. Omit the comment. (Even if S is in the tag set!)
+			break ;
 		case "T":
 			var tag = annotation.substring(1);  // Strip T
 			var p = tag.search(/\S/); // Find first non-whitespace
@@ -742,7 +747,7 @@ function writeAnnotation(annotation, tree, tagSet, closing){
 			break;
 		
 		default:
-			document.write("Annotation " + annotation.substr(0,1) + "unrecognized");
+			document.write("Annotation " + annotation.substr(0,1) + " unrecognized");
 		}
 	return eatRestOfComment(annotation);	
 }
@@ -756,10 +761,12 @@ function eatArgument(annotation){
 	return stripped;
 }
 
-/* Strip away the front of the annotation string up to the next closing comment */
+/* Strip away the front of the annotation string up to the next closing comment. */
 function eatRestOfComment(annotation){
-	var found = annotation.search(/<\/SPAN>/);
-	return annotation.substring(found+7);
+	// Modified 2013 May by TSN to look for */ as well as </SPAN>.
+	// This is to support the /*#I tag.  Hopefully nothing else breaks.
+	var found = annotation.search(/\*\/<\/SPAN>/);
+	return annotation.substring(found+9);
 }
 
 // annotation argument will be the next piece of text found between quotes

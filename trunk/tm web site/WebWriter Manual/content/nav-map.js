@@ -1,6 +1,8 @@
 // JavaScript Document
 // Assumes tocNavigator.js loaded
 // Normal starting page should go here
+
+if( console && console.debug ) console.debug("Start of nav-map.js" );	
 var root = new Node("content/titlePage.html");
 var treeWalker = new Walker(root);
 
@@ -31,3 +33,4 @@ toolsetNode.addChild(new Node(pages + "utilities.htm"));
 
 
 
+if( console && console.debug ) console.debug("End of nav-map.js" );	
