@@ -1,5 +1,7 @@
 // JavaScript Document
 
+//if( console && console.debug ) console.debug("Start of navBarHeader.js" );
+
 if (!nestingDepth) var nestingDepth = "";
 
 writeHeader();
@@ -17,3 +19,4 @@ function writeHeader(){
 }
 
 
+//if( console && console.debug ) console.debug("End of navBarHeader.js" );

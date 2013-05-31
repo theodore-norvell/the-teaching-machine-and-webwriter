@@ -5,7 +5,8 @@
 	DESCRIPTION:
 		Provides routines for walking a site navigation tree which is
 		defined by a separate, site-specific nav-map.js
-***************************************************************************/	
+***************************************************************************/
+//if( console && console.debug ) console.debug("Start of tocNavigator.js" );	
 
 /******** Node Class ******************************/
 
@@ -118,4 +119,5 @@ Walker.prototype.dump = function(){
 }
 		
 /******** End of Walker Class ***********************/
+//if( console && console.debug ) console.debug("End of tocNavigator.js" );	
 

@@ -15,7 +15,7 @@ if(homeTooltip == null) homeTooltip ="return to the site home page";
 
 /****************************************************
 Predefined button definitions
-This script does create buttons but simply defines standard
+This script does not create buttons but simply defines standard
 buttons. Buttons defined are
 
 homeButton - returns user from a webWriter framework site to a homesite
@@ -34,7 +34,7 @@ printButton - prepares online document for printing by changing stylesheets as w
 helpButton  - site help, when we finally create it!
 
 *****************************************************/
-
+//if( console && console.debug ) console.debug("Start of standardButtons.js" );
 var homeButtonDef = new ButtonDef("homeButton");
 homeButtonDef.actionString = "goHome()";
 homeButtonDef.tooltip = homeTooltip;
@@ -69,3 +69,5 @@ helpButtonDef.tooltip = "Get help on the website";
 var configButtonDef = new ButtonDef("configButton");
 configButtonDef.actionString = "showConfigPicker(true)";
 configButtonDef.tooltip = "set sitewide default TM configuration file";
+
+//if( console && console.debug ) console.debug("End of standardButtons.js" );

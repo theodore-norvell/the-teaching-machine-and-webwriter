@@ -1,5 +1,5 @@
 // JavaScript Document
-
+//if( console && console.debug ) console.debug("Start of noteConstants.js" );
 var siteTitle = "WebWriter++ Authoring Manual";
 var authors = "Michael Bruce-Lockhart";
 var generator = "DreamWeaver CS3 & WebWriter++";
@@ -86,3 +86,5 @@ var configurationsFolder = styleFolder + "configurations/";
 var videosFolder = contentFolder + "videos/";
 
 
+
+//if( console && console.debug ) console.debug("End of noteConstants.js" );

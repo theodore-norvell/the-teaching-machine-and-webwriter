@@ -1,5 +1,8 @@
 // JavaScript Document
 
+//if( console && console.debug ) console.debug("Start of ww_one_time.js" );	
+
+
 var appletsLoaded = false;
 var javaIsEnabled ;
 window.onload = doneLoading;
@@ -326,3 +329,4 @@ function getToWebWriter(){
 function getToVideos(){
 	return videosFolder;
 }
+//if( console && console.debug ) console.debug("End of ww_one_time.js" );	

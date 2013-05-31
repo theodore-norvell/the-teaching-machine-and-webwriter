@@ -16,6 +16,7 @@ nestingDepth = "../../";
     <script language="JavaScript" src="../../webWriter/markUpJava.js"></script>
 
 <title>Pedagogical Markup</title>
+<link href="../../style/notesScreen.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h2>Introduction</h2>
@@ -31,11 +32,10 @@ nestingDepth = "../../";
 <p>Enter <em>pedagogical mark-up</em> which is a small language that allows certain <span class="WW">WebWriter++</span> calls to be embedded in C/C++ comments.</p>
 <h2><a name="tools">Supported Tools</a></h2>
 <p>Currently, the following tools are supported:</p>
-<ul><li>pop-ups</li>
-<li>definitions</li>
-<li>rollover blocks</li>
-<li>selection display (deprecated)</li>
-<li>selection tagging (replaces selection display) </li>
+<ul><li><a href="#popups">pop-ups</a></li>
+<li><a href="#rollovers">rollover blocks</a></li>
+<li><a href="#definitions">definitions</a></li>
+<li><a href="#Tagging">selection tagging and invisible code</a>.</li>
 </ul>
 <p>Indeed, pop-ups and rollover blocks were initially developed specifically to enable the marking of code.</p>
 <h2><a name="syntax">Syntax</a></h2>
@@ -70,19 +70,98 @@ nestingDepth = "../../";
 <p>Marks the beginning of a definition link. The "definitionName" should be the name of the definition you want to see pop-up when the link is rolled over. Definitions are kept in a separate, standard dictionary.</p>
 <code><pre>    /*#/d*/</pre></code>
 <p>Terminate a definition link.</p>
-<h2><a name="Tagging">Selection Tagging</a></h2>
+<h2><a name="Tagging">Tagging</a> and invisible code</h2>
+<h3>Tagging with #T</h3>
 <p>Any section of code can be tagged by adding before it </p>
 <p><code>/*#T tagName */</code></p>
 <p>and</p>
 <p><code>/*#/T tagName */</code> </p>
-<p>after it. tagName can be any legal string. Leading and trailing whitespace
+<p>after it. tagName can be any (nonempty) sequent of ascii letters and digits, except for &quot;true&quot; and &quot;false&quot;. Leading and trailing whitespace
   are optional (that is, they are  ignored).</p>
 <p>A piece of code can carry as many tags as the instructor wishes. Tags do not
-  have to nest.</p>
-<p>Tags are used in conjunction with a pair of selection strings in the <a href="insert_code.htm#insertCode">insertCode</a>  command
-  to control independently what code selections are shown in webWriter++ and
-  in the TM. Here is the above example marked up using the Tagged approach.</p>
-<pre>class MyString{
+  have to nest. Consider</p>
+<pre class="code">/*#TA*/Bob /*#/TA*/saw /*#TA*/a /*#TB*/big
+/*#/TA*/hairy /*#/TB*/monster</pre>
+<p>Each section is associated with a set of tags as follows:</p>
+<table width="90%" border="1">
+  <tr>
+    <th align="left" scope="col">Section</th>
+    <th align="left" scope="col">Tag set</th>
+  </tr>
+  <tr>
+    <td>Bob</td>
+    <td>{A}</td>
+  </tr>
+  <tr>
+    <td>saw</td>
+    <td>{ }</td>
+  </tr>
+  <tr>
+    <td>a</td>
+    <td>{A}</td>
+  </tr>
+  <tr>
+    <td>big<br>
+    &nbsp; </td>
+    <td>{A,B}</td>
+  </tr>
+  <tr>
+    <td>hairy</td>
+    <td>{B}</td>
+  </tr>
+  <tr>
+    <td>monster</td>
+    <td>{ }</td>
+  </tr>
+</table>
+<p>Tags are used in conjunction with a pair of selection expressions in the <a href="insert_code.htm#insertCode">insertCode</a> command
+  to control what code sections are displayed by WebWriter++ and
+in the TM.  Given a selection expression E and a section S with tag set T: S is <em>selected</em> if (and only if) E evaluates to true if we replace (in E) each tag in T with &quot;true&quot; and each tag not in T with &quot;false&quot;. Only selected sections will be displayed.</p>
+<table width="90%" border="1">
+  <tr>
+    <th align="left" scope="col">Selection expression</th>
+    <th align="left" scope="col">Displayed</th>
+  </tr>
+  <tr>
+    <td>default (!S&amp;!L)</td>
+    <td><p>Bob saw a big <br>
+    hairy monster</p></td>
+  </tr>
+  <tr>
+    <td>A</td>
+    <td>Bob a big <br>&nbsp; </td>
+  </tr>
+  <tr>
+    <td>B</td>
+    <td>big <br>
+    hairy</td>
+  </tr>
+  <tr>
+    <td>A|B</td>
+    <td><p>Bob a big <br>
+    hairy</p></td>
+  </tr>
+  <tr>
+    <td>A&amp;B</td>
+    <td>big <br>
+    &nbsp; </td>
+  </tr>
+  <tr>
+    <td>!A</td>
+    <td>saw hairy monster</td>
+  </tr>
+  <tr>
+    <td>!B</td>
+    <td>Bob saw a monster</td>
+  </tr>
+  <tr>
+    <td>!A&amp;!B</td>
+    <td>saw monster</td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<p>Here is a larger example.</p>
+<pre class="code">class MyString{
 public:
   MyString(char* p);	// Construct using a standard string
   MyString();			// &quot;default&quot; (no arguement) constructor
@@ -107,7 +186,7 @@ private:
   int mLength;	// length of the string
   };
 
-/*#TA*/ // A class of users for network management
+<strong>/*#TA*/</strong>// A class of users for network management
 class User{
 public:
   User(char* n, char* u, char* p);
@@ -128,9 +207,9 @@ protected:
   MyString mUname;
   MyString mPassword;
   int mAllocation;	// Memory allocation, in MBytes
-};/*#/TA*/
+};<strong>/*#/TA*/</strong>
 
-/*#TB*/class Student: public User{
+<strong>/*#TB*/</strong>class Student: public User{
 public:
   Student(char* n, char* id, char* u, char* p);
   MyString id();
@@ -140,11 +219,11 @@ public:
 protected:
   MyString mId;
   long mPrintPennies;
-};/*#/TB*/
+};<strong>/*#/TB*/</strong>
 
 /*#TC*/class Faculty: public User{
 public:
-  Faculty(char* n, char* u, char* p, char* today);<p></p>
+  Faculty(char* n, char* u, char* p, char* today);
 
 // accessor functions
   long pages();
@@ -157,19 +236,61 @@ public:
 protected:
   long mPages;	// Pages used since
   MyString mCleared;	// last date cleared
-};/*#/TC*/</pre>
+};<strong>/*#/TC*/</strong></pre>
 <p>To expose only class <code>User</code> on the webSite the code is inserted
   using the <code>insertCode</code> command as follows:</p>
-<p><code>function insertCode(&quot;userInherit.cpp&quot;, true, &quot;code&quot;, &quot;default.cfg&quot;, &quot;A~S&quot;,
-    &quot;~S&quot;)</code></p>
+<p><pre class="code">function insertCode(&quot;userInherit.cpp&quot;, true, &quot;code&quot;, &quot;default.cfg&quot;, &quot;A&amp;~S&amp;~L&quot;, &quot;~S&amp;~L&quot;)</pre></p>
 <p>which shows only code tagged with &quot;<code>A</code>&quot; on the eBook page, but the whole example
-  when it gets run in the TM. The <code>~S</code> means <em>don't display Scripts,</em> referring
-  to internal scripting calls which instructors can build into the code.</p>
+  when it is run in the TM. The <code>~S</code> means <em>don't display Scripts,</em> referring
+  to internal scripting calls which instructors can build into the code, and &quot;~L&quot; means <em>don't show library code</em>. It's a good habit to ensure &quot;~S&amp;~L&quot; is implied by any selections, even when, as in this example, &quot;S&quot; and &quot;L&quot; tags aren't used. The final parameter in this call could be omitted, as &quot;~S&amp;~L&quot; is the default.</p>
 <h3>Reserved Tags </h3>
 <p>Tags &quot;<code>S</code>&quot; and &quot;<code>Script</code>&quot; are equivalent and reserved for marking intenal scripting
   calls (only &quot;<code>S</code>&quot; should be used in the <code>insertCode</code> selection strings).</p>
 <p>Tags &quot;<code>L</code>&quot; and &quot;<code>Lib</code>&quot; are equivalent and reserved for
 marking TM library code(only &quot;<code>L</code>&quot; should be used in the <code>insertCode</code>selection strings). </p>
+<h3><a name="Invisible" id="Invisible">Invisible Code</a></h3>
+<p>Code that needs to be hidden from regular compilers, but that should be compiled by the the Teaching Machine, can be put in a comment</p>
+<pre class="code">/*#I code goes here*/</pre>
+<p>WebWriter will not show these comments at all (not even if the selection string is &quot;S&quot;). The Teaching Machine will treat the code as if it were tagged with &quot;S&quot; (or, equivalently, &quot;Script&quot;). See below for examples.</p>
+<h3><a name="TMTagging" id="Invisible2">Invisible and tagged code in the TM</a></h3>
+<p>The TM will not display code that is currently unselected. Completely unselected lines are indicated by an ellipsis (...) when line numbers are displayed. For this reason, we suggest using a configuration file that turns off line numbers when scripting code is used. </p>
+<p>You can use the TM's View menu to change the current selection.</p>
+<p>Even white space that is selected will mean that the line is partially selected, i.e., not completely unselected.</p>
+<p>Furthermore the TM will generally not stop on code that is on a completely unselected line. So scripting calls should be on completely unselected lines. The same mechanism is used to keep the TM from stopping in library code. (Library code is tagged with &quot;L&quot;, and so is not selected by default.</p>
+<p>The best way to mark up TM code is like this</p>
+<pre class="code">#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;<strong>/*#I
+#include &lt;ScriptManager&gt; */</strong>
+    .
+    .
+    .
+    int array[SIZE]; <strong>/*#I
+    // Use only single line comments in invisible regions.
+    ScriptManager::relay(&quot;ArrayBar&quot;, &quot;setArray&quot;, array);*/</strong>
+    for (int i = 0; i &lt; SIZE; i++) {
+        array[i] = 0 ; }</pre>
+<p>or like this</p>
+<pre class="code">#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;<strong>/*#T S*/
+#include &lt;ScriptManager&gt; /*#/T S*/</strong>
+    .
+    .
+    .
+    int array[SIZE]; <strong>/*#T S*/
+    /* Either kind of comment is allowed here.*/
+    ScriptManager::relay(&quot;ArrayBar&quot;, &quot;setArray&quot;, array);/*#/T S*/</strong>
+    for (int i = 0; i &lt; SIZE; i++) {
+        array[i] = 0 ; }</pre>
+        
+<p>The first style is best if you don't want other compilers to see the code. </p>
+<p>Note that there must be nothing --not even be spaces or tab characters-- after the final &quot;*/&quot;. Whitespace characters after the final &quot;*/&quot; will be selected, by default, and so make the line appear in the TM. (This may change in the future. It's not a bug, but it is an annoyance.)</p>
+<p>If the last line before the script code ends with a single line comment, you can do the following</p>
+<pre class="code">    int array[SIZE]; // Make an array.
+<strong>/*#I    ScriptManager::relay(&quot;ArrayBar&quot;, &quot;setArray&quot;, array);
+*/</strong>    for (int i = 0; i &lt; SIZE; i++) {
+        array[i] = 0 ; }
+</pre>
+<p>Note the funky indentation; it is deliberate. It is tempting here to put the &quot;*/&quot; before the newline. This would be fine for the TM, but WW would show a blank line before the &quot;for&quot; loop.</p>
 <h2><a name="removed">Mark-Up Removed for Presentation</a></h2>
 <p>While pedagogically marked code compiles just fine it is still messy and confusing
   for students to look at. Consequently, both <span class="WW">WebWriter++</span> and
