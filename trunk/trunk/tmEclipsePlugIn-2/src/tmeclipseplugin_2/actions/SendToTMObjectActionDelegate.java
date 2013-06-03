@@ -9,7 +9,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.PlatformUI ;
 
 import tmeclipseplugin_2.TMAdapter;
 
@@ -17,13 +17,6 @@ public class SendToTMObjectActionDelegate implements IObjectActionDelegate {
 
 	//private IWorkbenchPart targetPart;
 	private ISelection selection;
-
-	/**
-	 * Construct the action delegate.
-	 */
-	public SendToTMObjectActionDelegate() {
-		super();
-	}
 
 	/**
 	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
@@ -63,7 +56,7 @@ public class SendToTMObjectActionDelegate implements IObjectActionDelegate {
         
         // Send it to the Teaching Machine
         if( resource != null ) {
-            IDE.saveAllEditors( new IResource[] {resource}, true ) ;
+        	boolean cancelled = ! PlatformUI.getWorkbench().saveAllEditors(true) ; 
             TMAdapter.load( resource ) ; }
         
 		if (message != null) {

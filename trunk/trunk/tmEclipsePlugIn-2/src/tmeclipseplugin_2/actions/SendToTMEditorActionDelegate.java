@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorActionDelegate;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.ide.IDE ;
+import org.eclipse.ui.PlatformUI ;
 
 
 import tmeclipseplugin_2.TMAdapter;
@@ -25,13 +25,6 @@ public class SendToTMEditorActionDelegate implements IEditorActionDelegate {
 
     private IEditorPart targetEditor;
     
-    /**
-     * Construct the action delegate.
-     */
-    public SendToTMEditorActionDelegate() {
-        super();
-        //System.out.println("SendToTMEditorActionDelegate constructed" ) ;
-    }
     /**
      * @see org.eclipse.ui.IEditorActionDelegate#setActiveEditor(org.eclipse.jface.action.IAction, org.eclipse.ui.IEditorPart)
      */
@@ -57,8 +50,7 @@ public class SendToTMEditorActionDelegate implements IEditorActionDelegate {
                 if( resource == null ) {
                     message = "Input does not adapt to resource" ; }
                 else {
-                    IDE.saveAllEditors(new IResource[] { resource }, true ) ;
-                    //message = "Got resource" + resource.getLocation() ;
+                	boolean cancelled = ! PlatformUI.getWorkbench().saveAllEditors(true) ; 
                     TMAdapter.load( resource ) ; } } }
         if( message != null ) {
             Shell shell = new Shell() ;
