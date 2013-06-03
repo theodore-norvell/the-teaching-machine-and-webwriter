@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+
+<head>
+<meta NAME="GENERATOR" Content="Microsoft FrontPage 3.0">
+<meta HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+<title>Help for the Teaching Machine</title>
+<base target="content">
+</head>
+
+<body TEXT="#000000" BGCOLOR="#FFFFFF">
+
+<h1>Help for the Teaching Machine.</h1>
+
+<h2>Loading programs.</h2>
+
+<ul>
+  <li><strong>Application: </strong>The menu command <b>Load File</b> on the File menu.</li>
+  <li><strong>Applet</strong>: When the Teaching Machine is used as an applet, files are usually loaded by doing something on the associated web page. The <strong>Load File</strong> menu command (and any other commands that access the local disk) usually will not work due to browser security restictions.</li>
+</ul>
+
+<p>When you load a local file, include directives (C++) and import declarations (Java)
+are resolved relative to a <em>root directory</em>. By default this is the directory
+containing the file loaded.  However you may explicitly set the root
+directory to something else using the <strong>Select Root Directory</strong> command on the Project menu. 
+The file loaded must be located somewhere under the root directory.
+</p>
+
+<h2>Commands to specific subwindows.</h2>
+
+<p><b>Source Code Subwindow</b> 
+
+<dl>
+  <dd><img SRC="stepOver.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Execute the
+    next expression in this subroutine. <p><img SRC="stepInto.gif" WIDTH="18" HEIGHT="18"
+    ALIGN="BOTTOM" BORDER="0"> Execute the next expression.</p>
+    <p><img SRC="stepOut.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Execute to the
+    end of this subroutine.</p>
+    <p><img SRC="ToCursor.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Execute until
+    the line the cursor is on or until the program terminates.</p>
+    <p><img SRC="ReStart.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Restart the
+    program.</p>
+  </dd>
+</dl>
+
+<p><b>Expression Engine Subwindow</b> 
+
+<dl>
+  <dd><img SRC="Advance.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Execute one
+    step. <p><img SRC="Backup.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Undo last
+    command.. </p>
+  </dd>
+</dl>
+
+<p><b>Stack, Static, Heap, and Scratch Subwindows</b> 
+
+<dl>
+  <dd><img SRC="Logical.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Display one
+    line per variable.. <p><img SRC="Scaled.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM"
+    BORDER="0"> Display one line per byte.</p>
+    <p><img SRC="Binary.gif" WIDTH="20" HEIGHT="20" ALIGN="BOTTOM" BORDER="0"> Display values
+    in binary. </p>
+  </dd>
+  <dt><strong>Linked View</strong></dt>
+</dl>
+
+<dl>
+          <dd><img SRC="Stack.gif" WIDTH="13" HEIGHT="13" ALIGN="BOTTOM" BORDER="0"> Display variables on the <strong>stack</strong> and heap variables reachable from them.
+            <p><img SRC="Static.gif" WIDTH="13" HEIGHT="13" ALIGN="BOTTOM"
+    BORDER="0"> Display variables in the <strong>static store</strong> and heap variables reachable from them.            </p>
+  </dd>
+</dl>
+<h2>Window manipulation.</h2>
+
+<p>All subwindows can be moved, resized, or brought to the front, though it sometimes
+takes a few tries to get the mouse in just the right spot.</p>
+
+<p>All subwindows can be maximized, minimized, or closed. Once closed, they are gone until
+a file is opened.</p>
+<p>The configuration of the windows can be saved and restored using the <strong>Save Configuation File</strong> and <strong>Read Configuration File</strong> commands on the File menu. </p>
+<h2>Security restrictions.</h2>
+
+<p>If you ask the applet to do something that, because of a security restriction, it can
+not do, a window will pop up to tell you so. Typicall applets may not open local files. </p>
+
+<h2>The Languages Accepted by the Teaching Machine</h2>
+
+<p>This release supports  subsets of C++ and Java. Many features of these languages are supported, but certainly not all. In particular, the templates in C++ are not supported, nor are multithreading, generics, or enums in Java. Library support is currently very sparse. </p>
+<p>Furthermore, the Teaching Machine makes only the spottiest attempt to certify that
+your code is valid C++ or Java before executing it. We recommend compiling all examples,
+with a real compiler, prior to running them on the Teaching Machine.</p>
+<p>For more information see the <a href="InstructorsManual.pdf">Instructor's Manual</a> or contact Theodore Norvell at <a HREF="mailto:theo@mun.ca">theo@mun.ca</a>. </p>
+
+<h2>Bugs and wishes</h2>
+<p>
+Send reports of bugs and suggested improvements
+to <a HREF="mailto:theo@engr.mun.ca">theo@mun.ca</a>.
+</p>
+</body>
+</html>
