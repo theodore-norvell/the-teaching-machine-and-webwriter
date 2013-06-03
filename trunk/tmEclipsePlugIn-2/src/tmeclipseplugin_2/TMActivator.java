@@ -15,6 +15,8 @@ public class TMActivator extends AbstractUIPlugin {
 	// The shared instance
 	private static TMActivator plugin;
 	
+	private TMAdapter tmAdapter ;
+	
 	/**
 	 * The constructor
 	 */
@@ -28,6 +30,7 @@ public class TMActivator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
+		tmAdapter = new TMAdapter(this) ;
 	}
 
 	/*

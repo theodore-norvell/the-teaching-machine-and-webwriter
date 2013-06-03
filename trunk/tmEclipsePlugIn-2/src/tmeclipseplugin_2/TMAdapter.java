@@ -13,6 +13,7 @@ import java.io.File;
 
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -24,18 +25,31 @@ import tm.TMMainFrameAppletStub;
  * @author Theo
  */
 public class TMAdapter {
+	
+	private static TMAdapter instance = null ;
+
+    private static TMActivator theActivator  = null ;
 
     private static TMMainFrame theMainFrame = null ;
     
 
+    public TMAdapter(TMActivator activator) {
+    	super() ;
+    	instance = this ;
+    	theActivator = activator ;
+    }
+    
     /** load a resource into the Teaching Machine
      * 
      * @param resource The resource to load.
      */
     public static void load(IResource resource) {
+    	log(">> load: " + resource) ;
         if( theMainFrame == null ) { initTheMainFrame(); }
         if( theMainFrame == null ) return ;
+    	log("   tm built") ;
         theMainFrame.showTM(true) ;
+    	log("   frame shown") ;
         
         String message = null ;
         IPath  location = resource.getLocation() ;
@@ -46,9 +60,13 @@ public class TMAdapter {
                 File directory = file2.getParentFile() ;
                 String fName = file2.getName() ;
                 
+                log("   loading " +fName+ " in " +directory) ;
                 theMainFrame.loadLocalFile( directory, fName ) ;
+                log("   loading complete") ;
+                
             }
             catch( Throwable e ) {
+            	log("Exception thrown", e) ;
                 e.printStackTrace( System.out ) ;
                 message = "Exception on launch. Exception is "+e.getLocalizedMessage() ;
             } }
@@ -93,6 +111,14 @@ public class TMAdapter {
             if( theMainFrame != null ) {
                 theMainFrame.dispose() ;
                 theMainFrame = null ; } }
+    }
+    
+    private static void log(String str) {
+    	log( str, null) ;
+    }
+    
+    private static void log( String msg, Throwable e) {
+    	theActivator.getLog().log(new Status(Status.INFO, "TMEclicpsePlugin", Status.OK, msg, e));
     }
 
 
