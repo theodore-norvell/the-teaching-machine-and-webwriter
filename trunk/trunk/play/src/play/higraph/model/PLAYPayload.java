@@ -14,63 +14,63 @@ import play.ide.checker.symbolTable.Constness;
  */
 public class PLAYPayload implements TaggedPayload<PLAYTag, PLAYPayload> {
 
-    private String name;
+	private final String name;
 
-    private final PLAYTag tag;
+	private final PLAYTag tag;
 
-    /* Field payloadValue is used for different purposes in different tags. */
-    private String payloadValue;
-    
-    private Constness constness;
+	/* Field payloadValue is used for different purposes in different tags. */
+	private String payloadValue;
+
+	private Constness constness;
 
 	public PLAYPayload(String name, PLAYTag tag) {
-	this.name = name;
-	this.tag = tag;
-	this.payloadValue = "";
-	constness = Constness.VAR;
-    }
+		this.name = name;
+		this.tag = tag;
+		this.payloadValue = "";
+		constness = Constness.VAR;
+	}
 
-    public PLAYPayload(String name, PLAYTag tag, String payloadValue) {
-	this.name = name;
-	this.tag = tag;
-	this.payloadValue = payloadValue;
-	constness = Constness.VAR;
-    }
+	public PLAYPayload(String name, PLAYTag tag, String payloadValue) {
+		this.name = name;
+		this.tag = tag;
+		this.payloadValue = payloadValue;
+		constness = Constness.VAR;
+	}
 
-    /**
-     * @see higraph.model.interfaces.Payload#copy()
-     */
-    @Override
-    public PLAYPayload copy() {
-	return this;
-    }
+	/**
+	 * @see higraph.model.interfaces.Payload#copy()
+	 */
+	@Override
+	public PLAYPayload copy() {
+		return this;
+	}
 
-    /**
-     * @see higraph.model.taggedInterfaces.TaggedPayload#getTag()
-     */
-    @Override
-    public PLAYTag getTag() {
-	return this.tag;
-    }
+	/**
+	 * @see higraph.model.taggedInterfaces.TaggedPayload#getTag()
+	 */
+	@Override
+	public PLAYTag getTag() {
+		return this.tag;
+	}
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-	return this.name;
-    }
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return this.name;
+	}
 
-    public String getPayloadValue() {
-	return payloadValue;
-    }
+	public String getPayloadValue() {
+		return payloadValue;
+	}
 
-    public void setPayloadValue(String payloadValue) {
-	this.payloadValue = payloadValue;
-    }
-    
+	public void setPayloadValue(String payloadValue) {
+		this.payloadValue = payloadValue;
+	}
 
-    public Constness getConstness() {
+
+	public Constness getConstness() {
 		return constness;
 	}
 

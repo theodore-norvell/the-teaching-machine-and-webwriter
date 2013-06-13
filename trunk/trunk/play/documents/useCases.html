@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<h1>Glossary</h1>
+<ul>
+  <li>add class button. A button.</li>
+  <li>class list. A GUI list that is a list of the names of all the classes. </li>
+  <li>graph editor. An area of the screen (a higraph view component) that shows the portion of the program higraph.</li>
+  <li>selection. The selection is a set of zero, one, or more views.
+    <ul>
+      <li>The selection is defined by a pointer (called the <em>parent</em>) to a single node view and two integers -- called <em>anchor</em> and <em>focus</em>. The <em>parent</em> pointer may be null -- in which case the selection consists of  0 views, or it may be nonnull, in which case the seletion consists of all views &quot;between&quot; the anchor and the focus as follows: Suppose the parent points to <em>p</em> and <em>p</em> has <em>n</em> child views (including drop-zones and node-views) and the sequence of children views of the node view (including drop-zones) are [<em>f</em>(0), <em>f</em>(1), ..., <em>f</em>(n-1)]. Then, when <em>anchor</em> ≤ <em>focus</em>, the selection is {<em>f</em>(<em>i</em>) | <em>anchor</em> ≤ <em>i</em> ≤ <em>focus</em>}, and, when <em>focus</em> ≤ <em>anchor</em>, the selection is {<em>f</em>(<em>i</em>) | <em>focus</em> ≤ <em>i</em> ≤ <em>anchor</em>}. </li>
+      <li>Example. Suppose the user creates an if node. If-node views have three child views. 0 for the guard, 1, for the then part and, 2 for the else part. The parent pointer will point to the if node's view and the anchor and focus will be 0. The selection consists of the view for the guard.</li>
+      <li>Example. Suppose a seq node has children [<em>dz</em>0, <em>nv</em>0, <em>dz</em>1, <em>nv</em>1, <em>dz</em>2]. Suppose the user clicks on drop zone <em>dz</em>1. This sets the <em>focus</em> and <em>anchor</em> to 2 and the <em>parent</em> pointer points at the seq node's view. The selection consists only of drop zone <em>dz</em>1. If the user then presses shift-down on the keyboard twice, this will increase the focus by 2 to 4 and the selection will be {<em>dz</em>1, <em>nv</em>1, <em>dz</em>2}.</li>
+    </ul>
+  </li>
+</ul>
+<h1>Use cases for the editor</h1>
+<p>&nbsp;</p>
+<h2>Creating a class</h2>
+<ol>
+  <li>User clicks on <em>add class button</em>.</li>
+  <li>System
+    <ol>
+      <li>creates a new class with a default name such as &quot;NewClass&quot;,</li>
+      <li>adds the class to the <em>class list</em>,</li>
+      <li>loads the subgraph associated with the class into the <em>graph editor</em>,</li>
+      <li>selects the name in the class list so that the user can replace it with a better name.</li>
+    </ol>
+  </li>
+  <li>User types the name of the class</li>
+  <li>As the user types, the system changes the name to the name typed.</li>
+</ol>
+<h2>Adding a member</h2>
+<p>Drag and drop method</p>
+<ul>
+  <li>Precondition: The graph editor is associated with a class.</li>
+</ul>
+<ol>
+  <li>User presses down on a field or method <em>template</em>.</li>
+  <li>System changes the mouse pointer to indicate a drag operation.</li>
+  <li>User drags the mouse to hover over a drop zone child of the class's view node.</li>
+  <li>System highlights the drop zone and changes the mouse pointer to indicate a drop is possibl.</li>
+  <li>User releases the mouse.</li>
+  <li>A new node is created based on the template and becomes a child of the class.</li>
+</ol>
+<p>Click and select method</p>
+<ul>
+  <li>Precondition: The graph editor is associated with a class.</li>
+</ul>
+<ol>
+  <li>User clicks on a drop zone</li>
+  <li>System pops up a menu with the following choices:
+    <ul>
+      <li>New variable field</li>
+      <li>New method</li>
+      <li>New constant field</li>
+      <li>Cancel</li>
+    </ul>
+  </li>
+
+  <li>User selects a choice</li>
+  <li>If the choice is not cancel a new members is created under the class.</li>
+</ol>
+<p>Keyboard method</p>
+<p>[[To be done]]</p>
+<h2>Adding an expression node</h2>
+<p>Drag and drop method</p>
+<ol>
+  <li>User presses down on an expression node template.</li>
+  <li>System changes the mouse pointer to indicate a drag operation.</li>
+  <li>User drags the mouse</li>
+  <li>As the user drags, if the mouse is dragged over a drop zone and if the content model of allows the template to be inserted at this point, then the drop zone is highlighted and the </li>
+</ol>
+</body>
+</html>

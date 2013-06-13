@@ -13,7 +13,7 @@ import higraph.model.interfaces.Payload;
  */
 public class PLAYEdgeLabel implements Payload<PLAYEdgeLabel> {
 
-    private String edgeLabel;
+    private final String edgeLabel;
 
     public PLAYEdgeLabel(String edgeLabel) {
 	this.edgeLabel = edgeLabel;
