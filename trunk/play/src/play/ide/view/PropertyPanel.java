@@ -24,7 +24,7 @@ public class PropertyPanel extends JPanel {
 	this.viewPropertiesPanel = new ViewPropertiesPanel();
     }
 
-    public void update(List<Object> list) {
+    public void update(List<PLAYNodeView> list) {
 	this.setVisible(false);
 	this.removeAll();
 	if (list != null && list.size() > 0) {
