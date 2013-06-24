@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>Pass-by-reference Tutorial</title>
+	<meta name="description" content="" />
+	
+	<script src="../Tutorials.js"></script>
+	<style>
+		#graph { display:none ; }
+	</style>
+<link href="../tutorials.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="Main.onLoad()">
+<h1>Pass-by-reference vs Pass-by-value</h1>
+<table width="90%" border="0">
+    <tr>
+      <td valign="top" >
+        <table width="100%" border="0">
+          <tr>
+            <td id="buttons" width = "740">
+		    </td>
+		    <td id="pageno" align = "left"> </td>
+		  </tr>
+          <tr>
+	        <td colspan = "2">
+          		<div id="instructions"></div>
+            </td>
+          </tr>
+        </table>
+      </td>
+      </tr>
+      <tr>
+      <td>
+          <applet 
+            code="tm/TMBigApplet.class"
+            name="tm_applet"
+            width="800"
+            height="500"
+            align="bottom"
+            archive="../tm.jar" id="tm_applet"
+            class="applet"
+            mayscript="true"
+          >
+          </applet>
+      </td>
+    </tr>
+  </table>
+	<div id="graph" data-function="initialize">
+		<script>//<![CDATA[
+			EdgeFunctions.initialize = function(tm) {
+				Main.trace("in initialize") ;
+				tm.loadRemoteFile( ".", "intSwap.cpp" ) ;
+				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
+				tm.initializeTheState() ;
+			}
+		 //]]></script>
+		<div class = "vertex" id="v0">
+			<p>This tutorial explains the concept of Pass-by-reference by comparing it with Pass-by-value.</p> </div>
+		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
+		     data-label="next" data-function="edge0to1">
+			<script>//<![CDATA[
+				EdgeFunctions.edge0to1 = function(tm) {
+					tm.go("10 * s ") ;
+				}
+			//]]></script>
+		</div>
+		<div class = "vertex" id="v1" >
+		 <p>First we declare and initialize two variables a and b whose values we wish to swap. a and b are initialised with 5 and 3 respectively.</p>
+		</div>
+		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
+		     data-label="next" data-function="edge1to2">
+			<script>//<![CDATA[
+				EdgeFunctions.edge1to2 = function(tm) {
+					tm.go("6 * s") ;
+				}
+			//]]></script>
+		</div>
+		<div class = "vertex" id="v2" >
+			<p>Now lets get into the Pass-by-value version of the intSwap() function. Two variables arg1 and arg2 called the formal parameters are created and the values of a and b are copied into them.</p>
+		</div>
+	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
+		     data-label="next" data-function="edge2to3">
+			<script>//<![CDATA[
+				EdgeFunctions.edge2to3 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		</div>
+			
+	  <div class = "vertex" id="v3" >
+			<p>Memory is allocated for the temporary variable <b>temp</b>. Note that it initially contains garbage value.</p>
+	  </div>
+	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
+		     data-label="next" data-function="edge3to4">
+			<script>//<![CDATA[
+				EdgeFunctions.edge3to4 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		</div>
+		
+	  <div class = "vertex" id="v4" >
+			<p>Value of arg1 is copied into temp.</p>
+	  </div>
+	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
+		     data-label="next" data-function="edge4to5">
+			<script>//<![CDATA[
+				EdgeFunctions.edge4to5 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		</div>
+		
+		<div class = "vertex" id="v5" >
+			<p>arg2 is copied into arg1.</p>
+		</div>
+	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
+		     data-label="next" data-function="edge5to6">
+			 <script>//<![CDATA[
+				EdgeFunctions.edge5to6 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		</div>
+		
+		<div class = "vertex" id="v6" >
+			 <p>temp which contains value of arg1 in copied into arg2.</p>
+			
+		</div>
+	    
+		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
+		     data-label="next" data-function="edge6to7">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge6to7 = function(tm) {
+					tm.go("5 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v7" >
+			<p>The function returns and the local variables temp, arg1 and arg2 are destroyed.</p>
+		</div>
+	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
+		     data-label="next" data-function="edge7to8">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge7to8 = function(tm) {
+					tm.go("1 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v8" >
+			<p>Note the values of a and b. They remain unchanged. Now we pass a and b to the Pass-by-reference version of the intSwap() function.Notice the function call. It is same as the call to the Pass-by-value version.</p>
+		</div>
+	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
+		     data-label="next" data-function="edge8to9">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge8to9 = function(tm) {
+					tm.go("12 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v9" >
+			<p>Carefully look at the function definition. In the first line two reference variables arg1 and arg2 are created pointing to actual variables a and b respectively. References are just separate names for the variables they point to. </p>
+		</div>
+		
+		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
+		     data-label="next" data-function="edge9to10">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge9to10 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v10" >
+			<p>Memory is allocated for the temp variable.</p>
+		</div>
+		
+		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
+		     data-label="next" data-function="edge10to11">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge10to11 = function(tm) {
+					tm.go("2 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v11" >
+			<p>Notice that 'temp=arg1' copies value 5 into temp, because arg1 is a reference to <b>a</b> or just another name for variable <b>a</b> so temp=arg1 assigns temp the value of <b>a</b> which is 5.</p>
+		</div>
+		
+		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
+		     data-label="next" data-function="edge11to12">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge11to12 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v12" >
+			<p>Similarly, arg1=arg2 copies value of <b>b</b> into <b>a</b>. because arg2 is reference to b and arg1 is reference to a. </p>
+		</div>
+		
+		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
+		     data-label="next" data-function="edge12to13">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge12to13 = function(tm) {
+					tm.go("3 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v13" >
+			<p>Finally, the value of <b>a</b> stored in temp through arg1 is copied back into arg2 which is nothing but <b>b</b>. </p>
+		</div>
+		
+		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
+		     data-label="next" data-function="edge13to14">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge13to14 = function(tm) {
+					tm.go("5 * s") ;
+				}
+			//]]></script>
+		<div class = "vertex" id="v14" >
+			<p>The function returns and all the local variables including the references are destroyed. Now note the values of <b>a</b> and <b>b</b>. They are swapped!</p>
+		</div>
+		
+		<div class="edge" id="edge14to15" data-source="v14" data-target="v15"
+		     data-label="next" data-function="edge14to15">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge14to15 = function(tm) {
+					tm.go("4 * s") ;
+				}
+			//]]></script>
+		 
+		<div class = "vertex" id="v15" >
+			<p>Excellent! You have completed the tutorial!</p>
+		</div>
+</div>
+	<div id="haxe:trace"></div>
+</body>
+</html>

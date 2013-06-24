@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Pass-by-reference tutorial</title>
+<link href="tutorials.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<h1>Pass-By-reference tutorial</h1>
+<p>This tutorial explains the concept of <b>Pass-by-reference.</b> </p>
+<p>But to appreciate its usage we first look at the more commonly used <b>Pass-by-value</b>. </p>
+<p>Consider the following example code.</p>
+<pre>
+int main() {
+	int a = 5 ;
+	int b = 3 ;
+	intSwapPassByVal(a,b); 
+	intSwapPassByRef(a,b);
+	return 0;
+	}
+</pre>
+<p><b>intSwapPassByVal</b> and <b>intSwapPassByRef</b> are the Pass-by-value and Pass-by-reference versions of a function that swaps two integers which are passed as arguments to it.</p>
+<p>Let us see what happens when the program is executed. </p>
+<p>The first two lines:</p>
+<pre>
+	int a = 5 ;
+	int b = 3 ; 
+</pre>
+<p>Memory is allocated for the integer variables a and b and they are initialised with the corresponding values.</p>
+<img src="Img1.png" width="257" height="198">
+<p>The function call:</p>
+<pre>
+intSwapPassByVal(a,b);
+</pre>
+<p>The function call to the Pass-by-value version of the intSwap() function.</p>
+<p>Let us go into the defintion of the function intSwapPassByVal()</p>
+<pre>
+void intSwapPassByVal(int arg1 int arg2){
+	
+	int temp;
+	temp=arg1;
+	arg1=arg2;
+	arg2=temp;
+}
+</pre>
+<p>The first line allocates memory for the two variables arg1 and arg2 and copies the values of a and b into arg1 and arg2 respectively.</p>
+<img src="Img2.png" width="257" height="238" >
+<p>a and b are called the <b>actual parameters</b> while arg1 and arg2 and called the <b>formal parameters.</b></p>
+<p>Here the point to note is that a copy of the variables a and b is created and stored in arg1 and arg2.</p>
+<p>Now lets look at the swapping code.</p>
+<p>(i)Memory is allocated for the variable temp,(ii)arg1 is copied into it,(iii) arg2 is copied into arg1 and (iv) value of arg1 which was safely stored in temp is copied to arg2.</p>
+<p>This is illustrated  sequentially in the images below:</p>
+<div>		
+<img src="Img3.png" width="357" height="268" >
+<img src="Img4.png" width="357" height="268" >
+</div>
+
+<div>		
+<img src="Img5.png" width="357" height="268" >
+<img src="Img6.png" width="357" height="268" >
+</div>
+<p>Now the control returns to the main function.All the local variables including arg1,arg2,temp are destroyed.</p>
+<img src="Img1.png" width="257" height="198" >
+<p>The values of a and b are still 3 and 5!</p>
+<p>And this is expected because we never actually changed the variables a and b themselves, rather we copied them into arg1 and arg2 which we called the formal parameters and changed them. So when the control returned  a and b are untouched!</p>
+<p>This is where the importance of Pass-by-reference becomes apparent.</p>
+<p>Now let us see the swapping of a and b again but this time using Pass-by-reference.</p>
+<pre>
+intSwapPassByRef(a,b);
+</pre>
+<p>Note that the function call to the Pass-by-reference version of intSwap is exactly the same as for the Pass-by-value version! So just by looking at the function call it is impossible to tell if it is Pass-by-value or Pass-by-reference. We need to look at the declaration or the actual defintion of the functions to identify.</p>
+<p>The definition of the Pass-by-refernce version of intSwap</p>
+<pre>
+void intSwapPassByRef(int& arg1, int& arg2) {
+	int temp  ;
+	temp = arg1 ;
+	arg1 = arg2 ;
+	arg2 = temp ;
+}
+</pre>
+<p>When the function is called arg1 and arg2 become what we call the <b>references</b> to the actual parameters a and b.</p>
+<img src="Img8.png" width="337" height="268"> 
+<p>Now the swapping.</p>
+<p>(i)First memory is allocated for the variable temp.</p>
+<p>(ii) 'temp=arg1': <b>arg1</b> which refers to <b>a</b> is copied into <b>temp</b> ,that is, effectively <b>a</b> is copied into <b>temp</b> and <b>temp</b> now contains 5.</p>
+<p>(iii)'arg2=arg1': <b>arg2</b> is copied into <b>arg1</b>, but since any changes made to the references are seen in the referred variables arg1=arg2 actually copies <b>b</b> into <b>a</b>,that is <b>a</b> now contains 3.</p>
+<p>(iv)Similarly arg2=temp actually copies the value of <b>temp</b> that is 5 into <b>a</b>, since <b>arg1</b> is the refernce of <b>a</b>. So <b>a</b> now contains 5.</p>
+<p>These changes are illustrated sequentially in the images below.</p>
+<div>
+	<img src="Img9.png" width="427" height="278">
+		<img src="Img10.png" width="427" height="278">
+</div>
+<div>
+	<img src="Img11.png" width="427" height="278">
+		<img src="Img12.png" width="427" height="278">
+</div>
+<p>Now the function returns to the main function and <b>temp</b>, <b>arg1</b> and <b>arg2</b> are destroyed. Only <b>a</b> and <b>b</b> remain but with their values swapped!</p>
+<img src="Img13.png" width="277" height="198"> 
+<p><em><b> We notice that Pass-by-refernce brought about the changing of the actual parameters which is  very useful is many scenarios.</b></em></p>
+</body>
+</html>
