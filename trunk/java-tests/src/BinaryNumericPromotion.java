@@ -1,6 +1,6 @@
 //package expressions;
 
-public class BinaryNumericPromotions {
+public class BinaryNumericPromotion {
    public static void main() {
      long lng  ;
      lng = -1L ;

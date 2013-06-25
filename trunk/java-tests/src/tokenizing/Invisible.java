@@ -18,6 +18,7 @@ public class Invisible {
         System.out.println(5) ; */
         System.out.println(6) ;
         System.out.println(7) ; /*#I
+        // An invisible comment!
         System.out.println(8) ;
 */    }
 }

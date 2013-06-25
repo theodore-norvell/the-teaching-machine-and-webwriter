@@ -313,9 +313,10 @@ public abstract class AbstractNode
         for( SG sg : recordedSubgraphs ) sg.addTop( root ) ;
     }
     
-    /** Just like insertChild, but does not check the well-formedness
-     * of inserting the child.  This should only be used to add children
-     * to a node that has just been created.
+    /** Just like insertChild, but does not guarantee the well-formedness of inserting the child.
+     * WARNING: This should only be used to add children
+     * to a node that has just been created. For example it might be called from
+     * an override of {@link AbstractWholeGraph.addChildrenHook}.
      * 
      * @param position
      * @param newChild
@@ -329,6 +330,7 @@ public abstract class AbstractNode
         // This is because a descendant of a top node should not
         // be a top node.
         // We do this in two steps.
+        
         // Step 0. Collect all nodes that need to be
         // removed from a subgraph.
         final List<N> nodeToRemove = new ArrayList<N>() ;
@@ -339,9 +341,8 @@ public abstract class AbstractNode
                     for( SG sg : node.subgraphs ) 
                         if( sg.contains( parent ) ) {
                             nodeToRemove.add(node) ;
-                            subgraphList.add( sg ) ;
-                        }
-        } } ) ;
+                            subgraphList.add( sg ) ; } } } ) ;
+        
         // Step 1. Remove the nodes from the subgraphs.
         Iterator<SG> sgIt = subgraphList.iterator() ;
         for( N node : nodeToRemove ) {
