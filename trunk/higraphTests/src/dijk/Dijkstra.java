@@ -1,5 +1,11 @@
 /* Created on Jun 24, 2011 by Theodore S. Norvell. */
 package dijk; /*#I
+
+import demos.Dijkstra;
+import demos.Edge;
+import demos.Graph;
+import demos.Heap;
+import demos.SmallGraph;
 import tm.scripting.ScriptManager;
 import tm.scripting.PDV; */
 class Heap {
