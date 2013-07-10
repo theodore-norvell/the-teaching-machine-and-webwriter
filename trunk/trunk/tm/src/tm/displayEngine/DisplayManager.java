@@ -225,8 +225,9 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
        =======   Refresh all displays.
     */
     public void refresh() {
-    	for (int d = 0; d < myDisplays.length; d++)
-    		if (myDisplays[d] != null) myDisplays[d].refresh() ;
+    	for (int d = 0; d < myDisplays.length; d++) {
+    		//System.out.println("Refreshing "+ myDisplays[d].getId() ) ;
+    		if (myDisplays[d] != null) myDisplays[d].refresh() ; }
     }
    
   

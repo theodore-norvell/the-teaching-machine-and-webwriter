@@ -232,6 +232,10 @@ public class VMState {
     public void undo() { timeMan.undo() ; }
 
     public void redo() { timeMan.redo() ; }
+    
+    public void turnOnProtection() { timeMan.turnOnProtection() ; }
+    
+    public void turnOffProtection() { timeMan.turnOffProtection() ; }
 
     /* Associate an object with a name (not backtrackable!) */
     public void setProperty( String name, Object info ) {

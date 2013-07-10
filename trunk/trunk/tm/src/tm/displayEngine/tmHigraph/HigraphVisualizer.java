@@ -60,14 +60,14 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	/**
 	 * Default implementation of refresh 
 	 */
-		public void refresh() {
-//			System.out.println("refreshing " + this);
-			if ( myView != null) {
-				this.mySubWindow.setTitle(myView.getTitle());
-				animator.start( 500 ) ; }
-			
-			super.refresh(); 
-		}
+	public void refresh() {
+		//			System.out.println("refreshing " + this);
+		if ( myView != null) {
+			this.mySubWindow.setTitle(myView.getTitle());
+			animator.start( 500 ) ; }
+
+		super.refresh(); 
+	}
 		
 		// Button handler
 	    public void buttonPushed(int i) {

@@ -35,6 +35,7 @@ public class Debug {
     public static final int DISPLAY = 8 ;
     public static final int EDITOR = 16 ;
     public static final int CURRENT = 32 ;
+    public static final int BACKTRACK = 64 ;
     
     // Invariant. If any category is active, then ALWAYS is active:
     //            activeCategories == 0 || (activeCategories & ALWAYS)!=0
@@ -90,6 +91,7 @@ public class Debug {
         else if(cat.equalsIgnoreCase("EDITOR")) turnOn(EDITOR) ;
         else if(cat.equalsIgnoreCase("ALWAYS")) turnOn(ALWAYS) ;
         else if(cat.equalsIgnoreCase("CURRENT")) turnOn(CURRENT) ;
+        else if(cat.equalsIgnoreCase("BACKTRACK")) turnOn(BACKTRACK) ;
         else msg(ALWAYS, "Unknown debug flag: '"+ cat + "'") ;
     }
     

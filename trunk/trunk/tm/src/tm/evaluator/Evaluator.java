@@ -269,7 +269,10 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     }
     
     public void refresh() {
-        observer.refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, " Evaluator refreshes its observers." ) ; /**/
+        try{ vms.turnOnProtection() ;
+        	observer.refresh() ; }
+       finally { vms.turnOffProtection() ; }
     }
 
 //  Calls to advance or retard the state  //
@@ -316,89 +319,112 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     }
     
     public void goBack() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.goBack()" ) ; /**/
         if( autoStepTimer != null ) return ;
         vms.undo() ;
-        refresh() ; }
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.goBack()" ) ; /**/ }
     
     public void redo() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.redo()" ) ; /**/
         if( autoStepTimer != null ) return ;
         vms.redo() ;
-        refresh() ; }
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.redo()" ) ; /**/
+    }
     
     public void go(String commandString ) {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.go()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
     	if( autoStepTimer != null ) return ;
     	vms.checkpoint() ;
     	new CommandStringInterpreter(commandString, this).interpretGoCommand(  ) ;
     	refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.go()" ) ; /**/
     }
 
 	public void microStep() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.microStep()" ) ; /**/
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         microStepCommand() ;
-        refresh() ;}
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.microStep()" ) ; /**/}
 	
 	/** Not really for public use*/
 	public void microStepCommand() { stepForward ( new microStepTest() ) ; }
 
     public void goForward() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.goForward()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         goForwardCommand() ; 
-        refresh() ; }
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.goForward()" ) ; /**/ }
 	
 	/** Not really for public use*/
 	public void goForwardCommand() { stepForward ( new goForwardTest() ) ;  }
 
     private void initialSteps() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.initialSteps()" ) ; /**/
         Assert.check( statusReporter.getStatusCode() == TMStatusCode.READY )  ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         stepForward ( new initialTest() ) ; 
-        refresh() ;}
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.initialSteps()" ) ; /**/ }
 
     public void intoExp() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.intoExp()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         intoExpCommand() ;
-        refresh() ; }
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.intoExp()" ) ; /**/ }
 	
 	/** Not really for public use*/
 	public void intoExpCommand() { stepForward ( new intoExpTest() ) ;  }
 
     public void intoSub() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.intoSub()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         intoSubCommand() ;
-        refresh() ; }
+        refresh() ; 
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.intoSub()" ) ; /**/ }
 	
 	/** Not really for public use*/
 	public void intoSubCommand() { stepForward ( new intoSubTest() ) ;  }
 
     public void overAll() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.overAll()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         overAllCommand() ;
-        refresh() ; }
+        refresh() ; 
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.overAll()" ) ; /**/ }
 	
 	/** Not really for public use*/
 	public void overAllCommand() { stepForward ( new overAllTest() ) ;  }
 
     public void toCursor(String fileName, int lineNumOneBased) {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.toCursor()" ) ; /**/
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
         if( autoStepTimer != null ) return ;
         vms.checkpoint() ;
         stepForward( new toCursorTest(fileName, lineNumOneBased) ) ;
-        refresh() ; }
+        refresh() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.toCursor()" ) ; /**/ }
     
     public void toBreakPoint() {
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.toBreakPoint()" ) ; /**/
     	// TODO
     	toBreakPointCommand() ;
+        /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.toBreakPoint()" ) ; /**/
     }
 	
 	/** Not really for public use*/
