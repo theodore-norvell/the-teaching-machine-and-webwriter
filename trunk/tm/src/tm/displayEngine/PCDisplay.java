@@ -50,7 +50,6 @@ public class PCDisplay extends DisplayAdapter{
 		g.setColor(Color.black);
 		g.drawString (commandProcessor.getPCLocation(), LEFTMARGIN,
 		TOPMARGIN + g.getFontMetrics().getAscent());
-		
 	}
 
 

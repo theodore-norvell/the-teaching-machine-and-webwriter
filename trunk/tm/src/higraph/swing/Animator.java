@@ -47,9 +47,12 @@ public class Animator {
 		delta = (double)FRAME_TIME_ms / lengthIn_ms  ;
 		degree = 0 ;
 		// Finish the last transition, if any
+		//System.out.println("Finishing transition") ;
 		view.finishTransition() ;
-		
+
+		//System.out.println("Starting transition") ;
 		view.startTransition() ;
 
+		//System.out.println("Starting timer") ;
 		timer.start(); }
 }
