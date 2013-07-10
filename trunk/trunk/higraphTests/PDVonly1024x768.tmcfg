@@ -195,7 +195,7 @@
 <param name="Position.y">0</param>
 <param name="Width">505</param>
 <param name="Height">691</param>
-<param name="WindowTitle">"Program Driven Visualization"</param>
+<param name="WindowTitle">"Program Defined Visualization"</param>
 <param name="Visible">true</param>
 </config>
 

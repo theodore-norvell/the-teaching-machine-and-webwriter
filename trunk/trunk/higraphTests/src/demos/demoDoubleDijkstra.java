@@ -1,5 +1,5 @@
 /* Created on Jun 24, 2011 by Theodore S. Norvell. */
-package dijk; /*#I
+package demos; /*#I
 import tm.scripting.ScriptManager;
 import tm.scripting.PDV; */
 class Heap {
