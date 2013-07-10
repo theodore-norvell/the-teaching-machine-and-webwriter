@@ -120,6 +120,7 @@ public class HigraphView
 
 	
 
+	private final BTTimeManager timeMan ;
 	private final BTVar<Color> defaultNodeColorVar;
 	private final BTVar<Color> defaultNodeFillColorVar;
 	private final BTVar<Stroke> defaultNodeStrokeVar;
@@ -156,11 +157,11 @@ public class HigraphView
 	private final BTVar<Boolean> countZonesVar;
 	
 	private class DisplayString{
-		public String id;
-		public StringBuilder theString;
-		public Color baseColor;
-		public int x;
-		public int y;
+		public final String id;
+		public BTVar<String> theString = new BTVar<String>(timeMan, "");
+		public BTVar<Color> baseColor = new BTVar<Color>(timeMan, Color.BLACK) ;
+		public BTVar<Integer> x = new BTVar<Integer>(timeMan, 0) ;
+		public BTVar<Integer> y = new BTVar<Integer>(timeMan, 0);
 		public DisplayString(String id){
 			this.id = new String(id);
 		}
@@ -185,7 +186,8 @@ public class HigraphView
 
 
 	protected HigraphView(ViewFactory<NP,EP,HG,WG,SG,N,E> viewFactory, HG theGraph, Component display, BTTimeManager timeMan) {
-	    defaultNodeColorVar = new BTVar<Color>( timeMan, DEFAULT_NODE_COLOR);
+	    this.timeMan = timeMan ;
+		defaultNodeColorVar = new BTVar<Color>( timeMan, DEFAULT_NODE_COLOR);
 	    defaultNodeFillColorVar = new BTVar<Color>( timeMan, DEFAULT_NODE_FILL_COLOR);
 	    defaultNodeStrokeVar = new BTVar<Stroke>( timeMan, DEFAULT_NODE_STROKE);
 	    defaultNodeWidthVar = new BTVar<Double>(timeMan, DEFAULT_SHAPE_WIDTH);
@@ -658,27 +660,27 @@ public class HigraphView
 	public void clearString(String id){
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		ds.theString = new StringBuilder();
+		ds.theString.set("");
 	}
 	
 	public void addToString(String id, String addendum){
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		if (ds.theString == null) ds.theString = new StringBuilder();
-		ds.theString.append(addendum);
+		String old = ds.theString.get() ;
+		ds.theString.set( old + addendum);
 	}
 	
 	public void placeString(String id, int x, int y){
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		ds.x = x;
-		ds.y = y;
+		ds.x.set(x);
+		ds.y.set(y);
 	}
 	
 	public void setStringBaseColor(String id, int c){
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		ds.baseColor = new Color(c);
+		ds.baseColor.set( new Color(c) );
 	}
 	
 	public void removeString(String id){
@@ -690,23 +692,25 @@ public class HigraphView
 	public void markSubString(String id, String subStr, char marker, int index) {
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		if (ds.theString != null) {
-			int p = ds.theString.indexOf(subStr, index);
-			ds.theString.insert(p+subStr.length(), ENDMARKER);
-			ds.theString.insert(p, marker);
-		}
+
+		StringBuilder sb = new StringBuilder( ds.theString.get() ) ;
+		int p = sb.indexOf(subStr, index);
+		sb.insert(p+subStr.length(), ENDMARKER);
+		sb.insert(p, marker);
+		ds.theString.set( sb.toString() ) ;
+
 	}
 	
 	public void removeStringMarking(String id) {
 		DisplayString ds = getDisplayString(id);
 		Assert.scriptingError(ds != null, "String " + id + " doesn't exist");
-		if (ds.theString != null) {
-			int l = ds.theString.length()-1;
-			for (int i = l; i >= 0; i--) 
-				if(ds.theString.charAt(i) >= ENDMARKER)
-					ds.theString.deleteCharAt(i);
-		}
 		
+		StringBuilder sb = new StringBuilder( ds.theString.get() ) ;
+		int l = sb.length()-1;
+		for (int i = l; i >= 0; i--) 
+			if(sb.charAt(i) >= ENDMARKER)
+				sb.deleteCharAt(i);
+		ds.theString.set( sb.toString() ) ;
 	}
 
 	private DisplayString getDisplayString(String id){
@@ -794,26 +798,26 @@ public class HigraphView
 		Iterator<DisplayString> iter = myStringVector.iterator();
 		while (iter.hasNext()) {
 			DisplayString ds = iter.next();
-
-			if (ds.theString != null && ds.theString.length() > 0){
-				int advance = ds.x;
+			String str = ds.theString.get() ;
+			if ( str.length() > 0){
+				int advance = ds.x.get() ;
 				int advances[];		// Character sizes
 	
 	
 			// Must convert expression to array of characters as drawChars can only work with
 			// char arrays
-				char tempArray[] = ds.theString.toString().toCharArray();
+				char tempArray[] = str.toCharArray();
 	  
 //				g.setFont(myFont);
 				FontMetrics fm = screen.getFontMetrics();
 				advances = fm.getWidths();	// Widths of every character
-				int baseline = fm.getAscent() + ds.y;
+				int baseline = fm.getAscent() + ds.y.get();
 
 				Color currentColor = screen.getColor();
-				Color currColor = ds.baseColor;
+				Color currColor = ds.baseColor.get();
 				screen.setColor(currColor);
 				Vector attrStack = new Vector() ;
-				for( int i = 0, sz = ds.theString.length() ; i < sz ; ++ i ) {
+				for( int i = 0, sz = str.length() ; i < sz ; ++ i ) {
 					char c = tempArray[i];		// Next character
 					switch (c) {
 					    case MARKER_RED:
