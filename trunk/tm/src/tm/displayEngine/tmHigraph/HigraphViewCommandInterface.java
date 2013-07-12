@@ -173,6 +173,11 @@ public interface HigraphViewCommandInterface {
     public void setEdgeLabelColor(Datum source, Datum target, String labelName, long c) ;
     public void setEdgeLabelFill(Datum source, Datum target, String labelName, long c) ;
     
+	// Valid Decorator types
+	public final static long NONE = 0;
+	public final static long ARROWHEAD = 1;
+	public final static long CIRCLE = 2;
+
 	public void setTargetDecorator(Datum source, Datum target, long d);
 	public void setSourceDecorator(Datum source, Datum target, long d);/*#/TEdge*/
 

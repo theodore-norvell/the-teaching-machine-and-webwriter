@@ -55,54 +55,13 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 
     private final WholeGraphTM wholeGraph;
 	
-	// Valid Decorator types
-	// TODO. Should these (and similar constants be declared in an interface?
-	public final static int NONE = 0;
-	public final static int ARROWHEAD = 1;
-	public final static int CIRCLE = 2;
-	
-	/** Cross-reference between the ViewId and the actual view
-	 */
-	
-	private class ViewRef{
-		public String viewId;
-		public HigraphViewTM view;
-//		public boolean defaultShowNodeName = false;
-		
-		public ViewRef(String id, HigraphViewTM v){
-			viewId = id;
-			view = v;
-		}			
-	}
-	
-	private class HigraphRef{
-		public String higraphId;
-		public HigraphTM higraph;
-		
-		public HigraphRef(String id, HigraphTM hg){
-			higraphId = id;
-			higraph = hg;
-		}			
-	}
-
-	private final List<ViewRef> viewMap;
-	private final List<HigraphRef> higraphMap;
-	private final List<HigraphViewTM> activeViewSet;
-	
-	/* This is a real problem. DisplayManager keeps a separate list of all displays and multiple calls to createAllDisplays
-	 * can end up with the lists out of synch. The upshot is that refresh is being called on a different visualizer
-	 * object than setView. A number of solutions present themselves
-	 * 
-	 * 1. Make sure that every call in DisplayManager is overridden in HigraphManager and keep the lists in synch
-	 * 2. Change the availableDisplays list in HigraphManager from a list of Visualizers to a list of indices
-	 * into DisplayManagers list of objects. Thus only one actual reference to a visualizer is maintained.
-	 * 
-	 * */
-	//private List<HigraphVisualizer> availableDisplays;
-//	final BTVar<Integer> currentViewVar; // The number of the view in the list to which commands are routed.
-	
 	private final BTTimeManager timeManager  ;
-	private DisplayManager displayManager;
+	
+	private final BTFunction<String, HigraphViewTM> viewMap;
+	private final BTFunction<String, HigraphTM> higraphMap;
+	private final BTVector<HigraphViewTM> activeViewSet;
+	
+	private final DisplayManager displayManager;
 	
 	
 	public HigraphManager(DisplayContextInterface context) {
@@ -110,10 +69,10 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 		wholeGraph = new WholeGraphTM( timeManager );
 		displayManager = (DisplayManager)context;
 		
-		activeViewSet = new ArrayList<HigraphViewTM>();
-		viewMap = new ArrayList<ViewRef>();
-		higraphMap = new ArrayList<HigraphRef>();
-		higraphMap.add(new HigraphRef("wholeGraph", wholeGraph));
+		activeViewSet = new BTVector<HigraphViewTM>(timeManager);
+		viewMap = new BTFunction<String, HigraphViewTM>(timeManager);
+		higraphMap = new BTFunction<String, HigraphTM>(timeManager);
+		higraphMap.map("wholeGraph", wholeGraph) ;
 //		availableDisplays = new ArrayList<HigraphVisualizer>();
  //       currentViewVar = new BTVar<Integer>( timeManager, 0 ) ;
 //		ConfigurationServer.getConfigurationServer().register(this, getId());
@@ -208,7 +167,7 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	public void makeSubGraph(String id) {
 		Assert.check(!id.equals("wholeGraph"), "wholeGraph cannot be used for a subGraph");
 		Assert.check(getView(id) == null,"subGraph id " + id + " already assigned");
-		higraphMap.add(new HigraphRef(id, wholeGraph.makeSubGraph())); 		
+		higraphMap.map(id, wholeGraph.makeSubGraph()); 		
 	}
 
 	@Override
@@ -258,7 +217,7 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	    ViewFactoryTM viewFactory = new ViewFactoryTM(timeManager);
 		HigraphViewTM view = viewFactory.makeHigraphView(hg, display) ;
 		
-		viewMap.add(new ViewRef(viewId, view));
+		viewMap.map(viewId, view);
 		setLayoutManager(layoutManager, view);
 
 		// let the plugin know who its delegate is
@@ -309,7 +268,7 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
     
 	@Override
    public void clearActiveViewSet(){
-    	activeViewSet.clear();
+    	while( activeViewSet.size() > 0 ) activeViewSet.removeElementAt(0);
     }
 		
 
@@ -1433,11 +1392,11 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	
 	private PointDecorator<NodePayloadTM, EdgePayloadTM, HigraphTM, WholeGraphTM, SubgraphTM, NodeTM, EdgeTM> getDecorator(HigraphViewTM view, long d) {
 		switch ((int) d){
-		case ARROWHEAD:
+		case (int)ARROWHEAD:
 			return view.getViewFactory().makeArrowHead(view);
-		case CIRCLE:
+		case (int)CIRCLE:
 			return view.getViewFactory().makeCircleDecorator(view);
-		case NONE:
+		case (int)NONE:
 			return null;
 		default:
 			Assert.scriptingError("Decorator type " + d + " is unrecognized.");
@@ -1524,10 +1483,9 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 		return "HigraphManager";
 	}
 	
+	/** Note: Gives null if id is not currently mapped. */
 	private HigraphViewTM getView(String id){
-		for(ViewRef vr : viewMap)
-			if(id.compareTo(vr.viewId)==0) return vr.view;	
-		return null;
+		return viewMap.at(id) ;
 	}
 	
 	private HigraphViewTM getAndCheckView(String id){
@@ -1537,10 +1495,9 @@ public class HigraphManager implements Configurable, Scriptable, HigraphScriptin
 	}
 
 	
+	/** Note. Returns null if id is not in the domain */
 	private HigraphTM getHigraph(String id){
-		for(HigraphRef hgr : higraphMap)
-			if(id.equals(hgr.higraphId)) return hgr.higraph;	
-		return null;
+		return higraphMap.at(id) ;
 	}
 	
 	private Color privateGetColor(long c){
