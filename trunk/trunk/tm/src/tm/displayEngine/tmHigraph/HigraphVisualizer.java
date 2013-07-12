@@ -21,7 +21,6 @@ import tm.displayEngine.DisplayAdapter;
 import tm.displayEngine.DisplayManager;
 import higraph.swing.Animator;
 import higraph.view.HigraphView;
-import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
@@ -34,9 +33,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 	private static final long serialVersionUID = -7382595374129821180L;
 	
-	private HigraphView<?,?,?,?,?,?,?> myView;
+	private final BTVar<HigraphView<?,?,?,?,?,?,?> > myView;
 	
-	private Animator animator  ;
+	private final BTVar<Animator> animator  ;
 	
 
 	/**
@@ -47,6 +46,8 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 	public HigraphVisualizer(DisplayManager dm, String configId){
 		super(dm, configId);
+		myView = new BTVar<HigraphView<?,?,?,?,?,?,?> >(dm.getTimeManager()) ;
+		animator = new BTVar<Animator>( dm.getTimeManager() ) ;
 		SmallButton buttons[] = new SmallButton[2];
 		ImageSourceInterface imageSource = context.getImageSource();
 		buttons[0] = new SmallButton(SmallButton.BACKUP, imageSource);
@@ -62,9 +63,10 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 */
 	public void refresh() {
 		//			System.out.println("refreshing " + this);
-		if ( myView != null) {
-			this.mySubWindow.setTitle(myView.getTitle());
-			animator.start( 500 ) ; }
+		if ( myView.get() != null) {
+			this.mySubWindow.setTitle(myView.get().getTitle());
+			animator.get().start( 500 ) ; }
+		else { this.mySubWindow.setTitle("") ; }
 
 		super.refresh(); 
 	}
@@ -88,8 +90,8 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	 * @param view
 	 */
 	public void setView(HigraphView<?,?,?,?,?,?,?> view){
-		myView = view ;
-		animator = new Animator(view) ;
+		myView.set(view) ;
+		animator.set(new Animator(view) ) ;
 		tm.utilities.Debug.getInstance().msg(Debug.DISPLAY, "SubgraphVisualizer set view. ");
 //		System.out.println("SubgraphVisualizer " + this + " set view to " + myView);
 
@@ -97,9 +99,9 @@ public class HigraphVisualizer	extends DisplayAdapter {
 	
 	public void dispose(){
 //		System.out.println("disposing " + myView );
-		if (myView != null){
+		if (myView.get() != null){
 			tm.utilities.Debug.getInstance().msg(Debug.DISPLAY, "disposing HigraphView.");
-			myView.dispose();
+			myView.get().dispose();
 		}
 
 		super.dispose();
@@ -108,8 +110,8 @@ public class HigraphVisualizer	extends DisplayAdapter {
 
 	@Override
 	public void drawArea(Graphics2D screen) {
-		if (myView != null)
-			myView.drawArea(screen);
+		if (myView.get() != null)
+			myView.get().drawArea(screen);
 	}
 	
 	public String toString() {return "Subgraph Visualizer " + configId + " @" + hashCode();}
