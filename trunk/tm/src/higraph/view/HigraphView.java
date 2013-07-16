@@ -288,6 +288,8 @@ public class HigraphView
 	 * 
 	 */
 	public void startTransition(){
+		// The layout system will need a graphics object, so be sure there is one.
+		Assert.check( getDisplay() != null && getDisplay().getGraphics() != null ) ;
 		//System.out.println("In startTransition") ;
 		if( animationState == TRANSITIONING ) {
 			finishTransition() ; }
