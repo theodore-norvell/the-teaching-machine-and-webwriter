@@ -62,6 +62,7 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
 					tm.go("1 * s ") ;
+					tm.intoExp();
 				}
 			//]]></script>
 		</div>
@@ -74,6 +75,8 @@
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
 					tm.go("6 * s") ;
+					tm.intoExp();
+					tm.intoExp();
 				}
 			//]]></script>
 		</div>
@@ -84,7 +87,8 @@
 		     data-label="next" data-function="edge2to3">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("4 * s") ;
+					
 				}
 			//]]></script>
 		</div>
@@ -96,7 +100,8 @@
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("4 * s") ;
+					tm.go("8 * s") ;
+					tm.intoExp();
 				}
 			//]]></script>
 		</div>
@@ -108,13 +113,13 @@
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.edge4to5 = function(tm) {
-					tm.go("2 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>The for loop: In the first iteration a variable <b>div</b> local to the loop is created and intialized to 2.Now we divide num by div while incrementing <b>div</b> (div++) in each iteration. The remainder of num/div (given by num%div) is logically ANDED with isPrime. So if the result of any division is 0 i.e. num is divisible by a div then <b>isPrime</b> becomes false because true&&0 is false else it remains true.</p>
+			<p>The for loop: In the first iteration a variable <b>div</b> local to the loop is created and intialized to 2.Now we divide num by div while incrementing <b>div</b> (div++) in each iteration. The remainder of num/div (given by num%div) is logically ANDED with isPrime. So if the result of any division is 0 i.e. num is divisible by a div then <b>isPrime</b> becomes false because true&&0 is false else it remains true.You can use the expression engine navigation keys <img src="eenavigate.PNG"/> to visualize for loop <b>OR</b> you can use the next button to see the state changes. </p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
@@ -126,7 +131,7 @@
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			 <p>div=2::num=7::num%div=1::isPrime=true&&2=true</p>
+			 <p>div=2 ; num=7 ; num%div=1 ; isPrime=true&&2=true</p>
 			
 		</div>
 	    
@@ -135,33 +140,33 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("5 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>div=3::num=7::num%div=1::isPrime=true&&1=true</p>
+			<p>div=3 ; num=7 ; num%div=1 ; isPrime=true&&1=true</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("1 * s") ;
+					tm.go("10 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p>Note the values of a and b. They remain unchanged. Now we pass a and b to the Pass-by-reference version of the intSwap() function.Notice the function call. It is same as the call to the Pass-by-value version.</p>
+			<p>div=4 ; num=7 ; num%div=3 ; isPrime=true&&3=true</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("12 * s") ;
+					tm.go("10 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
-			<p>Carefully look at the function definition. In the first line two reference variables arg1 and arg2 are created pointing to actual variables a and b respectively. References are just separate names for the variables they point to. </p>
+			<p>div=5 ; num=7 ; num%div=2 ; isPrime=true&&2=true</p>
 		</div>
 		
 		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
@@ -169,11 +174,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge9to10 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("10 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p>Memory is allocated for the temp variable.</p>
+			<p><p>div=6 ; num=7 ; num%div=1 ; isPrime=true&&1=true</p></p>
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -181,11 +186,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge10to11 = function(tm) {
-					tm.go("2 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v11" >
-			<p>Notice that 'temp=arg1' copies value 5 into temp, because arg1 is a reference to <b>a</b> or just another name for variable <b>a</b> so temp=arg1 assigns temp the value of <b>a</b> which is 5.</p>
+			<p>div=7::Condition div < num fails. Control comes out of for loop and executes the next statement.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -193,11 +198,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to12 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("2 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v12" >
-			<p>Similarly, arg1=arg2 copies value of <b>b</b> into <b>a</b>. because arg2 is reference to b and arg1 is reference to a. </p>
+			<p> That is, isPrime is returned to the main function. Note that <b>true</b> is returned as we saw in the loop evaluation. </p>
 		</div>
 		
 		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
@@ -205,7 +210,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge12to13 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("7 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v13" >

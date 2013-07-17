@@ -22,12 +22,13 @@ int main() {/*#TS*/makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode"
 	sum = calcSum(10);
 
 }/** Precondition: num > 1 */
-	bool isPrime(int num){ 
-	/*#TS*/setupval(temp,"num",102,20,temp); /*#/TS*/
+	bool isPrime(int num){ /*#TS*/setupval(temp,"num",50,80,temp); /*#/TS*/
+	
 	bool isPrime = true ;/*#TS*/ int i=1;  setupBool(i,"isPrime",102,200,i); displayString(id1,True,157,210,BLACK);   int remainder=0;/*#/TS*/
-	for(int div=2; div<num; div++){ /*#TS*/setupval(div,"div",102,100,div); /*#/TS*//*#TS*/remainder=num%div;/*#/TS*//*#TS*/setupval(remainder,"num%div",252,200,remainder); /*#/TS*/
-		isPrime = isPrime && num%div; /*#TS*/if (isPrime==true){i=1; } else {i=0; }/*#/TS*/
-	} /*#TS*/ removeString(id1);ScriptManager::relay("HigraphManager","deleteNode", temp);ScriptManager::relay("HigraphManager","deleteNode",i);ScriptManager::relay("HigraphManager","deleteNode", num);/*#/TS*/
+	for(int div=2; div<num; div++){ /*#TS*/setupval(div,"div",200,80,div); remainder=num%div;setupval(remainder,"num%div",320,80,remainder); /*#/TS*/
+		isPrime = isPrime && num%div; /*#TS*/if (div==6) {ScriptManager::relay("HigraphManager","deleteNode", div);}/*#/TS*/
+	} /*#TS*/ScriptManager::relay("HigraphManager","deleteNode", remainder);/*#/TS*/
+	/*#TS*/ removeString(id1);ScriptManager::relay("HigraphManager","deleteNode", temp);ScriptManager::relay("HigraphManager","deleteNode",i);/*#/TS*/
 	return isPrime ; 
 }
 
