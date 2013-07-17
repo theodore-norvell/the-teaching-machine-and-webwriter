@@ -1,0 +1,82 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>For-loop</title>
+<body bgcolor="LightCyan ">
+<link href="tutorials.css" rel="stylesheet" type="text/css">	
+</head>
+
+<body>
+<h1>For-loop</h1>
+<p>This tutorial explains the for-loop control structure and explains its usage with help of examples.</b> </p>
+<div>
+	A for loop is a repetition control structure that allows you to efficiently write a loop that needs to execute a specific number of times.
+	The general syntax for a for loop is as follows:
+	<pre>
+		for ( init; condition; increment )
+		{
+			statement(s);
+		}
+	</pre>
+</div>
+
+<ul>
+<li>The init step is executed first, and only once. This step allows you to declare and initialize any loop control variables. You are not required to put a statement here, as long as a semicolon appears.</li>
+
+<li>Next, the condition is evaluated. If it is true, the body of the loop is executed. If it is false, the body of the loop does not execute and flow of control jumps to the next statement just after the for loop.</li>
+
+<li>After the body of the for loop executes, the flow of control jumps back up to the increment statement. This statement allows you to update any loop control variables. This statement can be left blank, as long as a semicolon appears after the condition.It is possible to do things like x++, x = x + 10, or even x = random ( 5 ), and if you really wanted to, you could call other functions that do nothing to the variable but still have a useful effect on the code. </li>
+
+<li>The condition is now evaluated again. If it is true, the loop executes and the process repeats itself (body of loop, then increment step, and then again condition). After the condition becomes false, the for loop terminates.</li>
+</ul>
+
+<p>A diagram for flow control in a for loop is shown below:<div align="center"><img src="for-loop.jpg" alt="for-loop flow control" width="600" height="550" align="left"></div> </p>
+
+<p>Let us see the usage of a for-loop with the help of two examples:</p>
+
+<div>
+	<p><b>Example 1:</b> To determine if a given number(assumed to be greater than 1) is prime or not. We look at a method called isPrime() which returns a boolean true or false depending upon the number passed to it as argument is prime or not.</p>
+</div>
+<pre>
+	/** Precondition: num > 1 */
+	bool isPrime(int num){
+	
+	bool isPrime = true ;
+	for(int div=2; div < num; div++){
+		isPrime = isPrime && num%div;
+	}
+	return isPrime ;
+}
+</pre>
+
+<div>
+	<p><em>
+		<b>Pre-Notes:</b> 
+		<ol><li><b>bool:</b>bool is a variable type in C++ which can hold two values <b>true</b> or <b>false</b>. For more information on bools please see: <a href ="http://www.learncpp.com/cpp-tutorial/26-boolean-values/"> bool information</a></li>
+		    <li><b>% operator:</b> a%b gives the remainder when a is divided by b. For detailed information please refer:<a href="http://www.cplusplus.com/doc/tutorial/operators/">Operators doc</a></li>
+		</ol>
+				   </em></p>
+	
+</div>
+
+<p><b>Explanation:</b>The number passed as argument to isPrime() function is copied into the local variable num. A bool isPrime is declared and intialised to true. Now let us closely look at the for loop. A variable called div is initialised with 2. The scope of the div variable is only within the body of the for loop. Then the condition is checked whether div is less than the number num or not. The body of the for loop is executed next. Then the increment/decrement portion of the loop is executed. Here div is incremented by 1(div++).Then again the condiiton is checked. After that code in the body is repeted and then again increment. This process continues until the condition fails i.e. when div becomes greater than or equal to num. The code inside the body may affect any variables local to the for loop as well i.e. div,num etc. Although such is not the case here.</p>
+
+<p>A number is prime if it has no divisors other than 1 and the number itself. So from 2 upto num-1, num is divided by all integers. And if with any of then the remainder is zero(i.e. num is completely divisble by div for even a single div) isPrime becomes false. <b>isPrime=isPrime && num%div</b>: isPrime is the logical AND of its previous value and the value 'num%div', which is nothing but the remainder when num is divided by div. So from 2 to num-1 if any one of the divisions num%div gives a remained of 0 isPrime becomes false and after exiting the loop returns false.  </p>
+
+ <p><b>Example 2:</b>To calculate the sum of first n natural numbers where n is passed as an argument.We could do this simply by the mathematical formula sum=n*(n+1)/2. But here we take a different approach to illustrate the usage of for loop.A function called <b>calcSum</b> calculates the sum of first n natural numbers and returns the sum to the calling function. Have a look at the source code.</p>
+ <pre>
+	 int calcSum(int n){	
+		int sum=0;
+		for(int i=1;i<=n;i++)
+		{
+			sum=sum+i;
+		}
+		return sum;
+	}
+</pre>
+<p>A variable sum is initialised to 0. Then there's a for loop that runs from natural number 1 to natura number n. In each iteration of the for loop we keep on incrementing i which starts from 1 and add it to the sum. So at the end of n iterations we have added to sum numbers 1 to n. So now sum contains the sum for n natural numbers. We return the variable sum to the calling function.</p>
+<p><b>Great! You have completed the tutorial.</b></p>
+<b><a href="TutorialsFeedback.html">Click here to take survey.</a></b>
+</body>
+</html>

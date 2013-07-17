@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8"/>
-	<title>Pass-by-reference Tutorials</title>
+	<title>For-loop</title>
 	<meta name="description" content="" />
 	
 	<script src="../Tutorials.js"></script>
@@ -12,7 +12,7 @@
 <link href="../tutorials.css" rel="stylesheet" type="text/css">
 </head>
 <body onload="Main.onLoad()">
-<h1>Pass-by-reference Tutorial</h1>
+<h1>For-loop tutorial</h1>
 <table width="90%" border="0">
     <tr>
       <td valign="top" >
@@ -50,58 +50,59 @@
 		<script>//<![CDATA[
 			EdgeFunctions.initialize = function(tm) {
 				Main.trace("in initialize") ;
-				tm.loadRemoteFile( ".", "intSwap.cpp" ) ;
+				tm.loadRemoteFile( ".", "for.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;
 			}
 		 //]]></script>
 		<div class = "vertex" id="v0">
-			<p>This tutorial explains the concept of Pass-by-reference by comparing it with Pass-by-value.</p> </div>
+			<p>This tutorial explains the working of a for-loop with examples.</p> </div>
 		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					tm.go("10 * s ") ;
+					tm.go("1 * s ") ;
 				}
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v1" >
-		 <p>First we declare and initialize two variables a and b whose values we wish to swap. a and b are initialised with 5 and 3 respectively.</p>
+			<p>Example 1: Checking if a number is prime or not.It is assumed that the number is greater than 1.The function is called <b>isPrime()</b> which returns boolean variables <b>true</b> or <b>false</b>.</p>
+		
 		</div>
 		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					tm.go("12 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
-			<p>Now lets get into the Pass-by-value version of the intSwap() function. Two variables arg1 and arg2 called the formal parameters are created and the values of a and b are copied into them.</p>
+			 <p>First we declare a <b>bool</b> variable b and assign it to the return value of the isPrime() function. isPrime() returns <b>true</b> if the number passed to it is prime and returns <b>false</b> otherwise. We pass number 7 to the isPrime() function to verify that it is prime . </p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
-					tm.go("5 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>Memory is allocated for the temporary variable <b>temp</b>. Note that it initially contains garbage value.</p>
+			<p>In the isPrime() definition: The number is copied into a local variable called <b>num</b>.</p>
 	  </div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("3 * s") ;
+					tm.go("4 * s") ;
 				}
 			//]]></script>
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>Value of arg1 is copied into temp.</p>
+			<p>A bool variable called isPrime is declared and initialised to <b>true</b>.</p>
 	  </div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
@@ -113,7 +114,7 @@
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>arg2 is copied into arg1.</p>
+			<p>The for loop: In the first iteration a variable <b>div</b> local to the loop is created and intialized to 2.Now we divide num by div while incrementing <b>div</b> (div++) in each iteration. The remainder of num/div (given by num%div) is logically ANDED with isPrime. So if the result of any division is 0 i.e. num is divisible by a div then <b>isPrime</b> becomes false because true&&0 is false else it remains true.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
@@ -125,7 +126,7 @@
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			 <p>temp which contains value of arg1 in copied into arg2.</p>
+			 <p>div=2::num=7::num%div=1::isPrime=true&&2=true</p>
 			
 		</div>
 	    
@@ -134,11 +135,11 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("5 * s") ;
+					tm.go("3 * s") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>The function returns and the local variables temp, arg1 and arg2 are destroyed.</p>
+			<p>div=3::num=7::num%div=1::isPrime=true&&1=true</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
@@ -214,6 +215,8 @@
 		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
 		     data-label="next" data-function="edge13to14">
         </div>
+		
+		
 			<script>//<![CDATA[
 				EdgeFunctions.edge13to14 = function(tm) {
 					tm.go("5 * s") ;
