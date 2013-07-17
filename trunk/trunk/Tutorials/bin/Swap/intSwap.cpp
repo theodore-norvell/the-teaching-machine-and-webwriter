@@ -6,8 +6,11 @@ using namespace std;
 void intSwapPassByVal(int,int);
 void intSwapPassByRef(int&,int&);
 
-/*#TS*/int a=5;  /*#/TS*/
+/*#TS*/int a=5;  /*#TS*/
 /*#TS*/int b=3;  /*#/TS*/
+
+/*#TS*/char* id="str1";/*#TS*/
+/*#TS*/ char* message="Formal parameters";/*#/TS*/ 
 int main() {/*#TS*/makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode");
      setTitle("mainView", "intSwap PDV");
      setDefaultNodeValueShow(true, CENTER);
@@ -17,7 +20,7 @@ int main() {/*#TS*/makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode"
      ScriptManager::relay("HigraphManager", "setDefaultNodeNameShow", true, WEST);
      ScriptManager::relay("HigraphManager", "setDefaultNodeNameColor", MAGENTA);
 	 ScriptManager::relay("HigraphManager","setDefaultNodeSize", 40, 40); /*#/TS*/
-	int a = 5 ;/*#TS*/ setupval(a,"a",102,20,a); /*#/TS*/ 
+	int a = 5 ;/*#TS*/ setupval(a,"a",102,20,a);/*#/TS*/  
 	int b = 3 ; /*#TS*/ setupval(b,"b",102,85,b); /*#/TS*/
 	
 	intSwapPassByVal(a,b);
@@ -25,8 +28,8 @@ int main() {/*#TS*/makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode"
 	return 0 ;
 }
 
-void intSwapPassByVal(int arg1, int arg2){ /*#TS*/ setupval(arg1,"arg1",202,20,arg1); setupval(arg2,"arg2",202,85,arg2); /*#/TS*/
-	int temp;  /*#TS*/ setupval(temp,"temp",302,20,temp); /*#/TS*/
+void intSwapPassByVal(int arg1, int arg2){ /*#TS*/ setupval(arg1,"arg1",202,20,arg1); setupval(arg2,"arg2",202,85,arg2); drawLine(270,40,332,55);drawLine(270,105,332,75); displayString(id,message,300,55,BLACK);/*#/TS*/
+	int temp;  /*#TS*/ removeString(id); setupval(temp,"temp",302,20,temp); /*#/TS*/
 	temp=arg1; /*#TS*/ setupval(temp,"temp",302,20,arg1); /*#/TS*/
 	arg1=arg2; /*#TS*/ setupval(arg1,"arg1",202,20,arg2); /*#/TS*/
 	arg2=temp; /*#TS*/ setupval(arg2,"arg2",202,85,temp); /*#/TS*/

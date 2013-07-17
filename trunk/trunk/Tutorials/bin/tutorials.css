@@ -8,19 +8,19 @@ of individual vertices.
 .vertex { z-index: 999 ;
         background-color:rgba(222,184,135,0.5) ;
 		visibility: visible;
-		display: block ;
+		display: inline-block ;
 		width: 800px ;
-		height: 80px ;
 		overflow: auto ;
 		border:thick ;
 		border-color:black;
+		
 }
 
 
 .applet {
 	display: block ;
-	left: 0px ;
-	top: 0px ;
+	left: 100px ;
+	top: 100px ;
 }
 
 /* The instructions div is a container for the vertices. It sits in front of the applet and should be the same size.*/

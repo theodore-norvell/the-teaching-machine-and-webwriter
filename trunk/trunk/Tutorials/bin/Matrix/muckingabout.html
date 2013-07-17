@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+<style type="text/css">
+#bob {
+	display: block;
+	border-top-style: dotted;
+	border-right-style: dotted;
+	border-bottom-style: dotted;
+	border-left-style: dotted;
+	border-top-color: #00C;
+	border-right-color: #00C;
+	border-bottom-color: #00C;
+	border-left-color: #00C;
+	height: 600px;
+	width:500px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1;
+	visibility: hidden;
+}
+#alice {
+	display: block;
+	position: absolute;
+	height: 200px;
+	width: 300px;
+	background-color: rgba(255,255,255,0.5);
+	visibility: visible;
+	z-index: 2;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #000;
+	border-right-color: #000;
+	border-bottom-color: #000;
+	border-left-color: #000;
+	overflow: auto;
+	right: 10px;
+	bottom: 5px;
+}
+#chuck {
+	background-color: #939;
+	display: block;
+	height: 600px;
+	width: 500px;
+	position:absolute;
+	left:0px ;
+	top:0px ;
+	z-index: 0 ;
+}
+#dave {
+	position: relative;
+	height: 600px;
+	width: 500px;
+	border: thick ;
+	background-color: #3CF
+	
+}
+</style></head>
+
+<body>
+<h1>A heading</h1>
+<table width="100%" border="5">
+  <tr >
+    <td>Abcdefghjk</td>
+    <td>
+      <div id="dave">
+        <div id="bob" >
+          <div id="alice"><p>Some text</p></div>
+        </div>
+        <!-- Chuck is like the applet - purple -->
+        <div id="chuck"></div>
+      </div>
+    </td>
+  </tr>
+</table>
+<h2>Another go</h2>
+<table border="1">
+    <tr >
+        <td>some text</td>
+        <td>
+            <div style="position: relative; height: 100px; width: 100px; background-color: #0CF">
+                <div style="border: 1px solid red; position: absolute; bottom: 10px; left: 10px;">Position me</div>
+            </div>
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>

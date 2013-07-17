@@ -2,7 +2,6 @@
 
 #include<stdlib.h>
 
-
 int temp;
 const int WHITE = 0xffffff;
 const int BLACK = 0x000000;
@@ -203,8 +202,8 @@ void makeString(char* id, char* s, int x, int y, int c){
 	setStringBaseColor(id, c);
 }
 
-void setCountLabels(bool a){
-    ScriptManager::relay("HigraphManager", "setCountLabels", a);
+void setCountLabels(bool val){
+    ScriptManager::relay("HigraphManager", "setCountLabels", val);
 }
 
 void setCountZones(bool val){
@@ -239,7 +238,7 @@ void makeArray(int array[], int length, char* name){
     makeArray(array, length, true, name);
 }
 */	
-void makeArray(int array[], int rows, int cols, bool showCells, char* name){
+/*void makeArray(int array[], int rows, int cols, bool showCells, char* name){
 	int length = rows*cols;
     ScriptManager::relay("HigraphManager","makeNode", array);
     ScriptManager::relay("HigraphManager", "placeNode", array, 350, 0);
@@ -283,22 +282,9 @@ void makeArray(int array[], int rows, int cols, bool showCells, char* name){
             ScriptManager::relay("HigraphManager","addChild", array, array[i]);
 			array[i]=(rand()%1479)+1;
      	}
-   }
-   
-   void makeBox(int &a,int &x,int &y,char* name)
-   {
-	   
-	    ScriptManager::relay("HigraphManager","makeNode", a);
-		ScriptManager::relay("HigraphManager", "placeNode", a, x, y);
-		 ScriptManager::relay("HigraphManager","setNodeNamePosition", a, SOUTH);
-		  if (strcmp(name,"")!=0)
-      	ScriptManager::relay("HigraphManager","setNodeNameLabel", a, name);
-		 ScriptManager::relay("HigraphManager","setNodeValueShow", a, false);
-    ScriptManager::relay("HigraphManager","setNodeLayoutManager", a, "VertNestedTree");
-	   
-   }
+   }*/
 	
-/*void makeArray(double array[], int rows, int cols, bool showCells, char* name, int x, int y){
+void makeArray(double array[], int rows, int cols, bool showCells, char* name, int x, int y){
 	int length = rows*cols;
     ScriptManager::relay("HigraphManager","makeNode", array);
     ScriptManager::relay("HigraphManager", "placeNode", array, x, y);
@@ -343,7 +329,7 @@ void makeArray(int array[], int rows, int cols, bool showCells, char* name){
 			array[i]=((rand()%9999));
      	}
    }
-	*/
+	
 /*void makeMatrix(int* matrix[], int length, int width){
     makeMatrix(matrix, length, width, true, "");
 }
@@ -520,38 +506,46 @@ void drawLine(double x1, double y1, double x2, double y2){
     ScriptManager::relay("HigraphManager", "drawLine", x1, y1, x2, y2);
 }
     
-void setupval(int& a,char *name,int pos_x,int pos_y,int &node_value){
-	 ScriptManager::relay("HigraphManager","makeNode", a);
-	 ScriptManager::relay("HigraphManager","placeNode", a, pos_x, pos_y);
+void setupval(double& val){
+	 ScriptManager::relay("HigraphManager","makeNode", val);
+	 ScriptManager::relay("HigraphManager","placeNode", val, 5, 0);
 	 //ScriptManager::relay("HigraphManager","setNodeSize", 40, 40);
-     ScriptManager::relay("HigraphManager","setNodeValueShow", node_value, true);
-	 ScriptManager::relay("HigraphManager","setNodeNameLabel", a, name);
-	 //ScriptManager::relay("HigraphManager","setNodeNameNudge",a,-10,0);
-	 //ScriptManager::relay("HigraphManager","setNodeColor", a, BLACK);
-     //ScriptManager::relay("HigraphManager","setNodeFillColor", a, YELLOW);
-     //ScriptManager::relay("HigraphManager", "setNodeShape", a, ELLIPSE);
-     //ScriptManager::relay("HigraphManager","setNodeNamePosition", a, WEST);
+     ScriptManager::relay("HigraphManager","setNodeValueShow", val, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", val, "val");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",val,-10,0);
+	 //ScriptManager::relay("HigraphManager","setNodeColor", val, BLACK);
+     //ScriptManager::relay("HigraphManager","setNodeFillColor", val, YELLOW);
+     //ScriptManager::relay("HigraphManager", "setNodeShape", val, ELLIPSE);
+     //ScriptManager::relay("HigraphManager","setNodeNamePosition", val, WEST);
 }	 
-void displayString(char* id,char* message,int posx,int posy,int c){
-	ScriptManager::relay("HigraphManager","createString", id);
-	ScriptManager::relay("HigraphManager","addToString", id, message);
-	ScriptManager::relay("HigraphManager","placeString", id, posx, posy);
-	ScriptManager::relay("HigraphManager","setStringBaseColor", id, c);
-	}
 
+void setup_i_j(int& i,int& j)
+{
 
-void setupRef(int& a,char *name,int pos_x,int pos_y,int& node_value){
-	 ScriptManager::relay("HigraphManager","makeNode", a);
-	 ScriptManager::relay("HigraphManager","placeNode", a, pos_x, pos_y);
+	 ScriptManager::relay("HigraphManager","makeNode", i);
+	 ScriptManager::relay("HigraphManager","placeNode", i, 105,0);
 	 //ScriptManager::relay("HigraphManager","setNodeSize", 40, 40);
-     ScriptManager::relay("HigraphManager","setNodeValueShow", node_value, false);
-	 ScriptManager::relay("HigraphManager","setNodeNameLabel", a, name);
-	 //ScriptManager::relay("HigraphManager","setNodeNameNudge",a,-10,0);
-	 //ScriptManager::relay("HigraphManager","setNodeColor", a, BLACK);
-     //ScriptManager::relay("HigraphManager","setNodeFillColor", a, YELLOW);
-    ScriptManager::relay("HigraphManager", "setNodeShape", a, ELLIPSE);
-     ScriptManager::relay("HigraphManager","setNodeNamePosition", a, NORTH);
-}
+     ScriptManager::relay("HigraphManager","setNodeValueShow", i, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", i, "i");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",i,-10,0);
+	 i=rand()%1249;
+     //ScriptManager::relay("HigraphManager","setNodeShape", i, ELLIPSE);
+	 //ScriptManager::relay("HigraphManager","setNodeColor", i, BLACK);
+     //ScriptManager::relay("HigraphManager","setNodeFillColor", i, YELLOW);
+     //ScriptManager::relay("HigraphManager","setNodeNamePosition", i, WEST);
 	 
-
+	 
+	 ScriptManager::relay("HigraphManager","makeNode", j);
+	 ScriptManager::relay("HigraphManager","placeNode", j, 205, 0);
+	 //ScriptManager::relay("HigraphManager","setNodeSize", 40, 40);
+     ScriptManager::relay("HigraphManager","setNodeValueShow", j, true);
+	 ScriptManager::relay("HigraphManager","setNodeNameLabel", j, "j");
+	 ScriptManager::relay("HigraphManager","setNodeNameNudge",j,-10,0);
+	 //ScriptManager::relay("HigraphManager","setNodeColor", j, BLACK);
+     //ScriptManager::relay("HigraphManager","setNodeFillColor", j, YELLOW);
+     //ScriptManager::relay("HigraphManager", "setNodeShape", j, ELLIPSE);
+	 //ScriptManager::relay("HigraphManager","setNodeNamePosition", j, WEST);
+	 j=rand()%3230;
+	 
+}
 /*#/TS*/
