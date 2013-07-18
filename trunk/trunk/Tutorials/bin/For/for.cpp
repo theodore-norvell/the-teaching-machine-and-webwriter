@@ -33,13 +33,13 @@ int main() {/*#TS*/makeView("mainView", "wholeGraph","Higraph.PDV", "PlacedNode"
 }
 
 
-int calcSum(int n)
-{
-	int sum=0;
+int calcSum(int n){/*#TS*/ int i=10; setupval(i,"n",200,80,i); /*#/TS*/
+
+	int sum=0;/*#TS*/setupval(sum,"sum",320,80,sum); /*#/TS*/
 	
 	for(int i=1;i<=n;i++)
 	{
-		sum=sum+i;
+		sum=sum+i; /*#TS*/setupval(sum,"sum",320,80,sum); /*#/TS*/
 	}
 	
 	return sum;
