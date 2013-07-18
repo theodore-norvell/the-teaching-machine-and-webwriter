@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+		<body bgcolor="#E6E6FA">
+	<title>Welcome</title>
+	<link href="website.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div align="right"><script>
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+var yyyy = today.getFullYear();
+if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
+document.write(today);</script></div>
+<h1>Programming Tutorials </h1>
+
+<div id="welcome">Welcome to the Programming tutorials!
+<br/>For each topic there are two tutorials provided .Study both and fill a small survey at the end.
+<br/>Happy learning!
+<p>
+	<br/>Click <a href="Contents.html"><font size="4">here</font></a> to go to the contents page.
+</p>
+</div>
+
+
+
+<div style="
+height:100%; 
+width:100%;">
+
+<img src="index_mun_logo.jpg" 
+style="position:absolute; 
+float:right; 
+right:30px; 
+bottom:30px; 
+z-index:2;">
+
+</div>
+</body>
+</html>
