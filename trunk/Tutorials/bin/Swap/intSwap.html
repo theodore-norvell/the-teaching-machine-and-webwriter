@@ -233,8 +233,21 @@
 			//]]></script>
 		 
 		<div class = "vertex" id="v15" >
-			<p>Excellent! You have completed the tutorial!</p>
+			<p>Excellent! You have completed the tutorial! Click 'Survey' to take a short survey. </p>
 		</div>
+		<div class="edge" id="edge15to16" data-source="v15" data-target="v16"
+		     data-label="Survey" data-function="edge15to16">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge15to16 = function(tm) {
+				window.open("TutorialsFeedback.html");
+				tm.go("4 * s");
+				}
+			//]]></script>
+		<div class = "vertex" id="v16" >
+			<p>Thank you!</p>
+		</div>	
+		
 </div>
 	<div id="haxe:trace"></div>
 </body>
