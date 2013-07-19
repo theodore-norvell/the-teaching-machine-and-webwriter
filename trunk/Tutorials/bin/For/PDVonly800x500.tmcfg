@@ -199,7 +199,7 @@
 <param name="Position.x">256</param>
 <param name="Position.y">79</param>
 <param name="Width">544</param>
-<param name="Height">350</param>
+<param name="Height">410</param>
 <param name="WindowTitle">For-loop PDV</param>
 <param name="Visible">true</param>
 </config>
