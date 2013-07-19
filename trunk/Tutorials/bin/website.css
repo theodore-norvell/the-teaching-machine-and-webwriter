@@ -4,6 +4,7 @@
 	display: inline ;
 	visibility: visible ;
 	font-family:"Arial";
+	font-weight:normal;
 	top: 0 ;
 	left: 0 ;
 }
@@ -18,4 +19,11 @@ font-family:"Times New Roman";
 body
 {
 background-color: Khaki;
+}
+
+#para{
+	
+font-size:7;
+color:DarkRed;
+	
 }

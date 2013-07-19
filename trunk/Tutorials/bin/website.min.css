@@ -1,3 +1,4 @@
-#welcome{display:inline;visibility:visible;font-family:"Arial";top:0;left:0;}
+#welcome{display:inline;visibility:visible;font-family:"Arial";font-weight:normal;top:0;left:0;}
 h1{color:green;text-align:center;font-family:"Times New Roman";}
 body{background-color:Khaki;}
+#para{font-size:7;color:DarkRed;}
