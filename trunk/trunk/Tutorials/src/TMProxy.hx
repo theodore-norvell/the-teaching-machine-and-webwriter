@@ -41,11 +41,11 @@ class TMProxy implements TMExternalCommandInterface {
      * @param fileName The file name relative to the root directory.
      */
     public function loadRemoteFile( root : String, fileName : String ) : Void {
-		trace( "proxied call to loadRemoteFile" );
+		Main.print( "proxied call to loadRemoteFile" );
 		theTM.loadRemoteFile( root, fileName ) ;
 		if (!replaying && count>=0)
 			count = -2000;
-		trace("back from loadRemoteFile");
+		Main.print("back from loadRemoteFile");
 	}
 
     /** Uses the Applet method documentBase() and the file name to construct a URL for

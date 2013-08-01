@@ -1,4 +1,4 @@
-@charset "UTF-8";.vertex{z-index:999;background-color:rgba(222,184,135,0.5);visibility:visible;display:inline-block;width:800px;overflow:auto;border:thick;border-color:black;}
+@charset "UTF-8";.vertex{z-index:999;background-color:#FFFFCC;visibility:visible;display:inline-block;width:800px;min-height:100px;overflow:auto;border:thick;border-color:black;}
 .applet{display:block;left:100px;top:100px;}
 #instructions{z-index:99;display:block;visibility:hidden;top:0;left:0;}
 

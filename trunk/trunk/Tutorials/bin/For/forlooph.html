@@ -49,7 +49,7 @@
 	<div id="graph" data-function="initialize">
 		<script>//<![CDATA[
 			EdgeFunctions.initialize = function(tm) {
-				Main.trace("in initialize") ;
+				Main.print("in initialize") ;
 				tm.loadRemoteFile( ".", "for.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;

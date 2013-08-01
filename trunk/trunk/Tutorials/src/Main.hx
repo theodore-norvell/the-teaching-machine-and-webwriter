@@ -37,8 +37,14 @@ import haxe.Log ;
 	// is linked in.
 	static var neverUsed : EdgeFunctions ;
 	
-	public static function trace( mess : String ) {
-		 Log.trace( mess ) ;
+	static var tracingEnabled : Bool = false ;
+	
+	public static function enableTracing() { tracingEnabled = true ; }
+	
+	public static function disableTracing() { tracingEnabled = false ; }
+	
+	public static function print( mess : String ) {
+		 if( tracingEnabled ) Log.trace( mess ) ;
 	 }
 
 	static function main() {
@@ -51,35 +57,35 @@ import haxe.Log ;
 		var graphDomNode : Element ;
 		graphDomNode = doc.getElementById("graph") ;
 		if (graphDomNode == null ) {
-			//trace("No element in the html file has id 'graph'") ;
+			//print("No element in the html file has id 'graph'") ;
 			return null ; }
 		var startFunctionName = graphDomNode.getAttribute("data-function") ;
 		if ( startFunctionName != null ) graph.setStartFunctionName( startFunctionName ) ;
-		else { //trace("Graph node has no 'data-function' attribute") ;
+		else { //print("Graph node has no 'data-function' attribute") ;
 			return null ; }
 		var child = graphDomNode.firstChild ;
 		while ( child != null ) {
-			//trace( "Current child is  " + child ) ;
-			//trace( "Node name is " + child.nodeName ) ;
+			//print( "Current child is  " + child ) ;
+			//print( "Node name is " + child.nodeName ) ;
 			if ( child.nodeType == NodeTypes.ELEMENT_NODE && child.nodeName == "DIV" ) {
 				var childAsElement : Element = cast(child, Element) ;
 				var klass = childAsElement.getAttribute("class")  ;
 				// Collect all vertices
 				if ( klass == null ) {
-					//trace("A child of the 'graph' element has no class" ) ;
+					//print("A child of the 'graph' element has no class" ) ;
 					graphBuilt = false ;  }
 				else if ( klass == "vertex" ) {
 					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
-						//trace("There is a vertex with no id" ) ;
+						//print("There is a vertex with no id" ) ;
 						graphBuilt = false ;}
 					else if ( graph.vertices.exists( id ) ) {
-						//trace( "Duplicate vertex with id '" +id + "'" ) ;
+						//print( "Duplicate vertex with id '" +id + "'" ) ;
 						 graphBuilt = false ; }
 					else {
-						//trace( "Building vertex " + id) ;
+						//print( "Building vertex " + id) ;
 						var vertex = new TutorialVertex( id, childAsElement, pageno++ ) ;
-						//trace(vertex.pageno);
+						//print(vertex.pageno);
 						graph.vertices.set( id, vertex ) ; 
 						if ( graph.startVertex == null ) {
 							graph.setStartVertex( vertex ) ; } } }
@@ -87,34 +93,37 @@ import haxe.Log ;
 				else if ( klass == "edge" ) {
 					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
-						//trace("There is an edge with no id" ) ; 
+						//print("There is an edge with no id" ) ; 
 						graphBuilt = false ; } 
 					else if ( graph.edges.exists( id ) ) {
-						//trace( "Duplicate edge with id '" +id + "'" ) ;
+						//print( "Duplicate edge with id '" +id + "'" ) ;
 						graphBuilt = false ; }
 					else {
-						//trace( "Building edge " + id) ;
+						//print( "Building edge " + id) ;
 						var edge = new TutorialEdge( id, childAsElement ) ;
 						graph.edges.set( id, edge ) ; } }
 				else {
-					//trace("A child of the 'graph' node has a class '"
+					print("A child of the 'graph' node has a class '"
 						+ klass
-						+ "' that is neither 'vertex' nor 'edge'" ) ; } }
-			child = child.nextSibling ;  }
+						+ "' that is neither 'vertex' nor 'edge'" ) ;
+				}
+			}
+			child = child.nextSibling ;
+		}
 			
 		// Now link the vertices and edges together
 		for ( edge in graph.edges ) {
 			
 			var edgeLabel = edge.htmlNode.getAttribute("data-label") ;
 			if ( edgeLabel == null ) {
-				//trace("Edge '" + edge.id + "' is missing its 'data-label' attribute." ) ;
+				//print("Edge '" + edge.id + "' is missing its 'data-label' attribute." ) ;
 				graphBuilt = false ; }
 			else {
 				edge.label = edgeLabel ; }
 			
 			var functionName = edge.htmlNode.getAttribute("data-function") ;
 			if ( functionName == null ) {
-				//trace("Edge '" + edge.id + "' is missing its 'data-function' attribute." ) ;
+				//print("Edge '" + edge.id + "' is missing its 'data-function' attribute." ) ;
 				graphBuilt = false ; }
 			else { 
 				edge.functionName = functionName ;
@@ -122,10 +131,10 @@ import haxe.Log ;
 				
 			var sourceId = edge.htmlNode.getAttribute("data-source") ;
 			if ( sourceId == null ) {
-				//trace("Edge '" + edge.id + "' is missing its 'data-source' attribute." ) ;
+				//print("Edge '" + edge.id + "' is missing its 'data-source' attribute." ) ;
 				 graphBuilt = false ; }
 			else if( ! graph.vertices.exists( sourceId ) ) {
-				//trace("Edge '" + edge.id + "' has 'data-source' attribute of '" + sourceId + "'. But there is no such node.");
+				//print("Edge '" + edge.id + "' has 'data-source' attribute of '" + sourceId + "'. But there is no such node.");
 				graphBuilt = false ; }
 			else {
 				edge.source = graph.vertices.get( sourceId ) ;
@@ -134,10 +143,10 @@ import haxe.Log ;
 			
 			var targetId = edge.htmlNode.getAttribute("data-target") ;
 			if ( targetId == null ) {
-				trace("Edge '" + edge.id + "' is missing its 'data-target' attribute." ) ;
+				print("Edge '" + edge.id + "' is missing its 'data-target' attribute." ) ;
 				 graphBuilt = false ; }
 			else if( ! graph.vertices.exists( targetId ) ) {
-				trace("Edge '" + edge.id + "' has 'data-target' attribute of '" + targetId + "'. But there is no such node.");
+				print("Edge '" + edge.id + "' has 'data-target' attribute of '" + targetId + "'. But there is no such node.");
 				graphBuilt = false ; }
 			else {
 				edge.target = graph.vertices.get( targetId ) ; }
@@ -147,45 +156,45 @@ import haxe.Log ;
 		
 	}
 	static function onLoad() {
-		trace( "onLoad starts") ;
+		print( "onLoad starts") ;
 		var graph = buildGraph( Browser.document ) ;
-		if ( graph == null ) { trace("Failed to build graph"); return ; }
+		if ( graph == null ) { print("Failed to build graph"); return ; }
 		var applet : TMExternalCommandInterface ;
 		untyped { applet = Browser.document.applets["tm_applet"]  ;  }
 		if ( applet == null ) {
-			trace( "Applet not found" ) ;
+			print( "Applet not found" ) ;
 			return ; }
-		trace( "Applet is " + applet ) ;
+		print( "Applet is " + applet ) ;
 		tmProxy = new TMProxy( applet ) ;
 		var temp : EdgeFunc = new EdgeFunc();
 		temp.edgeId = graph.startFunctionName;
 		edgeFunctionStack.push(temp);
-		trace("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
+		print("At the beginning of executeFunction, startFunctionName: " + graph.startFunctionName);
 		executeFunction( graph.startFunctionName ) ;
-		trace( "Back from execute function" );
+		print( "Back from execute function" );
 		edgeFunctionStack.first().type = tmProxy.count;
 		tmProxy.count = 0;
 		switchToVertex( graph.startVertex ) ;
-		trace( "onLoad ends" ) ;
+		print( "onLoad ends" ) ;
 	}
 	
 	static function executeFunction( name : String ) {
-		trace("At the beginning of executeFunction");
+		print("At the beginning of executeFunction");
 		var klass = Type.resolveClass("EdgeFunctions") ;
 		if ( klass == null ) {
-			trace("No class 'EdgeFunctions' found.") ; }
+			print("No class 'EdgeFunctions' found.") ; }
 		else {
 			var fun = Reflect.field( klass, name ) ;
 			if ( fun == null ) {
-				trace( "Function named '" +name + "' not found." ) ; 
+				print( "Function named '" +name + "' not found." ) ; 
 				}
 			else {
 				Reflect.callMethod( klass, fun, [tmProxy] ) ; } }
-		trace("At the end of executeFunction");
+		print("At the end of executeFunction");
 	}
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
-		trace("Switching to vertex " + vertex.id);
+		print("Switching to vertex " + vertex.id);
 		var instructionNode = Browser.document.getElementById("instructions") ;
 		while ( instructionNode.firstChild != null )
 			instructionNode.removeChild( instructionNode.firstChild ) ;
@@ -198,7 +207,7 @@ import haxe.Log ;
 		var pageNumberNode = Browser.document.getElementById("pageno") ;
 		pageNumberNode.removeChild( pageNumberNode.firstChild ) ;
 		var label = Browser.document.createTextNode("Page: " + vertex.pageno);
-		//trace("Page: " + vertex.pageno);
+		//print("Page: " + vertex.pageno);
 		pageNumberNode.insertBefore(label, null);
 		
 		if (!vertexStack.isEmpty())
@@ -217,7 +226,7 @@ import haxe.Log ;
 					temp = vertexStack.pop();
 					edgeFunctionStack.pop();
 				}
-				trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
+				print(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
 				tmProxy.replaying = true;
 				executeFunction(edgeFunctionStack.first().edgeId);
 				edgeFunctionStack.first().type = tmProxy.count;
@@ -235,8 +244,8 @@ import haxe.Log ;
 			button.onclick = function(event : Event ) {
 				if (undoList.type < 0)
 				{
-					//trace("Count: " + undoList.type);
-					trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
+					//print("Count: " + undoList.type);
+					print(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
 					var temp = vertexStack.pop(); 
 					edgeFunctionStack.pop();
 					var forward_stack: List<String> = new List<String>();
@@ -247,7 +256,7 @@ import haxe.Log ;
 					tmProxy.replaying = true;
 					for (id in forward_stack)
 					{
-						//trace("Executing: " + id);
+						//print("Executing: " + id);
 						executeFunction(id);
 					}
 					tmProxy.replaying = false;
@@ -256,14 +265,14 @@ import haxe.Log ;
 				else
 				{
 					var count = undoList.type;
-					//trace("Count: " + count);
+					//print("Count: " + count);
 					tmProxy.replaying = true;
 					while(count--!=0)
 					{
 						tmProxy.goBack();
 					}
 					tmProxy.replaying = false;
-					//trace(vertexStack.first().id + " popped from stack \n" +  edgeFunctionStack.first().edgeId + " popped from stack\n" +  " Going to switch to : " + vertexStack.first().id);
+					//print(vertexStack.first().id + " popped from stack \n" +  edgeFunctionStack.first().edgeId + " popped from stack\n" +  " Going to switch to : " + vertexStack.first().id);
 					edgeFunctionStack.pop();
 					var temp = vertexStack.pop();
 					switchToVertex(temp);
@@ -298,14 +307,14 @@ import haxe.Log ;
 			var button = Browser.document.createElement("button") ;
 			button.insertBefore( labelNode, null ) ;
 			button.onclick = function(event : Event ) {
-				//trace("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);
+				//print("Pushing edge:  " + temp.edgeId + ", executing: " + functionName + ", pushing vertex: " + vertex.id);
 				edgeFunctionStack.push(temp);
 				executeFunction( functionName ) ;
-				//trace("tmProxy.count" + tmProxy.count);
+				//print("tmProxy.count" + tmProxy.count);
 				edgeFunctionStack.first().type = tmProxy.count;
 				tmProxy.count = 0;
 				vertexStack.push(vertex); 
-				//trace(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
+				//print(vertex.id + "pushed  on stack\nAbout to switch to target: "+ target.id);
 				switchToVertex( target ) ; }
 			buttonsNode.insertBefore( button, null ) ; 
 		}
