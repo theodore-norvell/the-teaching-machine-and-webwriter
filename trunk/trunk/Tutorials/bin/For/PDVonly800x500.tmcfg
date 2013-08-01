@@ -89,7 +89,7 @@
 <config id="Code">
 <param name="Position.x">-1</param>
 <param name="Position.y">-1</param>
-<param name="Width">259</param>
+<param name="Width">329</param>
 <param name="Height">481</param>
 <param name="fontMapper[NORMAL]">0</param>
 <param name="fontMapper[KEYWORD]">0</param>
@@ -120,10 +120,10 @@
 </config>
 
 <config id="Expression">
-<param name="Position.x">260</param>
+<param name="Position.x">326</param>
 <param name="Position.y">0</param>
-<param name="Width">541</param>
-<param name="Height">79</param>
+<param name="Width">470</param>
+<param name="Height">70</param>
 <param name="WindowTitle">Expression Engine</param>
 <param name="Visible">true</param>
 </config>
@@ -176,13 +176,13 @@
 </config>
 
 <config id="Stack">
-<param name="Position.x">657</param>
-<param name="Position.y">86</param>
-<param name="Width">425</param>
-<param name="Height">269</param>
-<param name="WindowTitle">Stack</param>
+<param name="Position.x">329</param>
+<param name="Position.y">73</param>
+<param name="Width">470</param>
+<param name="Height">410</param>
+<param name="WindowTitle">Memory</param>
 <param name="View">0</param>
-<param name="Visible">false</param>
+<param name="Visible">true</param>
 </config>
 
 <config id="Static">
@@ -196,12 +196,12 @@
 </config>
 
 <config id="Higraph.PDV">
-<param name="Position.x">256</param>
-<param name="Position.y">79</param>
-<param name="Width">544</param>
+<param name="Position.x">329</param>
+<param name="Position.y">73</param>
+<param name="Width">470</param>
 <param name="Height">410</param>
 <param name="WindowTitle">For-loop PDV</param>
-<param name="Visible">true</param>
+<param name="Visible">false</param>
 </config>
 
 </configFile>
