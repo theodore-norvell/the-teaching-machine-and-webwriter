@@ -61,77 +61,82 @@
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
 				EdgeFunctions.edge0to1 = function(tm) {
-					tm.go("1 * s ") ;
-					tm.intoExp();
+					//tm.go("5 * s ") ;
+					//tm.go("1 * f");
+					
 				}
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v1" >
-			<p>Example 1: Checking if a number is prime or not.It is assumed that the number is greater than 1.The function is called <b>isPrime()</b> which returns boolean variables <b>true</b> or <b>false</b>.</p>
+			<p>Example 1: Checking if a number is prime or not.<br/>It is assumed that the number is greater than 1.The function is called <b>isPrime()</b> which returns boolean variables <b>true</b> or <b>false</b>.</p>
 		
 		</div>
 		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
 		     data-label="next" data-function="edge1to2">
 			<script>//<![CDATA[
 				EdgeFunctions.edge1to2 = function(tm) {
-					tm.go("6 * s") ;
-					tm.intoExp();
-					tm.intoExp();
+					//tm.go("6 * s") ;
+					tm.go("1 * f") ;
+					
 				}
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
-			 <p>First we declare a <b>bool</b> variable b and assign it to the return value of the isPrime() function. isPrime() returns <b>true</b> if the number passed to it is prime and returns <b>false</b> otherwise. We pass number 7 to the isPrime() function to verify that it is prime . </p>
+			 <p>First we declare a <b>bool</b> variable <b>b</b> and assign it to the return value of the isPrime() function. isPrime() returns <b>true</b> if the number passed to it is prime and returns <b>false</b> otherwise. We pass number 7 to the isPrime() function to verify that it is prime .Notice that b is intially false. </p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
 			<script>//<![CDATA[
 				EdgeFunctions.edge2to3 = function(tm) {
-					tm.go("4 * s") ;
+					//tm.go("2 * s") ;
+					tm.go("1 * f") ;
 					
 				}
 			//]]></script>
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>In the isPrime() definition: The number is copied into a local variable called <b>num</b>.</p>
+			<p>Notice that in the expression engine isPrime(7) is evaluated next.</p> 
 	  </div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("8 * s") ;
-					tm.intoExp();
+					//tm.go("1 * s") ;
+					tm.go("2 * f") ;
+					//tm.intoExp();
 				}
 			//]]></script>
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>A bool variable called isPrime is declared and initialised to <b>true</b>.</p>
+			<p>In the isPrime() definition: The number is copied into a local variable called <b>num</b>.</p>
 	  </div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
 		     data-label="next" data-function="edge4to5">
 			<script>//<![CDATA[
 				EdgeFunctions.edge4to5 = function(tm) {
-					tm.go("6 * s") ;
+					//tm.go("7 * s") ;
+					tm.go("3 * f");
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v5" >
-			<p>The for loop: In the first iteration a variable <b>div</b> local to the loop is created and intialized to 2.Now we divide num by div while incrementing <b>div</b> (div++) in each iteration. The remainder of num/div (given by num%div) is logically ANDED with isPrime. So if the result of any division is 0 i.e. num is divisible by a div then <b>isPrime</b> becomes false because true&&0 is false else it remains true.You can use the expression engine navigation keys <img src="eenavigate.PNG"/> to visualize for loop <b>OR</b> you can use the next button to see the state changes. </p>
+			<p>A bool variable called <b>result</b> is declared and initialised to <b>true</b>.</p>
 		</div>
 	    <div class="edge" id="edge5to6" data-source="v5" data-target="v6"
 		     data-label="next" data-function="edge5to6">
 			 <script>//<![CDATA[
 				EdgeFunctions.edge5to6 = function(tm) {
-					tm.go("3 * s") ;
+					//tm.go("3 * s") ;
+					tm.go("4 * f") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			 <p>div=2 ; num=7 ; num%div=1 ; isPrime=true&&2=true</p>
+			 <p>The for loop: In the first iteration a variable <b>div</b> local to the loop is created and intialized to 2.</p> 
 			
 		</div>
 	    
@@ -140,33 +145,37 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge6to7 = function(tm) {
-					tm.go("5 * s") ;
+					//tm.go("5 * s") ;
+					tm.go("1 * f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>div=3 ; num=7 ; num%div=1 ; isPrime=true&&1=true</p>
+			<p>Then the condition : div < num ? is checked. Yes, 2 is less than 7, so the body of for loop is executed next.</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("10 * s") ;
+					//tm.go("10 * s") ;
+					tm.go("7 * f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p>div=4 ; num=7 ; num%div=3 ; isPrime=true&&3=true</p>
+			<p>The for loop body: The remainder of num/div (given by num%div) is logically ANDED with <b>result</b>. Here 7%2 = 1. true && (1!=0) becomes true&&true = true So, result = true.</p>
+			<p> So, if the remainder of any division is 0 i.e. num is divisible by a div(ranging from 1 to num) then <b>result</b> becomes false because (0!=0) is false and false ANDed with any boolean is false.</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to9 = function(tm) {
-					tm.go("10 * s") ;
+					//tm.go("10 * s") ;
+					tm.go("13 * f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
-			<p>div=5 ; num=7 ; num%div=2 ; isPrime=true&&2=true</p>
+			<p>Next div is incremented. Did you notice the sequence of execution of expressions in the for loop? First initialization ,then condition, then body and after that increment!</p>
 		</div>
 		
 		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
@@ -174,11 +183,12 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge9to10 = function(tm) {
-					tm.go("10 * s") ;
+					//tm.go("10 * s") ;
+					tm.go("5 * f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p><p>div=6 ; num=7 ; num%div=1 ; isPrime=true&&1=true</p></p>
+			<p>Iteration 2: Condition div < num = 3 < 7 is true. So its the body of the for loop next.</p>
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -186,11 +196,21 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge10to11 = function(tm) {
-					tm.go("8 * s") ;
+					//tm.go("8 * s") ;
+					tm.go("3 * f") ;
 				}
 			//]]></script>
+			<div class="edge" id="edge10to14" data-source="v10" data-target="v14"
+		     data-label="skip to end of loop" data-function="edge10to14">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge10to14 = function(tm) {
+					tm.go("75 * f") ;
+				}
+			//]]></script> 
+		
 		<div class = "vertex" id="v11" >
-			<p>div=7::Condition div < num fails. Control comes out of for loop and executes the next statement.</p>
+			<p> div is 3 , num is 7 so num%div is 2 ,therefore result is true&&(1!=0) which is true&&true, which is true.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -198,11 +218,20 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to12 = function(tm) {
-					tm.go("2 * s") ;
+					tm.go("30 * f") ;
 				}
 			//]]></script>
+			<div class="edge" id="edge11to14" data-source="v11" data-target="v14"
+		     data-label="skip to end of loop" data-function="edge11to14">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge11to14 = function(tm) {
+					tm.go("72 * f") ;
+				}
+			//]]></script> 
+		
 		<div class = "vertex" id="v12" >
-			<p> That is, isPrime is returned to the main function. Note that <b>true</b> is returned as we saw in the loop evaluation. </p>
+			<p>Iteration 3: div is 4 , num is 7 so num%div is 3 ,therefore result is true&&(3!=0) which is true&&true, which is true. </p>
 		</div>
 		
 		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
@@ -210,64 +239,411 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge12to13 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("21 * f") ;
 				}
 			//]]></script>
-		<div class = "vertex" id="v13" >
-			<p>Example 2: This is a very simple example to illustrate the usage of for loop. The Calcsum function calculates the sun of first n natural numbers where n is passed as an argument and returns the sum.</p> 
-		</div>
-		
-		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
-		     data-label="next" data-function="edge13to14">
+			<div class="edge" id="edge12to14" data-source="v12" data-target="v14"
+		     data-label="skip to end of loop" data-function="edge12to14">
         </div>
-		
-		
 			<script>//<![CDATA[
-				EdgeFunctions.edge13to14 = function(tm) {
-					tm.go("8 * s") ;
+				EdgeFunctions.edge12to14 = function(tm) {
+					tm.go("42 * f") ;
+				}
+			//]]></script> 
+		
+			<div class = "vertex" id="v13" >
+			<p>Iteration 4: div is 5 , num is 7 so num%div is 2 ,therefore result is true&&(2!=0) which is true&&true, which is true.  </p>
+			</div>
+			
+			<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
+		     data-label="next" data-function="edge13to14">
+			</div>
+				<script>//<![CDATA[
+					EdgeFunctions.edge13to14 = function(tm) {
+						tm.go("21 * f") ;
 				}
 			//]]></script>
+			
 		<div class = "vertex" id="v14" >
-			<p>The number passed is copied into a local variable n and another local variable sum is initialized to 0.</p>
+			<p>Iteration 5: div is 6 , num is 7 so num%div is 1 ,therefore result is true&&(1!=0) which is true&&true, which is true. </p>
 		</div>
 		
 		<div class="edge" id="edge14to15" data-source="v14" data-target="v15"
 		     data-label="next" data-function="edge14to15">
         </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge14to15 = function(tm) {
-					tm.go("8 * s") ;
-				}
+		
+				<script>//<![CDATA[
+					EdgeFunctions.edge14to15 = function(tm) {
+						tm.go("6 * f") ;
+					}
 			//]]></script>
-		 
+			
+		
 		<div class = "vertex" id="v15" >
-			<p>A loop variable i is created and intialized to 1 the first natural number.</p>
+			<p>Now when div is incremented it becomes 6+1=7. The condition div < num becomes false. So instead of the body the control jumps out of the for loop. </p>
 		</div>
+		
 		<div class="edge" id="edge15to16" data-source="v15" data-target="v16"
 		     data-label="next" data-function="edge15to16">
         </div>
+		
 			<script>//<![CDATA[
-				EdgeFunctions.edge15to16 = function(tm) {
-					tm.go("3 * s") ;
+			EdgeFunctions.edge15to16 = function(tm) {
+					tm.go("16 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v16" >
+			<p>The statement immediately following the for loop returns the result to the main function. Notice that now b becomes true.</p> 
+			</div>
+			<div class="edge" id="edge16to17" data-source="v16" data-target="v17"
+				data-label="next" data-function="edge16to17">
+			</div>
+		     <script>//<![CDATA[
+		         EdgeFunctions.edge16to17 = function(tm) {
+					tm.go("6 * f") ;
 				}
 			//]]></script>
 			
-		<div class = "vertex" id="v16" >
-			<p>In each iteration the variable i is added to the resulting sum. This continues till i becomes greater than n.You can see the resulting states through in the Expression Engine. You can see the variable changes by pressing the <img src="eenavigate.PNG"/> buttons in the Expression Engine. </p>
+		<div class = "vertex" id="v17" >
+			<p>Example 2: This is a very simple example to illustrate the usage of for loop. The <b>Calcsum()</b> function calculates the sum of first n natural numbers where n is passed as an argument and returns the sum.</p> 
 		</div>
-		<div class="edge" id="edge16to17" data-source="v16" data-target="v17"
-		     data-label="next" data-function="edge16to17">
+		
+		<div class="edge" id="edge17to18" data-source="v17" data-target="v18"
+		     data-label="next" data-function="edge17to18">
         </div>
 			<script>//<![CDATA[
-				EdgeFunctions.edge16to17 = function(tm) {
-					tm.go("4 * s") ;
+				EdgeFunctions.edge17to18 = function(tm) {
+					tm.go("6 * f") ;
 				}
 			//]]></script>
-			<div class = "vertex" id="v17" >
-			<p>The variable sum which contains the calculated sum is returned to the main function.</p>
+		<div class = "vertex" id="v18" >
+			<p>The number passed is copied into a local variable n and another local variable result is initialized to 0. Here we pass 6 to the function and intialize the variable result to 0.</p>
 		</div>
-</div>
- 
+		
+		<div class="edge" id="edge18o19" data-source="v18" data-target="v19"
+		     data-label="next" data-function="edge18to19">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge18to19 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+		 
+		<div class = "vertex" id="v19" >
+			<p>The for loop: A loop variable i intialized to 1 the first natural number.</p>
+		</div>
+		<div class="edge" id="edge19to20" data-source="v19" data-target="v20"
+		     data-label="next" data-function="edge19to20">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge19to20 = function(tm) {
+					//tm.go("0 * s") ;
+				}
+			//]]></script>
+			
+		<div class = "vertex" id="v20" >
+			<p>In every iteration the following occurs:  <b>i</b> is added to the <b>result</b>. It is incremented by 1. If i < n is still true the new i is added to the result. This happens until i < num condition becomes false. </p>
+		</div>
+		<div class="edge" id="edge20to21" data-source="v20" data-target="v21"
+		     data-label="next" data-function="edge20to21">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge20to21 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v21" >
+			<p>1 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge21to22" data-source="v21" data-target="v22"
+		     data-label="next" data-function="edge21to22">
+        </div>
+		
+			<script>//<![CDATA[
+				EdgeFunctions.edge21to22 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+			
+			<div class="edge" id="edge21to36" data-source="v21" data-target="v36"
+		     data-label="skip to end of loop" data-function="edge21to36">
+			</div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge21to36 = function(tm) {
+					tm.go("85 * f") ;
+				}
+			//]]></script> 
+		
+			<div class = "vertex" id="v22" >
+			<p>result becomes 0+1=1 </p>
+			</div>
+			<div class="edge" id="edge22to23" data-source="v22" data-target="v23"
+		     data-label="next" data-function="edge22to23">
+			</div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge22to23 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v23" >
+			<p>i++ increments i by 1 and i becomes 1+1=2</p>
+			</div>
+			<div class="edge" id="edge23to24" data-source="v23" data-target="v24"
+		     data-label="next" data-function="edge23to24">
+			</div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge23to24 = function(tm) {
+					tm.go("13 * f");
+				}
+			//]]></script>
+			
+			<div class = "vertex" id="v24" >
+			<p>2 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge24to25" data-source="v24" data-target="v25"
+		     data-label="next" data-function="edge24to25">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge24to25 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+				<div class="edge" id="edge24to36" data-source="v24" data-target="v36"
+		     data-label="skip to end of loop" data-function="edge24to36">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge24to36 = function(tm) {
+					tm.go("68 * f") ;
+				}
+			//]]></script> 
+			<div class = "vertex" id="v25" >
+			<p>result is 1+2=3 </p>
+			</div>
+			<div class="edge" id="edge25to26" data-source="v25" data-target="v26"
+		     data-label="next" data-function="edge25to26">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge25to26 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v26" >
+			<p>i++ makes i=2+1=3</p>
+			</div>
+			<div class="edge" id="edge26to27" data-source="v26" data-target="v27"
+		     data-label="next" data-function="edge26to27">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge26to27 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			
+		<div class = "vertex" id="v27" >
+			<p>3 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge27to28" data-source="v27" data-target="v28"
+		     data-label="next" data-function="edge27to28">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge27to28 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+				<div class="edge" id="edge27to36" data-source="v27" data-target="v36"
+		     data-label="skip to end of loop" data-function="edge27to36">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge27to36 = function(tm) {
+					tm.go("51 * f") ;
+				}
+			//]]></script> 
+			<div class = "vertex" id="v28" >
+			<p>result becomes 3+3=6 </p>
+			</div>
+			<div class="edge" id="edge28to29" data-source="v28" data-target="v29"
+		     data-label="next" data-function="edge28to29">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge28to29 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v29" >
+			<p>i++ makes i=3+1=4</p></div>
+			
+			<div class="edge" id="edge29to30" data-source="v29" data-target="v30"
+		     data-label="next" data-function="edge29to30">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge29to30 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			
+		<div class = "vertex" id="v30" >
+			<p>4 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge30to31" data-source="v30" data-target="v31"
+		     data-label="next" data-function="edge30to31">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge30to31 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+				<div class="edge" id="edge30to36" data-source="v30" data-target="v36"
+		     data-label="skip to end of loop" data-function="edge30to36">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge30to36 = function(tm) {
+					tm.go("34 * s") ;
+				}
+			//]]></script> 
+			<div class = "vertex" id="v31" >
+			<p>result=6+4=10 </p>
+			</div>
+			<div class="edge" id="edge31to32" data-source="v31" data-target="v32"
+		     data-label="next" data-function="edge31to32">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge31to32 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v32" >
+			<p>i++ makes i=4+1=5</p>
+			</div>
+			<div class="edge" id="edge32to33" data-source="v32" data-target="v33"
+		     data-label="next" data-function="edge23to24">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge23to24 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			
+		<div class = "vertex" id="v33" >
+			<p>5 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge33to34" data-source="v33" data-target="v34"
+		     data-label="next" data-function="edge33to34">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge33to34 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+			
+			<div class = "vertex" id="v34" >
+			<p>result becomes 10+5=15 </p>
+			</div>
+			<div class="edge" id="edge34to35" data-source="v34" data-target="v35"
+		     data-label="next" data-function="edge34to35">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge34to35 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v35" >
+			<p>i++ makes i equal to 5+1=6</p>
+			</div>
+			
+						<div class="edge" id="edge35to36" data-source="v35" data-target="v36"
+		     data-label="next" data-function="edge35to36">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge35to36 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			
+		<div class = "vertex" id="v36" >
+			<p>6 <= 6 is true</p>
+			</div>
+		<div class="edge" id="edge36to37" data-source="v36" data-target="v37"
+		     data-label="next" data-function="edge36to37">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge36to37 = function(tm) {
+					tm.go("9 * f") ;
+				}
+			//]]></script>
+			
+			<div class = "vertex" id="v37" >
+			<p>result becomes 15+6=21 </p>
+			</div>
+			<div class="edge" id="edge37to38" data-source="v37" data-target="v38"
+		     data-label="next" data-function="edge37to38">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge37to38 = function(tm) {
+					tm.go("3 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v38" >
+			<p>i++ makes i=6+1=7</p>
+			</div>
+			<div class="edge" id="edge38to39" data-source="v38" data-target="v39"
+		     data-label="next" data-function="edge38to39">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge38to39 = function(tm) {
+					tm.go("5 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v39" >
+			<p>7<=6 is false </p>
+			</div>
+			<div class="edge" id="edge39to40" data-source="v39" data-target="v40"
+		     data-label="next" data-function="edge39to40">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge39to40 = function(tm) {
+					tm.go("1 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v40" >
+			<p>The condition becomes false so the control comes out of the for loop. The result contains 21 which is now returned to the main function.</p>
+			</div>
+			<div class="edge" id="edge40to41" data-source="v40" data-target="v41"
+		     data-label="next" data-function="edge40to41">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge40to41 = function(tm) {
+					tm.go("7 * f") ;
+				}
+			//]]></script>
+			<div class = "vertex" id="v41" >
+			<p>In the main function now the variable sum contains the sum of first 6 natural numbers. </p>
+			</div>
+			<div class="edge" id="edge41to42" data-source="v41" data-target="v42"
+		     data-label="next" data-function="edge41to42">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge41to42 = function(tm) {
+				tm.go("4 * s");
+					
+			//]]></script>
+			<div class = "vertex" id="v42" >
+			<p>Excellent! You have completed the tutorial.</p>
+			</div>
+			<div class="edge" id="edge42to43" data-source="v42" data-target="v43"
+		     data-label="Continue" data-function="edge42to43">
+        </div>
+			<script>//<![CDATA[
+				EdgeFunctions.edge42to43 = function(tm) {
+					window.open("TutorialsFeedback.html");
+				}
+			//]]></script>
+			<div class = "vertex" id="v43" >
+			<p>Thank You!</p>
+			</div>
+			
+
+
+ </div>
 			
 		
 	<div id="haxe:trace"></div>
