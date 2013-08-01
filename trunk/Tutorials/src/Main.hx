@@ -51,11 +51,11 @@ import haxe.Log ;
 		var graphDomNode : Element ;
 		graphDomNode = doc.getElementById("graph") ;
 		if (graphDomNode == null ) {
-			trace("No element in the html file has id 'graph'") ;
+			//trace("No element in the html file has id 'graph'") ;
 			return null ; }
 		var startFunctionName = graphDomNode.getAttribute("data-function") ;
 		if ( startFunctionName != null ) graph.setStartFunctionName( startFunctionName ) ;
-		else { trace("Graph node has no 'data-function' attribute") ;
+		else { //trace("Graph node has no 'data-function' attribute") ;
 			return null ; }
 		var child = graphDomNode.firstChild ;
 		while ( child != null ) {
@@ -66,18 +66,18 @@ import haxe.Log ;
 				var klass = childAsElement.getAttribute("class")  ;
 				// Collect all vertices
 				if ( klass == null ) {
-					trace("A child of the 'graph' element has no class" ) ;
+					//trace("A child of the 'graph' element has no class" ) ;
 					graphBuilt = false ;  }
 				else if ( klass == "vertex" ) {
 					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
-						trace("There is a vertex with no id" ) ;
+						//trace("There is a vertex with no id" ) ;
 						graphBuilt = false ;}
 					else if ( graph.vertices.exists( id ) ) {
-						trace( "Duplicate vertex with id '" +id + "'" ) ;
+						//trace( "Duplicate vertex with id '" +id + "'" ) ;
 						 graphBuilt = false ; }
 					else {
-						trace( "Building vertex " + id) ;
+						//trace( "Building vertex " + id) ;
 						var vertex = new TutorialVertex( id, childAsElement, pageno++ ) ;
 						//trace(vertex.pageno);
 						graph.vertices.set( id, vertex ) ; 
@@ -87,17 +87,17 @@ import haxe.Log ;
 				else if ( klass == "edge" ) {
 					var id : String = childAsElement.getAttribute("id") ;
 					if ( id == null ) {
-						trace("There is an edge with no id" ) ; 
+						//trace("There is an edge with no id" ) ; 
 						graphBuilt = false ; } 
 					else if ( graph.edges.exists( id ) ) {
-						trace( "Duplicate edge with id '" +id + "'" ) ;
+						//trace( "Duplicate edge with id '" +id + "'" ) ;
 						graphBuilt = false ; }
 					else {
-						trace( "Building edge " + id) ;
+						//trace( "Building edge " + id) ;
 						var edge = new TutorialEdge( id, childAsElement ) ;
 						graph.edges.set( id, edge ) ; } }
 				else {
-					trace("A child of the 'graph' node has a class '"
+					//trace("A child of the 'graph' node has a class '"
 						+ klass
 						+ "' that is neither 'vertex' nor 'edge'" ) ; } }
 			child = child.nextSibling ;  }
@@ -107,14 +107,14 @@ import haxe.Log ;
 			
 			var edgeLabel = edge.htmlNode.getAttribute("data-label") ;
 			if ( edgeLabel == null ) {
-				trace("Edge '" + edge.id + "' is missing its 'data-label' attribute." ) ;
+				//trace("Edge '" + edge.id + "' is missing its 'data-label' attribute." ) ;
 				graphBuilt = false ; }
 			else {
 				edge.label = edgeLabel ; }
 			
 			var functionName = edge.htmlNode.getAttribute("data-function") ;
 			if ( functionName == null ) {
-				trace("Edge '" + edge.id + "' is missing its 'data-function' attribute." ) ;
+				//trace("Edge '" + edge.id + "' is missing its 'data-function' attribute." ) ;
 				graphBuilt = false ; }
 			else { 
 				edge.functionName = functionName ;
@@ -122,10 +122,10 @@ import haxe.Log ;
 				
 			var sourceId = edge.htmlNode.getAttribute("data-source") ;
 			if ( sourceId == null ) {
-				trace("Edge '" + edge.id + "' is missing its 'data-source' attribute." ) ;
+				//trace("Edge '" + edge.id + "' is missing its 'data-source' attribute." ) ;
 				 graphBuilt = false ; }
 			else if( ! graph.vertices.exists( sourceId ) ) {
-				trace("Edge '" + edge.id + "' has 'data-source' attribute of '" + sourceId + "'. But there is no such node.");
+				//trace("Edge '" + edge.id + "' has 'data-source' attribute of '" + sourceId + "'. But there is no such node.");
 				graphBuilt = false ; }
 			else {
 				edge.source = graph.vertices.get( sourceId ) ;
@@ -170,18 +170,18 @@ import haxe.Log ;
 	}
 	
 	static function executeFunction( name : String ) {
-		//trace("At the beginning of executeFunction");
+		trace("At the beginning of executeFunction");
 		var klass = Type.resolveClass("EdgeFunctions") ;
 		if ( klass == null ) {
 			trace("No class 'EdgeFunctions' found.") ; }
 		else {
 			var fun = Reflect.field( klass, name ) ;
 			if ( fun == null ) {
-				//trace( "Function named '" +name + "' not found." ) ; 
+				trace( "Function named '" +name + "' not found." ) ; 
 				}
 			else {
 				Reflect.callMethod( klass, fun, [tmProxy] ) ; } }
-		//trace("At the end of executeFunction");
+		trace("At the end of executeFunction");
 	}
 	
 	static function switchToVertex( vertex : TutorialVertex ) {
@@ -217,7 +217,7 @@ import haxe.Log ;
 					temp = vertexStack.pop();
 					edgeFunctionStack.pop();
 				}
-				//trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
+				trace(" Executing:  " + edgeFunctionStack.first().edgeId + " and vertex: " + temp.id);
 				tmProxy.replaying = true;
 				executeFunction(edgeFunctionStack.first().edgeId);
 				edgeFunctionStack.first().type = tmProxy.count;
@@ -236,7 +236,7 @@ import haxe.Log ;
 				if (undoList.type < 0)
 				{
 					//trace("Count: " + undoList.type);
-					//trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
+					trace(vertexStack.first().id + "popped from stack\n Going to switch to :" + vertexStack.first().id);
 					var temp = vertexStack.pop(); 
 					edgeFunctionStack.pop();
 					var forward_stack: List<String> = new List<String>();
