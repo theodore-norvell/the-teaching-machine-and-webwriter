@@ -6,10 +6,11 @@ Use the style attriute to customize the width, height, top, and bottom
 of individual vertices.
 */
 .vertex { z-index: 999 ;
-        background-color:rgba(222,184,135,0.5) ;
+        background-color:#FFFFCC ;
 		visibility: visible;
 		display: inline-block ;
 		width: 800px ;
+		min-height: 100px ;
 		overflow: auto ;
 		border:thick ;
 		border-color:black;

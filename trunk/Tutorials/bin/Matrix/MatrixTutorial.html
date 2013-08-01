@@ -5,11 +5,11 @@
 	<title>Matrix tutorial 1</title>
 	<meta name="description" content="" />
 	
-	<script src="Tutorials.js"></script>
+	<script src="../Tutorials.js"></script>
 	<style>
 		#graph { display:none ; }
 	</style>
-<link href="tutorials.css" rel="stylesheet" type="text/css">
+<link href="../tutorials.css" rel="stylesheet" type="text/css">
 </head>
 <body onload="Main.onLoad()">
 <h1>Matrix Tutorial Part I</h1>
@@ -49,7 +49,7 @@
 	<div id="graph" data-function="initialize">
 		<script>//<![CDATA[
 			EdgeFunctions.initialize = function(tm) {
-				Main.trace("in initialize") ;
+				Main.print("in initialize") ;
 				tm.loadRemoteFile( ".", "MatrixTutorial.cpp" ) ;
 				tm.readRemoteConfiguration( "PDVonly800x500.tmcfg" ) ;
 				tm.initializeTheState() ;

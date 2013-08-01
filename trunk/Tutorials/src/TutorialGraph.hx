@@ -20,7 +20,7 @@ class TutorialGraph {
 	
 	public function setStartVertex( n : TutorialVertex ) {
 		startVertex = n ;
-		// trace("Setting startVertex to " + startVertex) ;
+		// Main.print("Setting startVertex to " + startVertex) ;
 	}
 	
 	public function setStartFunctionName( name : String ) {
