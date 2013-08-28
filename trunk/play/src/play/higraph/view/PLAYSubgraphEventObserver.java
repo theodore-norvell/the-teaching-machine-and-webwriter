@@ -33,6 +33,9 @@ import play.higraph.model.PLAYTag;
 import play.higraph.model.PLAYWholeGraph;
 import play.higraph.swing.PLAYViewTransferObject;
 import play.higraph.view.model.PLAYViewSelectionModel;
+import play.ide.handler.ViewHandler;
+import play.ide.view.NewClass;
+import play.ide.view.SyntaxPallet;
 
 /**
  * @author Kai Zhu
@@ -61,6 +64,8 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	private PLAYSubgraph subgraph;
 
 	private Controller controller;
+	
+	private int i = 0;
 
 	private enum DropActionType {
 		NEWCLASS, TAG_NEW, TAG_REPLACE, TAG_INSERT, NODE_DETACH, NODE_MOVE, NODE_INSERT, NODE_REPLACE, NODE_COPY, NODE_DELETE, NONE
@@ -145,6 +150,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 			MouseEvent e) {
 		System.out.println("Pressed on " + e.getX() + "-" + e.getY() + "-"
 				+ e.getModifiersEx());
+		System.out.println("focus = "+ this.playViewSelectionModel.getFocus());
 		if (e.isShiftDown()) {
 			this.playViewSelectionModel.setFocus(this.playViewSelectionModel
 					.getFocus() + 1);
@@ -198,7 +204,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 						e.getComponent().setCursor(
 								Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 					}
-					this.controller.refresh(this.playHigraphView);
+					//this.controller.refresh(this.playHigraphView);
 				}
 			}
 			this.selectedView.setFillColor(this.controller.getViewFillColor());// Color.LIGHT_GRAY);
@@ -208,6 +214,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 			this.playViewSelectionModel.clearSelectedNodeViewList();
 		}
 		System.out.println("selectedView is " + selectedView);
+		this.controller.refresh(this.playHigraphView);
 	}
 
 	/** Called when a mouse button goes up. */
@@ -425,17 +432,60 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 		PLAYDropZone targetDropZone = null;
 		int index = 0;
 
-		if (this.dropAction == DropActionType.NEWCLASS) {
-			this.controller.createNewClass();
+		/*if (this.dropAction == DropActionType.NEWCLASS) {
+			//this.controller.createNewClass();
 			System.out.println("NEWCLASS");
-		} else {
+			object = supportObj.getTransferable().getTransferData(
+					PLAYViewTransferObject.TAG_DATAFLAVOR);
+			currentTag = (PLAYTag) object;
+			System.out.println(currentTag);
+			this.playWholeGraph.makeRootNode(new PLAYPayload(currentTag
+					.toString(), currentTag));
+			System.out.println("DOTAG_NEW");
+			break;
+		} else {*/
 			this.controller.setCheckPoint(this.dropAction.name());
 			try {
 				switch (this.dropAction) {
+				case NEWCLASS: {
+					object = supportObj.getTransferable().getTransferData(
+							PLAYViewTransferObject.TAG_DATAFLAVOR);
+					currentTag = (PLAYTag) object;
+					System.out.println(currentTag);
+					//System.out.println(this.playWholeGraph.getTop(0));
+					//List<PLAYNode> topNodeList = this.playWholeGraph.getTops();
+					/*if(!topNodeList.isEmpty()){
+						for(PLAYNode node : topNodeList){
+							node.delete();
+						}
+					}*/
+					for (PLAYNode n:subgraph.getTops() ) {
+						System.out.println(n);
+						subgraph.removeTop( n ) ;
+					}
+				
+					//create new root node for new class
+					PLAYPayload playLoad =new PLAYPayload(currentTag.toString(), currentTag);
+					PLAYNode node = this.playWholeGraph.makeRootNode(playLoad);
+					subgraph.addTop(node);
+					
+					
+					/*NewClass nc = new NewClass(playWholeGraph,playLoad,node,viewFactory,
+							playHigraphView,i);
+					SyntaxPallet.setClass(nc);
+					System.out.println("DOTAG_CLASS");
+					i++;*/
+					
+					//this.controller.createNewClass(node);
+					
+					
+					break;
+				}
 				case TAG_NEW: {
 					object = supportObj.getTransferable().getTransferData(
 							PLAYViewTransferObject.TAG_DATAFLAVOR);
 					currentTag = (PLAYTag) object;
+					System.out.println(currentTag);
 					this.playWholeGraph.makeRootNode(new PLAYPayload(currentTag
 							.toString(), currentTag));
 					System.out.println("DOTAG_NEW");
@@ -568,7 +618,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}
+		//}
 		this.controller.refresh(this.playHigraphView);
 
 		System.out.println("... returns true");

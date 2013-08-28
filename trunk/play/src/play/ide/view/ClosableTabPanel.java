@@ -90,7 +90,7 @@ public class ClosableTabPanel extends JPanel {
 			ClosableTabPanel.this.tabbedPane.remove(i);
 		    }
 		    if (ClosableTabPanel.this.tabbedPane.getTabCount() == 0) {
-			Controller.getInstance().createNewClass();
+			//Controller.getInstance().createNewClass();
 		    }
 		}
 

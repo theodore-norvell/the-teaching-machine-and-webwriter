@@ -15,6 +15,34 @@ import java.util.List;
  * 
  */
 public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
+	
+	CLASSROOT {
+		public boolean contentModel(List<PLAYTag> seq) {
+			/*	    if (seq.isEmpty())
+				    	return false;*/
+					return false;
+				}
+
+				@Override
+				public List<PLAYTag> defaultTagSequence() {
+					return new ArrayList<PLAYTag>();
+			
+			}
+
+				@Override
+				public PLAYPayload defaultPayload() {
+				    return new PLAYPayload("CLASSROOT", CLASSROOT);
+				}
+
+				/**
+				 * @see java.lang.Enum#toString()
+				 */
+				@Override
+				public String toString() {
+				    return "CLASSROOT";
+				}
+
+	},
 
     CLASS {
 
@@ -22,7 +50,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	public boolean contentModel(List<PLAYTag> seq) {
 /*	    if (seq.isEmpty())
 	    	return false;*/
-
+		
 	    for (int i = 0; i < seq.size() - 1; i++) {
 		if (seq.get(i).equals(VARDECL))
 		    continue;
@@ -36,6 +64,7 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 	@Override
 	public List<PLAYTag> defaultTagSequence() {
 		List<PLAYTag> defaultTagSequence = new ArrayList<PLAYTag>();
+		defaultTagSequence.add(VARDECL);
 	    defaultTagSequence.add(METHOD);
 	    return defaultTagSequence;
 	}
@@ -948,6 +977,8 @@ public enum PLAYTag implements Tag<PLAYTag, PLAYPayload> {
 
 	@Override
 	public boolean contentModel(List<PLAYTag> seq) {
+		
+		System.out.println("method");
 	    if (seq.size() < 3||!seq.get(0).equals(PARAMS))
 	    	return false;
 

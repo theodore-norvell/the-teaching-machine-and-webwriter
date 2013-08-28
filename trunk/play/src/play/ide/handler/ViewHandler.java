@@ -17,7 +17,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -26,11 +28,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneLayout;
 import javax.swing.SwingUtilities;
 
 import play.controller.Controller;
+import play.higraph.model.PLAYNode;
+import play.higraph.model.PLAYPayload;
 import play.higraph.model.PLAYSubgraph;
+import play.higraph.model.PLAYTag;
 import play.higraph.model.PLAYWholeGraph;
 import play.higraph.swing.PLAYHigraphJComponent;
 import play.higraph.swing.PLAYHigraphJComponentKeyAdapter;
@@ -41,10 +48,12 @@ import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.PLAYViewFactory;
 import play.higraph.view.layout.PLAYBoxesInBoxesLayout;
 import play.higraph.view.model.PLAYViewSelectionModel;
+import play.ide.view.NewClass;
 import play.ide.view.ClosableTabPanel;
 import play.ide.view.ExpsPallet;
 import play.ide.view.NodesOutline;
 import play.ide.view.PropertyPanel;
+import play.ide.view.Symbols;
 import play.ide.view.SyntaxPallet;
 import play.ide.view.ViewPropertiesPanel;
 import tm.backtrack.BTTimeManager;
@@ -58,7 +67,9 @@ public class ViewHandler {
 	// the main frame need to be showed
 	private JFrame mainFrame;
 
-	private JTabbedPane tabbedPane;
+	//private JTabbedPane tabbedPane;
+	
+	private JPanel jPanel;
 
 	private PLAYWholeGraph playWholeGraph;
 
@@ -69,7 +80,7 @@ public class ViewHandler {
 	private PLAYViewFactory viewFactory;
 
 	private PLAYHigraphView playHigraphView;
-
+	
 	private NodesOutline nodesOutline;
 
 	private PropertyPanel propertyPanel;
@@ -77,14 +88,27 @@ public class ViewHandler {
 	private JMenuItem undoMenuItem;
 
 	private BTTimeManager btTimeManager;
+	
+	private PLAYSubgraphEventObserver subgraphEventObserver;
+	
+	private PLAYSubgraphMouseAdapter subgraphMouseAdapter;
+	
+	private NewClass newClass;
+	
+	private SyntaxPallet sp;
+	
+	private int i = 0;
 
 	public ViewHandler(BTTimeManager btTimeManager) {
 		this.btTimeManager = btTimeManager;
 		this.mainFrame = new JFrame();
-		this.tabbedPane = new JTabbedPane();
-		this.tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+		//this.tabbedPane = new JTabbedPane();
+		this.jPanel = new JPanel(new BorderLayout());
+		//this.tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		this.addPLAYHigraphJComponent();
 		this.nodesOutline = new NodesOutline();
+		this.sp = new SyntaxPallet(playWholeGraph);
+		//this.classList = new ClassList(this);
 		this.mainFrame.setTitle("PLAY - PLAY Language IDE");
 		this.mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.mainFrame.addWindowListener(new WindowAdapter() {
@@ -116,6 +140,27 @@ public class ViewHandler {
 		mainPanel.add(this.getFrameSplitPane(), BorderLayout.CENTER);
 		this.mainFrame.getContentPane().add(mainPanel);
 		this.mainFrame.pack();
+		
+		/*playWholeGraph = new PLAYWholeGraph(this.btTimeManager);
+		viewFactory = new PLAYViewFactory(this.btTimeManager);
+		playSubgraph = new PLAYSubgraph(playWholeGraph);
+		playHigraphJComponent = new PLAYHigraphJComponent();
+		playHigraphView = viewFactory.makeHigraphView(
+				playWholeGraph, playHigraphJComponent);
+		subgraphEventObserver = new PLAYSubgraphEventObserver(
+				playHigraphView, playWholeGraph, viewFactory, playSubgraph);
+		subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
+				playHigraphView, subgraphEventObserver);
+		playHigraphJComponent
+		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
+				playHigraphView));
+		playHigraphJComponent.setBackground(Color.WHITE);
+		playHigraphJComponent.setAutoscrolls(true);
+		playHigraphJComponent.setSubgraphView(playHigraphView);
+		playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
+				NestedTreeLayoutManager.Axis.Y));
+		subgraphMouseAdapter.installIn(playHigraphJComponent);*/
+		
 	}
 
 	private JSplitPane getFrameSplitPane() {
@@ -133,7 +178,9 @@ public class ViewHandler {
 		leftCenterSplitPane.setOneTouchExpandable(true);
 		leftCenterSplitPane.setDividerLocation(150);
 		leftCenterSplitPane.setLeftComponent(this.getLeftTopBottomSplitPane());
-		leftCenterSplitPane.setRightComponent(this.tabbedPane);
+		//leftCenterSplitPane.setRightComponent(this.tabbedPane);
+		leftCenterSplitPane.setRightComponent(this.jPanel);
+		
 		return leftCenterSplitPane;
 	}
 
@@ -142,8 +189,8 @@ public class ViewHandler {
 				JSplitPane.VERTICAL_SPLIT);
 		leftTopBottomSplitPane.setOneTouchExpandable(true);
 		leftTopBottomSplitPane.setDividerLocation(300);
-		leftTopBottomSplitPane.setTopComponent(new SyntaxPallet());
-		leftTopBottomSplitPane.setBottomComponent(new ExpsPallet());
+		leftTopBottomSplitPane.setTopComponent(sp);
+		leftTopBottomSplitPane.setBottomComponent(new Symbols());
 		return leftTopBottomSplitPane;
 	}
 
@@ -151,14 +198,16 @@ public class ViewHandler {
 		JSplitPane rightTopBottomSplitPane = new JSplitPane(
 				JSplitPane.VERTICAL_SPLIT);
 		rightTopBottomSplitPane.setOneTouchExpandable(true);
-		rightTopBottomSplitPane.setDividerLocation(500);
+		rightTopBottomSplitPane.setDividerLocation(300);
 		JScrollPane scrollPane = new JScrollPane(this.nodesOutline);
 		scrollPane.setFocusable(true);
 		rightTopBottomSplitPane.setTopComponent(scrollPane);
+		//rightTopBottomSplitPane.setBottomComponent(classList);
 		// TODO
 		rightTopBottomSplitPane.setBottomComponent(new JPanel());
 		return rightTopBottomSplitPane;
 	}
+	
 
 	private JMenuBar getMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
@@ -222,15 +271,15 @@ public class ViewHandler {
 	}
 
 	public void addPLAYHigraphJComponent() {
-		PLAYWholeGraph playWholeGraph = new PLAYWholeGraph(this.btTimeManager);
-		PLAYViewFactory viewFactory = new PLAYViewFactory(this.btTimeManager);
-		PLAYSubgraph playSubgraph = new PLAYSubgraph(playWholeGraph);
-		PLAYHigraphJComponent playHigraphJComponent = new PLAYHigraphJComponent();
-		PLAYHigraphView playHigraphView = viewFactory.makeHigraphView(
-				playWholeGraph, playHigraphJComponent);
-		PLAYSubgraphEventObserver subgraphEventObserver = new PLAYSubgraphEventObserver(
+		/*PLAYWholeGraph*/ playWholeGraph = new PLAYWholeGraph(this.btTimeManager);
+		/*PLAYViewFactory*/ viewFactory = new PLAYViewFactory(this.btTimeManager);
+		/*PLAYSubgraph*/ playSubgraph = playWholeGraph.makeSubGraph();
+		/*PLAYHigraphJComponent*/ playHigraphJComponent = new PLAYHigraphJComponent();
+		/*PLAYHigraphView*/ playHigraphView = viewFactory.makeHigraphView(
+				playSubgraph, playHigraphJComponent);
+		/*PLAYSubgraphEventObserver*/ subgraphEventObserver = new PLAYSubgraphEventObserver(
 				playHigraphView, playWholeGraph, viewFactory, playSubgraph);
-		PLAYSubgraphMouseAdapter subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
+		/*PLAYSubgraphMouseAdapter*/ subgraphMouseAdapter = new PLAYSubgraphMouseAdapter(
 				playHigraphView, subgraphEventObserver);
 		playHigraphJComponent
 		.addKeyListener(new PLAYHigraphJComponentKeyAdapter(
@@ -241,17 +290,65 @@ public class ViewHandler {
 		playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
 				NestedTreeLayoutManager.Axis.Y));
 		subgraphMouseAdapter.installIn(playHigraphJComponent);
+		//this.jPanel.revalidate();
+		//this.jPanel.removeAll();
+		//this.jPanel.repaint();
 		JScrollPane scrollPane = new JScrollPane(playHigraphJComponent);
-		scrollPane.setFocusable(true);
+		scrollPane.setFocusable(true);				
+		
+		this.jPanel.add(scrollPane);
+		System.out.println("jcomponent" + playHigraphJComponent);
+		//playWholeGraph.makeRootNode(new PLAYPayload(PLAYTag.CLASS
+			//	.toString(),PLAYTag.CLASS));
+		//Controller.getInstance().refresh(playHigraphView);
+		
+		//		Object[][] className = {{"class1"}};
+		
+		//JTable table = sp.getList();
+		//System.out.println(table);
+		//table.set
+		
+		//System.out.println(table.getRowCount());
+		//System.out.println(table.getColumnCount());
+		
+		//table.getModel().
+		
+		//table.setValueAt(className, table.getRowCount()+1, table.getColumnCount());
+		/*String title = "Class" + this.tabbedPane.getTabCount() ; 
 		this.tabbedPane
-		.add("Class" + this.tabbedPane.getTabCount(), scrollPane);
+		.add(title, scrollPane);
 		this.tabbedPane.setTabComponentAt(
 				this.tabbedPane.getTabCount() - 1,
-				new ClosableTabPanel(this.tabbedPane, "Class"
-						+ this.tabbedPane.getTabCount()));
-		this.tabbedPane.setSelectedIndex(this.tabbedPane.getTabCount() - 1);
+				new ClosableTabPanel(this.tabbedPane, title));
+		this.tabbedPane.setSelectedIndex(this.tabbedPane.getTabCount() - 1);*/
+		
 	}
-
+	
+	/* 
+	 * creates a new class on click of the + button
+	 */
+	public void newClass(){
+		System.out.println("new class");
+		
+		for (PLAYNode n:playSubgraph.getTops() ) {
+			System.out.println(n);
+			playSubgraph.removeTop( n ) ;
+		}
+		
+		PLAYTag currentTag = PLAYTag.CLASS;
+		PLAYPayload playLoad =new PLAYPayload(currentTag.toString(), currentTag);
+		PLAYNode node = playWholeGraph.makeRootNode(playLoad);
+		playSubgraph.addTop(node);
+		System.out.println("jcomponent = "+ playHigraphJComponent);
+		System.out.println("node = " + node);
+		NewClass nc = new NewClass(playWholeGraph,viewFactory,playSubgraph,playHigraphJComponent,
+				subgraphEventObserver,subgraphMouseAdapter,jPanel,btTimeManager,playHigraphView,i,node);
+		SyntaxPallet.setClass(nc);
+		i++;
+		Controller.getInstance().refresh(this.playHigraphView);
+		
+	}
+	
 	public void showMainFrame() {
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -298,5 +395,4 @@ public class ViewHandler {
 	public ViewPropertiesPanel getViewPropertiesPanel() {
 		return this.propertyPanel.getViewPropertiesPanel();
 	}
-
 }

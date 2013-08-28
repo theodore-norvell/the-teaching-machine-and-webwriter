@@ -5,15 +5,23 @@
  */
 package play.higraph.swing;
 
+import higraph.swing.SubgraphTransferHandler;
 import higraph.view.ComponentView;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 import play.controller.Controller;
+import play.higraph.model.PLAYNode;
+import play.higraph.model.PLAYPayload;
+import play.higraph.model.PLAYTag;
+import play.higraph.view.PLAYDropZone;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
+import play.higraph.view.PLAYSubgraphEventObserver;
 import play.higraph.view.model.PLAYViewSelectionModel;
 
 /**
@@ -23,16 +31,20 @@ import play.higraph.view.model.PLAYViewSelectionModel;
 public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 
     private PLAYHigraphView playHigraphView;
+    
+
 
     private Controller controller;
 
     private PLAYViewSelectionModel playViewSelectionModel;
+    
+    private PLAYSubgraphEventObserver eo;
 
     public PLAYHigraphJComponentKeyAdapter(PLAYHigraphView playHigraphView) {
 	this.playHigraphView = playHigraphView;
-	this.controller = Controller.getInstance();
+	this.controller = Controller.getInstance();	
 	this.playViewSelectionModel = this.playHigraphView.getHigraph()
-		.getWholeGraph().getPLAYViewSelectionModel();
+				.getWholeGraph().getPLAYViewSelectionModel();
     }
 
     /**
@@ -159,6 +171,36 @@ public class PLAYHigraphJComponentKeyAdapter implements KeyListener {
 			    this.playViewSelectionModel.getSelectedViewList()
 				    .size() - 1))
 		    .setFillColor(Color.LIGHT_GRAY);
+	}else if ((e.getKeyCode() == KeyEvent.VK_I)){
+		
+		System.out.println("i key");
+		//SubgraphTransferHandler.canImport();
+		
+		
+		List<?> selectedViewList = this.playViewSelectionModel.getSelectedViewList();
+		ComponentView<?,?,?,?,?,?,?> view;
+		for (Object selectedView : selectedViewList) {
+			PLAYNodeView currentNodeView = (PLAYNodeView) selectedView;
+			
+			/*PLAYNode currentNode = currentNodeView.getNode();
+			PLAYDropZone targetDropZone = (PLAYDropZone) stack.peek();
+			targetNodeView = (PLAYNodeView) targetDropZone
+					.getAssociatedComponent();
+			targetNode = targetNodeView.getNode();
+			index = targetNodeView.indexOfZones(targetDropZone);
+			targetNode.insertChild(index, currentNode);
+			System.out.println("DONODE_INSERT"
+					+ targetNode.getNumberOfChildren() + "-"
+					+ index);*/
+		}
+		
+		PLAYTag currentTag = PLAYTag.IF;
+		this.playHigraphView.getHigraph()
+		.getWholeGraph().makeRootNode(new PLAYPayload(currentTag
+				.toString(), currentTag));
+		System.out.println("DOTAG_NEW");
+					
+					
 	}
 	this.controller.refresh(this.playHigraphView);
     }
