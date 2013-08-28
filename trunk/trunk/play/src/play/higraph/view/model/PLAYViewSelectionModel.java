@@ -23,6 +23,9 @@ public class PLAYViewSelectionModel {
 	private int anchor;
 
 	private int focus;
+	
+	private PLAYNodeView nv;
+	
 
 	public PLAYViewSelectionModel() {
 		this.selectedViewList = new ArrayList<PLAYNodeView>();
@@ -137,6 +140,22 @@ public class PLAYViewSelectionModel {
 		PLAYNodeView nodeview = (PLAYNodeView) higraphView
 				.getNodeView(currentNode);
 		this.selectedViewList.add(nodeview);
+	}
+	
+	public void setParentNodeView(PLAYNodeView nv){
+		this.nv = nv;
+	}
+	
+	public PLAYNodeView getParentNodeView(){
+		return nv;
+	}
+	
+	public boolean isUnderSelection(PLAYNodeView nv){
+		return true;
+	}
+	
+	public List<PLAYNodeView> getSelection(){
+		return selectedViewList;
 	}
 
 }

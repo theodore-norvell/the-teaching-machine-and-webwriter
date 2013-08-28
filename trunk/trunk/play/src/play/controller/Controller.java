@@ -7,6 +7,7 @@ package play.controller;
 
 import java.awt.Color;
 
+import play.higraph.model.PLAYNode;
 import play.higraph.view.PLAYHigraphView;
 import play.ide.handler.ViewHandler;
 import tm.backtrack.BTTimeManager;
@@ -106,9 +107,11 @@ public class Controller {
     }
 
     public void createNewClass() {
-	this.viewHandler.addPLAYHigraphJComponent();
+	  	this.viewHandler.newClass();
+	  	System.out.println("class created");
     }
-
+    
+   
     public Color getViewDrawColor() {
 	return this.viewHandler.getViewPropertiesPanel().getDrawColor();
     }
