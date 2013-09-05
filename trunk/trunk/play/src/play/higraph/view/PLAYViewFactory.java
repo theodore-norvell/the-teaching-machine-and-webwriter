@@ -83,10 +83,7 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 				.equals(node.getPayload().getTag())) {
 			nodeView = this.makeNULLNodeView(higraphView, node);
 		} 
-		else if (PLAYTag.CLASSROOT.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeClassRootView(higraphView, node);
-		} 
+		
 		/*else if (PLAYTag.VAR.defaultPayload().getTag()
 		.equals(node.getPayload().getTag())) {
 	    nodeView = this.makeVARNodeView(higraphView, node);
@@ -118,12 +115,6 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 		return classNodeView;
 	}
 	
-	private PLAYNodeView makeClassRootView(PLAYHigraphView higraphView,
-			PLAYNode node){
-		PLAYNodeView classNodeView = new CLASSRootView(higraphView,
-				node, super.timeMan);
-		return classNodeView;
-	}
 	/**
 	 * @param higraphView
 	 * @param node
