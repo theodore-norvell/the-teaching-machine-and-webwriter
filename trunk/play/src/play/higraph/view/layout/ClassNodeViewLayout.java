@@ -23,6 +23,7 @@ public class ClassNodeViewLayout extends PLAYLayoutManager {
 	 */
 	@Override
 	public void layoutLocal(PLAYHigraphView higraphView) {
+		//System.out.println("In layoutLocal for higraphView of ClassNodeView") ;
 	}
 
 	/**
@@ -30,6 +31,7 @@ public class ClassNodeViewLayout extends PLAYLayoutManager {
 	 */
 	@Override
 	public void layoutLocal(PLAYNodeView nodeView) {
+		//System.out.println("In layoutLocal of ClassNodeView") ;
 		if (nodeView instanceof ClassNodeView) {
 			ClassNodeView classNodeView = (ClassNodeView) nodeView;
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, 200, 200);
