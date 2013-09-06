@@ -51,57 +51,38 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 			PLAYNode node) {
 		PLAYHigraphView higraphView = (PLAYHigraphView) hgv;
 		PLAYNodeView nodeView = null;
-		if (PLAYTag.CLASS.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeClassNodeView(higraphView, node);
-		}
-		if (PLAYTag.EXPPLACEHOLDER.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makePlaceHolderNodeView(higraphView, node);
-		} else if (PLAYTag.ASSIGN.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeASSIGNNodeView(higraphView, node);
-		} else if (PLAYTag.SEQ.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeSEQNodeView(higraphView, node);
-		} else if (PLAYTag.IF.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeIFNodeView(higraphView, node);
-		} else if (PLAYTag.WHILE.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeWHILENodeView(higraphView, node);
-		} else if (PLAYTag.NUMBERTYPE.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeNUMNodeView(higraphView, node);
-		} else if (PLAYTag.BOOLEANTYPE.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeBOONodeView(higraphView, node);
-		} else if (PLAYTag.STRINGTYPE.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeSTRINGNodeView(higraphView, node);
-		} else if (PLAYTag.NULLTYPE.defaultPayload().getTag()
-				.equals(node.getPayload().getTag())) {
-			nodeView = this.makeNULLNodeView(higraphView, node);
-		} 
-		
-		/*else if (PLAYTag.VAR.defaultPayload().getTag()
-		.equals(node.getPayload().getTag())) {
-	    nodeView = this.makeVARNodeView(higraphView, node);
-	} else if (PLAYTag.PLUS.defaultPayload().getTag()
-		.equals(node.getPayload().getTag())) {
-	    nodeView = this.makePLUSNodeView(higraphView, node);
-	} else if (PLAYTag.MINUS.defaultPayload().getTag()
-		.equals(node.getPayload().getTag())) {
-	    nodeView = this.makeMINUSNodeView(higraphView, node);
-	} else if (PLAYTag.MULTIPLICATION.defaultPayload().getTag()
-		.equals(node.getPayload().getTag())) {
-	    nodeView = this.makeMULTIPLICATIONNodeView(higraphView, node);
-	} else if (PLAYTag.DIVISION.defaultPayload().getTag()
-		.equals(node.getPayload().getTag())) {
-	    nodeView = this.makeDIVISIONNodeView(higraphView, node);
-	} */
-		else {
-			nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
+		switch( node.getPayload().getTag() ) {
+			case CLASS :
+				nodeView = this.makeClassNodeView(higraphView, node);
+			break ;
+			case EXPPLACEHOLDER:
+				nodeView = this.makePlaceHolderNodeView(higraphView, node);
+			break ;
+			case ASSIGN:
+				nodeView = this.makeASSIGNNodeView(higraphView, node);
+			break ;
+			case SEQ: 
+				nodeView = this.makeSEQNodeView(higraphView, node);
+			break ;
+			case IF: 
+				nodeView = this.makeIFNodeView(higraphView, node);
+			break ;
+			case WHILE:
+				nodeView = this.makeWHILENodeView(higraphView, node);
+			break ;
+			case NUMBERTYPE:
+				nodeView = this.makeNUMNodeView(higraphView, node);
+			break ;
+			case BOOLEANTYPE:
+				nodeView = this.makeBOONodeView(higraphView, node);
+			case STRINGTYPE:
+				nodeView = this.makeSTRINGNodeView(higraphView, node);
+			break ;
+			case NULLTYPE:
+				nodeView = this.makeNULLNodeView(higraphView, node);
+			break ;
+			default:
+				nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
 		}
 		return nodeView;
 	}
