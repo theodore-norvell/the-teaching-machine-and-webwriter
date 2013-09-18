@@ -35,6 +35,17 @@ extends Node<NP,EP,HG,WG,SG,N,E>{
 	boolean canInsertChild( int position, T tag ) ;
 	
 	void insertChild( int position, T tag ) ;
+
+	/** Can a segment of the children be replace?
+	 * 
+	 * @param first The beginning of the segment
+	 * @param count Number of items in the segment
+	 * @param tags The proposed tag sequence for the replacement children.
+	 * @return
+	 */
+    boolean canReplaceChildrenTags( int first, int count, List<T> tags ) ;
+    
+    void replaceChildrenTags( int first, int count, List<T> tags ) ;
 	
 	boolean canReplace( T tag ) ;
 	

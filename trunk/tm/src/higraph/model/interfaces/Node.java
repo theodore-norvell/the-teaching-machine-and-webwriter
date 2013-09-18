@@ -303,6 +303,117 @@ extends Higraph<NP, EP, HG, WG, SG, N, E>
      */
     void insertChild( int position, N root ) ;
     
+
+    
+    /** Can a 0 or more nodes replace this node at the given position.
+     * 
+     * <p>
+     * As a general rule this routine will return false unless
+     * position is in range (<kbd>0 <= first && first+count <= getNumberOfChildren</kbd>)
+     * Furthermore the proposed new children must not be the same as this node, nor
+     * can they be ancestors of this node.
+     * 
+     * <p>
+     * There may be further restrictions, based on well-formedness
+     * constraints.
+     * 
+     * <p> Even though <code>replaceChildren</code> requires that the
+     * proposed children be roots, this routine ignores the
+     * "rootiness" (or lack thereof) of the child. The reason for
+     * this anomally is discussed below.
+     * 
+     * <p> However if any of the nodes are children of this node,
+     * the answer returned may not make sense. E.g. if the children
+     * of this node are [A,B,C] then a call to 
+     * <code>canReplace(2, 1, [A,B,C])</code> may succeed. However, if the
+     * nodes are detached and then inserted using <code>replaceNodes(2,1,[A,B,C]</code>,
+     * the precondition of replaceNodes is violated.
+     * 
+     * <p>In order to move nodes under this node, they should be detached first and then
+     * replace 0 or more children of this node.  The <code>canReplaceChildren</code> method can be called before
+     * the detach, like this:
+     * <pre>  
+     *        First check that all nodes in the nodes array can be detached and that none are children of parent
+     *        if( parent.canReplaceChildren(i, k, nodes) ) {
+     *        detach all the nodes
+     *        if( canReplaceChildren(i, k, nodes) // Double check.
+     *            parent.replaceChildren(i, k, nodes) ; }
+     *        else oops we just deleted some nodes that were supposed to be moved
+     * </pre>
+     * This works, even if a proposed child is not a root, because
+     * <code>canInsert</code> ignores the fact that it is not a root.
+     * Note that the above code will not work well when some of the nodes to be moved are already children of parent.
+     * If all are, then what is needed is permuteChildren. If some of nodes are children and some aren't, appropriate adjustments
+     * need to be made to i and k before the second call to canReplaceChildren.  Note also that, in the
+     * presence of nontrivial well-formedness constraints, checking that all the
+     * nodes can be detached may be more complex than a simple loop;
+     * likewise detaching them may be more complex than a simple loop.
+     * 
+     * 
+     * <p>A similar comment applies to copying a node. I.e. in order to
+     * copy a node it should be duplicated and then inserted in the new
+     * position. Thus you can write
+     * 
+     * <pre>   
+     *         first check that all nodes in the nodes array can be duplicated.
+     *         if( parent.canReplaceChildren(i, k, nodes) ) {
+     *             Node roots[] = new Node[ nodes.length ] ;
+     *             for( int i = 0 ; i < nodes.length ; ++i ) roots[i] = nodes[i].duplicate() ;
+     *             if( parent.canReplaceChildren(i, k, roots) ) // Double check.
+     *                  parent.insert(i, k, roots) ; }
+     *             else for( Node r : roots ) r.delete() ;
+     * </pre>
+     * 
+     * @param first This indicates the position that the first root goes to.
+     *              Also the position of the first node to delete.
+     * @param count The number of children to delete.
+     * @param nodes The sequence of proposed children.
+     */
+    boolean canReplaceChildren( int first, int count, List<N> nodes ) ;
+    
+    /** Replace 0 or more children with 0 or more roots?
+     * 
+     * <p> Specific implementations may interpret this in different ways.
+     * But in most cases it means replace count childrens starting with first
+     * and replace them with the list of roots.
+     * 
+     * <p> Any inserted root remains a top node of any Subgraph it is a 
+     * top node of unless the new parent (i.e. this node) is already in that Subgraph.
+     * (This exception is to maintain the invariant that if a node
+     * is a top node of a subgraph then its parent must not be in that
+     * subgraph.)  The inserted node will be added to all the subgraphs
+     * that this node is in. (This maintains the invariant that if a node
+     * is in a subgraph, so are all its children.)
+     * 
+     * <p> The node being inserted and its descendants may have edges related
+     * to them. The categorisation of these nodes may change.
+     * 
+     * <p><strong>Precondition:</strong></p>
+     * <ul>
+     *     <li><code> canReplaceChildren(first, count, roots) </code></li>
+     *     <li><code> root.getParent() == null </code>, for each root </li>
+     * </ul>
+     * 
+     * @param first This indicates the position that the first root goes to.
+     *              Also the position of the first node to delete.
+     * @param count The number of children to delete.
+     * @param roots The root nodes to insert.
+     */
+    void replaceChildren( int first, int count, List<N> roots ) ;
+    
+
+    /** Replace 0 or more children with 0 or more roots, saving the old children.
+     * The old nodes are not deleted, but detached. The items of oldNodes are overwritten
+     * with the detached former children.
+     * 
+     * @param first This indicates the position that the first root goes to.
+     *              Also the position of the first node to delete.
+     * @param count The number of children to delete.
+     * @param roots The root nodes to insert.
+     * @param oldNodes must have a length equal to count. 
+     */
+    void replaceChildren( int first, int count, List<N> roots, List<N> oldNodes ) ;
+    
     
     /** Can this node be replaced by another
      * 

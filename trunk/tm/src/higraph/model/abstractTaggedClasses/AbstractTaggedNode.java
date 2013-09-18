@@ -81,6 +81,54 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
     }
     
     @Override
+    public boolean canReplaceChildrenTags(int first, int count, List<T> tags) {
+    	boolean ok = 0 <= first && first+count < getNumberOfChildren() ; 
+    	if( ! ok ) return false ;
+    	List<T> tagList = getTagList() ;
+    	for( int i = 0 ; i < count; ++i ) tagList.remove(first) ;
+    	for( int i = 0 ; i < tags.size() ; ++i )
+    		tagList.add(first+i, tags.get(i) ) ;
+    	return getTag().contentModel( tagList ) ;
+    }
+    
+    @Override
+    public void replaceChildrenTags(int first, int count, List<T> tags) {
+    	ArrayList<N> newNodes = new ArrayList<N>() ;
+    	for( T tag : tags ) {
+    		newNodes.add( getWholeGraph().makeRootNode(tag.defaultPayload() ) ) ; }
+    	replaceChildren( first, count, newNodes ) ;
+    }
+    
+    /** In addition to inherited conditions, the content model is checked.
+     * The tag sequence checked consists of the current tag sequence with 
+     * the <code>count</code> tags beginning at <code>first</code> replaced
+     * by the tags of the nodes array.
+     * <p>
+     * No allowance is made for the case where some of the nodes are children
+     * of this node. E.g. if this node has children [A,B,C,D]
+     * then <code>canReplaceChildren( 0, 1, [A,B] )</code> checks the tags of
+     * <code>[A,B,B,C,D]</code> against the content model.  However if you were to
+     * detach A and B and then do a <code>replaceChildren(0,1,[A,B])</code> you
+     * would end up with children [A,B,D].
+     * 
+     */
+    @Override
+    public boolean canReplaceChildren(int first, int count, List<N> nodes) {
+    	// Check all conditions inherited
+    	boolean ok = super.canReplaceChildren(first, count, nodes) ;
+    	if( ! ok ) return false ;
+    	// Check the proposed child list against the content node.
+    	// No allowance is made for the fact that the nodes may be
+    	// children of this node. In this case the client should not
+    	// trust the results of this method.
+    	List<T> tagList = getTagList() ;
+    	for( int i = 0 ; i < count; ++i ) tagList.remove(first) ;
+    	for( int i = 0 ; i < nodes.size() ; ++i )
+    		tagList.add(first+i, nodes.get(i).getTag() ) ;
+    	return getTag().contentModel( tagList ) ;
+    }
+    
+    @Override
     public boolean canReplace(N node) {
         return super.canReplace(node) 
             && canReplace( node.getTag() ) ;
@@ -111,6 +159,11 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
     @Override
     public boolean canDetach() {
         Assert.check(! deleted()) ;
+        return canDelete() ;
+    }
+    
+    @Override
+    public boolean canDelete() {
         N parent = getParent() ;
         if( parent == null)
             return true;

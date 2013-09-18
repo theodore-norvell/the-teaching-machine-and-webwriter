@@ -185,7 +185,10 @@ public abstract class AbstractNode
     
     public void detach() {
         Assert.check( canDetach() ) ;
-        
+        privateDetach() ;
+    }
+    
+    void privateDetach() {     
         // If it's not a root already, make it a root.
         if( parent.get() != null ) {
             parent.get().childNodes.remove( getThis() ) ;
@@ -261,6 +264,52 @@ public abstract class AbstractNode
         Assert.check( canInsertChild( position, root) 
                    && root.getParent() == null) ;
         this.uncheckedInsertChild( position, root ) ;
+    }
+    
+    @Override
+    public boolean canReplaceChildren( int first, int count, List<N> nodes ) {
+        Assert.check( !deleted.get() ) ;
+        Assert.check( count >= 0 ) ;
+        // The children to be replaced must exist.
+        boolean ok = 0 <= first && first+count <= childNodes.size() ;
+        for( N n : nodes) {
+        	Assert.check( !n.deleted.get()) ;
+        	// No n may be this node, nor an ancestor
+            NodeCategory nodeCat = categorize( n ) ;
+        	ok = ok && nodeCat != NodeCategory.SELF 
+                    && nodeCat != NodeCategory.ANCESTOR ;
+        	// No duplication is allowed. Each n can only occur once.
+        	int k=0 ; for( int i = 0 ; i < nodes.size() ; ++i)
+        		if(nodes.get(i)==n) ++k ;
+        	ok = ok && k==1 ;
+        }
+        return ok ;
+    }
+    
+    @Override
+    public void replaceChildren( int first, int count, List<N> roots ) {
+    	Assert.check( canReplaceChildren( first, count, roots) ) ;
+    	for( N n : roots ) Assert.check( n.getParent() == null ) ;
+    	// Delete the count children
+    	for( int i=0 ; i < count ; ++i ) getChild(first).privateDelete() ;
+    	// Insert the roots.
+    	for( int i=0 ; i < roots.size() ; ++i )
+    		uncheckedInsertChild(first+1, roots.get(i)) ;
+    }
+    
+    @Override
+    public void replaceChildren( int first, int count, List<N> roots, List<N> oldNodes ) {
+    	Assert.check( canReplaceChildren( first, count, roots) ) ;
+    	Assert.check( oldNodes.size() == count ) ;
+    	for( N n : roots ) Assert.check( n.getParent() == null ) ;
+    	// Detach the count children
+    	for( int i=0 ; i < count ; ++i ) {
+    		N child = getChild(first); 
+    		oldNodes.set(i, child) ;
+    		child.privateDetach() ; }
+    	// Insert the roots.
+    	for( int i=0 ; i < roots.size() ; ++i )
+    		uncheckedInsertChild(first+i, roots.get(i)) ;
     }
     
     public boolean canReplace(N node) {
