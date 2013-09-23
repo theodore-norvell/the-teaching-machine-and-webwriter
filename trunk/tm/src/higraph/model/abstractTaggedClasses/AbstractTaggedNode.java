@@ -109,7 +109,9 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
      * then <code>canReplaceChildren( 0, 1, [A,B] )</code> checks the tags of
      * <code>[A,B,B,C,D]</code> against the content model.  However if you were to
      * detach A and B and then do a <code>replaceChildren(0,1,[A,B])</code> you
-     * would end up with children [A,B,D].
+     * would end up with children [A,B,D].  <code>permuteChildren</code> is a better
+     * alternative for replacing a segment of children with another segment
+     * of children.
      * 
      */
     @Override
@@ -175,6 +177,15 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
         }
     }
     
+    @Override public boolean canPermuteChildren(int[] p) {
+    	boolean result = super.canPermuteChildren(p) ;
+    	List<T> tagList = getTagList() ;
+    	ArrayList<T> newTagList = new ArrayList<T>() ;
+        for( int i = 0 ; i < tagList.size() ; ++i )
+        	newTagList.add( tagList.get(p[i]) ) ;
+        return result && getTag().contentModel(newTagList) ;
+    };
+    
     
     @Override
     public List<T> getTagList() {
@@ -183,6 +194,7 @@ implements TaggedNode<T,NP,EP,HG,WG,SG,N,E>
             result.add( getChild(i).getTag() ) ;
         return result;
     }
+    
 }
 
 

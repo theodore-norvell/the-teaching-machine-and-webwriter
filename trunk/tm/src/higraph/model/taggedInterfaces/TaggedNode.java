@@ -44,7 +44,15 @@ extends Node<NP,EP,HG,WG,SG,N,E>{
 	 * @return
 	 */
     boolean canReplaceChildrenTags( int first, int count, List<T> tags ) ;
-    
+
+
+	/** Replace a segment of children with new nodes based on a list of tags.
+	 * 
+	 * @param first The beginning of the segment
+	 * @param count Number of items in the segment
+	 * @param tags The proposed tag sequence for the replacement children.
+	 * @return
+	 */
     void replaceChildrenTags( int first, int count, List<T> tags ) ;
 	
 	boolean canReplace( T tag ) ;
