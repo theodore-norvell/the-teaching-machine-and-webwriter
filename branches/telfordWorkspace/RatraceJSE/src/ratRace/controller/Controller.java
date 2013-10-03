@@ -1,6 +1,4 @@
 package ratRace.controller;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import ratRace.model.Model;
 import ratRace.view.ViewI;

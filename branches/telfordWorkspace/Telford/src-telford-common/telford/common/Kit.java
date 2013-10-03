@@ -12,9 +12,7 @@ abstract public class Kit {
 	public static void setKit(Kit kit) { Kit.kit = kit ; }
 		
 	abstract public Font getFont() ;
-	
-	abstract public BorderLayout getBorderLayout();
-	
+		
 	abstract public RootPeer makeRootPeer( String title, Root root ) ;
 	
 	abstract public Display getDisplay();
@@ -22,7 +20,8 @@ abstract public class Kit {
 	abstract public ButtonPeer makeButtonPeer (String title, Button button);
 
 	abstract public ContainerPeer makeContainerPeer(Container container);
+	
+	abstract public LayoutManager getBorderLayoutManager();
 
-	abstract public Object getNorth() ;
-
+	public abstract Timer getTimer(int delay,boolean repeats, ActionListener actionListener) ;
 }

@@ -3,7 +3,6 @@ package telford.common;
 import java.util.ArrayList;
 
 import telford.common.peers.ButtonPeer;
-import telford.common.peers.ComponentPeer;
 
 public class Button extends Component{
 	final ButtonPeer peer ;
@@ -20,7 +19,7 @@ public class Button extends Component{
 	public void fireAction( ActionEvent ev ) {
 		for( ActionListener l : listeners ) l.actionPerformed(ev);
 	}
-
+	
 	public void setEnabled(boolean paused) {
 		peer.setEnabled(paused);
 	}

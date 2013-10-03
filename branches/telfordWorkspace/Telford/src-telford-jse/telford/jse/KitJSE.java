@@ -1,9 +1,14 @@
 package telford.jse;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import telford.common.Container;
 import telford.common.Display;
+import telford.common.LayoutManager;
+import telford.common.Line;
+import telford.common.Point;
+import telford.common.Timer;
 import telford.common.peers.ContainerPeer;
 
 public class KitJSE extends telford.common.Kit {
@@ -16,19 +21,6 @@ public class KitJSE extends telford.common.Kit {
 		return new FontJSE(f) ;
 	}
 	
-	@Override
-	public Object getNorth() {
-		new java.awt.BorderLayout();
-		String north = BorderLayout.NORTH;
-		return north;
-	}
-	
-	@Override
-	public telford.common.BorderLayout getBorderLayout() {
-		java.awt.BorderLayout b = new java.awt.BorderLayout();
-		return new BorderLayoutJSE(b);
-	}
-
 	@Override
 	public telford.common.peers.RootPeer makeRootPeer (String title, telford.common.Root root) {
 		return new RootPeerJSE( title, root ) ;
@@ -51,4 +43,17 @@ public class KitJSE extends telford.common.Kit {
 		return new ContainerPeerJSE (container);
 	}
 
+	@Override
+	public LayoutManager getBorderLayoutManager() {
+		return new BorderLayoutJSE();
+	}
+
+	@Override
+	public Timer getTimer(int delay,boolean repeats, telford.common.ActionListener actionListener) {
+		return new TimerJSE(delay,repeats, actionListener);
+	}
+
+
+	
 }
+	

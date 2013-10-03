@@ -2,6 +2,7 @@ package telford.cn1;
 
 import telford.common.Font;
 import telford.common.FontMetrics;
+import telford.common.Line;
 
 import com.codename1.ui.Graphics;
 
@@ -27,6 +28,18 @@ public class GraphicsCN1 implements telford.common.Graphics {
 	
 	public FontMetrics getFontMetrics( Font f ) {
 		return new FontMetricsCN1( ((FontCN1)f).font ) ;
+	}
+
+	public int getColor() {
+		return g.getColor();
+	}
+
+	public void fillOval(int x, int y, int weight, int height) {
+		g.
+	}
+
+	public void draw(Line line) {
+		g.drawLine(line.p0.getX(), line.p0.getY(), line.p1.getX(), line.p1.getY());
 	}
 
 }

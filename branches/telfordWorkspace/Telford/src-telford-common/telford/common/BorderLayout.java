@@ -1,6 +1,6 @@
 package telford.common;
 
-public interface BorderLayout {
+public interface BorderLayout extends LayoutManager {
 
 	Object getNorth();
 	

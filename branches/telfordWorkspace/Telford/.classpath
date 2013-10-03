@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src-telford-cn1"/>
+	<classpathentry kind="src" path="src-telford-common"/>
+	<classpathentry kind="src" path="src-telford-jse"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/Labyrinth-CN1/lib/CodenameOne.jar" sourcepath="/Labyrinth-CN1/lib/CodenameOne_SRC.zip"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
