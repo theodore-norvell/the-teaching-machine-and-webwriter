@@ -17,4 +17,10 @@ public interface Graphics {
 	public void drawString( String message, int x, int y ) ;
 	
 	public FontMetrics getFontMetrics( Font f ) ;
+
+	public int getColor();
+
+	public void fillOval(int x, int y, int weight, int height);
+
+	public void draw(Line line);
 }

@@ -17,4 +17,9 @@ public class FontMetricsJSE extends telford.common.FontMetrics {
 		return fm.stringWidth( str ) ;
 	}
 
+	@Override
+	public int getAscent() {
+		return fm.getAscent();
+	}
+
 }

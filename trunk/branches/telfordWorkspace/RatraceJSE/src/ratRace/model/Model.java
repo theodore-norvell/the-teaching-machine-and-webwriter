@@ -36,9 +36,9 @@ public class Model extends Observable {
 
 	public double getRatRadius() { return rat.radius ; }
 
-	public double getGoal_i() { return maze.goal_i() ; }
+	public int getGoal_i() { return maze.goal_i() ; }
 	
-	public double getGoal_j() { return maze.goal_j() ; }
+	public int getGoal_j() { return maze.goal_j() ; }
 	
 	public boolean hasHWall(int i, int j) { return maze.hasHWall(i, j) ; }
 

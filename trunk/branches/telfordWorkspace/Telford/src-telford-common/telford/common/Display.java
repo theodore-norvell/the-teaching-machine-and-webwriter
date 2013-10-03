@@ -8,6 +8,5 @@ public interface Display {
 	
 	public void setPreferredSize (int width, int height) ;
 
-	public void add(Container toolBar, Object north);
 	
 }

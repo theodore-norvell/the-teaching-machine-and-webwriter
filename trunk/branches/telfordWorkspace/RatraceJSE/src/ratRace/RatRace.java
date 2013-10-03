@@ -1,14 +1,6 @@
 package ratRace;
-//import java.awt.BorderLayout;
-//import java.awt.event.ActionEvent;
-//import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
-
-//import javax.swing.JButton;
-//import javax.swing.JFrame;
-//import javax.swing.JToolBar;
-//import javax.swing.SwingUtilities;
 
 import ratRace.controller.Controller;
 import ratRace.model.Model;
@@ -20,8 +12,9 @@ public class RatRace implements Observer{
 	private Model model ;
 	private View view ;
 	private Controller controller ;
+	private Root root = new Root("Ratrace");
 	private Display display = Kit.getKit().getDisplay() ;
-	private BorderLayout borderLayout = Kit.getKit().getBorderLayout();
+	private LayoutManager lm = Kit.getKit().getBorderLayoutManager() ;
 	private Button goButton = new Button("Go");
 	private Button pauseButton = new Button("Pause") ;
 	private Button restartButton = new Button("Restart") ;
@@ -33,7 +26,8 @@ public class RatRace implements Observer{
 		view = new View( model ) ;
 		controller = new Controller(model, view) ;
 		display.getRoot().add(view);
-		update(null, null) ; }
+		update(null, null) ; 
+	}
 	
 	public RatRace() {
 					
@@ -50,12 +44,13 @@ public class RatRace implements Observer{
 				rebuildMVC() ;
 			}} ) ;
 		
+		display.setRooot(root);
 		Container toolBar = new Container() ;
 		toolBar.add( restartButton ) ;
 		toolBar.add( goButton ) ;
 		toolBar.add( pauseButton ) ;
-		display.add( toolBar, borderLayout.getNorth()) ;
-
+		root.add(toolBar, lm.getNorth());
+		
 		rebuildMVC() ;
 	}
 

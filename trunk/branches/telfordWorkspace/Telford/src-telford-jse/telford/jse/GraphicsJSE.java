@@ -2,8 +2,11 @@ package telford.jse;
 
 import java.awt.*;
 
+import telford.common.Line;
+
 public class GraphicsJSE implements telford.common.Graphics {
-	Graphics2D g ;
+	
+	Graphics g;
 	GraphicsJSE( Graphics2D g ) { this.g = g ; }
 	
 	@Override
@@ -37,4 +40,20 @@ public class GraphicsJSE implements telford.common.Graphics {
 	public telford.common.FontMetrics getFontMetrics(telford.common.Font f) {
 		return new FontMetricsJSE(g.getFontMetrics( ((FontJSE)f).f ) ) ;
 	}
+
+	@Override
+	public int getColor() {
+		return g.getColor().getRGB();
+	}
+
+	@Override
+	public void fillOval(int x, int y, int height, int weight) {
+		g.fillOval(x, y, height, weight);
+	}
+
+	@Override
+	public void draw(Line line) {
+		g.drawLine(line.p0.getX(), line.p0.getY(), line.p1.getX(), line.p1.getY());;
+	}
+
 }

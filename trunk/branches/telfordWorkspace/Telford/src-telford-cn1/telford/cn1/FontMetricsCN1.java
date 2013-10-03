@@ -17,4 +17,9 @@ class FontMetricsCN1 extends telford.common.FontMetrics {
 		return f.stringWidth(str);
 	}
 
+	@Override
+	public int getAscent() {
+		return f.get
+	}
+
 }
