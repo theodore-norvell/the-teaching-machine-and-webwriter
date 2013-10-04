@@ -6,7 +6,7 @@ import telford.common.Line;
 
 public class GraphicsJSE implements telford.common.Graphics {
 	
-	Graphics g;
+	Graphics2D g;
 	GraphicsJSE( Graphics2D g ) { this.g = g ; }
 	
 	@Override

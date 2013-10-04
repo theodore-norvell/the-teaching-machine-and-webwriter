@@ -17,7 +17,7 @@ public class View extends Container implements Observer, ViewI {
 
 	@Override
 	public void update(Observable arg0, Object arg1) {
-		repaint() ;
+		repaint();
 	}
 	
 	public View( Model model ) {
@@ -46,7 +46,7 @@ public class View extends Container implements Observer, ViewI {
 		return new Point(x, y) ;
 	}
 	
-	private Point viewToWorld(int x, int y) {
+	private Point viewToWorld(int x, int y) {	
 		int myWidth = getWidth() ;
 		int myHeight = getHeight() ;
 		double scale = Math.min( myWidth/(modelWidth+4), myHeight/(modelHeight+4) ) ;
@@ -60,8 +60,10 @@ public class View extends Container implements Observer, ViewI {
 	
 	@Override public void paintComponent( Graphics g ) {
 		super.paintComponent(g) ;
-		if( !(g instanceof Graphics) )
-			throw new AssertionError("Needs Graphics2D support." ) ;
+		try { throw new Exception() ; }
+		catch( Exception ex ) {
+			ex.printStackTrace(System.out);
+		}
 		int originalColor = g.getColor() ;
 		Font originalFont = g.getFont() ;
 		

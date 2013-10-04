@@ -26,7 +26,7 @@ public class RatRace implements Observer{
 		view = new View( model ) ;
 		controller = new Controller(model, view) ;
 		display.getRoot().add(view);
-		update(null, null) ; 
+		update(null, null);
 	}
 	
 	public RatRace() {

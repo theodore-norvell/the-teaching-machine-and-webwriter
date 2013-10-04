@@ -72,6 +72,6 @@ public class Model extends Observable {
 			gameOver = true ;
 		}
 		setChanged() ;
-		notifyObservers() ;
+		//notifyObservers() ;
 	}
 }
