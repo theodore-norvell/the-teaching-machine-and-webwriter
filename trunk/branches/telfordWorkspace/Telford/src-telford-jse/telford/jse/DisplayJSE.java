@@ -29,7 +29,6 @@ public class DisplayJSE extends JFrame implements Display{
 	@Override
 	public void setPreferredSize(int width, int height) {
 		setSize(width, height);
-	}
-	
+	}	
 
 }

@@ -53,6 +53,11 @@ public class KitJSE extends telford.common.Kit {
 		return new TimerJSE(delay,repeats, actionListener);
 	}
 
+	@Override
+	public LayoutManager getFlowLayoutManager() {
+		return new FlowLayoutJSE();
+	}
+
 
 	
 }

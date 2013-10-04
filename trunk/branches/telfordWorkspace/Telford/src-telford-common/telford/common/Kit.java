@@ -24,4 +24,6 @@ abstract public class Kit {
 	abstract public LayoutManager getBorderLayoutManager();
 
 	public abstract Timer getTimer(int delay,boolean repeats, ActionListener actionListener) ;
+
+	public abstract LayoutManager getFlowLayoutManager() ;
 }

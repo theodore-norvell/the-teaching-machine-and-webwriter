@@ -8,6 +8,8 @@ public class Container extends Component {
 	
 	public Container ()  {
 		peer = Kit.getKit().makeContainerPeer(this);
+		//TODO: Choose right layoutManager for Container;
+		setLayoutManager(Kit.getKit().getFlowLayoutManager());
 	}
 		
 	public void add(Component component) {
