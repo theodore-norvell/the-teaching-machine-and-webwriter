@@ -2,11 +2,10 @@ package telford.common;
 
 public interface Display {
 		
-	public void setRooot ( Root root ) ;
+	public void setRoot ( Root root ) ;
 	
 	public Root getRoot () ; 
 	
 	public void setPreferredSize (int width, int height) ;
-
 	
 }

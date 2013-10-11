@@ -36,9 +36,9 @@ public class Model extends Observable {
 
 	public double getRatRadius() { return rat.radius ; }
 
-	public int getGoal_i() { return maze.goal_i() ; }
+	public double getGoal_i() { return maze.goal_i() ; }
 	
-	public int getGoal_j() { return maze.goal_j() ; }
+	public double getGoal_j() { return maze.goal_j() ; }
 	
 	public boolean hasHWall(int i, int j) { return maze.hasHWall(i, j) ; }
 
@@ -62,9 +62,9 @@ public class Model extends Observable {
 	public void pulse() {
 		if( paused ) return ;
 		long time = System.currentTimeMillis() ;
-		if( ! gameOver ) this.elapsedTime = time - startTime ;
 		long delta_t = timeOfLastPulse == NOTIME ? 0 : time - timeOfLastPulse ;
 		timeOfLastPulse = time ;
+		if( ! gameOver ) this.elapsedTime += delta_t ;
 		maze.pulse( delta_t ) ;
 		rat.pulse( delta_t ) ;
 		if( rat.getBlock_i(rat.get_i())==maze.goal_i()
@@ -72,6 +72,6 @@ public class Model extends Observable {
 			gameOver = true ;
 		}
 		setChanged() ;
-		//notifyObservers() ;
+		notifyObservers() ;
 	}
 }

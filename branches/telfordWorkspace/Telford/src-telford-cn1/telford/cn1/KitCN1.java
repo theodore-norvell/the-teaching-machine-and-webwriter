@@ -17,6 +17,8 @@ import com.codename1.ui.Form;
 
 public class KitCN1 extends telford.common.Kit {
 
+	private Display display;
+	
 	@Override
 	public telford.common.Font getFont() {
 		return new FontCN1(Font.createSystemFont( Font.FACE_PROPORTIONAL, Font.STYLE_BOLD, Font.SIZE_LARGE)) ;
@@ -29,32 +31,34 @@ public class KitCN1 extends telford.common.Kit {
 
 	@Override
 	public Display getDisplay() {
-		// TODO Auto-generated method stub
-		return null;
+		if( display == null ) 
+			display = new DisplayCN1();
+		return display ;
 	}
 
 	@Override
 	public ButtonPeer makeButtonPeer(String title, Button button) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ButtonPeerCN1 ( title, button);
 	}
 
 	@Override
 	public ContainerPeer makeContainerPeer(Container container) {
-		// TODO Auto-generated method stub
-		return null;
+		return new ContainerPeerCN1 (container);
 	}
 
 	@Override
 	public LayoutManager getBorderLayoutManager() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BorderLayoutCN1();
 	}
 
 	@Override
-	public Timer getTimer(int delay, ActionListener actionListener) {
-		// TODO Auto-generated method stub
-		return null;
+	public Timer getTimer(int delay,boolean repeats, telford.common.ActionListener actionListener) {
+		return new TimerCN1(delay,repeats, actionListener);
+	}
+
+	@Override
+	public LayoutManager getFlowLayoutManager() {
+		return new FlowLayoutCN1();
 	}
 	
 	

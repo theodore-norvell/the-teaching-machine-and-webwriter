@@ -70,6 +70,5 @@ class RootPeerJSE extends telford.common.peers.RootPeer{
 		}
 	}
 
-	
 
 }

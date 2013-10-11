@@ -3,10 +3,11 @@ package telford.jse;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseMotionListener;
 
 
-public class MouseListenerJSE implements MouseMotionListener, MouseListener{
+public class MouseListenerJSE extends MouseMotionAdapter implements MouseMotionListener, MouseListener{
 	
 	
 	private telford.common.MouseListener listener;

@@ -33,13 +33,13 @@ public class GraphicsCN1 implements telford.common.Graphics {
 	public int getColor() {
 		return g.getColor();
 	}
-
-	public void fillOval(int x, int y, int weight, int height) {
-		g.
+	
+	public void fillOval(int x, int y, int width, int height) {
+		g.fillArc(x, y, width, height, 0, 360);
 	}
 
 	public void draw(Line line) {
-		g.drawLine(line.p0.getX(), line.p0.getY(), line.p1.getX(), line.p1.getY());
+		g.drawLine((int)line.p0.getX(), (int)line.p0.getY(), (int)line.p1.getX(), (int)line.p1.getY());
 	}
 
 }
