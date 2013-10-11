@@ -19,7 +19,7 @@ class FontMetricsCN1 extends telford.common.FontMetrics {
 
 	@Override
 	public int getAscent() {
-		return f.get
+		return 0;
 	}
 
 }

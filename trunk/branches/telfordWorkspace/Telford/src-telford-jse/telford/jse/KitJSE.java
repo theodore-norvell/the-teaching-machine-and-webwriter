@@ -1,13 +1,10 @@
 package telford.jse;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 import telford.common.Container;
 import telford.common.Display;
 import telford.common.LayoutManager;
-import telford.common.Line;
-import telford.common.Point;
 import telford.common.Timer;
 import telford.common.peers.ContainerPeer;
 

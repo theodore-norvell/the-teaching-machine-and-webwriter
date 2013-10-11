@@ -53,7 +53,7 @@ public class GraphicsJSE implements telford.common.Graphics {
 
 	@Override
 	public void draw(Line line) {
-		g.drawLine(line.p0.getX(), line.p0.getY(), line.p1.getX(), line.p1.getY());;
+		g.drawLine((int)line.p0.getX(), (int)line.p0.getY(), (int)line.p1.getX(), (int)line.p1.getY());;
 	}
 
 }

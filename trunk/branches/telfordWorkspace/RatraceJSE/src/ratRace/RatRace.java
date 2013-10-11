@@ -20,7 +20,10 @@ public class RatRace implements Observer{
 	private Button restartButton = new Button("Restart") ;
 		
 	void rebuildMVC() {
-		if( view != null ) { view.terminate(); display.getRoot().remove(view); }
+		if( view != null ) { 
+			view.terminate(); 
+			display.getRoot().remove(view);
+		}
 		model = new Model(50, 50) ;
 		model.addObserver( this ) ;
 		view = new View( model ) ;
@@ -44,7 +47,7 @@ public class RatRace implements Observer{
 				rebuildMVC() ;
 			}} ) ;
 		
-		display.setRooot(root);
+		display.setRoot(root);
 		Container toolBar = new Container() ;
 		toolBar.add( restartButton ) ;
 		toolBar.add( goButton ) ;
@@ -61,6 +64,9 @@ public class RatRace implements Observer{
 		if( model.getPaused() ) {
 			goButton.requestFocusInWindow() ; }
 		else {
-			pauseButton.requestFocusInWindow() ; } }
-	
+			pauseButton.requestFocusInWindow() ; }
+		view.repaint();
+		display.setRoot(root);
+	}
+		
 }

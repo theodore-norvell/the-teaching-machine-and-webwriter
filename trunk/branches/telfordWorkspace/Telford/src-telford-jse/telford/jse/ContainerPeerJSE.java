@@ -9,14 +9,14 @@ import java.awt.LayoutManager;
 import javax.swing.JPanel;
 
 public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
-	
+
 	Container myContainer ;
 
 	ContainerPeerJSE(telford.common.Container container) {
 		super ( container );
 		myContainer = new MyContainer();
 	}
-	
+
 	@Override
 	public void add(telford.common.Component component) {
 		myContainer.add((Component) component.getPeer().getRepresentative());
@@ -31,7 +31,7 @@ public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
 	public void add(telford.common.Component component, Object constraint) {
 		myContainer.add( (Component) component.getPeer().getRepresentative(), constraint);
 	}
-	
+
 	@Override
 	public void repaint() {
 		myContainer.repaint();
@@ -46,28 +46,33 @@ public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
 	public int getHeight() {
 		return myContainer.getHeight();
 	}
-	
+
 	@Override
 	public Object getRepresentative() {
 		return myContainer;
 	}
-	
+
 	@Override
 	public void setLayoutManager(telford.common.LayoutManager lm) {
 		myContainer.setLayout((LayoutManager) lm.getRepresentative());
 	}
-	
+
 	@Override
 	public void addMouseListener(telford.common.MouseListener mouseListener) {
-		myContainer.addMouseListener( new MouseListenerJSE(mouseListener));
-	}
-	
-	class MyContainer extends JPanel {
-		@Override public void paintComponent( Graphics g) {
-			telford.common.Graphics tg = new GraphicsJSE( (Graphics2D) g) ;
-			component.paintComponent(tg) ;
+		MouseListenerJSE ml =  new MouseListenerJSE(mouseListener) ;
+		myContainer.addMouseListener( ml );
+		myContainer.addMouseMotionListener( ml );
 	}
 
-	
+	class MyContainer extends JPanel {
+		@Override public void paintComponent( Graphics g) {
+			super.paintComponent(g);
+			telford.common.Graphics tg = new GraphicsJSE( (Graphics2D) g) ;
+			component.paintComponent(tg) ;
+		}
+
+
 	}
-	}
+
+
+}

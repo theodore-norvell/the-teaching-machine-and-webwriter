@@ -13,10 +13,11 @@ public class DisplayJSE extends JFrame implements Display{
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize(500, 500);
 		setVisible(true);
+		
 		//TODO do we want to create an initial root?
 	}
 	@Override
-	public void setRooot(Root root) {
+	public void setRoot(Root root) {
 		this.root = root;
 		setContentPane((Container) root.getPeer().getRepresentative());
 	}
@@ -29,6 +30,6 @@ public class DisplayJSE extends JFrame implements Display{
 	@Override
 	public void setPreferredSize(int width, int height) {
 		setSize(width, height);
-	}	
-
+	}
+	
 }

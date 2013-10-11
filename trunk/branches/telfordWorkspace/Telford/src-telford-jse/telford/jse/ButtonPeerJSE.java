@@ -1,6 +1,5 @@
 package telford.jse;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -63,10 +62,11 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 		
 		MyButton(String title) {
 			super(title);
-			setPreferredSize(new Dimension(100, 100));
 		}
 		
 	}
+
+	
 
 
 }

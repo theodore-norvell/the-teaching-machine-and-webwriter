@@ -16,7 +16,7 @@ public class View extends Container implements Observer, ViewI {
 	    = new HashSet<ViewListenerI>() ;
 
 	@Override
-	public void update(Observable arg0, Object arg1) {
+	public void update(Observable arg0, Object arg1) {		
 		repaint();
 	}
 	
@@ -34,36 +34,33 @@ public class View extends Container implements Observer, ViewI {
 		myListeners.add( listener ) ;
 	}
 	
-	private Point worldToView(int i, int j) {
-		int myWidth = getWidth();
-		int myHeight = getHeight() ;
+	private Point worldToView(double i, double j) {
+		double myWidth = getWidth();
+		double myHeight = getHeight() ;
 		double scale = Math.min( myWidth/(modelWidth+4), myHeight/(modelHeight+4) ) ;
 		// Multiplying by scale converts model units to view units.
 		double x_offset = (myWidth-scale*modelWidth)/2 ;
 		double y_offset = (myHeight-scale*modelHeight)/2 ;
-		int x =  (int) (j * scale + x_offset);
-		int y =  (int) (i * scale + y_offset);
+		double x =  j * scale + x_offset;
+		double y =  i * scale + y_offset;
 		return new Point(x, y) ;
 	}
 	
-	private Point viewToWorld(int x, int y) {	
-		int myWidth = getWidth() ;
-		int myHeight = getHeight() ;
+	private Point viewToWorld(double x, double y) {	
+		double myWidth = getWidth() ;
+		double myHeight = getHeight() ;
 		double scale = Math.min( myWidth/(modelWidth+4), myHeight/(modelHeight+4) ) ;
 		// Multiplying by scale converts model units to view units.
 		double x_offset = (myWidth-scale*modelWidth)/2 ;
 		double y_offset = (myHeight-scale*modelHeight)/2 ;
-		int j = (int) ((x-x_offset) / scale);
-		int i = (int) ((y-y_offset) / scale) ;
+		double j =  (x-x_offset) / scale;
+		double i =  (y-y_offset) / scale ;
 		return new Point(i,j) ;
 	}
 	
 	@Override public void paintComponent( Graphics g ) {
 		super.paintComponent(g) ;
-		try { throw new Exception() ; }
-		catch( Exception ex ) {
-			ex.printStackTrace(System.out);
-		}
+
 		int originalColor = g.getColor() ;
 		Font originalFont = g.getFont() ;
 		
@@ -87,19 +84,19 @@ public class View extends Container implements Observer, ViewI {
 				} } }
 		
 		// Goal
-		int goal_i = model.getGoal_i() ;
-		int goal_j = model.getGoal_j() ;
+		double goal_i = model.getGoal_i() ;
+		double goal_j = model.getGoal_j() ;
 		p0 = worldToView(goal_i,goal_j) ;
 		p1 = worldToView(goal_i+1, goal_j+1) ;
-		int x = p0.getX(), y = p0.getY();
-		int w = p1.getX()-x, h = p1.getY()-y ;
+		double x = p0.getX(), y = p0.getY();
+		double w = p1.getX()-x, h = p1.getY()-y ;
 		g.setColor( 0xFF) ;
 		g.fillRect((int)x, (int)y, (int)w+1, (int)h+1) ;
 		
 		// Rat
-		int rat_i = (int) model.getRat_i() ;
-		int rat_j = (int) model.getRat_j() ;
-		int radius = (int) model.getRatRadius() ;
+		double rat_i = model.getRat_i() ;
+		double rat_j = model.getRat_j() ;
+		double radius = model.getRatRadius() ;
 		p0 = worldToView(rat_i-radius, rat_j-radius) ;
 		p1 = worldToView(rat_i+radius, rat_j+radius) ;
 		x = p0.getX(); y = p0.getY();
@@ -139,6 +136,10 @@ public class View extends Container implements Observer, ViewI {
 		timer.stop() ;
 	}
 	
+	public void start(){
+		timer.start();
+	}
+	
 	// It is important to use a Swing timer here
 	private telford.common.Timer timer = Kit.getKit().getTimer(50, true, new ActionListener() {
 		@Override
@@ -150,8 +151,8 @@ public class View extends Container implements Observer, ViewI {
 	class MyMouseListener implements telford.common.MouseListener {
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			int x = e.getX() ;
-			int y = e.getY();
+			double x = e.getX() ;
+			double y = e.getY();
 			Point p = viewToWorld(x, y) ;
 			for( ViewListenerI listener : myListeners ) {
 				listener.mouseMovedTo(p.getX(), p.getY()) ;
