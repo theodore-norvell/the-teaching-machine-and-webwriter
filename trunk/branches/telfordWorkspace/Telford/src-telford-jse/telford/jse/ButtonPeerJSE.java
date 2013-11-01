@@ -16,7 +16,6 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 		
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO create the right kind of event.
 				telford.common.ActionEvent ev = new telford.common.ActionEvent() {} ;
 				((telford.common.Button)component).fireAction(ev);
 			}
@@ -39,8 +38,8 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 	}
 	
 	@Override
-	public void addMouseListener(telford.common.MouseListener mouseListener) {
-		myButton.addMouseListener(new MouseListenerJSE(mouseListener));
+	public void addMouseListener(int count) {
+		UtilJSE.addMouseListener(myButton, count, component);
 	}
 	
 	@Override
@@ -65,6 +64,8 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 		}
 		
 	}
+
+	
 
 	
 

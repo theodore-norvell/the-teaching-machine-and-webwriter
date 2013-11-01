@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src-telford-common"/>
 	<classpathentry kind="src" path="src-telford-cn1"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="srcCN1"/>
 	<classpathentry kind="lib" path="lib/CLDC11.jar"/>
 	<classpathentry kind="lib" path="lib/CodenameOne.jar" sourcepath="lib/CodenameOne_SRC.zip"/>
 	<classpathentry kind="lib" path="lib/impl/cls"/>

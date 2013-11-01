@@ -1,18 +1,30 @@
 package telford.common;
 
+import java.util.ArrayList;
+
 import telford.common.peers.ComponentPeer;
 
-abstract public class Component {
+public class Component {
+	ComponentPeer peer;
+	ArrayList<MouseListener> mouseListeners = new ArrayList<MouseListener>() ;
 	
 	public Component () {
+		peer = Kit.getKit().makeComponentPeer(this);
 	}
 	
-	abstract public ComponentPeer getPeer();
-
-	public void addMouseListener(MouseListener mouseListener){
-		getPeer().addMouseListener(mouseListener);
+	public ComponentPeer getPeer(){
+		return peer;
 	}
 
+	public void addMouseListener(MouseListener mouseListener){
+		mouseListeners.add(mouseListener) ;
+		getPeer().addMouseListener(mouseListeners.size());
+	}
+	
+	public void fireMouseMoved( MouseEvent evt ) {
+		for(MouseListener l : mouseListeners ) l.mouseMoved( evt ) ;
+	}
+	
 	public void paintComponent(Graphics g) {
 	}
 	
