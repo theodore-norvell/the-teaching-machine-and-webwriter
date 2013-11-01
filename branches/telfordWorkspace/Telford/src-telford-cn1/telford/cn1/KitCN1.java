@@ -1,14 +1,15 @@
 package telford.cn1;
 
-
-import telford.common.ActionListener;
 import telford.common.Button;
+import telford.common.Component;
 import telford.common.Container;
 import telford.common.Display;
 import telford.common.LayoutManager;
+import telford.common.Random;
 import telford.common.Root;
 import telford.common.Timer;
 import telford.common.peers.ButtonPeer;
+import telford.common.peers.ComponentPeer;
 import telford.common.peers.ContainerPeer;
 import telford.common.peers.RootPeer;
 
@@ -47,20 +48,28 @@ public class KitCN1 extends telford.common.Kit {
 	}
 
 	@Override
-	public LayoutManager getBorderLayoutManager() {
+	public ComponentPeer makeComponentPeer(Component component) {
+		return new ComponentPeerCN1 (component);
+	}
+	
+	@Override
+	public telford.common.BorderLayout getBorderLayoutManager() {
 		return new BorderLayoutCN1();
 	}
 
 	@Override
-	public Timer getTimer(int delay,boolean repeats, telford.common.ActionListener actionListener) {
-		return new TimerCN1(delay,repeats, actionListener);
+	public Timer getTimer(int delay,boolean repeats,telford.common.Root root, telford.common.ActionListener actionListener) {
+		return new TimerCN1(delay,repeats,root, actionListener);
 	}
 
 	@Override
 	public LayoutManager getFlowLayoutManager() {
 		return new FlowLayoutCN1();
 	}
-	
-	
+
+	@Override
+	public Random getRandom() {
+		return new RandomCN1();
+	}	
 
 }

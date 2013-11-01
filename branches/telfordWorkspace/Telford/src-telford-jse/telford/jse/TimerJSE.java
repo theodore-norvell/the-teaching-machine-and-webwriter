@@ -9,7 +9,7 @@ public class TimerJSE implements telford.common.Timer {
 	
 	Timer timer;
 	
-	public TimerJSE(int delay,boolean repeats, final telford.common.ActionListener actionListener) {
+	public TimerJSE(int delay,boolean repeats, telford.common.Root root, final telford.common.ActionListener actionListener) {
 		timer = new Timer(delay, new ActionListener(){
 
 			@Override

@@ -3,7 +3,6 @@ package telford.jse;
 import javax.swing.*;
 
 import java.awt.*; 
-import java.awt.Component;
 
 import telford.common.Root;
 
@@ -57,8 +56,9 @@ class RootPeerJSE extends telford.common.peers.RootPeer{
 	}
 	
 	@Override
-	public void addMouseListener(telford.common.MouseListener mouseListener) {
-		myPanel.addMouseListener( new MouseListenerJSE(mouseListener));
+	public void addMouseListener(int count) {
+		UtilJSE.addMouseListener(myPanel, count, component);
+
 	}
 
 	

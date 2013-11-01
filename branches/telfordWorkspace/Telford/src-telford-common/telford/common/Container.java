@@ -13,7 +13,8 @@ public class Container extends Component {
 	}
 		
 	public void add(Component component) {
-		peer.add(component);
+		//TODO: ask layout manager whether a null constraint is allowed, and throw exception if not
+		peer.add(component); 
 	}
 
 	public void add(Component component, Object constraint) {
@@ -31,6 +32,10 @@ public class Container extends Component {
 
 	public void setLayoutManager(LayoutManager lm) {
 		peer.setLayoutManager(lm);
+	}
+	
+	@Override
+	public final void paintComponent(Graphics g){
 	}
 	
 }

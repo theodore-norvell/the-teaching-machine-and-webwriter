@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--build_version=2.1-->
+<!--build_version=2.4-->
 
 <!-- IMPORTANT!!! When building for ios: if you don't supply the certificate/provisioning profile etc. you will not 
     be able to run on a regular device (only on jailbroken devices) in that case your package name MUST be: com.codename1.demos.lwuitdemo
@@ -67,8 +67,8 @@
             source="1.5"
             target="1.5"
             bootclasspath="CLDC11.jar"        	
-            classpath="${javac.classpath}:${build.classes.dir}">
-            <src path="${test.src.dir}"/>
+				classpath="lib/CodenameOne.jar:${build.classes.dir}:lib/impl/cls">
+	        <src path="${test.src.dir}"/>
         	<classpath refid="master-classpath"/>
         </javac>        
         <prepareTests classesDir="${build.classes.dir}" testClassesDir="${build.test.classes.dir}" seJar="JavaSE.jar" metaDataFile="${build.test.classes.dir}/tests.dat" />
@@ -116,7 +116,10 @@
 				<fileset dir="build/tmp" includes="**/*" />
 			</delete> 
 	        <copy todir="build/tmp">
-	            <fileset dir="src" excludes="**/*.java"/> 
+	            <fileset dir="srcCN1" excludes="**/*.java"/> 
+	        	<fileset dir="../RatraceJSE/src" excludes="**/*.java"/>
+	        	<fileset dir="../Telford/src-telford-cn1" excludes="**/*.java"/>
+	        	<fileset dir="../Telford/src-telford-common" excludes="**/*.java"/>
 	        </copy>
 	        <copy todir="build/tmp">
 	            <fileset dir="bin" excludes="**/*.class, **/*.ovr"/> 
@@ -125,8 +128,11 @@
 	            source="1.5"
 	            target="1.5" 
 	            bootclasspath="lib/CLDC11.jar"
-	            classpath="${javac.classpath}:${build.classes.dir}">
-	            <src path="src"/>
+				classpath="lib/CodenameOne.jar:${build.classes.dir}:lib/impl/cls">
+	            <src path="srcCN1"/>
+	        	<src path="../RatraceJSE/src"/>
+	        	<src path="../Telford/src-telford-cn1"/>
+	        	<src path="../Telford/src-telford-common"/>
 	        </javac>
 	        <copy todir="build/tmp">
 	            <fileset dir="${build.classes.dir}" excludes="**/*.class, **/*.ovr"/> 

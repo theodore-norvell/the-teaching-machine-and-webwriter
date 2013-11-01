@@ -14,7 +14,7 @@ public class RatRace implements Observer{
 	private Controller controller ;
 	private Root root = new Root("Ratrace");
 	private Display display = Kit.getKit().getDisplay() ;
-	private LayoutManager lm = Kit.getKit().getBorderLayoutManager() ;
+	private BorderLayout lm = Kit.getKit().getBorderLayoutManager();
 	private Button goButton = new Button("Go");
 	private Button pauseButton = new Button("Pause") ;
 	private Button restartButton = new Button("Restart") ;
@@ -26,9 +26,9 @@ public class RatRace implements Observer{
 		}
 		model = new Model(50, 50) ;
 		model.addObserver( this ) ;
-		view = new View( model ) ;
+		view = new View( model, root ) ;
 		controller = new Controller(model, view) ;
-		display.getRoot().add(view);
+		display.getRoot().add(view, lm.getCenter());
 		update(null, null);
 	}
 	

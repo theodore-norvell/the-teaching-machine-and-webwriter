@@ -21,9 +21,15 @@ abstract public class Kit {
 
 	abstract public ContainerPeer makeContainerPeer(Container container);
 	
-	abstract public LayoutManager getBorderLayoutManager();
+	public abstract ComponentPeer makeComponentPeer(Component component);
+	
+	abstract public BorderLayout getBorderLayoutManager();
 
-	public abstract Timer getTimer(int delay,boolean repeats, ActionListener actionListener) ;
+	public abstract Timer getTimer(int delay,boolean repeats, Root root, ActionListener actionListener) ;
 
 	public abstract LayoutManager getFlowLayoutManager() ;
+
+	public abstract Random getRandom();
+
+
 }

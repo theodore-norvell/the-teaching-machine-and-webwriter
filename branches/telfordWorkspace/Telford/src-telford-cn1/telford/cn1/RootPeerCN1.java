@@ -1,9 +1,9 @@
 package telford.cn1;
 
-import telford.common.LayoutManager;
 import telford.common.Root;
 
 import com.codename1.ui.*;
+import com.codename1.ui.layouts.Layout;
 
 public class RootPeerCN1 extends telford.common.peers.RootPeer {
 	MyForm myForm ;
@@ -52,11 +52,12 @@ public class RootPeerCN1 extends telford.common.peers.RootPeer {
 
 	@Override
 	public void setLayoutManager(telford.common.LayoutManager lm) {
-		//myForm.setLayout((LayoutManager) lm.getRepresentative());
+		Layout layout = (Layout) lm.getRepresentative() ;
+		myForm.setLayout(layout);
 	}
 	
 	@Override
-	public void addMouseListener(telford.common.MouseListener mouseListener) {
+	public void addMouseListener(int count) {
 		//myForm.addMouseListener( new MouseListenerCN1(mouseListener));
 	}
 
@@ -64,8 +65,15 @@ public class RootPeerCN1 extends telford.common.peers.RootPeer {
 	class MyForm extends Form {
 				
 		@Override public void paint( Graphics g) {
+			//super.paint(g);
 			telford.common.Graphics tg = new GraphicsCN1( g) ;
 			component.paintComponent(tg) ;
+		}
+		
+		@Override
+		public void pointerPressed(int x, int y) {
+			super.pointerPressed(x, y);
+			component.repaint();
 		}
 	}
 	

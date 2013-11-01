@@ -7,11 +7,6 @@ public class FlowLayoutJSE implements telford.common.FlowLayout {
 	FlowLayout f = new FlowLayout();
 
 	@Override
-	public Object getNorth() {
-		return FlowLayout.LEADING;
-	}
-
-	@Override
 	public Object getRepresentative() {
 		return f;
 	}

@@ -8,7 +8,7 @@ import java.util.Observer;
 import ratRace.model.Model;
 import telford.common.*;
 
-public class View extends Container implements Observer, ViewI {
+public class View extends Component implements Observer, ViewI {
 	private final Model model ;
 	private final int modelWidth ;
 	private final int modelHeight ;
@@ -20,12 +20,18 @@ public class View extends Container implements Observer, ViewI {
 		repaint();
 	}
 	
-	public View( Model model ) {
+	public View( Model model, Root root ) {
 		this.model = model ;
 		modelWidth = model.getMazeWidth();
 		modelHeight = model.getMazeHeight();
 		model.addObserver( this ) ;
 		addMouseListener(new MyMouseListener()) ;
+		timer =  Kit.getKit().getTimer(50, true, root, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				for( ViewListenerI listener : myListeners ) {
+					listener.pulse() ;
+				} }});
 		timer.start() ;
 		repaint() ;
 	}
@@ -141,12 +147,7 @@ public class View extends Container implements Observer, ViewI {
 	}
 	
 	// It is important to use a Swing timer here
-	private telford.common.Timer timer = Kit.getKit().getTimer(50, true, new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			for( ViewListenerI listener : myListeners ) {
-				listener.pulse() ;
-			} }});
+	private telford.common.Timer timer;
 	
 	class MyMouseListener implements telford.common.MouseListener {
 		@Override

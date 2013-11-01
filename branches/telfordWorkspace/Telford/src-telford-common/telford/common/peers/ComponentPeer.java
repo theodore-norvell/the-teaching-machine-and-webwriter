@@ -1,7 +1,6 @@
 package telford.common.peers;
 
 import telford.common.Component;
-import telford.common.MouseListener;
 
 public abstract class ComponentPeer {
 	
@@ -13,7 +12,7 @@ public abstract class ComponentPeer {
 	
 	public abstract Object getRepresentative() ;
 
-	public abstract void addMouseListener(MouseListener mouseListener);
+	public abstract void addMouseListener(int count);
 
 	public abstract int getWidth();
 

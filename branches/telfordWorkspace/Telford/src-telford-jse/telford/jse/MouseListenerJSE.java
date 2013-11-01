@@ -10,10 +10,10 @@ import java.awt.event.MouseMotionListener;
 public class MouseListenerJSE extends MouseMotionAdapter implements MouseMotionListener, MouseListener{
 	
 	
-	private telford.common.MouseListener listener;
+	private telford.common.Component component;
 
-	MouseListenerJSE(telford.common.MouseListener listener){
-		this.listener = listener;
+	MouseListenerJSE(telford.common.Component component){
+		this.component = component;
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class MouseListenerJSE extends MouseMotionAdapter implements MouseMotionL
 
 	@Override
 	public void mouseMoved(MouseEvent event) {
-		listener.mouseMoved(new telford.common.MouseEvent(event.getX(),event.getY()));
+		component.fireMouseMoved(new telford.common.MouseEvent(event.getX(),event.getY()));
 	}
 	
 }

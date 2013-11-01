@@ -1,9 +1,13 @@
 package ratRace.model;
-import java.util.*;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+import telford.common.Kit;
+import telford.common.Random;
 
 class Maze {
-	private Random r = new Random() ;
+	private Random r = Kit.getKit().getRandom() ;
 	private final int ROWS, COLS ;
 	private final int MAXWALLLEN ;
 	private final int MINWALLLEN ;
