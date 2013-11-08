@@ -14,7 +14,6 @@ import telford.common.peers.ContainerPeer;
 import telford.common.peers.RootPeer;
 
 import com.codename1.ui.Font;
-import com.codename1.ui.Form;
 
 public class KitCN1 extends telford.common.Kit {
 
