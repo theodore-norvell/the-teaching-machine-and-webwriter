@@ -64,11 +64,11 @@ public class RootPeerCN1 extends telford.common.peers.RootPeer {
 	
 	class MyForm extends Form {
 				
-		@Override public void paint( Graphics g) {
-			//super.paint(g);
-			telford.common.Graphics tg = new GraphicsCN1( g) ;
-			component.paintComponent(tg) ;
-		}
+//		@Override public void paint( Graphics g) {
+//			telford.common.Graphics tg = new GraphicsCN1( g) ;
+//			component.paintComponent(tg) ;
+//			System.out.println("printing root");
+//		}
 		
 		@Override
 		public void pointerPressed(int x, int y) {
