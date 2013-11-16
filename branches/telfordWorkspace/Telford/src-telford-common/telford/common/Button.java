@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import telford.common.peers.ButtonPeer;
 
 public class Button extends Component{
-	final ButtonPeer peer ;
+
 	ArrayList<ActionListener> listeners = new ArrayList<ActionListener>() ;
 	
 	public Button ( String title ) {
+		super(false) ;
 		peer = Kit.getKit().makeButtonPeer(title, this);
 	}
 
@@ -21,16 +22,16 @@ public class Button extends Component{
 	}
 	
 	public void setEnabled(boolean paused) {
-		peer.setEnabled(paused);
+		getPeer().setEnabled(paused);
 	}
 
 	public void requestFocusInWindow() {
-		peer.requestFocusInWindwow();
+		getPeer().requestFocusInWindwow();
 	}
 
 	@Override
 	public ButtonPeer getPeer() {
-		return peer;
+		return (ButtonPeer) peer;
 	}
 
 }
