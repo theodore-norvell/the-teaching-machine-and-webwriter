@@ -9,9 +9,6 @@ import com.codename1.ui.layouts.Layout;
 
 public class ContainerPeerCN1 extends telford.common.peers.ContainerPeer {
 	Container myContainer ;
-	Component c;
-	
-	telford.common.Container container;
 	
 	ContainerPeerCN1(telford.common.Container container) {
 		super ( container );

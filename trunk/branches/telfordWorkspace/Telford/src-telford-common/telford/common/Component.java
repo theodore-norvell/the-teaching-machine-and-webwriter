@@ -8,8 +8,10 @@ public class Component {
 	ComponentPeer peer;
 	ArrayList<MouseListener> mouseListeners = new ArrayList<MouseListener>() ;
 	
-	public Component () {
-		peer = Kit.getKit().makeComponentPeer(this);
+	public Component() { this(true) ; }
+	
+	public Component (boolean makePeer) {
+		if(makePeer) peer = Kit.getKit().makeComponentPeer(this);
 	}
 	
 	public ComponentPeer getPeer(){
