@@ -1,10 +1,11 @@
-package ratRace;
+package org.theTeachingMachine;
 
 import java.io.IOException;
 
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 
+import ratRace.RatRace;
 import telford.common.Kit;
 
 public class Main {
