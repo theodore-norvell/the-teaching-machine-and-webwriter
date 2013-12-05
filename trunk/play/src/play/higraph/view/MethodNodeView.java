@@ -13,13 +13,16 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
 import play.higraph.model.PLAYNode;
 import play.higraph.model.PLAYPayload;
 import play.higraph.model.PLAYSubgraph;
+import play.higraph.model.PLAYTag;
 import play.higraph.model.PLAYWholeGraph;
+import play.higraph.swing.PLAYHigraphJComponent;
 import tm.backtrack.BTTimeManager;
 
 /**
@@ -27,6 +30,12 @@ import tm.backtrack.BTTimeManager;
  * 
  */
 public class MethodNodeView extends PLAYNodeView {
+	
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+	private PLAYHigraphJComponent hj;
 
 	/**
 	 * @param v
@@ -55,9 +64,30 @@ public class MethodNodeView extends PLAYNodeView {
 		//int number = this.getNumChildren();
 		
 		super.drawSelf(screen);
-		screen.setColor(Color.BLUE);
-		screen.setFont(new Font("Serif",Font.ITALIC,15));
-		screen.drawString("Method", (float) (x + 5), (float) (y + 12));
+	}
+	
+	public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		PLAYNode m = n;
+		//m.setView(n.getView());
+		
+		int mChildren = m.getNumberOfChildren();
+		System.out.println("children = "+mChildren);
+		
+		for(int k=0;k<mChildren;k++){
+			System.out.println(m.getChild(k).getTag());
+			
+			
+				s= m.getChild(k).getView().execute(env, m.getChild(k), sg);
+		}
+		
+		return s;
+		
 	}
 
 }

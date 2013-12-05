@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import play.higraph.model.PLAYNode;
+import play.higraph.view.PLAYDropZone;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
+import play.higraph.view.PLAYZoneView;
 
 /**
  * @author Kai Zhu
@@ -18,19 +20,20 @@ import play.higraph.view.PLAYNodeView;
  */
 public class PLAYViewSelectionModel {
 
-	private List<PLAYNodeView> selectedViewList;
+	private int anchor=0;
 
-	private int anchor;
+	private int focus=0;
 
-	private int focus;
-	
 	private PLAYNodeView nv;
-	
+
+	private boolean flag;
+
 
 	public PLAYViewSelectionModel() {
-		this.selectedViewList = new ArrayList<PLAYNodeView>();
+		//this.selectedViewList = new ArrayList<PLAYNodeView>();
 		this.anchor = 0;
 		this.focus = 0;
+		this.flag = false;
 	}
 
 	/**
@@ -69,93 +72,69 @@ public class PLAYViewSelectionModel {
 		this.focus = focus;
 	}
 
-	public void addSelectedView(PLAYNodeView view) {
-		this.selectedViewList.add(view);
-	}
-
 	public void clearSelectedNodeViewList() {
-		this.selectedViewList.clear();
+		this.nv = null;
 		this.anchor = 0;
 		this.focus = 0;
 	}
 
-	public List<PLAYNodeView> getSelectedViewList() {
-		return this.selectedViewList;
-	}
+	public List<PLAYNodeView> getSelectedViewList(PLAYHigraphView higraphView) {
 
-	public void setSelectedViewList(PLAYHigraphView higraphView) {
-		PLAYNode currentNode = ((PLAYNodeView) this.selectedViewList
-				.get(this.selectedViewList.size() - 1)).getNode();
-		PLAYNode parentNode = currentNode.getParent();
-		if (parentNode != null) {
+		List<PLAYNodeView> selectedViewList = new ArrayList<PLAYNodeView>();
+		PLAYNode currentChild = null;
+		PLAYNode parentNode = null;
+		selectedViewList.clear();
+
+		//System.out.println("anchor = "+anchor+ " focus = "+focus);
+
+		if(getParentNodeView() != null){
+			//System.out.println("parentnotnull");
+			selectedViewList.clear();
+			parentNode = getParentNodeView().getNode();
+
 			int childrenNumber = parentNode.getNumberOfChildren();
-			if (this.anchor < childrenNumber) {
-				currentNode = parentNode.getChild(this.anchor);
-			} else {
-				if (currentNode.getChildren().isEmpty()) {
-					currentNode = parentNode;
-					this.anchor = 0;
-					this.focus = 0;
-				} else {
-					currentNode = currentNode.getChild(0);
-					this.anchor = 0;
-					this.focus = 0;
+			//System.out.println("no of children = " + childrenNumber);
+
+			if(childrenNumber == 0){
+
+				selectedViewList.add(getParentNodeView());
+			}
+			else
+			{
+				if(anchor==focus && anchor < childrenNumber){
+					currentChild = parentNode.getChild(anchor);
+					selectedViewList.add((PLAYNodeView)higraphView.getNodeView(currentChild));
+
+				}
+				else if((anchor < focus) &&(focus < childrenNumber)){
+					System.out.println("anchor = "+anchor+" focus = "+focus);
+					for(int i = anchor; i<=focus;i++){
+						currentChild = parentNode.getChild(i);
+						selectedViewList.add((PLAYNodeView)higraphView.getNodeView(currentChild));
+					}
 				}
 			}
-		} else {
-			currentNode = currentNode.getChild(0);
-			this.anchor = 0;
-			this.focus = 0;
 		}
-		PLAYNodeView nodeview = (PLAYNodeView) higraphView
-				.getNodeView(currentNode);
-		this.selectedViewList.clear();
-		this.selectedViewList.add(nodeview);
-	}
-
-	public void setMultipleSelectedVideList(PLAYHigraphView higraphView) {
-		PLAYNode currentNode = ((PLAYNodeView) this.selectedViewList
-				.get(this.selectedViewList.size() - 1)).getNode();
-		PLAYNode parentNode = currentNode.getParent();
-		if (parentNode != null) {
-			int childrenNumber = parentNode.getNumberOfChildren();
-			if (this.focus < childrenNumber) {
-				currentNode = parentNode.getChild(this.focus);
-			} else {
-				if (currentNode.getChildren().isEmpty()) {
-					currentNode = parentNode;
-					this.anchor = 0;
-					this.focus = 0;
-				} else {
-					currentNode = currentNode.getChild(0);
-					this.anchor = 0;
-					this.focus = 0;
-				}
-			}
-		} else {
-			currentNode = currentNode.getChild(0);
-			this.anchor = 0;
-			this.focus = 0;
-		}
-		PLAYNodeView nodeview = (PLAYNodeView) higraphView
-				.getNodeView(currentNode);
-		this.selectedViewList.add(nodeview);
-	}
-	
-	public void setParentNodeView(PLAYNodeView nv){
-		this.nv = nv;
-	}
-	
-	public PLAYNodeView getParentNodeView(){
-		return nv;
-	}
-	
-	public boolean isUnderSelection(PLAYNodeView nv){
-		return true;
-	}
-	
-	public List<PLAYNodeView> getSelection(){
 		return selectedViewList;
 	}
 
+	public void setParentNodeView(PLAYNodeView nv){
+		this.nv = nv;
+	}
+
+	public PLAYNodeView getParentNodeView(){
+		return nv;
+	}
+
+	public boolean isUnderSelection(PLAYNodeView nv){
+		return true;
+	}
+
+	public void setFlag(boolean flag){
+		this.flag = flag;
+	}
+	
+	public boolean getFlag(){
+		return flag;
+	}
 }

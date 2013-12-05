@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -26,6 +27,11 @@ import tm.backtrack.BTTimeManager;
  */
 public class WHILENodeView extends PLAYNodeView {
 
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+	
     /**
      * @param v
      * @param node
@@ -88,5 +94,29 @@ public class WHILENodeView extends PLAYNodeView {
 	    // (int) (elseSeqNodeViewRect.getMinY() + 20));
 	}
     }
-
+    
+    public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		
+		System.out.println("inside while execute");
+		int children = n.getNumberOfChildren();
+		System.out.println("children = "+children);
+		
+		if(children == 2){
+			System.out.println(n.getChild(0).getTag());
+			
+			while((n.getChild(0).getView().execute(e, n.getChild(0), sg)!=null)&&
+					(n.getChild(0).getView().execute(e, n.getChild(0), sg).equals("true")))
+			{
+				s = n.getChild(1).getView().execute(e, n.getChild(1), sg);
+			}
+					
+		}
+		return s;
+    }
 }

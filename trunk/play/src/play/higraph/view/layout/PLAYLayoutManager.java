@@ -44,8 +44,10 @@ public abstract class PLAYLayoutManager
      */
     @Override
     public final void layoutLocal(
+    		
 	    NodeView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> view) {
 	layoutLocal((PLAYNodeView) view);
+	//System.out.println("locallayout");
     }
 
 }

@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 import higraph.view.HigraphView;
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -24,6 +25,11 @@ import tm.backtrack.BTTimeManager;
  */
 public class MINUSNodeView extends PLAYNodeView {
 
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+	
     public MINUSNodeView(
 	    HigraphView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> v,
 	    PLAYNode node, BTTimeManager timeMan) {
@@ -63,5 +69,31 @@ public class MINUSNodeView extends PLAYNodeView {
 			    .getHeight() / 2));
 	}
     }
-
+    
+    public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		
+		System.out.println("inside minus execute");
+		int children = n.getNumberOfChildren();
+		System.out.println("children = "+children);
+		
+		if(children ==2){
+			
+			PLAYNode child1 = n.getChild(0);
+			PLAYNode child2 = n.getChild(1);
+			String value1 = child1.getView().execute(e, child1, sg);
+			String value2 = child2.getView().execute(e, child2, sg);
+			
+			if((isNumber(value1))&&(isNumber(value2))){
+				s = Integer.toString((Integer.parseInt(value1)-Integer.parseInt(value2)));
+			}
+		}
+				
+		return s;
+	}
 }

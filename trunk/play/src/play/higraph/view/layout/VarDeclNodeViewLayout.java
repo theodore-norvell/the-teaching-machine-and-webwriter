@@ -33,20 +33,20 @@ public class VarDeclNodeViewLayout extends PLAYLayoutManager {
 	public void layoutLocal(PLAYNodeView nodeView) {
 		if (nodeView instanceof VarDeclNodeView) {
 			VarDeclNodeView vNodeView = (VarDeclNodeView) nodeView;
-			Rectangle2D rectangle = new Rectangle2D.Double(10, 10, 240, 100);
+			Rectangle2D rectangle = new Rectangle2D.Double(10, 10, 240, 40);
 			int num = vNodeView.getNumChildren();
 			//System.out.println("num = "+num);
 
 			if (vNodeView.getNumChildren() == 2) {
-				double x = 30;
-				double y = 30;
+				double x = 15;
+				double y = 20;
 				for (int i = 0; i < 2; i++) {
 					PLAYNodeView childNodeView = (PLAYNodeView) vNodeView
 							.getChild(i);
 					childNodeView.doLayout();
 					childNodeView.placeNextHierarchy(x, y);
 					Rectangle2D childNextExtent = childNodeView.getNextExtent();
-					y += 10 + childNextExtent.getHeight();
+					x += 30 + childNextExtent.getWidth();
 					Rectangle2D.union(rectangle, childNextExtent, rectangle);
 					childNodeView.getBranch().setVisibility(false);
 				}

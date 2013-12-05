@@ -8,6 +8,7 @@ package play.higraph.view;
 import java.awt.Color;
 
 import higraph.view.HigraphView;
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -23,6 +24,11 @@ import tm.backtrack.BTTimeManager;
  */
 public class STRINGNodeView extends PLAYNodeView {
 
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+
     /**
      * @param v
      * @param node
@@ -37,5 +43,25 @@ public class STRINGNodeView extends PLAYNodeView {
 	super.setFillColor(null);
 	super.label.setShow(true);
     }
+    
+    public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		System.out.println("inside num execute");
+		int children = n.getNumberOfChildren();
+		System.out.println("children = "+children);
+		
+		if(children==0){
+			s = n.getPayload().getPayloadValue();
+		}
+		
+		return s;
+		
+	}
+
 
 }
