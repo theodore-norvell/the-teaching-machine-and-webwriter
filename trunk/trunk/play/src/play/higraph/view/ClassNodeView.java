@@ -1,5 +1,5 @@
 /**
- * IFNodeView.java - play.higraph.view - PLAY
+ * ClassNodeview.java - play.higraph.view - PLAY
  * 
  * Created on 2012-03-04 by Kai Zhu
  */
@@ -27,7 +27,7 @@ import play.higraph.swing.PLAYHigraphJComponent;
 import tm.backtrack.BTTimeManager;
 
 /**
- * @author Kai Zhu
+ * @author Ravneet
  * 
  */
 public class ClassNodeView extends PLAYNodeView {

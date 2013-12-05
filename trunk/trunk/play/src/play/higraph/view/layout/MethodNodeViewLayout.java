@@ -1,7 +1,7 @@
 /**
  * IFNodeViewLayout.java - play.higraph.view.layout - PLAY
  * 
- * Created on 2012-03-08 by Kai Zhu
+ * Ravneet
  */
 package play.higraph.view.layout;
 
@@ -13,7 +13,7 @@ import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
 
 /**
- * @author Kai Zhu
+ * @author Ravneet
  * 
  */
 public class MethodNodeViewLayout extends PLAYLayoutManager {

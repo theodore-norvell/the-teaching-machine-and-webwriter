@@ -21,7 +21,7 @@ import play.higraph.swing.PLAYHigraphJComponent;
 import tm.backtrack.BTTimeManager;
 
 /**
- * @author Kai
+ * @author Ravneet
  * 
  */
 public class LessThanNodeView extends PLAYNodeView {

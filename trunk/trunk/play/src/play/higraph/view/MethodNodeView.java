@@ -1,7 +1,7 @@
 /**
- * IFNodeView.java - play.higraph.view - PLAY
+ * MethodNodeView.java - play.higraph.view - PLAY
  * 
- * Created on 2012-03-04 by Kai Zhu
+ * Created by Ravneet
  */
 package play.higraph.view;
 
@@ -26,7 +26,7 @@ import play.higraph.swing.PLAYHigraphJComponent;
 import tm.backtrack.BTTimeManager;
 
 /**
- * @author Kai Zhu
+ * @author Ravneet
  * 
  */
 public class MethodNodeView extends PLAYNodeView {
@@ -66,6 +66,7 @@ public class MethodNodeView extends PLAYNodeView {
 		super.drawSelf(screen);
 	}
 	
+	 //added by ravneet
 	public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
 		e = env;
 		s = null;

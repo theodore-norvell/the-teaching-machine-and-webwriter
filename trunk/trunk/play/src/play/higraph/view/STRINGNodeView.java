@@ -44,6 +44,7 @@ public class STRINGNodeView extends PLAYNodeView {
 	super.label.setShow(true);
     }
     
+    //added by ravneet
     public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
 		e = env;
 		s = null;

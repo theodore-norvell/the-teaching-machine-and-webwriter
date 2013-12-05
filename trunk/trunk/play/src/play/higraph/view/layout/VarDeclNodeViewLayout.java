@@ -1,7 +1,7 @@
 /**
  * IFNodeViewLayout.java - play.higraph.view.layout - PLAY
  * 
- * Created on 2012-03-08 by Kai Zhu
+ * Created by Ravneet
  */
 package play.higraph.view.layout;
 
@@ -14,7 +14,7 @@ import play.higraph.view.PLAYNodeView;
 import play.higraph.view.VarDeclNodeView;
 
 /**
- * @author Kai Zhu
+ * @author Ravneet
  * 
  */
 public class VarDeclNodeViewLayout extends PLAYLayoutManager {
