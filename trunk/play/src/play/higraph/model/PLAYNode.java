@@ -5,6 +5,7 @@
  */
 package play.higraph.model;
 
+import play.higraph.view.PLAYNodeView;
 import higraph.model.abstractTaggedClasses.AbstractTaggedNode;
 
 /**
@@ -15,6 +16,7 @@ public class PLAYNode
 	extends
 	AbstractTaggedNode<PLAYTag,PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge> {
 
+	private PLAYNodeView view;
     public PLAYNode(PLAYWholeGraph wholeGraph, PLAYPayload payload) {
 	super(wholeGraph, payload);
     }
@@ -28,4 +30,11 @@ public class PLAYNode
 	return this;
     }
 
+    public void setView(PLAYNodeView view){
+    this.view = view;	
+    }
+    
+    public PLAYNodeView getView(){
+    	return this.view;
+    }
 }
