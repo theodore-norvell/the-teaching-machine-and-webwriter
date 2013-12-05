@@ -20,7 +20,7 @@ import play.higraph.model.PLAYWholeGraph;
 import tm.backtrack.BTTimeManager;
 
 /**
- * @author Kai
+ * @author Ravneet
  * 
  */
 public class GreaterThanNodeView extends PLAYNodeView {
