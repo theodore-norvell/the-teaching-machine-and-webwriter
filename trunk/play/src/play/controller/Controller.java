@@ -7,8 +7,11 @@ package play.controller;
 
 import java.awt.Color;
 
+import play.executor.Executor;
 import play.higraph.model.PLAYNode;
+import play.higraph.model.PLAYSubgraph;
 import play.higraph.view.PLAYHigraphView;
+import play.higraph.view.PLAYNodeView;
 import play.ide.handler.ViewHandler;
 import tm.backtrack.BTTimeManager;
 
@@ -83,6 +86,7 @@ public class Controller {
 			.getCurrentDescription());
 	    } else {
 		this.viewHandler.modifyUndoMenuItem(null);
+		
 	    }
 	}
     }
@@ -102,8 +106,13 @@ public class Controller {
 	}
     }
 
-    public void run() {
-	// TODO
+    public void refreshView(PLAYNodeView view){
+    	view.refresh();
+    }
+    public void run(PLAYSubgraph sg) {
+	 Executor ex = new Executor(sg,this.viewHandler.getJComponent());
+	 Thread t = new Thread(ex);
+	 t.start();
     }
 
     public void createNewClass() {
