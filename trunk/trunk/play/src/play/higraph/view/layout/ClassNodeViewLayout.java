@@ -1,7 +1,6 @@
 /**
- * IFNodeViewLayout.java - play.higraph.view.layout - PLAY
+ *CLASSNodeViewLayout.java - play.higraph.view.layout - PLAY
  * 
- * Created on 2012-03-08 by Kai Zhu
  */
 package play.higraph.view.layout;
 
@@ -11,9 +10,10 @@ import java.awt.geom.Rectangle2D;
 import play.higraph.view.ClassNodeView;
 import play.higraph.view.PLAYHigraphView;
 import play.higraph.view.PLAYNodeView;
+import play.higraph.view.PLAYViewFactory;
 
 /**
- * @author Kai Zhu
+ * @author Ravneet
  * 
  */
 public class ClassNodeViewLayout extends PLAYLayoutManager {
@@ -34,25 +34,33 @@ public class ClassNodeViewLayout extends PLAYLayoutManager {
 		//System.out.println("In layoutLocal of ClassNodeView") ;
 		if (nodeView instanceof ClassNodeView) {
 			ClassNodeView classNodeView = (ClassNodeView) nodeView;
-			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, 200, 200);
+			classNodeView.removeAllDropZones();
+			PLAYViewFactory viewFactory = (PLAYViewFactory) classNodeView
+					.getHigraphView().getViewFactory();
+			Rectangle2D rectangle = new Rectangle2D.Double(20, 20, 250, 280);
 			int num = classNodeView.getNumChildren();
-			System.out.println("num = "+num);
+			
+			//System.out.println("num = "+num);
 
-			if (num >= 2) {
+			if (num >= 1) {
+				//System.out.println("inside num check");
 				double x = 30;
-				double y = 0;
+				double y = 40;
 				for (int i = 0; i < num; i++) {
 					PLAYNodeView childNodeView = (PLAYNodeView) classNodeView
 							.getChild(i);
 					childNodeView.doLayout();
 					childNodeView.placeNextHierarchy(x, y);
 					Rectangle2D childNextExtent = childNodeView.getNextExtent();
-					y += 10 + childNextExtent.getHeight();
+					y += 20 + childNextExtent.getHeight();
 					Rectangle2D.union(rectangle, childNextExtent, rectangle);
 					childNodeView.getBranch().setVisibility(false);
+					if(!(i==num-1)){
+						viewFactory.makeDropZone(classNodeView);
+					}
 				}
 				rectangle.add(new Point2D.Double(rectangle.getMaxX() + 10,
-						rectangle.getMaxY() + 10));
+						rectangle.getMaxY() + 20));
 				classNodeView.setNextShape(rectangle);
 				classNodeView.translateNextHierarchy(0, 0);
 			} else {
