@@ -12,13 +12,16 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
 import play.higraph.model.PLAYNode;
 import play.higraph.model.PLAYPayload;
 import play.higraph.model.PLAYSubgraph;
+import play.higraph.model.PLAYTag;
 import play.higraph.model.PLAYWholeGraph;
+import play.higraph.swing.PLAYHigraphJComponent;
 import tm.backtrack.BTTimeManager;
 
 /**
@@ -26,6 +29,12 @@ import tm.backtrack.BTTimeManager;
  * 
  */
 public class SEQNodeView extends PLAYNodeView {
+	
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+	private PLAYHigraphJComponent hj;
 
 	/**
 	 * @param v
@@ -119,6 +128,29 @@ public class SEQNodeView extends PLAYNodeView {
 		zone.setNextShape(new Rectangle2D.Double(x, y, width, height));
 		zone.placeNext(x, y);
 		super.moveZone(zone);
+	}
+	
+	public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		
+		System.out.println("inside seq execute");
+		int mChildren = n.getNumberOfChildren();
+		System.out.println("children = "+mChildren);
+		
+		for(int k=0;k<mChildren;k++){
+			System.out.println(n.getChild(k).getTag());
+			
+			s= n.getChild(k).getView().execute(env, n.getChild(k), sg);
+			
+		}
+		
+		return s;
+		
 	}
 
 }

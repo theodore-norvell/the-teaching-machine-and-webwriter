@@ -261,7 +261,7 @@ public class ViewHandler {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controller.getInstance().run();
+				Controller.getInstance().run(playSubgraph);
 			}
 
 		});
@@ -290,38 +290,12 @@ public class ViewHandler {
 		playHigraphView.setLayoutManager(new PLAYBoxesInBoxesLayout(
 				NestedTreeLayoutManager.Axis.Y));
 		subgraphMouseAdapter.installIn(playHigraphJComponent);
-		//this.jPanel.revalidate();
-		//this.jPanel.removeAll();
-		//this.jPanel.repaint();
 		JScrollPane scrollPane = new JScrollPane(playHigraphJComponent);
 		scrollPane.setFocusable(true);				
 		
 		this.jPanel.add(scrollPane);
 		System.out.println("jcomponent" + playHigraphJComponent);
-		//playWholeGraph.makeRootNode(new PLAYPayload(PLAYTag.CLASS
-			//	.toString(),PLAYTag.CLASS));
-		//Controller.getInstance().refresh(playHigraphView);
-		
-		//		Object[][] className = {{"class1"}};
-		
-		//JTable table = sp.getList();
-		//System.out.println(table);
-		//table.set
-		
-		//System.out.println(table.getRowCount());
-		//System.out.println(table.getColumnCount());
-		
-		//table.getModel().
-		
-		//table.setValueAt(className, table.getRowCount()+1, table.getColumnCount());
-		/*String title = "Class" + this.tabbedPane.getTabCount() ; 
-		this.tabbedPane
-		.add(title, scrollPane);
-		this.tabbedPane.setTabComponentAt(
-				this.tabbedPane.getTabCount() - 1,
-				new ClosableTabPanel(this.tabbedPane, title));
-		this.tabbedPane.setSelectedIndex(this.tabbedPane.getTabCount() - 1);*/
-		
+	
 	}
 	
 	/* 
@@ -388,11 +362,15 @@ public class ViewHandler {
 
 	public void updataPropertyPanel(
 			PLAYViewSelectionModel playViewSelectionModel) {
-		List<PLAYNodeView> list = playViewSelectionModel.getSelectedViewList();
+		List<PLAYNodeView> list = playViewSelectionModel.getSelectedViewList(playHigraphView);
 		this.propertyPanel.update(list);
 	}
 
 	public ViewPropertiesPanel getViewPropertiesPanel() {
 		return this.propertyPanel.getViewPropertiesPanel();
+	}
+	
+	public PLAYHigraphJComponent getJComponent(){
+		return playHigraphJComponent;
 	}
 }

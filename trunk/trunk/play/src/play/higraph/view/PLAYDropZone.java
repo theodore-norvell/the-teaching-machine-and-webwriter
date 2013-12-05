@@ -38,7 +38,7 @@ public class PLAYDropZone
 	super(nv, timeMan);
 	super.strokeVar.set(new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
 		BasicStroke.JOIN_MITER, 10.0f, new float[] { 1.0f }, 0.0f));
-	super.setColor(Color.RED);
+	super.setColor(Color.WHITE);
 	super.setFillColor(null);
 	this.setVisibility(true);
     }

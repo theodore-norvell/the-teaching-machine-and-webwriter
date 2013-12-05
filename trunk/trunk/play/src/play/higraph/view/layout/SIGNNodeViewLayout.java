@@ -8,6 +8,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import play.higraph.view.DIVISIONNodeView;
+import play.higraph.view.GreaterThanNodeView;
+import play.higraph.view.LessThanNodeView;
 import play.higraph.view.MINUSNodeView;
 import play.higraph.view.MULTIPLICATIONNodeView;
 import play.higraph.view.PLAYHigraphView;
@@ -35,7 +37,9 @@ public class SIGNNodeViewLayout extends PLAYLayoutManager {
 	if ((nodeView instanceof PLUSNodeView)
 		|| (nodeView instanceof MINUSNodeView)
 		|| (nodeView instanceof MULTIPLICATIONNodeView)
-		|| (nodeView instanceof DIVISIONNodeView)) {
+		|| (nodeView instanceof DIVISIONNodeView)
+		|| (nodeView instanceof LessThanNodeView)
+		|| (nodeView instanceof GreaterThanNodeView)) {
 	    PLAYNodeView playNodeView = (PLAYNodeView) nodeView;
 	    Rectangle2D rectangle = new Rectangle2D.Double(0, 0, 20, 20);
 	    if (playNodeView.getNumChildren() == 2) {

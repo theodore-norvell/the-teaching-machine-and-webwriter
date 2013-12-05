@@ -26,10 +26,15 @@ import play.higraph.view.layout.IFNodeViewLayout;
 import play.higraph.view.layout.SEQNodeViewLayout;
 import play.higraph.view.layout.SIGNNodeViewLayout;
 import play.higraph.view.layout.WHILENodeViewLayout;
+import play.higraph.view.layout.VarDeclNodeViewLayout;
+import play.higraph.view.layout.MethodNodeViewLayout;
 import tm.backtrack.BTTimeManager;
 
 /**
  * @author Kai Zhu
+ * 
+ * -----Modification History-----
+ * Ravneet Sandhu	2013-10-19
  * 
  */
 public class PLAYViewFactory
@@ -55,6 +60,12 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 			case CLASS :
 				nodeView = this.makeClassNodeView(higraphView, node);
 			break ;
+			case VARDECL:
+				nodeView = this.makeVarDeclNodeView(higraphView, node);
+			break;
+			case METHOD:
+				nodeView = this.makeMethodNodeView(higraphView,node);
+			break;
 			case EXPPLACEHOLDER:
 				nodeView = this.makePlaceHolderNodeView(higraphView, node);
 			break ;
@@ -81,9 +92,28 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 			case NULLTYPE:
 				nodeView = this.makeNULLNodeView(higraphView, node);
 			break ;
+			case PLUS:
+				nodeView = this.makePLUSNodeView(higraphView, node);
+			break ;
+			case MINUS:
+				nodeView = this.makeMINUSNodeView(higraphView, node);
+			break ;
+			case DIVIDE:
+				nodeView = this.makeDIVISIONNodeView(higraphView, node);
+			break ;
+			case MULTIPLY:
+				nodeView = this.makeMULTIPLICATIONNodeView(higraphView, node);
+			break ;
+			case LESS:
+				nodeView = this.makeLESSNodeView(higraphView, node);
+			break ;
+			case GREATER:
+				nodeView = this.makeGREATERNodeView(higraphView, node);
+			break ;
 			default:
 				nodeView = new PLAYNodeView(higraphView, node, super.timeMan);
 		}
+		node.setView(nodeView);
 		return nodeView;
 	}
 
@@ -94,6 +124,22 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 				node, super.timeMan);
 		classNodeView.setLayoutManager(new ClassNodeViewLayout());
 		return classNodeView;
+	}
+	
+	private PLAYNodeView makeVarDeclNodeView(PLAYHigraphView higraphView,
+			PLAYNode node){
+		PLAYNodeView varDeclNodeView = new VarDeclNodeView(higraphView,
+				node, super.timeMan);
+		varDeclNodeView.setLayoutManager(new VarDeclNodeViewLayout());
+		return varDeclNodeView;
+	}
+	
+	private PLAYNodeView makeMethodNodeView(PLAYHigraphView higraphView,
+			PLAYNode node){
+		PLAYNodeView methodNodeView = new MethodNodeView(higraphView,
+				node, super.timeMan);
+		methodNodeView.setLayoutManager(new MethodNodeViewLayout());
+		return methodNodeView;
 	}
 	
 	/**
@@ -309,5 +355,20 @@ ViewFactory<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgrap
 		divisionNodeView.setLayoutManager(new SIGNNodeViewLayout());
 		return divisionNodeView;
 	}
+	
+	private PLAYNodeView makeLESSNodeView(PLAYHigraphView higraphView,
+			PLAYNode node) {
+		LessThanNodeView lessThanNodeView = new LessThanNodeView(higraphView,
+				node, super.timeMan);
+		lessThanNodeView.setLayoutManager(new SIGNNodeViewLayout());
+		return lessThanNodeView;
+	}
 
+	private PLAYNodeView makeGREATERNodeView(PLAYHigraphView higraphView,
+			PLAYNode node) {
+		GreaterThanNodeView greaterThanNodeView = new GreaterThanNodeView(higraphView,
+				node, super.timeMan);
+		greaterThanNodeView.setLayoutManager(new SIGNNodeViewLayout());
+		return greaterThanNodeView;
+	}
 }

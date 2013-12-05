@@ -64,7 +64,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	private PLAYSubgraph subgraph;
 
 	private Controller controller;
-	
+
 	private int i = 0;
 
 	private enum DropActionType {
@@ -130,10 +130,10 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	public void clickedOn(
 			Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 			MouseEvent e) {
-		System.out.println("Clicked on " + e.getX() + "-" + e.getY());
-		if (!this.playViewSelectionModel.getSelectedViewList().isEmpty()) {
+		//System.out.println("Clicked on " + e.getX() + "-" + e.getY());
+		if (!this.playViewSelectionModel.getSelectedViewList(playHigraphView).isEmpty()) {
 			for (Object object : this.playViewSelectionModel
-					.getSelectedViewList()) {
+					.getSelectedViewList(playHigraphView)) {
 				String text = ((PLAYNodeView) object).getLabel().getTheLabel();
 				if (text.endsWith("|")) {
 					((PLAYNodeView) object).getLabel().setTheLabel(
@@ -148,30 +148,32 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	public void pressedOn(
 			Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 			MouseEvent e) {
-		System.out.println("Pressed on " + e.getX() + "-" + e.getY() + "-"
-				+ e.getModifiersEx());
+		//System.out.println("Pressed on " + e.getX() + "-" + e.getY() + "-"
+			//	+ e.getModifiersEx());
 		System.out.println("focus = "+ this.playViewSelectionModel.getFocus());
 		if (e.isShiftDown()) {
+			System.out.println("shiftdown");
 			this.playViewSelectionModel.setFocus(this.playViewSelectionModel
 					.getFocus() + 1);
-			this.playViewSelectionModel
-			.setMultipleSelectedVideList(this.playHigraphView);
+			//this.playViewSelectionModel
+			//.setMultipleSelectedVideList(this.playHigraphView);
+			System.out.println("focus = " + playViewSelectionModel.getFocus());
 			for (Object object : this.playViewSelectionModel
-					.getSelectedViewList()) {
+					.getSelectedViewList(playHigraphView)) {
 				((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
 				.setFillColor(Color.LIGHT_GRAY);
 			}
 			// TODO
 			return;
-		} else if (!this.playViewSelectionModel.getSelectedViewList().isEmpty()) {
+		} else if (!this.playViewSelectionModel.getSelectedViewList(playHigraphView).isEmpty()) {
 			if (stack != null && stack.size() > 0) {
-				if (this.playViewSelectionModel.getSelectedViewList().contains(
+				if (this.playViewSelectionModel.getSelectedViewList(playHigraphView).contains(
 						stack.peek())) {
 					return;
 				}
 			}
 			for (Object object : this.playViewSelectionModel
-					.getSelectedViewList()) {
+					.getSelectedViewList(playHigraphView)) {
 				((ComponentView<?, ?, ?, ?, ?, ?, ?>) object)
 				.setFillColor(null);
 			}
@@ -179,10 +181,41 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 		e.getComponent().setFocusable(false);
 		this.selectedView = null;
 		this.playViewSelectionModel.clearSelectedNodeViewList();
+
 		if (stack != null && stack.size() > 0 && stack.peek() instanceof PLAYNodeView) {
+			System.out.println("stack not empty");
 			this.selectedView = stack.peek();
-			this.playViewSelectionModel.addSelectedView((PLAYNodeView)this.selectedView);
-			if (this.selectedView instanceof NUMNodeView
+			//this.playViewSelectionModel.addSelectedView((PLAYNodeView)this.selectedView);
+
+			// new code for selection
+
+			PLAYNodeView targetNodeView = (PLAYNodeView) stack.peek();
+			PLAYNode targetNode = targetNodeView.getNode();
+			PLAYNode parentNode = targetNode.getParent();
+
+			System.out.println(targetNode.getTag());
+			if(parentNode != null){
+
+				PLAYNodeView nv = (PLAYNodeView) playHigraphView
+						.getNodeView(parentNode);
+				playViewSelectionModel.setParentNodeView(nv);
+				playViewSelectionModel.setAnchor(targetNode.getPosition());
+				playViewSelectionModel.setFocus(targetNode.getPosition());
+				System.out.println(targetNode.getPosition());
+
+			}
+			else
+			{
+				playViewSelectionModel.setParentNodeView(targetNodeView);
+				playViewSelectionModel.setAnchor(0);
+				playViewSelectionModel.setFocus(targetNode.getNumberOfChildren());
+			}
+
+
+
+			// new code ends
+
+			/*if (this.selectedView instanceof NUMNodeView
 					|| this.selectedView instanceof BOOLNodeView
 					|| this.selectedView instanceof STRINGNodeView
 					|| this.selectedView instanceof VARNodeView) {
@@ -204,13 +237,37 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 						e.getComponent().setCursor(
 								Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
 					}
-					//this.controller.refresh(this.playHigraphView);
+					this.controller.refresh(this.playHigraphView);
 				}
-			}
+			}*/
 			this.selectedView.setFillColor(this.controller.getViewFillColor());// Color.LIGHT_GRAY);
 			e.getComponent().setFocusable(true);
 			e.getComponent().requestFocusInWindow();
-		} else {
+			
+		} 
+		else if (stack != null && stack.size() > 0 && stack.peek() instanceof PLAYDropZone){
+			System.out.println("drop zone selected");
+			this.selectedView = stack.peek();
+			
+			PLAYDropZone targetDropZone = (PLAYDropZone) stack.peek();
+			
+			System.out.println("dropzone visibility" + targetDropZone.getVisibility());
+			this.selectedView.setFillColor(this.controller.getViewFillColor());
+			e.getComponent().setFocusable(true);
+			e.getComponent().requestFocusInWindow();
+			
+			PLAYNodeView nv = (PLAYNodeView) targetDropZone
+					.getAssociatedComponent();
+			playViewSelectionModel.setParentNodeView(nv);
+			
+			int dropZoneIndex = nv.indexOfZones(targetDropZone);
+			int position = nv.zonePosition(dropZoneIndex);
+			playViewSelectionModel.setAnchor(position);
+			playViewSelectionModel.setFocus(position);
+			playViewSelectionModel.setFlag(true);
+			
+		}
+		else {
 			this.playViewSelectionModel.clearSelectedNodeViewList();
 		}
 		System.out.println("selectedView is " + selectedView);
@@ -225,46 +282,48 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	}
 
 	public int getSourceActions() {
-		System.out.println("getSourceActions()");
+		//System.out.println("getSourceActions()");
 		int result;
 		if (this.selectedView == null) {
 			result = TransferHandler.NONE;
 		} else {
 			result = TransferHandler.COPY_OR_MOVE;
 		}
-		System.out.println("...returns " + result);
+		//System.out.println("...returns " + result);
 		return result;
 	}
 
 	public Transferable createTransferable() {
 		Transferable result = null;
-		System.out.println("createTransferable");
-		if (this.playViewSelectionModel.getSelectedViewList() != null) {
-			if (this.playViewSelectionModel.getSelectedViewList().size() > 0) {
+		//System.out.println("createTransferable");
+		if (this.playViewSelectionModel.getSelectedViewList(playHigraphView) != null) {
+			if (this.playViewSelectionModel.getSelectedViewList(playHigraphView).size() > 0) {
 				result = new PLAYViewTransferObject(
-						this.playViewSelectionModel.getSelectedViewList());
+						this.playViewSelectionModel.getSelectedViewList(playHigraphView));
 			}
 		}
-		System.out.println("...returns " + result);
+		//System.out.println("...returns " + result);
 		return result;
 	}
 
 	public boolean canDropHere(
 			Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 			TransferHandler.TransferSupport supportObj) {
-		System.out.println("canDropHere()");
+		//System.out.println("canDropHere()");
 		boolean result = false;
 		if (!supportObj.isDrop()) {
+			//System.out.println("inside is support obj");
 			return false;
 		} else {
 			supportObj.setShowDropLocation(true);
 		}
 
 		if (supportObj.getDropAction() == TransferHandler.NONE) {
+			//System.out.println("inside get drop action");
 			result = false;
 		} else {
 			for (DataFlavor dataFlavor : supportObj.getDataFlavors()) {
-				System.out.println("...data flavor is " + dataFlavor);
+				//System.out.println("...data flavor is " + dataFlavor);
 			}
 
 			if (supportObj
@@ -282,7 +341,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 							.getTransferData(
 									PLAYViewTransferObject.TAG_DATAFLAVOR);
 					if (object != null) {
-						System.out.println("TAG_DATAFLAVOR");
+						//System.out.println("TAG_DATAFLAVOR");
 						PLAYTag currentTag = (PLAYTag) object;
 						if (currentTag == PLAYTag.CLASS) {
 							result = true;
@@ -296,15 +355,24 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 							} else {
 								peekElement = stack.peek();
 								if (peekElement instanceof PLAYDropZone) {
+									System.out.println("drop zone");
 									targetDropZone = (PLAYDropZone) peekElement;
 									targetNodeView = (PLAYNodeView) targetDropZone
 											.getAssociatedComponent();
 									targetNode = targetNodeView.getNode();
+									int dropZoneIndex;
+									if(targetNode.getTag() == PLAYTag.CLASS){
+										dropZoneIndex = targetNodeView.indexOfZones(targetDropZone)+1;
+										System.out.println("dropxone index = " + dropZoneIndex);
+									}
+									else
+									{
+										dropZoneIndex = targetNodeView
+												.indexOfZones(targetDropZone);
+									}
 									result = targetNode
 											.canInsertChild(
-													targetNodeView
-													.indexOfZones(targetDropZone),
-													currentTag);
+													dropZoneIndex,currentTag);
 									if (result) {
 										this.dropAction = PLAYSubgraphEventObserver.DropActionType.TAG_INSERT;
 										System.out.println("TAG_INSERT");
@@ -315,7 +383,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 									result = targetNode.canReplace(currentTag);
 									if (result) {
 										this.dropAction = PLAYSubgraphEventObserver.DropActionType.TAG_REPLACE;
-										System.out.println("TAG_REPLACE");
+										//System.out.println("TAG_REPLACE");
 									}
 								} else {
 									result = false;
@@ -329,7 +397,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 						List<?> selectedViewList = (List<?>) object;
 						for (Object selectedView : selectedViewList) {
 							if (selectedView != null) {
-								System.out.println("VIEWLIST_DATAFLAVOR");
+								//System.out.println("VIEWLIST_DATAFLAVOR");
 								PLAYNodeView currentNodeView = (PLAYNodeView) selectedView;
 								PLAYNode currentNode = currentNodeView
 										.getNode();
@@ -347,8 +415,17 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 										targetNodeView = (PLAYNodeView) targetDropZone
 												.getAssociatedComponent();
 										targetNode = targetNodeView.getNode();
-										int dropZoneIndex = targetNodeView
-												.indexOfZones(targetDropZone);
+
+										int dropZoneIndex;
+
+										if(targetNode.getTag() == PLAYTag.CLASS){
+											dropZoneIndex = targetNodeView.indexOfZones(targetDropZone)+1;
+										}
+										else
+										{
+											dropZoneIndex = targetNodeView
+													.indexOfZones(targetDropZone);
+										}
 										if (supportObj.getUserDropAction() == TransferHandler.COPY) {
 											result = targetNode.canInsertChild(
 													dropZoneIndex, currentNode);
@@ -406,7 +483,7 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 				result = false;
 			}
 		}
-		System.out.println("...returns " + result);
+		//System.out.println("...returns " + result);
 		if (!result) {
 			this.dropAction = DropActionType.NONE;
 		}
@@ -416,10 +493,10 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 	public boolean importData(
 			Stack<ComponentView<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, PLAYSubgraph, PLAYNode, PLAYEdge>> stack,
 			TransferHandler.TransferSupport supportObj) {
-		System.out.println("Import data");
+		//System.out.println("Import data");
 
 		if (!canDropHere(stack, supportObj)) {
-			System.out.println("... returns false");
+			//System.out.println("... returns false");
 			return false;
 		}
 
@@ -444,184 +521,189 @@ SubgraphEventObserver<PLAYPayload, PLAYEdgeLabel, PLAYHigraph, PLAYWholeGraph, P
 			System.out.println("DOTAG_NEW");
 			break;
 		} else {*/
-			this.controller.setCheckPoint(this.dropAction.name());
-			try {
-				switch (this.dropAction) {
-				case NEWCLASS: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.TAG_DATAFLAVOR);
-					currentTag = (PLAYTag) object;
-					System.out.println(currentTag);
-					//System.out.println(this.playWholeGraph.getTop(0));
-					//List<PLAYNode> topNodeList = this.playWholeGraph.getTops();
-					/*if(!topNodeList.isEmpty()){
+		this.controller.setCheckPoint(this.dropAction.name());
+		try {
+			switch (this.dropAction) {
+			case NEWCLASS: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.TAG_DATAFLAVOR);
+				currentTag = (PLAYTag) object;
+				System.out.println(currentTag);
+				//System.out.println(this.playWholeGraph.getTop(0));
+				//List<PLAYNode> topNodeList = this.playWholeGraph.getTops();
+				/*if(!topNodeList.isEmpty()){
 						for(PLAYNode node : topNodeList){
 							node.delete();
 						}
 					}*/
-					for (PLAYNode n:subgraph.getTops() ) {
-						System.out.println(n);
-						subgraph.removeTop( n ) ;
-					}
-				
-					//create new root node for new class
-					PLAYPayload playLoad =new PLAYPayload(currentTag.toString(), currentTag);
-					PLAYNode node = this.playWholeGraph.makeRootNode(playLoad);
-					subgraph.addTop(node);
-					
-					
-					/*NewClass nc = new NewClass(playWholeGraph,playLoad,node,viewFactory,
+				for (PLAYNode n:subgraph.getTops() ) {
+					System.out.println(n);
+					subgraph.removeTop( n ) ;
+				}
+
+				//create new root node for new class
+				PLAYPayload playLoad =new PLAYPayload(currentTag.toString(), currentTag);
+				PLAYNode node = this.playWholeGraph.makeRootNode(playLoad);
+				subgraph.addTop(node);
+
+
+				/*NewClass nc = new NewClass(playWholeGraph,playLoad,node,viewFactory,
 							playHigraphView,i);
 					SyntaxPallet.setClass(nc);
 					System.out.println("DOTAG_CLASS");
 					i++;*/
-					
-					//this.controller.createNewClass(node);
-					
-					
-					break;
+
+				//this.controller.createNewClass(node);
+
+
+				break;
+			}
+			case TAG_NEW: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.TAG_DATAFLAVOR);
+				currentTag = (PLAYTag) object;
+				System.out.println(currentTag);
+				this.playWholeGraph.makeRootNode(new PLAYPayload(currentTag
+						.toString(), currentTag));
+				System.out.println("DOTAG_NEW");
+				break;
+			}
+			case TAG_REPLACE: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.TAG_DATAFLAVOR);
+				currentTag = (PLAYTag) object;
+				targetNodeView = (PLAYNodeView) stack.peek();
+				targetNode = targetNodeView.getNode();
+				targetNode.replace(currentTag);
+				System.out.println("DOTAG_REPLACE");
+				break;
+			}
+			case TAG_INSERT: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.TAG_DATAFLAVOR);
+				currentTag = (PLAYTag) object;
+				targetDropZone = (PLAYDropZone) stack.peek();
+				targetNodeView = (PLAYNodeView) targetDropZone
+						.getAssociatedComponent();
+				targetNode = targetNodeView.getNode();
+				if(targetNode.getTag() == PLAYTag.CLASS){
+					index = targetNodeView.indexOfZones(targetDropZone)+1;
 				}
-				case TAG_NEW: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.TAG_DATAFLAVOR);
-					currentTag = (PLAYTag) object;
-					System.out.println(currentTag);
-					this.playWholeGraph.makeRootNode(new PLAYPayload(currentTag
-							.toString(), currentTag));
-					System.out.println("DOTAG_NEW");
-					break;
+				else{
+					index = targetNodeView.indexOfZones(targetDropZone);
+					}
+				targetNode.insertChild(index, currentTag);
+				System.out.println("DOTAG_INSERT"
+						+ targetNode.getNumberOfChildren() + "-" + index);
+				break;
+			}
+			case NODE_DETACH: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
+				List<?> selectedViewList = (List<?>) object;
+				for (Object selectedView : selectedViewList) {
+					currentNodeView = (PLAYNodeView) selectedView;
+					currentNode = currentNodeView.getNode();
+					currentNode.detach();
+					System.out.println("DONODE_DETACH");
 				}
-				case TAG_REPLACE: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.TAG_DATAFLAVOR);
-					currentTag = (PLAYTag) object;
-					targetNodeView = (PLAYNodeView) stack.peek();
+				break;
+			}
+			case NODE_MOVE: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
+				List<?> selectedViewList = (List<?>) object;
+				for (Object selectedView : selectedViewList) {
+					currentNodeView = (PLAYNodeView) selectedView;
+					currentNode = currentNodeView.getNode();
+					targetDropZone = (PLAYDropZone) stack.peek();
+					targetNodeView = (PLAYNodeView) targetDropZone
+							.getAssociatedComponent();
 					targetNode = targetNodeView.getNode();
-					targetNode.replace(currentTag);
-					System.out.println("DOTAG_REPLACE");
-					break;
+					currentNode.detach();
+					index = targetNodeView.indexOfZones(targetDropZone);
+					targetNode.insertChild(index, currentNode);
+					System.out.println("DONODE_MOVE"
+							+ targetNode.getNumberOfChildren() + "-"
+							+ index);
 				}
-				case TAG_INSERT: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.TAG_DATAFLAVOR);
-					currentTag = (PLAYTag) object;
+				break;
+			}
+			case NODE_INSERT: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
+				List<?> selectedViewList = (List<?>) object;
+				for (Object selectedView : selectedViewList) {
+					currentNodeView = (PLAYNodeView) selectedView;
+					currentNode = currentNodeView.getNode();
 					targetDropZone = (PLAYDropZone) stack.peek();
 					targetNodeView = (PLAYNodeView) targetDropZone
 							.getAssociatedComponent();
 					targetNode = targetNodeView.getNode();
 					index = targetNodeView.indexOfZones(targetDropZone);
-					targetNode.insertChild(index, currentTag);
-					System.out.println("DOTAG_INSERT"
-							+ targetNode.getNumberOfChildren() + "-" + index);
-					break;
+					targetNode.insertChild(index, currentNode);
+					System.out.println("DONODE_INSERT"
+							+ targetNode.getNumberOfChildren() + "-"
+							+ index);
 				}
-				case NODE_DETACH: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
-					List<?> selectedViewList = (List<?>) object;
-					for (Object selectedView : selectedViewList) {
-						currentNodeView = (PLAYNodeView) selectedView;
-						currentNode = currentNodeView.getNode();
-						currentNode.detach();
-						System.out.println("DONODE_DETACH");
-					}
-					break;
-				}
-				case NODE_MOVE: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
-					List<?> selectedViewList = (List<?>) object;
-					for (Object selectedView : selectedViewList) {
-						currentNodeView = (PLAYNodeView) selectedView;
-						currentNode = currentNodeView.getNode();
-						targetDropZone = (PLAYDropZone) stack.peek();
-						targetNodeView = (PLAYNodeView) targetDropZone
-								.getAssociatedComponent();
-						targetNode = targetNodeView.getNode();
-						currentNode.detach();
-						index = targetNodeView.indexOfZones(targetDropZone);
-						targetNode.insertChild(index, currentNode);
-						System.out.println("DONODE_MOVE"
-								+ targetNode.getNumberOfChildren() + "-"
-								+ index);
-					}
-					break;
-				}
-				case NODE_INSERT: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
-					List<?> selectedViewList = (List<?>) object;
-					for (Object selectedView : selectedViewList) {
-						currentNodeView = (PLAYNodeView) selectedView;
-						currentNode = currentNodeView.getNode();
-						targetDropZone = (PLAYDropZone) stack.peek();
-						targetNodeView = (PLAYNodeView) targetDropZone
-								.getAssociatedComponent();
-						targetNode = targetNodeView.getNode();
-						index = targetNodeView.indexOfZones(targetDropZone);
-						targetNode.insertChild(index, currentNode);
-						System.out.println("DONODE_INSERT"
-								+ targetNode.getNumberOfChildren() + "-"
-								+ index);
-					}
-					break;
-				}
-				case NODE_REPLACE: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
-					List<?> selectedViewList = (List<?>) object;
-					for (Object selectedView : selectedViewList) {
-						currentNodeView = (PLAYNodeView) selectedView;
-						currentNode = currentNodeView.getNode();
-						targetDropZone = (PLAYDropZone) stack.peek();
-						targetNodeView = (PLAYNodeView) targetDropZone
-								.getAssociatedComponent();
-						targetNode = targetNodeView.getNode();
-						currentNode.detach();
-						targetNode.replace(currentNode);
-						System.out.println("DONODE_REPLACE");
-					}
-					break;
-				}
-				case NODE_COPY: {
-					object = supportObj.getTransferable().getTransferData(
-							PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
-					List<?> selectedViewList = (List<?>) object;
-					for (Object selectedView : selectedViewList) {
-						currentNodeView = (PLAYNodeView) selectedView;
-						currentNode = currentNodeView.getNode();
-						targetDropZone = (PLAYDropZone) stack.peek();
-						targetNodeView = (PLAYNodeView) targetDropZone
-								.getAssociatedComponent();
-						targetNode = targetNodeView.getNode();
-						targetNode.replace(currentNode);
-						System.out.println("DONODE_REPLACE");
-					}
-					break;
-				}
-				case NODE_DELETE: {
-					// TODO
-					System.out.println("DONODE_DELETE");
-					break;
-				}
-				case NONE: {
-					// TODO
-					System.out.println("DONODE_NONE");
-					break;
-				}
-				default: {
-					break;
-				}
-				}
-			} catch (UnsupportedFlavorException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
+				break;
 			}
+			case NODE_REPLACE: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
+				List<?> selectedViewList = (List<?>) object;
+				for (Object selectedView : selectedViewList) {
+					currentNodeView = (PLAYNodeView) selectedView;
+					currentNode = currentNodeView.getNode();
+					targetDropZone = (PLAYDropZone) stack.peek();
+					targetNodeView = (PLAYNodeView) targetDropZone
+							.getAssociatedComponent();
+					targetNode = targetNodeView.getNode();
+					currentNode.detach();
+					targetNode.replace(currentNode);
+					System.out.println("DONODE_REPLACE");
+				}
+				break;
+			}
+			case NODE_COPY: {
+				object = supportObj.getTransferable().getTransferData(
+						PLAYViewTransferObject.VIEWLIST_DATAFLAVOR);
+				List<?> selectedViewList = (List<?>) object;
+				for (Object selectedView : selectedViewList) {
+					currentNodeView = (PLAYNodeView) selectedView;
+					currentNode = currentNodeView.getNode();
+					targetDropZone = (PLAYDropZone) stack.peek();
+					targetNodeView = (PLAYNodeView) targetDropZone
+							.getAssociatedComponent();
+					targetNode = targetNodeView.getNode();
+					targetNode.replace(currentNode);
+					System.out.println("DONODE_REPLACE");
+				}
+				break;
+			}
+			case NODE_DELETE: {
+				// TODO
+				System.out.println("DONODE_DELETE");
+				break;
+			}
+			case NONE: {
+				// TODO
+				System.out.println("DONODE_NONE");
+				break;
+			}
+			default: {
+				break;
+			}
+			}
+		} catch (UnsupportedFlavorException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		//}
 		this.controller.refresh(this.playHigraphView);
 
-		System.out.println("... returns true");
+		//System.out.println("... returns true");
 		return true;
 	}
 

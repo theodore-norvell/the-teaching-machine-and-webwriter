@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -26,6 +27,11 @@ import tm.backtrack.BTTimeManager;
  */
 public class IFNodeView extends PLAYNodeView {
 
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
+	
     /**
      * @param v
      * @param node
@@ -37,6 +43,7 @@ public class IFNodeView extends PLAYNodeView {
 	super(v, node, timeMan);
 	super.setColor(Color.BLUE);
 	super.setFillColor(null);
+	//System.out.println("ifview");
     }
 
     /**
@@ -87,5 +94,38 @@ public class IFNodeView extends PLAYNodeView {
 		    (int) (elseSeqNodeViewRect.getMinY() + 20));
 	}
     }
+    
+    public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		System.out.println("inside if execute");
+		int children = n.getNumberOfChildren();
+		System.out.println("children = "+children);
+		
+		highlight(n);
+		
+		if(children == 3){
+			System.out.println(n.getChild(0).getTag());
+			s = n.getChild(0).getView().execute(e, n.getChild(0), sg);
+			if(s != null){
+				if(s.equals("true")){
+					s = n.getChild(1).getView().execute(e, n.getChild(1), sg);
+				}
+				else if(s.equals("false")){
+					s = n.getChild(2).getView().execute(e, n.getChild(2), sg);
+				}
+			}
+			else{
+				System.out.println("Condition for if does not return boolean value");
+			}
+		}
+		
+		return s;
+		
+	}
+
 
 }
