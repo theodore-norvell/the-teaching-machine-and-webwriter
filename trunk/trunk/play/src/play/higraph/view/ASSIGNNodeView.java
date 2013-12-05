@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
+import play.executor.Environment;
 import play.higraph.model.PLAYEdge;
 import play.higraph.model.PLAYEdgeLabel;
 import play.higraph.model.PLAYHigraph;
@@ -25,6 +26,11 @@ import tm.backtrack.BTTimeManager;
  * 
  */
 public class ASSIGNNodeView extends PLAYNodeView {
+	
+	private String s;
+	private Environment e;
+	private PLAYNode n;
+	private PLAYSubgraph sg;
 
     /**
      * @param v
@@ -70,5 +76,37 @@ public class ASSIGNNodeView extends PLAYNodeView {
 			    .getHeight() / 2));
 	}
     }
+    
+    public String execute(Environment env,PLAYNode node,PLAYSubgraph sgraph){
+		e = env;
+		s = null;
+		sg = sgraph;
+		n = node;
+		
+		highlight(n);
+		System.out.println("inside assign execute");
+		int mChildren = n.getNumberOfChildren();
+		System.out.println("children = "+mChildren);
+		
+		PLAYNode child1 = n.getChild(0);
+		PLAYNode child2 = n.getChild(1);
+		System.out.println("child1 = "+child1.getTag());
+		//String var = child1.getView().execute(e, child1, sg);
+		highlight(child1);
+		String var = child1.getPayload().getPayloadValue();
+		System.out.println("child2 = "+child2.getTag());
+		String value = child2.getView().execute(e, child2, sg);
+			
+		if(!e.has(var)){
+			e.add(var);
+			e.set(var, value);
+		}
+		else{
+			e.set(var, value);
+		}
+		System.out.println(var + " = "+ value);
+		new PLAYEdge(child1,child2,new PLAYEdgeLabel(var),sg.getWholeGraph());
+		return s;		
+	}
 
 }
