@@ -14,6 +14,12 @@
 <script language="JavaScript" src="../../webWriter/parser.js"></script>
 <script language="JavaScript" src="../../webWriter/web_writer.js"></script>
 <script language="JavaScript" src="../../webWriter/header.js"></script>
+
+<!-- The next files are for markup.-->
+    <script language="JavaScript" src="../../webWriter/mclexer.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUp.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpCPP.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpJava.js"></script>
 <script language="JavaScript">
     setSourceRoot( "../src/" ) ;
 </script>
@@ -66,7 +72,7 @@ insertDefLink("accessors","accessor")
 <p>(We could use this to represent a ball on a field or a zone around a ship.)</p>
 <p>
   <script language="JavaScript">
-      setButtons(true, false, true,"","");
+      setButtons(true, false, false,"","");
       insertCode("MovableDisk.java", false, "code", "linked.cfg");
     </script>
 </p>
@@ -90,7 +96,7 @@ insertDefLink("accessors","accessor")
 <p>Consider the following simple class.</p>
 <p>
   <script language="JavaScript">
-      setButtons(true, false, true,"","");
+      setButtons(true, false, false,"","");
       insertCode("MutableInt.java", false, "code", "linked.cfg");
     </script>
 </p>

@@ -1,0 +1,85 @@
+<html>
+<head>
+<title>edit.gif</title>
+<meta http-equiv="Content-Type" content="text/html;">
+<!--Fireworks MX 2004 Dreamweaver MX 2004 target.  Created Tue Apr 11 13:42:50 GMT-0230 (Newfoundland Daylight Time) 2006-->
+<script language="JavaScript">
+<!--
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+function MM_nbGroup(event, grpName) { //v6.0
+var i,img,nbArr,args=MM_nbGroup.arguments;
+  if (event == "init" && args.length > 2) {
+    if ((img = MM_findObj(args[2])) != null && !img.MM_init) {
+      img.MM_init = true; img.MM_up = args[3]; img.MM_dn = img.src;
+      if ((nbArr = document[grpName]) == null) nbArr = document[grpName] = new Array();
+      nbArr[nbArr.length] = img;
+      for (i=4; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+        if (!img.MM_up) img.MM_up = img.src;
+        img.src = img.MM_dn = args[i+1];
+        nbArr[nbArr.length] = img;
+    } }
+  } else if (event == "over") {
+    document.MM_nbOver = nbArr = new Array();
+    for (i=1; i < args.length-1; i+=3) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = (img.MM_dn && args[i+2]) ? args[i+2] : ((args[i+1])?args[i+1] : img.MM_up);
+      nbArr[nbArr.length] = img;
+    }
+  } else if (event == "out" ) {
+    for (i=0; i < document.MM_nbOver.length; i++) { img = document.MM_nbOver[i]; img.src = (img.MM_dn) ? img.MM_dn : img.MM_up; }
+  } else if (event == "down") {
+    nbArr = document[grpName];
+    if (nbArr) for (i=0; i < nbArr.length; i++) { img=nbArr[i]; img.src = img.MM_up; img.MM_dn = 0; }
+    document[grpName] = nbArr = new Array();
+    for (i=2; i < args.length-1; i+=2) if ((img = MM_findObj(args[i])) != null) {
+      if (!img.MM_up) img.MM_up = img.src;
+      img.src = img.MM_dn = (args[i+1])? args[i+1] : img.MM_up;
+      nbArr[nbArr.length] = img;
+  } }
+}
+
+function MM_preloadImages() { //v3.0
+ var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+   var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+   if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+//-->
+</script>
+</head>
+<body bgcolor="#ffffff" onLoad="MM_preloadImages('editButtonNormal_f2.gif','editButtonNormal_f4.gif','editButtonNormal_f3.gif');">
+<table border="0" cellpadding="0" cellspacing="0" width="1280">
+<!-- fwtable fwsrc="editButton.png" fwbase="edit.gif" fwstyle="Dreamweaver" fwdocid = "1986257031" fwnested="0" -->
+  <tr>
+   <td><img src="spacer.gif" width="640" height="1" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="110" height="1" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="530" height="1" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="1" height="1" border="0" alt=""></td>
+  </tr>
+
+  <tr>
+   <td colspan="3"><img name="edit_r1_c1" src="edit_r1_c1.gif" width="1280" height="512" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="1" height="512" border="0" alt=""></td>
+  </tr>
+  <tr>
+   <td rowspan="2"><img name="edit_r2_c1" src="edit_r2_c1.gif" width="640" height="512" border="0" alt=""></td>
+   <td><img name="editButtonNormal" src="editButtonNormal.gif" width="110" height="30" border="0" usemap="#m_editButtonNormal" alt=""></td>
+   <td rowspan="2"><img name="edit_r2_c3" src="edit_r2_c3.gif" width="530" height="512" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="1" height="30" border="0" alt=""></td>
+  </tr>
+  <tr>
+   <td><img name="edit_r3_c2" src="edit_r3_c2.gif" width="110" height="482" border="0" alt=""></td>
+   <td><img src="spacer.gif" width="1" height="482" border="0" alt=""></td>
+  </tr>
+<map name="m_editButtonNormal">
+<area shape="poly" coords="12,1,93,1,99,4,102,11,102,11,99,18,93,21,12,21,5,18,2,11,2,11,5,4,12,1" href="#" alt="" onMouseOut="MM_nbGroup('out');"  onMouseOver="MM_nbGroup('over','editButtonNormal','editButtonNormal_f2.gif','editButtonNormal_f4.gif',1);"  onClick="MM_nbGroup('down','navbar1','editButtonNormal','editButtonNormal_f3.gif',1);"  >
+</map>
+</table>
+</body>
+</html>

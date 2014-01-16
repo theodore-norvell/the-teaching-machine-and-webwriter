@@ -1,6 +1,10 @@
 // JavaScript Document
 
+//if( console && console.debug ) console.debug("Start of ww_one_time.js" );	
+
+
 var appletsLoaded = false;
+var javaIsEnabled ;
 window.onload = doneLoading;
 
 
@@ -115,10 +119,9 @@ if (!is_ie6up && !is_nav6up && !is_gecko) {
 }
 
 if (!navigator.javaEnabled() ){
-	alert("Java is not enabled on your browser. Extensive use is made of Applets, which require Java." + 
-		  "\n It will run with Java set to any degree of safety including high (which is what we use)." +
-		  "\nThe Teaching Machine Design Team: Michael Bruce-Lockhart & Theo Norvell");
-}
+	javaIsEnabled = false ;
+} else {
+	javaIsEnabled = true ; }
 
 /*	else if(parent.contents.location.search) { // document started to load before this window loaded (reload?)
 		startPoint = parent.contents.location.search.substring(1);
@@ -326,3 +329,4 @@ function getToWebWriter(){
 function getToVideos(){
 	return videosFolder;
 }
+//if( console && console.debug ) console.debug("End of ww_one_time.js" );	
