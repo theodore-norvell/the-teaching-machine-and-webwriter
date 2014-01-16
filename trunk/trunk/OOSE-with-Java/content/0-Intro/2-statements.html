@@ -14,6 +14,12 @@
 <script language="JavaScript" src="../../webWriter/parser.js"></script>
 <script language="JavaScript" src="../../webWriter/web_writer.js"></script>
 <script language="JavaScript" src="../../webWriter/header.js"></script>
+
+<!-- The next files are for markup.-->
+    <script language="JavaScript" src="../../webWriter/mclexer.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUp.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpCPP.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpJava.js"></script>
 <script language="JavaScript">
     setSourceRoot( "../src/" ) ;
 </script>
@@ -179,7 +185,7 @@ insertCode("../src/Scope.java", true, "code", "default.cfg");
 <p>For example, here is a statement that calculates (in a rather inefficient way) the triangular number n: 0, 1, 3, 6, 10, 15, 21, 28 </p>
 <p>
   <script language="JavaScript">
-setButtons(true, false, false,"","");
+setButtons(true, false, true,"","");
 insertCode("../src/While0.java", true, "code", "default.cfg", "A");
   
 </script>
