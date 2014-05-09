@@ -15,7 +15,10 @@ var licenseRef = authorRef;
 var copyRightDates = "2002, 2004, 2008, 2010, 2013";
 var creativeCommons = true;
 
-var tmArchive = "tm.jar, ArrayBarDisplay.class, ArrayBarPIFactory.class";
+// TODO: Ensure that these class files are in the signed-tm.jar.
+// The next line is the old tmArchive.
+// var tmArchive = "tm.jar, ArrayBarDisplay.class, ArrayBarPIFactory.class";
+var tmArchive = "signed-tm.jar" ;
 
 //  SITE IDENTIFICATION 
 // Define either the organization and the course or the siteLogo and the siteTooltip

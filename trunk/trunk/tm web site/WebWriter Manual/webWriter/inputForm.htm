@@ -4,13 +4,14 @@
 <head>
 <script LANGUAGE="JavaScript">
              function loadCode() {
-			 	self.opener.changeCode(document.theForm.text.value);  
+			 	self.opener.changeCode(document.theForm.text.value, document.language );  
 			  /*var t = top.content_frame.
             	top.applet_frame.document.tm_applet.loadString('C++', t) ;*/
             } 
             
-            function loadForm(code) {
+            function loadForm(code, language) {
               document.theForm.text.value = code;
+			  document.language ;
 			}
             
           </script>
@@ -22,9 +23,9 @@
 
 
 
-<p>You can use this experimental form to change any example for which it has been activated with the <img src="images/editButtonNormal.gif"> button).</p>
+<p>You can use this  form to change any example for which it has been activated with the <img src="images/editButtonNormal.gif"> button).</p>
 <p><strong>The changes will not be permanent, </strong>so don't put too much effort and energy into making major rewrites. </p>
-<p> Please be aware that the Teaching Machine does not handle all valid C++ constructs.</p>
+<p> Please be aware that the Teaching Machine does not handle all valid C++ and Java constructs.</p>
 <form name="theForm">
   <p><input type="button" value="Load code into the Teaching Machine" name="B1"
   onClick="loadCode()"><br>

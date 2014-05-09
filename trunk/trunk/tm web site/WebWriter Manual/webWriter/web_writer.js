@@ -34,10 +34,13 @@
 								9. Reskinned TM display with title barincluding buttons.
 								
 	July, 2007: Refactored to support the quizWriter add-on.
+
 	May, 2013: Eliminated the need for the URL2String Applet.
 	           Using XMLHttpRequest instead.
 	May, 2013: Eliminated the MarkUp applet. Using JavaScript for
 	           marking up.
+			   
+	Jan 2014: Added support for setSourceRoot *yet again)
 
 ************************************************************************************/ 
 
@@ -247,10 +250,20 @@ var guidedLinkImage1 = -1;
 var currentCode = -1;
 var baseCode = new Array();		// Holds code for TM
 var config = new Array();		// holds config file names for examples
-var exampleURL = new Array();     // Holds name of url to example file
+var absExampleURL = new Array();       // Holds an absolute URL for the example file.
+var exampleSourceRoot = new Array() ; // Either null or the absolute URL for the root of the example file.
+var relExampleURL = new Array() ; // If the exampleSourceRoot is null, this is null otherwise this is the
+                                  // URL relative to the exampleSourceRoot.
 var selection = new Array();		// holds selection strings for examples.
 var dataFileSet = new Array();   // Holds references to any data file arrays
 
+// Invariant: absExampleURL.length == currentCode+1 
+//            exampleSourceRoot ==  currentCode+1 
+//            relExampleURL.length == currentCode+1
+//            baseCode.length == currentCode+1
+//            config.length == currentCode+1
+//            selection.length == currentCode+1
+//            dataFileSet.length == currentCode+1
 
 var TMLink = false;			// boolean-true if a TM link button wanted
 var videoLink = false;		// boolean-true if a video link button wanted
@@ -270,6 +283,19 @@ function setButtons(TM, video, edit, videoR){
     if (video) videoRef = videoR;
 }
 
+/* The source root. This global is used to comunicate between, on the one hand
+   setSourceRoot and clearSourceRoot and, on the other, insertCode.
+*/
+var rootOfSourceFiles = null ;
+
+// Set the root of the source files
+function setSourceRoot( srcRoot ) {
+	rootOfSourceFiles = getAbsoluteURL( srcRoot ) ;
+}
+
+function clearSourceRoot( ) {
+	rootOfSourceFiles = null ;
+}
 /* Definitions required to set up parsing of tmand ww selection strings for
 following insertCode function
 */
@@ -367,8 +393,15 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 
 	
 //	alert("insertCode.");
-	// Normalize to the absolute url
-	var theURL = getAbsoluteURL(relativeURL);
+	// What directory should be used as the root for this example?
+	var theRoot ;
+	if( rootOfSourceFiles == null ) {
+		theRoot = peelName(location.href); }
+	else {
+		theRoot = rootOfSourceFiles ; }
+
+	// Let theURL be the absolute URL of the example.
+	var theURL = catenateURLs(theRoot, relativeURL);
 //	 alert("InsertCode: absoluteURL is " + theURL + "\nwhile navBarFrame doc url is " + getBaseURL());
 	// construct the differential url to the applet document
 
@@ -376,9 +409,7 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 //	 alert("InsertCode: differentialURL is " + theURL);
 	// Now use it to get the code, making sure url is in Java format
 //    alert("InsertCode: JavaURL is " + getJavaURL(theURL));
-	rawCode = loadCode(theURL, configurationFile, tmParseString);
-//	var javaURL = getJavaURL(theURL);
-//	rawCode = fileToString(javaURL);
+	rawCode = loadCode(theURL,theRoot, relativeURL, configurationFile, tmParseString);
 	if (rawCode != null) {
 		document.write('<div class="tmContainer">');
 		document.write('<table class="tmBar" width = "100%"> <tr><td width="120px" align="left">');
@@ -419,7 +450,7 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 	    // Now the text of the code file goes in a DIV and a PRE
 		document.write('<div class="',className,'" style="position:relative;">');
 		document.write('<pre>');
-	    var language = ((theURL.search(/\.jav/i) == -1 ) ? "C++" : "Java");
+	    var language = determineLanguage(theURL) ;
 		//consoleDebug("language is " + language );
 		//consoleDebug("The raw code is <<" + rawCode + ">>" ) ;
 		var stainedCode = stain( rawCode, language ) ;
@@ -445,15 +476,25 @@ function stain( rawCode, language ) {
     return result ;
 }
 
+function determineLanguage( url ) {
+	return (url.search(/\.jav/i) == -1 ) ? "C++" : "Java" ;
+}
+
 /** Fetch the raw code for the new example. It also loads the TM version of
 	of the code (plus associated information) to the array of examples for this page and
 	updates the page global variable currentCode
 */
-function loadCode(theURL, configurationFile, tmParseString){
-	rawCode = fileToString(theURL);
-	currentCode++;		// track no of examples on this page
+function loadCode(theURL, theRoot, relativeURL,  configurationFile, tmParseString){
+	consoleDebug("loadCode( " +theURL+ ", " +theRoot+ ", " +relativeURL+ ", " +configurationFile+ ", " +tmParseString ) ;
 	var javaURL = getJavaURL(theURL);
-	exampleURL[currentCode] = javaURL;
+
+	rawCode = fileToString(javaURL);
+	currentCode++;		// track no of examples on this page
+
+	// The absolute path goes in absExampleURL
+	absExampleURL[currentCode] = javaURL
+	exampleSourceRoot[currentCode] = getJavaURL( rootOfSourceFiles ) ;
+	relExampleURL[currentCode] = getJavaURL(relativeURL) ;
 	baseCode[currentCode] = getTMCode(rawCode);
 	dataFileSet[currentCode] = lastDataSet;
 // Updated 2007.02.02 to use new configuration filetype, ignoring any type specified in the call
@@ -545,8 +586,8 @@ function invokeTM(example){
 			TMApplet.registerRemoteDataFile( fileLoc ); } }
 			
 	// Load the example.
-    consoleDebug('TMApplet.loadRemoteFile("'+ exampleURL[example] +'")' );
-	TMApplet.loadRemoteFile(exampleURL[example]);
+	consoleDebug('TMApplet.loadRemoteFile("'+ exampleSourceRoot[example] +','+ relExampleURL[example] +'")' );
+	TMApplet.loadRemoteFile(exampleSourceRoot[example], relExampleURL[example]);
 
 	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() 
 	                                           : config[example]);
@@ -583,20 +624,22 @@ function invokeEdit(example){
 }
 // Called from input form window by its onload handler
 function formLoaded(){
-	formW.loadForm(baseCode[currentExample]);
+	var lang = determineLanguage( relExampleURL[currentExample] ) ;
+	formW.loadForm( baseCode[currentExample], lang ) ;
 }
 
 // Called by input form window once editing is done
-function changeCode(newCode){
+function changeCode(newCode, language){
 	consoleDebug("About to get applet. (changeCode)") ;
 	getTMApplet() ;
 	if (TMApplet == null) {
 		consoleError("TMApplet could not be got.") ;
 		return ; }
 	consoleDebug("GotApplet") ;
+	var fileName = (language == "C++") ? "edited.cpp" : "edited.java" ;
 	// TODO Why is this for .cpp only?
-    consoleDebug('TMApplet.loadString(".cpp", ...)' );
-	TMApplet.loadString( '.cpp',newCode);
+    consoleDebug('TMApplet.loadString("'+ fileName +'", ...)' );
+	TMApplet.loadString( fileName, newCode);
 	
 	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
     consoleDebug('TMApplet.readRemoteConfiguration(' +useConfigFile+ ')' ) ;
@@ -1430,13 +1473,13 @@ function invokePrint(){
 function printFormLoaded(){
 /*	var examples = new Array();  // Trying to add full examples at end 
 	var k = 0;
-	for(var i = 0; i < exampleURL.length; i++){
+	for(var i = 0; i < absExampleURL.length; i++){
 		var skip = false;
 		for (var j = 0; j < i; j++)
-			if (exampleURL[i] == exampleURL[j]) skip = true;
+			if (absExampleURL[i] == absExampleURL[j]) skip = true;
 		if (!skip) {
-			var rawCode = fileToString(exampleURL[i]);
-			examples[k++] = new String(parseApplet.markUpString(rawCode, exampleURL[i]));
+			var rawCode = fileToString(absExampleURL[i]);
+			examples[k++] = new String(parseApplet.markUpString(rawCode, absExampleURL[i]));
 		}
 	} */
 	var theBody;
@@ -1715,6 +1758,10 @@ function getAbsoluteURL(relativeURL){
 	//alert("Inside getAbsoluteURL looking for  " + relativeURL + " relative to " + location.href);
 	var path=peelName(location.href);
 	//alert("path is: " + path);
+	return catenateURLs( path, relativeURL ) ;
+}
+
+function catenateURLs( path, relativeURL ) {
 	var backUp=/\.\.\//;
 	while (relativeURL.match(backUp) != null){
 		relativeURL=relativeURL.replace(backUp,"");
