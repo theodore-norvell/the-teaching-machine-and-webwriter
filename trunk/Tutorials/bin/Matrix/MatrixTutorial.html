@@ -56,7 +56,7 @@
 			}
 		 //]]></script>
 		<div class = "vertex" id="v0">
-			This tutorial looks at the representation and usage of a two-dimensional matrix. </div>
+			This tutorial looks at the representation of two-dimensional matrices using C++'s arrays.</div>
 		<div class="edge" id="edge0to1" data-source="v0" data-target="v1"
 		     data-label="next" data-function="edge0to1">
 			<script>//<![CDATA[
@@ -66,8 +66,9 @@
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v1" >
-			<p>The matrix is represented by an array with its number of items equal to the product of the number of rows and the number of columns. </p>
-			<p>Notice the arbitrary values stored at all the matrix locations when it is declared.</p>
+			<p>The matrix is represented by an array; the number of items in the array
+			is equal to the product of the number of rows and the number of columns. </p>
+			<p>In this example there are 2 rows and 3 columns, so we need an array of size 6.</p>
 		</div>
 		<div class="edge" id="edge1to2" data-source="v1" data-target="v2"
 		     data-label="next" data-function="edge1to2">
@@ -78,7 +79,8 @@
 			//]]></script>
 		</div>
 		<div class = "vertex" id="v2" >
-			<p>We'll use the variables i and j to iterate over the number of rows and the number of columns in the matrix respectively.</p>
+			<p>We'll use the variables i and j to iterate over the number of rows and
+			   columns of the matrix respectively.</p>
 		</div>
 	  <div class="edge" id="edge2to3" data-source="v2" data-target="v3"
 		     data-label="next" data-function="edge2to3">
@@ -90,21 +92,30 @@
 		</div>
 			
 	  <div class = "vertex" id="v3" >
-			<p>The matrix represented by array A[] is a  2 row by 3 column matrix. Notice that the representation of row 1 begins at 1*cols. In general the representation of each row begins at item i*cols of the array. The size of the array is 2*3, i.e. 6.</p>
+			<p>In this example, we want to represent a matrix with 2 rows and 3 columns.
+			We will use array A[] to represent this matrix.</p>
+			<p>We will number rows and columns of the matrix starting with 0.
+			   Recall that, in C++, array items are also numbered from 0.</p>
+			<p>Notice that the representation of row i of the matrix begins at item i*cols of the array.
+			I.e., the representation of row 0 starts at item 0 of the array,
+			and the representation of row 1 begins at item 3 of the array.</p>
 	  </div>
 	  <div class="edge" id="edge3to4" data-source="v3" data-target="v4"
 		     data-label="next" data-function="edge3to4">
 			<script>//<![CDATA[
 				EdgeFunctions.edge3to4 = function(tm) {
-					tm.go("4 * s") ;
+					tm.go("5 * s; 14*f") ;
 				}
 			//]]></script>
 		</div>
 		
 	  <div class = "vertex" id="v4" >
-			<p>Each matrix item (i,j) is represented by item ((i * number of columns) + j) of the array.</p>
-		<p>As you'll see, using this formula allows us to traverse the entire matrix by iterating over the rows and columns.</p>
-			<p>Here, the formula gives us: (0 * 3) + 0 = 0.</p>
+			<p>Each matrix item (i,j) --i.e., the item in row i and column j-- is represented by
+				item ((i * cols) + j) of the array.</p>
+			<p>As you'll see, using this formula allows us to traverse the entire matrix by iterating over the
+				rows and columns.</p>
+			<p>Here, the formula gives us: (i * cols) + j == (0 * 3) + 0 == 0. So item A[0] represents item (0,0),
+			   of the matrix.</p>
 			<p>This loop initializes the matrix to values 10, 11.5, 13, ... .</p>
 	  </div>
 	  <div class="edge" id="edge4to5" data-source="v4" data-target="v5"
@@ -123,14 +134,14 @@
 		     data-label="next" data-function="edge5to6">
 			 <script>//<![CDATA[
 				EdgeFunctions.edge5to6 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("6 * s; 14*f") ;
 				}
 			//]]></script>
 		</div>
 		
 		<div class = "vertex" id="v6" >
-			<p>Work out the locations accessed for the rest of matrix as the loops continue, or skip ahead if you feel you're comfortable with the matrix lookups.</p>
-			<p>Here, the formula gives us: (0 x 3) + 1 = 1.</p>
+			<p>Here, the formula gives us: (i * cols) + j == (0 * 3) + 1 == 1.
+			   So item 1 of the array represents item (0,1) of the matrix.</p>
 		</div>
 	    
 		<div class="edge" id="edge6to7" data-source="v6" data-target="v7"
@@ -142,18 +153,19 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v7" >
-			<p>The first element of the matrix has been assigned the value of 11.5 and val has been updated to 13.0.</p>
+			<p>Item (0,1) the matrix has been assigned the value of 11.5 and val has been updated to 13.0.</p>
 		</div>
 	    <div class="edge" id="edge7to8" data-source="v7" data-target="v8"
 		     data-label="next" data-function="edge7to8">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge7to8 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("6 * s; 14*f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v8" >
-			<p>(0 x 3) + 2 = 2.</p>
+			<p>>Here, the formula gives us: (i * cols) + j == (0 * 3) + 2 == 2.
+			   so item 2 of the array represents item (0,2) of the matrix.</p>
 		</div>
 	    <div class="edge" id="edge8to9" data-source="v8" data-target="v9"
 		     data-label="next" data-function="edge8to9">
@@ -164,7 +176,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v9" >
-			<p>The second element of the matrix has been assigned the value of 13.0 and val has been updated to 14.5.</p>
+			<p>Item (0,2) of the matrix has been assigned the value of 13.0 and val has been updated to 14.5.</p>
 		</div>
 		
 		<div class="edge" id="edge9to10" data-source="v9" data-target="v10"
@@ -172,11 +184,12 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge9to10 = function(tm) {
-					tm.go("10 * s") ;
+					tm.go("10 * s; 14*f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v10" >
-			<p>(1 x 3) + 0 = 3.</p>
+			<p>Here, the formula gives us: (i * cols) + j == (1 * 3) + 0 == 3.
+			   so item 3 of the array represents item (1,0) of the matrix.
 		</div>
 		
 		<div class="edge" id="edge10to11" data-source="v10" data-target="v11"
@@ -188,7 +201,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v11" >
-			<p>The third element of the matrix has been assigned the value of 14.5 and val has been updated to 16.0.</p>
+			<p>Item (1, 0) of the matrix has been assigned the value of 14.5 and val has been updated to 16.0.</p>
 		</div>
 		
 		<div class="edge" id="edge11to12" data-source="v11" data-target="v12"
@@ -196,11 +209,12 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to12 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("6 * s; 14*f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v12" >
-			<p>(1 x 3) + 1 = 4.</p>
+			<p>Here, the formula gives us: (i * cols) + j == (1 * 3) + 1 == 4.
+			   So item 4 of the array represents item (1,1) of the matrix.
 		</div>
 		
 		<div class="edge" id="edge12to13" data-source="v12" data-target="v13"
@@ -212,7 +226,7 @@
 				}
 			//]]></script>
 		<div class = "vertex" id="v13" >
-			<p>The fourth element of the matrix has been assigned the value of 16.0 and val has been updated to 17.5.</p>
+			<p>Item (1,1) the matrix has been assigned the value of 16.0 and val has been updated to 17.5.</p>
 		</div>
 		
 		<div class="edge" id="edge13to14" data-source="v13" data-target="v14"
@@ -220,11 +234,12 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge13to14 = function(tm) {
-					tm.go("6 * s") ;
+					tm.go("6 * s; 14*f") ;
 				}
 			//]]></script>
 		<div class = "vertex" id="v14" >
-			<p>(1 x 3) + 2 = 5.</p>
+			<p>Here, the formula gives us: (i * cols) + j == (1 * 3) + 2 == 5.
+			   so item 5 of the array represents item (1,2) of the matrix.
 		</div>
 		
 		<div class="edge" id="edge14to15" data-source="v14" data-target="v15"
@@ -240,34 +255,16 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge5to16 = function(tm) {
-					tm.go("51 * s") ;
+					tm.go("42 * s") ;
 				}
 			//]]></script> 
 		
-		<div class="edge" id="edge6to16" data-source="v6" data-target="v16"
-		     data-label="skip to end of loop" data-function="edge6to16">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge5to16 = function(tm) {
-					tm.go("45 * s") ;
-				}
-			//]]></script>
-			
-		<div class="edge" id="edge7to16" data-source="v7" data-target="v16"
-		     data-label="skip to end of loop" data-function="edge7to16">
-        </div>
-			<script>//<![CDATA[
-				EdgeFunctions.edge7to16 = function(tm) {
-					tm.go("43 * s") ;
-				}
-			//]]></script>
-
 		<div class="edge" id="edge8to16" data-source="v8" data-target="v16"
 		     data-label="skip to end of loop" data-function="edge8to16">
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge8to16 = function(tm) {
-					tm.go("37 * s") ;
+					tm.go("36 * s") ;
 				}
 			//]]></script>
 			
@@ -276,7 +273,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge9to16 = function(tm) {
-					tm.go("35 * s") ;
+					tm.go("34 * s") ;
 				}
 			//]]></script>
 			
@@ -294,7 +291,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge11to16 = function(tm) {
-					tm.go("23 * s") ;
+					tm.go("22 * s") ;
 				}
 			//]]></script>
 			
@@ -303,7 +300,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge12to16 = function(tm) {
-					tm.go("17 * s") ;
+					tm.go("16 * s") ;
 				}
 			//]]></script>
 			
@@ -312,7 +309,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge13to16 = function(tm) {
-					tm.go("15 * s") ;
+					tm.go("14 * s") ;
 				}
 			//]]></script>
 		
@@ -321,7 +318,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge14to16 = function(tm) {
-					tm.go("9 * s") ;
+					tm.go("8 * s") ;
 				}
 			//]]></script>
 			
@@ -334,7 +331,7 @@
         </div>
 			<script>//<![CDATA[
 				EdgeFunctions.edge15to16 = function(tm) {
-					tm.go("7 * s") ;
+					tm.go("6 * s") ;
 				}
 			//]]></script>
 			
