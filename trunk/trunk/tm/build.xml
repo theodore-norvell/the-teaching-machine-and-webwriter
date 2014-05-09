@@ -80,6 +80,7 @@
 	  	    <attribute name="Built-By" value="${user.name}"/>
 	  	    <attribute name="Built-On" value="${TODAY}"/>
 	  	    <attribute name="Main-Class" value="tm.TMMainFrame"/>
+	  		<attribute name="Permissions" value="sandbox"/>
 	  	</manifest>
 	  	<!-- Put everything in ${build} into the tm.jar file -->
 	    <jar jarfile="${dist}/tm.jar"

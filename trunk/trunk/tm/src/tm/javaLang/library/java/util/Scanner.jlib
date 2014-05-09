@@ -32,7 +32,13 @@ public class Scanner {
   	public String next() {
   		skipDelimiter() ;
   		String result = "" ;
-  		if( 
+  		while( hasMoreCharacters() ) {
+  		    char c = peek() ;
+  		    if( ! isWhileSpace(c) ) break ;
+  		    result.append(c)  ;
+  		    consume() ; }
+  		return result ;
+    }
     
     private void skipDelimiter() {
     	while( hasMoreCharacters() ) {
