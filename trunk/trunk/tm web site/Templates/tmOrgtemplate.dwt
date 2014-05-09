@@ -22,7 +22,7 @@ pageTracker._trackPageview();
      the only difference between the two is the stylesheet they use -->
 <body>
 <div id="masthead">
-  <h1 id="siteName">TeachingMachine.org </h1>
+  <h1 id="siteName">www.TheTeachingMachine.org </h1>
   <div id="globalNav">  <strong>principal researchers:</strong> &nbsp;&nbsp;&nbsp;michael
     bruce-lockhart&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;theodore s. norvell</div>
 </div>
