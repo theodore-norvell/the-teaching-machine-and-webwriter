@@ -90,7 +90,7 @@ var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
 var isLoaded = false;
 var thisDoc = self.location.href;
 
-var debugging = false;   // set to false to turn off logging
+var debugging = true;   // set to false to turn off logging
 
 /* This is temporary and should move to document. I would love to automate it but it we have to contend
  	with the possibility that the page may have been loaded directly in which case the frames are not
@@ -493,7 +493,7 @@ function loadCode(theURL, theRoot, relativeURL,  configurationFile, tmParseStrin
 
 	// The absolute path goes in absExampleURL
 	absExampleURL[currentCode] = javaURL
-	exampleSourceRoot[currentCode] = getJavaURL( rootOfSourceFiles ) ;
+	exampleSourceRoot[currentCode] = getJavaURL( theRoot ) ;
 	relExampleURL[currentCode] = getJavaURL(relativeURL) ;
 	baseCode[currentCode] = getTMCode(rawCode);
 	dataFileSet[currentCode] = lastDataSet;
@@ -537,8 +537,9 @@ function getTMApplet() {
 	var alertMessage = "WebWriter++ was unable start the Teaching Machine. "
 	             + "The problem may be that you do not have the "
 				 + "Java Runtime Environment intalled on your computer. "
-			 	 + "Java can be obtained from Oracle corporation: "
-			 	 +" http://java.com/en/download/index.jsp ."
+			 	 + "For most desktop and laptop computers, "
+				 + "Java can be obtained from Oracle corporation: "
+			 	 +" http://java.com/en/download/index.jsp ." ;
 	
 	if (TMApplet != null) {
 		consoleDebug("Looks like we got it already") ;
@@ -587,7 +588,15 @@ function invokeTM(example){
 			
 	// Load the example.
 	consoleDebug('TMApplet.loadRemoteFile("'+ exampleSourceRoot[example] +','+ relExampleURL[example] +'")' );
-	TMApplet.loadRemoteFile(exampleSourceRoot[example], relExampleURL[example]);
+	try {
+		TMApplet.loadRemoteFile(exampleSourceRoot[example], relExampleURL[example]); }
+	catch( ex ) {
+		consoleDebug("Crapped out") ;
+		consoleStackTrace(ex) ;
+		consoleDebug( ex.toString() ) ;
+		throw ex ;
+	}
+	consoleDebug("loadFile returned") ;
 
 	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() 
 	                                           : config[example]);
@@ -1772,6 +1781,9 @@ function catenateURLs( path, relativeURL ) {
 
 // deal with javaScript/Java url differences
 function getJavaURL(javaScriptURL){
+	if( ! javaScriptURL ) {
+		consoleError( "javaScriptURL is false" ) ; 
+		consoleStackTrace() ; }
 	// Use real spaces
 	var javaURL=javaScriptURL.replace(/%20/g," ");
 	// flip '\' to '/'
@@ -1801,8 +1813,13 @@ function consoleDebug(message){
 	}
 }
 
-
-
+function consoleStackTrace(error) {
+	if( !error ) error = new Error() ;
+	if( error.stack ) {
+		consoleError( error.stack.toString() ) ; }
+	else {
+		consoleError(  "no stack trace available" ) ; }
+}
 
 /* A STAMP FOR THE BOTTOM OF THE PAGE **************************************************/
 

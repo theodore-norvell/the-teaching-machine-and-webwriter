@@ -1,0 +1,117 @@
+/* CSS Document */
+
+body {
+	padding: 5% ;
+	background:#CCCCCC ;
+}
+
+#warning {
+	background:#CC3300 ;
+	font-family: sans-serif ;
+	color: white ;
+	display: block ;
+	position: fixed ;
+	top: 20px ;
+	left: 20px ;
+	width:500px ;
+	z-index: 3 ; 
+	visibility: hidden ;
+}
+
+#topContainer {
+	display: block ;
+	position:relative ;
+	width: 800px ;
+	height: 700px ;
+}
+
+.shim {
+	position: absolute ;
+	top: 0 ;
+	left: 0 ;
+	width: 800px ;
+	height: 700px ;
+	display: block ;
+	z-index: 1 ;
+	opacity: 1.0 ;
+}
+
+#teachingMachineContainer {
+	background:rgb(255,255,240) ;
+	position: absolute ;
+	top: 0 ;
+	left: 0 ;
+	width: 800px ;
+	height: 700px ;
+	display: block ;
+	transition: z-index 0s linear 1s, opacity 2s ;
+	-webkit-transition: z-index 0s linear 1s, opacity 2s ;
+}
+
+.onTop {
+	z-index: 2 ;
+	opacity: 1.0 ;
+}
+.onBottom {
+	z-index: 0 ;
+	opacity: 0.0 ;
+}
+
+#editorContainerContainerContainer {
+	background:rgb(255,240,255) ;
+	position: absolute ;
+	top: 0 ;
+	left: 0 ;
+	width: 800px ;
+	height: 700px ;
+	display: block ;
+	transition: z-index 0s linear 1s, opacity 2s ;
+	-webkit-transition: z-index 0s linear 1s, opacity 2s ;
+}
+	
+.editorContainerContainer {
+	position: relative ;
+	perspective: 1500px;
+	-webkit-perspective: 1500px;
+	display: block ;
+	position: relative ;
+	
+}
+
+.editorContainer {
+	position:absolute ;
+	top: 0 ;
+	left: 0 ;
+	bottom: 0 ;
+	right : 0 ;
+	display: block ;
+	transform: rotateY(91deg) ;
+	-webkit-transform: rotateY(91deg) ;
+	transition: transform 2s ease-in-out ;
+	-webkit-transition: -webkit-transform 2s ease-in-out ;
+	backface-visibility: hidden ;
+	-webkit-backface-visibility: hidden ;
+}
+
+.textArea {
+	height: 200 ;
+	border-style: inset ;
+	border-width: thick ;
+	display:block ;
+}
+
+.CodeMirror {
+	margin-left: 10% ;
+	margin-right: 10% ;
+	border-style: inset ;
+	border-width: thick ;
+	background:rgb(255,255,204) ;
+}
+
+.controlTable {
+	margin-left: 10% ;
+}
+
+button:disabled {
+	text-decoration:line-through ;
+}
