@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <link rel="stylesheet" href="codemirror-4.1/lib/codemirror.css">
+    <link rel="stylesheet" href="try-it-now.css">
+    <script src="codemirror-4.1/lib/codemirror.js"></script>
+    <script src="codemirror-4.1/mode/clike/clike.js"></script>
+    <script src="try-it-now.js"></script>
+
+  <title>Try The Teaching Machine</title>
+  </head>
+
+  <body onload="onLoad();">
+    
+    <h1>Try the Teaching Machine Now</h1> 
+    <table class="controlTable">
+      <tr>
+        <td><strong>Pick a language</strong></td>
+        <td><input id="cppRadio" type="radio" name="language" value="cpp"  onChange="languageChange();"/>C++</td>
+        <td><input id="javaRadio" type="radio" name="language" value="java" onChange="languageChange();"/>Java</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+       <div id="warning">
+         <p>Please be patient. It can take a little while for
+             the Teaching Machine to start.
+         </p>
+         <p> Please agree to any security prompts.
+             The Teaching Machine runs in sandboxed mode, and it
+             can not harm your computer.
+         </p>
+         <p><button onclick="dismissWarning();">Dismiss</button>
+         </p>
+       </div>
+    <div id="topContainer">   
+      <div id="teachingMachineContainer" class="onBottom">
+        <p><strong>Running. Use</strong> the Teaching Machine's controls to step forward and backward through the program's execution. Click on "Edit" to return to editing.
+          <button onClick="hideTheTM();">Edit</button>
+        </p>
+        <object type="application/x-java-applet" width="800" height="600" 
+                name="teachingMachine" id="teachingMachine" >
+          <param name="code" value="tm/TMBigApplet.class" />
+          <param name="archive" value="signed-tm.jar" />
+          <param name="java_arguments" value="-Djnlp.packEnabled=true"/>
+          Applet failed to run.  No Java plug-in was found.
+        </object>
+      </div>
+      <iframe src="javascript:false;" frameBorder="0" scrolling="no" class="shim">
+      </iframe>
+      <div id="editorContainerContainerContainer" class="onTop">
+        <div class="editorContainerContainer">
+          <div class="editorContainer" id="cppEditorContainer">
+            <p><strong>Editing C++.</strong> Click on "Run" when ready.
+               <button onclick="sendToTM();">Run</button>
+            </p>
+            <textarea id="cppTextArea" class="textArea">
+#include <iostream>
+using namespace std;
+
+int main(){
+  cout << "Hello from the TM team." << endl ;
+  return 0; 
+}        
+            </textarea>
+          </div>
+          <div class="editorContainer" id="javaEditorContainer">
+            <p><strong>Editing Java.</strong> Click on "Run" when ready.
+               <button onclick="sendToTM();">Run</button>
+            </p>
+            <textarea id="javaTextArea" class="textArea">
+class Main {
+  public static void main( String[] args ) {
+      System.out.println("Hello from the TM team." ) ;
+  }
+}
+            </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body >
+</html>
