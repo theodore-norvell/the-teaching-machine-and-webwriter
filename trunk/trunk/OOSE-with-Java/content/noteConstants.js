@@ -6,7 +6,7 @@ var generator = "WebWriter++";
 var bottomMark ="<em>Object-oriented software engineering with Java</em>";
 var courseNo = "Engi-9859";
 
-var copyright = "&copy; 2004--2012, Theodore Norvell";
+var copyright = "&copy; 2004--2014, Theodore Norvell";
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
 var authorRef = "http://www.teachingMachine.org";
@@ -15,7 +15,7 @@ var licenseRef = authorRef;
 var copyRightDates = "2011";
 var creativeCommons = true;
 
-var tmArchive = "tm.jar";
+var tmArchive = "signed-tm.jar";
 
 //  SITE IDENTIFICATION 
 // Define either the organization and the course or the siteLogo and the siteTooltip
@@ -37,7 +37,7 @@ var siteTooltip = "Object-Oriented Software Engineering with Java";
 *****************************************************/
 var homeButton = true;
 var homeTooltip = "";
-var homeUrl = "http://www.teachingMachine.org";
+var homeUrl = "http://www.engr.mun.ca/~theo/Courses/OOSE-with-Java/default.htm";
 
 var modeButton = true;
 var startInLectureMode = false;
