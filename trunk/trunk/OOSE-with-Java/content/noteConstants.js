@@ -4,15 +4,15 @@ var siteTitle = "OOSE w/ Java";
 var authors = "Theodore Norvell";
 var generator = "WebWriter++";
 var bottomMark ="<em>Object-oriented software engineering with Java</em>";
-var courseNo = "Engi-9859";
+var courseNo = "Engi-9874";
 
 var copyright = "&copy; 2004--2014, Theodore Norvell";
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
-var authorRef = "http://www.teachingMachine.org";
+var authorRef = "http://www.theTeachingMachine.org";
 var licenseRef = authorRef;
 
-var copyRightDates = "2011";
+var copyRightDates = "2004--2014";
 var creativeCommons = true;
 
 var tmArchive = "signed-tm.jar";
