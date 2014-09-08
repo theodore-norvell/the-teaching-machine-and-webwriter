@@ -79,10 +79,6 @@
 //	alert("isIE is " + (isIE ? "true" : "false"));
 
 
-//var loadApplet=null;
-//var parseApplet=null;
-var TMApplet = null;
-
 // Technically this is no applets as well. An effort to force reload to behave because I figured && top.navBarFrame.appletsLoaded
 // reload is touching of a race between frames so we just treat it as if we were starting on a page not at the top.
 var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
@@ -90,7 +86,7 @@ var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
 var isLoaded = false;
 var thisDoc = self.location.href;
 
-var debugging = false;   // set to false to turn off logging
+var debugging = true;   // set to false to turn off logging
 
 /* This is temporary and should move to document. I would love to automate it but it we have to contend
  	with the possibility that the page may have been loaded directly in which case the frames are not
@@ -210,27 +206,6 @@ function fileToString(url){
 	*/
 }
 
-/*	Try to find a specific applet. 
-*/
-function getApplet(appletName){
-	if (noAppletFrame) return;
-	
-	if (!parent.navBarFrame.appletsLoaded) {
-		var waitPage = peelName(getBaseURL()) + "wait_for_applets.htm";
-		self.location.replace(nestingDepth + "wait_for_applets.htm");
-//		var waitWindow = window.open(waitPage,null,"height=400,width=300");
-/*		while(!waitWindow.closed) {
-		}*/
-	}
-	if (parent.navBarFrame.appletsLoaded) {
-//		alert("Looking for applet " + appletName);
-		var applet = parent.navBarFrame.document[appletName];
-//		alert("Got applet " + applet);
-		return applet;	// Changed 2004.02.17 to support both Mozilla & ie
-	}
-//	alert("Sorry. " + appletName + " is unavailable.");
-	return null;
-}
 
 /*************************************************************************************/
 /* Functions to write code dynamically into documents. A piece of sample code is extracted as a single string
@@ -527,49 +502,19 @@ function getTMCode(rawCode){
 }
 
 /**  getTMApplet()
-     Pre: if TMApplet != null, then it points to a good applet.
-     Post: either TMApplet' != null and it points to a good applet
-	       or TMApplet' == null and the user has been alerted to
-		      the problem 
+Returns null if the TM applet can not be got. The user will already have been
+informed
 */
 function getTMApplet() {
-	consoleDebug("Getting applet") ;
-	var alertMessage = "WebWriter++ was unable start the Teaching Machine. "
-	             + "The problem may be that you do not have the "
-				 + "Java Runtime Environment intalled on your computer. "
-			 	 + "Java can be obtained from Oracle corporation: "
-			 	 +" http://java.com/en/download/index.jsp ."
-	
-	if (TMApplet != null) {
-		consoleDebug("Looks like we got it already") ;
-		return ; }
-		
-	consoleDebug("Checking on whether java is supported.") ;
-	if( ! parent.navBarFrame.javaIsEnabled ) {
-		consoleError("Looks like Java is not supported.") ;
-		alert( alertMessage ) ; 
-		return; }
-		
-	consoleDebug("Looks like Java is supported.") ;
-	TMApplet = getApplet("teachingMachine");
-	if (TMApplet == null) {
-		consoleError('getApplet("teachingMachine") has failed.') ;
-		alert(alertMessage); 
-		return ; }
-	
-	consoleDebug('getApplet("teachingMachine") has succeeded.') ;
-	
-	if( ! TMApplet.loadRemoteFile ) {
-		TMApplet = null ;
-		consoleError("TMApplet does not have a loadRemoteFile function") ; 
-		alert(alertMessage);  }
+	if (noAppletFrame) return null;
+	else return parent.navBarFrame.getTMApplet() ;
 }
 
 function invokeTM(example){
 
 	// Try to get the TM applet. Return if the applet could not be found.
 	consoleDebug("About to get applet. f") ;
-	getTMApplet() ;
+	var TMApplet = getTMApplet() ;
 	if (TMApplet == null) {
 		consoleError("TMApplet could not be got.") ;
 		return ; }
@@ -631,7 +576,7 @@ function formLoaded(){
 // Called by input form window once editing is done
 function changeCode(newCode, language){
 	consoleDebug("About to get applet. (changeCode)") ;
-	getTMApplet() ;
+	var TMApplet = getTMApplet() ;
 	if (TMApplet == null) {
 		consoleError("TMApplet could not be got.") ;
 		return ; }
