@@ -12,7 +12,7 @@ var courseNo = "";
 
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
-var authorRef = "http://www.teachingMachine.org";
+var authorRef = "http://www.TheTeachingMachine.org";
 var licenseRef = authorRef;
 var copyright = copyrightOwner;
 var copyRightDates = "14610";
@@ -37,7 +37,7 @@ var siteTooltip = "How to use the Teaching Machine to create Program Dependent V
 // Desired buttons and states associated with buttons
 var homeButton = true;
 var homeTooltip = "Go to the course administrative website";
-var homeUrl = "http://www.teachingMachine.org/cookBook/default.html";
+var homeUrl = "http://www.TheTeachingMachine.org/cookBook/default.html";
 
 var modeButton = false;
 var startInLectureMode = false;

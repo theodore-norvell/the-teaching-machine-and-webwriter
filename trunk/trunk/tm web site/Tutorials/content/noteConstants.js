@@ -9,7 +9,7 @@ var courseNo = "1020";
 
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
-var authorRef = "http://www.teachingMachine.org";
+var authorRef = "http://www.TheTeachingMachine.org";
 var licenseRef = authorRef;
 
 var tmArchive = "tm.jar, qg.jar, tmImagePlugIn.jar";
@@ -34,8 +34,8 @@ var siteTooltip = "";
 *****************************************************/
 
 var homeButton = true;
-var homeTooltip = "return to teachingMachine.org home page";
-var homeUrl = "http://www.teachingMachine.org";
+var homeTooltip = "return to TheTeachingMachine.org home page";
+var homeUrl = "http://www.TheTeachingMachine.org";
 
 
 var modeButton = false;
