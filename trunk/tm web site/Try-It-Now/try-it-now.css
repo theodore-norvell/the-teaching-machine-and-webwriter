@@ -5,17 +5,24 @@ body {
 	background:#CCCCCC ;
 }
 
-#warning {
+.popup {
+	overflow: hidden ;
+	transition: max-height 2s ;
+}
+
+.popup.hidden { 
+	max-height: 0px ;
+}
+
+.popup.showing {
+	max-height: 200px ;
+}
+
+.alert {
 	background:#CC3300 ;
 	font-family: sans-serif ;
 	color: white ;
-	display: block ;
-	position: fixed ;
-	top: 20px ;
-	left: 20px ;
-	width:500px ;
-	z-index: 3 ; 
-	visibility: hidden ;
+	border:thick solid black ;
 }
 
 #topContainer {
@@ -94,7 +101,7 @@ body {
 }
 
 .textArea {
-	height: 200 ;
+	height: 200px ;
 	border-style: inset ;
 	border-width: thick ;
 	display:block ;

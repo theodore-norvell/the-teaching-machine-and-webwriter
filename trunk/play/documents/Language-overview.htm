@@ -13,7 +13,7 @@
   <li>Version 0 -- from the depths of time. Circa 2007.</li>
 </ul>
 <h2>Data model</h2>
-<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot; (or &quot;state&quot;), which may be a string, a reference to an object, or the special null value. (In fact, as we will soon see, null and strings are also objects, and so we may say that the value (or state) of a field is a reference to an object.</p>
+<p>The state of a PLAY program is called a world. A world is an object, which means that it may have one or more &quot;fields&quot;  (or &quot;attributes&quot; or &quot;member variables&quot;). Each of these fields has a &quot;value&quot; (or &quot;state&quot;), which may be a string, a reference to an object, or the special null value. (In fact, as we will soon see, null and strings are also objects, and so we may simply say that the value (or state) of a field is a reference to an object.)</p>
 <h3>Values</h3>
 <p>Each value is a reference to an object.</p>
 <h3>Objects: primitive and complex</h3>
@@ -24,12 +24,12 @@
 <h3>Numbers, strings, and boolean</h3>
 <p align="left">Certain objects are strings.</p>
 <p align="left">A string object represents any sequence of zero or more unicode characters. A number is just a string that obeys some special syntax restrictions. For example a string that consists only of digits is also considered a number. Certain operators require that their operands be numbers. E.g., </p>
-<p align="center">world.x + world.y</p>
-<p align="left">will result in an &quot;error&quot; if the value of wor	ld.x is a reference to the string &quot;bogart&quot; or if the value of world.y is the null reference. </p>
+<p align="center">x + y</p>
+<p align="left">will result in an &quot;error&quot; if the value of x is a reference to the string &quot;bogart&quot; or if the value of y is the null reference. </p>
 <p align="left">Boolean values are the two strings &quot;true&quot; and &quot;false&quot;. Certain operators and statements will result in an &quot;error&quot; if an operand is neither of these particular strings. </p>
 <h3 align="left">Types</h3>
 <p align="left">Types are objects that describe a set of values. Some values may belong to more than one type.</p>
-<p align="left">Each class is a type. If C is a class then, as a type C describes all references to objects of type C. </p>
+<p align="left">Each class is a type. If C is a class then, as a type, C describes all references to objects of type C. </p>
 <p align="left">I addition there are the following types</p>
 <ul>
   <li>Boolean -- describes only the strings &quot;true&quot; and &quot;false&quot;.</li>
@@ -42,43 +42,42 @@
 <p>There are also a number of method types</p>
 <ul>
   <li>Method -- describes all methods with no restrictions on parameters, return values and recipients.</li>
-  <li>Method (X) : Y for Z -- describes all methods that take parameters described by X and return results as described by Y that can be sent to objects of type Z. Here X is a list of types and Y and Z are types. For example Method(Number, Boolean) : String for Person </li>
+  <li>X -&gt; Y -- describes all methods that take parameters described by X and return results as described by Y. Here X is type and Y is a type. For example Number*Boolean -&gt; String is a type.</li>
 </ul>
-<p>Furthermore we can form the finite union of types. This is usually done to allow null values. For exmple the type String+Null describes references that are either to strings or to the null object. </p>
+<p>Furthermore we can form the finite union of types. This is usually done to allow null values. For exmple the type String | Null describes references that are either to strings or to the null object. </p>
+<p>We can also form the product of any number of types greater than 1: textually T*U, T*U*V etc. The product of one type, T, is T. The product of 0 types is Null.</p>
 <h3>Objects and classes </h3>
 <p>Each object is associated with one object that is its class. The class determines what fields an object has. Thus each class object is associated with an ordered set of field descriptions, each member of that set having a unique name. Each field description contains</p>
 <ul>
   <li>a name -- a string. All names must be unique within the fields of the object </li>
   <li>a type (e.g. Any, String, Boolean, Method, or a class)</li>
-  <li>a default value, which could be the null value. </li>
+  <li>a default value expression</li>
   <li>a boolean indicating whether the field is var or con. var field may be changed after initialization, con fields can not. con fields are often used for constants (as static final fields in Java) and to hold methods..</li>
 </ul>
-<p>Each class is also associated with a class that is its superclass. The special class Object has itself as its superclass. The classes form a tree with Object at its root.</p>
-<p>Since classes themselves are objects it is sensible to ask what the class of a class object is. The answer is a special class called MetaClass. As MetaClass is a class, its class is itself. </p>
+<p>Each class is also associated with a class that is its superclass. The special class Object has itself as its superclass. The classes form a tree with Object at its root. Note that all classes are types, but not all types are classes.</p>
+<p>Since classes themselves are objects, it is sensible to ask what the class of a class object is. The answer is a special class called MetaClass. As MetaClass is a class, its class is itself. </p>
 <p>As a textual notation, we could imitate Javascript and refer to a field or method as</p>
 <p align="center"><em>object . name</em></p>
 <p align="left">where <em>object</em> is an expression that evaluates to an object reference, <em>name</em> is a name. For example </p>
 <p align="center">world . fred</p>
 <p align="left">is an  expression for a field or method named &quot;fred&quot; in  world object.</p>
-<p align="left">[Aside on &quot;textual notations&quot;. The PLAY language is intended to be mostly visual. However, we might also provide a textual notation that can be textually edited. The textual notations in this document are tentative, but over time will become fixed.]]</p>
+<p align="left">[Aside on &quot;textual notations&quot;. The PLAY language is intended to be mostly visual. However, we might also provide a textual notation that can be textually edited. The textual notations in this document are tentative, but over time will become fixed.]</p>
 <p align="left">The value of a field is found by first looking at the object. If the object does not supply a value, then the value is the default for the class. If the class does not supply the value, one goes to the classes superclass and so on. </p>
 <h3 align="left">The World class </h3>
 <p align="left">The class of the world is a class called World. When the user adds objects (i.e. attributes) to world, it may be necessary to add new field descriptions to World.</p>
 <h3 align="left">Methods</h3>
-<p align="left">Methods are objects. The class of a method is Method. Each method object has attributes that specify: an associated  class -- called the method's activation class--, the number of parameters is has, a return type, a recipient type, and a method body. The field descriptions of the activation class describe the local variables of the method. If the number of parameters is n, there must be at least n local variables and the first n are the parameters (in order). </p>
+<p align="left">Methods are objects. The class of a method is Method. Each method object has attributes that specify: an associated  class -- called the method's activation class--, the number of parameters it has, a return type, and a method body. The field descriptions of the activation class describe the local variables of the method. If the number of parameters is n, there must be at least n local variables and the first n are the parameters (in order).</p>
 <p align="left">Methods may also be &quot;built-in&quot;, in which case the method body is absent.</p>
 <h2 align="left">Language Model</h2>
 <h3 align="left">Commands and expressions </h3>
 <p align="left">In terms of syntax, the language makes no distinction between commands and expressions. In a sense commands are just expressions that always return a value of type Comm.</p>
 <h3 align="left">Variables</h3>
-<p align="left">Variables come in three varieties: world, local, and instance. In fact all variables are fields of some object, but this fact is a bit hidden from the programmer, who sees the previously mentioned three possibilities. In the case of world variables, these are fields of the world object. In the case of local variables, these are fields of the top-most activation object on the activation object stack. In the case of instance variables these are the fields of some object that is a part of the currect chain of contexts. </p>
-<p align="left">In the visual language, variables might be shown as labeled boxes of three different shapes or colours. So <span style="background-color:#003333;color:#FFFFFF">fred</span> might mean the fred field of the world object, whereas <span style="background-color:#00CCFF;color:#000000
-">fred</span> might mean the local fred. As an ad hoc textual notation, I will use world.fred, local.fred, and this.fred to distinguish the three possibilities.</p>
-<p align="left">Variable access expression. The current value of a field can be obtained, by simply mentioning its name. The textual syntax is world.name, local.name, or this.name. The visual syntax, as mentioned above might be a coloured labeled box with an arrow leading out of it, headed for its use. </p>
+<p align="left">Variable references refer to the field of some object or to a &quot;local&quot; variable such as a method parameter. (In fact even local variables are fields of activation objects, but this is a fact that the programmer can generally ignore. Technically each expression is evaluated in a context that includes a stack of activation records and objects belonging to classes. The top of this stack is at position 0, so a variable reference &quot;x&quot; might be equivalent to &quot;stack[i].x&quot; for a value of i that can be computed statically.)</p>
+<p align="left">Variable access expression. The current value of a field can be obtained, by simply mentioning its name. The textual syntax is name. The visual syntax is just the name in a box.</p>
 <p align="left">Compile time</p>
 <p align="left">Check:</p>
 <ul>
-  <li>That the name is the name of a field of the compile time type of the class of this, the world, or the current method's activation class. If need be, go up the superclass chain to find the field description.</li>
+  <li>That the name is declared somewhere in the stack.</li>
 </ul>
 <p>The type of the variable reference is the the type found in its field description.</p>
 <p>Execution: </p>
@@ -87,17 +86,17 @@
   <li>Otherwise use the default value for the class (or superclass etc.).</li>
 </ul>
 <p align="left">Variable assignment command. The textual syntax is</p>
-<p align="center">world.fred := exp </p>
-<p align="center">local.fred := exp </p>
-<p align="left">or</p>
-<p align="center">this.fred := exp </p>
-<p align="left">The visual syntax might consist of a coloured box with an arrow headed into it from the expression. Some visual distinction should be made between an assignment and a call of a command with one argument.</p>
+<p align="center">pat := exp </p>
+<p>where pat is one of</p>
+<p align="center">name or x.name </p>
+<p align="left">where x is an expression, or is a more complex pattern such as a tuple of 2 or more patterns, e.g. (n, m) := z.</p>
+<p align="left">The visual syntax is similar to the textual.</p>
 <p align="left">Assignment only affects the value of the field in one object, never in the object's class. </p>
 <p align="left">Compile time:</p>
 <p align="left">Check</p>
 <ul>
-  <li>that the name is the name of a field of the compile time type of the class of this, the world, or the current method's activation class.  If need be, go up the superclass chain to find the field description.</li>
-  <li>that the field is not locked </li>
+  <li>that the names are the names fields of the compile time type of the appropriate field.</li>
+  <li>that the field is not locked (con)</li>
   <li>that the type of the expression is a subtype of the type of the field.</li>
   <li>that the type </li>
 </ul>
@@ -113,14 +112,13 @@
 <h3 align="left">Calls</h3>
 <p align="left">Text representation</p>
 <blockquote>
-  <p align="left">exp<sub>0</sub> &lt;- name( exp<sub>1</sub>, exp<sub>2</sub>, ..., exp<sub>n</sub>)</p>
+  <p align="left">exp<sub>0</sub>( exp<sub>1</sub>, exp<sub>2</sub>, ..., exp<sub>n</sub>)</p>
 </blockquote>
-<p align="left">exp<sub>0</sub> is an expression representing an object reference. Typically, exp_0 is just a reference to a variable (world, instance, or local), and the GUI might make this option the easiest to choose. If exp<sub>0</sub> evaluates to null, it is a run-time error. Otherwise the object is the &quot;recipient object&quot;. The name is an attribute name. The value of attribute &quot;name&quot; of the recipient should be a method that takes n argument. The remaining expressions are the arguments. </p>
+<p align="left">exp<sub>0</sub> is an expression representing a method.</p>
 <p align="left">Compile time:</p>
 <p align="left">We can check that </p>
 <ul>
-  <li> that the name is the name of an attribute of the class of exp<sub>0</sub></li>
-  <li>that the type of this attribute is a subtype of Method</li>
+  <li>that exp<sub>0</sub> is of type Method</li>
   <li> if the type of the attribute supplies information about the numbers and types of the parameters, that
     <ul>
       <li>the number of parameters is correct and</li>
@@ -134,31 +132,23 @@
   <li>Evaluate exp<sub>0</sub> to exp_n in order.</li>
   <li>Check:
     <ul>
-      <li></li>
+      <li>  that the value of exp<sub>0</sub> is a method</li>
+      <li>that the number of arguments equals the number of parameters of the method</li>
+      <li>check that each argument is of the appropriate type for the parameter</li>
     </ul>
-  that the value of exp<sub>0</sub> is not null
-  <ul>
-    <li>that exp<sub>0</sub>  has an attribute &quot;name&quot;. </li>
-    <li>that the value of exp<sub>0</sub>.name is not null and is of type Method</li>
-    <li>that the value of exp<sub>0</sub> is in the recipient type of the method.</li>
-    <li>that the number of arguments equals the number of parameters of the method</li>
-    <li>check that each argument is of the appropriate type for the parameter</li>
-  </ul>
   </li>
   <li>Let x<sub>i</sub> be the value of exp<sub>i</sub>, for each i</li>
-  <li>Let m be the value of exp<sub>0</sub>.name </li>
-  <li>Push x<sub>0</sub> on to the recipient stack.</li>
-  <li>Create an object of the activation class of m and push a reference to it onto the activation stack</li>
+  <li>Let m be the value of exp<sub>0</sub></li>
+  <li>Create an activation record for m and push a reference to it onto the activation stack assign arguments to parameters.</li>
   <li>If the method is user-defined, execute the method body.</li>
   <li>Otherwise, evaluate the built-in method in some implementation dependant way. </li>
   <li>If the result of executing the method body is &quot;return v&quot;
     <ul>
-      <li>check that each argument is of the appropriate type for the parameter</li>
       <li> the value of the call is v.</li>
     </ul>
   </li>
 </ul>
-<p align="left">Visual representation: Each call can be represented by a coloured box with arrows headed in from the arguments and one arrow headed out.</p>
+<p align="left">Visual representation: a box containing exp<sub>0</sub> to exp_n in order with a </p>
 <p align="left">Global operations. Operations such as *, +, =, etc can be thought of as methods that belong to the world, or perhaps to some child of the world, say world.std. Then an operation that computes the sum of 2 and 3 could  be written as</p>
 <blockquote>
   <p align="left">world.std.+( 2, 3 )</p>
@@ -173,19 +163,18 @@
   <li>&quot;1&quot; -- equivalent to the above</li>
   <li>&quot;true&quot;</li>
   <li>null</li>
-  <li>method (v<sub>0</sub> : type<sub>0</sub>, v <sub>1</sub> : type<sub>1</sub>, ..., v <sub>n-2</sub> : type<sub>n-1</sub>) : type<sub>n</sub>  seq end for type<sub>n+1</sub> </li>
+  <li>lambda (v<sub>0</sub> : type<sub>0</sub>, v <sub>1</sub> : type<sub>1</sub>, ..., v <sub>n-2</sub> : type<sub>n-1</sub>) : type<sub>n</sub>  seq</li>
 </ul>
-<p>The last is a method literal (i.e. lambda expressions). The &quot;seq&quot; represents a sequence of expression. The type of a sequence is the type of its last expression. (And should be convertable to type<sub>n</sub>).</p>
-<p>(In the visual language the method literals may not be used much as methods will generally be associated with one class rather than free-floating values. In particular, the programmer shouldn't need to specify the recipient type when defining a method for a particular class as it can be assumed to be the same as the class.) </p>
-<p>Compile time: The type of a literal is the most specific type possible. Thus the type of null is Null and the type of &quot;1&quot; is Number. </p>
-<p>The body of a method is checked in the context of the given recipient type, the activation class of the method, and the current state of World.</p>
+<p>The last is a method literal (i.e. lambda expressions). The &quot;seq&quot; represents a sequence of expression. The type of a sequence is the type of its last expression. (And should be convertable to type<sub>n</sub>). More generally after the lambda comes a declaration pattern (see below).</p>
+<p>Compile time: The type of a literal is the most specific type possible. Thus the type of null is Null and the type of  &quot;1&quot; is Number. </p>
+<p>The body of a method is checked in the context of the given recipient type.</p>
 <p>Execution:</p>
 <ul>
-  <li>The value of a literal is straight-forward.</li>
+  <li>The value of a literal is straight-forward execpt in the case of lambdas. The value of a lambda is an internal representation of the literal (i.e. its machine code) together with the runtime context (i.e. stack) that it was created in.</li>
 </ul>
 <h3 align="left">Commands</h3>
 <p align="left">We've already seen variable assignment commands.</p>
-<p align="left">Command method calls are similar to operation calls discussed above. There is a compile-time warning if the return type is not Null, however there is no run-time error if the result is not null. </p>
+<p align="left">Command method calls are similar to operation calls discussed above. There is a compile-time warning if the return type is not Comm, however there is no run-time error if the result is not Comm. </p>
 <p align="left">Sequences: A sequence of expressions is a an expression.</p>
 <p align="center">exp<sub>0</sub> exp<sub>1</sub>... exp<sub>n-1</sub>,</p>
 <p align="left"></p>
@@ -195,6 +184,6 @@
 <p align="center">while exp<sub>0</sub> do seq <sub>1</sub></p>
 <p align="left">The compile-time and execution semantics are straight-forward as the language (as of yet) has no exceptions. The value in each case is the last expression executed, except for the for loop, which has a type of Comm. </p>
 <p align="left">Variable declarations.</p>
-<p align="left">Local variable declarations are allowed only within sequences. Local variable declarations are expressions of type Comm that have the effect of declaring a variable in the local activation record (i.e. the local frame. </p>
+<p align="left">Local variable declarations are allowed only within sequences. Local variable declarations are expressions of type Comm that have the effect of declaring one or more variables</p>
 </body>
 </html>

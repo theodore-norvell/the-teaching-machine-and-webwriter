@@ -39,9 +39,19 @@ public class TMTinyApplet extends JApplet
 // OVERIDES OF APPLET //
 ////////////////////////
 
-    public void init() {
+    /** Note: init should only be called if we are running as an applet.
+     * This is because if relies on class netscape.JSObject which 
+     * does not exist in the standard JRE
+     */
+     public void init() {
+    	System.out.println("The TMTinyApplet has recieved an 'init' message") ;    
     	setLayout(null);	
     	TMBigApplet.setLookAndFeel( this ) ;
+    }
+     
+    public void start() {
+    	System.out.println("The TMTinyApplet has recieved a 'start' message") ;    
+    	TMBigApplet.callBackToJavaScript(this) ;
     }
 
     public void destroy() {

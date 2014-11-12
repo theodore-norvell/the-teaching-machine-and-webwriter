@@ -8,12 +8,37 @@
     <script src="codemirror-4.1/lib/codemirror.js"></script>
     <script src="codemirror-4.1/mode/clike/clike.js"></script>
     <script src="try-it-now.js"></script>
+    <script src="tmStartUp.js"></script>
 
   <title>Try The Teaching Machine</title>
   </head>
 
   <body onload="onLoad();">
-    
+    <div class="warningArea"> 
+      <div id="warning" class="popup showing">
+        <div class="alert">
+        <p>Please be patient. This page can take a while to load.
+        </p>
+        <p> Please agree to any security prompts.
+            The Teaching Machine runs in sandboxed mode, and it
+            can not harm your computer.
+        </p>
+        <p>Click on <button onclick="dismissWarning();">Dismiss</button>
+           to dismiss this message.
+        </p>
+        </div>
+      </div>
+      <div id="loadWarning" class="popup hidden">
+        <div class="alert">
+        <p> Please be patient. It may take a few seconds to compile your
+            file and build the displays.
+        </p>
+        <p>Click on <button onclick="dismissLoadWarning();">Dismiss</button>
+           to dismiss this message.
+        </p>
+      </div>
+      </div>
+    </div>
     <h1>Try the Teaching Machine Now</h1> 
     <table class="controlTable">
       <tr>
@@ -24,21 +49,13 @@
         <td></td>
       </tr>
     </table>
-       <div id="warning">
-         <p>Please be patient. It can take a little while for
-             the Teaching Machine to start.
-         </p>
-         <p> Please agree to any security prompts.
-             The Teaching Machine runs in sandboxed mode, and it
-             can not harm your computer.
-         </p>
-         <p><button onclick="dismissWarning();">Dismiss</button>
-         </p>
-       </div>
     <div id="topContainer">   
       <div id="teachingMachineContainer" class="onBottom">
-        <p><strong>Running. Use</strong> the Teaching Machine's controls to step forward and backward through the program's execution. Click on "Edit" to return to editing.
-          <button onClick="hideTheTM();">Edit</button>
+        <p><strong>Running.</strong> Use the Teaching Machine's controls
+           to step forward and backward through the program's
+           execution. Click on 
+             <button onClick="hideTheTM();">Edit</button>
+           to return to editing.
         </p>
         <object type="application/x-java-applet" width="800" height="600" 
                 name="teachingMachine" id="teachingMachine" >
@@ -53,8 +70,9 @@
       <div id="editorContainerContainerContainer" class="onTop">
         <div class="editorContainerContainer">
           <div class="editorContainer" id="cppEditorContainer">
-            <p><strong>Editing C++.</strong> Click on "Run" when ready.
+            <p><strong>Editing C++.</strong> Click on
                <button onclick="sendToTM();">Run</button>
+               when ready to see your program execute.
             </p>
             <textarea id="cppTextArea" class="textArea">
 #include <iostream>
@@ -67,8 +85,9 @@ int main(){
             </textarea>
           </div>
           <div class="editorContainer" id="javaEditorContainer">
-            <p><strong>Editing Java.</strong> Click on "Run" when ready.
+            <p><strong>Editing Java.</strong> Click on
                <button onclick="sendToTM();">Run</button>
+               when ready to see your program execute.
             </p>
             <textarea id="javaTextArea" class="textArea">
 class Main {
