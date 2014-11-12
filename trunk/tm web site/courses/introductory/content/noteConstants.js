@@ -12,7 +12,7 @@ var courseNo = "P1";
 
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
-var authorRef = "http://www.teachingMachine.org";
+var authorRef = "http://www.TheTeachingMachine.org";
 var licenseRef = authorRef;
 var copyright = copyrightOwner;
 var copyRightDates = "2002, 2004, 2008, 2010";
@@ -68,8 +68,8 @@ var siteTooltip = "Procedural programming in C++ ";
 
 // Desired buttons and states associated with buttons
 var homeButton = true;
-var homeTooltip = "Go to the TeachingMachine.org home page";
-var homeUrl = "http://www.teachingmachine.org/";
+var homeTooltip = "Go to TheTeachingMachine.org home page";
+var homeUrl = "http://www.TheTeachingMachine.org/";
 
 var modeButton = true;
 var startInLectureMode = true;

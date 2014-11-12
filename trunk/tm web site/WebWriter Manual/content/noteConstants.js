@@ -9,7 +9,7 @@ var courseNo = "";
 var copyright = "&copy; 2002, 2004, 2008, 2010, 2013 Michael Bruce-Lockhart.";
 var copyrightTitle = siteTitle;
 var copyrightOwner = authors;
-var authorRef = "http://www.teachingMachine.org";
+var authorRef = "http://www.TheTeachingMachine.org";
 var licenseRef = authorRef;
 
 var copyRightDates = "2002, 2004, 2008, 2010, 2013";
@@ -40,7 +40,7 @@ var siteTooltip = "A manual for authors of programming sites";
 *****************************************************/
 var homeButton = true;
 var homeTooltip = "";
-var homeUrl = "http://www.teachingMachine.org";
+var homeUrl = "http://www.TheTeachingMachine.org";
 
 var modeButton = true;
 var startInLectureMode = false;
