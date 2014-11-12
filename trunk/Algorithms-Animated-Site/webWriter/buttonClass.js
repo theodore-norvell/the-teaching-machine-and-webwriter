@@ -13,6 +13,9 @@ appearance when greyed out.
 use putButton to actual insert button onto page
 */
 
+//if( console && console.debug ) console.debug("Start of buttonClass.js" );
+
+
 // Button definition constructor
 function ButtonDef(id){
 	this.id = id;					// button id - unique within the document 
@@ -301,5 +304,5 @@ function ButtonSet(setId, arrayOfDefs, horizontal){
 
 /**** End of ButtonSet Class *****************************************************/
 
-
+//if( console && console.debug ) console.debug("End of buttonClass.js" );
 //******************** END of Buttons **********************************************

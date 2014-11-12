@@ -4,15 +4,38 @@
 nestingDepth = "../../";
 </script>
 <script language="JavaScript" src="../noteConstants.js"></script>
+<script language="JavaScript" src="../../webWriter/buttonClass.js"></script>
 <script language="JavaScript" src="../../webWriter/parser.js"></script>
 <script language="JavaScript" src="../../webWriter/web_writer.js"></script>
 <script language="JavaScript" src="../../webWriter/header.js"></script>
+<script language="JavaScript" src="../../webWriter/mathSymbols.js"></script>
+<script language="JavaScript">setSymbolsToLATex(true);</script>
+
+<!-- The next files are for markup.-->
+    <script language="JavaScript" src="../../webWriter/mclexer.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUp.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpCPP.js"></script>
+    <script language="JavaScript" src="../../webWriter/markUpJava.js"></script>
+<script language="JavaScript">
+    setSourceRoot( "../src/" ) ;
+</script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript" src="../../MathJax1.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <title>Introduction</title>
 </head>
 <body>
 <p>Welcome to our Animated Algorithms site.</p>
 <p>The animations are created by the Teaching Machine, which is a computer model of a computer. The Teaching Machine interprets Java or C++ code and presents visualizations of the state of the computer as it executes the code. In addition to standard visualizations, annotations added to the source the code can be used to create custom --program defined-- visualizations; this facility was used to create the animations you will see at this site. The web pages were created with the help of WebWriter++.</p>
-<p>This site is intended for students taking courses in algorithms. Instructors interested in contributing additional examples should contact the authors. Companion sites provide information on <a href="http://www.teachingmachine.org/" target="_top">the Teaching Machine</a>, <a href="http://www.teachingmachine.org/webWriter.html" target="_top">WebWriter++</a>, and <a href="http://www.teachingmachine.org/cookBook/default.htm" target="_top">Program Defined Visualizations</a>.</p>
+<p>This site is intended for students taking courses in algorithms. Instructors interested in contributing additional examples should contact the authors. Companion sites provide information on <a href="http://www.theteachingmachine.org/" target="_top">the Teaching Machine</a>, <a href="http://www.theteachingmachine.org/webWriter.html" target="_top">WebWriter++</a>, and <a href="http://www.theteachingmachine.org/cookBook/default.htm" target="_top">Program Defined Visualizations</a>.</p>
 <ul>
   <li>Data Structures </li>
   <li>Search Algorithms

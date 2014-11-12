@@ -42,8 +42,8 @@ contains any of the op strings. String contains
 
 <h2>Op Table Tests</h2>
 <p>Define opOr, opAnd and opNot functions and then create an op table by adding</p>
-<pre> opTable.add(new Op("&", "\u2022", 2, opAnd, Op.LEFT));
-opTable.add(new Op(".", "\u2022", 2, opAnd, Op.LEFT));
+<pre> opTable.add(new Op("&", ".", 2, opAnd, Op.LEFT));
+opTable.add(new Op(".", ".", 2, opAnd, Op.LEFT));
 opTable.add(new Op("|", "+", 1, opOr, Op.LEFT));
 opTable.add(new Op("+", "+", 1, opOr, Op.LEFT));
 opTable.add(new Op("!", "~", 3, opNot, Op.UNARY));
@@ -70,8 +70,8 @@ function evaluateLeaf(token, set){
 
 
 myTable = new Array();
-myTable[0] = new Op("&", "\u2022", 2, opAnd, Op.LEFT);
-myTable[1] = new Op(".", "\u2022", 2, opAnd, Op.LEFT);
+myTable[0] = new Op("&", ".", 2, opAnd, Op.LEFT);
+myTable[1] = new Op(".", ".", 2, opAnd, Op.LEFT);
 myTable[2] = new Op("|", "+", 1, opOr, Op.LEFT);
 myTable[3] = new Op("+", "+", 1, opOr, Op.LEFT);
 myTable[4] = new Op("!", "~", 3, opNot, Op.UNARY);

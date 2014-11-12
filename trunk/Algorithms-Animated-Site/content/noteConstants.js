@@ -12,10 +12,10 @@ var copyrightOwner = authors;
 var authorRef = "http://www.teachingMachine.org";
 var licenseRef = authorRef;
 
-var copyRightDates = "2011";
+var copyRightDates = "2011--2014";
 var creativeCommons = true;
 
-var tmArchive = "tm.jar, ArrayBarDisplay.class, ArrayBarPIFactory.class";
+var tmArchive = "signed-tm.jar";
 
 //  SITE IDENTIFICATION 
 // Define either the organization and the course or the siteLogo and the siteTooltip
@@ -37,7 +37,7 @@ var siteTooltip = "Algorithms Animated (by the Teaching Machine)";
 *****************************************************/
 var homeButton = true;
 var homeTooltip = "";
-var homeUrl = "http://www.teachingMachine.org";
+var homeUrl = "http://www.theteachingmachine.org/Algorithms-Animated-Site/default.htm";
 
 var modeButton = true;
 var startInLectureMode = false;

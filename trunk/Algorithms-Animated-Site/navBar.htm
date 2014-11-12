@@ -79,12 +79,16 @@ document.write('<div id="topBanner">');
 	document.write('</div>');
 	
 	document.write('<div id="appletContainer">');
-	document.write('<applet name="url2String" width="1" height="1" code="URL2String.class">');
-	document.write('</applet>');
-	document.write('<applet name="markUp" width="1" height="1" code="MarkUp.class" archive="markUp.jar">');
-	document.write('</applet>');
-	document.write('<applet name="teachingMachine" width="1" height="1" code="tm/TMTinyApplet.class" archive="',tmArchive,'">');
-	document.write('</applet>');
+	//document.write('<applet name="url2String" width="1" height="1" code="URL2String.class">');
+	//document.write('</applet>');
+	//document.write('<applet name="markUp" width="1" height="1" code="MarkUp.class" archive="markUp.jar">');
+	//document.write('</applet>');
+	document.write('<object type="application/x-java-applet" width="5" height="5" name="teachingMachine" id="teachingMachine">');
+	document.write('<param name="code" value="tm/TMTinyApplet.class" />');
+	document.write('<param name="archive" value="',tmArchive,'"/>');
+	document.write('<param name="java_arguments" value="-Djnlp.packEnabled=true"/>');
+	document.write('<param name="MAYSCRIPT" value="true"/>');
+	document.write('</object>');
 	document.write('</div>');
 
 	
