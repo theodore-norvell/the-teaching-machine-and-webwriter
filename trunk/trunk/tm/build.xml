@@ -14,6 +14,7 @@
 	  
 	  <!-- Names for directories and files -->
 	  <property name="src" location="src"/>
+	  <property name="lib" location="lib"/>
 	  <property name="build" location="tm-build"/>
 	  <property name="dist"  location="tm-dist"/>
 	  <property name="tarfile"  location="tm-dist.tar.gz"/>
@@ -45,8 +46,14 @@
 	    </javac>
 	    <!-- Compile the java code from ${src} into ${build} -->
 	    <!-- Should have fork=true if compiler is javac -->
-	    <!-- Note includeantruntime="false" is there to make ant quite. I'm not sure what it does. -->
-	  	<javac srcdir="${src}" destdir="${build}"  source="${source.version}" target="${target.version}" includeantruntime="false">
+	    <!-- Note includeantruntime="false" is there to make ant quiet. I'm not sure what it does. -->
+	  	<!-- plugin.jar includes classes made available to appplets by the Java browser plugin.
+	  	     It is used in compilation, but not distributed with the tm. -->
+	  	<javac srcdir="${src}" destdir="${build}"
+	  		   source="${source.version}"
+	  	       target="${target.version}"
+	  		   classpath="${lib}/plugin.jar"
+	  	       includeantruntime="false">
 	    	<compilerarg  value="-g:lines"/>
 	    	<compilerarg  value="-nowarn"/>
 	    	<compilerarg  value="-deprecation"/>
@@ -80,6 +87,9 @@
 	  	    <attribute name="Built-By" value="${user.name}"/>
 	  	    <attribute name="Built-On" value="${TODAY}"/>
 	  	    <attribute name="Main-Class" value="tm.TMMainFrame"/>
+	  		<attribute name="Application-Name" value="The Teaching Machine"/>
+	  		<attribute name="Caller-Allowable-Codebase" value="*"/>
+	  		<attribute name="Codebase" value="*"/>
 	  		<attribute name="Permissions" value="sandbox"/>
 	  	</manifest>
 	  	<!-- Put everything in ${build} into the tm.jar file -->

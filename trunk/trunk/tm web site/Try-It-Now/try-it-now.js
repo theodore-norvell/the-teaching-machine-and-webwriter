@@ -23,62 +23,23 @@ function consoleDebug(message){
 	}
 }
 
+function consoleDebugObject(object){
+	if( debugging ) {
+		var out = '';
+		for (var p in object) {
+			if (!object.hasOwnProperty(p)) out += '(inherited) ';
+			out += p + ': ' + object[p] + '\n';
+		}
+		consoleDebug(out)
+	}
+}
+
 function consoleStackTrace(error) {
 	if( !error ) error = new Error() ;
 	if( error.stack ) {
 		consoleError( error.stack.toString() ) ; }
 	else {
 		consoleError(  "no stack trace available" ) ; }
-}
-var TMApplet = null ; // Only used within the next function.
-function checkForTMApplet() {
-	consoleDebug("Getting applet") ;
-	
-	if (TMApplet != null) {
-		consoleDebug("Looks like we got it already") ;
-		return {tm: TMApplet} ; }
-	
-	consoleDebug("Checking on whether java is supported.") ;
-	if( ! navigator.javaEnabled() ) {
-		consoleError("Looks like Java is not supported.") ;
-		return "noSupport" ; }
-	consoleDebug("Looks like Java is supported.") ;
-	
-	var tm = document.getElementById("teachingMachine") ;
-	if (tm == null) {
-		consoleError('document.getElementById("teachingMachine") has failed.') ;
-		return "missing" ; }
-	consoleDebug('document.getElementById("teachingMachine") has succeeded.') ;
-	
-	//if( ! tm.loadRemoteFile ) {
-	//	consoleError("TMApplet does not have a loadRemoteFile function") ; 
-	//	return "notReady" ;  }
-		
-	TMApplet = tm ;
-	// Wrap the result so that client that fail to check
-	// for a case will bomb at that point.
-	return {tm: TMApplet} ;
-}
-
-function getTMApplet() {
-	var result = checkForTMApplet() ;
-	if( result == "noSupport" ) {
-		var alertMessage = "Unable start the Teaching Machine. "
-	             + "The problem may be that you do not have the "
-				 + "Java Runtime Environment intalled on your computer. "
-			 	 + "For most desktop and laptop computers, "
-				 + "Java can be obtained from Oracle corporation: "
-			 	 +" http://java.com/en/download/index.jsp ." ;
-		alert(alertMessage) ;
-		return null ; }
-	else if( result == "missing" ) {
-		alert("The Teaching Machine can not be found." ) ;
-		return null ; }
-	else if( result == "notReady" ) {
-		alert("The Teaching Machine is not ready yet. Please try again." ) ;
-		return null ; }
-	else if( result.tm ) {
-		return result.tm ; }
 }
 
 function getLanguage() {
@@ -131,42 +92,63 @@ function switchLanguageTo( language ) {
 	} else { alert("Unknown language"); }
 }
 
-var warningHasBeenShown = false ;
-
-function showWarning() {
-	if( warningHasBeenShown ) return ;
-	var warning = document.getElementById("warning") ;
-	warning.style.visibility = "visible" ;
-	warningHasBeenShown = true ;
+function showPopUp(id) {
+	var popup = document.getElementById(id) ;
+	popup.className = "popup showing" ;
 }
 
+function hidePopUp(id) {
+	var popup = document.getElementById(id) ;
+	popup.className = "popup hidden" ;
+}
+
+function showWarning() {
+	consoleDebug("showWarning") ;
+	showPopUp("warning") ;
+}
+
+
 function dismissWarning() {
-	var warning = document.getElementById("warning") ;
-	warning.style.visibility = "hidden" ;
+	consoleDebug("dismissWarning") ;
+	hidePopUp("warning") ;
+}
+
+function showLoadWarning() {
+	consoleDebug("showLoadWarning") ;
+	showPopUp("loadWarning") ;
+}
+
+
+function dismissLoadWarning() {
+	consoleDebug("dismissLoadWarning") ;
+	hidePopUp("loadWarning") ;
 }
 
 function sendToTM() {
 	consoleDebug("onSend") ;
-	var tm = getTMApplet() ;
-	if(tm==null || currentLanguage == null ) return ;
+	var result = TM.getTMApplet() ;
+	if( result.status != "ok" ) return ;
 	
-	showWarning() ;
+	showLoadWarning() ;
+	setTimeout( function(){ continueSendToTM(result) ; }, 1 ) ; }
 	
-	setTimeout( function() { continueSendToTM(tm, currentLanguage) ; }, 100 ) ;
-}
-
-function continueSendToTM(tm, currentLanguage) {
-	showTheTM() ;
+function continueSendToTM(result) {
+	showTheTM( ) ;
+	dismissLoadWarning() ;
 	var text ;
 	if( currentLanguage == 'cpp' ) sourceText = cppEditor.getValue("\n") ;
 	else sourceText = javaEditor.getValue("\n") ;
 	var fileName = "tryItNow." + currentLanguage ;
 	consoleDebug("fileName: " + fileName + " sourceText: " + sourceText ) ;
 	try {
-		tm.loadString( fileName, sourceText ) ; }
+		result.tm.loadString( fileName, sourceText ) ; }
 	catch( ex ) {
-		consoleDebug("Exception on call to 'loadString'") ;
-		consoleStackTrace( ex ) ; }
+		consoleError("Exception on call to 'loadString'") ;
+		consoleStackTrace( ex ) ;
+		
+		alert("There was a problem sending the code to the Teaching Machine."
+		    + " Try again. If the problem persists, contact Theodore"
+			+ " Norvell (theo@mun.ca)" ) ; }
 }
 
 function showTheTM() {
@@ -198,6 +180,8 @@ function hideTheTM() {
 }
 
 function onLoad() {
+	consoleDebug("onLoad starts") ;
+	TM.setTMReadyCallBack( dismissWarning ) ;
 	cppEditorContainer = document.getElementById('cppEditorContainer') ;
 	var cppTextArea = document.getElementById('cppTextArea') ;
 	cppEditor = CodeMirror.fromTextArea(cppTextArea, {

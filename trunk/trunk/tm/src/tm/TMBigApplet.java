@@ -35,6 +35,8 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import netscape.javascript.*; // Need plugin.jar from JDK on the CLASSPATH.
+
 import tm.backtrack.BTTimeManager;
 import tm.evaluator.Evaluator;
 import tm.evaluator.Evaluator.Refreshable;
@@ -240,7 +242,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             Thread pingThread = new Thread( new Runnable() {
                 public void run() {
                     try {
-                        java.net.URL url = new URL("http://www.teachingmachine.org/counters/BigAppletStarts.html") ;
+                        java.net.URL url = new URL("http://www.theteachingmachine.org/counters/BigAppletStarts.html") ;
                         url.getContent() ; }
                     catch( Throwable e ) {}                    
                 }} ) ;
@@ -263,6 +265,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         // Load the initial configuration file.
         // If there is an initial configuaration file specified on the command line, use that,
         // otherwise use the default.tmcfg from the .jar file
+    	System.out.println("The TMBigApplet has recieved a 'start' message") ;
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
                 @Override public void run() {
@@ -286,10 +289,40 @@ public class TMBigApplet extends JApplet implements CommandInterface,
                 }} ) ;
         } catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }
+        if( !( getAppletContext() instanceof TMMainFrameAppletStub ) ) {
+        	// This is an applet.
+        	callBackToJavaScript(this) ;
+        }
     }
     
+    /** Note: init should only be called if we are running as an applet.
+     * This is because if relies on class netscape.JSObject which 
+     * does not exist in the standard JRE
+     */
     @Override public void init() {
+    	System.out.println("The TMBigApplet has recieved an 'init' message") ;
     	TMBigApplet.setLookAndFeel( this ) ;
+    }
+    
+    /** Try to call a JS method of the window to let JS scripts know the
+      * has been initialized
+      * Note callBackToJavaScript should only be called if we are running as an applet.
+      * This is because if relies on class netscape.JSObject which 
+      * does not exist in the standard JRE
+      */
+     static void callBackToJavaScript(final JApplet thisApplet) {
+    	Thread t = new Thread() {
+    		@Override public void run() {
+    	    	try {
+    	    		
+    	            JSObject window = JSObject.getWindow(thisApplet);
+    	            System.out.println("Evaluating 'theTMIsInitialized()'") ;    
+    	            window.eval("theTMIsInitialized()") ;
+    	            System.out.println("Evaluation sucessfull.") ;  }
+    	    	catch( Throwable jse) {
+    	            System.out.println("Evaluation failed.") ;
+    	            jse.printStackTrace(); } } } ;
+    	t.start() ;
     }
     
     @Override public void destroy() {
