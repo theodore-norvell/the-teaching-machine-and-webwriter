@@ -115,11 +115,6 @@ public class SyntaxPallet extends JPanel {
 		this.syntaxListModel.addElement(PLAYTag.BOOLEANTYPE);
 		this.syntaxListModel.addElement(PLAYTag.STRINGTYPE);
 		this.syntaxListModel.addElement(PLAYTag.NULLTYPE);
-		this.syntaxListModel.addElement(PLAYTag.NUMBERLITERAL);
-		this.syntaxListModel.addElement(PLAYTag.STRINGLITERAL);
-		this.syntaxListModel.addElement(PLAYTag.LOCALVAR);
-		this.syntaxListModel.addElement(PLAYTag.WORLDVAR);
-		//this.syntaxListModel.addElement(PLAYTag.PLUS);
 		// expsRootTreeNode.add(new DefaultMutableTreeNode(PLAYTag.VAR));
 		//this.syntaxListModel.addElement(PLAYTag.DOT);
 
