@@ -35,8 +35,13 @@
 								
 	July, 2007: Refactored to support the quizWriter add-on.
 
-	July 27, 2011: Added support for setSourceRoot
-	July 27, 2011: Added support for non Creative Commons copyright
+	May, 2013: Eliminated the need for the URL2String Applet.
+	           Using XMLHttpRequest instead.
+	May, 2013: Eliminated the MarkUp applet. Using JavaScript for
+	           marking up.
+			   
+	Jan 2014: Added support for setSourceRoot *yet again)
+
 ************************************************************************************/ 
 
 /*************************** TO DO LIST ****************************************
@@ -74,10 +79,6 @@
 //	alert("isIE is " + (isIE ? "true" : "false"));
 
 
-var loadApplet=null;
-var parseApplet=null;
-var TMApplet = null;
-
 // Technically this is no applets as well. An effort to force reload to behave because I figured && top.navBarFrame.appletsLoaded
 // reload is touching of a race between frames so we just treat it as if we were starting on a page not at the top.
 var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
@@ -85,7 +86,7 @@ var noAppletFrame = ((parent && parent.navBarFrame ) ? false : true);
 var isLoaded = false;
 var thisDoc = self.location.href;
 
-var debugging = false;   // set to false to turn off logging
+var debugging = true;   // set to false to turn off logging
 
 /* This is temporary and should move to document. I would love to automate it but it we have to contend
  	with the possibility that the page may have been loaded directly in which case the frames are not
@@ -152,12 +153,39 @@ function initialize(){
 		
 
 /*************************************************************************************/
-/* Functions to load a document using the url2String applet which must be loaded into
-the applets frame by the time these functions are called
+/** Read a file using XMLHttpRequest.
+* @param url  A URL relative to the root directory of the site. 
+* (i.e. the directory holding default.htm).
+  @returns The contents of the file as a string object.
 */
 
 function fileToString(url){
-//alert(url + " requested. Window at " + window.location + " and document at " + document.URL);
+    consoleDebug(url + " requested. Window at " + window.location + " and document at " + document.URL);
+    // Adjust the URL to be relative to the directory this HTML page is in.
+    url = nestingDepth + url ;
+    var ok = false ;
+    var xhr ;
+    // Try to make and send a request for the file.
+    try {
+        xhr = new XMLHttpRequest() ;
+        xhr.open("GET",url,false);
+        xhr.send();
+        ok = true ; }
+    catch( e ) {
+        // Failed to make, open, or send the request.
+        consoleError( "Function fileToString failed to fetch " +url+
+                    ". Exception is "+e ) ;
+        return "File could not be read. Exception is "+e ; }
+    var DONE = 4 ;
+    if( ok && xhr.readyState == DONE ) {
+        // Success ;
+        return xhr.responseText ; }
+    else if( ok ) {
+        // Request sent ok, but not successfully satified.
+        consoleError( "Function fileToString failed to fetch " +url+ "XMLHttpRequest state code is " + xhr.readyState ) ;  
+        return "File could not be read. XMLHttpRequest state code is " + xhr.readyState ; }
+    
+    /*
 	var url_contents = null;
 	if (loadApplet == null) {
 		loadApplet = getApplet("url2String");
@@ -175,37 +203,15 @@ function fileToString(url){
 	// url_contents is a JavaObject. Force it to a script String
 	// This cures bug between Sun Java 1.5 and JScript
 	return new String(url_contents.toString());	
+	*/
 }
 
-/*	Puts up a window 
-*/
-function getApplet(appletName){
-	if (noAppletFrame) return;
-	
-	if (!parent.navBarFrame.appletsLoaded) {
-		var waitPage = peelName(getBaseURL()) + "wait_for_applets.htm";
-		self.location.replace(nestingDepth + "wait_for_applets.htm");
-//		var waitWindow = window.open(waitPage,null,"height=400,width=300");
-/*		while(!waitWindow.closed) {
-		}*/
-	}
-	if (parent.navBarFrame.appletsLoaded) {
-//		alert("Looking for applet " + appletName);
-		var applet = parent.navBarFrame.document[appletName];
-//		alert("Got applet " + applet);
-		return applet;	// Changed 2004.02.17 to support both Mozilla & ie
-	}
-//	alert("Sorry. " + appletName + " is unavailable.");
-	return null;
-}
 
 /*************************************************************************************/
 /* Functions to write code dynamically into documents. A piece of sample code is extracted as a single string
 directly from a cpp file. The code is assumed to be standard code EXCEPT that it may have been annotated for
 teaching purposes. Annotations are embedded in c style comments so that they may be made by an instructor
 without affecting the compilability of the code.
-
-	The JAVA parser from the Teaching Machine has been ammended to provide HTML syntax colouring.
 
 Annotations are handled by JavaScript functions.
 
@@ -238,20 +244,18 @@ var TMLink = false;			// boolean-true if a TM link button wanted
 var videoLink = false;		// boolean-true if a video link button wanted
 var editLink = false;		// boolean-true if a edit link button wanted
 var videoRef = null;
-var editRef = null;			// probably not needed - hangover from guidedLink which was not being used
 
 /* popups inside of code must be restored to html: added 01/11/01 */
 var insidePopup = false;
 
 
 // This could be redone as an object - in fact, it effectively is
-function setButtons(TM, video, edit, videoR, editR){
+function setButtons(TM, video, edit, videoR){
 //	if (noAppletFrame) return; // Most images loaded rel to parent which ain't there
 	TMLink = TM;
 	videoLink = video;
 	editLink = edit;
-   if (video) videoRef = videoR;
-	if (edit) editRef = editR;
+    if (video) videoRef = videoR;
 }
 
 /* The source root. This global is used to comunicate between, on the one hand
@@ -327,7 +331,7 @@ function createDataFileSet(/* any number of file names */){
 
 /* Insert a code example into the document. It will be automatically marked for syntax colouring
  and annotations will be inserted as needed.
-	relativeURL: the file holding the code
+	relativeURL: the file holding the code. Relative to the root directory.
 	buttonSet: boolean. if true, insert the buttonSet (which must be already defined)
 	className: user defined class to allow appearance to be controlled by a cascading style sheet
 	configurationFile: relative path to configuration file to be used with TM
@@ -339,19 +343,21 @@ function createDataFileSet(/* any number of file names */){
 
 function insertCode(relativeURL, buttonSet, className, configurationFile, wwSelection, tmSelection){
 	if(noAppletFrame) return;
-	if(!wwSelection || wwSelection == "" || wwSelection.toUpperCase() == "DEFAULT") wwSelection = defaultString;
-	if(!tmSelection || tmSelection == "" || tmSelection.toUpperCase() == "DEFAULT") tmSelection = defaultString;
+	
+	if(!wwSelection || wwSelection == "" || wwSelection.toUpperCase() == "DEFAULT")
+		wwSelection = defaultString;
+	
+	if(!tmSelection || tmSelection == "" || tmSelection.toUpperCase() == "DEFAULT")
+		tmSelection = defaultString;
+		
+	// Parse the TM selection so that errors are reported up front.
 	parser.setParseString(tmSelection.toUpperCase());
-	var parseTree = parser.eParser();
-	var tmParseString = parseTree.toString();
+	parser.eParser();
 	
-	/* Current system. Delete these lines to switch once TM is ready ***************/
 	tmParseString = tmSelection;  
-	/* Current system. Delete these lines to switch once TM is ready ***************/
-	
 	
 	parser.setParseString(wwSelection.toUpperCase());
-	parseTree = parser.eParser();
+	var parseTree = parser.eParser();
 	/* This is for backward compatability with the old H and D switches which are now deprecated. */
 	{
 		var stringRep = parseTree.toString();
@@ -380,77 +386,76 @@ function insertCode(relativeURL, buttonSet, className, configurationFile, wwSele
 //    alert("InsertCode: JavaURL is " + getJavaURL(theURL));
 	rawCode = loadCode(theURL,theRoot, relativeURL, configurationFile, tmParseString);
 	if (rawCode != null) {
-		if (parseApplet == null) {
-			parseApplet = getApplet("markUp");
+		document.write('<div class="tmContainer">');
+		document.write('<table class="tmBar" width = "100%"> <tr><td width="120px" align="left">');
+		document.write('<img src="', getToImages() + "greenBoard.gif" + '"></td><td align="left">');
+		if(buttonSet) {
+    		document.write('<div id="buttonContainer', currentCode, '"></div>');
+    		var buttonSetArray = new Array();
+    		var setButtons = 0;
+    
+    		if (TMLink){
+    			var linkButtonDef = new ButtonDef("runButton" + currentCode);
+    			linkButtonDef.gifBase = "runButton";
+    			linkButtonDef.actionString = "invokeTM(" + currentCode + ")";
+    			linkButtonDef.tooltip = "Run " + theURL + " in the Teaching Machine";
+    			buttonSetArray[setButtons++] = linkButtonDef;
+    		}
+    		if (videoLink) {
+    			var videoButtonDef = new ButtonDef("videoButton" + currentCode);
+    			videoButtonDef.gifBase = "videoButton";
+    			videoButtonDef.actionString = "invokeVideo('" + videoRef +"')" ;
+    			videoButtonDef.tooltip = "See a video of " + theURL + " being run in the Teaching Machine";
+    			buttonSetArray[setButtons++] = videoButtonDef;
+    		}
+    		if (editLink) {
+    			var editButtonDef = new ButtonDef("editButton" + currentCode);
+    			editButtonDef.gifBase = "editButton";
+    			editButtonDef.actionString = "invokeEdit(" + currentCode +")" ;
+    			editButtonDef.tooltip = "Change the example temporarily";
+    			buttonSetArray[setButtons++] = editButtonDef;
+    		}
+    		if (buttonSetArray.length > 0) {
+    			var TMButtons = new ButtonSet("TMButtons" + currentCode, buttonSetArray, true);
+    			//TMButtons.append(document.getElementById("buttonContainer" + currentCode));
+    		}
 		}
-		if (parseApplet != null) {
-//			alert("rawCode is " + rawCode);
-		// In business! Is a TM link wanted?
-			document.write('<div class="tmContainer">');
-			document.write('<table class="tmBar" width = "100%"> <tr><td width="120px" align="left">');
-			document.write('<img src="', getToImages() + "greenBoard.gif" + '"></td><td align="left">');
-			if(buttonSet) {
-				document.write('<div id="buttonContainer', currentCode, '"></div>');
-				var buttonSetArray = new Array();
-				var setButtons = 0;
-
-				if ((TMLink||editLink) && (TMApplet == null))
-					TMApplet = parent.navBarFrame.document.teachingMachine;
-				if (TMLink){
-					var linkButtonDef = new ButtonDef("runButton" + currentCode);
-					linkButtonDef.gifBase = "runButton";
-					linkButtonDef.actionString = "invokeTM(" + currentCode + ")";
-					linkButtonDef.tooltip = "Run " + theURL + " in the Teaching Machine";
-					buttonSetArray[setButtons++] = linkButtonDef;
-				}
-				if (videoLink) {
-					var videoButtonDef = new ButtonDef("videoButton" + currentCode);
-					videoButtonDef.gifBase = "videoButton";
-					videoButtonDef.actionString = "invokeVideo('" + videoRef +"')" ;
-					videoButtonDef.tooltip = "See a video of " + theURL + " being run in the Teaching Machine";
-					buttonSetArray[setButtons++] = videoButtonDef;
-				}
-				if (editLink) {
-					var editButtonDef = new ButtonDef("editButton" + currentCode);
-					editButtonDef.gifBase = "editButton";
-					editButtonDef.actionString = "invokeEdit(" + currentCode +")" ;
-					editButtonDef.tooltip = "Change the example temporarily";
-					buttonSetArray[setButtons++] = editButtonDef;
-				}
-				if (buttonSetArray.length > 0) {
-					var TMButtons = new ButtonSet("TMButtons" + currentCode, buttonSetArray, true);
-//					TMButtons.append(document.getElementById("buttonContainer" + currentCode));
-				}
-			}
-			document.write('</td> <td align="right">', relativeURL,'</td></tr></table>');
-			document.write('<div class="',className,'" style="position:relative;">');
-		//Mark it as code and as preformatted
-			document.write('<pre>');
-		//	alert("RAW CODE\n" + rawCode);
-		// have parser applet return HTML for syntax colouring
-//		static public String markUpString(String str, String lang) Where lang should equal "C++" or "Java". It's been tested a little.
-			try {
-				var language = ((theURL.search(/.jav/i) == -1 ) ? "C++" : "Java");
-				//alert("languge is " + language + "\nparseApplet is " + parseApplet.tostring());
-				/* new String is required to convert Java String Object to JavaScript one
-				   Or Safari won't apply native methods like match to it. */
-				var stainedCode = new String(parseApplet.markUpString(rawCode, relativeURL));
-		//document.write("STAINED CODE<pre>" + stainedCode + "</pre>------ END OF STAINED CODE -----------------");
-			// Now write it dynamically, handling notations, then close off block
-				writeAnnotated(stainedCode, parseTree);
-			} catch(e) {
-				document.write('<p class="error">Error retrieving code\n' + e + "</p>");
-			}
-			finally {
-				document.write('</pre></div></div>');
-			}
-		}
-	else alert("Can't find markUp Applet");
+	    document.write('</td> <td align="right">', relativeURL,'</td></tr></table>');
+	    // End of buttons.
+	    // Now the text of the code file goes in a DIV and a PRE
+		document.write('<div class="',className,'" style="position:relative;">');
+		document.write('<pre>');
+	    var language = determineLanguage(theURL) ;
+		//consoleDebug("language is " + language );
+		//consoleDebug("The raw code is <<" + rawCode + ">>" ) ;
+		var stainedCode = stain( rawCode, language ) ;
+		//consoleDebug("The stained code is <<" + stainedCode + ">>" ) ;
+	    // Now write it dynamically, handling notations, then close off block
+		writeAnnotated(stainedCode, parseTree);
+		document.write('</pre></div></div>');
+	} else {
+	    document.write('<p>Error in insertCode: rawCode is null!</p>') ;
+	    consolError('WW++: rawCode is null in insertCode');
 	}
 }
 
-/* Hoisted out of invokeCode in June, 2007, to allow code sharing with new runCode routine.
-	This function fetches the raw code for the new example. It also loads the TM version of
+/** Convert a string of C++ or Java code to HTML */
+function stain( rawCode, language ) {
+    var result ;
+    try {
+    result = (language == "C++" ? markUpCPP.markUp : markUpJava.markUp)
+                ( rawCode ) ;
+    } catch ( e ) {
+        consoleError('WW++: Exception during mark up. Exception is ' + e ) ; 
+        result = "WW++: Exception while marking up the code. See javascript console." ; }
+    return result ;
+}
+
+function determineLanguage( url ) {
+	return (url.search(/\.jav/i) == -1 ) ? "C++" : "Java" ;
+}
+
+/** Fetch the raw code for the new example. It also loads the TM version of
 	of the code (plus associated information) to the array of examples for this page and
 	updates the page global variable currentCode
 */
@@ -465,7 +470,6 @@ function loadCode(theURL, theRoot, relativeURL,  configurationFile, tmParseStrin
 	absExampleURL[currentCode] = javaURL
 	exampleSourceRoot[currentCode] = getJavaURL( rootOfSourceFiles ) ;
 	relExampleURL[currentCode] = getJavaURL(relativeURL) ;
-
 	baseCode[currentCode] = getTMCode(rawCode);
 	dataFileSet[currentCode] = lastDataSet;
 // Updated 2007.02.02 to use new configuration filetype, ignoring any type specified in the call
@@ -497,38 +501,47 @@ function getTMCode(rawCode){
 	return processedCode;  //splitUp.join("");
 }
 
-// Configuration added 2001.12.31
+/**  getTMApplet()
+Returns null if the TM applet can not be got. The user will already have been
+informed
+*/
+function getTMApplet() {
+	if (noAppletFrame) return null;
+	else return parent.navBarFrame.getTMApplet() ;
+}
+
 function invokeTM(example){
-	if (TMApplet == null)
-		TMApplet = getApplet("teachingMachine");
-	if (TMApplet == null)
-		alert("Sorry. Unable to locate the Teaching Machine Applet");
-	else {
-		if(dataFileSet[example] != null) {
-			var fileSet = dataFileSet[example];
-			for (var i = 0; i < fileSet.length; i++) {
-				var fileLoc = peelName(getBaseToHere()) + fileSet[i];
-//				alert ("fileLoc is " + fileLoc);
-				TMApplet.registerRemoteDataFile( fileLoc );
-			}
-		}
 
+	// Try to get the TM applet. Return if the applet could not be found.
+	consoleDebug("About to get applet. f") ;
+	var TMApplet = getTMApplet() ;
+	if (TMApplet == null) {
+		consoleError("TMApplet could not be got.") ;
+		return ; }
+	consoleDebug("GotApplet") ;
+	
+	//Load the TM with data files.
+	// (This should really be checked. What if there are 2 examples that use
+	// data files? Will they interfere?)
+	if(dataFileSet[example] != null) {
+		var fileSet = dataFileSet[example];
+		for (var i = 0; i < fileSet.length; i++) {
+			var fileLoc = peelName(getBaseToHere()) + fileSet[i];
+			consoleDebug('TMApplet.registerRemoteDataFile("' +fileLoc+ '")') ;
+			TMApplet.registerRemoteDataFile( fileLoc ); } }
+			
+	// Load the example.
+	consoleDebug('TMApplet.loadRemoteFile("'+ exampleSourceRoot[example] +','+ relExampleURL[example] +'")' );
+	TMApplet.loadRemoteFile(exampleSourceRoot[example], relExampleURL[example]);
 
-// Changed March, 2008, to use sitewide default config file if none was specified originally
-		var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
-//		alert(useConfigFile);
-
-		//consoleDebug("TMApplet.readRemoteConfiguration(" +useConfigFile+ ");");
-		
-		TMApplet.readRemoteConfiguration(useConfigFile);
-		// Load the example into the Teaching Machine.
-		//consoleDebug("TMApplet.loadRemoteFile("+ exampleSourceRoot[example]+", "+relExampleURL[example]+");");
-		TMApplet.loadRemoteFile( exampleSourceRoot[example], relExampleURL[example]);
-
-		if (selection[example] != null) {
-	//		alert(selection[example]);
-			TMApplet.setSelectionString(selection[example]);
-		}
+	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() 
+	                                           : config[example]);
+    consoleDebug('TMApplet.readRemoteConfiguration("' +useConfigFile+ '")' ) ;
+	TMApplet.readRemoteConfiguration(useConfigFile);
+			
+	if (selection[example] != null) {
+        consoleDebug('TMApplet.setSelectionString("' +selection[example]+ '")' ) ;
+		TMApplet.setSelectionString(selection[example]);
 	}
 }
 
@@ -556,25 +569,26 @@ function invokeEdit(example){
 }
 // Called from input form window by its onload handler
 function formLoaded(){
-	formW.loadForm(baseCode[currentExample]);
+	var lang = determineLanguage( relExampleURL[currentExample] ) ;
+	formW.loadForm( baseCode[currentExample], lang ) ;
 }
 
 // Called by input form window once editing is done
-function changeCode(newCode){
-	if (TMApplet == null)
-		TMApplet = getApplet("teachingMachine");
-	if (TMApplet == null)
-		alert("Sorry. Unable to locate the Teaching Machine Applet");
-	else {
-//	 alert(absExampleURL[example]);
-	// String language, String fileName, String programSource
-		TMApplet.loadString( '.cpp',newCode);
-		if (config[currentExample] != null) {
-//			alert(config[example]);
-			TMApplet.readRemoteConfiguration(config[currentExample]);
-		}
-		else TMApplet.readRemoteConfiguration(oneTimeScript.getDefaultConfig());
-	}
+function changeCode(newCode, language){
+	consoleDebug("About to get applet. (changeCode)") ;
+	var TMApplet = getTMApplet() ;
+	if (TMApplet == null) {
+		consoleError("TMApplet could not be got.") ;
+		return ; }
+	consoleDebug("GotApplet") ;
+	var fileName = (language == "C++") ? "edited.cpp" : "edited.java" ;
+	// TODO Why is this for .cpp only?
+    consoleDebug('TMApplet.loadString("'+ fileName +'", ...)' );
+	TMApplet.loadString( fileName, newCode);
+	
+	var useConfigFile = (config[example] == "" ? getDefaultConfigFile() : config[example]);
+    consoleDebug('TMApplet.readRemoteConfiguration(' +useConfigFile+ ')' ) ;
+	TMApplet.readRemoteConfiguration(useConfigFile);
 }
 
 
@@ -633,7 +647,7 @@ Returns: annotation with the rest of this annotation stripped out
 var annotArg;
 
 function writeAnnotation(annotation, tree, tagSet, closing){
-//	alert("write " + (closing ? "closing" : "opening") + " annotation: " + annotation );
+	//alert("write " + (closing ? "closing" : "opening") + " annotation: " + annotation );
 	switch (annotation.substr(0,1)){
 		case "/":		// closing, strip leading '/'
 			annotation = annotation.substring(1);
@@ -673,10 +687,8 @@ function writeAnnotation(annotation, tree, tagSet, closing){
 			else
 				startBlockLink(getAnnotationArg(annotation));
 			break;
-			
-		case "I":
-			break; //Just eat the rest of the comment which eats the code embedded inside it as well
-			
+		case "I": // Invisible code. Omit the comment. (Even if S is in the tag set!)
+			break ;
 		case "T":
 			var tag = annotation.substring(1);  // Strip T
 			var p = tag.search(/\S/); // Find first non-whitespace
@@ -723,7 +735,7 @@ function writeAnnotation(annotation, tree, tagSet, closing){
 			break;
 		
 		default:
-			document.write("Annotation " + annotation.substr(0,1) + "unrecognized");
+			document.write("Annotation " + annotation.substr(0,1) + " unrecognized");
 		}
 	return eatRestOfComment(annotation);	
 }
@@ -737,12 +749,12 @@ function eatArgument(annotation){
 	return stripped;
 }
 
-/* Strip away the front of the annotation string up to the next closing comment */
+/* Strip away the front of the annotation string up to the next closing comment. */
 function eatRestOfComment(annotation){
+	// Modified 2013 May by TSN to look for */ as well as </SPAN>.
+	// This is to support the /*#I tag.  Hopefully nothing else breaks.
 	var found = annotation.search(/\*\/<\/SPAN>/);
-	annotation = annotation.substring(found+9);
-//	alert("annotation after eatComment: " + annotation );
-	return annotation;
+	return annotation.substring(found+9);
 }
 
 // annotation argument will be the next piece of text found between quotes
@@ -1727,10 +1739,10 @@ function consoleError(message){
 
 function consoleDebug(message){
 	if (debugging) {
-		if (typeof console == 'undefined')
-			alert(message);
-		else
-			console.debug(message);
+	    if (typeof console == 'undefined')
+	    	alert(message);
+	    else
+		    console.debug(message);
 	}
 }
 
