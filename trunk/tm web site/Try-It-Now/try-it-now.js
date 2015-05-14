@@ -50,29 +50,46 @@ function getLanguage() {
 			return radios[i].value ; } }
 }
 
+function disableRadioButtons() {
+	var controlTable = document.getElementById('controlTable' ) ;
+	controlTable.className = 'controlTable disabled' ;
+	var radios = document.getElementsByName('language');
+	for (var i = 0; i < radios.length; i++) {
+		radios[i].disabled = true ; }
+}
+
+function enableRadioButtons() {
+	var controlTable = document.getElementById('controlTable' ) ;
+	controlTable.className = 'controlTable' ;
+	var radios = document.getElementsByName('language');
+	for (var i = 0; i < radios.length; i++) {
+		radios[i].disabled = false ; }
+}
+
 function languageChange() {
 	switchLanguageTo( getLanguage() ) ; 
 }
 
-function hide( language ) {
-	if( language == "java" ) {
-		 javaEditorContainer.style.transform = "rotateY(180deg)" ;
-		 javaEditorContainer.style.WebkitTransform = "rotateY(180deg)" ; }
-	else {
-		 cppEditorContainer.style.transform = "rotateY(180deg)" ;
-		 cppEditorContainer.style.WebkitTransform = "rotateY(180deg)" ; 
-	}
+function swap( oldContainer, newContainer, editor ) {
+	disableRadioButtons() ;
+	oldContainer.style.transform = "rotateY(90deg)" ;
+	oldContainer.style.WebkitTransform = "rotateY(90deg)" ;
+	setTimeout( function() {
+					oldContainer.style.visibility = 'hidden' ;
+					show( newContainer, editor ) ;
+					setTimeout( function() {
+									oldContainer.style.transform = "rotateY(-90deg)" ;
+									oldContainer.style.WebkitTransform = "rotateY(-90deg)" ;},
+								10 ) ; },
+	            300 ) ;
 }
 
-function show( language ) {
-	//document.getElementById("runButton").disabled = false ;
-	if( language == "java" ) {
-		 javaEditorContainer.style.transform = "rotateY(0deg)" ;
-		 javaEditorContainer.style.WebkitTransform = "rotateY(0deg)" ; }
-	else {
-		 cppEditorContainer.style.transform = "rotateY(0deg)" ;
-		 cppEditorContainer.style.WebkitTransform = "rotateY(0deg)" ; 
-	}
+function show( editorContainer, editor ) {	
+	disableRadioButtons() ;
+    editorContainer.style.visibility = 'visible' ;
+	editorContainer.style.transform = "rotateY(0deg)" ;
+	editorContainer.style.WebkitTransform = "rotateY(0deg)" ;
+	setTimeout( function() { enableRadioButtons() ; editor.focus() ; }, 300 ) ;
 }
 
 function switchLanguageTo( language ) {
@@ -81,13 +98,19 @@ function switchLanguageTo( language ) {
 	
 	if( language == currentLanguage ) return ;
 	
-	if( language == "java" ) {
-		hide( "cpp" ) ;
-		show('java') ;
+	else if( currentLanguage == null ) {
+		if( language == "java" ) {	
+			show( javaEditorContainer, javaEditor ) ;
+			currentLanguage = 'java'  ;
+		} else if( language == "cpp" ) {
+			show( cppEditorContainer, cppEditor ) ;
+			currentLanguage = 'cpp'  ;
+		} else { alert("Unknown language"); }
+	} else if( language == "java" ) {
+		swap( cppEditorContainer, javaEditorContainer, cppEditor ) ;
 		currentLanguage = 'java'  ;
 	} else if( language == "cpp" ) {
-		hide("java" ) ;
-		show('cpp') ;
+		swap( javaEditorContainer, cppEditorContainer, javaEditor ) ;
 		currentLanguage = 'cpp'  ;
 	} else { alert("Unknown language"); }
 }
@@ -118,7 +141,6 @@ function showLoadWarning() {
 	showPopUp("loadWarning") ;
 }
 
-
 function dismissLoadWarning() {
 	consoleDebug("dismissLoadWarning") ;
 	hidePopUp("loadWarning") ;
@@ -126,13 +148,14 @@ function dismissLoadWarning() {
 
 function sendToTM() {
 	consoleDebug("onSend") ;
-	var result = TM.getTMApplet() ;
-	if( result.status != "ok" ) return ;
-	
+	var tm = getTMApplet() ;
+	if( tm == null ) return ;
+
 	showLoadWarning() ;
-	setTimeout( function(){ continueSendToTM(result) ; }, 1 ) ; }
+	setTimeout( function(){ continueSendToTM(tm) ; }, 1 ) ; }
 	
-function continueSendToTM(result) {
+function continueSendToTM(tm) {
+	disableRadioButtons() ;
 	showTheTM( ) ;
 	dismissLoadWarning() ;
 	var text ;
@@ -141,7 +164,7 @@ function continueSendToTM(result) {
 	var fileName = "tryItNow." + currentLanguage ;
 	consoleDebug("fileName: " + fileName + " sourceText: " + sourceText ) ;
 	try {
-		result.tm.loadString( fileName, sourceText ) ; }
+		tm.loadString( fileName, sourceText ) ; }
 	catch( ex ) {
 		consoleError("Exception on call to 'loadString'") ;
 		consoleStackTrace( ex ) ;
@@ -157,12 +180,6 @@ function showTheTM() {
 	
 	theTMCont.setAttribute("class", "onTop") ;
 	theEditorContCont.setAttribute("class", "onBottom") ;
-	//var tm = document.getElementById("teachingMachine") ;
-	//if( tm != null ) {
-	//	tm.setAttribute("width", "800" ) ;
-	//	tm.setAttribute("height", "600" ) ; }
-	//document.getElementById("runButton").disabled = true ;
-	//document.getElementById("editButton").disabled = false ;
 }
 
 function hideTheTM() {
@@ -171,17 +188,18 @@ function hideTheTM() {
 	
 	theTMCont.setAttribute("class", "onBottom") ;
 	theEditorContCont.setAttribute("class", "onTop") ;
-	//var tm = document.getElementById("teachingMachine") ;
-	//if( tm != null ) {
-	//	tm.setAttribute("width", "1" ) ;
-	//	tm.setAttribute("height", "1" ) ; }
-	//document.getElementById("runButton").disabled = false ;
-	//document.getElementById("editButton").disabled = true ;
+	var editor = null ;
+	if( currentLanguage == "java" ) {	
+		editor = javaEditor ;
+	} else if( currentLanguage == "cpp" ) {
+		editor = cppEditor ;
+	} 
+	setTimeout( function() { enableRadioButtons() ; if(editor) editor.focus() ; }, 2000 ) ;
 }
 
 function onLoad() {
 	consoleDebug("onLoad starts") ;
-	TM.setTMReadyCallBack( dismissWarning ) ;
+	setTMReadyCallBack( dismissWarning ) ;
 	cppEditorContainer = document.getElementById('cppEditorContainer') ;
 	var cppTextArea = document.getElementById('cppTextArea') ;
 	cppEditor = CodeMirror.fromTextArea(cppTextArea, {
@@ -194,9 +212,9 @@ function onLoad() {
 					 
 	document.getElementById("cppRadio").checked = false ;
 	document.getElementById("javaRadio").checked = false ;
-	//document.getElementById("runButton").disabled = true ;
-	//document.getElementById("editButton").disabled = true ;
+	enableRadioButtons() ;
 	
 	//setInterval( function (){ consoleDebug( checkForTMApplet() )  ; }, 100 ) ;
 	consoleDebug("done onLoad") ;
 }
+

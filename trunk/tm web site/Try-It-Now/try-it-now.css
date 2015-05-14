@@ -15,27 +15,31 @@ body {
 }
 
 .popup.showing {
-	max-height: 200px ;
+	max-height: 10000px ;
 }
 
 .alert {
-	background:#CC3300 ;
+	background: #CC3300 ;
 	font-family: sans-serif ;
 	color: white ;
 	border:thick solid black ;
 }
 
+.alert .a {
+	color: rgb(102,204,255) ;
+}
+
 #topContainer {
 	display: block ;
-	position:relative ;
+	position: relative ;
 	width: 800px ;
 	height: 700px ;
 }
 
 .shim {
 	position: absolute ;
-	top: 0 ;
-	left: 0 ;
+	top: 0px ;
+	left: 0px ;
 	width: 800px ;
 	height: 700px ;
 	display: block ;
@@ -46,8 +50,8 @@ body {
 #teachingMachineContainer {
 	background:rgb(255,255,240) ;
 	position: absolute ;
-	top: 0 ;
-	left: 0 ;
+	top: 0px ;
+	left: 0px ;
 	width: 800px ;
 	height: 700px ;
 	display: block ;
@@ -67,8 +71,8 @@ body {
 #editorContainerContainerContainer {
 	background:rgb(255,240,255) ;
 	position: absolute ;
-	top: 0 ;
-	left: 0 ;
+	top: 0px ;
+	left: 0px ;
 	width: 800px ;
 	height: 700px ;
 	display: block ;
@@ -87,38 +91,49 @@ body {
 
 .editorContainer {
 	position:absolute ;
-	top: 0 ;
-	left: 0 ;
-	bottom: 0 ;
-	right : 0 ;
+	top: 0px ;
+	left: 0px ;
 	display: block ;
-	transform: rotateY(91deg) ;
-	-webkit-transform: rotateY(91deg) ;
-	transition: transform 2s ease-in-out ;
-	-webkit-transition: -webkit-transform 2s ease-in-out ;
-	backface-visibility: hidden ;
-	-webkit-backface-visibility: hidden ;
+	visibility: hidden ;
+	transform: rotateY(-90deg) ;
+	-webkit-transform: rotateY(-90deg) ;
+	transition: transform 0.25s  linear  ;
+	-webkit-transition: -webkit-transform 0.25s linear ;
 }
 
 .textArea {
-	height: 200px ;
+	width: 600px ;
+	height: 500px ;
+	margin-left: 10% ;
+	margin-right: 10% ;
 	border-style: inset ;
 	border-width: thick ;
 	display:block ;
 }
 
 .CodeMirror {
+	width: 600px ;
+	height: 500px ;
 	margin-left: 10% ;
 	margin-right: 10% ;
 	border-style: inset ;
 	border-width: thick ;
-	background:rgb(255,255,204) ;
+	background: rgb(255,255,204) ;
 }
 
 .controlTable {
 	margin-left: 10% ;
 }
 
+.disabled {
+	color: grey ;
+}
+
 button:disabled {
-	text-decoration:line-through ;
+	text-decoration: line-through ;
+}
+
+
+.finePrint {
+	font-size: x-small ;
 }
