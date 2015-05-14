@@ -17,30 +17,40 @@
     <div class="warningArea"> 
       <div id="warning" class="popup showing">
         <div class="alert">
-        <p>Please be patient. This page can take a while to load.
-        </p>
-        <p> Please agree to any security prompts.
-            The Teaching Machine runs in sandboxed mode, and it
-            can not harm your computer.
-        </p>
-        <p>Click on <button onclick="dismissWarning();">Dismiss</button>
-           to dismiss this message.
-        </p>
+          <p>This warning will disappear as soon as the Teaching Machine is ready.
+          </p>
+          <p> Please agree to any security prompts.
+              The Teaching Machine runs in sandboxed mode, and it
+              cannot harm your computer.
+          </p>
+          <p>If you are using a tablet or phone, this isn't going to work. Try from a desktop or laptop OS.</p>
+          <p>If no security prompts appear, ensure that the Java plugin has not been blocked.</p>
+          <p>If think you may need to install the Java plugin, follow the following steps.</p>
+          <ul><li>If you use Google Chrome on Windows or Mac, also see <a href="https://java.com/en/download/faq/chrome.xml#npapichrome" target="_blank">these instructions</a>
+              </li>
+              <li>Visit <a href="https://www.java.com/verify" target="_new">https://www.java.com/verify</a> to check whether you have the Java plugin.
+              </li>
+          </ul>
+          <p>Click on <button onclick="dismissWarning();">Dismiss</button>
+             to dismiss this message.
+          </p>
         </div>
       </div>
+      
       <div id="loadWarning" class="popup hidden">
         <div class="alert">
-        <p> Please be patient. It may take a few seconds to compile your
-            file and build the displays.
-        </p>
-        <p>Click on <button onclick="dismissLoadWarning();">Dismiss</button>
-           to dismiss this message.
-        </p>
-      </div>
+          <p> Please be patient. It may take a few seconds to compile your
+              file and build the displays.
+          </p>
+          <p>Click on <button onclick="dismissLoadWarning();">Dismiss</button>
+             to dismiss this message.
+          </p>
+        </div>
       </div>
     </div>
+    
     <h1>Try the Teaching Machine Now</h1> 
-    <table class="controlTable">
+    <table id="controlTable" class="controlTable">
       <tr>
         <td><strong>Pick a language</strong></td>
         <td><input id="cppRadio" type="radio" name="language" value="cpp"  onChange="languageChange();"/>C++</td>
@@ -49,13 +59,31 @@
         <td></td>
       </tr>
     </table>
+    <!-- The structure here is
+        topContainer (div)
+            - teachingMachineContainer (div)
+              --paragraphs (p)
+              --applet (object)
+            - shim (iframe)
+            - editorContainerContainerContainer (div)
+                -- editorContainer for C++ (div)
+                   --- editorContainer (div)
+                       ----paragraph (p)
+                       ----textArea (textArea)
+                   --- editorContainer for Java++(div)
+                       ----paragraph (p)
+                       ----textArea (textArea)
+    -->
     <div id="topContainer">   
       <div id="teachingMachineContainer" class="onBottom">
         <p><strong>Running.</strong> Use the Teaching Machine's controls
            to step forward and backward through the program's
-           execution. Click on 
+           execution. </p>
+        <p>Click on 
              <button onClick="hideTheTM();">Edit</button>
            to return to editing.
+        </p>
+        <p class="finePrint">If you do not see the Teaching Machine, try another browswer. In particular Chrome on Windows seems to have trouble showing the applet.
         </p>
         <object type="application/x-java-applet" width="800" height="600" 
                 name="teachingMachine" id="teachingMachine" >
@@ -65,8 +93,7 @@
           Applet failed to run.  No Java plug-in was found.
         </object>
       </div>
-      <iframe src="javascript:false;" frameBorder="0" scrolling="no" class="shim">
-      </iframe>
+      <iframe src="javascript:false;" frameBorder="0" scrolling="no" class="shim"></iframe>
       <div id="editorContainerContainerContainer" class="onTop">
         <div class="editorContainerContainer">
           <div class="editorContainer" id="cppEditorContainer">
