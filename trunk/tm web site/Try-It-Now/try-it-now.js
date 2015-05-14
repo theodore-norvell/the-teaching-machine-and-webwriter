@@ -50,6 +50,21 @@ function getLanguage() {
 			return radios[i].value ; } }
 }
 
+
+function disableRunButtons() {
+	var buttons = document.getElementsByName('run');
+	for (var i = 0; i < buttons.length; i++) {
+		buttons[i].disabled = true ; }
+}
+
+
+function enableRunButtons() {
+	var buttons = document.getElementsByName('run');
+	for (var i = 0; i < buttons.length; i++) {
+		buttons[i].disabled = false ; }
+}
+
+
 function disableRadioButtons() {
 	var controlTable = document.getElementById('controlTable' ) ;
 	controlTable.className = 'controlTable disabled' ;
@@ -199,7 +214,8 @@ function hideTheTM() {
 
 function onLoad() {
 	consoleDebug("onLoad starts") ;
-	setTMReadyCallBack( dismissWarning ) ;
+	disableRunButtons() ;
+	setTMReadyCallBack( function() { dismissWarning() ; enableRunButtons() ; }) ;
 	cppEditorContainer = document.getElementById('cppEditorContainer') ;
 	var cppTextArea = document.getElementById('cppTextArea') ;
 	cppEditor = CodeMirror.fromTextArea(cppTextArea, {

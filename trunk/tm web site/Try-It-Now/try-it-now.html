@@ -18,7 +18,7 @@
       <div id="warning" class="popup showing">
         <div class="alert">
           <p>This warning will disappear as soon as the Teaching Machine is ready.
-          </p>
+          This may take a while, especially the first time you use it. Be patient! In the meantime you can select a language and edit.</p>
           <p> Please agree to any security prompts.
               The Teaching Machine runs in sandboxed mode, and it
               cannot harm your computer.
@@ -98,7 +98,7 @@
         <div class="editorContainerContainer">
           <div class="editorContainer" id="cppEditorContainer">
             <p><strong>Editing C++.</strong> Click on
-               <button onclick="sendToTM();">Run</button>
+               <button onclick="sendToTM();" name="run">Run</button>
                when ready to see your program execute.
             </p>
             <textarea id="cppTextArea" class="textArea">
@@ -113,7 +113,7 @@ int main(){
           </div>
           <div class="editorContainer" id="javaEditorContainer">
             <p><strong>Editing Java.</strong> Click on
-               <button onclick="sendToTM();">Run</button>
+               <button onclick="sendToTM();" name="run">Run</button>
                when ready to see your program execute.
             </p>
             <textarea id="javaTextArea" class="textArea">
