@@ -17,11 +17,13 @@ package tm.evaluator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
+
 import javax.swing.Timer;
 
 import tm.backtrack.BTTimeManager;
 import tm.interfaces.CodeLine;
 import tm.interfaces.EvaluatorInterface;
+import tm.interfaces.Inputter;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.SelectionInterface;
 import tm.interfaces.STEntry;
@@ -213,11 +215,13 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     {updateDelay() ;}
     private boolean autoStepStopRequested;
     private boolean runStopRequested;
+    private Inputter inputter ;
 
     public Evaluator( Language lang,
                       StatusConsumer statusReporter,
                       Refreshable observer,
                       SelectionInterface initialSelection, 
+                      Inputter inputter,
                       int boStatic, int toStatic,
                       int boHeap, int toHeap,
                       int boStack, int toStack,
@@ -226,6 +230,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         this.lang = lang ;
         this.statusReporter = statusReporter ;
         this.observer = observer ;
+        this.inputter = inputter ;
         
         // Create a time manager to synchronize back tracking
         BTTimeManager timeMan = new BTTimeManager() ;
@@ -658,9 +663,9 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             else if( vms.getEvaluationState() != VMState.EVALUATION_STATE_RUNNING ) {
                 switch( vms.getEvaluationState() ) {
                 case VMState.EVALUATION_STATE_NEEDINPUT :
-                    // Prompt the user with a nonmodal input frame.
-                    InputFrame inputFrame = new InputFrame( this ) ;
-                    statusReporter.setStatus( TMStatusCode.READY,
+                    // Prompt the user for more input
+                    inputter.requestMoreInput( this );
+                	statusReporter.setStatus( TMStatusCode.READY,
                             langName+" Waiting for input") ;
                     break;
                 case VMState.EVALUATION_STATE_TERMINATED:

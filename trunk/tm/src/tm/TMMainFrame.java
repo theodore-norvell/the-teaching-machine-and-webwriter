@@ -58,7 +58,7 @@ public class TMMainFrame extends JFrame
                                     Configurable
 {
 
-    private static final String COPYRIGHT = "(C) 1997--2013 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
+    private static final String COPYRIGHT = "(C) 1997--2015 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
     private static final String PROGRAMMERS = "Designed and coded by\n"
                                             + "Michael Bruce-Lockhart\n"
                                             + "Sun Hao\n"
@@ -249,7 +249,7 @@ public class TMMainFrame extends JFrame
 
         /*Now, create an Applet that takes up the rest of the
         space & restricts all the display frames to operate inside it!!!!*/
-        tmBigApplet = new TMBigApplet(menuView, argPackage );
+        tmBigApplet = new TMBigApplet( menuView, argPackage );
         tmBigApplet.setStub( appletStub ) ;
         tmBigApplet.setJMenuBar( menuBar ) ;
         tmBigApplet.start() ;
