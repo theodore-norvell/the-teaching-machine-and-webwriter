@@ -22,6 +22,14 @@ import java.util.Enumeration ;
 
 public interface EvaluatorInterface {
 	
+// Mutators
+	
+	/** Add more text to the input.
+	 *  Lines are normally separated by newlines.
+	 *  A 0 (nul) character anywhere in the string indicates the end of file.
+	 */
+	public void addInputString( String text ) ;
+	
 // Display callbacks
     /** The number of symbol table entries */
     public int getNumSTEntries() ;

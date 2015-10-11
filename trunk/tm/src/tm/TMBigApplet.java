@@ -1005,7 +1005,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 /////////////////////
 
     String getVersionString() {
-       return "Built on " + properties.getProperty("build.date", "unknown version") ;
+       return "Built on " + properties.getProperty("build.date", "unknown date") ;
     }
 
 // PRIVATE AND PACKAGE METHODS //
@@ -1067,6 +1067,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             try {
                 evaluator = new Evaluator( lang, this, refreshMole,
                                     SelectionParser.parse(CommandInterface.DEFAULT_SELECTION),
+                                    new SwingInputter(),
                                     boStatic, toStatic,
                                     boHeap, toHeap,
                                     boStack, toStack,
