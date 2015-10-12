@@ -1,0 +1,36 @@
+/*#TS*/
+package java.io ;
+
+/** PrintStream for Teaching Machine
+*/
+public class PrintStream {
+// TODO move closer to the real library
+    public PrintStream() { }
+    public native void print( boolean x) ;
+    public native void print( char x) ;
+    public void print( char[] chars ) {
+        for( int i = 0 ; i < chars.length ; ++i ) print( chars[i] )  ;
+    }
+    public native void print( double x) ;
+    public native void print( float x) ;
+    public native void print( int x ) ;
+    public native void print( long x) ;
+    public void print( String s ) {
+        int length = s.length() ;
+        char[] chars = new char[ s.length() ] ;
+        s.getChars( 0, length, chars, 0 ) ;
+        print( chars ) ;
+    }
+    
+    //public void print( Object obj ) { print( obj.toString() ) ; }
+    public void println() { print( '\n' ) ; }
+    public void println( boolean x ) { print(x) ; println() ; }
+    public void println( char x ) { print(x) ; println() ; }
+    // public void println( char[] x ) { print(x) ; println() ; }
+    public void println( double x ) { print(x) ; println() ; }
+    public void println( float x ) { print(x) ; println() ; }
+    public void println( int x ) { print(x) ; println() ; }
+    public void println( long x ) { print(x) ; println() ; }
+    //public void println( Object obj ) { print( obj ) ; println() ; }
+    public void println( String s ) { print( s ) ; println() ;  }
+}
