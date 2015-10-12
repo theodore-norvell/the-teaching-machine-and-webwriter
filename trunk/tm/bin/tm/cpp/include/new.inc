@@ -1,1 +1,0 @@
-static const int nothrow = 0 ;
