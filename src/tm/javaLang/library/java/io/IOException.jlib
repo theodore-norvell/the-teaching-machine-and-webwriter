@@ -1,0 +1,7 @@
+/*#TS*/
+package java.io ;
+
+/** IOException for Teaching Machine
+*/
+public class IOException /* extends Exception */ {
+}

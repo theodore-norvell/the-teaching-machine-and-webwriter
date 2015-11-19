@@ -1,0 +1,3 @@
+<plugins>
+	<plugin-class>editor.plugins.TestPlugin</plugin-class>
+</plugins>
