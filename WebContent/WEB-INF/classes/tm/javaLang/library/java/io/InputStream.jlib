@@ -1,0 +1,10 @@
+/*#TS*/
+package java.io ;
+
+/** InputStream for Teaching Machine
+*/
+public class InputStream {
+// TODO move closer to the real library
+    public InputStream() { }
+    public native int read() /* throws IOException */ ;
+}

@@ -1,0 +1,2900 @@
+//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License. 
+// You may obtain a copy of the License at 
+//
+//     http://www.apache.org/licenses/LICENSE-2.0 
+//
+// Unless required by applicable law or agreed to in writing, 
+// software distributed under the License is distributed on an 
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+// either express or implied. See the License for the specific language 
+// governing permissions and limitations under the License.
+
+/**
+ * C++ almost full ISO parser
+ * This .jj file is intended to cover much of the ISO
+ * standard for lexical analysis and syntax.
+ * Deviations from the ISO standard are noted.
+ *
+ *
+ * Author: Theodore Norvell
+ * (C) 1997--2002 Theodore Norvell and Michael Bruce-Lockhart
+ * except for the lexer, which is based on a lexer
+ * that is (C) sun microsystems.  However permission
+ * was granted by sun for it to be used.
+ *
+ * Lexical grammar based on a parser by Sreenivasa Viswanadha, then of sun
+ * (Date: 3/20/97), derived in part from the following work:
+ *
+ * PUBLIC DOMAIN PCCTS-BASED C++ GRAMMAR (cplusplus.g, stat.g, expr.g)
+ *
+ * Authors: Sumana Srinivasan, Next Inc.;            sumana_srinivasan@next.com
+ *          Terence Parr, Parr Research Corporation; parrt@parr-research.com
+ *          Russell Quong, Purdue University;        quong@ecn.purdue.edu
+ *
+ */
+options {
+        STATIC = false ;
+        ERROR_REPORTING = true ;
+        // DEBUG_PARSER = true ;
+        //DEBUG_LOOKAHEAD = true ;
+}
+
+PARSER_BEGIN(Parser)
+
+package tm.cpp.parser ;
+
+import java.io.* ;
+import java.util.* ;
+
+import tm.cpp.analysis.* ;
+import tm.cpp.ast.* ;
+import tm.clc.ast.* ;
+import tm.clc.analysis.* ;
+import tm.interfaces.SourceCoords ;
+import tm.utilities.* ;
+
+public class Parser {
+
+  private ParserContext pc ;
+ 
+  // binary_ops 
+  // We need a table to record the precedence of all the binary
+  // operations.
+  // The following relies on token kinds falling between 0 and UNEXPECTED_CHAR inclusive
+  private static int[] binary_ops ;
+  private static final int lastToken = UNEXPECTED_CHAR ;
+
+  // right_assoc
+  // This table represents the set of all right associative operator
+  private static boolean[] right_assoc ;
+  
+  private static boolean tables_initialized = false ;
+  
+  public static NoExpNode noExp_node = new NoExpNode() ;
+
+  public void init( ParserContext pc, FileMap fileMap ) {
+    token_source.set_parser_context( pc ) ;
+    token_source.setFileMap( fileMap ) ;
+        this.pc = pc ;
+        if( ! tables_initialized ) {
+            binary_ops = new int[ lastToken+1 ] ;
+            right_assoc = new boolean[ lastToken+1 ] ;
+            for( int i=0 ; i<lastToken+1 ; ++i ) {
+                binary_ops[i] = -1 ;
+                right_assoc[i] = false ; }
+                            
+            binary_ops[COMMA] = 0 ;
+            
+            binary_ops[ASSIGN] = 2 ;
+            binary_ops[STARASSIGN] = 2 ;
+            binary_ops[SLASHASSIGN] = 2 ;
+            binary_ops[PERCENTASSIGN] = 2 ;
+            binary_ops[PLUSASSIGN] = 2 ;
+            binary_ops[MINUSASSIGN] = 2 ;
+            binary_ops[SHIFTLEFTASSIGN] = 2 ;
+            binary_ops[SHIFTRIGHTASSIGN] = 2 ;
+            binary_ops[BITWISEANDASSIGN] = 2 ;
+            binary_ops[BITWISEORASSIGN] = 2 ;
+            binary_ops[BITWISEXORASSIGN] = 2 ;
+            
+            binary_ops[ QUESTIONMARK ] = 3 ;
+            
+            binary_ops[ OR ] = 4 ;
+            
+            binary_ops[ AND ] = 5 ;
+            
+            binary_ops[ BITWISEOR ] = 6 ;
+            
+            binary_ops[ BITWISEXOR ] = 7 ;
+            
+            binary_ops[ AMPERSAND ] = 8 ;
+            
+            binary_ops[ EQUAL ] = 9 ;
+            binary_ops[ NOTEQUAL ] = 9 ;
+            
+            binary_ops[ LESSTHANOREQUALTO ] = 10 ;
+            binary_ops[ GREATERTHANOREQUALTO ] = 10 ;
+            binary_ops[ LESSTHAN ] = 10 ;
+            binary_ops[ GREATERTHAN ] = 10 ;
+            
+            binary_ops[ SHIFTLEFT ] = 11 ;
+            binary_ops[ SHIFTRIGHT ] = 11 ;
+            
+            binary_ops[ PLUS ] = 12 ;
+            binary_ops[ MINUS ] = 12 ;
+            
+            binary_ops[ STAR ] = 13 ;
+            binary_ops[ SLASH ] = 13 ;
+            binary_ops[ PERCENT ] = 13 ;
+            
+            
+            binary_ops[ DOTSTAR ] = 14 ;
+            binary_ops[ ARROWSTAR ] = 14 ;
+            
+            right_assoc[ASSIGN] = true ;
+            right_assoc[STARASSIGN] = true ;
+            right_assoc[SLASHASSIGN] = true ;
+            right_assoc[PERCENTASSIGN] = true ;
+            right_assoc[PLUSASSIGN] = true ;
+            right_assoc[MINUSASSIGN] = true ;
+            right_assoc[SHIFTLEFTASSIGN] = true ;
+            right_assoc[SHIFTRIGHTASSIGN] = true ;
+            right_assoc[BITWISEANDASSIGN] = true ;
+            right_assoc[BITWISEORASSIGN] = true ;
+            right_assoc[BITWISEXORASSIGN] = true ;
+            
+            tables_initialized = true ; }
+    
+  }
+  
+  //  Coordinates
+  SourceCoords getCoords(int offset ) {
+    return pc.line_map.getCoords(getToken(offset).beginLine) ; }
+
+}
+
+PARSER_END(Parser)
+
+TOKEN_MGR_DECLS : {
+    private int tokenLine ;
+    private int sourceLine ;
+    private TMFile file = null ;
+    private ParserContext pc ;
+    private FileMap fileMap ;
+    public void set_parser_context( ParserContext pc ) { this.pc = pc ; }
+    public void setFileMap( FileMap fileMap ) { this.fileMap = fileMap ; }
+}
+
+///////////////////////////////////////
+// Here follows the lexical grammar  //
+// This follows the ISO spec         //
+// exactly, except that it has no    //
+// support for digraphs, trigraphs,  //
+// or preprocessing                  //
+///////////////////////////////////////
+
+
+SPECIAL_TOKEN : 
+{
+  // Line directives should have the form
+  //    #line linenum filename
+  // or
+  //    #line linenum
+  // In the latter case the previous file name is kept.
+  "#line" : LINE_DIRECTIVE
+}
+
+<LINE_DIRECTIVE> SPECIAL_TOKEN :
+{
+    <LINE_NO : (["0"-"9"])+>
+        { tokenLine = matchedToken.beginLine+1 ;
+          sourceLine = Integer.parseInt (matchedToken.image.trim()); }
+|
+    <FILE_NM : "\"" (["0"-"9"])+ "\"">
+    {file = fileMap.get( new Integer(matchedToken.image.substring(1, matchedToken.image.length()-1) ) );}
+|
+    " "
+|
+    "\n" { pc.line_map.add (tokenLine, sourceLine, file); } : DEFAULT
+}
+
+SKIP :
+{
+  " "
+|
+  "\t"
+|
+  "\n"
+|
+  "\r"
+|
+  "//" : IN_LINE_COMMENT
+|
+  "/*" : IN_COMMENT
+// In the Teaching Machine, there should be unexpected preprocessor
+// output. Thus the following two lines are commented out. TSN
+//|
+//  "#" : PREPROCESSOR_OUTPUT 
+}
+
+<IN_LINE_COMMENT> SKIP:
+{
+   "\n" : DEFAULT
+}
+
+<IN_LINE_COMMENT> MORE:
+{
+  < ~[] >
+}
+
+<IN_COMMENT> SKIP :
+{
+   "*/" : DEFAULT
+}
+
+<IN_COMMENT> MORE:
+{
+  < ~[] >
+}
+
+// In the Teaching Machine, the state PREPROCESSOR_OUTPUT is not
+// used.  Thus the following two rules are commented out. TSN.
+// <PREPROCESSOR_OUTPUT> SKIP:
+// {
+//    "\n" : DEFAULT
+// }
+// 
+// <PREPROCESSOR_OUTPUT> MORE:
+// {
+//   < ~[] >
+// }
+
+// WARNING !!! WARNING !!! WARNING !!!
+// Do not reorder the following token definitions.
+// Add to this list at your peril.  Beware of arrays that are
+// indexed by the constants corresponding to operators.
+TOKEN :
+{
+  < OPEN_BRACE: "{" >
+| < CLOSE_BRACE: "}" >
+| < OPEN_BRACKET: "[" >
+| < CLOSE_BRACKET: "]" >
+| < OPEN_PAREN: "(" >
+| < CLOSE_PAREN: ")" >
+| < SCOPE: "::" >
+| < COLON: ":" >
+| < SEMICOLON: ";" >
+| < COMMA: "," >
+| < QUESTIONMARK: "?" >
+| < ELLIPSIS: "..." >
+| < ASSIGN: "=" >
+| < STARASSIGN: "*=" >
+| < SLASHASSIGN: "/=" >
+| < PERCENTASSIGN: "%=" >
+| < PLUSASSIGN: "+=" >
+| < MINUSASSIGN: "-=" >
+| < SHIFTLEFTASSIGN: "<<=" >
+| < SHIFTRIGHTASSIGN: ">>=" >
+| < BITWISEANDASSIGN: "&=" >
+| < BITWISEXORASSIGN: "^=" >
+| < BITWISEORASSIGN: "|=" >
+| < OR: "||" >
+| < AND: "&&" >
+| < BITWISEOR: "|" >
+| < BITWISEXOR: "^" >
+| < AMPERSAND: "&" >
+| < EQUAL: "==" >
+| < NOTEQUAL: "!=" >
+| < LESSTHAN: "<" >
+| < GREATERTHAN: ">" >
+| < LESSTHANOREQUALTO: "<=" >
+| < GREATERTHANOREQUALTO: ">=" >
+| < SHIFTLEFT: "<<" >
+| < SHIFTRIGHT: ">>" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < STAR: "*" >
+| < SLASH: "/" >
+| < PERCENT: "%" >
+| < PLUSPLUS: "++" >
+| < MINUSMINUS: "--" >
+| < TILDE: "~" >
+| < BANG: "!" >
+| < DOT: "." >
+| < ARROW: "->" >
+| < DOTSTAR: ".*" >
+| < ARROWSTAR: "->*" >
+| < ASM: "asm" >
+| < AUTO: "auto" >
+| < BOOL: "bool" >
+| < BREAK: "break" >
+| < CASE: "case" >
+| < CATCH: "catch" >
+| < CHAR: "char" >
+| < CLASS : "class" >
+| < CONST: "const" >
+| < CONST_CAST: "const_cast" >
+| < CONTINUE: "continue" >
+| < KEYWORD_DEFAULT: "default" >
+| < DELETE: "delete" >
+| < DO: "do" >
+| < DOUBLE: "double" >
+| < DYNAMIC_CAST: "dynamic_cast" >
+| < ELSE: "else" >
+| < ENUM: "enum" >
+| < EXPLICIT: "explicit" >
+| < EXPORT: "export" >
+| < EXTERN: "extern" >
+| < FALSE: "false" >
+| < FLOAT: "float" >
+| < FOR: "for" >
+| < FRIEND: "friend" >
+| < GOTO: "goto" >
+| < IF: "if" >
+| < INLINE: "inline" >
+| < INT: "int" >
+| < LONG: "long" >
+| < MUTABLE: "mutable" >
+| < NAMESPACE: "namespace" >
+| < NEW: "new" >
+| < OPERATOR: "operator" >
+| < PRIVATE: "private" >
+| < PROTECTED: "protected" >
+| < PUBLIC: "public" >
+| < REGISTER: "register" >
+| < REINTERPRET_CAST: "reinterpret_cast" >
+| < RETURN: "return" >
+| < SHORT: "short" >
+| < SIGNED: "signed" >
+| < SIZEOF: "sizeof" >
+| < STATIC: "static" >
+| < STATIC_CAST: "static_cast" >
+| < STRUCT: "struct" >
+| < SWITCH: "switch" >
+| < TEMPLATE: "template" >
+| < THIS: "this" >
+| < THROW: "throw" >
+| < TRUE: "true" >
+| < TRY: "try" >
+| < TYPEDEF: "typedef" >
+| < TYPEID: "typeid" >
+| < TYPENAME: "typename" >
+| < UNION: "union" >
+| < UNSIGNED: "unsigned" >
+| < USING: "using" >
+| < VIRTUAL: "virtual" >
+| < VOID: "void" >
+| < VOLATILE: "volatile" >
+| < WCHAR_T: "wchar_t" >
+| < WHILE: "while" >
+}
+
+TOKEN [IGNORE_CASE] :
+{
+  <  OCTALINT : "0" (["0"-"7"])* <INTSUFFIX> >
+| <  DECIMALINT : ["1"-"9"] (["0"-"9"])* <INTSUFFIX> >
+| <  HEXINT : "0x" (["0"-"9","a"-"f"])+  <INTSUFFIX> >
+| <  #INTSUFFIX : ("l" | "u" | "lu" | "ul")? >
+
+| <  FLOATCONST: <LOCAL_FLOATCONST> ("f" | "l")?>
+| <  #LOCAL_FLOATCONST :    <DIGITS> "." (<DIGITS>)? (<EXPPART>)?// Digit before decimal
+                          | "." <DIGITS>             (<EXPPART>)?// No digit before decimal
+                          | <DIGITS>                 <EXPPART>   // No decimal
+  >
+| <  #DIGITS :          (["0"-"9"])+ >
+| <  #EXPPART  :        "e" (["-","+"])? (["0"-"9"])+  >
+}
+
+TOKEN :
+{
+
+  <  CHARACTER : ("L")? "'"
+                 ( (~["'","\\","\n","\r"])
+                   | <SIMPLEESCAPESEQ>
+                   | <OCTALESCAPESEQ>
+                   | <HEXESCAPESEQ>
+                   | <UCODENAME>
+                 )+
+                 "'" >
+
+| <  STRING : ("L")? "\""
+                ( ( ~["\"","\\","\n","\r"])
+                  | <SIMPLEESCAPESEQ>
+                  | <OCTALESCAPESEQ>
+                  | <HEXESCAPESEQ>
+                  | <UCODENAME>
+                )*
+              "\"" >
+
+|  < #SIMPLEESCAPESEQ : "\\" ["n","t","v","b","r","f","a","\\","?","'","\""] >
+|  < #OCTALESCAPESEQ :  "\\" ["0"-"7"] (["0"-"7"])? (["0"-"7"])? >
+|  < #HEXESCAPESEQ :    "\\"  "x" (<HEXDIG>)+ >
+|  < #UCODENAME :       "\\" ["u","U"] <HEXQUAD> (<HEXQUAD>)? >
+|  < #HEXQUAD :         <HEXDIG> <HEXDIG> <HEXDIG> <HEXDIG> >
+|  < #HEXDIG :          ["0"-"9","a"-"f","A"-"F"] >
+}
+
+
+////////////////////////////////////////////////////////////////////
+// Lexical analyzer is continued after the context free grammar   //
+////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////
+// Here begins the context free grammar
+// This grammar follows the ISO standard grammar to
+// the extent possible.
+// Deviations are noted.
+///////////////////////////////////////////////////////////////////
+
+// translation_unit --> declaration* <EOF>
+void translation_unit( String file_name, StatementNodeLink p ) :
+//////////////////////////
+{ }
+{
+   { pc.start_file_scope( file_name ) ; }
+   { pc.enter_standard_declarations() ; }
+   try {
+       (
+               LOOKAHEAD( {getToken(1).kind != EOF} )
+               // Semantic lookahead above is to suppress syntactic lookahead
+               // on declaration
+               p=declaration(p)
+       )*
+       <EOF> }
+   catch( TMException e ) {
+        int rawLineNumber ;
+        if( e instanceof ParseException && ((ParseException)e).currentToken != null) {
+            rawLineNumber = ((ParseException)e).currentToken.next.beginLine ; }
+        else {
+            rawLineNumber = getToken(0).beginLine ; }
+        SourceCoords coords = pc.line_map.getCoords( rawLineNumber ) ;
+        e.setSourceCoords( coords ) ;
+        throw e ; }
+   catch( RuntimeException e ) {
+        int rawLineNumber = getToken(0).beginLine ;
+        SourceCoords coords = pc.line_map.getCoords( rawLineNumber ) ;
+        Debug.getInstance().msg(Debug.COMPILE, "Exception thrown while parsing line "+coords);
+        throw e ; }
+   { pc.end_file_scope( ) ; }
+}
+
+///////////////////////////////////////////////////////////////////
+//  DECLARATIONS
+///////////////////////////////////////////////////////////////////
+
+// declaration --> block_declaration_or_function_definition
+//               | name_space_definition
+//               | linkage_specification
+//               | template_declaration
+//               | explicit_instantiation
+//               | explicit_specialization
+
+StatementNodeLink declaration( StatementNodeLink p ) :
+////////////////////////////
+{ NodeList var_decls ; }
+{
+    (
+        LOOKAHEAD( <EXTERN> <STRING> )
+        // Extra LOOKAHEAD required for obvious reasons.
+        linkage_specification()
+    |  // DEVIATION The next clause is not in the ISO, it is just a hack to stop the parser
+       [<EXPORT>] <TEMPLATE>
+           { pc.sorry_not_implemented( "templates" ) ; }
+    // DEVIATION: The next 3 clauses are subsumed by the fake one above
+    //| template_declaration() | explicit_instantiation() | explicit_specialization()
+    |
+        namespace_definition()
+    |
+        block_declaration_or_function_definition(p)
+    )
+        {return p;}
+}
+
+// block_declaration_or_function_definition -->
+//             | asm_definition
+//             | namespace_alias_definition
+//             | using_declaration
+//             | using_directive
+//             | simple_declaration_or_function_definition
+// DEVIATION: The ISO spec makes block_declaration and function_definition
+// separate syntactic categories.  However, this requires a complex lookahead.
+
+
+StatementNodeLink block_declaration_or_function_definition( StatementNodeLink p ) :
+{}
+{
+    (
+        asm_definition()
+    //|  This choice is unreachable
+    //    namespace_alias_definition()
+    |
+        LOOKAHEAD( <USING> <NAMESPACE> )
+        // Lookahead required since using declaration also starts with "using".
+        using_directive()
+    |
+        using_declaration()
+    |
+        p=simple_declaration_or_function_definition(p)
+    )
+    {return p;}
+}
+
+// block_declaration_with_nonopt_decl_spec
+//           --> simple_declaration_with_nonopt_decl_spec
+//             | asm_definition
+//             | namespace_alias_definition
+//             | using_declaration
+//             | using_directive
+// Deviation from ISO grammar.  I'm splitting the ISO's block_declaration
+// nonterminal into two special cases: block_declaration and
+// block_declaration_with_nonopt_decl_spec.  The reason is the LOOKAHEAD in "statement"
+// that is used to distinguish declaration statements from expression statements.
+// Suppose that "foo" is not a type name, then "foo();" is syntactically a valid
+// "block_definition", although it violates the semantic rule that declarations of
+//  constructors, destructors, and type conversions may omit all delc_specifiers.
+// Thus the following code for "statement" does not work
+//       ...
+//       | LOOKAHEAD(block_declaration())
+//         block_declaration(p)
+//       | expression() ";"
+//       ...
+// So instead we do the lookahead insisting on at least one declaration specfier.
+//       ...
+//       | LOOKAHEAD(block_declaration_with_nonopt_decl_spec())
+//         block_declaration_with_nonopt_decl_spec(p)
+//       | expression() ";"
+//       ...
+//
+// Actually, something I don't understand is why simple_declaration
+// allows all the decl_specifiers to be omitted.  Constructors, destructors
+// and, I presume, conversions can only be declared within a class specifier,
+// and there simple_declaration is not used.
+// 
+// Maybe a simpler solution is to change simple_declaration
+// so that it insists on at least one declaration specifier.
+// Then we only need one version of simple_declaration and one
+// version of block_declaration.
+//
+// TSN
+
+StatementNodeLink block_declaration_with_nonopt_decl_spec( StatementNodeLink p ) :
+{}
+{
+    (
+        asm_definition()
+    |
+        namespace_alias_definition()
+    |
+        LOOKAHEAD( <USING> <NAMESPACE> )
+        // Lookahead required since using declaration also starts with "using".
+        using_directive()
+    |
+        using_declaration()
+    |
+        p=simple_declaration_with_nonopt_decl_spec(p)
+    )
+    {return p;}
+}
+
+// simple_declaration_or_function_definition 
+//   --> opt_decl_specifier_seq ( opt_init_declarator_list ";"
+//                              | rest_of_function_definition )
+// DEVIATION: This nonterminal is not in the ISO spec.
+
+StatementNodeLink simple_declaration_or_function_definition( StatementNodeLink p ) :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet () ;
+}
+{
+    (   LOOKAHEAD( declarator() (<OPEN_BRACE> | <COLON> | <TRY>) )
+        // If it looks like a function definition with no decl_specifiers, then it is one.
+        rest_of_function_definition(spec_set)
+    |
+        opt_decl_specifier_seq( spec_set )
+        (	LOOKAHEAD( declarator() (<OPEN_BRACE> | <COLON> | <TRY>) )
+        	rest_of_function_definition(spec_set)
+        |
+            LOOKAHEAD( <SEMICOLON> | init_declarator() (<COMMA> | <SEMICOLON>) )
+        	p = opt_init_declarator_list( spec_set, p )
+        	<SEMICOLON>
+        )
+    )
+    {return p ;}
+}
+
+// simple_declaration -> opt_decl_specifier_seq opt_init_declarator_list ";"
+
+StatementNodeLink simple_declaration( StatementNodeLink p ) :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet () ;
+}
+{
+        opt_decl_specifier_seq( spec_set )
+        p = opt_init_declarator_list( spec_set, p )
+        <SEMICOLON>
+        {return p ;}
+}
+
+// simple_declaration_with_nonopt_decl_spec -> decl_specifier_seq opt_init_declarator_list ";"
+//
+// See block_declaration_with_nonopt_decl_spec for the reationale behind this
+// nonterminal.
+
+StatementNodeLink simple_declaration_with_nonopt_decl_spec( StatementNodeLink p ) :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+}
+{
+        decl_specifier_seq( spec_set )
+        p = opt_init_declarator_list( spec_set, p )
+        <SEMICOLON>
+        {return p ;}
+}
+
+// opt_decl_specifier_seq --> decl_specifier*
+
+void opt_decl_specifier_seq( Cpp_SpecifierSet spec_set ) :
+// This is optional to accomodate constructors, destructors.
+{}
+{
+    ( decl_specifier( spec_set ) ) *
+}
+
+// decl_specifier_seq --> decl_specifier *
+
+void decl_specifier_seq( Cpp_SpecifierSet spec_set ) :
+{}
+{
+    (  // LOOKAHEAD( decl_specifier_lookahead() )
+       decl_specifier( spec_set )
+    ) +
+}
+
+//  To be done.
+//  void decl_specifier_lookahead() :
+//  {
+//      Cpp_SpecifierSet spec_set = null ;
+//  }
+//  {
+//      storage_class_specifier( spec_set ) 
+//  |
+//      function_specifier( spec_set )
+//  |
+//      <FRIEND>
+//  |
+//      <TYPEDEF>
+//  }
+
+void decl_specifier(  Cpp_SpecifierSet spec_set ) :
+{}
+{
+    storage_class_specifier( spec_set )
+|
+    type_specifier( spec_set )
+|
+    function_specifier( spec_set )
+|
+    <FRIEND> { spec_set.add( Cpp_Specifiers.SP_FRIEND ) ; }
+|
+    <TYPEDEF> { spec_set.add( Cpp_Specifiers.SP_TYPEDEF ) ; }
+}
+
+void storage_class_specifier(  Cpp_SpecifierSet spec_set ) :
+{}
+{
+    <AUTO> { spec_set.add( Cpp_Specifiers.SP_AUTO ) ; }
+|
+    <REGISTER> { spec_set.add( Cpp_Specifiers.SP_REGISTER ) ; }
+|
+    <STATIC> { spec_set.add( Cpp_Specifiers.SP_STATIC ) ; }
+|
+    <EXTERN> { spec_set.add( Cpp_Specifiers.SP_EXTERN ) ; }
+|
+    <MUTABLE> { spec_set.add( Cpp_Specifiers.SP_MUTABLE ) ; }
+}
+
+void function_specifier(  Cpp_SpecifierSet spec_set ) :
+{}
+{
+    <INLINE> { spec_set.add( Cpp_Specifiers.SP_INLINE ) ; }
+|
+    <VIRTUAL> { spec_set.add( Cpp_Specifiers.SP_VIRTUAL ) ; }
+|
+    <EXPLICIT> { spec_set.add( Cpp_Specifiers.SP_EXPLICIT ) ; }
+}
+
+void type_specifier(  Cpp_SpecifierSet spec_set ) :
+{}
+{
+    simple_type_specifier( spec_set )
+|
+    LOOKAHEAD( class_head() <OPEN_BRACE> )
+    // Lookahead required since an elaborated_type_specifier can also start with
+    // "class"
+    class_specifier( spec_set )
+|
+    LOOKAHEAD( <ENUM> [ identifier() ] <OPEN_BRACE> )
+    // Lookahead required since an elaborated_type_specifier can also start with
+    // "enum"
+    enum_specifier( spec_set )
+|
+    elaborated_type_specifier( spec_set )
+|
+    cv_qualifier( spec_set )
+}
+
+void simple_type_specifier( Cpp_SpecifierSet spec_set ) :
+{ ScopedName name ; }
+{
+    LOOKAHEAD( { pc.lookahead_scoped_type_name_follows(this) } )
+        // This semantic lookahead should fail if the identifier is not
+        // ultimately a type name.
+        // Consider:
+        //     foo (f) ;
+        // Case (0): Neither foo nor f is a type name.
+        // A syntactic lookahead on block_declaration_with_nonopt_decl_spec
+        // of simple_declaration_with_nonopt_decl_spec (the important examples
+        // are in "statement" and "more_for"), will ultimately
+        // fail because the above semantic lookahead fails on foo.
+        // Therefore foo(f) is a function call.
+        //
+        // Case (1): foo is a type name, then we have
+        //      simple_declaration_with_nonopt_decl_spec
+        //  =>* decl_specifier opt_init_declarator_list ;
+        //  =>* simple_type_specifier opt_init_declarator_list ;
+        // etc. So we have a declaration of a variable f.  (Even if
+        // f is a type name.)
+        //
+        // Case (2): foo is not a type name, but f is.
+        // We get
+        //      simple_declaration_with_nonopt_decl_spec
+        //   =>* decl_specifier_list opt_init_declarator_list ;
+        //  =>* simple_type_specifier opt_init_declarator_list ;
+        // since the above LOOKAHEAD fails, the whole LOOKAHEAD on
+        // simple_declaration_with_nonopt_decl_spec and the phrase
+        // is parsed as an expresion.
+        // 
+        // Remaining problems. 
+        // (1) Need to stop consuming decl_specifiers at the right time.
+        // Consider 
+        //    X Y ;
+        // where  X and Y are type names.  This should declare a variable Y.
+        // So we must break out of the decl_specifier loop after the X.
+        // Similary 
+        //    int X ;
+        // where X is a type name.  Again we need to break out of the loop
+        // at the right time.  At the same time
+        //    short int x ;
+        // and
+        //    int const short x ;
+        // are valid, so you can't just restrict the sequence of
+        // declaration specifiers to only have 1 type specifier.
+    name = scoped_type_name() 
+        { spec_set.add_type_name( name ) ; }
+|
+    <CHAR> { spec_set.add( Cpp_Specifiers.SP_CHAR ) ; }
+|
+    <WCHAR_T> { spec_set.add( Cpp_Specifiers.SP_WCHAR_T ) ; }
+|
+    <BOOL> { spec_set.add( Cpp_Specifiers.SP_BOOL ) ; }
+|
+    <SHORT> { spec_set.add( Cpp_Specifiers.SP_SHORT ) ; }
+|
+    <INT> { spec_set.add( Cpp_Specifiers.SP_INT ) ; }
+|
+    <LONG> { spec_set.add( Cpp_Specifiers.SP_LONG ) ; }
+|
+    <SIGNED> { spec_set.add( Cpp_Specifiers.SP_SIGNED ) ; }
+|
+    <UNSIGNED> { spec_set.add( Cpp_Specifiers.SP_UNSIGNED ) ; }
+|
+    <FLOAT> { spec_set.add( Cpp_Specifiers.SP_FLOAT ) ; }
+|
+    <DOUBLE> { spec_set.add( Cpp_Specifiers.SP_DOUBLE ) ; }
+|
+    <VOID> { spec_set.add( Cpp_Specifiers.SP_VOID ) ; }
+}
+
+
+void elaborated_type_specifier( Cpp_SpecifierSet spec_set ) :
+{
+    ScopedName name ;
+}{
+    <CLASS>
+    name = scoped_identifier()
+        {   pc.declare_class( name, getCoords(0) ) ;
+	    spec_set.add( Cpp_Specifiers.SP_CLASS ) ;
+            spec_set.add_type_name( name ) ;
+        }
+|
+    <STRUCT>
+    name = scoped_identifier()
+        {   pc.declare_class( name, getCoords(0) ) ;
+	    spec_set.add( Cpp_Specifiers.SP_STRUCT ) ;
+            spec_set.add_type_name( name ) ;
+        }
+|
+    <UNION>
+    name = scoped_identifier()
+        {   
+            pc.sorry_not_implemented( "union" ) ;
+        }
+|
+    <ENUM>
+    name = scoped_identifier()
+        {   
+            pc.sorry_not_implemented( "enum" ) ;
+        }
+|
+    <TYPENAME>
+        { pc.sorry_not_implemented( "typename" ) ; }
+    // DEVIATION: I'm just stopping here.
+    // scoped_identifier | scoped_template_id
+}
+
+void enum_specifier( Cpp_SpecifierSet spec_set ) :
+{
+    String id ;
+}
+{
+    <ENUM>  id=identifier() <OPEN_BRACE> (enumerator_list())? <CLOSE_BRACE>
+        { pc.sorry_not_implemented( "enum" ) ; }
+}
+
+void enumerator_list() :
+{}
+{    enumerator_definition() ( <COMMA> enumerator_list() ) ?
+}
+
+void enumerator_definition() :
+{}
+{
+    identifier() ( <ASSIGN> constant_expression() )?
+}
+
+void namespace_definition() :
+{}
+// DEVIATION. Since we don't suuport namespaces, I'm quitting here.
+{
+    <NAMESPACE>
+    { pc.sorry_not_implemented( "namespace" ) ; }
+    //  (identifier())? <OPEN_BRACE> (declaration())* <CLOSE_BRACE>
+}
+
+void namespace_alias_definition() :
+{}
+// DEVIATION. Since we don't suuport namespaces, I'm quitting here.
+{
+    <NAMESPACE>
+    { pc.sorry_not_implemented( "namespace" ) ; }
+    // identifier() <ASSIGN> qualified_name_space_specifier() <SEMICOLON>
+}
+
+void using_declaration() :
+{
+    ScopedName name = new Cpp_ScopedName() ;
+}
+// The syntax description (but not the syntax, I think) deviates
+// from the ISO description a bit here.
+{
+    <USING> 
+    (
+        <TYPENAME> (<SCOPE>)? nested_name_specifier(name)
+    |
+        <SCOPE> ( LOOKAHEAD( class_or_namespace_name() <SCOPE> ) 
+                  nested_name_specifier(name))?
+    |
+        nested_name_specifier(name)
+    )
+    unqualified_id()
+    <SEMICOLON>
+    { pc.sorry_not_implemented( "\"using\" declaration" ) ; }
+}
+
+void using_directive() :
+{  ScopedName name = new Cpp_ScopedName() ; }
+{      
+    <USING>
+    <NAMESPACE>
+    (<SCOPE> /* NEED to add {name.set_absolute();} here if this is not ignored */ )?
+    (LOOKAHEAD( class_or_namespace_name() <SCOPE> ) nested_name_specifier(name))?
+    identifier()
+    <SEMICOLON>
+    // Using directives are ignored, but not disallowed.
+}
+
+void asm_definition() :
+{}
+{
+    <ASM> <OPEN_PAREN> <STRING> <CLOSE_PAREN> <SEMICOLON>
+    { pc.sorry_not_implemented( "asm" ) ; }
+}
+
+void linkage_specification() :
+// DEVIATION. Since we don't support it, I'm not parsing the whole thing.
+{}
+{
+    <EXTERN> <STRING> 
+    { pc.sorry_not_implemented( "linkage specifications" ) ; }
+    // ( <OPEN_BRACE>  (declaration())* <CLOSE_BRACE> | declaration() )
+}
+
+/////////////////////////
+////// DECLARATORS //////
+/////////////////////////
+
+// opt_init_declarator_list --> ( init_declarator (, init_declarator) )*
+StatementNodeLink opt_init_declarator_list( Cpp_SpecifierSet spec_set, StatementNodeLink p ) :
+{}
+{
+    ( p = init_declarator( spec_set, p ) (<COMMA> p = init_declarator( spec_set, p ))* )?
+        {return p;}
+}
+
+// init_declarator --> declarator [initializer]
+StatementNodeLink init_declarator( Cpp_SpecifierSet spec_set, StatementNodeLink p ) :
+{ TypeNodeLink type_link = new TypeNodeLink() ;
+  TypeNode base_type ;
+  Initializer i ;
+  ScopedName name ;
+  SourceCoords coords = getCoords(0) ;}
+{
+        name = declarator( type_link )
+        { base_type = pc.extract_type(spec_set) ; }
+        { type_link.addToEnd( base_type ) ; }
+        { p = pc.simple_declaration( p, coords, name, spec_set, type_link.get() ) ; }
+        { pc.start_initializer( name ) ; }
+        (   i=initializer()
+        |
+            { i = new Initializer( Initializer.NONE ) ; }
+        )
+        { p = pc.end_initializer( i, p ) ; }
+        {return p ;}
+}
+
+ScopedName declarator(TypeNodeLink type_link ) :
+// declarator returns the name of the thing being declared.
+// It also modifies type_link by appending any modifiers found.
+//  The natural grammar for declarators is
+//      D -> DD | *D | &D
+//      DD -> id | DD "[" Expression "]" DD ParamList | "("D")"
+//    but this is left recursive.
+// Observe that DD is a (possibly empty list of array bounds and
+// parameter lists, preceeded by either an identifier or a (D).
+// Thus we can use the equivalent grammar
+//    we get
+//      D -> *D | &D | id [D'] | "("D")" [D']
+//      D' -> ( "[" Expression "]" | ParamList )+
+//
+//    To build the correct tree to represent the type requires some care
+//    but it can be done.  The code I have here works for the following
+//    types
+//    int *a ;                  Pointer to int
+//    int b[10] ;               Array 10 of int
+//    int *c[10] ;              Array 10 of pointer to int
+//    int (*d)[10] ;            Pointer to array 10 of int
+//    int *(e[10]) ;            Array 10 of pointer to int
+//    int f[10][12] ;           Array 10 of array 12 of int
+//    int *g[10][12] ;          Array 10 of array 12 of pointer to int
+
+{ ScopedName name ;
+  Cpp_SpecifierSet spec_set ;
+  int k ;
+}
+{
+        LOOKAHEAD( ptr_operator( ) )
+        // This lookahead is required because in e.g. int A::*a
+        // the A could be the start of a declarator_id.
+            { spec_set = new Cpp_SpecifierSet() ; }
+        k = ptr_operator( spec_set )
+        name = declarator( type_link )
+            { if( k == STAR ) {
+                type_link.addToEnd( new TyPointer( spec_set ) ) ; }
+              else if( k == AMPERSAND ) {
+                type_link.addToEnd( new TyRef( ) ) ; }
+              else {
+                Assert.check( false ) ; }
+          return name ; }
+|
+        <OPEN_PAREN>
+        name = declarator( type_link )
+        <CLOSE_PAREN>
+        [   LOOKAHEAD( <OPEN_BRACKET> | <OPEN_PAREN> ( <CLOSE_PAREN> | <ELLIPSIS> | parameter_declaration() ) )
+            // LOOKAHEAD is needed to keep initializers from screwing this choice up.
+            // For example consider
+            //        int (*f)(0);  // Initializing pointer to null
+            //    vs. int (*f)(int j);  // declaraing a function 
+            // we need to look ahead to see
+            // the parameter declaration in order to decide whether the OPEN_PAREN
+            // represents the start of a parameter list or the start of an initializer.
+            declarator_prime( type_link )
+        ]
+        { return name ; }
+|
+        name = declarator_id()
+        [   LOOKAHEAD( <OPEN_BRACKET> | <OPEN_PAREN> ( <CLOSE_PAREN> | <ELLIPSIS> | parameter_declaration() ) )
+            // LOOKAHEAD is needed for the same reason as above.
+            declarator_prime( type_link )
+        ]
+        { return name ; }
+}
+
+// ptr_operator --> "*" cv_qualifier* | & | [::] nested_name_specifier "*" cv_qualifier*
+int ptr_operator( Cpp_SpecifierSet spec_set ) :
+{
+    ScopedName name ;
+}
+{
+    <STAR> (cv_qualifier( spec_set ))*
+        {return STAR ;}
+|
+    <AMPERSAND>
+        {return AMPERSAND;}
+|
+    // Otherwise, must be a pointer to a member.
+        { name = new Cpp_ScopedName() ; }
+    [ <SCOPE> {name.set_absolute();}] nested_name_specifier(name) <STAR> (cv_qualifier(spec_set))*
+        { pc.sorry_not_implemented( "pointers to members" ) ;
+          return 0 ; }
+}
+
+// declarator_prime --> see declarator for comments.
+void declarator_prime( TypeNodeLink type_link ) :
+////////////////////////////
+// declarator_prime modifies type by appending any modifiers it finds
+{ Vector param_types ;
+  boolean [] ends_with_ellipsis ;
+  ExpressionNode e ;
+  Cpp_SpecifierSet spec_set ;
+}
+{
+   ( // Start of ( ...)+ loop.
+     LOOKAHEAD( <OPEN_BRACKET> | <OPEN_PAREN> ( <CLOSE_PAREN> | <ELLIPSIS> | parameter_declaration() ) )
+     // We look ahead here because initializations in C++ can be in
+     // parentheses.  Consider "int i(1) ;". Without the lookahead
+     // we might gobble the "(" here and then be stuck trying to parse "1"
+     // as a parameter declaration clause.  Note that
+     // "int f(int(q));" declares a function "f", not an initialized
+     // int variable "f".
+     // Although this LOOKHEAD is checked before entering declarator_prime
+     // from declarator.
+     // we also need to check it each time through the loop.
+     //   int (*f)()(0) ; // Null intialize a pointer to a function.
+       (
+        <OPEN_BRACKET>
+        ( e = constant_expression()
+            {     int elCount = (int) e.get_integral_constant_value() ;
+                  TyArray arrayType = new TyArray( ) ;
+                  arrayType.setNumberOfElements( elCount ) ;
+                  type_link.addToEnd( arrayType ) ;  }
+        | // Nothing -- so we are looking at a pointer.
+          // [] notation. 
+            { TyArray arrayType = new TyArray( ) ;
+              arrayType.setNumberOfElements( -1 ) ;
+              type_link.addToEnd( arrayType ) ;
+            }
+        )
+        <CLOSE_BRACKET>
+   |
+        <OPEN_PAREN>
+        	{ pc.start_prototype_scope() ; }
+        	{ param_types = new Vector() ; }
+        	{ ends_with_ellipsis = new boolean[1] ; }
+        	parameter_declaration_clause(param_types, ends_with_ellipsis )
+            { spec_set = new Cpp_SpecifierSet() ; }
+        <CLOSE_PAREN>                      { pc.end_prototype_scope() ; }
+        ( cv_qualifier( spec_set ) )*
+        // NOTE.  "const" and "volatile" after parameter declarations are ignored.
+        [ exception_specification() ]
+            { TypeNode funType = new TyFun( param_types, ends_with_ellipsis[0] ) ;
+              type_link.addToEnd( funType ) ; }
+       )
+   )+
+}
+
+void cv_qualifier( Cpp_SpecifierSet spec_set ) :
+{}
+{
+    <CONST>   { spec_set.add( Cpp_Specifiers.SP_CONST ) ; }
+|
+    <VOLATILE> { spec_set.add( Cpp_Specifiers.SP_VOLATILE ) ; }
+}
+
+// declarator_id --> id_expression
+//                 | [ :: ] [ nested_name_specifier ] type_name
+ScopedName declarator_id() :
+{
+    ScopedName name ;
+    ScopedName nm ;
+}
+{
+    LOOKAHEAD( [ <SCOPE> ] [class_or_namespace_name() <SCOPE> ] type_name() )
+        { name = new Cpp_ScopedName() ; }
+    [ <SCOPE>
+          {name.set_absolute();}
+    ]
+    [ LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+      nested_name_specifier( name )
+    ]
+    nm = type_name()
+        { name.append( nm ) ; }
+        {return name ; }
+|
+    name = id_exp()
+        {return name ; }
+}
+
+// type_id --> ( type_specifier )+ [ abstract_declarator ]
+TypeNode type_id() :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    TypeNodeLink type_link = new TypeNodeLink() ;
+    TypeNode base_type ;
+}
+{
+    (
+        type_specifier( spec_set )
+    )+
+        { base_type =  pc.extract_type(spec_set) ; }
+    (
+        abstract_declarator( type_link )
+            { type_link.addToEnd( base_type ) ;
+              return type_link.get() ; }
+    |
+            { return base_type ; }
+    )
+}
+
+void abstract_declarator(TypeNodeLink type_link ) :
+/* The ISO Syntax is roughly
+    AD --> * AD? | & AD? | DAD
+    DAD --> DAD? "[" exp "]" | DAD? "(" parameters ")" | "(" AD ")"
+
+Note that DAD is either a nonempty sequence of array bounds and parameter lists,
+or a (AD) followed by an optional nonemtpy sequence of array bounds and parameter lists,
+do it is equivalent to
+    DAD --> "(" AD ")" [D'] | D'
+where 
+    D' --> ( "[" exp "]" | "("parameters")" )+
+To make this non left recursive, I'm doing roughly
+    AD --> * AD? | & AD | "(" AD ")" [D'] | D'
+*/
+{ 
+  Cpp_SpecifierSet spec_set ;
+  int k ;
+  ScopedName name ;
+}
+{
+        LOOKAHEAD( ptr_operator( ) )
+        // Got to lookahead to make sure the whole ptr_operator is there.
+        // Otherwise nonabstract declarator can be mistaken for an abstract
+        // declarator on the basis of the next token.  Consider "A". Is it 
+        // a declarator or the start of an abstract declarator "A*"
+            { spec_set = new Cpp_SpecifierSet() ; }
+        k = ptr_operator( spec_set )
+        [ abstract_declarator( type_link ) ]
+            { if( k == STAR ) {
+                type_link.addToEnd( new TyPointer( spec_set ) ) ; }
+              else if( k == AMPERSAND ) {
+                type_link.addToEnd( new TyRef( ) ) ; }
+              else {
+                Assert.check( false ) ; }
+            }
+|
+        LOOKAHEAD( <OPEN_PAREN> abstract_declarator(  ) <CLOSE_PAREN> )
+        <OPEN_PAREN>
+        abstract_declarator( type_link )
+        <CLOSE_PAREN>
+        [ declarator_prime( type_link ) ]
+|
+        declarator_prime( type_link )
+}
+
+// parameter_declaration_clause --> parameter_declaration parameter_declaration_clause_prime
+//                                | ...
+//                                | nothing
+void parameter_declaration_clause( Vector param_types, boolean[] ends_with_ellipsis ) :
+{
+    TypeNode param_type ;
+}
+{
+    
+    param_type = parameter_declaration()               // The first parameter
+        { param_types.addElement( param_type ) ; }
+    parameter_declaration_clause_prime( param_types, ends_with_ellipsis )  //The rest of 'em
+|
+    <ELLIPSIS>
+        { ends_with_ellipsis[0] = true ; }
+|
+        { /* empty */ }
+}
+   
+
+// parameter_declaration_clause_prime --> "..." | "," "..." | empty
+//                                     |  "," parameter_declaration parameter_declaration_clause_prime
+
+void parameter_declaration_clause_prime(Vector param_types, boolean[] ends_with_ellipsis) :
+{
+  TypeNode param_type ;
+}
+{
+    <COMMA>
+    ( <ELLIPSIS>
+        { ends_with_ellipsis[0] = true ; }
+    | 
+        param_type = parameter_declaration()
+            { param_types.addElement( param_type ) ; }
+        parameter_declaration_clause_prime( param_types, ends_with_ellipsis )
+    )
+|
+    <ELLIPSIS>
+        { ends_with_ellipsis[0] = true ; }
+|
+    { /* empty */ }
+}
+
+
+// parameter_declaration --> decl_specifier_seq [declarator | abstract_declarator] (= exp(1))?
+TypeNode parameter_declaration() :
+{ TypeNode base_type ;
+  TypeNodeLink type_link = new TypeNodeLink();
+  TypeNode type ;
+  ScopedName name ;
+  Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+}
+{
+        decl_specifier_seq( spec_set )
+            { base_type =  pc.extract_type(spec_set) ; }
+        (
+            LOOKAHEAD( declarator() )
+            // This LOOKAHEAD used to be
+            //   "LOOKAHEAD( declarator() (<ASSIGN> | <COMMA> | <ELLIPSIS> | <CLOSE_PAREN>) )"
+            // I can't see the justification for the second part and it violates
+            // the guideline (see JavaCC FAQ) that lookahead should not extend
+            // past the choice it represents. So I'm eliminating the right concatenend.
+            // The look-ahead on declarator is needed because declarators and abstract
+            // declarators can look the same for arbitrary distance.
+            name = declarator(type_link)
+        |
+            abstract_declarator( type_link ) 
+                { name = pc.anon_name() ; }
+        |
+            // No declarator.
+            { name = pc.anon_name() ; }
+        )
+        
+        { type_link.addToEnd( base_type ) ; }
+        { type = type_link.get() ; }
+        //  Fix type if array (or function).
+        { if( type instanceof TyArray ) {
+            TypeNode eltType = ((TyArray)type).getElementType() ;
+            type = new TyPointer() ;
+            type.addToEnd( eltType ) ; }
+          //else if( type instanceof TyFun ) {
+          //  TypeNode temp = type ;
+          //  type = new TyPointer() ;
+          //  type.addToEnd( temp ) ; }
+        }
+        
+        (
+            <ASSIGN> exp(1)
+                { pc.sorry_not_implemented( "default parameter values" ) ; } 
+        |
+                { // Tell the parser context about the parameter declaration.
+                  // This will be in prototype scope.
+                  pc.parameter_declaration(getCoords(0), name, spec_set, type) ;
+                }                        
+                { return type ; }
+        )
+}
+
+// member_function_definition -->
+//     declarator more_function_definition
+//  |
+//   decl_specifier_seq declarator more_function_definition
+// DEVIATION: This nonterminal is not in the ISO
+void member_function_definition( ) :
+{ ScopedName name ;
+  Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+  TypeNode base_type ;
+  TypeNodeLink type_link = new TypeNodeLink() ;
+}
+{
+
+        {
+          pc.warning_message("Function declared within a class. Forward references are not yet supported");
+        }
+        (  
+            LOOKAHEAD( declarator() (<OPEN_BRACE> | <COLON> | <TRY>) )
+            // If a function definition looks like it starts with a
+            // declarator, then it does.  The decl_specifier_seq is empty.
+            // 
+            // You might think that "opt_decl_specifier_seq declarator"
+            // could replace this whole alternation (it does in the ISO's grammar).
+            // But consider "C::C() {...}" .  If we tried to parse an
+            // opt_decl_specifier_seq, then the first "C" would be gobbled up
+            // as a decl_specifier.
+            //
+            // It looks like we could factor out the call to declarator, from
+            // this alternation but doing so causes a problem when
+            // LOOKAHEAD(1, function_definition() ) is performed.
+            
+                { base_type =  pc.extract_type(spec_set) ; }  // WEIRD. Extract on empty spec_set
+            name = declarator( type_link )
+                { type_link.addToEnd( base_type ) ; }
+            more_function_definition( true, name, type_link )
+        
+        |
+            decl_specifier_seq( spec_set )
+                { base_type =  pc.extract_type(spec_set) ; }  // !!! What if there is no type
+            name = declarator( type_link )
+                { type_link.addToEnd( base_type ) ; }
+            more_function_definition( true, name, type_link )
+        
+        )
+}
+
+void rest_of_function_definition( Cpp_SpecifierSet spec_set ) :
+{
+  ScopedName name ;
+  TypeNode base_type ;
+  TypeNodeLink type_link = new TypeNodeLink() ;
+}
+{
+	{ base_type =  pc.extract_type(spec_set) ; }
+	name = declarator( type_link )
+        { type_link.addToEnd( base_type ) ; }
+        more_function_definition( false, name, type_link )
+}
+
+// more_function_definition -->
+//    [ ctor_initializer ] compound_statement
+// |
+//    function_try_block
+void more_function_definition( boolean is_declared_within_class,
+                               ScopedName name,
+                               TypeNodeLink type_link ) :
+{
+  StatementNodeLink  body_link  ;
+  StatementNodeLink last_link ;
+  SourceCoords coords ;
+  Vector initializer_list = new Vector() ;
+}
+{
+    { body_link = pc.new_function_defn( getCoords(0), name, type_link.get() ) ; }
+    [ ctor_initializer( initializer_list )
+    ]
+    { body_link = pc.constructor_initializer( initializer_list, body_link ) ; }
+    last_link = compound_statement( body_link )
+    { pc.end_function_defn( last_link, getCoords(0) ) ; }
+|
+    function_try_block()
+}
+
+// initializer --> "=" initializer_clause | "(" expression_list ")"
+Initializer initializer() :
+// No array or structure initializations
+{ Initializer i ;
+  NodeList es  = new NodeList ();
+}
+{
+        <ASSIGN> i=initializer_clause()
+        { return i ; }
+|
+        <OPEN_PAREN> expression_list(es) <CLOSE_PAREN>
+        { return new Initializer( Initializer.DIRECT, es ) ; }
+}
+
+// initializer_clause --> exp(1) | "{" (initializer_clause ("," initializer_clause)* )? "}"
+Initializer initializer_clause() :
+{
+    ExpressionNode e ;
+}
+{
+    e = exp(1)
+    { return new Initializer( Initializer.COPY, e ) ; }
+|
+    <OPEN_BRACE> (initializer_clause() (<COMMA> initializer_clause())* )? <CLOSE_BRACE>
+    { pc.sorry_not_implemented( "initializer lists" ) ; }
+}
+
+/////////////////////////////////////////////
+//             CLASSES                     //
+/////////////////////////////////////////////
+
+
+// class_specifier --> class_head { opt_member_specification }
+void class_specifier( Cpp_SpecifierSet spec_set ) :
+{
+    ClassHead head ;
+    StatementNodeLink p ;
+    SourceCoords coords ;
+}
+{
+    { coords = getCoords(0) ; }
+    head = class_head()
+        {pc.add_class_declaration(  head ) ; }
+        {pc.start_class_scope() ;}
+        {p = new StatementNodeLink() ; }
+    <OPEN_BRACE>
+    opt_member_specification( head.get_key(), p )
+    <CLOSE_BRACE>
+        { coords = getCoords(0) ; }
+        { pc.record_member_declarations(p, coords ) ; }
+        { pc.end_class_scope() ; }
+        { spec_set.add_type_name( head.get_name() ) ; }
+}
+
+// class_head --> (class|struct|union)
+//                [ identifier
+//                | nested_name_specifier identifier
+//                | [nested_name_specifier] template_id
+//                ]
+//                opt_base_clause 
+// DEVIATION: template_id is not allowed by the parser.
+// DEVIATION: nested_name_specifiers are also not supported.
+ClassHead class_head() :
+{
+    int key ;
+    ScopedName name = null;
+    Vector base_specifier_list ;
+    String id ;
+}
+{
+    ( <CLASS>   {key = ClassHead.CLASS ; }
+    | <STRUCT>  {key = ClassHead.STRUCT ; }
+    | <UNION>   {key = ClassHead.UNION ; }
+                {pc.sorry_not_implemented( "union" ) ;}
+    )
+    ( 
+        LOOKAHEAD( nested_name_specifier())
+        // We need this LOOKAHEAD because a nested_name_specifier and and
+        // identifier can start with the same <ID> token.
+        nested_name_specifier(new Cpp_ScopedName()) identifier()
+        {pc.sorry_not_implemented("nested_names_specifier in class head");}
+        {base_specifier_list = null ;} // keep compiler happy.
+    |
+        id = identifier()
+        {name = new Cpp_ScopedName(id) ;}
+        base_specifier_list = opt_base_clause()
+    //|
+    //    [nested_name_specifier()] template_id()
+    |
+        {name = pc.unique_name() ;}
+        base_specifier_list = opt_base_clause()
+    )
+    { return new ClassHead( key, name, base_specifier_list ) ; }
+}
+
+void opt_member_specification( int key, StatementNodeLink p ) :
+{
+    int access = (key == ClassHead.CLASS ? Cpp_Specifiers.SP_PRIVATE : Cpp_Specifiers.SP_PUBLIC) ;
+}
+{
+    (   <PRIVATE> <COLON>   { access = Cpp_Specifiers.SP_PRIVATE ; }
+    |   <PUBLIC> <COLON>    { access = Cpp_Specifiers.SP_PUBLIC ; }
+    |   <PROTECTED> <COLON> { access = Cpp_Specifiers.SP_PROTECTED ; }
+    |   p=member_declaration( access, p )
+    )*
+}
+
+StatementNodeLink member_declaration( int access, StatementNodeLink p ) :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    ScopedName name ;
+}
+{
+    (
+        LOOKAHEAD( opt_member_declarator_list() <SEMICOLON> )
+            // Then no decl_specifiers.  This is to avoid a problem with constructors.
+            // Consider a declaration "C();", if we tried to parse an
+            // opt_decl_specifier_seq, then the "C" would be gobbled up as
+            // a decl_specifier.
+            
+        p=opt_member_declarator_list( spec_set, p ) <SEMICOLON>
+    |
+        LOOKAHEAD( decl_specifier_seq( spec_set )
+                   opt_member_declarator_list()
+                   <SEMICOLON> )   
+        decl_specifier_seq( spec_set )
+            { spec_set.add( access ); }
+        p=opt_member_declarator_list( spec_set, p ) <SEMICOLON>
+    |
+        LOOKAHEAD( [<SCOPE>] nested_name_specifier() [<TEMPLATE>] unqualified_id() <SEMICOLON> )
+            { pc.sorry_not_implemented( "changing access of parent members" ) ; }
+            { name = new Cpp_ScopedName() ; }
+        [ <SCOPE> {name.set_absolute();}] nested_name_specifier(name)
+        [<TEMPLATE>] unqualified_id() <SEMICOLON>
+    |
+        using_declaration()
+    |// DEVIATION The next clause is not in the ISO, it is just a hack to stop the parser
+       [<EXPORT>] <TEMPLATE>  { pc.sorry_not_implemented( "templates" ) ; }
+    // This is what should be in place of the previous line:    template_declaration()
+    |
+        LOOKAHEAD( {getToken(1).kind != CLOSE_BRACE} )
+        // Semantic lookahead above is to suppress syntactic lookahead on
+        // function_definition
+        // NOTE! Really we ought to factor out the decl_specifier_seq that
+        // is common to member declaration and member function definitions.
+        // This is what is done with non member declarations and definitions.
+        member_function_definition( ) [LOOKAHEAD( <SEMICOLON> ) <SEMICOLON>]
+    )
+    {return p; }
+}
+
+// opt_member_declarator_list --> ( member_declarator (, member_declarator) )*
+StatementNodeLink opt_member_declarator_list( Cpp_SpecifierSet spec_set, StatementNodeLink p ) :
+{}
+{
+    ( p=member_declarator( spec_set, p ) (<COMMA> p=member_declarator( spec_set, p ))* )?
+        { return p; }
+}
+
+// member_declarator --> declarator [= constant_expression()]
+//                     | identifier : constant_expression
+// Minor deviation. In ISO [initializer] is [constant
+StatementNodeLink member_declarator( Cpp_SpecifierSet spec_set, StatementNodeLink p ) :
+{ TypeNodeLink type_link = new TypeNodeLink() ;
+  TypeNode base_type ;
+  ExpressionNode e ;
+  Initializer i ;
+  ScopedName name ;
+  StatementNodeLink q ;
+  SourceCoords coords ;
+}
+{
+        LOOKAHEAD( [identifier()] <COLON> )
+        [identifier()] <COLON> constant_expression()
+            {pc.sorry_not_implemented("bit fields") ;}
+|
+        {coords = getCoords(0) ; }
+        name = declarator( type_link )
+        { base_type =  pc.extract_type(spec_set) ; }
+        { type_link.addToEnd( base_type ) ; }
+        { q = pc.simple_declaration( p, coords, name, spec_set, type_link.get() ) ; }
+        { pc.start_initializer( name ) ; }
+        (
+            // This could be a pure specifier or an initialization for a static
+            <ASSIGN> e=constant_expression()
+            { i = new Initializer( Initializer.COPY, e ) ; }
+        |
+            { i = new Initializer( Initializer.NONE ) ; }
+        )
+        { pc.end_initializer( i ) ; }
+        {return q;}
+}
+
+////////////////////////////////////////
+// Derived Classes                    //
+////////////////////////////////////////
+
+// opt_base_clause --> [ : base_specifier (, base_specifier)* ]
+Vector opt_base_clause() :
+{
+    Vector base_specifier_list = new Vector();
+    Cpp_SpecifierSet spec_set ;
+}
+{
+    [   <COLON>
+        spec_set = base_specifier()
+            { base_specifier_list.addElement( spec_set ) ; }
+        (
+            <COMMA>
+            spec_set = base_specifier()
+                { base_specifier_list.addElement( spec_set ) ; }
+        )*
+    ]
+        { return base_specifier_list ; }
+}
+
+// base_specifier --> virtual [access_specifier] scoped_class_name
+//                  | [access_specifier] [virtual] scoped_class_name
+Cpp_SpecifierSet base_specifier() :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    int access = Cpp_Specifiers.SP_PUBLIC ;
+    ScopedName name ;
+    boolean is_virtual = false ;
+}
+{
+    (
+        <VIRTUAL>
+        [ access = access_specifier() ]
+        name = scoped_class_name()
+            {is_virtual = true ; }
+    |
+        access = access_specifier()
+        [ <VIRTUAL> {is_virtual = true ; } ]
+        name = scoped_class_name()
+    |
+        name = scoped_class_name()
+    )
+    {
+        spec_set.add( access ) ;
+        if( is_virtual ) spec_set.add( Cpp_Specifiers.SP_VIRTUAL ) ;
+        spec_set.add_type_name( name ) ;
+    return spec_set;
+
+    }
+}
+
+// access_specifier --> private | public | protected
+int access_specifier() :
+{}
+{
+    <PRIVATE>   {return Cpp_Specifiers.SP_PRIVATE;  }
+|
+    <PUBLIC>    {return Cpp_Specifiers.SP_PUBLIC;   }
+|
+    <PROTECTED> {return Cpp_Specifiers.SP_PROTECTED;}
+}
+
+//  Special Member functions  //
+////////////////////////////////
+
+// conversion_function_id --> operator conversion_type_id
+ScopedName conversion_function_id() :
+{}
+{
+    <OPERATOR> conversion_type_id()
+        { 
+          pc.sorry_not_implemented("Conversion function identifiers") ; 
+          return null;
+        }
+}
+
+// conversion_type_id --> ( type_specifier )+ (ptr_operator)*
+void conversion_type_id() :
+{ Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ; 
+}
+{
+    ( type_specifier(spec_set) )+
+    // Conflict:  This one seems to arise because you can write
+    // write  "operator int * (2)"
+    // Are we multiplying the function "operator int" by 2 or
+    // or calling the function "operator int *" with argument 2?
+    // The latter seems preferable, so we ignore the conflict.
+    
+    // TBD Is this parameter right??? Does it matter???
+    // TBD No this is not right.  It will matter if we ever
+    // support conversion_type_id .
+    ( ptr_operator( spec_set ) ) *
+}
+
+void ctor_initializer(Vector initializer_list ) :
+{
+    ConstructorInitializer ctor_init ;
+}
+{
+    <COLON>
+    ctor_init=mem_initializer()  { initializer_list.addElement( ctor_init ) ; }
+    (
+        <COMMA>
+        ctor_init=mem_initializer()  { initializer_list.addElement( ctor_init ) ; }
+    )*
+}
+
+ConstructorInitializer mem_initializer() :
+{
+    ScopedName name ;
+    Initializer init ;
+    NodeList nl = new NodeList ();
+}
+{
+    // DEVIATION:  The standard says that a mem_initializer_id is
+    //   mem-initializer-id --> scoped_class_name | identifier
+    // where scoped_class_name --> [ "::" ] [ nested-name-specifier ] class-name
+    // but the first choice includes the second (we don't check that the class-name is
+    // a class name).  So we use only the first choice
+    name=scoped_class_name()
+    <OPEN_PAREN> opt_expression_list(nl) <CLOSE_PAREN>
+    { init = new Initializer( Initializer.DIRECT, nl ) ; }
+    { return new ConstructorInitializer( name, init ) ; }
+}
+
+
+// Overloading //
+/////////////////
+
+// operator_function_id --> "operator" operator
+ScopedName operator_function_id() :
+{ int opcode ; }
+{
+    <OPERATOR> opcode = operator()
+       { return pc.operator_to_name( opcode ) ; }
+}
+
+// operator --> many things
+int operator() :
+{
+    int opcode ;
+    Token t ;
+}
+{
+    (   <NEW> ( <OPEN_BRACKET> <CLOSE_BRACKET>           { opcode = -1 ; }
+              |                             { opcode = NEW ; }
+              )
+    |   <DELETE> ( <OPEN_BRACKET> <CLOSE_BRACKET>        { opcode = -2 ; }
+                 |                          { opcode = DELETE ; }
+                 )
+    |   <ARROW>                             { opcode = ARROW ; }
+    |   <OPEN_PAREN> <CLOSE_PAREN>                       { opcode = OPEN_PAREN ; }
+    |   <OPEN_BRACKET> <CLOSE_BRACKET>                   { opcode = OPEN_BRACKET ; }
+    |   LOOKAHEAD( unary_op() ) // Need lookahead spec since "-" is both binary and unary.
+        opcode = unary_op()
+    |   opcode = binary_op()
+
+    )
+    { return opcode ; }
+}
+
+////////////////
+//  Templates //
+////////////////
+
+// template_declaration --> [export] template < template_parameter ( "," template_parameter)* > declaration
+//void template_declaration() :
+//{}
+//{
+//    [ <EXPORT> ] <TEMPLATE>
+//    <LESSTHAN> template_parameter() ( "," template_parameter())* <GREATERTHAN> declaration()
+//}
+
+// template_id is not used elsewhere in the parser, because you really need a template declaration
+// first, in order to recognize the syntax.
+
+// explicit_instantiation --> "template" declaration
+// DEVIATION. explicit declarations are not complete
+//void explicit_instantiation() :
+//{}
+//{
+//    <TEMPLATE>
+//        { pc.sorry_not_implemented( "templates" ) ; }
+//    declaration()
+//}
+
+// explicit_specialization --> "template" "<" ">" declaration
+// DEVIATION. explicit specializations are not complete
+//void explicit_specialization() :
+//{}
+//{
+//    <TEMPLATE> <LESSTHAN> <GREATERTHAN>
+//    declaration()
+//}
+
+////////////////////////
+// Exception Handling //
+////////////////////////
+
+// function_try_block --> try  [ctor_initializer] function_body handler_seq
+// DEVIATION. This is incomplete
+void function_try_block() :
+{   
+    // StatementNodeLink p,q ;
+}
+{
+    <TRY> 
+        { pc.sorry_not_implemented( "function try blocks" ) ; }
+    // [ctor_initializer] q=compound_statement(p) handler_seq()
+}
+
+// handler_seq --> (  catch"(" exception_declaration ")" compound_statement )+
+void handler_seq() :
+{
+    StatementNodeLink p = new StatementNodeLink() ;
+    StatementNodeLink q ;
+}
+{
+    (  <CATCH> <OPEN_PAREN> exception_declaration() <CLOSE_PAREN> q=compound_statement(p) )+
+}
+
+// exception_declaration --> (type_specifier)+ declarator
+//                         | (type_specifier)+ abstract_declarator
+//                         | (type_specifier)+
+//                         | "..."
+void exception_declaration() :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    TypeNodeLink type_link = new TypeNodeLink() ;
+}
+{
+    (
+        type_specifier( spec_set )
+    )+
+    (
+        LOOKAHEAD( declarator( ) )
+        declarator( type_link )
+    |
+        abstract_declarator( type_link )
+    |
+        {}
+    )
+|
+    <ELLIPSIS>
+}
+
+// exception_specification --> "throw" "(" [ type_id ( "," type_id )* ] ")"
+void exception_specification() :
+{}
+{
+    <THROW> <OPEN_PAREN> [ type_id() (<COMMA> type_id())* ] <CLOSE_PAREN>
+}
+   
+//////////////////////////////////////////////////////////////
+// Statements
+//////////////////////////////////////////////////////////////
+
+// statement --> Many things
+
+StatementNodeLink statement(StatementNodeLink p) :
+// p is a link (pointer object) to a statement. 
+// This subroutine will set p to link to the first
+// node of the parsed statement.  This subroutine
+// then returns a fresh statement node link that
+// will be used to find the next statement after the
+// parsed statement is finished (assuming it exits out
+// the bottom.
+
+{ StatDo ddo ;
+  StatBranch branch ;
+  StatJoin looptop ;
+  StatJoin exit ;
+  StatJoin contin ;
+  StatementNodeLink q, r ;
+  ExpressionNode e ;
+  SourceCoords coords ;
+  int varDepth = pc.get_current_var_depth() ; 
+}
+{
+        <TRY> p=compound_statement(p) handler_seq()
+            {pc.sorry_not_implemented( "exceptions");}
+|
+        // BREAK Statement
+        <BREAK> <SEMICOLON>
+            { coords = getCoords(0) ; }
+            { pc.makeBreak( p, coords, varDepth ) ; }
+            { return new StatementNodeLink() ; }
+|
+        // CONTINUE Statement
+        <CONTINUE> <SEMICOLON>
+            { coords = getCoords(0) ; }
+            { pc.makeContinue( p, coords, varDepth ) ; }
+            { return new StatementNodeLink() ; }
+|
+        // RETURN STATEMENT
+        <RETURN> e=opt_exp() <SEMICOLON>
+            { coords = getCoords(0) ; }
+            { pc.makeReturn( p, coords, varDepth, e ) ; }
+            { return new StatementNodeLink() ; }
+|
+        <GOTO> identifier() <SEMICOLON>
+            { pc.sorry_not_implemented( "goto" ) ; }
+            { return p ; }
+|
+        // COMPOUND Statement
+        p = compound_statement(p)
+            { return p;}
+|
+        //NULL statement
+        LOOKAHEAD( <SEMICOLON> ) // The Lookahead is to suppress a warning that arises since,
+                                 // syntactically, declaration statements can be simply a ";"
+        <SEMICOLON>
+            {return p ; }
+|
+        // IF statement
+        <IF> 
+            { coords = getCoords(0) ; }
+            { p = pc.start_local_scope(p, coords) ; }
+        <OPEN_PAREN> e=condition() <CLOSE_PAREN>
+            { e = pc.coerce_to_bool( e ) ; }
+            { branch = new StatBranch( coords, varDepth, e ) ; }
+            { p.set( branch ) ; p = branch.onTrue() ; }
+            { p = pc.start_local_scope(p, coords) ; }
+        p = statement( p )
+            { coords = getCoords(0) ; }
+            { p = pc.end_local_scope(p, coords) ; }
+        (
+                //LOOKAHEAD(<ELSE>)
+                <ELSE>
+                    { r = pc.start_local_scope( branch.onFalse(), coords ) ; }
+                r = statement( r )
+                    { coords = getCoords(0) ; }
+                    { r = pc.end_local_scope(r, coords) ; }
+                    { exit = new StatJoin( coords, varDepth ) ; }
+                    { p.set( exit ) ; r.set( exit ) ; }
+        |
+                // empty -- no else clause
+                    { coords = getCoords(1) ; }
+                    { exit = new StatJoin( coords, varDepth ) ; }
+                    { p.set( exit ) ; branch.onFalse().set( exit ) ; }
+
+        )
+            {   return pc.end_local_scope(exit.next(), coords) ; }
+|
+        // SWITCH Statement
+        <SWITCH>
+            {   coords = getCoords(0) ;
+                exit = new StatJoin( coords, varDepth ) ;
+                p = pc.startBreakRegion( p, coords, varDepth, false ) ;
+                pc.setBreakTarget( exit ) ;
+                p = pc.start_local_scope(p, coords) ;
+            }
+         <OPEN_PAREN> e = condition() <CLOSE_PAREN>
+            {   e = pc.coerce_to_integral( e ) ;
+                pc.startSwitchStatement( p, coords, varDepth, e, exit ) ;
+            }
+        p = statement( new StatementNodeLink() )
+            { p = pc.end_local_scope(p, getCoords(0) ) ; }
+            { pc.endSwitchStatement() ; }
+            { p = pc.endBreakRegion( p, coords, varDepth, false ) ; }
+            { p.set( exit ) ; }
+            { return exit.next() ; }
+|
+        // CASE Statement
+            { coords = getCoords(1) ; }
+        <CASE> e = constant_expression( ) <COLON>
+            { pc.addCaseToSwitch( p, varDepth, e ) ; }
+        p = statement( p )
+            { return p ; }
+
+|
+        // DEFAULT Statement
+            { coords = getCoords(1) ; }
+        <KEYWORD_DEFAULT> <COLON>
+            { pc.addDefaultToSwitch( p, varDepth ) ; }        
+        p = statement( p )
+            { return p ; }
+|
+        // WHILE Statement
+        <WHILE>
+            {   coords = getCoords(0) ;
+                looptop = new StatJoin( coords, varDepth ) ;
+                p.set( looptop ) ; p = looptop.next() ;
+                
+                exit = new StatJoin( coords, varDepth ) ;
+                
+                p = pc.startBreakRegion( p, coords, varDepth, true ) ;
+                pc.setBreakTarget( exit ) ;
+                pc.setContinueTarget( looptop ) ;
+                p = pc.start_local_scope(p, coords) ;
+            }    
+        <OPEN_PAREN> e=condition() <CLOSE_PAREN>
+            {   e = pc.coerce_to_bool( e ) ;
+                varDepth = pc.get_current_var_depth() ; 
+                branch = new StatBranch( coords, varDepth, e ) ;
+                p.set( branch ) ; p = branch.onTrue() ;
+                
+                // On false, execute a break.
+                int varDepth1 = pc.get_current_var_depth() ;
+                pc.makeBreak( branch.onFalse(), coords, varDepth1 ) ;
+            }
+            
+        p = statement( p )
+            {   coords = getCoords(0) ;
+                p = pc.end_local_scope( p, coords) ;
+                p = pc.endBreakRegion( p, coords, varDepth, true ) ;
+                p.set( looptop ) ;
+                return exit.next() ;
+            }
+|
+        // DO Statement
+            {   coords = getCoords(1) ; }
+        <DO>
+            {   looptop = new StatJoin( coords, varDepth ) ;
+                exit = new StatJoin( coords, varDepth ) ;
+                contin = new StatJoin( coords, varDepth ) ;
+                p.set( looptop ) ; p = looptop.next() ;
+                p = pc.startBreakRegion( p, coords, varDepth, true ) ;
+                pc.setBreakTarget( exit ) ;
+                pc.setContinueTarget( contin ) ;
+                p = pc.start_local_scope( p, coords ) ;
+            }
+        p = statement( p )
+            {   coords = getCoords(1) ;
+                p = pc.end_local_scope(p, coords) ;
+                p = pc.endBreakRegion( p, coords, varDepth, true ) ;
+                p.set( contin ) ;
+                p = contin.next() ;
+            }
+        <WHILE> <OPEN_PAREN> e=expression() <CLOSE_PAREN> <SEMICOLON>
+            {   e = pc.coerce_to_bool( e ) ;
+                branch = new StatBranch( coords, varDepth, e ) ;
+                p.set( branch ) ;
+                branch.onTrue().set( looptop ) ;
+                branch.onFalse().set( exit ) ;
+                return exit.next() ;
+            }
+|
+        // FOR statement
+        <FOR> <OPEN_PAREN> p = more_for(p)
+            {   return p ;
+            }
+|
+        // GOTO target statment
+        LOOKAHEAD( identifier() <COLON> )
+        identifier() <COLON> p = statement( p )
+            { pc.sorry_not_implemented("goto") ; }
+|
+        // DECLARATION Statement
+        LOOKAHEAD( block_declaration_with_nonopt_decl_spec() ) 
+        p = block_declaration_with_nonopt_decl_spec(p)
+            { return p ; }
+|
+        // EXPRESSION Statement
+        e = expression()
+            { coords = getCoords(0) ; }
+        <SEMICOLON>
+            { ddo = new StatDo(coords, varDepth, e) ;
+              p.set( ddo ) ;
+              return ddo.next() ; }
+}
+
+
+// more_for --> simple_declaration_with_nonopt_decl_spec opt_exp ";" opt_exp ")" statement
+//            | opt_exp ";" opt_exp ";" opt_exp ")" statement
+StatementNodeLink more_for(StatementNodeLink p) :
+{ ExpressionNode e0, e1, e2 ;
+  StatDo s0, s2;
+  StatJoin exit, contin, looptop ;
+  StatBranch branch ;
+  SourceCoords coords = getCoords(0) ; ;
+  NodeList ds ;
+  int varDepth ; 
+}
+
+{
+        { p = pc.start_local_scope(p, coords) ;
+          varDepth = pc.get_current_var_depth() ;
+        }
+        (       LOOKAHEAD( simple_declaration_with_nonopt_decl_spec(  ) ) 
+                // IS THIS LOOKAHEAD NEEDED??  And if it is needed, will it
+                // work without the second argument to simple_declaration?
+                {   coords = getCoords(1) ; }
+                p = simple_declaration_with_nonopt_decl_spec(p)
+        |
+                    { coords = getCoords(1) ; }
+                e0 = opt_exp() <SEMICOLON>
+                { s0 = new StatDo( coords, varDepth, e0 ) ; }
+                { p.set( s0 ) ; }
+                { p = s0.next() ; }
+        )
+        { 
+          varDepth = pc.get_current_var_depth() ; 
+          coords = getCoords(1) ;
+          looptop = new StatJoin( coords, varDepth ) ;
+          p.set( looptop ) ; p = looptop.next() ;
+                
+          exit = new StatJoin( coords, varDepth ) ;
+          contin = new StatJoin( coords, varDepth ) ;
+                
+          p = pc.startBreakRegion( p, coords, varDepth, true ) ;
+          pc.setBreakTarget( exit ) ;
+          pc.setContinueTarget( contin ) ;
+          p = pc.start_local_scope(p, coords) ;
+        }
+        e1 = opt_condition() <SEMICOLON>
+        { 
+          e1 = pc.coerce_to_bool( e1 ) ;
+          varDepth = pc.get_current_var_depth() ; 
+          branch = new StatBranch( coords, varDepth, e1 ) ;
+          p.set( branch ) ; p = branch.onTrue() ;
+                
+          // On false, execute a break.
+          int varDepth1 = pc.get_current_var_depth() ;
+          pc.makeBreak( branch.onFalse(), coords, varDepth1 ) ;
+          coords = getCoords(1) ;
+        }
+        e2 = opt_exp() <CLOSE_PAREN>
+        {
+          s2 = new StatDo( coords, varDepth, e2 ) ;
+        }
+        p = statement( p )
+        { coords = getCoords(0) ;
+          p.set( contin ) ; p = contin.next() ;
+          p.set( s2 ) ; p = s2.next() ;
+          p = pc.end_local_scope(p, coords) ;
+          p = pc.endBreakRegion( p, coords, varDepth, true ) ;
+          p.set( looptop ) ; p = exit.next() ;
+          // Remember that code generated by next statement goes after exit
+          p = pc.end_local_scope(p, coords) ;
+          return p ;
+        }
+}
+// opt_condition  --> condition | empty
+ExpressionNode opt_condition( ) :
+{ ExpressionNode e ; }
+{
+        e=condition()
+        { return e ; }
+|
+        { return noExp_node ; }
+    
+}
+
+// condition --> expression | (type_specifier)+  declarator = exp(1)
+ExpressionNode condition() :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    TypeNodeLink type_link = new TypeNodeLink() ;
+    TypeNode base_type ;
+    ExpressionNode e ;
+    ScopedName name ;
+}
+{
+    LOOKAHEAD( (type_specifier())+ declarator() <ASSIGN> )
+    // An expression could start with a type_specifier,
+    // so we search well ahead to the assignment sign.
+    (
+        type_specifier( spec_set )
+    )+
+        {    base_type =  pc.extract_type(spec_set) ; }
+    name = declarator( type_link )
+        {    type_link.addToEnd( base_type ) ; }
+    <ASSIGN>
+    e = exp(1)
+        {   return new DeclarationExpNd( type_link.get(), name, e ) ; }
+|
+    e = expression()
+        { return e ; }
+        
+}
+
+// opt_exp  --> expression | empty
+ExpressionNode opt_exp( ) :
+{ ExpressionNode e ; }
+{
+        e=expression()
+        { return e ; }
+|
+        // empty
+        { return noExp_node ; }
+
+}
+
+
+// compound_statement --> "{" statement_list "}"
+StatementNodeLink compound_statement(StatementNodeLink p) :
+{ }
+{
+        <OPEN_BRACE>                 {  p = pc.start_local_scope(p, getCoords(0)) ; }
+        ( p = statement(p) )*
+        <CLOSE_BRACE>                {  p = pc.end_local_scope(p, getCoords(0)) ;
+                                        return p ; }
+}
+
+
+//////////////////////////////////////////////////////////////
+// Expressions
+//////////////////////////////////////////////////////////////
+
+// The algorithm for expressions is an efficient, compact, and flexible method.
+//   I first saw this method described by Keith Clarke of Imperial College.
+//
+//   See http://www.engr.mun.ca/~theo/Misc#ExpParse for a more detailed description.
+//
+//   The idea is to parse expressions in a loop using recursion only
+//   as necessary.  For example in parsing
+//      a * b - c * d - e/f <<  g + h
+//       --- ---     ---   ----
+//   the underlined operators are parsed at the top level.
+//   The sub expressions a, b, c*d, e/f, and g+h are parsed with
+//   recursive calls.
+//
+//   To make this work we use a subroutine exp(p) that parses expressions that
+//   have no exposed operators of precedence lower than p. If a lower precedence
+//   operator is found, then the subroutine just returns.
+//
+//   The right argument of each operator (binary or unary) is parsed
+//   by exp(p+1) where p is the precedence of the operator. (Or exp(p)
+//   for right associative binary operators)
+
+ExpressionNode constant_expression() :
+{ ExpressionNode x ; }
+{
+    x = exp(0)
+        {   x = pc.coerce_to_integral( x ) ;
+            Assert.apology( x.is_integral_constant(), "Integral constant required." ) ;
+            if( Debug.getInstance().isOn() ) {
+                Debug.getInstance().msg(Debug.COMPILE, "Constant expression vvvvvvvvvvvvvv") ;
+                Debug.getInstance().msg(Debug.COMPILE, x.ppToString(3, 80) ) ; 
+                Debug.getInstance().msg(Debug.COMPILE, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^") ; }
+            return x ; 
+        }
+}
+
+ExpressionNode expression() :
+{ ExpressionNode x ; }
+{
+        x = exp(0)
+        {
+            if( Debug.getInstance().isOn() ) {
+                Debug.getInstance().msg(Debug.COMPILE, "Expression vvvvvvvvvvvvvv") ;
+                Debug.getInstance().msg(Debug.COMPILE, x.ppToString(3, 80) ) ; 
+                Debug.getInstance().msg(Debug.COMPILE, "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^") ; }
+        }
+        {return x ; }
+}
+
+//   exp --> unary ( binary_op exp | "?" exp ":" exp )*
+ExpressionNode exp(int minPrec) :
+        // This subroutine accepts only operators with precedence
+        // greater or equal to minPrec.
+{ int prec ;
+  int op ;
+  ExpressionNode x, y, z ; 
+}
+{
+        x = cast_exp()
+        (
+                // We must proceed only if the next token is a
+                // binary operator of precedence greater than minPrec.
+                LOOKAHEAD( { binary_ops[ getToken(1).kind ] >= minPrec } )
+                (
+                        op = binary_op()
+                        {
+                          int tableVal = binary_ops[ op ] ;
+                          if( right_assoc[ op ] ) {
+                                prec = tableVal ; }
+                          else {
+                                prec = 1 + tableVal ; }
+                        }
+                        y = exp( prec )
+                        { x = pc.make_bin_op(op, x, y) ; }
+                |
+                        <QUESTIONMARK> y=expression() <COLON> z=exp(2)
+                        { x = pc.make_conditional_exp(x, y, z) ; }
+                )
+        )*
+        { return x ; }
+}
+
+// cast_exp --> "(" type_id ")" cast_exp | unary_exp
+ExpressionNode cast_exp() :
+{
+    ExpressionNode x ;
+    TypeNode type ;
+}
+{
+    LOOKAHEAD( <OPEN_PAREN> type_id() <CLOSE_PAREN> )
+    // The lookahead is needed because a type can appear as a 
+    // unary_expression.  E.g. C(1), where C is a class name.
+    <OPEN_PAREN> type=type_id() <CLOSE_PAREN> x=cast_exp()
+    { return pc.make_cast_exp( type, x ) ; }
+|
+    x=unary_exp()
+    {return x ;}
+}
+// unary_exp --> unary_op cast_exp
+//             | "sizeof" "(" type_id ")"
+//             | "sizeof" unary_exp
+//             | new_exp
+//             | delete_exp
+//             | postfix_exp
+
+ExpressionNode unary_exp() :
+{ ExpressionNode x ;
+  int op ;
+  TypeNode type ;
+}
+{
+        LOOKAHEAD( unary_op() ) // This lookahead is only to suppress a
+                                // pointless warning that arises because
+                                // ~classname is technically a postfix expression
+                                // even though is is never semantically allowed.
+        op = unary_op()
+        x = cast_exp()
+        { return pc.make_unary_op( op, x ) ; }
+|
+        <SIZEOF>
+        (
+            LOOKAHEAD( <OPEN_PAREN> type_id() <CLOSE_PAREN> )
+            <OPEN_PAREN> type=type_id() <CLOSE_PAREN>
+            { return pc.make_sizeof_type_exp( type ) ; }
+        |
+            x=unary_exp()
+            {return pc.make_sizeof_value( x ) ; }
+        )
+|
+    LOOKAHEAD( [ <SCOPE> ] <NEW> )
+    x = new_exp()
+    { return x ;}
+|
+    LOOKAHEAD( [ <SCOPE> ] <DELETE> )
+    x = delete_exp() 
+    {return x;}
+|
+    x = postfix_exp() 
+    {return x;}
+}
+
+int unary_op() :
+{ Token t ; }
+{
+        ( t = <PLUSPLUS>
+        | t = <MINUSMINUS>
+        | t = <TILDE>
+        | t = <BANG>
+        | t = <MINUS>
+        | t = <PLUS>
+        | t = <AMPERSAND>
+        | t = <STAR>
+        )
+        { return t.kind; }
+}
+
+int binary_op() :
+{ Token t ; }
+{
+        ( t = <DOTSTAR>
+        | t = <ARROWSTAR>
+        | t = <STAR>
+        | t = <SLASH>
+        | t = <PERCENT>
+        | t = <PLUS>
+        | t = <MINUS>
+        | t = <SHIFTLEFT>
+        | t = <SHIFTRIGHT>
+        | t = <LESSTHAN>
+        | t = <LESSTHANOREQUALTO>
+        | t = <GREATERTHAN>
+        | t = <GREATERTHANOREQUALTO>
+        | t = <EQUAL>
+        | t = <NOTEQUAL>
+        | t = <AMPERSAND>
+        | t = <BITWISEXOR>
+        | t = <BITWISEOR>
+        | t = <AND>
+        | t = <OR>
+        | t = <ASSIGN>
+        | t = <STARASSIGN>
+        | t = <SLASHASSIGN>
+        | t = <PERCENTASSIGN>
+        | t = <PLUSASSIGN>
+        | t = <MINUSASSIGN>
+        | t = <SHIFTLEFTASSIGN>
+        | t = <SHIFTRIGHTASSIGN>
+        | t = <BITWISEANDASSIGN>
+        | t = <BITWISEORASSIGN>
+        | t = <BITWISEXORASSIGN>
+        | t = <COMMA>
+        )
+        { return t.kind ; }
+}
+
+// new_exp -->  (::)? "new" ("(" expression_list ")")? (new_type_id | <OPEN_PAREN> type_id <CLOSE_PAREN>)
+//              ("(" opt_expression_list ")" )?
+// NOTE: The placement part is recognized, but otherwise ignored.
+// until the TM supports exceptions, new will return 0 when out of space regardless of
+// the placement specification.
+
+ExpressionNode new_exp() :
+{ NodeList placement = new NodeList() ;
+  NodeList initializer = null ;
+  boolean has_initializer = false ;
+  TypeNodeLink type_link = new TypeNodeLink() ;
+  ExpressionNode flexible_dimension = null;
+  TypeNode type = null;
+}
+{
+        ( <SCOPE> )?  //Ignored for now.
+        <NEW>
+        ( // Optional placement
+          LOOKAHEAD( <OPEN_PAREN> exp() )
+          <OPEN_PAREN> expression_list( placement ) <CLOSE_PAREN>
+        )? 
+        (
+            flexible_dimension = new_type_id( type_link )
+            { type = type_link.get() ; }
+        |
+            // CXX accepts new (int[i]), where "i" is not a constant.
+            // G++ does not. 
+            // I can't find anything in the standard to say that
+            // it is acceptable. So I am not supporting it.
+            <OPEN_PAREN> type = type_id( ) <CLOSE_PAREN>
+            { flexible_dimension = noExp_node ; }
+        )
+        (
+            <OPEN_PAREN>
+            { initializer = new NodeList() ; }
+            { has_initializer = true ; }
+            opt_expression_list( initializer )
+            <CLOSE_PAREN>
+        | {}
+        ) 
+        { return pc.make_new_exp( type,
+                                  flexible_dimension,
+                                  placement,
+                                  has_initializer,
+                                  initializer ) ; }
+}
+
+//  new_type_id --> (type_specifier)+ [new_declarator]
+// Returns the flexible dimension or a NoExpNd if there is none
+ExpressionNode new_type_id( TypeNodeLink type_link ) :
+{
+    Cpp_SpecifierSet spec_set = new Cpp_SpecifierSet() ;
+    TypeNode base_type ;
+    ExpressionNode x ;
+}
+{
+    (
+        type_specifier( spec_set )
+    )+
+        { base_type = pc.extract_type(spec_set) ; }
+    (
+        x=new_declarator( type_link )
+            { type_link.addToEnd( base_type ) ;
+              return x ; }
+    |
+            { type_link.set(base_type) ;
+              return noExp_node ; }
+    )
+}
+
+// new_declarator -->  ptr_operator [new_declarator]
+//                  |  new_declarator_prime
+// Returns the flexible dimension or a NoExpNd if there is none
+ExpressionNode new_declarator( TypeNodeLink type_link ) :
+{ 
+  Cpp_SpecifierSet spec_set ;
+  ExpressionNode x ;
+  int k ;
+}
+{
+        // Is this one needed? LOOKAHEAD( ptr_operator( ) )
+        { spec_set = new Cpp_SpecifierSet() ; }
+        k = ptr_operator( spec_set )
+        ( x=new_declarator( type_link )
+        | { x = noExp_node; }
+        )
+        { if( k == STAR ) {
+            type_link.addToEnd( new TyPointer( spec_set ) ) ; }
+          else if( k == AMPERSAND ) {
+            type_link.addToEnd( new TyRef( ) ) ; }
+          else {
+            Assert.check( false ) ; }
+          return x ;
+        }
+|
+        x = new_declarator_prime( type_link )
+        {return x;}
+}
+
+// new_declaractor_prime --> "[" expression "]" ( "[" expression "]" )*
+// Returns the flexible dimension or a NoExpNd if there is none
+ExpressionNode new_declarator_prime( TypeNodeLink type_link ) :
+
+{ ExpressionNode flexible_dimension ;
+  ExpressionNode inflexible_dimension ;
+}
+{
+   <OPEN_BRACKET> flexible_dimension = expression() <CLOSE_BRACKET>
+   (
+        <OPEN_BRACKET>
+        inflexible_dimension = constant_expression()
+        <CLOSE_BRACKET>
+            {     int elCount = (int) inflexible_dimension.get_integral_constant_value() ;
+                  TyArray arrayType = new TyArray(  ) ;
+                  arrayType.setNumberOfElements( elCount ) ;
+                  type_link.addToEnd( arrayType ) ;
+            }
+    )*
+    { return flexible_dimension ; }
+}
+
+ExpressionNode delete_exp() :
+{
+    ExpressionNode x ;
+}
+{
+    ( <SCOPE> )?  // Ignored for now
+    <DELETE> 
+    (
+        <OPEN_BRACKET> <CLOSE_BRACKET>
+        x=cast_exp() 
+        {return pc.make_delete_array_exp( x ) ; }
+    |
+        x=cast_exp()
+        {return pc.make_delete_exp( x ) ; }
+    )
+}
+
+ExpressionNode postfix_exp() :
+{
+    ExpressionNode x = null;
+    TypeNode type = null;
+    ScopedName name ;
+    ExpressionNode y ;
+    Cpp_SpecifierSet spec_set = null;
+    NodeList arg_list ;
+}
+{
+    (
+        <TYPENAME>
+            {pc.sorry_not_implemented( "typename" ); }
+        // DEVIATION: more stuff goes here        
+    |
+        <DYNAMIC_CAST> <LESSTHAN> type=type_id() <GREATERTHAN> <OPEN_PAREN> x = expression() <CLOSE_PAREN>
+            {x = pc.make_dynamic_cast_exp( type, x ) ; }
+    |
+        <STATIC_CAST> <LESSTHAN> type=type_id() <GREATERTHAN> <OPEN_PAREN> x = expression() <CLOSE_PAREN>
+            {x = pc.make_static_cast_exp( type, x ) ; }
+    |
+        <REINTERPRET_CAST> <LESSTHAN> type=type_id() <GREATERTHAN> <OPEN_PAREN> x = expression() <CLOSE_PAREN>
+            {x = pc.make_reinterpret_cast_exp( type, x ) ; }
+    |
+        <CONST_CAST> <LESSTHAN> type=type_id() <GREATERTHAN> <OPEN_PAREN> x = expression() <CLOSE_PAREN>
+            {x = pc.make_const_cast_exp( type, x ) ; }
+    |
+        <TYPEID>
+        <TYPENAME>
+            {pc.sorry_not_implemented( "typeid" ); }
+        // DEVIATION: more stuff goes here. But since we don't support it ...
+    |
+        // Explicit conversions like:  int( f ) 
+            { spec_set = new Cpp_SpecifierSet() ; }
+            { arg_list = new NodeList() ; }
+        simple_type_specifier(spec_set) <OPEN_PAREN> opt_expression_list( arg_list ) <CLOSE_PAREN>
+            { type = pc.extract_type(spec_set) ; }
+            { x = pc.make_explicit_conversion( type, arg_list ) ; }
+    |
+        x = primary_exp()
+    
+    )
+    (
+            <PLUSPLUS>
+                { x = pc.make_postfix_exp( PLUSPLUS, x ) ; }
+    |
+            <MINUSMINUS>
+                { x = pc.make_postfix_exp( MINUSMINUS, x ) ; }
+    |
+            <DOT>
+            ( <TEMPLATE> {pc.sorry_not_implemented("templates") ; } )?
+            // DEVIATION: I am not supporting calls to psuedo destructors
+            name=id_exp()
+                { x = pc.make_member_exp(x, name) ; }
+    |
+            <ARROW>
+            ( <TEMPLATE> {pc.sorry_not_implemented("templates") ; } )?
+            // DEVIATION: I am not supporting calls to psuedo destructors
+            name=id_exp()
+                { x = pc.make_arrow_exp(x, name) ; }
+    |
+            <OPEN_BRACKET> y=expression() <CLOSE_BRACKET>
+                { x = pc.make_bin_op( OPEN_BRACKET, x, y ) ; }
+    |
+            <OPEN_PAREN>    
+                { arg_list = new NodeList() ; }
+            opt_expression_list( arg_list )
+            <CLOSE_PAREN>
+                { x = pc.make_function_call_exp( x, arg_list ) ; }
+        
+    )*
+    { return x ; }
+}
+
+// opt_expression_list --> ( exp(1) ( "," exp(1) )*
+void expression_list( NodeList list) :
+{ ExpressionNode e ; }
+{
+    e=exp(1) { list.addLastChild( e ) ; }
+    (       ","
+            e=exp(1)  { list.addLastChild( e ) ; }
+    )*
+}
+
+// opt_expression_list --> ( expression_list )?
+void opt_expression_list(NodeList list) :
+{ ExpressionNode e ; }
+{
+    ( expression_list( list ) )?
+}
+
+// primary_exp --> "(" expression ")" | "this" | id_exp | literal
+ExpressionNode primary_exp() :
+{ ExpressionNode x ;
+  ScopedName name ; }
+{
+        <OPEN_PAREN> x=expression() <CLOSE_PAREN>
+        {return pc.make_paren_exp( x ) ; }
+|
+        <THIS>
+        {return pc.make_this_exp() ; }
+|
+        name=id_exp()
+        {return pc.make_id_exp( name ) ; }
+|
+        x=literal()
+        { return x ; }
+}
+
+// id_exp --> qualified_id | unqualified_id
+ScopedName id_exp() :
+{
+    ScopedName name ;
+}
+{
+    LOOKAHEAD( qualified_id() )
+    name = qualified_id()
+    {return name ;}
+|
+    name = unqualified_id()
+    {return name ; }
+}
+
+
+// unqualified_id --> identifier | operator_function_id | conversion_function_id
+//                  | "~" class_name | template_id
+// DEVIATION. template_id is not recognized by the parser.
+ScopedName unqualified_id() :
+{
+    ScopedName name ;
+    String id ;
+}
+{
+    id=identifier()
+        { name = new Cpp_ScopedName( id ) ; }
+        { return name ; }
+|
+    <TILDE> name=class_name() 
+        { pc.name_to_destructor_name( name ) ; }
+        { return name ; }
+|
+    LOOKAHEAD(2)
+    name=operator_function_id()
+        {return name ; }
+|
+    name=conversion_function_id()
+        {return name ; }
+// |
+//    template_id()
+}
+
+
+// qualified_id --> nested_name_specifier ("template")? unqualified_id
+//                | :: nested_name_specifier ("template")? unqualified_id
+//                | :: identifier
+//                | :: operator_function_id
+//                | :: template_id
+// DEVIATION: template_id is not supported
+
+ScopedName qualified_id() :
+{   
+    ScopedName nm;
+    ScopedName name = new Cpp_ScopedName();
+    String id ;
+}
+{
+    LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+    nested_name_specifier( name )
+    ( <TEMPLATE>
+        {pc.sorry_not_implemented( "templates" ) ; }
+    |
+        {}
+    )
+    nm = unqualified_id() 
+        { name.append( nm ) ;
+          return name ; }
+|
+    <SCOPE>
+    (
+        LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+            { name.set_absolute() ; }
+        nested_name_specifier( name )
+        ( <TEMPLATE>
+              {pc.sorry_not_implemented( "templates" ) ; }
+        |
+            {}
+        )
+        nm = unqualified_id() 
+            { name.append( nm ) ;
+              return name ; }
+    |
+        id=identifier()
+            { name = new Cpp_ScopedName( id ) ; }
+            { name.set_absolute() ; }
+            { return name ; }
+    |
+        LOOKAHEAD(2)
+        name=operator_function_id()
+            { name.set_absolute() ; }
+            {return name ; }
+    //|
+        //template_id()
+    )
+}
+    
+// literal --> OCTALINT | DECIMALINT | HEXINT | FLOAT | CHARACTER
+//              | STRING |TRUE | FALSE
+// DEVIATION. Multiple string constants not supported. E.g. "abc" "def" "ghi"
+// (Actually this is not a deviation, since the ISO std defines that catentation
+// to be an earlier preprocessing step. But it makes sense to fold it into
+// phase 4.)
+ExpressionNode literal() :
+{Token t ; }
+{
+        t = <OCTALINT>
+            {return pc.make_octal_const(t.image) ; }
+|
+        t = <DECIMALINT>
+            {return pc.make_decimal_const(t.image) ; }
+|
+        t = <HEXINT>
+            {return pc.make_hex_const(t.image) ; }
+|       t = <FLOATCONST>
+            {return  pc.make_float_const(t.image) ; }
+|       t = <CHARACTER>
+            {return pc.make_char_const(t.image) ; }
+|       t = <STRING>
+            {return pc.make_string_const(t.image) ; }
+|       t = <TRUE>
+            {return pc.make_bool_const(true) ; }
+|       t = <FALSE>
+            {return pc.make_bool_const(false) ; }
+}
+
+String identifier() :
+{
+    Token t ;
+}
+{
+    t = <ID>
+        { return pc.id_table.inter( t.image ) ; }
+}
+
+// nested_name_specifier --> class_or_namespace_name :: [template] nested_name_specifier
+//                         | class_or_namespace_name :: nested_name_specifier?
+
+void nested_name_specifier(ScopedName name) : 
+{
+    ScopedName nm ;
+}
+{
+    nm = class_or_namespace_name()
+        { name.append( nm ) ; }
+    <SCOPE>
+    (   <TEMPLATE>  { pc.sorry_not_implemented( "templates" ) ; }
+        // nested_name_specifier( )
+
+    |
+        LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+        nested_name_specifier( name )
+    |
+        {}
+    )
+
+}
+
+// class_or_namespace_name --> class_name | namespace_name
+// namespace_name --> original_namespace_name |  namespace_alias
+// original_namespace_name --> identifier
+// namespace_alias --> identifier
+// DEVIATION. Since I'm not dealing with namespaces just yet,
+// I'm going to assume that we only have class names.
+
+ScopedName class_or_namespace_name() :
+{
+    ScopedName name ;
+}
+{
+    name = class_name()
+        {return name;}
+}
+
+// scoped_class_name --> ("::")? (nested_name_specifier)? class_name
+ScopedName scoped_class_name() :
+{
+    ScopedName nm ;
+    ScopedName name = new Cpp_ScopedName() ;
+}
+{
+    (
+      <SCOPE>             { name.set_absolute() ; }
+    )?
+    ( 
+      LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+      nested_name_specifier( name )
+    )?
+    
+    nm = class_name()     { name.append( nm ) ; }
+    
+    {return name ; }
+}
+
+// scoped_type_name --> ("::")? (nested_name_specifier)? type_name
+//                    | ("::")? nested_name_specifier "template" template_id
+// DEVIATION. I am not supporting template_ids.
+ScopedName scoped_type_name() :
+{
+    ScopedName nm ;
+    ScopedName name = new Cpp_ScopedName() ;
+}
+{
+    (
+      <SCOPE>             { name.set_absolute() ; }
+    )?
+    ( 
+      LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+      nested_name_specifier( name )
+      ( <TEMPLATE>
+           { pc.sorry_not_implemented( "templates" ) ; }
+        // DEVIATION. Stoping here.
+        // template_id
+      |
+       nm = type_name()
+           {name.append( nm ) ;}
+           {return name;}
+      )
+    |
+      nm = type_name()
+          {name.append( nm ) ; }
+          {return name;}
+    )
+}
+
+// scoped_identifier --> ("::")? (nested_name_specifier)? identifier
+ScopedName scoped_identifier() :
+{
+    String id ;
+    ScopedName nm ;
+    ScopedName name = new Cpp_ScopedName() ;
+}
+{
+    (
+      <SCOPE>
+          { name.set_absolute() ; }
+    )?
+    ( 
+      LOOKAHEAD( class_or_namespace_name() <SCOPE> )
+      nested_name_specifier( name )
+    )?
+    id = identifier()
+        {nm = new Cpp_ScopedName( id ) ;}
+        {name.append( nm ) ; }
+        {return name;}
+}
+
+ScopedName class_name() : 
+// DEVIATION: template_id is not supported.
+{
+    String id ;
+}
+{
+    // First alternative is omitted, since templates are not supported.
+    //LOOKAHEAD( template_id() )
+    //template_id()
+//|
+    id=identifier()
+        { return new Cpp_ScopedName( id ) ; }
+}
+
+ScopedName type_name() :
+// DEVIATION: template_id is not supported.
+// Therefore a type_name is just an identifier.
+{
+    String id ;
+}
+{
+    id=identifier()
+        { return new Cpp_ScopedName( id ) ; } 
+}
+
+//////////////////////////////////////////////////////
+//  More lexical analysis
+//////////////////////////////////////////////////////
+
+// This has to come at the end, so that keywords in the grammar
+// are not confused with identifiers
+TOKEN :
+{
+  <  ID : ["a"-"z","A"-"Z", "_"] (["a"-"z","A"-"Z","0"-"9","_"])* >
+}
+
+// Finally a catch all to prevent token manager errors
+<*> TOKEN :
+{
+  <  UNEXPECTED_CHAR : ~[] >
+}
