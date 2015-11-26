@@ -58,6 +58,14 @@ public class getRTM extends HttpServlet {
 				out.println("READY") ;
 				//System.out.println(exp);
 			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
 		}
 		//goBack
 		if(path.equals("/goBack")){
@@ -65,6 +73,14 @@ public class getRTM extends HttpServlet {
 			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
 				mapForRTM.getInstance(guid).getEvaluator().goBack();
 				out.println("READY") ;
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
 			}
 			
 			
@@ -78,7 +94,81 @@ public class getRTM extends HttpServlet {
 				mapForRTM.getInstance(guid).getEvaluator().redo();
 				out.println("READY") ;
 			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
+		}
+		//intoSub
+		if(path.equals("/intoSub")){
+			guid = request.getParameter("myguid");
+			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).getEvaluator().intoSub();
+				out.println("READY") ;
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
 			
+		}
+		//intoExp
+		if(path.equals("/intoExp")){
+			guid = request.getParameter("myguid");
+			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).getEvaluator().intoExp();
+				out.println("READY") ;
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
+			
+		}
+		//overAll
+		if(path.equals("/overAll")){
+			guid = request.getParameter("myguid");
+			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).getEvaluator().overAll();
+				out.println("READY") ;
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
+			
+		}
+		//microStep
+		if(path.equals("/microStep")){
+			guid = request.getParameter("myguid");
+			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).getEvaluator().microStep();
+				out.println("READY") ;
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
 			
 		}
 		
@@ -87,6 +177,16 @@ public class getRTM extends HttpServlet {
 			guid = request.getParameter("myguid");
 			String exp = mapForRTM.getInstance(guid).getEvaluator().getExpression() ;
 			out.println(exp);
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			{
+				out.println("EXECUTION_COMPLETE");
+			}
+			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			{
+				out.println("EXECUTION_FAILED");
+			}
+			
+			
 		}
 		
 		//getAnswer
@@ -97,7 +197,6 @@ public class getRTM extends HttpServlet {
 			}
 			String myOutPut = mapForRTM.getInstance(guid).getOutputString() ;
 	        out.println(myOutPut);
-			
 		}
 		
 		
