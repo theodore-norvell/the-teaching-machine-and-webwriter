@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.util.Hashtable;
 
 import javax.servlet.ServletException;
@@ -41,8 +42,7 @@ public class ButtonClick extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int x = Integer.parseInt(request.getParameter("x"));
 		int y = Integer.parseInt(request.getParameter("y"));
-//		String command = request.getParameter("command");
-		
+//		
 		
 		int id = MouseEvent.MOUSE_PRESSED ;
 		long now = System.currentTimeMillis() ;
@@ -88,12 +88,7 @@ public class ButtonClick extends HttpServlet {
 //		PrintWriter out = response.getWriter();
 //		out.append("{'status': 'ok'}");
 	}
-	private void triggerMouseEvent(int x, int y, int buttonNum, int flag){
-		long now = System.currentTimeMillis();
-		int clickCount = 1;
-		boolean popupTrigger = false;
-		
-	}
+
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -109,6 +104,8 @@ public class ButtonClick extends HttpServlet {
 		Triple<Component,Integer,Integer> result = searchForMouseEventSource( root, x, y) ;
 		if( result != null ) {
 			Component source = result.first;
+			//set Focus
+			source.requestFocus();
 			int localX = result.second;
 			int localY = result.third;
 			MouseEvent ev = new MouseEvent( source, id, now, modifiers, localX, localY,
@@ -121,20 +118,7 @@ public class ButtonClick extends HttpServlet {
 		}
 	}
 	
-//	private void injectActionEvent(Component root, int id, long now, int modifiers,
-//			int x, int y, String command) {
-//		System.out.println( "Searching for point (" +x+ "," +y+ ")" ) ;
-//		Triple<Component,Integer,Integer> result = searchForMouseEventSource( root, x, y) ;
-//		if( result != null ) {
-//			Component source = result.first;
-//			ActionEvent ev = new ActionEvent(source, id, command, now, modifiers) ;
-//			System.out.println( "Found source. New event is " + ev ) ;
-//			fire(ev);
-//		} else {
-//			System.out.println( "No source found" ) ;
-//		}
-//	}
-
+	
 	private void fire(final AWTEvent ev) {
 		EventQueue q = Toolkit.getDefaultToolkit().getSystemEventQueue() ;
 		q.postEvent(ev);

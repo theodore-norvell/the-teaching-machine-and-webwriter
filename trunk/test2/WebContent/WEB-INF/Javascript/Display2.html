@@ -15,6 +15,7 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#output').focus();
+		
 		$('#output').bind("contextmenu",function(e){
 			   alert('Context Menu event has fired!');
 			   return false;
@@ -41,6 +42,31 @@
 					
 				});  
 			  });
+		 
+		$(window).on('keydown', function(e){
+			 e = e||event;
+			/*  if(document.forms.keyform[e.type+'Ignore'].checked) return */
+
+			 var keyCode;
+			 if(e.shiftKey){ // If the SHIFT key is down
+	                keyCode = e.keyCode;
+	            }else{ // If the SHIFT key is not down
+	                keyCode = e.keyCode+32;
+	            }
+			 var url = '/test2/KeyClick';
+			 var keyChar = String.fromCharCode(e.keyCode||e.charCode);
+			 $.getJSON(url,{
+				 Code: keyCode,
+				 Char: keyChar
+			 }, function(data){
+			    	console.log('keydown successed');
+			    	console.log(data);
+			    	setTimeout(
+			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),
+			    			500
+			    			);
+			 });
+		 });
 	});
 	
 	</script>

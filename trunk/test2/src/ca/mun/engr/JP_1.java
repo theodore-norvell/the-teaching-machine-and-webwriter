@@ -229,6 +229,10 @@ public class JP_1 {
 //    			internalframe.setSize(300,300);
     			panel = new DrawingPanel();
     			internalframe.setContentPane(panel);
+    			JTextField txt = new JTextField();
+    			panel.setLayout(new BorderLayout());
+    			txt.setBounds(10, 150, 100, 20);
+    			panel.add(txt, BorderLayout.NORTH);
     			desk.add(internalframe);
 //    			frame.add(internalframe, BorderLayout.CENTER);
     			internalframe.setVisible(true);
