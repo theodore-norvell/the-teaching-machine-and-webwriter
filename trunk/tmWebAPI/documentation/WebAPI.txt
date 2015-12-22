@@ -3,6 +3,7 @@ Proposed Web API for the Teaching Machine
 
 History: Version 0. TSN 2015 Nov 11.
   Version 1. TSN 2015 Nov 12. Added retire.
+  Version 2. TSN 2015 Dec 22. Changes to how state information is returned from the remote TM
 
 Objective: Allow Remote Teaching Machines (RTM) to be used as a web service.
 
@@ -108,11 +109,39 @@ that the "status" field can take on.
 
 The idea behind RETIRED is that if a remote TM is not used for a long time, the server might delete it.
 
+Section 1. State Information
+-----------------------------
+
+Wanted parameters
+.................
+
+Many methods can return information about the state of the remoteTM.
+The request specifies what information is wanted by the client.
+For example
+* If the request contains an expressionWanted parameter equal to "yes",
+the response must contain the current state of the expression being evaluated
+(see the "expression" field below for details).
+* If the value of the "expressionWanted" parameter is
+equal to "maybe", the response would contain an "expression" field unless the
+value of that field would be the same as the value of the field in the most recent
+response that had that field. I.e. the client gets a new value iff it is different
+from the old value.
+* If there is no "expressionWanted" parameter or its value is "no", there
+will be no "expression" field in the response.
+
+All together there are the following "wanted parameters" and corresponding response fields
+   expressionWanted        expression
+   outputWanted			   output
+   consoleWanted           console
+   codeWanted              code
+   sourceCoordinatesWanted sourceCoordinates
+
 The "expression" field of the responses
 .........................................
 
 Many of the api calls have an "expression" field in the response. This is a specially
-encoded string that shows the current state of the execution of the current expression.   [...]
+encoded string that shows the current state of the execution of the current expression.
+Details of the encoding can be found in the TM's source code.
 
 The "console" field of the responses:
 ......................................
@@ -123,20 +152,45 @@ output.  However, within each line, \ufffe indicates the start of input and \uff
 indicates the resumption of output.  Note that tabs are not expanded, so tab expansion
 needs to be done on the client.
 
-Other state information from the remote TM
-...........................................
+The "output" field of the responses:
+......................................
 
-In the future, we will add more fields to the responses to allow clients more access to
-the state of the RemoteTM.  For example the contents of memory, the line that is currently
-being executed, the contents of the symbol table, etc.
+Many of the api calls have a "console" field. This is an array of 
+strings that shows data that has been output to the console.  It differs from "console"
+in that it does not show any input.  There is no special encoding.
 
-[Design note: It is a question of efficiency how much state to provide after
-every call.  One possibility for the future is to allow the client to specify
-what information it needs.  Another is to only provide fields that have changed
-since the last time it was delivered.]
+The "code" field of the responses:
+..................................
+The "code" field consists of all the currently selected lines
+in the current source file.    It is an array of objects
+where each object has three fields.
+   chars -- a string
+   coords -- an object (see below for details)
+   markup -- an array of objects (see below for details) sorted by column
+The chars of course represent the line of code.
 
+(See class tm.virtualMachine.CodeStore for details.  The code field corresponds to 
+the array of lines one gets from the evaluator as follows
+   SourceCoords focus = evaluator.getCodeFocus();
+   TMFile file = focus.getFile() ;
+   int n = evaluator.getNumSelectedCodeLines(file, false) ;
+   for( int i=0; i < n ; ++i ) {
+       CodeLine line = evaluator.getSelectedCodeLine(file, false, i);
+       ...
+   }
+)
+   
+The coords objects have fields fileName, which is a string, and line which is an int.
 
-Section 1. The API calls
+Each markup object is an object with two or three fields
+   column -- an int
+   command -- an int
+   tagSet -- a string
+For details concerning markup, see class tm.interfaces.MarkUp in the TM source code.
+The tagSet string is only needed when the command is CHANGE_TAG_SET (i.e. 5) and
+will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
+
+Section 2. The API calls
 ------------------------
 
 createRemoteTM
@@ -203,6 +257,7 @@ initializeTheState
 URL: <Base URL>/initializeTheState
 Parameters:
     guid: string   -- The GUID
+    expressionWanted, outputWanted etc -- see the section on State Information.
 Initial state:  COMPILED
 Action:
    If the RTM is not in the COMPILED state, then the request has no effect.
@@ -222,9 +277,9 @@ Response:
                     Otherwise, a string representing the reason why the status is
                     not READY or EXECUTION_COMPLETE. Note that this string may contain
                     newline characters.
-   expression: See section on General Considerations.
-   console: See section on General Considerations.
-
+   expression, output, code, etc -- see section on State Information.
+   
+   
 go
 ..
 
@@ -241,6 +296,7 @@ Parameters:
         integer -->  digit [ integer ]
         digit --> "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
         ws --> [ " " ws ]
+    expressionWanted, outputWanted etc -- see the section on State Information.
 Initial state:  Any
 Action:
    If the state is not READY, this request does nothing to the state of the RTM.
@@ -272,8 +328,7 @@ Response:
                       If the final status is EXECUTION_FAILED, the reason will
                       be an error message.
                       Otherwise, reason will be a string indicating what the problem is.
-   expression: See section on General Considerations.
-   console: See section on General Considerations.
+   expression, output, code, etc -- see section on State Information.
    
 goBack
 ......
@@ -281,6 +336,7 @@ goBack
 URL: <Base URL>/goBack
 Parameters:
     guid: string   -- The GUID
+    expressionWanted, outputWanted etc -- see the section on State Information.
 Initial state:  ANY
 Action:
    The state of the evaluator is backed up to where it was just before
@@ -299,8 +355,7 @@ Response:
    status:  int -- see above
    reason: string -- If the status is BAD_GUID, RETIRED, or NO_EVALUATOR, a reason why.
                      Otherwise this string should be "".
-   expression: See section on General Considerations.
-   console: See section on General Considerations.
+   expression, output, code, etc -- see section on State Information.
    
 redo
 ....
@@ -308,6 +363,7 @@ redo
 URL: <Base URL>/redo
 Parameters:
     guid: string   -- The GUID
+    expressionWanted, outputWanted etc -- see the section on State Information.
 Initial state:  ANY
 Action:
    The most recent goBack is undone.  If the machine has moved forward since that goBack,
@@ -323,6 +379,5 @@ Response:
    status:  int -- see above
    reason: string -- If the status is BAD_GUID, RETIRED, or NO_EVALUATOR, a reason why.
                      Otherwise this string should be "".
-   expression: See section on General Considerations.
-   console: See section on General Considerations.
+   expression, output, code, etc -- see section on State Information.
 
