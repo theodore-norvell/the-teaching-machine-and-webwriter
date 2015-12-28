@@ -6,11 +6,11 @@
 <title>JPanel</title>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
-<body>
+<body ondragstart="return false;" ondrop="return false;">
 	<center><h2>JPanel</h2></center>
 	<center><h4>This is a test applet for the project</h4></center>
 	<div id="main" align="center" >
-	<img src="http://localhost:8080/test2/IMAGE_servlet" id="output" alt="" usemap="#mapCoor"  >
+	<center><img src="/test2/IMAGE_servlet" id="output" alt="" usemap="#mapCoor"  ><center>
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function(){
@@ -43,16 +43,16 @@
 				});  
 			  });
 		 
-		$(window).on('keydown', function(e){
+		$(window).keypress(function(e){
 			 e = e||event;
 			/*  if(document.forms.keyform[e.type+'Ignore'].checked) return */
 
 			 var keyCode;
-			 if(e.shiftKey){ // If the SHIFT key is down
+			/*  if(e.shiftKey){ // If the SHIFT key is down
 	                keyCode = e.keyCode;
-	            }else{ // If the SHIFT key is not down
-	                keyCode = e.keyCode+32;
-	            }
+	            }else{ */ // If the SHIFT key is not down
+	                keyCode = e.keyCode;
+	      /*       } */
 			 var url = '/test2/KeyClick';
 			 var keyChar = String.fromCharCode(e.keyCode||e.charCode);
 			 $.getJSON(url,{
@@ -60,6 +60,7 @@
 				 Char: keyChar
 			 }, function(data){
 			    	console.log('keydown successed');
+			    	console.log(keyCode, keyChar);
 			    	console.log(data);
 			    	setTimeout(
 			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),

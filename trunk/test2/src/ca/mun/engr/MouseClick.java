@@ -25,13 +25,13 @@ import javax.swing.JButton;
  * Servlet implementation class ButtonClick
  */
 @WebServlet("/ButtonClick")
-public class ButtonClick extends HttpServlet {
+public class MouseClick extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ButtonClick() {
+    public MouseClick() {
         super();
         
     }
@@ -55,6 +55,11 @@ public class ButtonClick extends HttpServlet {
 		
 		injectMouseEvent(ExternalRunner.getComponentRoot(), id, now, modifiers, x, y, xAbs, yAbs,
 				clickCount, popupTrigger, button);
+		
+//		Triple<Component,Integer,Integer> focus = searchForMouseEventSource( ExternalRunner.getComponentRoot(), x, y) ;
+//		Component focusTarget = focus.first;
+//		focusTarget.requestFocus();
+		
 		id = MouseEvent.MOUSE_RELEASED ;
 		now = System.currentTimeMillis() ;
 		modifiers = InputEvent.BUTTON1_MASK ;

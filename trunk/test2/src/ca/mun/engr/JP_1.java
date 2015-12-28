@@ -14,7 +14,7 @@ import javax.swing.*;
 
 public class JP_1 {
 	public static JP_1 obj = null;
-	public DrawingPanel panel = new DrawingPanel();
+	public DrawingPanel panel;
     private Shape circle = null;
     private Shape square = null;
     private Shape triangle = null;
@@ -48,10 +48,6 @@ public class JP_1 {
     	subPanel.setLayout(new BorderLayout());
     	subPanel.setBackground(Color.red);
     	
-//    	desk.add(internalframe);
-//    	internalframe.setContentPane(panel);
-    	
-//    	frame.add(internalframe, BorderLayout.CENTER);
     	frame.add(subPanel,BorderLayout.NORTH);
 //        desk.add(subPanel, BorderLayout.NORTH);
         subPanel.add(createWindowsButton(), BorderLayout.NORTH);
@@ -146,7 +142,7 @@ public class JP_1 {
 	                }
 	                else{
 	                	
-	                    circle = new Circle(100,100,200,200);
+	                    circle = new Circle(50,50,100,100);
 	                    panel.shapes.add(circle);
 	                    panel.repaint();
 	                 }
@@ -175,7 +171,7 @@ public class JP_1 {
 	                }
 	                else{
 	                	
-	                    square = new Square(100,150,200,100);
+	                    square = new Square(50,75,100,50);
 	                    panel.shapes.add(square);
 	                    panel.repaint();
 	                 }
@@ -195,7 +191,7 @@ public class JP_1 {
     	 button3.setMaximumSize(new Dimension(10,20));
     	button3.addMouseListener(new MouseAdapter(){
     		public void mouseClicked(MouseEvent e){
-//    			if(internalframe.isVisible() ){
+//    			if(panel.hasFocus() ){
     			try{
 	    			if(triangle!=null){
 	            		panel.shapes.remove(triangle);
@@ -204,7 +200,7 @@ public class JP_1 {
 	                }
 	                else{
 	                	
-	                    triangle = new Triangle(200,100,200,150);
+	                    triangle = new Triangle(100,50,100,75);
 	                    panel.shapes.add(triangle);
 	                    panel.repaint();
 	                 }
@@ -229,6 +225,7 @@ public class JP_1 {
 //    			internalframe.setSize(300,300);
     			panel = new DrawingPanel();
     			internalframe.setContentPane(panel);
+    			panel.requestFocus();
     			JTextField txt = new JTextField();
     			panel.setLayout(new BorderLayout());
     			txt.setBounds(10, 150, 100, 20);

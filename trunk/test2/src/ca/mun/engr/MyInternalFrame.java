@@ -1,7 +1,7 @@
 package ca.mun.engr;
  
 import javax.swing.JInternalFrame;
- 
+
 import java.awt.event.*;
 import java.awt.*;
  
@@ -23,5 +23,6 @@ public class MyInternalFrame extends JInternalFrame {
  
         //Set the window's location.
         setLocation(xOffset*openFrameCount, yOffset*openFrameCount);
+        
     }
 }
