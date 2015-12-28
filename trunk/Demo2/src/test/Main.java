@@ -1,19 +1,27 @@
 package test;
 
 import java.awt.AWTEvent;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.JButton;
+import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
@@ -24,75 +32,137 @@ public class Main {
 	public Main(){
 		JFrame frame = new JFrame();
 		frame.setBounds(400, 100, 400, 600);
-		frame.setLayout(null);
+		frame.setLayout(new BorderLayout());
 		frame.setVisible(true);
-		JButton but1 = new JButton("test");
-		but1.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("test triggered");
-				System.out.println(e);
-			}});
-		but1.setBounds(10, 10, 100, 20);
-		frame.add(but1);
 		
-		JButton but2 = new JButton("go");
-		but2.addActionListener(new ActionListener(){
+		JDesktopPane jdp = new JDesktopPane();
+		frame.setContentPane(jdp);
+		jdp.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
+		
+		JInternalFrame jip1 = new JInternalFrame("frame1",true,true,true,true);
+		JInternalFrame jip2 = new JInternalFrame("frame2",true,true,true,true);
+		jip1.setBounds(10, 10, 100, 100);
+		jip2.setBounds(100, 100, 150, 150);
+		
+		JPanel jpjip1 = new JPanel();
+		jpjip1.setLayout(new BorderLayout());
+		JPanel jpjip2 = new JPanel();
+		jpjip2.setLayout(new BorderLayout());
+		
+		JButton jb = new JButton("Switch");
+		jpjip2.add(jb);
+		jb.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int id = MouseEvent.MOUSE_PRESSED;
 				long now = System.currentTimeMillis() ;
 				int modifiers = InputEvent.BUTTON1_MASK ;
-				injectMouseEvent(frame, id, now, modifiers, 50, 50,50,50,1,false, MouseEvent.BUTTON1);
+				injectMouseEvent(frame, id, now, modifiers, 36,99,36,99,1,false, MouseEvent.BUTTON1);
 				
 				id = MouseEvent.MOUSE_RELEASED;
 				now = System.currentTimeMillis() ;
 				modifiers = InputEvent.BUTTON1_MASK ;
-				injectMouseEvent(frame, id, now, modifiers, 50, 50, 50,50,1,false, MouseEvent.BUTTON1);
+				injectMouseEvent(frame, id, now, modifiers, 36,99,36,99,1,false, MouseEvent.BUTTON1);
 			}
-
-			
 		});
-		but2.setBounds(10, 50, 100, 20);
-		frame.add(but2);
 		
-		JButton but3 = new JButton("input");
-		but3.setBounds(10, 100, 100, 20);
-		but3.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-//				if(!txt.isFocusOwner()){
-//					txt.requestFocus();
-//				}
-				int id = KeyEvent.KEY_PRESSED;
-				long now = System.currentTimeMillis();
-				int modifiers = 0x00;
-				int keyCode = 69;
-				char keyChar = 'e';
-				injectKeyEvent(frame, id, now, modifiers,
-						keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
-				
-				id = KeyEvent.KEY_TYPED;
-				now = System.currentTimeMillis();
-				modifiers = 0x00;
-				keyCode = 0;
-				keyChar = 'e';
-				injectKeyEvent(frame, id, now, modifiers,
-						keyCode, keyChar, KeyEvent.KEY_LOCATION_UNKNOWN, 0x45);
-				
-				id = KeyEvent.KEY_RELEASED;
-				now = System.currentTimeMillis();
-				modifiers = 0x00;
-				keyCode = 69;
-				keyChar = 'e';
-				injectKeyEvent(frame, id, now, modifiers,
-						keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
-			}});
-		frame.add(but3);
+		JTextField jtf1 = new JTextField("    ");
+		JTextField jtf2 = new JTextField("    ");
+		jtf1.setSize(100,100);
+		jtf2.setSize(100,100);
+		jpjip1.add(jtf1, BorderLayout.NORTH);
+		jpjip1.add(jtf2, BorderLayout.SOUTH);
 		
-		txt = new JTextField();
-		txt.setBounds(10, 150, 100, 20);
-		frame.add(txt);
+		jip1.setContentPane(jpjip1);
+		jip2.setContentPane(jpjip2);
+		jdp.add(jip1);
+		jdp.add(jip2);
+		
+		jip1.setVisible(true);
+		jip2.setVisible(true);
+		
+//		Timer timer = new Timer();
+//		timer.schedule(new TimerTask(){
+//			@Override
+//			public void run(){
+//				int id = MouseEvent.MOUSE_PRESSED;
+//				long now = System.currentTimeMillis() ;
+//				int modifiers = InputEvent.BUTTON1_MASK ;
+//				injectMouseEvent(frame, id, now, modifiers, 58,77,58,77,1,false, MouseEvent.BUTTON1);
+//				
+//				id = MouseEvent.MOUSE_RELEASED;
+//				now = System.currentTimeMillis() ;
+//				modifiers = InputEvent.BUTTON1_MASK ;
+//				injectMouseEvent(frame, id, now, modifiers, 58,77, 58,77,1,false, MouseEvent.BUTTON1);
+//			}
+//		}, 5*1000);
+//		JButton but1 = new JButton("test");
+//		but1.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				System.out.println("test triggered");
+//				System.out.println(e);
+//			}});
+//		but1.setBounds(10, 10, 100, 20);
+//		frame.add(but1);
+//		
+//		JButton but2 = new JButton("go");
+//		but2.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				int id = MouseEvent.MOUSE_PRESSED;
+//				long now = System.currentTimeMillis() ;
+//				int modifiers = InputEvent.BUTTON1_MASK ;
+//				injectMouseEvent(frame, id, now, modifiers, 50, 50,50,50,1,false, MouseEvent.BUTTON1);
+//				
+//				id = MouseEvent.MOUSE_RELEASED;
+//				now = System.currentTimeMillis() ;
+//				modifiers = InputEvent.BUTTON1_MASK ;
+//				injectMouseEvent(frame, id, now, modifiers, 50, 50, 50,50,1,false, MouseEvent.BUTTON1);
+//			}
+//
+//			
+//		});
+//		but2.setBounds(10, 50, 100, 20);
+//		frame.add(but2);
+//		
+//		JButton but3 = new JButton("input");
+//		but3.setBounds(10, 100, 100, 20);
+//		but3.addActionListener(new ActionListener(){
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+////				if(!txt.isFocusOwner()){
+////					txt.requestFocus();
+////				}
+//				int id = KeyEvent.KEY_PRESSED;
+//				long now = System.currentTimeMillis();
+//				int modifiers = 0x00;
+//				int keyCode = 69;
+//				char keyChar = 'e';
+//				injectKeyEvent(frame, id, now, modifiers,
+//						keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
+//				
+//				id = KeyEvent.KEY_TYPED;
+//				now = System.currentTimeMillis();
+//				modifiers = 0x00;
+//				keyCode = 0;
+//				keyChar = 'e';
+//				injectKeyEvent(frame, id, now, modifiers,
+//						keyCode, keyChar, KeyEvent.KEY_LOCATION_UNKNOWN, 0x45);
+//				
+//				id = KeyEvent.KEY_RELEASED;
+//				now = System.currentTimeMillis();
+//				modifiers = 0x00;
+//				keyCode = 69;
+//				keyChar = 'e';
+//				injectKeyEvent(frame, id, now, modifiers,
+//						keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
+//			}});
+//		frame.add(but3);
+//		
+//		txt = new JTextField();
+//		txt.setBounds(10, 150, 100, 20);
+//		frame.add(txt);
 	}
 
 	private void injectMouseEvent(Component root, int id, long now, int modifiers,
@@ -209,10 +279,10 @@ public class Main {
 		
 		@Override
 		public void dispatchEvent(AWTEvent e){
-			if(e instanceof KeyEvent){
+//			if(e instanceof FocusEvent || e instanceof MouseEvent){
 				System.out.println(String.format("%d:%s", count, e));
 				count++;
-			}
+//			}
 			super.dispatchEvent(e);
 		}
 	}
