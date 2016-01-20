@@ -190,6 +190,11 @@ For details concerning markup, see class tm.interfaces.MarkUp in the TM source c
 The tagSet string is only needed when the command is CHANGE_TAG_SET (i.e. 5) and
 will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
 
+The "sourceCoordinates" field of the responses:
+..................................
+The this is a "coords" object (described above under "code") that indicates the
+file name and line number of the line that is currently being executed.
+
 Section 2. The API calls
 ------------------------
 
