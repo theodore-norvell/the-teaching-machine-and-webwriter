@@ -21,6 +21,7 @@ module jstm {
 		        case "<" : html += "&lt;" ; break ;
 		        case ">" : html += "&gt;" ; break ;
 		        case "&" : html += "&amp;" ; break ; 
+                case " " : html += "&nbsp;" ; break ;
 		        case "\uffff" : html += '<span class="tm-red">' ; break ;
 		        case "\ufffe" : html += '<span class="tm-underline">' ; break ;
 		        case "\ufffc" : html += '<span class="tm-blue">' ; break ;
