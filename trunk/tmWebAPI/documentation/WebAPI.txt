@@ -15,8 +15,7 @@ Section 0.  General comments on the Web API
 GET vs POST:
 ............
 
-Since the results of a GET may be cached, it is important that all requests be sent using
-the HTTP POST method.
+Since the results of a GET may be cached, it is important that all requests be sent using the HTTP POST method.
 
 On parameters
 ..............
