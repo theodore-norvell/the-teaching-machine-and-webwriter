@@ -9,8 +9,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import tm.interfaces.TMStatusCode;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
+import tm.interfaces.CodeLine;
+import tm.interfaces.SourceCoords;
+import tm.interfaces.TMStatusCode;
+import tm.utilities.TMFile;
+
+import com.remoteTMproject.model.RTM.remoteTM;
+import com.remoteTMproject.model.json.JsonTransfer;
+import com.remoteTMproject.model.json.Response;
 import com.remoteTMproject.model.map.mapForRTM;
 
 /**
@@ -20,7 +29,8 @@ import com.remoteTMproject.model.map.mapForRTM;
 public class getRTM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     //private String guidTest1= createRTM.guidHolder;
-	private String guid;
+
+	private int focusnumber;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -42,6 +52,7 @@ public class getRTM extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html;charset=utf-8");
+		
 	    PrintWriter out = response.getWriter();
 		//get the request uri
 		String uri=request.getRequestURI();
@@ -49,72 +60,23 @@ public class getRTM extends HttpServlet {
 				uri.lastIndexOf("/"),
 				uri.lastIndexOf("."));
 		
+		/**JSONObject here **/
+		//JSONObject obj1 = new JSONObject();
+
 		
-		 //goForward
-		if(path.equals("/go")){
-			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().goForward();
-				out.println("READY") ;
-				//System.out.println(exp);
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
-			{
-				out.println("EXECUTION_COMPLETE");
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
-			{
-				out.println("EXECUTION_FAILED");
-			}
-		}
-		//goBack
-		if(path.equals("/goBack")){
-			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().goBack();
-				out.println("READY") ;
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
-			{
-				out.println("EXECUTION_COMPLETE");
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
-			{
-				out.println("EXECUTION_FAILED");
-			}
-			
-			
-		}
-		
-		
-		//redo
-		if(path.equals("/redo")){
-			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().redo();
-				out.println("READY") ;
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
-			{
-				out.println("EXECUTION_COMPLETE");
-			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
-			{
-				out.println("EXECUTION_FAILED");
-			}
-		}
 		//intoSub
 		if(path.equals("/intoSub")){
+			String guid;
 			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().intoSub();
-				out.println("READY") ;
+			if(  mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).intoSub();
+				//out.print("READY") ;
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
 			{
 				out.println("EXECUTION_COMPLETE");
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_FAILED)
 			{
 				out.println("EXECUTION_FAILED");
 			}
@@ -122,16 +84,17 @@ public class getRTM extends HttpServlet {
 		}
 		//intoExp
 		if(path.equals("/intoExp")){
+			String guid;
 			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().intoExp();
-				out.println("READY") ;
+			if(  mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).intoExp();
+				//out.print("READY") ;
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
 			{
 				out.println("EXECUTION_COMPLETE");
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_FAILED)
 			{
 				out.println("EXECUTION_FAILED");
 			}
@@ -139,16 +102,17 @@ public class getRTM extends HttpServlet {
 		}
 		//overAll
 		if(path.equals("/overAll")){
+			String guid;
 			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().overAll();
-				out.println("READY") ;
+			if(  mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).overAll();
+				//out.print("READY") ;
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
 			{
 				out.println("EXECUTION_COMPLETE");
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_FAILED)
 			{
 				out.println("EXECUTION_FAILED");
 			}
@@ -156,48 +120,51 @@ public class getRTM extends HttpServlet {
 		}
 		//microStep
 		if(path.equals("/microStep")){
+			String guid;
 			guid = request.getParameter("myguid");
-			if(  mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guid).getEvaluator().microStep();
-				out.println("READY") ;
+			if(  mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.READY ) {
+				mapForRTM.getInstance(guid).microStep();
+				//out.print("READY") ;
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
 			{
 				out.println("EXECUTION_COMPLETE");
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_FAILED)
 			{
 				out.println("EXECUTION_FAILED");
 			}
 			
 		}
 		
-		//getExpression
+/*		//getExpression
 		if(path.equals("/expression")){
+			String guid;
 			guid = request.getParameter("myguid");
-			String exp = mapForRTM.getInstance(guid).getEvaluator().getExpression() ;
-			out.println(exp);
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
+			String exp = mapForRTM.getInstance(guid).getExpression() ;
+			out.print(exp);
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_COMPLETE)
 			{
 				out.println("EXECUTION_COMPLETE");
 			}
-			if(mapForRTM.getInstance(guid).getEvaluator().getStatusCode() == TMStatusCode.EXECUTION_FAILED)
+			if(mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.EXECUTION_FAILED)
 			{
 				out.println("EXECUTION_FAILED");
 			}
 			
 			
-		}
+		}*/
 		
-		//getAnswer
+/*		//getAnswer
 		if(path.equals("/answer")){
+			String guid;
 			guid = request.getParameter("myguid");
 			while( mapForRTM.getInstance(guid).getStatusCode() == TMStatusCode.READY ) {
 				mapForRTM.getInstance(guid).getEvaluator().goForward();
 			}
 			String myOutPut = mapForRTM.getInstance(guid).getOutputString() ;
-	        out.println(myOutPut);
-		}
+	        out.print(myOutPut);
+		}*/
 		
 		
 		

@@ -9,17 +9,78 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  
-    <servlet>
+  <servlet>
     <servlet-name>createRTM</servlet-name>
     <servlet-class>com.remoteTMproject.controller.servlet.createRTM</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>createRTM</servlet-name>
-    <url-pattern>*.do</url-pattern>
+    <url-pattern>*.create</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>retireRemoteTM</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.retireRemoteTM</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>retireRemoteTM</servlet-name>
+    <url-pattern>*.retire</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>loadString</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.loadString</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>loadString</servlet-name>
+    <url-pattern>*.load</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>initializeTheState</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.initializeTheState</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>initializeTheState</servlet-name>
+    <url-pattern>*.initialize</url-pattern>
   </servlet-mapping>
   
     <servlet>
+    <servlet-name>go</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.go</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>go</servlet-name>
+    <url-pattern>*.g</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <servlet-name>goForward</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.goForward</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goForward</servlet-name>
+    <url-pattern>*.goForward</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <servlet-name>goBack</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.goBack</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>goBack</servlet-name>
+    <url-pattern>*.goBack</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+    <servlet-name>redo</servlet-name>
+    <servlet-class>com.remoteTMproject.controller.servlet.redo</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>redo</servlet-name>
+    <url-pattern>*.redo</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
     <servlet-name>getRTM</servlet-name>
     <servlet-class>com.remoteTMproject.controller.servlet.getRTM</servlet-class>
   </servlet>

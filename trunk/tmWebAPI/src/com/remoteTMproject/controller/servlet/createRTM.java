@@ -2,6 +2,7 @@ package com.remoteTMproject.controller.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,6 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import tm.interfaces.CodeLine;
+import tm.interfaces.SourceCoords;
 import tm.interfaces.TMStatusCode;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
@@ -17,6 +24,8 @@ import tm.utilities.TMFile;
 
 import com.remoteTMproject.controller.GUIDMaker.GUIDMaker;
 import com.remoteTMproject.model.RTM.remoteTM;
+import com.remoteTMproject.model.json.JsonTransfer;
+import com.remoteTMproject.model.json.Response;
 import com.remoteTMproject.model.map.mapForRTM;
 
 /**
@@ -27,7 +36,8 @@ import com.remoteTMproject.model.map.mapForRTM;
 public class createRTM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	//static public String guidHolder ;
-       
+	private int focusNumber;
+    private int reasonFlag=0;   
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -61,8 +71,6 @@ public class createRTM extends HttpServlet {
 		GUIDMaker guid=GUIDMaker.getInstance();
 		String myguid=guid.nextGUID();
 		
-		
-		
 		//System.out.println(myguid);
 		String[] guidParts=myguid.split(":");
 		//the RTM name
@@ -70,78 +78,46 @@ public class createRTM extends HttpServlet {
 		//THE guid number
 		String guidNumberTest=guidParts[1];
 		//guidHolder= guidNumberTest;
-
-		//test for outputs
-		/*System.out.print("RTM is instantiated at this time:-------");
-		System.out.println(RTMname);
-		System.out.print("guid for the RTM is:-------------------");
-		System.out.println(guidNumberTest);*/
-
+	  
+		
 		
 		//create a remoteRTM for the first time if the url is    /createRemoteTM.do
-	    if(path.equals("/createRemoteTM")){
-	    	String programText = request.getParameter("Codes");
+		if(path.equals("/createRemoteTM")){
 			
-			StringFileSource fs = new StringFileSource() ;
-			String fileName="test";
-			fs.addString( fileName, programText ) ;
-			TMFile tmf = new TMFile( fs, fileName ) ;
-
 			Debug debug = Debug.getInstance() ;
 			debug.deactivate(); 
-
+					
 			//getInstance could lazily create a remoteTM object and add the object to a ConcurrentHashmap
 			mapForRTM.addInstance(guidNumberTest);
 			remoteTM rtm = mapForRTM.getInstance(guidNumberTest);
-			//loadTMFile, then compile, STATE ---------------------> COMPILED
-			rtm.loadTMFile(rtm.CPP_LANG,tmf);
-			
-			Assert.check(rtm.getEvaluator().getStatusCode() == TMStatusCode.COMPILED );
-			rtm.getEvaluator().initialize();
-			Assert.check( rtm.getEvaluator().getStatusCode() == TMStatusCode.READY );
-			if(rtm.getEvaluator().getStatusCode() == TMStatusCode.READY){
-			out.println(guidNumberTest);
-			out.println("   remote TMStatusCode is READY");
+
+			JSONObject response1;
+			try {
+				response1 = rtm.createRemoteTM(guidNumberTest);
+				
+				out.println(response1);
+				out.close();
+				
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			
+
+
+
+
+				
 	    }
 	    
-	    
-	    
-	    
-	    
-	    
-   /* //getState
-		if(path.equals("/state")){
-				
-			if(  mapForRTM.getInstance(guidNumberTest).evaluator.getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guidNumberTest).evaluator.goForward();
-			
-				out.println("READY") ;
-				//System.out.println(exp);
-			}
-		}
-		
-		//getExpression
-		if(path.equals("/expression")){
-			
-			String exp = mapForRTM.getInstance(guidNumberTest).evaluator.getExpression() ;
-			out.println(exp);
-		}
-		
-		//getAnswer
-		if(path.equals("/answer")){
-			while( mapForRTM.getInstance(guidNumberTest).getStatusCode() == TMStatusCode.READY ) {
-				mapForRTM.getInstance(guidNumberTest).evaluator.goForward();
-			}
-			String myOutPut = mapForRTM.getInstance(guidNumberTest).getOutputString() ;
-	        out.println(myOutPut);
-			
-		}*/
-		
-	    
-	    
-		
-	
 	}
+	    
+	    
+	    
+	    
+
+	
+
 
 }

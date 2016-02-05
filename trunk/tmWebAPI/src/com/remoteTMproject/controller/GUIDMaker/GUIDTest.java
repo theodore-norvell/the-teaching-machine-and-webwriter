@@ -38,7 +38,7 @@ public class GUIDTest {
 		Debug debug = Debug.getInstance() ;
 		debug.deactivate(); 
 
-		tm.loadTMFile(CPP_LANG, tmf);
+		tm.loadTMFile(fileName, CPP_LANG, tmf);
 
 		
 	}
