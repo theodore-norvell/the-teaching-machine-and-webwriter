@@ -1,9 +1,11 @@
 /// <reference path="JSTM.ts" />
+/// <reference path="Promise.ts"/>
 
 module jstm {
 
+    import Promise = P.Promise ;
 
-    export class MockJSTM implements jstm.JSTM {
+    export class MockJSTM implements JSTM {
 
         private expressionDisplays = new Array<HTMLElement>() ;
         private varVals_tempC = new Array<HTMLElement>() ;
@@ -86,18 +88,24 @@ module jstm {
             return expDisp ;
         }
 
-        makeGoForwardButton() : HTMLElement {
+        makeGoForwardButton(onDone? : (jstm:JSTM) => void, onFail? : (r:P.Rejection) => void) : HTMLElement {
+            onDone = onDone || (jstm => {}) ;
+            onFail = onFail || (r => {}) ;
+
             var button = document.createElement( "button" ) ;
             button.setAttribute( "class", "tm-button" ) ;
-            button.onclick = () => this.goForward() ;
+            button.onclick = () => { this.goForward().done( onDone ).fail( onFail ) ; }
             button.innerHTML = "-&gt;" ;
             return button ;
         }
 
-        makeGoBackButton() : HTMLElement {
+        makeGoBackButton(onDone? : (jstm:JSTM) => void, onFail? : (r:P.Rejection) => void) : HTMLElement {
+            onDone = onDone || (jstm => {}) ;
+            onFail = onFail || (r => {}) ;
+
             var button = document.createElement( "button" ) ;
             button.setAttribute( "class", "tm-button" ) ;
-            button.onclick = () => this.goBack() ;
+            button.onclick = () => { this.goForward().done( onDone ).fail( onFail ) ; }
             button.innerHTML = "&lt;-" ;
             return button ;
         }
@@ -118,22 +126,33 @@ module jstm {
             return varWatcher ;
         }
 
-        loadString( program : string, language : string ) : void {
-        }
-
         getStatus() : number {
             return 3 ;
         }
 
-        go( commandString : string ) : void {
+        getMessage() : string  {
+            return "" ;
         }
 
-        goForward() : void {
-            this.k = (this.k + 1) % this.numStates ; 
-            this.updateDisplays() ; }
 
-        goBack() : void {
+        loadString( program : string, language : string ) : Promise<JSTM> {
+            return P.defer<JSTM>().resolve(this).promise() ;
+        }
+
+        go( commandString : string ) : Promise<JSTM>  {
+            return P.defer<JSTM>().resolve(this).promise() ;
+        }
+
+        goForward() : Promise<JSTM>  {
+            this.k = (this.k + 1) % this.numStates ; 
+            this.updateDisplays() ;
+            return P.defer<JSTM>().resolve(this).promise() ;
+        }
+
+        goBack() : Promise<JSTM>  {
             this.k = (this.k + this.numStates - 1) % this.numStates ; 
-            this.updateDisplays() ; }
+            this.updateDisplays() ;
+            return P.defer<JSTM>().resolve(this).promise() ;
+        }
     }
 }

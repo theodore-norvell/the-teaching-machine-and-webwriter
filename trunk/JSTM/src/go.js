@@ -6,3 +6,4 @@ function go() {
     var root = document.documentElement;
     jstm.addTM(tm, root);
 }
+//# sourceMappingURL=go.js.map
