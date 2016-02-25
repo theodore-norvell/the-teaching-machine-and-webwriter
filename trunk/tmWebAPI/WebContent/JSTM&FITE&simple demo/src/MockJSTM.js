@@ -1,6 +1,7 @@
 /// <reference path="JSTM.ts" />
+/// <reference path="Promise.ts"/>
 var jstm;
-(function (jstm) {
+(function (jstm_1) {
     var MockJSTM = (function () {
         function MockJSTM() {
             this.expressionDisplays = new Array();
@@ -112,19 +113,23 @@ var jstm;
             this.expressionDisplays.push(expDisp);
             return expDisp;
         };
-        MockJSTM.prototype.makeGoForwardButton = function () {
+        MockJSTM.prototype.makeGoForwardButton = function (onDone, onFail) {
             var _this = this;
+            onDone = onDone || (function (jstm) { });
+            onFail = onFail || (function (r) { });
             var button = document.createElement("button");
             button.setAttribute("class", "tm-button");
-            button.onclick = function () { return _this.goForward(); };
+            button.onclick = function () { _this.goForward().done(onDone).fail(onFail); };
             button.innerHTML = "-&gt;";
             return button;
         };
-        MockJSTM.prototype.makeGoBackButton = function () {
+        MockJSTM.prototype.makeGoBackButton = function (onDone, onFail) {
             var _this = this;
+            onDone = onDone || (function (jstm) { });
+            onFail = onFail || (function (r) { });
             var button = document.createElement("button");
             button.setAttribute("class", "tm-button");
-            button.onclick = function () { return _this.goBack(); };
+            button.onclick = function () { _this.goForward().done(onDone).fail(onFail); };
             button.innerHTML = "&lt;-";
             return button;
         };
@@ -145,22 +150,30 @@ var jstm;
             }
             return varWatcher;
         };
-        MockJSTM.prototype.loadString = function (program, language) {
-        };
         MockJSTM.prototype.getStatus = function () {
             return 3;
         };
+        MockJSTM.prototype.getMessage = function () {
+            return "";
+        };
+        MockJSTM.prototype.loadString = function (program, language) {
+            return P.defer().resolve(this).promise();
+        };
         MockJSTM.prototype.go = function (commandString) {
+            return P.defer().resolve(this).promise();
         };
         MockJSTM.prototype.goForward = function () {
             this.k = (this.k + 1) % this.numStates;
             this.updateDisplays();
+            return P.defer().resolve(this).promise();
         };
         MockJSTM.prototype.goBack = function () {
             this.k = (this.k + this.numStates - 1) % this.numStates;
             this.updateDisplays();
+            return P.defer().resolve(this).promise();
         };
         return MockJSTM;
     })();
-    jstm.MockJSTM = MockJSTM;
+    jstm_1.MockJSTM = MockJSTM;
 })(jstm || (jstm = {}));
+//# sourceMappingURL=MockJSTM.js.map

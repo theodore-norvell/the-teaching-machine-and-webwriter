@@ -1,22 +1,21 @@
 <html>
-    <title>node practice</title>
+    <title>state</title>
     <head>
-        <script type="text/javascript" src="jquery-1.11.3.js" ></script>
-        <script type="text/javascript" src="description.json" ></script>
-        <script type="text/javascript" src="description.js" ></script> 
         <link type="text/css" rel="Stylesheet" href="jstm.css">
         
         
-       <!-- <script type="text/javascript" src="scratchJSTM.js" ></script>-->
-        <!--<script type="text/javascript" src="readjsonfile.js" ></script>-->
-        
-       <!-- <script type="text/javascript" src="node.js" ></script>  -->
-        
+        <script type="text/javascript" src="../library/jquery-1.11.3.js" ></script>
+        <script type="text/javascript" src="../src/Promise.js" ></script>  
+        <script type="text/javascript" src="description.js" ></script>
+        <script type="text/javascript" src="description.json" ></script>
+        <script type="text/javascript" src="../state/State.js" ></script>
+        <script type="text/javascript" src="../state/concreteJSTM.js" ></script>            
+        <script type="text/javascript" src="test1.js" ></script>
     </head>
     
     <body>
         
-        <div id='divquiztype'> 
+            <div id='divquiztype'> 
             <p>you have four types of questions</p>
             <button id='questiontype1' >questiontype1</button>
             <button id='questiontype2' >questiontype2</button>
@@ -24,6 +23,11 @@
             <button id='questiontype4' >questiontype4</button>  
         </div>
         <br><br>
+        
+        
+        
+        
+        <!--first div, which includes a select tag -->
         <div id='divquestions'> 
                 <select id='questionslist'>questionslist
                 <option>question1</option>
@@ -40,34 +44,34 @@
             
         </div>
         
-        <div id='div3'> 
+            <div id='div3' > 
             <p id='questionDisplay'></p>
-            <span id='expressionDisplay'></span> <input type='text' id='expression'> <p></p> 
-            <span id='initialValueOfX'></span> <input type='text' id='X'> <p></p>
-            <span id='initialValueOfY'></span> <input type='text' id='Y'><p></p>
+            <span id='E1'></span> <input type='text' id='E2'> <p></p> 
+            <span id='X1'></span> <input type='text' id='X2'> <p></p>
+            <span id='Y1'></span> <input type='text' id='Y2'><p></p>
             <div id='insert1'>
             </div>
-            <button id='start'></button>
+            <button id='checkValid' >checkValid</button>
+            <button id='start' disabled='disabled'>start</button>
         </div>
         
-        <div id='expressionpanel'>
-            <fieldset id='panel'>
-             <button id="goFoward">goFoward</button>
-             <button id="goBack">goBack</button><span>&nbsp&nbsp <span>
+        
+            <div id='expressionpanel'>
+            <fieldset id='panel'style="display:none" >
+             <button id="goFoward" disabled='disabled'>goFoward</button>
+             <button id="goBack" disabled='disabled'>goBack</button><span>&nbsp&nbsp <span>
              <span id='expressioninpanel'></span><span>&nbsp;</span>
              <a href="javascript:void(0)" aria-label="Close Account Info Modal Box" style="float:right;" id="closebtn">&#x274C;</a><p></p><p></p> 
-             <span id='initialValueOfXinpanel'></span> <input type='text' id='Xinpanel'> <p></p>
-             <span id='initialValueOfYinpanel'></span> <input type='text' id='Yinpanel'><p></p>
+             <span id='X3'></span> <input type='text' id='X4'> <p></p>
+             <span id='Y3'></span> <input type='text' id='Y4'><p></p>
              <div id='insert2'>
              </div>
-             <span id='initialValueOfainpanel'></span> <input type='text' id='ainpanel'><p></p>
+             <span id='A3'></span> <input type='text' id='A4'><p></p>
             </fieldset>
             
             
             
         </div>
-        
-        
         
         
     </body>

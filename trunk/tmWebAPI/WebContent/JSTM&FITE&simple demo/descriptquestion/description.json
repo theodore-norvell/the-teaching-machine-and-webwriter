@@ -1,0 +1,122 @@
+
+[
+    
+{"question1":
+    {"name":"Question 1",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question2":
+    {"name":"Question 2",
+     "test":"write an to calculate x+y+z",
+     "inputVars":[{"name":"x","defaultInitValue":21.0},
+                  {"name":"y","defaultInitValue":20.0},
+                  {"name":"z","defaultInitValue":30.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question3":
+    {"name":"Question 3",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0},
+                  {"name":"z","defaultInitValue":30.0},
+                  {"name":"h","defaultInitValue":40.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n double h=$h$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question4":
+    {"name":"Question 4",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0},
+                  {"name":"z","defaultInitValue":30.0},
+                  {"name":"h","defaultInitValue":40.0},
+                  {"name":"i","defaultInitValue":50.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question5":
+    {"name":"Question 5",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question6":
+    {"name":"Question 6",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question7":
+    {"name":"Question 7",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question8":
+    {"name":"Question 8",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question9":
+    {"name":"Question 9",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      },
+"question10":
+    {"name":"Question 10",
+     "test":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.0},
+                  {"name":"y","defaultInitValue":20.0}],
+      "outPutVars":[{"name":"a","initValue":0.0}],
+      "language":"c++",
+      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "category":"fillInTheExpression"
+      }
+    },
+
+
+{}
+
+
+
+
+
+
+
+
+]

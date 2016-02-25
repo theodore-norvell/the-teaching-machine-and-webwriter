@@ -1,0 +1,7 @@
+--JSTM&FITE&simple demo -- description-- description.ts...used to initialize html
+                                      -- test1.ts...like the mian entry program for                        
+                                          demo
+                                      --testState.html...simple demo html
+                        --src-- Dr.norvell's JSTM interface and other stuff
+                        --library-- jquery.js and jquery.d.ts filrs
+                        --state-- concreteJSTM.ts & State.ts connect with each other
