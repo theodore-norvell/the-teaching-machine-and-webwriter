@@ -21,9 +21,13 @@ window.onload = function go() {
         console.log(index[i]);
         description.descript(index[i]);
     }
+    var fite;
     //after select, all the initial vars are ok!.
-    var concrete = new jstm.concreteJSTM('i will be send to FITE');
-    var fite = new State.FITE(concrete);
+    //var concrete = new jstm.concreteJSTM('i will be send to FITE');
+    jstm.concreteJSTM.createRTM().done(function (data) {
+        fite = new State.FITE(data);
+        console.log(fite.concrete);
+    });
     var check = document.getElementById('checkValid');
     //
     check.addEventListener('click', checkValid, false);
@@ -39,14 +43,20 @@ window.onload = function go() {
     //after i click the start button, change to the wait state
     //use asyn callback to make sure the program cascading function is first excuted and return program.
     function clickStartAndWait() {
-        fite.clickStart(fite);
+        fite.clickStart();
     }
     var goForwardButton = document.getElementById('goFoward');
     var goBackButton = document.getElementById('goBack');
     /** --------------------------------i am now in the start state -------------------------------------  **/
     /** --------------------------------i am now in the start state -------------------------------------  **/
-    goForwardButton.addEventListener('click', fite.goForward, false);
-    goBackButton.addEventListener('click', fite.goBack, false);
+    goForwardButton.addEventListener('click', goForward, false);
+    goBackButton.addEventListener('click', goBack, false);
+    function goForward() {
+        fite.goForward();
+    }
+    function goBack() {
+        fite.goBack();
+    }
     var closebtn = document.getElementById('closebtn');
     closebtn.addEventListener('click', closepanel, false);
     function closepanel() {

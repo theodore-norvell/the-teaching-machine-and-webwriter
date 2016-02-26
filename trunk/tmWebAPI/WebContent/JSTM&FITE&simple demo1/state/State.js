@@ -1,8 +1,8 @@
 /// <reference path="concreteJSTM.ts" />
 /// <reference path="../descriptquestion/description.ts" />
+/// <reference path="../src/JSTM.ts" />
 var State;
 (function (State) {
-    //export var test = '1';
     State.isInputValidFlag = false;
     //1,2,3,4
     var FITEState = {
@@ -43,10 +43,10 @@ var State;
         //start button clicked event
         Startable.prototype.clickStart = function (fite) {
             //i wish to fetch the program& the filename from the web pages!
-            State.filename = 'FITE.cpp';
-            State.program = DESCRIP.cascadeProgram();
-            console.log(State.program);
-            fite.create();
+            var filename = 'FITE.cpp';
+            var program = DESCRIP.cascadeProgram();
+            console.log(program);
+            fite.loadStringAndInitialize(filename, program);
             fite.setCurrentState(FITE.wait);
         };
         return Startable;
@@ -65,10 +65,16 @@ var State;
         };
         Wait.prototype.clickStart = function (fite) {
             //i wish to fetch the program& the filename from the web pages!
-            State.filename = 'FITE.cpp';
-            State.program = DESCRIP.cascadeProgram();
-            fite.create();
+            var filename = 'FITE.cpp';
+            var program = DESCRIP.cascadeProgram();
+            fite.loadStringAndInitialize(filename, program);
             fite.setCurrentState(FITE.wait);
+        };
+        Wait.prototype.gotoStarted = function (fite) {
+            fite.setCurrentState(FITE.started);
+            document.getElementById('goFoward').removeAttribute('disabled');
+            document.getElementById('goBack').removeAttribute('disabled');
+            document.getElementById('panel').style.display = 'block';
         };
         return Wait;
     })();
@@ -84,13 +90,17 @@ var State;
             this.currentState = FITE.initialize;
             this.concrete = concrete;
         }
-        //
+        //user check valid
         FITE.prototype.checkValid = function () {
             this.currentState.checkValid(this);
         };
-        //
-        FITE.prototype.clickStart = function (fite) {
-            this.currentState.clickStart(fite);
+        //user click start , 
+        FITE.prototype.clickStart = function () {
+            this.currentState.clickStart(this);
+        };
+        //gotoStarted
+        FITE.prototype.gotoStarted = function () {
+            this.currentState.gotoStarted(this);
         };
         FITE.prototype.setCurrentState = function (s) {
             this.currentState = s;
@@ -100,57 +110,47 @@ var State;
             return State.isInputValidFlag;
         };
         //11111111create  this is a promise's callback with 3 .done cascaded{which is the callback functions}
-        FITE.prototype.create = function () {
-            State.concrete = this.concrete;
+        FITE.prototype.loadStringAndInitialize = function (filename, program) {
+            var thisFITE = this;
+            var thisConcreteJSTM = this.concrete;
             //call the loadString in the concrete JSTM        
-            State.concrete.createRTM()
+            var program = program;
+            var filename = filename;
+            console.log(program + " " + filename + " " + thisConcreteJSTM.guid);
+            //call the loadString in the concrete JSTM
+            thisConcreteJSTM.loadString(program, filename)
                 .done(function (data) {
-                console.log('createRTM callback for the resolve');
+                console.log('loadString callback for the resolve');
                 console.log(data);
-                var program = State.program;
-                var filename = State.filename;
-                var guid = jstm.json.parameter[0].guid;
-                console.log(program + " " + filename + " " + guid);
-                //call the loadString in the concrete JSTM
-                State.concrete.loadString(program, filename, guid)
+                //'1' means, i want the response back from the server
+                var responseWantedFlag = '1';
+                //call the initialize in concrete JSTM
+                thisConcreteJSTM.initialize(responseWantedFlag)
                     .done(function (data) {
-                    console.log('loadString callback for the resolve');
+                    console.log('initialize callback for the resolve');
                     console.log(data);
-                    var guid = jstm.json.parameter[0].guid;
-                    //'1' means, i want the response back from the server
-                    var responseWantedFlag = '1';
-                    //call the initialize in concrete JSTM
-                    State.concrete.initialize(guid, responseWantedFlag)
-                        .done(function (data) {
-                        console.log('initialize callback for the resolve');
-                        console.log(data);
-                        document.getElementById('goFoward').removeAttribute('disabled');
-                        document.getElementById('goBack').removeAttribute('disabled');
-                        document.getElementById('panel').style.display = 'block';
-                    })
-                        .fail(function (data) {
-                        document.getElementById('panel').style.display = 'none';
-                        alert(jstm.json.parameter[0].reason);
-                        console.log('fail');
-                    });
+                    // DESCRIP.updateVariablesToPanelArea();
+                    thisFITE.gotoStarted();
                 })
                     .fail(function (data) {
                     document.getElementById('panel').style.display = 'none';
-                    alert(jstm.json.parameter[0].reason);
+                    alert(data.message);
                     console.log('fail');
                 });
             })
                 .fail(function (data) {
+                document.getElementById('panel').style.display = 'none';
+                alert(data.message);
                 console.log('fail');
             });
         };
         //22222222loadString this method is not used in my test, because i need use create().done.done.done chain to make it work. so this methid is cascaded in the .done
         FITE.prototype.loadString = function () {
+            var thisConcreteJSTM = this.concrete;
             var program = program;
             var filename = filename;
-            var guid = jstm.json.parameter[0].guid;
             //call the loadString in the concrete JSTM
-            State.concrete.loadString(program, filename, guid)
+            thisConcreteJSTM.loadString(program, filename)
                 .done(function (data) {
                 console.log('loadString callback for the resolve');
                 console.log(data);
@@ -161,11 +161,11 @@ var State;
         };
         //333333333initialize this method is not used in my test, because i need use create().done.done.done chain to make it work.so this methid is cascaded in the .done
         FITE.prototype.initialize = function () {
-            var guid = jstm.json.parameter[0].guid;
+            var thisConcreteJSTM = this.concrete;
             //'1' means, i want the response back from the server
             var responseWantedFlag = '1';
             //call the initialize in concrete JSTM
-            State.concrete.initialize(guid, responseWantedFlag)
+            thisConcreteJSTM.initialize(responseWantedFlag)
                 .done(function (data) {
                 console.log('initialize callback for the resolve');
                 console.log(data);
@@ -175,8 +175,11 @@ var State;
             });
         };
         FITE.prototype.goForward = function () {
-            var guid = jstm.json.parameter[0].guid;
-            State.concrete.goForward(guid)
+            var thisConcreteJSTM = this.concrete;
+            console.log(this);
+            console.log(this.currentState);
+            console.log(this.concrete);
+            thisConcreteJSTM.goForward()
                 .done(function (data) {
                 console.log('goForward callback for the resolve');
                 console.log(data);
@@ -186,8 +189,8 @@ var State;
             });
         };
         FITE.prototype.goBack = function () {
-            var guid = jstm.json.parameter[0].guid;
-            State.concrete.goBack(guid)
+            var thisConcreteJSTM = this.concrete;
+            thisConcreteJSTM.goBack()
                 .done(function (data) {
                 console.log('goBack callback for the resolve');
                 console.log(data);

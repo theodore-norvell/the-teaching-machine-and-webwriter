@@ -4,6 +4,7 @@ var DESCRIP;
 (function (DESCRIP) {
     DESCRIP.watchHTMLElement = { "input": { 'length': null, "a": null, 'b': null, 'c': null, 'd': null },
         'output': { 'a': null },
+        'inputReflectInPanelArea': { "a": null, 'b': null, 'c': null, 'd': null },
         'expression': null };
     var program;
     function cascadeProgram() {
@@ -44,6 +45,10 @@ var DESCRIP;
         }
     }
     DESCRIP.cascadeProgram = cascadeProgram;
+    function updateVariablesToPanelArea() {
+        document.getElementById('expressioninpanel').innerHTML = document.getElementById('E2').value;
+    }
+    DESCRIP.updateVariablesToPanelArea = updateVariablesToPanelArea;
     var description = (function () {
         function description() {
         }
@@ -86,7 +91,11 @@ var DESCRIP;
             document.getElementById('X2').value = index.value.inputVars[0].defaultInitValue;
             document.getElementById('Y1').innerHTML = "Initial Value of " + index.value.inputVars[1].name;
             document.getElementById('Y2').value = index.value.inputVars[1].defaultInitValue;
-            //set the watchHTMLElement 
+            document.getElementById('X3').innerHTML = index.value.inputVars[0].name;
+            document.getElementById('X4').value = index.value.inputVars[0].defaultInitValue;
+            document.getElementById('Y3').innerHTML = index.value.inputVars[1].name;
+            document.getElementById('Y4').value = index.value.inputVars[1].defaultInitValue;
+            //set the watchHTMLElement inout part
             DESCRIP.watchHTMLElement.input.length = index.value.inputVars.length;
             DESCRIP.watchHTMLElement.input.a = document.getElementById('X2');
             DESCRIP.watchHTMLElement.input.b = document.getElementById('Y2');
@@ -155,9 +164,11 @@ var DESCRIP;
             }
         };
         description.prototype.makeHTMLoutputVars = function (index) {
-            document.getElementById('A4').innerHTML = index.value.outPutVars.initValue;
+            document.getElementById('A3').innerHTML = index.value.outPutVars[0].name;
+            document.getElementById('A4').value = index.value.outPutVars[0].initValue;
             //
             DESCRIP.watchHTMLElement.output.a = document.getElementById('A4');
+            // document.getElementById('A3').innerHTML=abstract.;
         };
         description.prototype.checkValid = function (c) {
             switch (DESCRIP.watchHTMLElement.input.length) {

@@ -6,6 +6,8 @@ module jstm {
     import Promise = P.Promise ;
     
     export interface JSTM {
+        
+        guid:string;
         /** Make an HTML element that displays the state of the expression.
          *   This display will update automatically.
         */
@@ -36,37 +38,36 @@ module jstm {
         getStatus : () => string ;
 
         /** The most recent error message from the Remote TM.*/
-        getMessage : () => string  ;
+        getMessage : () => string ;
 
 
         //createRTM
-        createRTM:()=>Promise<JSTM>;
         
         /** Compile a program. See WebAPI documentation for details.
         *   The result is a Promise object. This promise will be resolved when the 
         *   server's response arrives and has HTTP response code 200.  It will be
         *   rejected if the response code is anything else.
         */
-        loadString : ( program : string, filename : string, guid:string)=>Promise<JSTM>;
+        loadString : ( program : string, filename : string)=>Promise<JSTM>;
         
         //initialize
-        initialize:(guid:string,responseWantedFlag:string)=>Promise<JSTM>;
+        initialize:(responseWantedFlag:string)=>Promise<JSTM>;
         /** Advance the state of the TM.  See WebAPI documentation for details.
         *   The result is a Promise object. This promise will be resolved when the 
         *   server's response arrives and has HTTP response code 200.  It will be
         *   rejected if the response code is anything else.
         */
-        go : ( commandString : string,guid:string ) => Promise<JSTM> ;
+        go : ( commandString : string) => Promise<JSTM> ;
 
         /** Same as go("f") ;
         */
-        goForward : (guid:string) => Promise<JSTM> ;
+        goForward : () => Promise<JSTM> ;
 
         /** Undo the last advance of the remote TM.
         *   The result is a Promise object. This promise will be resolved when the 
         *   server's response arrives and has HTTP response code 200.  It will be
         *   rejected if the response code is anything else.
         */
-        goBack : (guid:string) => Promise<JSTM> ; 
+        goBack : () => Promise<JSTM> ; 
     }
 }

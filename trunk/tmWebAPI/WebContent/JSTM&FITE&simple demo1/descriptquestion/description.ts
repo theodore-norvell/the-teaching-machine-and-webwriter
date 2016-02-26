@@ -7,6 +7,7 @@ module DESCRIP{
   export var tempIndex;
   export var watchHTMLElement={"input":{ 'length':null, "a":null,'b':null,'c':null,'d':null},
                                 'output':{'a':null},
+                                'inputReflectInPanelArea':{"a":null,'b':null,'c':null,'d':null},
                                 'expression':null};
          var program;
                                 
@@ -47,6 +48,15 @@ module DESCRIP{
       
        
    }
+   
+   export function updateVariablesToPanelArea(){
+       
+    document.getElementById('expressioninpanel').innerHTML= document.getElementById('E2').value;
+       
+       
+   }
+   
+   
     
   export  class description{
         
@@ -96,12 +106,17 @@ module DESCRIP{
         
         document.getElementById('Y1').innerHTML="Initial Value of "+index.value.inputVars[1].name;
         document.getElementById('Y2').value=index.value.inputVars[1].defaultInitValue;
-        //set the watchHTMLElement 
+        
+        document.getElementById('X3').innerHTML=index.value.inputVars[0].name;
+        document.getElementById('X4').value=index.value.inputVars[0].defaultInitValue;
+        document.getElementById('Y3').innerHTML=index.value.inputVars[1].name;
+        document.getElementById('Y4').value=index.value.inputVars[1].defaultInitValue;
+        //set the watchHTMLElement inout part
         watchHTMLElement.input.length=index.value.inputVars.length;
         watchHTMLElement.input.a=document.getElementById('X2');
         watchHTMLElement.input.b=document.getElementById('Y2');
         watchHTMLElement.expression=document.getElementById('E2');
-        
+
          console.log(watchHTMLElement);
  }  
   
@@ -179,9 +194,12 @@ module DESCRIP{
   }
 
          public makeHTMLoutputVars(index){
-          document.getElementById('A4').innerHTML=index.value.outPutVars.initValue;  
+          document.getElementById('A3').innerHTML=index.value.outPutVars[0].name;
+          document.getElementById('A4').value=index.value.outPutVars[0].initValue;   
           //
           watchHTMLElement.output.a=document.getElementById('A4');
+         // document.getElementById('A3').innerHTML=abstract.;
+          
        } 
         
         

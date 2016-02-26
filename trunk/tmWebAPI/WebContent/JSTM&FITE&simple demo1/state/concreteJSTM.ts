@@ -3,34 +3,48 @@
 /// <reference path="../library/jquery.d.ts" />
 
 module jstm{
-    export var json={ "parameter":[{"guid":"","reasonFlag":"","reason":"","focus":"","code":"","status":"","expression":"","filename":""}],
-                "flag":[{"expEffect":0,"responseWantedFlag":null}]}
+    // var json={ "parameter":[{"guid":"","reasonFlag":"","reason":"","focus":"","code":"","status":"","expression":"","filename":""}],
+       //         "flag":[{"expEffect":0,"responseWantedFlag":null}]}
  
     
     import Promise = P.Promise ;
     
     
    export class concreteJSTM implements jstm.JSTM{
-       public name:string;
-        constructor(name:string){
-            this.name=name;
+        status:string;
+        message:string;
+        guid:string;
+        constructor(guid:string){
+            this.guid=guid;
         }
-        
+     
+    
         
     //getstatus
     getStatus():string{
-        return json.parameter[0].status;
+        return this.status;
     } 
+    
+    //set
+    setStatus(status:string):void{
+        this.status=status;
+    }
+    
     //getMessage    
     getMessage():string{
-        return json.parameter[0].reason; 
+        return this.message; 
+    }
+    
+    //set
+    setMessage(message:string):void{
+        this.message=message;
     }
         
      //createRTM   
-     createRTM():Promise<JSTM>{
+    static createRTM():Promise<JSTM>{
         var d=P.defer<JSTM>();
         var p=d.promise();
-        var thisJSTM=this;
+       // var thisJSTM=this;
         
         $.ajax({
             url : 'createRemoteTM.create',
@@ -40,15 +54,16 @@ module jstm{
     .done(function (data) {
         var parameterTemp =data;
         //assign back-end json object to the front end parameters in this js file;
-        json.parameter[0].guid=parameterTemp.guid;
-        json.parameter[0].reasonFlag=parameterTemp.reasonFlag;
-        json.parameter[0].reason=parameterTemp.reason;
-        json.parameter[0].status=parameterTemp.status;
+        var guid=parameterTemp.guid;
+        var reasonFlag=parameterTemp.reasonFlag;
+        var reason=parameterTemp.reason;
+        var status=parameterTemp.status;
         //if there is no error in the createRemoteTM step
-        console.log(json.parameter[0].status);
+        console.log(status);
         console.log(parameterTemp);
         //fullfill the defered state
-        d.resolve(thisJSTM)
+        var thisJSTM:JSTM = new concreteJSTM(guid);
+        d.resolve(thisJSTM);
     })
     .fail(function () {d.reject(this); console.log("error! in createRTM in concreteJSTM");});
    
@@ -58,34 +73,38 @@ module jstm{
         
         
   //loadString
-    loadString( program : string, filename : string, guid:string ) :Promise<JSTM>  {
+    loadString( program : string, filename : string) :Promise<JSTM>  {
             var d=P.defer<JSTM>();
             var p=d.promise();
             var thisJSTM=this;
+            console.log(thisJSTM);
+            console.log(thisJSTM.guid);
             
             $.ajax({
              url : 'loadString.load',
              dataType:"json",
              type:"POST",
-             data : {'guid':guid,
+             data : {'guid':thisJSTM.guid,
                     'Codes' : program,
                     'filename':filename },
             })
             .done(function (data) {
                      var parameterTemp =data;
                      //assign back-end json object to the front end parameters in this js file;
-                     json.parameter[0].reasonFlag=parameterTemp.reasonFlag;
-                     json.parameter[0].reason=parameterTemp.reason;
-                     json.parameter[0].status=parameterTemp.status;
+                     var reasonFlag=parameterTemp.reasonFlag;
+                     var reason=parameterTemp.reason;
+                     var status=parameterTemp.status;
                      //if there is no error in the createRemoteTM step
-                     console.log(json.parameter[0].status);
+                     thisJSTM.setStatus(status);
+                     console.log(thisJSTM.getStatus());
                      console.log(parameterTemp); 
-                    if(json.parameter[0].status=='3'){
+                    if(status=='3'){
                         d.resolve(thisJSTM);
                     } 
                     else{
                         document.getElementById('panel').style.display='none';
-                        alert(jstm.json.parameter[0].reason);
+                        thisJSTM.setMessage(reason);
+                        alert(thisJSTM.getMessage());
                     }
                     
                 })
@@ -95,7 +114,7 @@ module jstm{
         }
         
       //initialize  
-       initialize(guid:string,responseWantedFlag:string):Promise<JSTM>{
+       initialize(responseWantedFlag:string):Promise<JSTM>{
             var d=P.defer<JSTM>();
             var p=d.promise();
             var thisJSTM=this;
@@ -104,24 +123,26 @@ module jstm{
 	         url : 'initializeTheState.initialize',
 	         dataType:"json",
 	         type:"POST",
-	         data : { 'guid':guid,
+	         data : { 'guid':thisJSTM.guid,
                       'responseWantedFlag':responseWantedFlag }})
              .done(function(data){
                     var parameterTemp =data;
-    	            json.parameter[0].reasonFlag=parameterTemp.reasonFlag;
-    	            json.parameter[0].reason=parameterTemp.reason;
-    	            json.parameter[0].status=parameterTemp.status;
-                    console.log(json.parameter[0].status);
+    	            var reasonFlag=parameterTemp.reasonFlag;
+    	            var reason=parameterTemp.reason;
+    	            var status=parameterTemp.status;
+                    thisJSTM.setStatus(status);
+                    console.log(thisJSTM.getStatus());
                     console.log(parameterTemp); 
                     //fuilfull
-                    if (json.parameter[0].status=='4'){
+                    if (status=='4'){
                         d.resolve(thisJSTM);
                      //goForwardButton.removeAttribute('disabled');
                      //goBackButton.removeAttribute('disabled');
                        }
                      else{
                          document.getElementById('panel').style.display='none';
-                          alert(jstm.json.parameter[0].reason);
+                         thisJSTM.setMessage(reason);
+                         alert(thisJSTM.getMessage());
                                  }
                         })
              .fail(function(data){ d.reject(this); console.log('error! in the initialize in concreteJSTM');});
@@ -130,7 +151,7 @@ module jstm{
        }
        
         //go
-        go( commandString : string, guid:string ):Promise<JSTM>{
+        go( commandString : string):Promise<JSTM>{
         var d=P.defer<JSTM>();
         var p=d.promise();
         var thisJSTM=this;
@@ -139,29 +160,29 @@ module jstm{
         url : 'go.g',
         dataType:"json",
         type:"POST",
-        data : { 'guid':guid ,
+        data : { 'guid':thisJSTM.guid ,
                 'command':commandString}})            
           .done(function(data){
             var parameterTemp =data;
-            json.parameter[0].reason=parameterTemp.reason;
-            json.parameter[0].status=parameterTemp.status;
-            json.parameter[0].expression=parameterTemp.expression;
+            var reason=parameterTemp.reason;
+            var status=parameterTemp.status;
+            var expression=parameterTemp.expression;
             /**parse the characters of the expression**/
-            var expTemp = ExpressionEffect(json.parameter[0].expression);
+            var expTemp = ExpressionEffect(expression);
             //fuilfull
             d.resolve(thisJSTM);
-            if(json.parameter[0].status!='6'&&json.parameter[0].status!='7'){
+            if(status!='6'&&status!='7'){
                 $('#expressioninpanel').text("");
                 $('#expressioninpanel').append("<p>"+expTemp+"</p>");
                 }
-                if(json.parameter[0].status=='6'){
+                if(status=='6'){
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+json.parameter[0].status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
                     }
-                if(json.parameter[0].status=='7')
+                if(status=='7')
                     {
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+json.parameter[0].status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
                     
                     }
                  })
@@ -175,7 +196,7 @@ module jstm{
         
         //goForward
     
-       goForward(guid:string):Promise<JSTM>{
+       goForward():Promise<JSTM>{
         var d=P.defer<JSTM>();
         var p=d.promise();
         var thisJSTM=this;
@@ -185,30 +206,31 @@ module jstm{
 	    url : 'goForward.goForward',
 	    dataType:"json",
 	    type:"POST",
-	    data : {'myguid':guid} })
+	    data : {'myguid':thisJSTM.guid} })
         .done(function(data){
+            //data comes back from the server. 
             var parameterTemp =data;
-        	json.parameter[0].reason=parameterTemp.reason;
-        	json.parameter[0].status=parameterTemp.status;
-        	json.parameter[0].expression=parameterTemp.expression;
+        	var reason=parameterTemp.reason;
+        	var status=parameterTemp.status;
+        	var expression=parameterTemp.expression;
         	/**parse the characters of the expression**/
-        	var expTemp = ExpressionEffect(json.parameter[0].expression);
+        	var expTemp = ExpressionEffect(expression);
             //fuilfill
             d.resolve(thisJSTM);
             
-    		if(json.parameter[0].status!='6'&&json.parameter[0].status!='7'){
+    		if(status!='6'&&status!='7'){
  		    $('#expressioninpanel').text("");
             $('#expressioninpanel').append("<span>"+expTemp+"</span>");
 
         	}
-    		if(json.parameter[0].status=='6'){
+    		if(status=='6'){
     			$('#expressioninpanel').text("");
-                $('#expressioninpanel').append("<span>"+json.parameter[0].status+"</span>"+"<br>");
+                $('#expressioninpanel').append("<span>"+status+"</span>"+"<br>");
     			}
-    		if(json.parameter[0].status=='7')
+    		if(status=='7')
     			{
     			$('#expressioninpanel').text("");
-                $('#expressioninpanel').append("<span>"+json.parameter[0].reason+"</span>"+"<br>");
+                $('#expressioninpanel').append("<span>"+reason+"</span>"+"<br>");
 
     			
     			};
@@ -221,7 +243,7 @@ module jstm{
 
 
         //goBack
-       goBack(guid:string):Promise<JSTM>{
+       goBack():Promise<JSTM>{
         var d=P.defer<JSTM>();
         var p=d.promise();
         var thisJSTM=this;
@@ -230,29 +252,29 @@ module jstm{
 	    url : 'goBack.goBack',
 	    dataType:"json",
 	    type:"POST",
-	    data : {'myguid':guid} })
+	    data : {'myguid':thisJSTM.guid} })
         .done(function(data){
             var parameterTemp =data;
-            json.parameter[0].reason=parameterTemp.reason;
-            json.parameter[0].status=parameterTemp.status;
-            json.parameter[0].expression=parameterTemp.expression;
+            var reason=parameterTemp.reason;
+            var status=parameterTemp.status;
+            var expression=parameterTemp.expression;
             /**parse the characters of the expression**/
-            var expTemp = ExpressionEffect(json.parameter[0].expression);
+            var expTemp = ExpressionEffect(expression);
             //fuillfill
             d.resolve(thisJSTM);
             
-            if(json.parameter[0].status!='6'&&json.parameter[0].status!='7'){
+            if(status!='6'&&status!='7'){
                 $('#expressioninpanel').text("");
                 $('#expressioninpanel').append("<span>"+expTemp+"</span>");
                 }
-                if(json.parameter[0].status=='6'){
+                if(status=='6'){
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+json.parameter[0].status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
                     }
-                if(json.parameter[0].status=='7')
+                if(status=='7')
                     {
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+json.parameter[0].reason+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+reason+"</font>"+"<br>");
                     }
                 })  
                 .fail(function(){ d.reject(this);console.log('error!'); });
@@ -287,7 +309,7 @@ module jstm{
 	exp=exp.replace(/[\ufffd]/g,"<span class='tm-underline'>");
 	exp=exp.replace(/[\ufffc]/g,"<span class='tm-blue'>");
 	exp=exp.replace(/[\ufffb]/g,"</span>");
-	json.flag[0].expEffect=1;
+	var expEffect=1;
 	
 	return exp;
 	
