@@ -11,21 +11,28 @@ module jstm {
         */
         makeExpressionDisplay : () => HTMLElement ;
 
-        /** Make a button that will move the TM state forward by the smallest interesting step.
-        *@params
-        *    onDone : A callback to be executed after the response from the TM arrives and the displays 
-        *             have been updated.
-        *    onFail : A callback to be executed if the response from the TM is not HTTP response code 200.
+        /** Make a button that will move the TM state forward by
+        *   the smallest interesting step.
+        * @params
+        *    onDone : A callback to be executed after the response from the
+        *             TM arrives and the displays have been updated.
+        *    onFail : A callback to be executed if the response
+        *             from the TM is not HTTP response code 200.
         */
-        makeGoForwardButton : (onDone? : (jstm:JSTM) => void, onFail? : (r:P.Rejection) => void) => HTMLElement ;
+        makeGoForwardButton : (onDone? : (jstm:JSTM) => void,
+                               onFail? : (r:P.Rejection) => void)
+                            => HTMLElement ;
  
         /** Make a button that will undo the last forward step.
-        *@params
-        *    onDone : A callback to be executed after the response from the TM arrives and the displays 
-        *             have been updated.
-        *    onFail : A callback to be executed if the response from the TM is not HTTP response code 200.
+        * @params
+        *    onDone : A callback to be executed after the response
+        *             from the TM arrives and the displays have been updated.
+        *    onFail : A callback to be executed if the response
+        *             from the TM is not HTTP response code 200.
         */
-        makeGoBackButton : (onDone? : (jstm:JSTM) => void, onFail? : (r:P.Rejection) => void) => HTMLElement ;
+        makeGoBackButton : (onDone? : (jstm:JSTM) => void,
+                            onFail? : (r:P.Rejection) => void)
+                         => HTMLElement ;
 
         /** Make an HTML element that displays the state of one variable.
         *    This display will update automatically.
