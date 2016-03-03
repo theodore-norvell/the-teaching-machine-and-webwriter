@@ -58,13 +58,12 @@ public class initializeTheState extends HttpServlet {
 			String responseWantedFlag = request.getParameter("responseWantedFlag");
 			String res=responseWantedFlag;
 
-		
 			remoteTM rtm = mapForRTM.getInstance(guid);
 			
 			JSONObject response1;
 			try {
 				response1 = rtm.initializeTheState(guid,responseWantedFlag);
-				
+				//System.out.println(response1);
 				if("1".equals(res)){
 					
 					out.println(response1);
