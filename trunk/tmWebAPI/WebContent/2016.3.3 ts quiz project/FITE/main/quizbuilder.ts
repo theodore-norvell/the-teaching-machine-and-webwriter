@@ -59,6 +59,8 @@ module quizBuilder
        inputVars:any;
        outputVars:any;
        expression:HTMLElement;
+       
+       questionDisplay = new Array<HTMLElement>();
        //
        inputExpressionSpanElement = new Array<HTMLElement>();
        inputExpressionInputElement:any = new Array<HTMLElement>();
@@ -91,7 +93,13 @@ module quizBuilder
   public setOutputVars(outputVars:any){
       this.outputVars=outputVars;  
                                      }
+                                     
   // i will receive the inputVars object and return inputVarsSpan;
+    public setquestionDisplay(tempIndex:any){
+      this.questionDisplay[0] = document.getElementById('questionDisplay');
+      this.questionDisplay[0].innerHTML = tempIndex.name+" : "+tempIndex.text;
+  }
+   
   public setInputExpressionSpanElement(){
       this.inputExpressionSpanElement[0]=document.createElement('span');
       this.inputExpressionSpanElement[0].innerHTML='expression: ';
@@ -263,6 +271,7 @@ module quizBuilder
     };
     public  buildInputVars(){
         //console.log(tempIndex.inputVars);
+        this.quiz.setquestionDisplay(tempIndex);
         this.quiz.setInputVars(tempIndex.inputVars);
         this.quiz.setInputExpressionSpanElement();
         this.quiz.setinputExpressionInputElement();

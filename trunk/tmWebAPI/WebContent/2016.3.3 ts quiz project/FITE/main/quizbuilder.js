@@ -50,6 +50,7 @@ var quizBuilder;
     //fat product---->quiz
     var Quiz = (function () {
         function Quiz(category, name, language) {
+            this.questionDisplay = new Array();
             //
             this.inputExpressionSpanElement = new Array();
             this.inputExpressionInputElement = new Array();
@@ -77,6 +78,10 @@ var quizBuilder;
             this.outputVars = outputVars;
         };
         // i will receive the inputVars object and return inputVarsSpan;
+        Quiz.prototype.setquestionDisplay = function (tempIndex) {
+            this.questionDisplay[0] = document.getElementById('questionDisplay');
+            this.questionDisplay[0].innerHTML = tempIndex.name + " : " + tempIndex.text;
+        };
         Quiz.prototype.setInputExpressionSpanElement = function () {
             this.inputExpressionSpanElement[0] = document.createElement('span');
             this.inputExpressionSpanElement[0].innerHTML = 'expression: ';
@@ -203,6 +208,7 @@ var quizBuilder;
         ;
         FITEQuiz.prototype.buildInputVars = function () {
             //console.log(tempIndex.inputVars);
+            this.quiz.setquestionDisplay(tempIndex);
             this.quiz.setInputVars(tempIndex.inputVars);
             this.quiz.setInputExpressionSpanElement();
             this.quiz.setinputExpressionInputElement();

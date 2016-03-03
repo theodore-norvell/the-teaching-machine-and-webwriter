@@ -52,9 +52,9 @@ window.onload=function(){
    qz.constructInertArea1();
    qz.constructInsertArea2();
    
-    qz.inputExpressionInputElement[0].addEventListener('change',ValidWatch,false);
+    qz.inputExpressionInputElement[0].addEventListener('input',ValidWatch,false);
    for(var i=0;i<qz.inputVarsInputElement.length;i++){
-    qz.inputVarsInputElement[i].addEventListener('change',ValidWatch,false);
+    qz.inputVarsInputElement[i].addEventListener('input',ValidWatch,false);
                                                       }
    
    
@@ -99,6 +99,7 @@ window.onload=function(){
     function close(){
         document.getElementById('panel').style.display='none';
         startButton.setAttribute('disabled','disabled');
+        document.getElementById('expressioninpanel').innerHTML='';
     }
 
 
@@ -131,7 +132,7 @@ window.onload=function(){
    function ValidWatch(){
        var boolFlag=true;
        var bool = new Array<boolean>();
-       for(var i=0;i<qz.outputVarsInputElement.length;i++)
+       for(var i=0;i<qz.inputVarsInputElement.length;i++)
        {  
            bool[i]=qz.inputExpressionInputElement[0].value!=''&&!isNaN(qz.inputVarsInputElement[i].value)&&qz.inputVarsInputElement[i].value!='';
            if (bool[i]==false)
@@ -141,6 +142,13 @@ window.onload=function(){
        }
        //console.log(bool);
        if(boolFlag==true){
+           //if valid check pass, update outputarea.
+           for(var i=0;i<qz.outputVarsInputElement.length;i++)
+           {
+               console.log('i am in the update for loop');
+               qz.outputVarsInputElement[i].value=qz.inputVarsInputElement[i].value;
+           }
+           //update finishes
             fite.setisInputValidFlagToBeTrue();
             fite.checkValid();
            }

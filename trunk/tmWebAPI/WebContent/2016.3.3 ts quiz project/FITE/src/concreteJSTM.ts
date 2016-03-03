@@ -177,12 +177,12 @@ module jstm{
                 }
                 if(status=='6'){
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+' EXECUTION_COMPLETE '+"</font>"+"<br>");
                     }
                 if(status=='7')
                     {
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+' EXECUTION_FAILED '+"</font>"+"<br>");
                     
                     }
                  })
@@ -225,12 +225,12 @@ module jstm{
         	}
     		if(status=='6'){
     			$('#expressioninpanel').text("");
-                $('#expressioninpanel').append("<span>"+status+"</span>"+"<br>");
+                $('#expressioninpanel').append("<span>"+' EXECUTION_COMPLETE '+"</span>"+"<br>");
     			}
     		if(status=='7')
     			{
     			$('#expressioninpanel').text("");
-                $('#expressioninpanel').append("<span>"+reason+"</span>"+"<br>");
+                $('#expressioninpanel').append("<span>"+' EXECUTION_FAILED '+"</span>"+"<br>");
 
     			
     			};
@@ -269,12 +269,12 @@ module jstm{
                 }
                 if(status=='6'){
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+status+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+' EXECUTION_COMPLETE '+"</font>"+"<br>");
                     }
                 if(status=='7')
                     {
                     $('#expressioninpanel').text("");
-                    $('#expressioninpanel').append("<font color='black'>"+reason+"</font>"+"<br>");
+                    $('#expressioninpanel').append("<font color='black'>"+' EXECUTION_FAILED '+"</font>"+"<br>");
                     }
                 })  
                 .fail(function(){ d.reject(this);console.log('error!'); });

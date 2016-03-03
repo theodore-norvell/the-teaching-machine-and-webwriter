@@ -146,6 +146,9 @@ module State{
                 console.log('input valid'); 
                 document.getElementById('start').innerHTML= 'Restart';
                 document.getElementById('start').removeAttribute('disabled');
+                document.getElementById('goFoward').setAttribute('disabled','disabled');
+                document.getElementById('goBack').setAttribute('disabled','disabled');
+                
                 fite.setCurrentState(FITE.startable);
                 
                 

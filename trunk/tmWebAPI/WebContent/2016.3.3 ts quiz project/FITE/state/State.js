@@ -59,8 +59,8 @@ var State;
             var filename = 'FITE.cpp';
             var program = Singleton.singleton.getSingleton().getProgramText();
             console.log(program);
-            fite.loadStringAndInitialize(filename, program);
             fite.setCurrentState(FITE.wait);
+            fite.loadStringAndInitialize(filename, program);
         };
         return Startable;
     })();
@@ -84,6 +84,7 @@ var State;
             fite.setCurrentState(FITE.wait);
         };
         Wait.prototype.gotoStarted = function (fite) {
+            console.log('i am the method gotoStatred in Wait state');
             document.getElementById('goFoward').removeAttribute('disabled');
             document.getElementById('goBack').removeAttribute('disabled');
             document.getElementById('panel').style.display = 'block';
@@ -102,6 +103,8 @@ var State;
                 console.log('input valid');
                 document.getElementById('start').innerHTML = 'Restart';
                 document.getElementById('start').removeAttribute('disabled');
+                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
+                document.getElementById('goBack').setAttribute('disabled', 'disabled');
                 fite.setCurrentState(FITE.startable);
             }
             else {
