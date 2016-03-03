@@ -1,4 +1,4 @@
-package com.remoteTMproject.controller.servlet;
+/*package com.remoteTMproject.controller.servlet;
 
 
 
@@ -22,37 +22,37 @@ import tm.utilities.TMFile;
 import com.remoteTMproject.model.RTM.remoteTM;
 import com.remoteTMproject.model.map.map;
 
-/**
+*//**
  * Servlet implementation class servlet
  * in the start of this project , create this servlet class. the first version!!!!!!!!!!!!!!!!!
- */
+ *//*
 @WebServlet("/servlet")
 public class servlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    /**
+    *//**
      * @see HttpServlet#HttpServlet()
-     */
+     *//*
     public servlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
+	*//**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	 *//*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
-	/**
+	*//**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	 *//*
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html;charset=utf-8");
 	    PrintWriter out = response.getWriter();
-		//»ñÈ¡ÇëÇó×ÊÔ´Â·¾¶
+		//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Â·ï¿½ï¿½
 		String uri=request.getRequestURI();
 		String path=uri.substring(
 				uri.lastIndexOf("/"),
@@ -63,19 +63,19 @@ public class servlet extends HttpServlet {
 		//create a remoteRTM for the first time.
 	    if(path.equals("/createRemoteTM")){
 	    	//createRTM method to create a RTM
-	        /** Status Code -- No Evaluator is present. This means no display manager either. */
+	        *//** Status Code -- No Evaluator is present. This means no display manager either. *//*
 	       // public static final int NO_EVALUATOR = 0 ;
 	        
-	        /**  Status Code -- An evaluator is built but compilation hasn't happened yet.  */
+	        *//**  Status Code -- An evaluator is built but compilation hasn't happened yet.  *//*
 	       // public static final int READY_TO_COMPILE = 1 ;
 	        
-	        /**  Status Code -- Compilation failed. */
+	        *//**  Status Code -- Compilation failed. *//*
 	       // public static final int DID_NOT_COMPILE = 2 ;
 	        
-	        /**  Status Code -- Compilation was successful. Initialization has not been done.*/
+	        *//**  Status Code -- Compilation was successful. Initialization has not been done.*//*
 	        //public static final int COMPILED = 3 ;
 	        
-	        /**  Status Code -- Ready for next step*/
+	        *//**  Status Code -- Ready for next step*//*
 	       // public static final int READY = 4 ;
 	    	
 	    	String programText = request.getParameter("Codes");
@@ -133,3 +133,4 @@ public class servlet extends HttpServlet {
 	}
 
 }
+*/
