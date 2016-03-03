@@ -160,6 +160,7 @@ public class remoteTM implements StatusConsumer{
 			////////////////
 			remoteTM rtm = mapForRTM.getInstance(guid);
   	        
+			
 			if(rtm.getStatusCode()!=3)
 			{   
 				reasonFlag=1;
@@ -572,10 +573,10 @@ public class remoteTM implements StatusConsumer{
 
 	private void compile( TMFile tmFile) {
 		// Precondition evaluator != null
-		Assert.check( evaluator != null  ) ;
-		java.awt.Frame dialog = new AttentionFrame( "Standby",
-				"The Teaching Machine is loading the file.") ;
-		dialog.setVisible( true ) ;
+		//Assert.check( evaluator != null  ) ;
+		//java.awt.Frame dialog = new AttentionFrame( "Standby",
+			//	"The Teaching Machine is loading the file.") ;
+		//dialog.setVisible( true ) ;
 
 		evaluator.compile( tmFile );
 
