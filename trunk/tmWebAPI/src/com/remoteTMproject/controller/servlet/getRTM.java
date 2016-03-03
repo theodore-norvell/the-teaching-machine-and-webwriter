@@ -1,4 +1,4 @@
-package com.remoteTMproject.controller.servlet;
+/*package com.remoteTMproject.controller.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,33 +22,33 @@ import com.remoteTMproject.model.json.JsonTransfer;
 import com.remoteTMproject.model.json.Response;
 import com.remoteTMproject.model.map.mapForRTM;
 
-/**
+*//**
  * Servlet implementation class servletTest1
- */
+ *//*
 @WebServlet("/servletTest1")
 public class getRTM extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     //private String guidTest1= createRTM.guidHolder;
 
 	private int focusnumber;
-    /**
+    *//**
      * @see HttpServlet#HttpServlet()
-     */
+     *//*
     public getRTM() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-	/**
+	*//**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
+	 *//*
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
-	/**
+	*//**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
+	 *//*
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.setContentType("text/html;charset=utf-8");
@@ -60,7 +60,7 @@ public class getRTM extends HttpServlet {
 				uri.lastIndexOf("/"),
 				uri.lastIndexOf("."));
 		
-		/**JSONObject here **/
+		*//**JSONObject here **//*
 		//JSONObject obj1 = new JSONObject();
 
 		
@@ -137,7 +137,7 @@ public class getRTM extends HttpServlet {
 			
 		}
 		
-/*		//getExpression
+		//getExpression
 		if(path.equals("/expression")){
 			String guid;
 			guid = request.getParameter("myguid");
@@ -153,9 +153,9 @@ public class getRTM extends HttpServlet {
 			}
 			
 			
-		}*/
+		}
 		
-/*		//getAnswer
+		//getAnswer
 		if(path.equals("/answer")){
 			String guid;
 			guid = request.getParameter("myguid");
@@ -164,7 +164,7 @@ public class getRTM extends HttpServlet {
 			}
 			String myOutPut = mapForRTM.getInstance(guid).getOutputString() ;
 	        out.print(myOutPut);
-		}*/
+		}
 		
 		
 		
@@ -173,3 +173,4 @@ public class getRTM extends HttpServlet {
 	}
 
 }
+*/
