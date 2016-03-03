@@ -1,9 +1,11 @@
-/// <reference path="concreteJSTM.ts" />
-/// <reference path="../descriptquestion/description.ts" />
+/// <reference path="../src/concreteJSTM.ts" />
+/// <reference path="../main/description.ts" />
 /// <reference path="../src/JSTM.ts" />
+/// <reference path="../singleton/singleton.ts" />
 var State;
 (function (State) {
-    State.isInputValidFlag = false;
+    //export var programTemp=null;
+    //var isInputValidFlag=false;
     //1,2,3,4
     var FITEState = {
         initialize: 'initialize',
@@ -19,10 +21,12 @@ var State;
         Initialize.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
+                document.getElementById('start').removeAttribute('disabled');
                 fite.setCurrentState(FITE.startable);
             }
             else {
                 console.log('input not valid');
+                document.getElementById('start').setAttribute('disabled', 'disabled');
                 fite.setCurrentState(FITE.initialize);
             }
         };
@@ -37,14 +41,23 @@ var State;
         Startable.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
+                document.getElementById('start').removeAttribute('disabled');
                 fite.setCurrentState(FITE.startable);
+            }
+            else {
+                console.log('input not valid');
+                document.getElementById('start').setAttribute('disabled', 'disabled');
+                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
+                document.getElementById('goBack').setAttribute('disabled', 'disabled');
+                fite.setCurrentState(FITE.initialize);
             }
         };
         //start button clicked event
         Startable.prototype.clickStart = function (fite) {
             //i wish to fetch the program& the filename from the web pages!
+            console.log('i am in startable . and i will trigger clickStart event');
             var filename = 'FITE.cpp';
-            var program = DESCRIP.cascadeProgram();
+            var program = Singleton.singleton.getSingleton().getProgramText();
             console.log(program);
             fite.loadStringAndInitialize(filename, program);
             fite.setCurrentState(FITE.wait);
@@ -66,15 +79,15 @@ var State;
         Wait.prototype.clickStart = function (fite) {
             //i wish to fetch the program& the filename from the web pages!
             var filename = 'FITE.cpp';
-            var program = DESCRIP.cascadeProgram();
+            var program = Singleton.singleton.getSingleton().getProgramText();
             fite.loadStringAndInitialize(filename, program);
             fite.setCurrentState(FITE.wait);
         };
         Wait.prototype.gotoStarted = function (fite) {
-            fite.setCurrentState(FITE.started);
             document.getElementById('goFoward').removeAttribute('disabled');
             document.getElementById('goBack').removeAttribute('disabled');
             document.getElementById('panel').style.display = 'block';
+            fite.setCurrentState(FITE.started);
         };
         return Wait;
     })();
@@ -83,12 +96,35 @@ var State;
         function Started(name) {
             this.name = name;
         }
+        //rechecked 
+        Started.prototype.checkValid = function (fite) {
+            if (fite.isInputValid()) {
+                console.log('input valid');
+                document.getElementById('start').innerHTML = 'Restart';
+                document.getElementById('start').removeAttribute('disabled');
+                fite.setCurrentState(FITE.startable);
+            }
+            else {
+                console.log('input not valid');
+                document.getElementById('start').setAttribute('disabled', 'disabled');
+                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
+                document.getElementById('goBack').setAttribute('disabled', 'disabled');
+                document.getElementById('panel').style.display = 'block';
+                fite.setCurrentState(FITE.initialize);
+            }
+        };
+        Started.prototype.clickStart = function (fite) {
+            alert('if you want to restart me again, please modify the input area again!');
+            document.getElementById('start').setAttribute('disabled', 'disabled');
+            fite.setCurrentState(FITE.started);
+        };
         return Started;
     })();
     var FITE = (function () {
         function FITE(concrete) {
             this.currentState = FITE.initialize;
             this.concrete = concrete;
+            this.isInputValidFlag = false;
         }
         //user check valid
         FITE.prototype.checkValid = function () {
@@ -107,7 +143,13 @@ var State;
             console.log('current state is ' + this.currentState.name);
         };
         FITE.prototype.isInputValid = function () {
-            return State.isInputValidFlag;
+            return this.isInputValidFlag;
+        };
+        FITE.prototype.setisInputValidFlagToBeTrue = function () {
+            this.isInputValidFlag = true;
+        };
+        FITE.prototype.setisInputValidFlagToBeFalse = function () {
+            this.isInputValidFlag = false;
         };
         //11111111create  this is a promise's callback with 3 .done cascaded{which is the callback functions}
         FITE.prototype.loadStringAndInitialize = function (filename, program) {
@@ -199,6 +241,16 @@ var State;
                 console.log('fail');
             });
         };
+        /**
+                private static instance:FITE = null;
+                
+                public static getInstance(){
+                    if (FITE.instance==null){
+                        FITE.instance= new FITE();
+                        return FITE.instance;
+                    }
+                }
+                **/
         FITE.initialize = new Initialize(FITEState.initialize);
         FITE.startable = new Startable(FITEState.startable);
         FITE.wait = new Wait(FITEState.wait);

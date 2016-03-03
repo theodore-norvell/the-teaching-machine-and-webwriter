@@ -1,6 +1,6 @@
 ///<reference path="description.ts" />
 ///<reference path="../state/State.ts" />
-///<reference path="../state/concreteJSTM.ts" />
+///<reference path="../src/concreteJSTM.ts" />
 window.onload = function go() {
     /** --------------------------------i am now in the initialize state -------------------------------------  **/
     /** --------------------------------i am now in the initialize state -------------------------------------  **/
@@ -21,10 +21,12 @@ window.onload = function go() {
         console.log(index[i]);
         description.descript(index[i]);
     }
+    // console.log(DESCRIP.watchHTMLElement);
     var fite;
     //after select, all the initial vars are ok!.
     //var concrete = new jstm.concreteJSTM('i will be send to FITE');
-    jstm.concreteJSTM.createRTM().done(function (data) {
+    jstm.concreteJSTM.createRTM()
+        .done(function (data) {
         fite = new State.FITE(data);
         console.log(fite.concrete);
     });

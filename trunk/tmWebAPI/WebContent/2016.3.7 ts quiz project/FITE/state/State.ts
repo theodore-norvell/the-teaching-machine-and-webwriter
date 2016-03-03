@@ -1,12 +1,14 @@
-/// <reference path="concreteJSTM.ts" />
-/// <reference path="../descriptquestion/description.ts" />
+/// <reference path="../src/concreteJSTM.ts" />
+/// <reference path="../main/description.ts" />
 /// <reference path="../src/JSTM.ts" />
+/// <reference path="../singleton/singleton.ts" />
 
 module State{
+  
+     //export var programTemp=null;
 
 
-
-    export var isInputValidFlag=false;
+ //var isInputValidFlag=false;
 
     //1,2,3,4
     var FITEState={
@@ -32,13 +34,17 @@ module State{
         name;
         
         checkValid(fite:FITE){
+          
             if(fite.isInputValid())
             {	  
                 console.log('input valid'); 
-                fite.setCurrentState(FITE.startable);
+                document.getElementById('start').removeAttribute('disabled');
+                fite.setCurrentState(FITE.startable); 
+                //console.log(fite.currentState); 
             }
             else{
                 console.log('input not valid'); 
+                document.getElementById('start').setAttribute('disabled','disabled');
                 fite.setCurrentState(FITE.initialize);
             }
             
@@ -60,19 +66,30 @@ module State{
             if(fite.isInputValid())
             {	  
                 console.log('input valid'); 
+                document.getElementById('start').removeAttribute('disabled');
                 fite.setCurrentState(FITE.startable);
             }    
+            else{
+                console.log('input not valid');
+                document.getElementById('start').setAttribute('disabled','disabled'); 
+                document.getElementById('goFoward').setAttribute('disabled','disabled'); 
+                document.getElementById('goBack').setAttribute('disabled','disabled'); 
+                fite.setCurrentState(FITE.initialize);
+            }
         }
         //start button clicked event
         clickStart(fite:FITE){
             //i wish to fetch the program& the filename from the web pages!
+            console.log('i am in startable . and i will trigger clickStart event');
+            
            var filename = 'FITE.cpp';
             
-           var program=DESCRIP.cascadeProgram();
+           var program=Singleton.singleton.getSingleton().getProgramText();
             console.log(program);
             
-            fite.loadStringAndInitialize(filename,program);
             fite.setCurrentState(FITE.wait);
+            fite.loadStringAndInitialize(filename,program);
+            
         }
     }
     
@@ -95,18 +112,18 @@ module State{
             //i wish to fetch the program& the filename from the web pages!
            var filename = 'FITE.cpp';
             
-           var program=DESCRIP.cascadeProgram();
+           var program=Singleton.singleton.getSingleton().getProgramText();
             
            fite.loadStringAndInitialize(filename,program);
             
            fite.setCurrentState(FITE.wait);
         }
         gotoStarted(fite:FITE){
-            
-            fite.setCurrentState(FITE.started);
+            console.log('i am the method gotoStatred in Wait state');
             document.getElementById('goFoward').removeAttribute('disabled');
             document.getElementById('goBack').removeAttribute('disabled');
-            document.getElementById('panel').style.display='block';
+            document.getElementById('panel').style.display='block'; 
+            fite.setCurrentState(FITE.started);
  
         }
         
@@ -122,16 +139,57 @@ module State{
         }
         name;
         
+        //rechecked 
+        checkValid(fite:FITE){
+            if(fite.isInputValid())
+            {	  
+                console.log('input valid'); 
+                document.getElementById('start').innerHTML= 'Restart';
+                document.getElementById('start').removeAttribute('disabled');
+                fite.setCurrentState(FITE.startable);
+                
+                
+            } 
+            else {
+                console.log('input not valid');
+                document.getElementById('start').setAttribute('disabled','disabled');
+                document.getElementById('goFoward').setAttribute('disabled','disabled');
+                document.getElementById('goBack').setAttribute('disabled','disabled');
+                document.getElementById('panel').style.display='block';
+                fite.setCurrentState(FITE.initialize);
+
+            }
+               
+        }
+        
+        clickStart(fite:FITE){
+            alert('if you want to restart me again, please modify the input area again!');
+            document.getElementById('start').setAttribute('disabled','disabled');
+            fite.setCurrentState(FITE.started);
+ 
+        }
         
 
     }
     
-   export class FITE{
+   export  class FITE{
        
         concrete:jstm.JSTM;
         constructor(concrete:jstm.JSTM){
-            this.concrete=concrete;  
+            this.concrete=concrete;
+            this.isInputValidFlag=false;  
         }
+        isInputValidFlag;
+/**         
+        private static instance:FITE = null;
+        
+        public static getInstance(){ 
+            if (FITE.instance==null){
+                FITE.instance= new FITE();
+                return FITE.instance; 
+            }
+        }
+        **/
         
         static initialize:state = new Initialize(FITEState.initialize);
         static startable:state = new Startable(FITEState.startable);
@@ -162,12 +220,19 @@ module State{
             console.log('current state is '+this.currentState.name);
             
             
-        }
+                                  }
 
         isInputValid(){
-            return isInputValidFlag;
+            return this.isInputValidFlag;
         }
         
+        setisInputValidFlagToBeTrue(){
+            this.isInputValidFlag=true;
+        }
+        
+        setisInputValidFlagToBeFalse(){
+            this.isInputValidFlag=false;
+        }
         
 
     //11111111create  this is a promise's callback with 3 .done cascaded{which is the callback functions}
@@ -287,15 +352,7 @@ module State{
         
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
         
     }

@@ -1,5 +1,5 @@
-/// <reference path="../src/JSTM.ts" />
-/// <reference path="../src/Promise.ts"/>
+/// <reference path="JSTM.ts" />
+/// <reference path="Promise.ts"/>
 /// <reference path="../library/jquery.d.ts" />
 var jstm;
 (function (jstm) {

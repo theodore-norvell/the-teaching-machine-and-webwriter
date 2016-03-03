@@ -3,8 +3,8 @@
     
 {"question1":
     {"name":"Question 1",
-     "test":"write an to calculate area with outer radius y and inner radius x",
-     "inputVars":[{"name":"x","defaultInitValue":10.0},
+     "text":"write an to calculate area with outer radius y and inner radius x",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
@@ -13,7 +13,7 @@
       },
 "question2":
     {"name":"Question 2",
-     "test":"write an to calculate x+y+z",
+     "text":"write an to calculate x+y+z",
      "inputVars":[{"name":"x","defaultInitValue":21.0},
                   {"name":"y","defaultInitValue":20.0},
                   {"name":"z","defaultInitValue":30.0}],
@@ -24,7 +24,7 @@
       },
 "question3":
     {"name":"Question 3",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0},
                   {"name":"z","defaultInitValue":30.0},
@@ -36,7 +36,7 @@
       },
 "question4":
     {"name":"Question 4",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0},
                   {"name":"z","defaultInitValue":30.0},
@@ -49,7 +49,7 @@
       },
 "question5":
     {"name":"Question 5",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
@@ -59,7 +59,7 @@
       },
 "question6":
     {"name":"Question 6",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
@@ -69,7 +69,7 @@
       },
 "question7":
     {"name":"Question 7",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
@@ -79,7 +79,7 @@
       },
 "question8":
     {"name":"Question 8",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
@@ -89,7 +89,7 @@
       },
 "question9":
     {"name":"Question 9",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
@@ -99,7 +99,7 @@
       },
 "question10":
     {"name":"Question 10",
-     "test":"write an to calculate area with outer radius y and inner radius x",
+     "text":"write an to calculate area with outer radius y and inner radius x",
      "inputVars":[{"name":"x","defaultInitValue":10.0},
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
