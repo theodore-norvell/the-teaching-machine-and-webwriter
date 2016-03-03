@@ -56,6 +56,7 @@ public class loadString extends HttpServlet {
 				uri.lastIndexOf("."));
 		
 		if(path.equals("/loadString")){
+			//System.out.println(request.getParameter("guid"));
 			String guid = request.getParameter("guid");
 			String filename = request.getParameter("filename");
 			String programText = request.getParameter("Codes");
