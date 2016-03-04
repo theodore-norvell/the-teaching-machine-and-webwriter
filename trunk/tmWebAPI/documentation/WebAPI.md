@@ -1,5 +1,5 @@
-Proposed Web API for the Teaching Machine
-==========================================
+# Proposed Web API for the Teaching Machine
+
 
 History: Version 0. TSN 2015 Nov 11.
   Version 1. TSN 2015 Nov 12. Added retire.
@@ -9,24 +9,20 @@ Objective: Allow Remote Teaching Machines (RTM) to be used as a web service.
 
 This is a RESTless API!
 
-Section 0.  General comments on the Web API
---------------------------------------------
+## Section 0.  General comments on the Web API
 
-GET vs POST:
-............
+### GET vs POST:
 
 Since the results of a GET may be cached, it is important that all requests be sent using the HTTP POST method.
 
-On parameters
-..............
+### On parameters
 
 Parameters are extra bits of information that go along with the request.
 We could implement parameters either by putting them in a query string (this is the jquery
 default) or by passing in a JSON encoded object in the request body (also easy to do in
 jquery).  My preference is for the later, as it is symmetric with the response.
 
-Response HTTP status code
-..........................
+### Response HTTP status code
 
 Responses in HTTP are considered successes or failures based on 
 their HTTP  status.  Status 200 means success.  The API below deals only with success
@@ -40,22 +36,20 @@ status code 400 makes sense.  Missing required parameters would also give a 400.
 if say a bad or retired GUID is sent or a request is made when the remote TM is in the wrong state, then HTTP status would be 200.  HTTP status codes between 201 and 299 
 inclusive should be avoided.
 
-Responses
-..........
+### Responses
 
 Assuming the HTTP response status is 200, each request results in a response object. This
 object should be a JSON encoded object in the body of the response.
 
-The "status" field of the responses
-....................................
+### The "status" field of the responses
 
-Independent of the HTTP status codes, the API defines its own set of statuses. These
-are returned in the "status" field of the response.  Generally the value of the "status"
-field indicates the state of a remote TM.
+Independent of the HTTP status codes, the API defines its own set of statuses. These are returned in the "status" field of the response.  Generally the value of the "status" field indicates the state of a remote TM.
 
 There is a subtle distinction between states and statuses.  All possible states of the
 remote TM are statuses, but some statuses are not states. The states or the remote TM are
 as listed in interface TMStatusCode. They are
+
+```
     /** Status Code -- No Evaluator is present.*/
     NO_EVALUATOR = 0
     
@@ -79,6 +73,7 @@ as listed in interface TMStatusCode. They are
     
     /**  Status Code -- The program has crashed or otherwise completed in an unpleasant way. */
     EXECUTION_FAILED = 7 
+```
 
 [Implementation Note: These states are stored in the RTMs evaluator object (which in
 turn, keeps them in its virtual machine state object.) However NO_EVALUATOR can not be
@@ -94,6 +89,8 @@ would be EXECUTION_COMPLETE.
 However there are a few cases where it does not make sense for the response
 to contain the state of the RTM.  For these cases, there are some additional values
 that the "status" field can take on.
+
+```
    /** Status Code -- There is no RTM with that GUID */
    BAD_GUID = -1
    
@@ -105,14 +102,13 @@ that the "status" field can take on.
    
    /** Status Code -- The request succeeded. */
    SUCCEEDED = -4
+```
 
 The idea behind RETIRED is that if a remote TM is not used for a long time, the server might delete it.
 
-Section 1. State Information
------------------------------
+## Section 1. State Information
 
-Wanted parameters
-.................
+### Wanted parameters
 
 Many methods can return information about the state of the remoteTM.
 The request specifies what information is wanted by the client.
@@ -129,21 +125,23 @@ from the old value.
 will be no "expression" field in the response.
 
 All together there are the following "wanted parameters" and corresponding response fields
-   expressionWanted        expression
-   outputWanted			   output
-   consoleWanted           console
-   codeWanted              code
-   focusWanted             focus
 
-The "expression" field of the responses
-.........................................
+
+   Parameter          | Response field
+   -------------------|---------------
+   expressionWanted   |   expression
+   outputWanted		  |	   output
+   consoleWanted      |   console
+   codeWanted         |   code
+   focusWanted        |   focus
+
+### The "expression" field of the responses
 
 Many of the api calls have an "expression" field in the response. This is a specially
 encoded string that shows the current state of the execution of the current expression.
 Details of the encoding can be found in the TM's source code.
 
-The "console" field of the responses:
-......................................
+### The "console" field of the responses:
 
 Many of the api calls have a "console" field. This is an array of specially encoded
 strings that shows the current state of the console.  By default the characters represent
@@ -151,25 +149,27 @@ output.  However, within each line, \ufffe indicates the start of input and \uff
 indicates the resumption of output.  Note that tabs are not expanded, so tab expansion
 needs to be done on the client.
 
-The "output" field of the responses:
-......................................
+### The "output" field of the responses:
 
 Many of the api calls have a "console" field. This is an array of 
 strings that shows data that has been output to the console.  It differs from "console"
 in that it does not show any input.  There is no special encoding.
 
-The "code" field of the responses:
-..................................
-The "code" field consists of all the currently selected lines
+### The "code" field of the responses:The "code" field consists of all the currently selected lines
 in the current source file.    It is an array of objects
 where each object has three fields.
+
+```
    chars -- a string
    coords -- an object (see below for details)
    markup -- an array of objects (see below for details) sorted by column
+```
 The chars of course represent the line of code.
 
 (See class tm.virtualMachine.CodeStore for details.  The code field corresponds to 
 the array of lines one gets from the evaluator as follows
+
+```
    SourceCoords focus = evaluator.getCodeFocus();
    TMFile file = focus.getFile() ;
    int n = evaluator.getNumSelectedCodeLines(file, false) ;
@@ -177,39 +177,45 @@ the array of lines one gets from the evaluator as follows
        CodeLine line = evaluator.getSelectedCodeLine(file, false, i);
        ...
    }
+```
 )
    
 The coords objects have fields fileName, which is a string, and line which is an int.
 
 Each markup object is an object with two or three fields
+
+```
    column -- an int
    command -- an int
    tagSet -- a string
-For details concerning markup, see class tm.interfaces.MarkUp in the TM source code.
-The tagSet string is only needed when the command is CHANGE_TAG_SET (i.e. 5) and
-will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
+```
 
-The "focus" field of the responses:
-..................................
-The this is a "coords" object (described above under "code") that indicates the
-file name and line number of the line that is currently being executed.
+For details concerning markup, see class tm.interfaces.MarkUp in the TM source code. The tagSet string is only needed when the command is CHANGE_TAG_SET (i.e. 5) and will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
 
-Section 2. The API calls
-------------------------
+### The "focus" field of the responses:
+The this is a "coords" object (described above under "code") that indicates the file name and line number of the line that is currently being executed.
 
-createRemoteTM
-...............
+## Section 2. The API calls
+
+### createRemoteTM
 
 URL: <BaseURL>/createRemoteTM
+
 Parameters: None
+
 Initial state:  Initially there is no RTM, so there is no initial state.
 Action: The server creates a new RTM and assigns it a globally unique identifier.
+
 Final status:  If successful the final state will be NO_EVALUATOR. Otherwise it will be FAILED.
+
 Response:
-  status: int         -- This will be NO_EVALUATOR or FAILED.
-  guid: string       -- If the status is NO_EVALUATOR, this will be the GUID of the RTM created.
-  reason:            -- If the status is NO_EVALUATOR, this will be "".
-                        Otherwise, it will be an explanation of the problem.
+
+  Name      | Type    | Meaning
+  ----------|---------|-----------
+  status    | int     | This will be NO_EVALUATOR or FAILED.
+  guid      | string  |If the status is NO_EVALUATOR, this will be the GUID of the RTM created.
+  reason    | string  | If the status is NO_EVALUATOR, this will be "". Otherwise, it will be an explanation of the problem.
+                      
 
 retireRemoteTM
 ...............
