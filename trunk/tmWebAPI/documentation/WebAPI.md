@@ -30,7 +30,7 @@ cases.  I.e. the  server should return a response with HTTP status code equal to
 even in the case that it can't fulfill the request because of some problem such as
 a bad or retired GUID.   Other codes might be used if the request was in error.  For
 example if the URL is
-    <BaseURL>/fuddleDuddle
+    *BaseURL*/fuddleDuddle
 then the HTTP status code would be 404. And if the parameters can't be parsed, then 
 status code 400 makes sense.  Missing required parameters would also give a 400.  However
 if say a bad or retired GUID is sent or a request is made when the remote TM is in the wrong state, then HTTP status would be 200.  HTTP status codes between 201 and 299 
@@ -76,15 +76,15 @@ as listed in interface TMStatusCode. They are
 ```
 
 [Implementation Note: These states are stored in the RTMs evaluator object (which in
-turn, keeps them in its virtual machine state object.) However NO_EVALUATOR can not be
+turn, keeps them in its virtual machine state object.) However `NO_EVALUATOR` can not be
 stored in the evaluator object since there isn't one. In the TMBigApplet, the
-NO_EVALUATOR state is represented by the evaluator pointer being null.]
+`NO_EVALUATOR` state is represented by the evaluator pointer being null.]
 
 The "status" field of the response will usually hold one of the above states.
 It will be the state of the RTM after the request has been processed. For example
-a "go" request might start with the RTM in the READY state and end with it being
-in the EXECUTION_COMPLETE state.  In this case the "status" field of the response
-would be EXECUTION_COMPLETE.
+a "go" request might start with the RTM in the `READY` state and end with it being
+in the `EXECUTION_COMPLETE` state.  In this case the "status" field of the response
+would be `EXECUTION_COMPLETE`.
 
 However there are a few cases where it does not make sense for the response
 to contain the state of the RTM.  For these cases, there are some additional values
@@ -104,7 +104,7 @@ that the "status" field can take on.
    SUCCEEDED = -4
 ```
 
-The idea behind RETIRED is that if a remote TM is not used for a long time, the server might delete it.
+The idea behind `RETIRED` is that if a remote TM is not used for a long time, the server might delete it.
 
 ## Section 1. State Information
 
@@ -155,15 +155,21 @@ Many of the api calls have a "console" field. This is an array of
 strings that shows data that has been output to the console.  It differs from "console"
 in that it does not show any input.  There is no special encoding.
 
-### The "code" field of the responses:The "code" field consists of all the currently selected lines
+### The "code" field of the responses:
+
+The "code" field consists of all the currently selected lines
 in the current source file.    It is an array of objects
 where each object has three fields.
 
-```
-   chars -- a string
-   coords -- an object (see below for details)
-   markup -- an array of objects (see below for details) sorted by column
-```
+
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+   chars  | string | one line of code
+   coords | object | an object (see below for details)
+   markup | array  | an array of objects (see below for details) sorted by column
+
+
 The chars of course represent the line of code.
 
 (See class tm.virtualMachine.CodeStore for details.  The code field corresponds to 
@@ -184,210 +190,281 @@ The coords objects have fields fileName, which is a string, and line which is an
 
 Each markup object is an object with two or three fields
 
-```
-   column -- an int
-   command -- an int
-   tagSet -- a string
-```
+Field     | Type    | Comment
+:---------|:--------|:-----------
+ column   |  int    |
+ command  |  int    | see `tm.interfaces.MarkUp`
+ tagSet   |  string | see `tm.interfaces.MarkUp`
 
-For details concerning markup, see class tm.interfaces.MarkUp in the TM source code. The tagSet string is only needed when the command is CHANGE_TAG_SET (i.e. 5) and will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
+
+For details concerning markup, see class `tm.interfaces.MarkUp` in the TM source code. The tagSet string is only needed when the command is `CHANGE_TAG_SET` (i.e. 5) and will be a string of lower-case letters (a-z) without duplicates in alphabetical order.
 
 ### The "focus" field of the responses:
+
 The this is a "coords" object (described above under "code") that indicates the file name and line number of the line that is currently being executed.
 
 ## Section 2. The API calls
 
 ### createRemoteTM
 
-URL: <BaseURL>/createRemoteTM
+**URL:** *BaseURL*/createRemoteTM
 
-Parameters: None
+**Parameters:** None
 
-Initial state:  Initially there is no RTM, so there is no initial state.
-Action: The server creates a new RTM and assigns it a globally unique identifier.
+**Initial state:**  Initially there is no RTM, so there is no initial state.
 
-Final status:  If successful the final state will be NO_EVALUATOR. Otherwise it will be FAILED.
+**Action:** The server creates a new RTM and assigns it a globally unique identifier.
 
-Response:
+**Final status:**  If successful the final state will be `NO_EVALUATOR`. Otherwise it will be `FAILED`.
 
-  Name      | Type    | Meaning
-  ----------|---------|-----------
-  status    | int     | This will be NO_EVALUATOR or FAILED.
-  guid      | string  |If the status is NO_EVALUATOR, this will be the GUID of the RTM created.
-  reason    | string  | If the status is NO_EVALUATOR, this will be "". Otherwise, it will be an explanation of the problem.
+**Response:**
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+  status    | int     | This will be `NO_EVALUATOR` or `FAILED`.
+  guid      | string  |If the status is `NO_EVALUATOR`, this will be the GUID of the RTM created.
+  reason    | string  | If the status is `NO_EVALUATOR`, this will be "". Otherwise, it will be an explanation of the problem.
                       
 
-retireRemoteTM
-...............
+### retireRemoteTM
 
-URL: <BaseURL>/retireRemoteTM
-Parameters: 
+**URL:** *BaseURL*/retireRemoteTM
+
+**Parameters:** 
      guid: string   -- The GUID of the remote TM (returned from a previous createRemoteTM)
-Initial state:  Any
-Action: The server retires the RTM.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID.
-   RETIRED: if the RTM with the GUID has already retired.
-   SUCCEEDED: if the RTM was retired.
-Response:
-  status: int         -- See above created.
-  reason:            -- If the status is SUCCEEDED, this will be "".
-                        Otherwise, it will be an explanation of the problem.
+
+**Initial state:**  Any
+
+**Action:** The server retires the RTM.
+
+**Final status:**
+
+Value | Meaning
+:-----|:--
+`BAD_GUID`  | if no RTM has ever had the given GUID.
+`RETIRED`   | if the RTM with the GUID has already retired.
+`SUCCEEDED` | if the RTM was retired.
+
+**Response:**
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+  status    | int     | See above created.
+  reason    | string  | If the status is `SUCCEEDED`, this will be "". Otherwise, it will be an explanation of the problem.
   
-  
-loadString
-...............
+###loadString
 
-URL: <Base URL>/loadString
-Parameters:
-    guid: string   -- The GUID of the remote TM (returned from a previous createRemoteTM)
-    language: string -- Either "cpp" or "java"
-    fileName: string -- The file name for the main program.
-    program: string  --The text of the program.
-Initial state:  The RTM may be in any state.
-Action:
-   Unless the initial state is NO_EVALUATOR, the current evaluator is destroyed.
-   The RTM then builds an evaluator and compiles the program.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID
-   RETIRED: if the RTM with the GUID has retired
-   NO_EVALUATOR: if any error happens prior to compilation.
-   DID_NOT_COMPILE: If there was an error during compilation.
-   COMPILED: Otherwise
-Response:
-   status:  int  -- see above
-   reason: string --  If the status is COMPILED, this will be "".
-           Otherwise, a string representing the reason why the status is not COMPILED.
-           (e.g. the error message from the compiler). Note that this string may contain
-           newline characters.
+**URL:** *BaseURL*/loadString
 
-initializeTheState
-...................
+**Parameters:**
 
-URL: <Base URL>/initializeTheState
-Parameters:
-    guid: string   -- The GUID
-    expressionWanted, outputWanted etc -- see the section on State Information.
-Initial state:  COMPILED
-Action:
-   If the RTM is not in the COMPILED state, then the request has no effect.
-   If the RTM is in the COMPILED state, then the program is executed until either it can
-   not be executed any further, or the first visible expression of the program is about
-   to be evaluated.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID.
-   RETIRED: if the RTM with the GUID has retired.
-   READY: if the RTM is ready for another action.
-   EXECUTION_COMPLETE: if the execution of the program is complete
-   EXECUTION_FAILED: if there was a failure during execution. For example a run time
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+  guid      |  string | The GUID of the remote TM (returned from a previous createRemoteTM)
+    language | string | Either "cpp" or "java"
+    fileName | string | The file name for the main program.
+    program  | string | The text of the program.
+    
+**Initial state:**  The RTM may be in any state.
+
+**Action:**
+
+   Unless the initial state is `NO_EVALUATOR`, the current evaluator destroyed. The RTM then builds an evaluator and compiles the program.
+   
+**Final status:**
+
+Value | Meaning
+:-----|:--
+   `BAD_GUID` | if no RTM has ever had the given GUID
+   `RETIRED` | if the RTM with the GUID has retired
+   `NO_EVALUATOR` | if any error happens prior to compilation.
+   `DID_NOT_COMPILE` | If there was an error during compilation.
+   `COMPILED` | Otherwise
+   
+**Response:**
+
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+   status   | int     |   see above
+   reason   | string  | If the status is `COMPILED`, this will be "". Otherwise, a string representing the reason why the status is not `COMPILED`. (e.g. the error message from the compiler). Note that this string may contain newline characters.
+
+### initializeTheState
+
+
+**URL:** *BaseURL*/initializeTheState
+
+**Parameters:**
+
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+    guid    | string  | The GUID
+    expressionWanted, outputWanted, etc  | boolean |  see the section on State Information.
+    
+**Initial state:**  `COMPILED`
+
+**Action:**
+
+* If the RTM is not in the `COMPILED` state, then the request has no effect.
+* If the RTM is in the `COMPILED` state, then the program is executed until either it can not be executed any further, or the first visible expression of the program is about to be evaluated.
+
+**Final status:**
+
+Value | Meaning
+:-----|:--
+   `BAD_GUID` | if no RTM has ever had the given GUID.
+   `RETIRED`  | if the RTM with the GUID has retired.
+   `READY`    | if the RTM is ready for another action.
+   `EXECUTION_COMPLETE` | if the execution of the program is complete
+   `EXECUTION_FAILED` | if there was a failure during execution. For example a run time
    error.
-Response:
-   status:  int -- see above
-   reason: string --  If the status is READY or EXECUTION_COMPLETE, this will be "".
-                    Otherwise, a string representing the reason why the status is
-                    not READY or EXECUTION_COMPLETE. Note that this string may contain
-                    newline characters.
-   expression, output, code, etc -- see section on State Information.
+   
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+   status   |  int    |  see above
+   reason   |  string | If the status is `READY` or `EXECUTION_COMPLETE`, this will be "". Otherwise, a string representing the reason why the status is not `READY` or `EXECUTION_COMPLETE`. Note that this string may contain newline characters.
+   expression, output, code, etc | | see section on State Information.
    
    
-go
-..
+### go
 
-[Implementation note:  Although this seems very complicated, it is mostly
-already implemented inside the current Evaluator class, so don't worry.]
+[Implementation note:  Although this seems very complicated, it is mostly already implemented inside the current Evaluator class, so don't worry.]
 
-URL: <Base URL>/go
-Parameters:
-    guid: string   -- The GUID
-    commandString: string  -- A string that should follow the following syntax.
+**URL:** *BaseURL*/go
+
+**Parameters:**
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+   guid     | string   |The GUID
+    commandString | string | See below. 
+    expressionWanted, outputWanted, etc  | boolean |  see the section on State Information.
+
+    
+ The commandString field should following syntax.
+ 
         command -->  ws [ simpleCommand ws [ ";" command] ]
         simpleCommand --> [integer ws "*" ws] primaryCommand
         primaryCommand --> "s" | "e" | "o" | "f" | "b" | "m"
         integer -->  digit [ integer ]
         digit --> "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
         ws --> [ " " ws ]
-    expressionWanted, outputWanted etc -- see the section on State Information.
-Initial state:  Any
-Action:
-   If the state is not READY, this request does nothing to the state of the RTM.
-   If the state is READY and the commandString does not follow the given syntax, the
-   result is not defined.
-   If the state is READY and the commandString follows the syntax above, then each command
-   of the string will be executed in turn as long as the state remains READY.
-   Once the state is not READY, the remaining commands have no effect.
-   Integers indicate repetition, thus "5*s" is the same as "s;s;s;s;s".
-   Primary commands have the following meanings
-       s  Step to the next expression, even if it is in a deeper subroutine invocation.
-       e  Step to the next expression at an equal or lesser depth.
-       o  Step out of the current subroutine invocation.
-       f  Step forward to the next operation.
-       b  Step until the next break point.
-       m  Take a microstep, i.e. the smallest possible advance of the machine's state.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID.
-   RETIRED: if the RTM with the GUID has retired.
-   READY: if the RTM is ready for another action.
-   EXECUTION_COMPLETE: if the execution of the program is complete
-   EXECUTION_FAILED: if there was a failure during execution. For example a run time
-   error.
-   Any other: if the request started in a state that was not READY.
-Response:
-   status:  int -- see above
-   reason: string --  If the final status is READY or EXECUTION_COMPLETE, the
-                      reason will be "".
-                      If the final status is EXECUTION_FAILED, the reason will
-                      be an error message.
-                      Otherwise, reason will be a string indicating what the problem is.
-   expression, output, code, etc -- see section on State Information.
-   
-goBack
-......
+        
+**Initial state:**  Any
 
-URL: <Base URL>/goBack
-Parameters:
-    guid: string   -- The GUID
-    expressionWanted, outputWanted etc -- see the section on State Information.
-Initial state:  ANY
-Action:
-   The state of the evaluator is backed up to where it was just before
+**Action:**
+
+*   If the state is not `READY`, this request does nothing to the state of the RTM.
+*  If the state is `READY` and the commandString does not follow the given syntax, the
+   result is not defined.
+*  If the state is `READY` and the commandString follows the syntax above, then each command
+*  of the string will be executed in turn as long as the state remains `READY`.
+*  Once the state is not `READY`, the remaining commands have no effect.
+*  Integers indicate repetition, thus "5*s" is the same as "s;s;s;s;s".
+*   Primary commands have the following meanings
+   -      s  Step to the next expression, even if it is in a deeper subroutine invocation.
+   -     e  Step to the next expression at an equal or lesser depth.
+   -     o  Step out of the current subroutine invocation.
+   -     f  Step forward to the next operation.
+   -     b  Step until the next break point.
+   -     m  Take a microstep, i.e. the smallest possible advance of the machine's state.
+
+   
+**Final status:**
+<dl>
+   <dt>`BAD_GUID`:</dt><dd> if no RTM has ever had the given GUID.</dd>
+    <dt>`RETIRED`:</dt><dd> if the RTM with the GUID has retired.</dd>
+    <dt>`READY`:</dt><dd> if the RTM is ready for another action.</dd>
+    <dt>`EXECUTION_COMPLETE`:</dt><dd> if the execution of the program is complete</dd>
+   <dt> `EXECUTION_FAILED`:</dt><dd> if there was a failure during execution. For example a run time
+   error.</dd>
+    <dt>Any other:</dt><dd> if the request started in a state that was not `READY`.</dd>
+ </dl>
+ 
+**Response:**
+
+
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+   status |  int | see above
+   reason | string | If the final status is `READY` or `EXECUTION_COMPLETE`, the reason will be "".  If the final status is `EXECUTION_FAILED`, the reason will   be an error message. Otherwise, reason will be a string indicating what the problem is.
+   expression, output, code, etc | |  see section on State Information.
+   
+### goBack
+
+**URL:** *BaseURL*/goBack
+
+**Parameters:**
+
+  Field     | Type    | Comment
+  :---------|:--------|:-----------
+    guid    | string  | The GUID
+    expressionWanted, outputWanted etc | | see the section on State Information.
+
+**Initial state:**  Any
+
+**Action:**
+
+*   The state of the evaluator is backed up to where it was just before
    the most recent checkpoint.   Note that the evaluator can only be
    backed up to the first checkpoint, which happens right after global
    variables are initialized.  After that new checkpoints are created
    at the start of each "go" command.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID.
-   RETIRED: if the RTM with the GUID has retired.
-   NO_EVALUATOR: if (and only if) the initial state is NO_EVALUATOR
-   If there is nothing to undo, the state is unchanged.
-   If there was something to undo the final state will be whatever the state
-   was before the checkpoint.
-Response:
-   status:  int -- see above
-   reason: string -- If the status is BAD_GUID, RETIRED, or NO_EVALUATOR, a reason why.
-                     Otherwise this string should be "".
-   expression, output, code, etc -- see section on State Information.
-   
-redo
-....
 
-URL: <Base URL>/redo
-Parameters:
-    guid: string   -- The GUID
-    expressionWanted, outputWanted etc -- see the section on State Information.
-Initial state:  ANY
-Action:
-   The most recent goBack is undone.  If the machine has moved forward since that goBack,
-   this request has no effect.
-Final status:
-   BAD_GUID: if no RTM has ever had the given GUID.
-   RETIRED: if the RTM with the GUID has retired.
-   NO_EVALUATOR: if (and only if) the initial state is NO_EVALUATOR
-   If there is nothing to redo, the state is unchanged.
-   If there was something to redo, the final state will be whatever the state
-   was before goBack was executed.
-Response:
-   status:  int -- see above
-   reason: string -- If the status is BAD_GUID, RETIRED, or NO_EVALUATOR, a reason why.
-                     Otherwise this string should be "".
-   expression, output, code, etc -- see section on State Information.
+**Final status:**
+
+<dl>
+   <dt>`BAD_GUID`:</dt><dd> if no RTM has ever had the given GUID.</dd>
+   <dt>`RETIRED`:</dt><dd> if the RTM with the GUID has retired.</dd>
+   <dt>`NO_EVALUATOR`:</dt><dd> if (and only if) the initial state is `NO_EVALUATOR`</dd>
+   <dt>Otherwise:</dt><dd>If there is nothing to undo, the state is unchanged.
+   If there was something to undo the final state will be whatever the state
+   was before the checkpoint.</dd>
+</dl>   
+
+**Response:**
+
+
+Field     | Type    | Comment
+:---------|:--------|:-----------
+   status | int | see above
+   reason | string | If the status is `BAD_GUID`, `RETIRED`, or `NO_EVALUATOR`, a reason why. Otherwise this string should be "".
+   expression, output, code, etc | |  see section on State Information.
+   
+###redo
+
+**URL:** *BaseURL*/redo
+
+**Parameters:**
+
+Field     | Type    | Comment
+:---------|:--------|:-----------
+ guid     | string  | The GUID
+ expressionWanted, outputWanted etc | see the section on State Information.
+ 
+**Initial state:**  Any
+
+**Action:**
+
+The most recent goBack is undone.  If the machine has moved forward since that goBack, this request has no effect.
+   
+**Final status:**
+
+<dl>
+   <dt>`BAD_GUID`:</dt><dd> if no RTM has ever had the given GUID.</dd>
+   <dt>`RETIRED`:</dt><dd> if the RTM with the GUID has retired.</dt><dd>
+   <dt>`NO_EVALUATOR`:</dt><dd> if (and only if) the initial state is `NO_EVALUATOR`</dt><dd>
+   <dt>Otherwise</dt><dd>If there is nothing to redo, the state is unchanged.</dt><dd> If there was something to redo, the final state will be whatever the state was before goBack was executed.
+</dl>   
+
+**Response:**
+
+Field     | Type    | Comment
+:---------|:--------|:-----------
+ status   | int     | see above
+reason    | string  | If the status is `BAD_GUID`, `RETIRED`, or `NO_EVALUATOR`, a reason why. Otherwise this string should be "".
+   expression, output, code, | | see section on State Information.
 
