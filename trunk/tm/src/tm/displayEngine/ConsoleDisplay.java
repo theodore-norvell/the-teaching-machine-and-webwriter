@@ -50,16 +50,12 @@ public class ConsoleDisplay extends DisplayAdapter {
 	    public static final char INPUT_MARK = '\ufffe';
 	    private static final char MARKER_BOUND = INPUT_MARK;
 
-	    private final static int NORMAL = 0;
-	    private final static int OUTPUT = 1;
-
 	    private final static int LEFT_MARGIN = 10;
 	    private final static int TOP_MARGIN = 10;
 	    private final static int TABSPACE = 4;
 
 	    private int numLines = 0;
 	    private int xInsert = 0;
-	    private static int tabSpaces = 4;
 	    private int advances[];
 
 
