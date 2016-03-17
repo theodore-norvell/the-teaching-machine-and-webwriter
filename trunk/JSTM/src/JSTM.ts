@@ -6,6 +6,9 @@ module jstm {
     import Promise = P.Promise ;
     
     export interface JSTM {
+
+        makeTMDisplay : () => HTMLElement ;
+
         /** Make an HTML element that displays the state of the expression.
          *   This display will update automatically.
         */
