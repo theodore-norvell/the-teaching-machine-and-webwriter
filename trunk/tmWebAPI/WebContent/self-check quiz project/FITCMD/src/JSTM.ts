@@ -6,27 +6,30 @@ module jstm {
     import Promise = P.Promise ;
     
     export interface JSTM {
-        
+        //the guid
         guid:string;
         
+        //the mirrorData object received from the remoteTM.
+        mirrorData:any;
         
+        //
+        status:string;
+        message:string;
+        programText:string;
         
+        goForwardButton:HTMLElement;
+        goBackButton:HTMLElement;
+        expressionDisplay:HTMLElement;
         
-        questionDisplay:HTMLElement;
-       //
-       inputExpressionSpanElement:HTMLElement;
-       inputExpressionInputElement:HTMLElement;
-       inputVarsSpanElement:Array<HTMLElement>;
-       inputVarsInputElement:Array<HTMLElement>;
+        //jstm hold a reference to the FITEQuestion
+        //qz:quizBuilder.FITEQuestion;
+      
        //
 
         /** Make an HTML element that displays the state of the expression.
          *   This display will update automatically.
         */
-        constructHTMLElement ():void ;
-        
-        constructInsertArea1():void;
-        
+
         /** Make a button that will move the TM state forward by
         *   the smallest interesting step.
         * @params
@@ -49,11 +52,16 @@ module jstm {
         makeGoBackButton : (onDone? : (jstm:JSTM) => void,
                             onFail? : (r:P.Rejection) => void)
                          => HTMLElement ;
-
+        
+        //
+        makeExpressionDisplay: (onDone? : (jstm:JSTM) => void,
+                            onFail? : (r:P.Rejection) => void)
+                         => HTMLElement ;
         /** Make an HTML element that displays the state of one variable.
         *    This display will update automatically.
         */
-        makeVariableWatcher ?: ( varName : string ) => HTMLElement ;
+        //add a parameter to this method.
+        makeVariableWatcher ?: ( Name : string,initValue:string) => HTMLElement ;
         
         
         //set programText
@@ -63,10 +71,13 @@ module jstm {
         getprogramText();
         /** The current status.  See WebAPI documentation for a list */
         getStatus : () => string ;
+        //
+        setStatus:(status:string)=>void;
 
         /** The most recent error message from the Remote TM.*/
         getMessage : () => string  ;
-        
+        //
+        setMessage:(message:string)=>void;
         
         
         initialize:(responseWantedFlag:string)=> Promise<JSTM> ;

@@ -36,7 +36,7 @@ module jstm{
         //questiionText
        expressionDisplay:HTMLElement;
        
-
+       VariableWatcher:HTMLElement;
 
       //makeGoForwardButton
       public makeGoForwardButton(onDone ?: (jstm:JSTM) => void,onFail ?: (r:P.Rejection) => void):HTMLElement{
@@ -60,7 +60,22 @@ module jstm{
       return this.expressionDisplay;
       }
       
-
+      //makeVariableWatcher
+      public makeVariableWatcher( Name : string,initValue:string):HTMLElement {
+          var VariableWatcherSpan:HTMLElement;
+          VariableWatcherSpan=document.createElement('span');
+          VariableWatcherSpan.innerHTML = Name;
+          
+          var VariableWatcherInput:HTMLElement;
+          VariableWatcherInput= document.createElement('input');
+          VariableWatcherInput.setAttribute('type','text');
+          VariableWatcherInput.setAttribute('value',initValue);
+          
+          this.VariableWatcher=document.createElement('div');
+          this.VariableWatcher.appendChild(VariableWatcherSpan);
+          this.VariableWatcher.appendChild(VariableWatcherInput);
+          return this.VariableWatcher;
+      }
  
 
   

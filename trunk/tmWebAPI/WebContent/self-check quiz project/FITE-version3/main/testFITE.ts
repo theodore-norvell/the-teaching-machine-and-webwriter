@@ -9,7 +9,7 @@
 window.onload=function(){
     
 //fite, call the function to make the FITE question. 
-FITCMD();
+FITE();
 
 
 
@@ -25,7 +25,7 @@ FITCMD();
 
 
 
-function FITCMD(){
+function FITE(){
 // iterate from 0-9, make 9 questions from description.
 for (var i=0;i<10;i++){
     
@@ -49,7 +49,7 @@ fetchFile.AJAX_JSON_Req()
 var selectedQuestion=fetchFile.getselectedQuestion();
    
 //declare quiz object
-var FITCMDQuestion:quizBuilder.FITCMDQuestion;
+var FITEQuestion:quizBuilder.FITEQuestion;
 //instantiate director
 var QuizDirector:quizBuilder.QuizDirector = new quizBuilder.QuizDirector();
 //selectedQuestion are get here : is a json object
@@ -69,22 +69,24 @@ QuizDirector.setQuizBuilder(fitequizBuilder);
           //call construct method
           QuizDirector.constructQuiz();
           //get quiz product 
-          FITCMDQuestion = QuizDirector.getQuiz();
+          FITEQuestion = QuizDirector.getQuiz();
           //set thisJSTM reference to the instance variable of FITEQuestion
-          FITCMDQuestion.setConcreteJSTM(thisJSTM);
-          FITCMDQuestion.makeHTML();
-          var html =FITCMDQuestion.getHTML();
+          FITEQuestion.setConcreteJSTM(thisJSTM);
+          FITEQuestion.makeHTML();
+          var html =FITEQuestion.getHTML();
           //console.log(html);
 
-          document.getElementById('FITCMD').appendChild(html);
+          document.getElementById('FITE').appendChild(html);
           
           //declare fite object
-          var fiteController:State.FITCMDController;
-          fiteController= new State.FITCMDController(thisJSTM,FITCMDQuestion);
+          var fiteController:State.FITEController;
+          fiteController= new State.FITEController(thisJSTM,FITEQuestion);
           
+          //set fiteController reference to the instance variable of FITEQuestion
+          FITEQuestion.setController(fiteController);
           
-          //
-          addeventListener();
+          //add all the html element in the FITEQuestion that are related with the user reaction to the event handler.
+          FITEQuestion.addeventListener();
 
 
 
@@ -94,18 +96,20 @@ QuizDirector.setQuizBuilder(fitequizBuilder);
 
 
 //addEventListener
+/** 
           function addeventListener(){
-            FITCMDQuestion.inputExpressionValue.addEventListener('input',ValidWatch,false);
-            for(var i=0;i<FITCMDQuestion.inputVarsValue.length;i++){
-            FITCMDQuestion.inputVarsValue[i].addEventListener('input',ValidWatch,false);
+            FITEQuestion.inputExpressionValue.addEventListener('input',ValidWatch,false);
+            for(var i=0;i<FITEQuestion.inputVarsValue.length;i++){
+            FITEQuestion.inputVarsValue[i].addEventListener('input',ValidWatch,false);
                                                                     }   
-            FITCMDQuestion.concreteJSTM.goForwardButton.addEventListener('click',goForward,false);
-            FITCMDQuestion.concreteJSTM.goBackButton.addEventListener('click',goBack,false);
-            FITCMDQuestion.aHref.addEventListener('click',close,false); 
-            FITCMDQuestion.startButton.addEventListener('click',start,false);                                                        
+            FITEQuestion.concreteJSTM.goForwardButton.addEventListener('click',goForward,false);
+            FITEQuestion.concreteJSTM.goBackButton.addEventListener('click',goBack,false);
+            FITEQuestion.aHref.addEventListener('click',close,false); 
+            FITEQuestion.startButton.addEventListener('click',start,false);                                                        
                                                                              
           }
-          
+          **/
+          /** 
            function ValidWatch(){
                 fiteController.ValidWatch();
                 }
@@ -121,11 +125,11 @@ QuizDirector.setQuizBuilder(fitequizBuilder);
                 fiteController.getProgramText();
                             }
            function close(){
-                FITCMDQuestion.fieldSet.style.display='none';
-                FITCMDQuestion.startButton.setAttribute('disabled','disabled');
-                //FITCMDQuestion.innerDiv2.innerHTML='';
+                FITEQuestion.fieldSet.style.display='none';
+                FITEQuestion.startButton.setAttribute('disabled','disabled');
+                //FITEQuestion.innerDiv2.innerHTML='';
                     }
-          
+          **/
                      
                         })
           .fail(function(data){alert('error in the testForFactory');});

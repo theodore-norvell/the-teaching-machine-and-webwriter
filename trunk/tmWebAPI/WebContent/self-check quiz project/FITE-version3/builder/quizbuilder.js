@@ -1,5 +1,6 @@
 /// <reference path="../library/jquery.d.ts" />
 /// <reference path="../src/JSTM.ts" />
+/// <reference path="../state/State.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -121,63 +122,65 @@ var quizBuilder;
         return Questiion;
     })();
     //fat product---->quiz
-    var FITCMDQuestion = (function (_super) {
-        __extends(FITCMDQuestion, _super);
-        //
+    var FITEQuestion = (function (_super) {
+        __extends(FITEQuestion, _super);
         //
         //outputVarsSpan = new Array<HTMLElement>();
         //outputVarsValue = new Array<HTMLElement>();
-        function FITCMDQuestion(selectedQuestion) {
+        function FITEQuestion(selectedQuestion) {
             _super.call(this, selectedQuestion);
             //<span> element for variables
             this.inputVarsSpan = new Array();
             //<input> element for variables
             this.inputVarsValue = new Array();
+            //
+            //<span> element for watch variables 
+            this.outputMirrorSpan = new Array();
+            //<input> element for watch variables
+            this.outputMirrorValue = new Array();
         }
-        FITCMDQuestion.prototype.setFunctiondescription = function (functiondescription) {
-            this.functiondescription = functiondescription;
+        FITEQuestion.prototype.setCode = function (code) {
+            this.code = code;
         };
-        FITCMDQuestion.prototype.setCodeFunction = function (codeFunction) {
-            this.codeFunction = codeFunction;
+        FITEQuestion.prototype.setOutputVars = function (outputVars) {
+            this.outputVars = outputVars;
         };
-        FITCMDQuestion.prototype.setCodeMain = function (codeMain) {
-            this.codeMain = codeMain;
+        //setter a reference
+        FITEQuestion.prototype.setController = function (controller) {
+            this.controller = controller;
+        };
+        //getter a reference
+        FITEQuestion.prototype.getController = function () {
+            return this.controller;
         };
         /////////////////////////////makeHTML
         //outer div <div id='question1'>
-        FITCMDQuestion.prototype.makeDiv = function () {
+        FITEQuestion.prototype.makeDiv = function () {
             this.Div = document.createElement('div');
             this.Div.setAttribute('id', this.name);
             return this.Div;
         };
         //innerDiv1 <div id='question1=area1'>      
-        FITCMDQuestion.prototype.makeInnerDiv1 = function () {
+        FITEQuestion.prototype.makeInnerDiv1 = function () {
             this.innerDiv1 = document.createElement('div');
             this.innerDiv1.setAttribute('id', this.name + '-area1');
             return this.innerDiv1;
         };
         //     
-        FITCMDQuestion.prototype.makeQuestionDisplay = function () {
-            this.questionDisplay = document.createElement('p');
-            this.questionDisplay.setAttribute('id', this.name + '-questionDisplay');
-            this.questionDisplay.innerHTML = this.name + ":" + this.text;
-            return this.questionDisplay;
-        };
-        //
-        FITCMDQuestion.prototype.makeFunctionDisplay = function () {
-            this.functionDisplay = document.createElement('p');
-            this.functionDisplay.setAttribute('id', 'Function: ' + '-functionDisplay');
-            this.functionDisplay.innerHTML = "Fill in the function::" + this.functiondescription;
-            return this.functionDisplay;
+        FITEQuestion.prototype.makeP = function () {
+            this.P = document.createElement('p');
+            this.P.setAttribute('id', this.name + '-questionDisplay');
+            this.P.innerHTML = this.name + ":" + this.text;
+            return this.P;
         };
         //insertDiv1     
-        FITCMDQuestion.prototype.makeInsertDiv1 = function () {
+        FITEQuestion.prototype.makeInsertDiv1 = function () {
             this.insertDiv1 = document.createElement('div');
             this.insertDiv1.setAttribute('id', this.name + '-insertDiv1');
             return this.insertDiv1;
         };
         //      
-        FITCMDQuestion.prototype.makeStartButton = function () {
+        FITEQuestion.prototype.makeStartButton = function () {
             this.startButton = document.createElement('button');
             this.startButton.setAttribute('id', this.name + '-start');
             this.startButton.setAttribute('disabled', 'disabled');
@@ -186,20 +189,20 @@ var quizBuilder;
             return this.startButton;
         };
         //innerDiv2 <div id='question-area2'>      
-        FITCMDQuestion.prototype.makeInnerDiv2 = function () {
+        FITEQuestion.prototype.makeInnerDiv2 = function () {
             this.innerDiv2 = document.createElement('div');
             this.innerDiv2.setAttribute('id', this.name + '-area2');
             return this.innerDiv2;
         };
         //
-        FITCMDQuestion.prototype.makeFieldSet = function () {
+        FITEQuestion.prototype.makeFieldSet = function () {
             this.fieldSet = document.createElement('fieldSet');
             this.fieldSet.setAttribute('id', this.name + 'panel');
             this.fieldSet.style.display = 'none';
             return this.fieldSet;
         };
         //      
-        FITCMDQuestion.prototype.makeAHref = function () {
+        FITEQuestion.prototype.makeAHref = function () {
             this.aHref = document.createElement('a');
             this.aHref.setAttribute('id', this.name + '-close');
             this.aHref.setAttribute('href', 'javascript:void(0)');
@@ -209,31 +212,31 @@ var quizBuilder;
             return this.aHref;
         };
         //#insertDiv2
-        FITCMDQuestion.prototype.makeInsertDiv2 = function () {
+        FITEQuestion.prototype.makeInsertDiv2 = function () {
             this.insertDiv2 = document.createElement('div');
             this.insertDiv2.setAttribute('id', this.name + '-insertDiv2');
             return this.insertDiv2;
         };
         //
-        FITCMDQuestion.prototype.makeSpan = function () {
+        FITEQuestion.prototype.makeSpan = function () {
             this.span = document.createElement('span');
             this.span.innerHTML = '&nbsp';
             return this.span;
         };
         //
         /////////////////////make insertArea1 and 2
-        FITCMDQuestion.prototype.setinputExpressionSpan = function () {
+        FITEQuestion.prototype.setinputExpressionSpan = function () {
             this.inputExpressionSpan = document.createElement('span');
-            this.inputExpressionSpan.innerHTML = 'fill in the function: ';
+            this.inputExpressionSpan.innerHTML = 'expression: ';
             return this.inputExpressionSpan;
         };
-        FITCMDQuestion.prototype.setinputExpressionValue = function () {
-            this.inputExpressionValue = document.createElement('textarea');
+        FITEQuestion.prototype.setinputExpressionValue = function () {
+            this.inputExpressionValue = document.createElement('input');
             this.inputExpressionValue.setAttribute('type', 'text');
             this.inputExpressionValue.setAttribute('value', '');
             return this.inputExpressionValue;
         };
-        FITCMDQuestion.prototype.setinputVarsSpan = function (inputVars) {
+        FITEQuestion.prototype.setinputVarsSpan = function (inputVars) {
             // console.log(inputVars);
             var count = Object.keys(inputVars).length;
             for (var i = 0; i < count; i++) {
@@ -244,7 +247,7 @@ var quizBuilder;
             return this.inputVarsSpan;
         };
         //i will receive the inputVars object and return inputVarsInputElement;
-        FITCMDQuestion.prototype.setinputVarsValue = function (inputVars) {
+        FITEQuestion.prototype.setinputVarsValue = function (inputVars) {
             var count = Object.keys(inputVars).length;
             for (var i = 0; i < count; i++) {
                 this.inputVarsValue[i] = document.createElement('input');
@@ -253,6 +256,23 @@ var quizBuilder;
                 this.inputVarsValue[i].setAttribute('value', inputVars[i].defaultInitValue);
             }
             return this.inputVarsValue;
+        };
+        FITEQuestion.prototype.setoutputMirrorSpan = function (inputVars) {
+            var count = Object.keys(inputVars).length;
+            for (var i = 0; i < count; i++) {
+                this.outputMirrorSpan[i] = document.createElement('span');
+                this.outputMirrorSpan[i].innerHTML = inputVars[i].name;
+            }
+            return this.outputMirrorSpan;
+        };
+        FITEQuestion.prototype.setoutputMirrorValue = function (inputVars) {
+            var count = Object.keys(inputVars).length;
+            for (var i = 0; i < count; i++) {
+                this.outputMirrorValue[i] = document.createElement('input');
+                this.outputMirrorValue[i].setAttribute('type', 'text');
+                this.outputMirrorValue[i].setAttribute('value', inputVars[i].defaultInitValue);
+            }
+            return this.outputMirrorValue;
         };
         /**
        public setoutputVarsSpan(outPutVars:any){
@@ -280,7 +300,7 @@ var quizBuilder;
             **/
         //constructDisplay area1!!!!
         // div parameter 
-        FITCMDQuestion.prototype.constructInsertArea1 = function () {
+        FITEQuestion.prototype.constructInsertArea1 = function () {
             var fn = this.insertDiv1.firstChild;
             while (fn) {
                 this.insertDiv1.removeChild(fn);
@@ -295,12 +315,29 @@ var quizBuilder;
                 this.insertDiv1.appendChild(document.createElement('br'));
             }
         };
-        FITCMDQuestion.prototype.makeHTML = function () {
+        FITEQuestion.prototype.constructInsertArea2 = function () {
+            var fn = this.insertDiv2.firstChild;
+            while (fn) {
+                this.insertDiv2.removeChild(fn);
+                fn = this.insertDiv2.firstChild;
+            }
+            //make the VariableWatcher by calling concreteJSTM's method
+            var VariableWatcher = this.concreteJSTM.makeVariableWatcher(this.outputVars[0].name, this.outputVars[0].initValue);
+            for (var j = 0; j < this.outputMirrorValue.length; j++) {
+                this.insertDiv2.appendChild(this.outputMirrorSpan[j]);
+                this.insertDiv2.appendChild(this.outputMirrorValue[j]);
+                this.insertDiv2.appendChild(document.createElement('br'));
+            }
+            //this.insertDiv2.appendChild(this.outputVarsSpan[0]);
+            //
+            this.insertDiv2.appendChild(VariableWatcher);
+            //this.insertDiv2.appendChild(document.createElement('br'));
+        };
+        FITEQuestion.prototype.makeHTML = function () {
             //make the sturcture
             this.makeDiv();
             this.makeInnerDiv1();
-            this.makeQuestionDisplay();
-            this.makeFunctionDisplay();
+            this.makeP();
             this.makeInsertDiv1();
             this.makeStartButton();
             this.makeInnerDiv2();
@@ -317,13 +354,14 @@ var quizBuilder;
             this.setinputExpressionValue();
             this.setinputVarsSpan(this.selectedQuestion.inputVars);
             this.setinputVarsValue(this.selectedQuestion.inputVars);
+            this.setoutputMirrorSpan(this.selectedQuestion.inputVars);
+            this.setoutputMirrorValue(this.selectedQuestion.inputVars);
             //this.setoutputVarsSpan(this.selectedQuestion.outPutVars);
             //this.setoutputVarsValue(this.selectedQuestion.outPutVars)
             //
             this.Div.appendChild(this.innerDiv1);
             this.Div.appendChild(this.innerDiv2);
-            this.innerDiv1.appendChild(this.questionDisplay);
-            this.innerDiv1.appendChild(this.functionDisplay);
+            this.innerDiv1.appendChild(this.P);
             this.innerDiv1.appendChild(this.insertDiv1);
             this.innerDiv1.appendChild(this.startButton);
             this.innerDiv2.appendChild(this.fieldSet);
@@ -339,13 +377,31 @@ var quizBuilder;
             this.fieldSet.appendChild(this.insertDiv2);
             //
             this.constructInsertArea1();
+            this.constructInsertArea2();
         };
-        FITCMDQuestion.prototype.getHTML = function () {
+        FITEQuestion.prototype.getHTML = function () {
             return this.Div;
         };
-        return FITCMDQuestion;
+        FITEQuestion.prototype.addeventListener = function () {
+            var _this = this;
+            //lambda expression to hold the context this/controller
+            var handler1 = function (e) { _this.controller.ValidWatch(); };
+            this.inputExpressionValue.addEventListener('input', handler1, false);
+            for (var i = 0; i < this.inputVarsValue.length; i++) {
+                this.inputVarsValue[i].addEventListener('input', handler1, false);
+            }
+            var handler2 = function (e) { _this.controller.goForward(); };
+            this.concreteJSTM.goForwardButton.addEventListener('click', handler2, false);
+            var handler3 = function (e) { _this.controller.goBack(); };
+            this.concreteJSTM.goBackButton.addEventListener('click', handler3, false);
+            var handler4 = function (e) { _this.controller.close(); };
+            this.aHref.addEventListener('click', handler4, false);
+            var handler5 = function (e) { _this.controller.start(); };
+            this.startButton.addEventListener('click', handler5, false);
+        };
+        return FITEQuestion;
     })(Questiion);
-    quizBuilder.FITCMDQuestion = FITCMDQuestion;
+    quizBuilder.FITEQuestion = FITEQuestion;
     //anstract builder
     var QuizBuilder = (function () {
         function QuizBuilder(selectedQuestion) {
@@ -355,7 +411,7 @@ var quizBuilder;
             return this.quiz;
         };
         QuizBuilder.prototype.createNewQuiz = function () {
-            this.quiz = new FITCMDQuestion(this.selectedQuestion);
+            this.quiz = new FITEQuestion(this.selectedQuestion);
         };
         return QuizBuilder;
     })();
@@ -376,15 +432,17 @@ var quizBuilder;
         };
         FITEQuizQuizBuilder.prototype.buildText = function () {
             this.quiz.setText(this.selectedQuestion.text);
-            this.quiz.setFunctiondescription(this.selectedQuestion.functiondescription);
         };
         FITEQuizQuizBuilder.prototype.buildCode = function () {
-            this.quiz.setCodeFunction(this.selectedQuestion.codeFunction);
-            this.quiz.setCodeMain(this.selectedQuestion.codeMain);
+            this.quiz.setCode(this.selectedQuestion.code);
         };
         FITEQuizQuizBuilder.prototype.buildInputVars = function () {
             //console.log(tempIndex.inputVars);
             this.quiz.setInputVars(this.selectedQuestion.inputVars);
+        };
+        FITEQuizQuizBuilder.prototype.buildoutputVars = function () {
+            //console.log()
+            this.quiz.setOutputVars(this.selectedQuestion.outPutVars);
         };
         return FITEQuizQuizBuilder;
     })(QuizBuilder);
@@ -408,6 +466,7 @@ var quizBuilder;
             this.quizbuilder.buildText();
             this.quizbuilder.buildCode();
             this.quizbuilder.buildInputVars();
+            this.quizbuilder.buildoutputVars();
         };
         return QuizDirector;
     })();

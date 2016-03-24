@@ -28,6 +28,20 @@ var jstm;
             this.expressionDisplay = document.createElement('span');
             return this.expressionDisplay;
         };
+        //makeVariableWatcher
+        concreteJSTM.prototype.makeVariableWatcher = function (Name, initValue) {
+            var VariableWatcherSpan;
+            VariableWatcherSpan = document.createElement('span');
+            VariableWatcherSpan.innerHTML = Name;
+            var VariableWatcherInput;
+            VariableWatcherInput = document.createElement('input');
+            VariableWatcherInput.setAttribute('type', 'text');
+            VariableWatcherInput.setAttribute('value', initValue);
+            this.VariableWatcher = document.createElement('div');
+            this.VariableWatcher.appendChild(VariableWatcherSpan);
+            this.VariableWatcher.appendChild(VariableWatcherInput);
+            return this.VariableWatcher;
+        };
         //setProgramText
         concreteJSTM.prototype.setprogramText = function (pt) {
             this.programText = pt;

@@ -1,5 +1,6 @@
 /// <reference path="../library/jquery.d.ts" />
 /// <reference path="../src/JSTM.ts" />
+/// <reference path="../state/State.ts" />
 
 
 module quizBuilder
@@ -10,7 +11,7 @@ module quizBuilder
        //var tempIndex:any;
 export  class fetchFile{
      //the url of the .json file; 
-    url:any;
+     url:any;
     //this represents the whole json file;
     jsonFile:any; 
     //this represents the whole json file in array;
@@ -165,21 +166,20 @@ export  class fetchFile{
   }
  
     //fat product---->quiz
-  export  class FITCMDQuestion extends Questiion
+  export  class FITEQuestion extends Questiion
 {
 
        
-       codeFunction:string;
-       codeMain:string;
-       functiondescription:string
+       code:string;
+       outputVars:any;
        //
+       controller:State.FITEController;
 
 
        //
        Div:HTMLElement;
        innerDiv1:HTMLElement;
-       questionDisplay:HTMLElement;
-       functionDisplay:HTMLElement;
+       P:HTMLElement;
        insertDiv1:HTMLElement;
        startButton:HTMLElement;
        innerDiv2:HTMLElement;
@@ -205,6 +205,10 @@ export  class fetchFile{
        //<input> element for variables
        inputVarsValue = new Array<HTMLElement>();
        //
+       //<span> element for watch variables 
+       outputMirrorSpan = new Array<HTMLElement>();
+       //<input> element for watch variables
+       outputMirrorValue = new Array<HTMLElement>();
        //
        //outputVarsSpan = new Array<HTMLElement>();
        //outputVarsValue = new Array<HTMLElement>();
@@ -213,18 +217,25 @@ export  class fetchFile{
   constructor(selectedQuestion:any){
       super(selectedQuestion);
                             }
-   public setFunctiondescription(functiondescription:string){
-       this.functiondescription=functiondescription;
-   }                       
+                            
                              
-  public setCodeFunction(codeFunction:string){
-      this.codeFunction=codeFunction;
+  public setCode(code:string){
+      this.code=code;
                               }
                               
   
-  public setCodeMain(codeMain:any){
-      this.codeMain=codeMain;  
+  public setOutputVars(outputVars:any){
+      this.outputVars=outputVars;  
                                      }
+    //setter a reference
+  public setController(controller:State.FITEController){
+      this.controller=controller;
+  }
+  
+  //getter a reference
+  public getController(){
+      return this.controller;
+                                 }   
   
   /////////////////////////////makeHTML
   
@@ -241,19 +252,11 @@ export  class fetchFile{
       return this.innerDiv1;
       }
       //     
-      public makeQuestionDisplay(){
-      this.questionDisplay =document.createElement('p');
-      this.questionDisplay.setAttribute('id',this.name+'-questionDisplay');
-      this.questionDisplay.innerHTML=this.name+":"+this.text;
-      return this.questionDisplay;
-      }
-      //
-      public makeFunctionDisplay(){
-      this.functionDisplay =document.createElement('p');
-      this.functionDisplay.setAttribute('id','Function: '+'-functionDisplay');
-      this.functionDisplay.innerHTML="Fill in the function::"+this.functiondescription;
-      return this.functionDisplay;
-          
+      public makeP(){
+      this.P =document.createElement('p');
+      this.P.setAttribute('id',this.name+'-questionDisplay');
+      this.P.innerHTML=this.name+":"+this.text;
+      return this.P;
       }
       //insertDiv1     
       public makeInsertDiv1(){
@@ -312,7 +315,7 @@ export  class fetchFile{
       /////////////////////make insertArea1 and 2
       public setinputExpressionSpan(){
       this.inputExpressionSpan=document.createElement('span');
-      this.inputExpressionSpan.innerHTML='fill in the function: ';
+      this.inputExpressionSpan.innerHTML='expression: ';
       
       return this.inputExpressionSpan;
       
@@ -320,7 +323,7 @@ export  class fetchFile{
                                         }
                                         
       public setinputExpressionValue(){
-      this.inputExpressionValue=document.createElement('textarea');
+      this.inputExpressionValue=document.createElement('input');
       this.inputExpressionValue.setAttribute('type','text');
       this.inputExpressionValue.setAttribute('value','');
       return this.inputExpressionValue;
@@ -355,7 +358,25 @@ export  class fetchFile{
                                                   }
   
   
- 
+     public setoutputMirrorSpan(inputVars:any){
+      var count = Object.keys(inputVars).length;
+      for(var i=0;i<count;i++){
+        this.outputMirrorSpan[i]=document.createElement('span');
+        this.outputMirrorSpan[i].innerHTML=inputVars[i].name;  
+      }
+      return this.outputMirrorSpan;
+                                                }
+  
+     public setoutputMirrorValue(inputVars:any){
+      var count = Object.keys(inputVars).length;
+      for(var i=0;i<count;i++)
+      {
+          this.outputMirrorValue[i]=document.createElement('input');
+          this.outputMirrorValue[i].setAttribute('type','text');
+          this.outputMirrorValue[i].setAttribute('value',inputVars[i].defaultInitValue);
+      }
+      return this.outputMirrorValue;
+                                                   }
       /**  
      public setoutputVarsSpan(outPutVars:any){
       var count = Object.keys(outPutVars).length;
@@ -399,15 +420,34 @@ export  class fetchFile{
        }  
       
                             }   
-                                                  
+  
+  public constructInsertArea2(){
+       var fn=this.insertDiv2.firstChild;
+       while(fn){
+           this.insertDiv2.removeChild(fn);
+           fn=this.insertDiv2.firstChild;
+       }
+       //make the VariableWatcher by calling concreteJSTM's method
+       var VariableWatcher:HTMLElement=this.concreteJSTM.makeVariableWatcher(this.outputVars[0].name,this.outputVars[0].initValue);
+       
+       for(var j=0; j<this.outputMirrorValue.length;j++)
+       {
+       this.insertDiv2.appendChild(this.outputMirrorSpan[j]);
+       this.insertDiv2.appendChild(this.outputMirrorValue[j]);
+       this.insertDiv2.appendChild(document.createElement('br'));
+       }
+       //this.insertDiv2.appendChild(this.outputVarsSpan[0]);
+       //
+       this.insertDiv2.appendChild(VariableWatcher);
+       //this.insertDiv2.appendChild(document.createElement('br'));
+                                }                                                   
                                                         
 
       public makeHTML(){
           //make the sturcture
           this.makeDiv();
           this.makeInnerDiv1();
-          this.makeQuestionDisplay();
-          this.makeFunctionDisplay();
+          this.makeP();
           this.makeInsertDiv1();
           this.makeStartButton();
           this.makeInnerDiv2();
@@ -425,14 +465,15 @@ export  class fetchFile{
           this.setinputExpressionValue();
           this.setinputVarsSpan(this.selectedQuestion.inputVars);
           this.setinputVarsValue(this.selectedQuestion.inputVars);
+          this.setoutputMirrorSpan(this.selectedQuestion.inputVars);
+          this.setoutputMirrorValue(this.selectedQuestion.inputVars);
           //this.setoutputVarsSpan(this.selectedQuestion.outPutVars);
           //this.setoutputVarsValue(this.selectedQuestion.outPutVars)
          //
          this.Div.appendChild(this.innerDiv1);
          this.Div.appendChild(this.innerDiv2);
          
-         this.innerDiv1.appendChild(this.questionDisplay);
-         this.innerDiv1.appendChild(this.functionDisplay);
+         this.innerDiv1.appendChild(this.P);
          this.innerDiv1.appendChild(this.insertDiv1);
          this.innerDiv1.appendChild(this.startButton); 
          this.innerDiv2.appendChild(this.fieldSet);
@@ -448,6 +489,7 @@ export  class fetchFile{
          this.fieldSet.appendChild(this.insertDiv2);
          //
          this.constructInsertArea1();
+         this.constructInsertArea2();
         
       }
       public getHTML(){
@@ -455,6 +497,35 @@ export  class fetchFile{
           
       }
       
+      
+      
+      
+      
+       public addeventListener(){
+            //lambda expression to hold the context this/controller
+            var handler1 = (e:Event)=>{this.controller.ValidWatch();}
+            this.inputExpressionValue.addEventListener('input',handler1,false);
+            for(var i=0;i<this.inputVarsValue.length;i++){
+            this.inputVarsValue[i].addEventListener('input',handler1,false);
+                                                                    }  
+                                                                     
+            //lambda expression to hold the context this/controller                                                       
+            var handler2 = (e:Event)=>{this.controller.goForward();}                                                        
+            this.concreteJSTM.goForwardButton.addEventListener('click',handler2,false);
+            
+            //lambda expression to hold the context this/controller
+            var handler3 = (e:Event)=>{this.controller.goBack();} 
+            this.concreteJSTM.goBackButton.addEventListener('click',handler3,false);
+            
+            //lambda expression to hold the context this/controller
+            var handler4 = (e:Event)=>{this.controller.close();} 
+            this.aHref.addEventListener('click',handler4,false); 
+            
+            //lambda expression to hold the context this/controller
+            var handler5 = (e:Event)=>{this.controller.start();} 
+            this.startButton.addEventListener('click',handler5,false);                                                        
+                                                                             
+          }
       
         
 //fat product
@@ -464,7 +535,7 @@ export  class fetchFile{
 //anstract builder
    abstract class QuizBuilder
 {
-      quiz:FITCMDQuestion;
+      quiz:FITEQuestion;
       category:string;
       name:string;
       language:string;
@@ -478,12 +549,12 @@ export  class fetchFile{
   }  
       
       
-    public getQuiz():FITCMDQuestion {
+    public getQuiz():FITEQuestion {
         return this.quiz;
     }
     
     public createNewQuiz(){
-       this.quiz = new FITCMDQuestion(this.selectedQuestion); 
+       this.quiz = new FITEQuestion(this.selectedQuestion); 
      
     }
     public abstract buildCategory();
@@ -492,6 +563,7 @@ export  class fetchFile{
     public abstract buildText();
     public abstract buildCode();
     public abstract buildInputVars();
+    public abstract buildoutputVars();
  
 }
    //builder
@@ -512,15 +584,17 @@ export  class fetchFile{
        
     public  buildText(){
         this.quiz.setText(this.selectedQuestion.text);
-        this.quiz.setFunctiondescription(this.selectedQuestion.functiondescription);
     }
     public  buildCode(){
-        this.quiz.setCodeFunction(this.selectedQuestion.codeFunction);
-        this.quiz.setCodeMain(this.selectedQuestion.codeMain);
+        this.quiz.setCode(this.selectedQuestion.code);
     }
     public  buildInputVars(){
         //console.log(tempIndex.inputVars);
         this.quiz.setInputVars(this.selectedQuestion.inputVars);
+    }
+    public  buildoutputVars(){
+        //console.log()
+        this.quiz.setOutputVars(this.selectedQuestion.outPutVars);
     }
    }
    
@@ -542,6 +616,7 @@ export  class fetchFile{
             this.quizbuilder.buildText();
             this.quizbuilder.buildCode();
             this.quizbuilder.buildInputVars();
+            this.quizbuilder.buildoutputVars();
             
         }
    }

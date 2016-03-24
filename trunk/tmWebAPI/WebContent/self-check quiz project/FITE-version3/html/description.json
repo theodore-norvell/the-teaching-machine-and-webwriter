@@ -8,7 +8,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question2":
@@ -19,7 +19,7 @@
                   {"name":"z","defaultInitValue":30.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question3":
@@ -31,7 +31,7 @@
                   {"name":"h","defaultInitValue":40.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n double h=$h$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n double z=$z$; \n double h=$h$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question4":
@@ -44,7 +44,7 @@
                   {"name":"i","defaultInitValue":50.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question5":
@@ -54,7 +54,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question6":
@@ -64,7 +64,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question7":
@@ -74,7 +74,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question8":
@@ -84,7 +84,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question9":
@@ -94,7 +94,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       },
 "question10":
@@ -104,7 +104,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int void main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
       "category":"fillInTheExpression"
       }
     },

@@ -19,13 +19,13 @@ var State;
         Initialize.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
-                document.getElementById('start').removeAttribute('disabled');
-                fite.setCurrentState(FITE.startable);
+                fite.qz.startButton.removeAttribute('disabled');
+                fite.setCurrentState(FITCMDController.startable);
             }
             else {
                 console.log('input not valid');
-                document.getElementById('start').setAttribute('disabled', 'disabled');
-                fite.setCurrentState(FITE.initialize);
+                fite.qz.startButton.setAttribute('disabled', 'disabled');
+                fite.setCurrentState(FITCMDController.initialize);
             }
         };
         return Initialize;
@@ -39,16 +39,16 @@ var State;
         Startable.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
-                document.getElementById('start').removeAttribute('disabled');
-                document.getElementById('start').style.display = 'block';
-                fite.setCurrentState(FITE.startable);
+                fite.qz.startButton.removeAttribute('disabled');
+                fite.qz.startButton.style.display = 'block';
+                fite.setCurrentState(FITCMDController.startable);
             }
             else {
                 console.log('input not valid');
-                document.getElementById('start').setAttribute('disabled', 'disabled');
-                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
-                document.getElementById('goBack').setAttribute('disabled', 'disabled');
-                fite.setCurrentState(FITE.initialize);
+                fite.qz.startButton.setAttribute('disabled', 'disabled');
+                fite.concrete.goForwardButton.setAttribute('disabled', 'disabled');
+                fite.concrete.goBackButton.setAttribute('disabled', 'disabled');
+                fite.setCurrentState(FITCMDController.initialize);
             }
         };
         //start button clicked event
@@ -58,7 +58,7 @@ var State;
             var filename = 'FITE.cpp';
             var program = fite.concrete.getprogramText();
             console.log(program);
-            fite.setCurrentState(FITE.wait);
+            fite.setCurrentState(FITCMDController.wait);
             fite.loadStringAndInitialize(filename, program);
         };
         return Startable;
@@ -72,7 +72,7 @@ var State;
         Wait.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
-                fite.setCurrentState(FITE.startable);
+                fite.setCurrentState(FITCMDController.startable);
             }
         };
         Wait.prototype.clickStart = function (fite) {
@@ -80,14 +80,14 @@ var State;
             var filename = 'FITE.cpp';
             var program = fite.concrete.getprogramText();
             fite.loadStringAndInitialize(filename, program);
-            fite.setCurrentState(FITE.wait);
+            fite.setCurrentState(FITCMDController.wait);
         };
         Wait.prototype.gotoStarted = function (fite) {
             console.log('i am the method gotoStatred in Wait state');
-            document.getElementById('goFoward').removeAttribute('disabled');
-            document.getElementById('goBack').removeAttribute('disabled');
-            document.getElementById('panel').style.display = 'block';
-            fite.setCurrentState(FITE.started);
+            fite.concrete.goForwardButton.removeAttribute('disabled');
+            fite.concrete.goBackButton.removeAttribute('disabled');
+            fite.qz.fieldSet.style.display = 'block';
+            fite.setCurrentState(FITCMDController.started);
         };
         return Wait;
     })();
@@ -100,62 +100,63 @@ var State;
         Started.prototype.checkValid = function (fite) {
             if (fite.isInputValid()) {
                 console.log('input valid');
-                document.getElementById('start').innerHTML = 'Restart';
-                document.getElementById('start').removeAttribute('disabled');
-                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
-                document.getElementById('goBack').setAttribute('disabled', 'disabled');
-                fite.setCurrentState(FITE.startable);
+                fite.qz.startButton.innerHTML = 'Restart';
+                fite.qz.startButton.removeAttribute('disabled');
+                fite.concrete.goForwardButton.setAttribute('disabled', 'disabled');
+                fite.concrete.goBackButton.setAttribute('disabled', 'disabled');
+                fite.setCurrentState(FITCMDController.startable);
             }
             else {
                 console.log('input not valid');
-                document.getElementById('start').setAttribute('disabled', 'disabled');
-                document.getElementById('goFoward').setAttribute('disabled', 'disabled');
-                document.getElementById('goBack').setAttribute('disabled', 'disabled');
-                document.getElementById('panel').style.display = 'block';
-                fite.setCurrentState(FITE.initialize);
+                fite.qz.startButton.setAttribute('disabled', 'disabled');
+                fite.concrete.goForwardButton.setAttribute('disabled', 'disabled');
+                fite.concrete.goBackButton.setAttribute('disabled', 'disabled');
+                fite.qz.fieldSet.style.display = 'block';
+                fite.setCurrentState(FITCMDController.initialize);
             }
         };
         Started.prototype.clickStart = function (fite) {
             alert('if you want to restart me again, please modify the input area again!');
-            document.getElementById('start').setAttribute('disabled', 'disabled');
-            fite.setCurrentState(FITE.started);
+            fite.qz.startButton.setAttribute('disabled', 'disabled');
+            fite.qz.fieldSet.style.display = 'block';
+            fite.setCurrentState(FITCMDController.started);
         };
         return Started;
     })();
-    var FITE = (function () {
-        function FITE(concrete, qz) {
-            this.currentState = FITE.initialize;
+    var FITCMDController = (function () {
+        function FITCMDController(concrete, qz) {
+            this.currentState = FITCMDController.initialize;
             this.concrete = concrete;
             this.qz = qz;
             this.isInputValidFlag = false;
         }
         //user check valid
-        FITE.prototype.checkValid = function () {
+        FITCMDController.prototype.checkValid = function () {
             this.currentState.checkValid(this);
         };
         //user click start , 
-        FITE.prototype.clickStart = function () {
+        FITCMDController.prototype.clickStart = function () {
             this.currentState.clickStart(this);
         };
         //gotoStarted
-        FITE.prototype.gotoStarted = function () {
+        FITCMDController.prototype.gotoStarted = function () {
             this.currentState.gotoStarted(this);
         };
-        FITE.prototype.setCurrentState = function (s) {
+        FITCMDController.prototype.setCurrentState = function (s) {
             this.currentState = s;
             console.log('current state is ' + this.currentState.name);
         };
-        FITE.prototype.isInputValid = function () {
+        FITCMDController.prototype.isInputValid = function () {
             return this.isInputValidFlag;
         };
-        FITE.prototype.setisInputValidFlagToBeTrue = function () {
+        FITCMDController.prototype.setisInputValidFlagToBeTrue = function () {
             this.isInputValidFlag = true;
         };
-        FITE.prototype.setisInputValidFlagToBeFalse = function () {
+        FITCMDController.prototype.setisInputValidFlagToBeFalse = function () {
             this.isInputValidFlag = false;
         };
         //11111111create  this is a promise's callback with 3 .done cascaded{which is the callback functions}
-        FITE.prototype.loadStringAndInitialize = function (filename, program) {
+        FITCMDController.prototype.loadStringAndInitialize = function (filename, program) {
             var thisFITE = this;
             var thisConcreteJSTM = this.concrete;
             //call the loadString in the concrete JSTM
@@ -181,19 +182,19 @@ var State;
                     thisFITE.gotoStarted();
                 })
                     .fail(function (data) {
-                    document.getElementById('panel').style.display = 'none';
+                    thisFITE.qz.fieldSet.style.display = 'none';
                     alert(data.message);
                     console.log('fail');
                 });
             })
                 .fail(function (data) {
-                document.getElementById('panel').style.display = 'none';
+                thisFITE.qz.fieldSet.style.display = 'none';
                 alert(data.message);
                 console.log('fail');
             });
         };
         //22222222loadString this method is not used in my test, because i need use create().done.done.done chain to make it work. so this methid is cascaded in the .done
-        FITE.prototype.loadString = function () {
+        FITCMDController.prototype.loadString = function () {
             var thisConcreteJSTM = this.concrete;
             var program = program;
             var filename = filename;
@@ -208,7 +209,7 @@ var State;
             });
         };
         //333333333initialize this method is not used in my test, because i need use create().done.done.done chain to make it work.so this methid is cascaded in the .done
-        FITE.prototype.initialize = function () {
+        FITCMDController.prototype.initialize = function () {
             var thisConcreteJSTM = this.concrete;
             //'1' means, i want the response back from the server
             var responseWantedFlag = '1';
@@ -222,7 +223,7 @@ var State;
                 console.log('fail');
             });
         };
-        FITE.prototype.goForward = function () {
+        FITCMDController.prototype.goForward = function () {
             var thisConcreteJSTM = this.concrete;
             console.log(this);
             console.log(this.currentState);
@@ -236,7 +237,7 @@ var State;
                 console.log('fail');
             });
         };
-        FITE.prototype.goBack = function () {
+        FITCMDController.prototype.goBack = function () {
             var thisConcreteJSTM = this.concrete;
             thisConcreteJSTM.goBack()
                 .done(function (data) {
@@ -250,12 +251,12 @@ var State;
         //-----------------------------------------------------
         //var concrete = new jstm.concreteJSTM('i will be send to FITE');
         // check the user - input validity at run time 
-        FITE.prototype.ValidWatch = function () {
+        FITCMDController.prototype.ValidWatch = function () {
             var boolFlag = true;
             var bool = new Array();
             console.log(this);
-            for (var i = 0; i < this.concrete.inputVarsInputElement.length; i++) {
-                bool[i] = this.concrete.inputExpressionInputElement.value != '' && !isNaN(this.concrete.inputVarsInputElement[i].value) && this.concrete.inputVarsInputElement[i].value != '';
+            for (var i = 0; i < this.qz.inputVarsValue.length; i++) {
+                bool[i] = this.qz.inputVarsValue.value != '' && !isNaN(this.qz.inputVarsValue[i].value) && this.qz.inputVarsValue[i].value != '';
                 if (bool[i] == false) {
                     boolFlag = false;
                 }
@@ -272,15 +273,15 @@ var State;
             }
         };
         //get the program text at run time, then call clickStart method.
-        FITE.prototype.getProgramText = function () {
+        FITCMDController.prototype.getProgramText = function () {
             var programText;
             var codeFunction = this.qz.codeFunction;
             var codeMain = this.qz.codeMain;
-            for (var i = 0; i < this.concrete.inputVarsInputElement.length; i++) {
-                var replace = this.concrete.inputVarsInputElement[i].value;
+            for (var i = 0; i < this.qz.inputVarsValue.length; i++) {
+                var replace = this.qz.inputVarsValue[i].value;
                 codeMain = codeMain.replace(/\$.*?\$\s?/, replace);
             }
-            codeFunction = codeFunction.replace(/\$.*?\$\s?/, this.concrete.inputExpressionInputElement.value);
+            codeFunction = codeFunction.replace(/\$.*?\$\s?/, this.qz.inputExpressionValue.value);
             //cascade
             programText = codeFunction + codeMain;
             //singleton's set method
@@ -297,13 +298,13 @@ var State;
                     }
                 }
                 **/
-        FITE.initialize = new Initialize(FITEState.initialize);
-        FITE.startable = new Startable(FITEState.startable);
-        FITE.wait = new Wait(FITEState.wait);
-        FITE.started = new Started(FITEState.started);
-        return FITE;
+        FITCMDController.initialize = new Initialize(FITEState.initialize);
+        FITCMDController.startable = new Startable(FITEState.startable);
+        FITCMDController.wait = new Wait(FITEState.wait);
+        FITCMDController.started = new Started(FITEState.started);
+        return FITCMDController;
     })();
-    State.FITE = FITE;
+    State.FITCMDController = FITCMDController;
 })(State || (State = {}));
 /**
 window.onload=function(){

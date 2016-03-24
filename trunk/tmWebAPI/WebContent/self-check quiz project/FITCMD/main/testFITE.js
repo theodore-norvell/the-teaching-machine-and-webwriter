@@ -3,100 +3,90 @@
 ///<reference path="../state/State.ts" />
 ///<reference path="../src/concreteJSTM.ts" />
 window.onload = function () {
-    //fite
-    FITE();
-    //ficmd
+    //fite, call the function to make the FITE question. 
     FITCMD();
-    function FITE() {
-        console.log('FITE');
-        //document.getElementById('divquestions').addEventListener('change',FITEType,false);
-        //call ajax function to read the whole json file and then store in a var called globalvar;
-        //1
-        quizBuilder.Quiz.AJAX_JSON_Req('description.json');
-        //2 push to index
-        // var index = [];
-        // var tempQuiz; 
-        quizBuilder.Quiz.tansferarray(quizBuilder.Quiz.index);
-        //3 
-        var select = document.getElementById('questionslist');
-        select.addEventListener('change', selec, false);
-        //declare quiz object
-        var qz;
-        //declare fite object
-        var fiteController;
-        //declar concreteJSTM object
-        var concretejstm;
-        function selec() {
-            var i = this.selectedIndex;
-            //console.log(index[i].value.inputVars.length);
-            //console.log(index[i]);
-            quizBuilder.Quiz.descript(quizBuilder.Quiz.index[i])
-                .done(function (data) {
-                //tempQuiz=data;
-                // console.log(data);
+    function FITCMD() {
+        // iterate from 0-9, make 9 questions from description.
+        for (var i = 0; i < 10; i++) {
+            //console.log('FITE');
+            console.log(i);
+            //the only dependency is here, the selected Number that the client gives and the url.
+            var selectedNumber = i;
+            var url = 'description.json';
+            var fetchFile = new quizBuilder.fetchFile(url, selectedNumber);
+            //fetchFile.AJAX_JSON_Req();
+            //fetchFile.setSelectedNumber(selectedNumber);
+            //selectedQuestion are get here
+            //var selectedQuestion =fetchFile.getselectedQuestion();
+            //console.log(selectedQuestion);
+            //data is selectedQuestion, a json onject    
+            fetchFile.AJAX_JSON_Req()
+                .done(function () {
+                var selectedQuestion = fetchFile.getselectedQuestion();
+                //declare quiz object
+                var FITCMDQuestion;
                 //instantiate director
-                var qd = new quizBuilder.QuizDirector();
-                //instantiate concrete builder FITEQuiz
-                var fitequizBuilder = new quizBuilder.FITEQuizQuizBuilder(data.category, data.name, data.language);
+                var QuizDirector = new quizBuilder.QuizDirector();
+                //selectedQuestion are get here : is a json object
+                var fitequizBuilder = new quizBuilder.FITEQuizQuizBuilder(selectedQuestion);
                 //set director
-                qd.setQuizBuilder(fitequizBuilder);
-                //cal construct method
-                qd.constructQuiz();
-                //het quiz product 
-                qz = qd.getQuiz();
+                QuizDirector.setQuizBuilder(fitequizBuilder);
                 //static method to instantiate a jstm , then instantiate fitecontroller
                 jstm.concreteJSTM.createRTM()
                     .done(function (data) {
-                    fiteController = new State.FITE(data, qz);
-                    console.log(data);
-                    console.log(fiteController.concrete);
-                    //fite.checkValid();
-                    concretejstm = data;
-                    //set concretejstm hold reference to the Quiz object
-                    // concretejstm.setQuiz(qz);
-                    //construct html element;
-                    concretejstm.constructHTMLElement();
-                    //add element into #insert1
-                    concretejstm.constructInsertArea1();
-                    concretejstm.inputExpressionInputElement.addEventListener('input', ValidWatch, false);
-                    for (var i = 0; i < concretejstm.inputVarsInputElement.length; i++) {
-                        concretejstm.inputVarsInputElement[i].addEventListener('input', ValidWatch, false);
+                    //
+                    console.log(i);
+                    //declar concreteJSTM object
+                    var thisJSTM;
+                    thisJSTM = data;
+                    //call construct method
+                    QuizDirector.constructQuiz();
+                    //get quiz product 
+                    FITCMDQuestion = QuizDirector.getQuiz();
+                    //set thisJSTM reference to the instance variable of FITEQuestion
+                    FITCMDQuestion.setConcreteJSTM(thisJSTM);
+                    FITCMDQuestion.makeHTML();
+                    var html = FITCMDQuestion.getHTML();
+                    //console.log(html);
+                    document.getElementById('FITCMD').appendChild(html);
+                    //declare fite object
+                    var fiteController;
+                    fiteController = new State.FITCMDController(thisJSTM, FITCMDQuestion);
+                    //
+                    addeventListener();
+                    //addEventListener
+                    function addeventListener() {
+                        FITCMDQuestion.inputExpressionValue.addEventListener('input', ValidWatch, false);
+                        for (var i = 0; i < FITCMDQuestion.inputVarsValue.length; i++) {
+                            FITCMDQuestion.inputVarsValue[i].addEventListener('input', ValidWatch, false);
+                        }
+                        FITCMDQuestion.concreteJSTM.goForwardButton.addEventListener('click', goForward, false);
+                        FITCMDQuestion.concreteJSTM.goBackButton.addEventListener('click', goBack, false);
+                        FITCMDQuestion.aHref.addEventListener('click', close, false);
+                        FITCMDQuestion.startButton.addEventListener('click', start, false);
+                    }
+                    function ValidWatch() {
+                        fiteController.ValidWatch();
+                    }
+                    function goForward() {
+                        fiteController.goForward();
+                    }
+                    function goBack() {
+                        fiteController.goBack();
+                    }
+                    function start() {
+                        //fite.clickStart();
+                        console.log('i have start');
+                        fiteController.getProgramText();
+                    }
+                    function close() {
+                        FITCMDQuestion.fieldSet.style.display = 'none';
+                        FITCMDQuestion.startButton.setAttribute('disabled', 'disabled');
+                        //FITCMDQuestion.innerDiv2.innerHTML='';
                     }
                 })
                     .fail(function (data) { alert('error in the testForFactory'); });
-                //done
             });
-            //selec function
         }
-        function ValidWatch() {
-            fiteController.ValidWatch();
-        }
-        var startButton = document.getElementById('start');
-        startButton.addEventListener('click', start, false);
-        function start() {
-            //fite.clickStart();
-            console.log('i have start');
-            fiteController.getProgramText();
-        }
-        var goForwardButton = document.getElementById('goFoward');
-        var goBackButton = document.getElementById('goBack');
-        var closeButton = document.getElementById('closebtn');
-        goForwardButton.addEventListener('click', goForward, false);
-        goBackButton.addEventListener('click', goBack, false);
-        closeButton.addEventListener('click', close, false);
-        function goForward() {
-            fiteController.goForward();
-        }
-        function goBack() {
-            fiteController.goBack();
-        }
-        function close() {
-            document.getElementById('panel').style.display = 'none';
-            startButton.setAttribute('disabled', 'disabled');
-            document.getElementById('expressioninpanel').innerHTML = '';
-        }
-    }
-    function FITCMD() {
-        console.log('fitcmd');
     }
 };
