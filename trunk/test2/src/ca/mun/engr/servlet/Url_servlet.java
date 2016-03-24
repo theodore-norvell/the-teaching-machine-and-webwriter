@@ -1,5 +1,5 @@
 
-package ca.mun.engr;
+package ca.mun.engr.servlet;
 
 import java.io.IOException;
 import java.util.Hashtable;
@@ -7,6 +7,7 @@ import java.util.Hashtable;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -49,6 +50,8 @@ public class Url_servlet extends HttpServlet {
 //		out.append("<div id="+div_Id+"><img src="+source_image+"></div>");
 //		out.append("</body>");
 //		out.append("</html>");
+		
+        
 		 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Javascript/Display2.html");
 		 dispatcher.include(request, response);
 		  

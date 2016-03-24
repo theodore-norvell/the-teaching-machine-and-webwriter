@@ -1,4 +1,4 @@
-package ca.mun.engr;
+package ca.mun.engr.servlet;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
@@ -14,24 +14,28 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.Hashtable;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JButton;
 
+import ca.mun.engr.ExternalRunner;
+
 /**
  * Servlet implementation class ButtonClick
  */
-@WebServlet("/ButtonClick")
-public class MouseClick extends HttpServlet {
+@WebServlet("/MousePressed")
+public class MousePressed extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MouseClick() {
+    public MousePressed() {
         super();
         
     }
@@ -42,7 +46,18 @@ public class MouseClick extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int x = Integer.parseInt(request.getParameter("x"));
 		int y = Integer.parseInt(request.getParameter("y"));
+		int index = Integer.parseInt(request.getParameter("index"));
+//		Cookie[] cookies = request.getCookies();
+//        int index = -1;
+//        
+//        for(int i = 0; i < cookies.length; i++) { 
+//            Cookie cookie1 = cookies[i];
+//            if (cookie1.getName().equals("index")) {
+//            	index = Integer.parseInt(cookie1.getValue());
+//            	}
+//        }
 //		
+		ExternalRunner erMouse = ExternalRunner.getInstance();
 		
 		int id = MouseEvent.MOUSE_PRESSED ;
 		long now = System.currentTimeMillis() ;
@@ -53,45 +68,38 @@ public class MouseClick extends HttpServlet {
 		boolean popupTrigger = false ;
 		int button = 1 ;
 		
-		injectMouseEvent(ExternalRunner.getComponentRoot(), id, now, modifiers, x, y, xAbs, yAbs,
+		injectMouseEvent(erMouse.getComponentRoot(index), id, now, modifiers, x, y, xAbs, yAbs,
 				clickCount, popupTrigger, button);
 		
 //		Triple<Component,Integer,Integer> focus = searchForMouseEventSource( ExternalRunner.getComponentRoot(), x, y) ;
 //		Component focusTarget = focus.first;
 //		focusTarget.requestFocus();
-		
-		id = MouseEvent.MOUSE_RELEASED ;
-		now = System.currentTimeMillis() ;
-		modifiers = InputEvent.BUTTON1_MASK ;
-		xAbs = x ;		// ?
-		yAbs = y ;		// ?
-		clickCount = 1 ;
-		popupTrigger = false ;
-		button = 1 ;
-		
-		injectMouseEvent(ExternalRunner.getComponentRoot(), id, now, modifiers, x, y, xAbs, yAbs,
-				clickCount, popupTrigger, button);
-		
-		id = MouseEvent.MOUSE_CLICKED ;
-		now = System.currentTimeMillis() ;
-		modifiers = InputEvent.BUTTON1_MASK ;
-		xAbs = x ;		// ?
-		yAbs = y ;		// ?
-		clickCount = 1 ;
-		popupTrigger = false ;
-		button = 1 ;
-		
-		injectMouseEvent(ExternalRunner.getComponentRoot(), id, now, modifiers, x, y, xAbs, yAbs,
-				clickCount, popupTrigger, button);
-//		int id = ActionEvent.ACTION_PERFORMED;
-//		long now = System.currentTimeMillis() ;
-//		int modifiers = InputEvent.BUTTON1_MASK ;
 //		
-//		injectActionEvent(ExternalRunner.getComponentRoot(), id, now, modifiers, x, y, command);
+//		id = MouseEvent.MOUSE_RELEASED ;
+//		now = System.currentTimeMillis() ;
+//		modifiers = InputEvent.BUTTON1_MASK ;
+//		xAbs = x ;		// ?
+//		yAbs = y ;		// ?
+//		clickCount = 1 ;
+//		popupTrigger = false ;
+//		button = 1 ;
+//		
+//		injectMouseEvent(erMouse.getComponentRoot(index), id, now, modifiers, x, y, xAbs, yAbs,
+//				clickCount, popupTrigger, button);
+//		
+//		id = MouseEvent.MOUSE_CLICKED ;
+//		now = System.currentTimeMillis() ;
+//		modifiers = InputEvent.BUTTON1_MASK ;
+//		xAbs = x ;		// ?
+//		yAbs = y ;		// ?
+//		clickCount = 1 ;
+//		popupTrigger = false ;
+//		button = 1 ;
+//		
+//		injectMouseEvent(erMouse.getComponentRoot(index), id, now, modifiers, x, y, xAbs, yAbs,
+//				clickCount, popupTrigger, button);
 		
-//		response.setContentType("application/json");
-//		PrintWriter out = response.getWriter();
-//		out.append("{'status': 'ok'}");
+		response.getWriter().append("{}");
 	}
 
 

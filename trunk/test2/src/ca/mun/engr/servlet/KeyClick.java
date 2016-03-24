@@ -1,4 +1,4 @@
-package ca.mun.engr;
+package ca.mun.engr.servlet;
 
 import java.awt.AWTEvent;
 import java.awt.Component;
@@ -11,10 +11,13 @@ import java.lang.reflect.Field;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.swing.JTextField;
+
+import ca.mun.engr.ExternalRunner;
 
 /**
  * Servlet implementation class KeyClick
@@ -38,14 +41,25 @@ public class KeyClick extends HttpServlet {
 		// TODO Auto-generated method stub
 		int keycode = Integer.parseInt(request.getParameter("Code"));
 		char keychar = request.getParameter("Char").charAt(0);
+		int index = Integer.parseInt(request.getParameter("index"));
+//		Cookie[] cookies = request.getCookies();
+//        int index = -1;
+//        
+//        for(int i = 0; i < cookies.length; i++) { 
+//            Cookie cookie1 = cookies[i];
+//            if (cookie1.getName().equals("index")) {
+//            	index = Integer.parseInt(cookie1.getValue());
+//            	}
+//        }
 		
+		ExternalRunner erKey = ExternalRunner.getInstance();
 		
 		int id = KeyEvent.KEY_PRESSED;
 		long now = System.currentTimeMillis();
 		int modifiers = 0x00;
 		int keyCode = keycode;
 		char keyChar = keychar;
-		injectKeyEvent(ExternalRunner.getComponentRoot(), id, now, modifiers,
+		injectKeyEvent(erKey.getComponentRoot(index), id, now, modifiers,
 				keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
 		
 		id = KeyEvent.KEY_TYPED;
@@ -53,7 +67,7 @@ public class KeyClick extends HttpServlet {
 		modifiers = 0x00;
 		keyCode = 0;
 		keyChar = keychar;
-		injectKeyEvent(ExternalRunner.getComponentRoot(), id, now, modifiers,
+		injectKeyEvent(erKey.getComponentRoot(index), id, now, modifiers,
 				keyCode, keyChar, KeyEvent.KEY_LOCATION_UNKNOWN, 0x45);
 		
 		id = KeyEvent.KEY_RELEASED;
@@ -61,8 +75,10 @@ public class KeyClick extends HttpServlet {
 		modifiers = 0x00;
 		keyCode = keycode;
 		keyChar = keychar;
-		injectKeyEvent(ExternalRunner.getComponentRoot(), id, now, modifiers,
+		injectKeyEvent(erKey.getComponentRoot(index), id, now, modifiers,
 				keyCode, keyChar, KeyEvent.KEY_LOCATION_STANDARD, 0x45);
+		
+		response.getWriter().append("{}");
 	}
 
 	/**

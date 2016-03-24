@@ -7,68 +7,168 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </head>
 <body ondragstart="return false;" ondrop="return false;">
-	<center><h2>JPanel</h2></center>
-	<center><h4>This is a test applet for the project</h4></center>
+	<h2 align="center">JPanel</h2>
+	<h4 align="center">This is a test applet for the project</h4>
 	<div id="main" align="center" >
-	<center><img src="/test2/IMAGE_servlet" id="output" alt="" usemap="#mapCoor"  ><center>
+	<img src="/test2/IMAGE_servlet" id="output" style="display:none" alt="" >
 	</div>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#output').focus();
+		var idx;
+		var interval_idx;
+		var isDragging = false;
+		var src_temp = "data:image/png;base64,";
+		var click = false;
 		
-		$('#output').bind("contextmenu",function(e){
-			   alert('Context Menu event has fired!');
-			   return false;
-			});
-	
-		 $('#output').click(function(e) {
+		$.ajax({
+			url:'/test2/JavaRunner',
+			method:'GET',
+			dataType:'json',
+			success:function(json){
+				idx = json.index;
+				/* alert(idx); */
+				$.ajax({
+					url:'/test2/IMAGE_servlet',
+					method:'GET',
+					dataType:'text', 
+					contentType: "image/png",
+					data:{
+						'index':idx
+						},
+					success:function(data){
+						/* alert(data); */
+						$('#output').attr('src', src_temp + data);
+	    				$('#output').show(); 
+					},
+					error:function(){
+						 alert("error"); 
+					}
+				});
+				
+			},
+			error:function(){
+				alert("e");
+			}
+		});
+		
+		function interval(){
+			interval_idx = setInterval(function(){
+				$.ajax({
+					url:'/test2/IMAGE_servlet',
+					method:'GET',
+					dataType:'text', 
+					contentType: "image/png",
+					data:{
+						'index':idx
+						},
+					success:function(data){
+						/* alert(data); */
+						$('#output').attr('src', src_temp + data); 
+					},
+					error:function(){
+						 /* alert("error");  */
+					}
+				});
+			},200);
+		};
+		
+		
+		 $('#output').mousedown(function(e) {
+				/* var idx = $('#index').val(); */
+				click = true;
 			    var offset = $(this).offset();
 			    var X = Math.floor(e.pageX - offset.left);
 			    var Y = Math.floor(e.pageY - offset.top);
 			    console.log(X, Y);
-			    var url = '/test2/ButtonClick';
+			    var url = '/test2/MousePressed';
 			    $.getJSON(url, {
 			    	x: X,
-			    	y: Y
+			    	y: Y,
+			    	index: idx 
 			    }, function(data){
 			    	console.log('submitted');
 			    	console.log(data);
-			    	setTimeout(
-			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),
-			    			500
-			    			);
-			    	// refresh
-			    	/* $('#output').attr('src', $('#output').attr('src')+'?'+Math.random()); */ 
-					
+			    	
+			    	clearInterval(interval_idx);	  
+			    	interval();		  
 				});  
-			  });
+		})
+		.mousemove(function(e){
+			if(click == true){
+				isDragging = true;
+				var offset = $(this).offset();
+			    var X = Math.floor(e.pageX - offset.left);
+			    var Y = Math.floor(e.pageY - offset.top);
+			    console.log(X, Y);
+			    var url = '/test2/MouseDragged';
+			    $.getJSON(url, {
+			    	x: X,
+			    	y: Y,
+			    	index: idx 
+			    }, function(data){
+			    	console.log('dragging');
+			    });
+			}else{return;}
+		    
+		})
+		.mouseup(function(e){
+			var indicator_ = 0;
+			click = false;
+			var offset = $(this).offset();
+		    var X = Math.floor(e.pageX - offset.left);
+		    var Y = Math.floor(e.pageY - offset.top);
+			var wasDragging = isDragging;
+			isDragging = false;
+			if(!wasDragging){
+				indicator_ = 1;
+				$.getJSON('/test2/MouseRelease', {
+			    	x: X,
+			    	y: Y,
+			    	index: idx,
+			    	indicator: indicator_
+			    }, function(data){
+			    	console.log('mouseClicked');
+			    });
+			}else{
+				$.getJSON('/test2/MouseRelease', {
+			    	x: X,
+			    	y: Y,
+			    	index: idx,
+			    	indicator: indicator_
+			    }, function(data){
+			    	console.log('mouseDragged');
+			    });
+			}
+		});
+
 		 
 		$(window).keypress(function(e){
 			 e = e||event;
-			/*  if(document.forms.keyform[e.type+'Ignore'].checked) return */
-
 			 var keyCode;
-			/*  if(e.shiftKey){ // If the SHIFT key is down
 	                keyCode = e.keyCode;
-	            }else{ */ // If the SHIFT key is not down
-	                keyCode = e.keyCode;
-	      /*       } */
 			 var url = '/test2/KeyClick';
 			 var keyChar = String.fromCharCode(e.keyCode||e.charCode);
 			 $.getJSON(url,{
 				 Code: keyCode,
-				 Char: keyChar
+				 Char: keyChar,
+				 index: idx
 			 }, function(data){
 			    	console.log('keydown successed');
 			    	console.log(keyCode, keyChar);
 			    	console.log(data);
-			    	setTimeout(
-			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),
-			    			500
-			    			);
 			 });
-		 });
+		 })
+		 .bind("beforeunload",function() { 
+		    return confirm("Do you really want to close?" );
+		})
+		.unload(function(){
+			$.getJSON('/test2/Disposed',{
+		    	index:idx
+			},function(data){});
+		}); 
 	});
+
 	
 	</script>
 </body>
