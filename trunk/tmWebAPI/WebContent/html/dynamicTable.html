@@ -1,0 +1,74 @@
+<html>  
+    <head>  
+        <title>Table</title>  
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">  
+		<script type="text/javascript" src="../js/dynamicTable.js"></script>
+    </head>  
+    <body>  
+        <table id="tb1" border="1">  
+            <thead>  
+                <tr>  
+                    <th>lines</th>  
+                    <th width="150px">codes</th>  
+                    <th width="130px"> </th>  
+                </tr>  
+            <thead>  
+            <tbody id="tb">  
+                <tr id="1st">  
+                    <td >1</td>  
+                    <td width="150px"><input name="lastName" id="1" value="#include<iostream>" onkeypress=searchKeyPress(event); ></td>  
+                    <!-- 这里的两个input输入域和连接的 必须放置在一行，否则表格主体的第一行的两个按钮之间多一个空格-->  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+            </tbody>  
+        </table>  
+        
+        <div><input type="button" id="submit" value="submit" onclick="submit()"></div>
+    </body>  
+</html>  
+
+<!--  
+<script>  
+	var codes="";
+	var i=2;
+	var count= 1;
+    function add() {  
+        // 创建table 行标签tr  
+        var trObj = document.createElement("tr");  
+        // 设置行内容  
+        trObj.innerHTML = "<td width='30px'>"+i+"</td><td width='150px'>"  
+            + "<input name='lastName' id="+i+" /></td><td width='130px'><input type='button' id='btnSearch' value='Add' onclick='add()'> "  
+            + "<input type='button' value='Del' onclick='del(this)'></td>";  
+        // 将行内容添加到表格中  
+        i++;
+        document.getElementById("tb").appendChild(trObj);  
+    }  
+  
+    function del(obj) {  
+        // 直接删除当前对象的父节点的父节点  
+        document.getElementById("tb").removeChild(obj.parentNode.parentNode);  
+    }  
+
+    function searchKeyPress(e){
+    	//look for window.event
+   		e=e||window.event;
+    	if(e.keyCode==13)
+    		{
+    		document.getElementById("btnSearch").click();
+    	
+    		}
+    }
+    
+    function submit(){
+ 
+    	for(;count<i;count++){
+    	codes=codes+document.getElementById(count).value;
+    		}
+    	alert(codes);
+    	 //codes= document.getElementById(count).value+codes;
+    	
+    }
+    
+</script>   
+
+-->

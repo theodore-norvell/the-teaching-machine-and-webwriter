@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>Self Check Quiz System with Ajax implementation</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link type="text/css" rel="Stylesheet" href="../css/demo.css">
+<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+<script type="text/javascript" src="../js/980b-1,31.js"></script>
+</head>
+<body>
+
+
+
+<form>
+  <fieldset>
+    <legend>(Q1) Find the bigger one between two expression: i=(5+5)/2,j=(8+10)/3</legend>
+    <br /> Enter The c++ codes: 
+    
+    <table id="tb1" border="1">  
+            <thead>  
+                <tr>  
+                    <th>lines</th>  
+                    <th width="450px">codes</th>  
+                    <th width="130px"> </th>  
+                </tr>  
+            <thead>  
+            <tbody id="tb">  
+                <tr id="1st">  
+                    <td >1</td>  
+                    <td width="450px"><input style=width:300px name="partialcode" id="1" value="#include<iostream>" onkeypress=searchKeyPress(event); ></td>  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr> 
+                <tr id="2st">  
+                    <td >2</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="2" value="using namespace std;" onkeypress=searchKeyPress(event); ></td>    
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="3st">  
+                    <td >3</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="3" value="int main(){  " onkeypress=searchKeyPress(event); ></td>    
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="4st">  
+                    <td >4</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="4" value="   int i=(5+5)/2;" onkeypress=searchKeyPress(event); ></td>  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="5st">  
+                    <td >5</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="5" value="   int j=(8+10)/3; " onkeypress=searchKeyPress(event); ></td>  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="6st">  
+                    <td >6</td>  
+                    <td width="150px"><input style=width:300px name="lastName" id="6" value="if (i>j)" onkeypress=searchKeyPress(event); ></td>   
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="7st">  
+                    <td >7</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="7" value="{cout<<(5+5)/2<<endl;}  " onkeypress=searchKeyPress(event); ></td>   
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="8st">  
+                    <td >8</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="8" value="else" onkeypress=searchKeyPress(event); ></td>   
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="9st">  
+                    <td >9</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="9" value="{cout<<(8+10)/3<<endl; } " onkeypress=searchKeyPress(event); ></td>   
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="10st">  
+                    <td >10</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="10" value="return 0;" onkeypress=searchKeyPress(event); ></td>  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>  
+                <tr id="11st">  
+                    <td >11</td>  
+                    <td width="150px"><input style=width:300px name="partialcode" id="11" value="}" onkeypress=searchKeyPress(event); ></td>  
+                    <td width="130px"><input type="button" id="btnSearch" value="Add" onclick="add()"> <input type="button" value="Del" onclick="del(this)"></td>  
+                </tr>   
+            </tbody>  
+        </table>  
+   
+        <br> Expression Engine:
+         <br>
+         <br>
+  <input type="button" id="goForward1" value="goForward">
+  <input type="button" id="goBack1" value="goBack">
+    <div id="responseconsole"></div>
+    
+ </fieldset>
+
+ <fieldset>
+   <legend>Response from jQuery Ajax Request on click event</legend>
+   <div id="ajaxResponseforexp"></div>
+      input command String:<input type="text" name ="command" id="command">
+   						<input type="button" id="go" value="go">
+
+    
+   <!--<textarea id="responseconsole" rows="10" cols="30"></textarea>
+  -->
+ </fieldset>
+ <input type="button" id="createRemoteTM" value="createRemoteTM">
+  <br/>
+ load with filename(.cpp||.java):
+  <input type="text" name ="filename" id="filename">
+ <input type="button" id="loadString" value="loadString">
+ <br/>
+ <input type="button" id="initializeTheState" value="initializeTheState">
+  <input type="button" id="initializeTheStateNoResponse" value="initializeTheStateNoResponse">
+  <br/>
+   <input type="button" id="retireRemoteTM" value="retireRemoteTM">
+  
+ <br/>
+  <input type="button" id="goForward2" value="goForward">
+    <input type="button" id="intoSub" value="intoSub">
+      <input type="button" id="intoExp" value="intoExp">
+        <input type="button" id="overAll" value="overAll">
+          <input type="button" id="microStep" value="microStep">
+   <br/>
+   <input type="button" id="expression" value="expression">
+     <input type="button" id="clear" value="clear">
+      <br/>
+   <input type="button" id="goBack2" value="goBack">
+    <input type="button" id="redo" value="redo">
+
+ 
+  <fieldset>
+   <legend>Response from jQuery Ajax Request on click event</legend>
+   <div id="ajaxResponseforanswer"></div>
+ </fieldset>
+  <input type="button" id="quizanswer" value="quizanswer">
+</form>
+
+
+
+</body>
+</html>

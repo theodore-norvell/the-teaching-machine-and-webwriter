@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JPanel</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+	<center><h2>JPanel</h2></center>
+	<center><h4>This is a test applet for the project</h4></center>
+	<div id="main" align="center" >
+	<center><img src="/test2/IMAGE_servlet" id="output" alt="" usemap="#mapCoor"  ><center>
+	</div>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#output').focus();
+		
+		$('#output').bind("contextmenu",function(e){
+			   alert('Context Menu event has fired!');
+			   return false;
+			});
+	
+		 $('#output').click(function(e) {
+			    var offset = $(this).offset();
+			    var X = Math.floor(e.pageX - offset.left);
+			    var Y = Math.floor(e.pageY - offset.top);
+			    console.log(X, Y);
+			    var url = '/test2/ButtonClick';
+			    $.getJSON(url, {
+			    	x: X,
+			    	y: Y
+			    }, function(data){
+			    	console.log('submitted');
+			    	console.log(data);
+			    	setTimeout(
+			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),
+			    			500
+			    			);
+			    	// refresh
+			    	/* $('#output').attr('src', $('#output').attr('src')+'?'+Math.random()); */ 
+					
+				});  
+			  });
+		 
+		$(window).keypress(function(e){
+			 e = e||event;
+			/*  if(document.forms.keyform[e.type+'Ignore'].checked) return */
+
+			 var keyCode;
+			/*  if(e.shiftKey){ // If the SHIFT key is down
+	                keyCode = e.keyCode;
+	            }else{ */ // If the SHIFT key is not down
+	                keyCode = e.keyCode;
+	      /*       } */
+			 var url = '/test2/KeyClick';
+			 var keyChar = String.fromCharCode(e.keyCode||e.charCode);
+			 $.getJSON(url,{
+				 Code: keyCode,
+				 Char: keyChar
+			 }, function(data){
+			    	console.log('keydown successed');
+			    	console.log(keyCode, keyChar);
+			    	console.log(data);
+			    	setTimeout(
+			    			$('#output').attr('src', $('#output').attr('src')+'?'+Math.random()),
+			    			500
+			    			);
+			 });
+		 });
+	});
+	
+	</script>
+</body>
+</html>

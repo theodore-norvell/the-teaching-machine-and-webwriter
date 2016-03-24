@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Self Check Quiz System with Ajax implementation</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<link type="text/css" rel="Stylesheet" href="../css/demo.css">
+<script type="text/javascript" src="../js/jquery-1.11.3.js" ></script>
+<script type="text/javascript" src="../js/ajax.js"></script>
+
+</head>
+<body>
+
+
+
+<form>
+  <fieldset>
+    <legend>(Q1) Find the bigger one between two expression: i=(5+5)/2,j=(8+10)/3</legend>
+    <br /> Enter The c++ codes:  <textarea id="Codes" rows="10" cols="40"></textarea>
+ </fieldset>
+
+ <fieldset>
+   <legend>Response from jQuery Ajax Request on click event</legend>
+   <div id="ajaxResponseforexp"></div>
+      input command String:<input type="text" name ="command" id="command">
+   						<input type="button" id="go" value="go">
+    <br /> console:
+    <div id="responseconsole"></div>
+    
+   <!--<textarea id="responseconsole" rows="10" cols="30"></textarea>
+  -->
+ </fieldset>
+ <input type="button" id="start" value="start">
+ <br/>
+  <input type="button" id="goForward" value="goForward">
+    <input type="button" id="intoSub" value="intoSub">
+      <input type="button" id="intoExp" value="intoExp">
+        <input type="button" id="overAll" value="overAll">
+          <input type="button" id="microStep" value="microStep">
+   <br/>
+   <input type="button" id="expression" value="expression">
+     <input type="button" id="clear" value="clear">
+      <br/>
+   <input type="button" id="goBack" value="goBack">
+    <input type="button" id="redo" value="redo">
+
+ 
+  <fieldset>
+   <legend>Response from jQuery Ajax Request on click event</legend>
+   <div id="ajaxResponseforanswer"></div>
+ </fieldset>
+  <input type="button" id="quizanswer" value="quizanswer">
+</form>
+
+
+
+</body>
+</html>

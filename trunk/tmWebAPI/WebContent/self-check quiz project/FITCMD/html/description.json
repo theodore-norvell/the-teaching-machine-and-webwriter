@@ -1,0 +1,128 @@
+
+[
+    
+{"question1":
+    {"name":"Question 1",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare($x$,$y$); \n  cout<<x; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question2":
+    {"name":"Question 2",
+     "text":"write a function ,takes 3 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b,double c){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0},
+                  {"name":"y","defaultInitValue":30.0}
+                  ],
+                  
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b,double c){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare($x$,$y$,$z$); \n  cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question3":
+    {"name":"Question 3",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n  cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question4":
+    {"name":"Question 4",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question5":
+    {"name":"Question 5",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question6":
+    {"name":"Question 6",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question7":
+    {"name":"Question 7",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question8":
+    {"name":"Question 8",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n  cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question9":
+    {"name":"Question 9",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      },
+"question10":
+    {"name":"Question 10",
+     "text":"write a function ,takes 2 parameters in , which return the larger one of them",
+     "functiondescription":"double compare(double a,double b){ }",
+     "inputVars":[{"name":"x","defaultInitValue":10.1},
+                  {"name":"y","defaultInitValue":20.0}],
+      "language":"c++",
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare();  \n  cout<<x ; \n return 0;}" ,
+      "category":"fillIntheCommand"
+      }
+    },
+
+
+{}
+
+
+
+
+
+
+
+
+]

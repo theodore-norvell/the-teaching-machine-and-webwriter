@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/jquery-1.11.3.js"></script>
+<title>demo about table</title>
+<script>
+jQuery(function($){
+   //添加行
+    $("#add1").click(function(){
+        $("#table2>tbody").append('<tr><td>新增1</td><td><button onclick="deltr(this)">删除</button></td></tr>')
+   });
+});
+//删除行的函数，必须要放domready函数外面
+function deltr(delbtn){
+    $(delbtn).parents("tr").remove();
+};
+jQuery(function($){
+   //定义删除按钮事件绑定
+   //写里边，防止污染全局命名空间
+   function deltr(){
+        $(this).parents("tr").remove();
+   };
+   //已有删除按钮初始化绑定删除事件
+    $("#table2 .del").click(deltr);
+   //添加行
+    $("#add2").click(function(){
+        $('<tr><td>新增行2</td><td><button class="del">删除</button></td></tr>')
+           //在这里给删除按钮再次绑定事件。
+            .find(".del").click(deltr).end()
+            .appendTo($("#table2>tbody"));
+   });
+});
+jQuery(function($){
+   //第四个表格的删除按钮事件绑定
+    $("#table2").click(function(e) {
+       if (e.target.className=="del"){
+            $(e.target).parents("tr").remove();
+       };
+   });
+   //第四个表格的添加按钮事件绑定
+    $("#add3").click(function(){
+        $("#table2>tbody").append('<tr><td>新增行3</td><td><button class="del">删除</button></td></tr>')
+   });
+});
+</script>
+</head>
+<body>
+<br/>
+<table id="table2">
+    <tbody>
+        <tr>
+            <td>这行原来就有</td>
+            <td><buttonclass="del">删除</button></td>
+        </tr>
+        <tr>
+            <td>这行原来就有</td>
+            <td><buttonclass="del">删除</button></td>
+        </tr>
+    </tbody>
+</table>
+<input type="button" name="add1" id="add1" value="新增1"/>
+<input type="button" name="add2" id="add2" value="新增2"/>
+<input type="button" name="add3" id="add3" value="新增3"/>
+</body>
+</html>
