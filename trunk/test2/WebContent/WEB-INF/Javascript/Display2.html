@@ -12,6 +12,13 @@
 	<div id="main" align="center" >
 	<img src="/test2/IMAGE_servlet" id="output" style="display:none" alt="" >
 	</div>
+	
+	<div id="controller" align="center">
+	<button onclick="go()">Go</button>
+	<button id="gof">Go Forward</button>
+	<button id="gob">Go Back</button>
+	
+	</div>
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$('#output').focus();
@@ -20,6 +27,9 @@
 		var isDragging = false;
 		var src_temp = "data:image/png;base64,";
 		var click = false;
+		var controllerURL = '/test2/ButtonController';
+		var controller;
+		var commandString =$('#text').text();
 		
 		$.ajax({
 			url:'/test2/JavaRunner',
@@ -52,6 +62,66 @@
 			}
 		});
 		
+		function go(){
+			controller=0;
+			$.ajax({
+				url:controllerURL,
+				method:'GET',
+				dataType:'json',
+				data:{
+					'index':idx,
+					ctrNum:controller,
+					command:commandString
+				},
+				success:function(){
+					console.log('go success!');
+				},
+				error:function(){
+					console.log('controller go error');
+				}
+				
+			});
+		};
+		
+		function goForward(){
+			controller=1;
+			$.ajax({
+				url:controllerURL,
+				method:'GET',
+				dataType:'json',
+				data:{
+					'index':idx,
+					ctrNum:controller
+				},
+				success:function(){
+					console.log('go forward success!');
+				},
+				erro:function(){
+					console.log('controller go forward error');
+				}
+			
+			});
+		};
+		
+		function goBack(){
+			controller=2;
+			$.ajax({
+				url:controllerURL,
+				method:'GET',
+				dataTYPE:'json',
+				data:{
+					'index':idx,
+					ctrNum:controller
+				},
+				success:function(){
+					console.log('go back success!');
+				},
+				error:function(){
+					console.log('controller go back error');
+				}
+			})
+		}
+		
 		function interval(){
 			interval_idx = setInterval(function(){
 				$.ajax({
@@ -63,14 +133,15 @@
 						'index':idx
 						},
 					success:function(data){
-						/* alert(data); */
-						$('#output').attr('src', src_temp + data); 
+						if(data.length >= 100)
+							/* alert(data); */
+							$('#output').attr('src', src_temp + data); 
 					},
 					error:function(){
 						 /* alert("error");  */
 					}
 				});
-			},200);
+			},150);
 		};
 		
 		
@@ -167,6 +238,13 @@
 		    	index:idx
 			},function(data){});
 		}); 
+		
+		$('#gof').click(function(){
+			goForward();
+		});
+		$('#gob').click(function(){
+			goBack();
+		});
 	});
 
 	
