@@ -270,7 +270,7 @@ public class TMMainFrame extends JFrame
     }
     
     public void dispose() {
-        tmBigApplet.disposeBigApplet() ;
+        tmBigApplet.dispose() ;
         ConfigurationServer server = ConfigurationServer.getConfigurationServer();
         server.deregister(this) ;
         super.dispose();
