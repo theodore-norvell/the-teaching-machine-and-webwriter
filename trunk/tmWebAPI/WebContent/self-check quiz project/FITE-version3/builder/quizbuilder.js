@@ -390,12 +390,16 @@ var quizBuilder;
             for (var i = 0; i < this.inputVarsValue.length; i++) {
                 this.inputVarsValue[i].addEventListener('input', handler1, false);
             }
+            //lambda expression to hold the context this/controller                                                       
             var handler2 = function (e) { _this.controller.goForward(); };
             this.concreteJSTM.goForwardButton.addEventListener('click', handler2, false);
+            //lambda expression to hold the context this/controller
             var handler3 = function (e) { _this.controller.goBack(); };
             this.concreteJSTM.goBackButton.addEventListener('click', handler3, false);
+            //lambda expression to hold the context this/controller
             var handler4 = function (e) { _this.controller.close(); };
             this.aHref.addEventListener('click', handler4, false);
+            //lambda expression to hold the context this/controller
             var handler5 = function (e) { _this.controller.start(); };
             this.startButton.addEventListener('click', handler5, false);
         };
@@ -448,17 +452,17 @@ var quizBuilder;
     })(QuizBuilder);
     quizBuilder.FITEQuizQuizBuilder = FITEQuizQuizBuilder;
     //director
-    var QuizDirector = (function () {
-        function QuizDirector() {
+    var FITEQuizDirector = (function () {
+        function FITEQuizDirector() {
         }
-        QuizDirector.prototype.setQuizBuilder = function (qb) {
+        FITEQuizDirector.prototype.setQuizBuilder = function (qb) {
             this.quizbuilder = qb;
         };
-        QuizDirector.prototype.getQuiz = function () {
+        FITEQuizDirector.prototype.getQuiz = function () {
             return this.quizbuilder.getQuiz();
         };
         //take a selectedQuestion as parameter,which is an json object
-        QuizDirector.prototype.constructQuiz = function () {
+        FITEQuizDirector.prototype.constructQuiz = function () {
             this.quizbuilder.createNewQuiz();
             this.quizbuilder.buildCategory();
             this.quizbuilder.buildName();
@@ -468,7 +472,7 @@ var quizBuilder;
             this.quizbuilder.buildInputVars();
             this.quizbuilder.buildoutputVars();
         };
-        return QuizDirector;
+        return FITEQuizDirector;
     })();
-    quizBuilder.QuizDirector = QuizDirector;
+    quizBuilder.FITEQuizDirector = FITEQuizDirector;
 })(quizBuilder || (quizBuilder = {}));

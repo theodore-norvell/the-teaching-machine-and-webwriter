@@ -55,11 +55,22 @@ var State;
         Startable.prototype.clickStart = function (fite) {
             //i wish to fetch the program& the filename from the web pages!
             console.log('i am in startable . and i will trigger clickStart event');
-            var filename = 'FITE.cpp';
-            var program = fite.concrete.getprogramText();
-            console.log(program);
-            fite.setCurrentState(FITCMDController.wait);
-            fite.loadStringAndInitialize(filename, program);
+            //load c++program
+            if (fite.qz.language == "c++") {
+                var filename = 'FITE.cpp';
+                var program = fite.concrete.getprogramText();
+                console.log(program);
+                fite.setCurrentState(FITCMDController.wait);
+                fite.loadStringAndInitialize(filename, program);
+            }
+            //load java program
+            if (fite.qz.language == "java") {
+                var filename = 'FITE.java';
+                var program = fite.concrete.getprogramText();
+                console.log(program);
+                fite.setCurrentState(FITCMDController.wait);
+                fite.loadStringAndInitialize(filename, program);
+            }
         };
         return Startable;
     })();
@@ -165,20 +176,25 @@ var State;
             //to it in the fill in the command question
             //program = "#include <iostream> \n double compare(double a,double b){ \n  if (a>b) \n return a; \n  else \n  return b; } \n int main(){ \n double x=1; \n double y=0; \n double sum=0; \n  x=compare(10.2,20.4); \n cout<<x;  \n  return 0;     } ";
             var filename = filename;
-            console.log(program + " " + filename + " " + thisConcreteJSTM.guid);
             //call the loadString in the concrete JSTM
             thisConcreteJSTM.loadString(program, filename)
                 .done(function (data) {
-                console.log('loadString callback for the resolve');
-                console.log(data);
                 //'1' means, i want the response back from the server
                 var responseWantedFlag = '1';
                 //call the initialize in concrete JSTM
                 thisConcreteJSTM.initialize(responseWantedFlag)
                     .done(function (data) {
-                    console.log('initialize callback for the resolve');
-                    console.log(data);
-                    // DESCRIP.updateVariablesToPanelArea();
+                    //append the table to DisplayDiv
+                    //first clear
+                    var DisplayDiv = thisFITE.qz.DisplayDiv;
+                    var fn = DisplayDiv.firstChild;
+                    while (fn) {
+                        DisplayDiv.removeChild(fn);
+                        fn = DisplayDiv.firstChild;
+                    }
+                    //then append
+                    var table = data.makeTMDisplay();
+                    thisFITE.qz.DisplayDiv.appendChild(table);
                     thisFITE.gotoStarted();
                 })
                     .fail(function (data) {
@@ -225,13 +241,32 @@ var State;
         };
         FITCMDController.prototype.goForward = function () {
             var thisConcreteJSTM = this.concrete;
-            console.log(this);
-            console.log(this.currentState);
-            console.log(this.concrete);
+            var thisFITE = this;
+            //console.log(this);
+            //console.log(this.currentState);
+            //console.log(this.concrete);
             thisConcreteJSTM.goForward()
                 .done(function (data) {
-                console.log('goForward callback for the resolve');
-                console.log(data);
+                //console.log('goForward callback for the resolve');
+                //console.log(data);
+                //append the table to DisplayDiv
+                //first clear
+                var DisplayDiv = thisFITE.qz.DisplayDiv;
+                var fn = DisplayDiv.firstChild;
+                while (fn) {
+                    DisplayDiv.removeChild(fn);
+                    fn = DisplayDiv.firstChild;
+                }
+                var table = thisConcreteJSTM.makeTMDisplay();
+                thisFITE.qz.DisplayDiv.appendChild(table);
+                //
+                var focusNumber = data.mirrorData.focus.lineNumber;
+                if (document.getElementById(focusNumber) != null) {
+                    document.getElementById(focusNumber).innerHTML = "<span class=tm-yellow>" + focusNumber + ':' + "</span>";
+                }
+                else {
+                    console.log('null');
+                }
             })
                 .fail(function (data) {
                 console.log('fail');
@@ -239,10 +274,29 @@ var State;
         };
         FITCMDController.prototype.goBack = function () {
             var thisConcreteJSTM = this.concrete;
+            var thisFITE = this;
             thisConcreteJSTM.goBack()
                 .done(function (data) {
-                console.log('goBack callback for the resolve');
-                console.log(data);
+                //console.log('goBack callback for the resolve');
+                //console.log(data);
+                //append the table to DisplayDiv
+                //first clear
+                var DisplayDiv = thisFITE.qz.DisplayDiv;
+                var fn = DisplayDiv.firstChild;
+                while (fn) {
+                    DisplayDiv.removeChild(fn);
+                    fn = DisplayDiv.firstChild;
+                }
+                var table = thisConcreteJSTM.makeTMDisplay();
+                thisFITE.qz.DisplayDiv.appendChild(table);
+                //
+                var focusNumber = data.mirrorData.focus.lineNumber;
+                if (document.getElementById(focusNumber) != null) {
+                    document.getElementById(focusNumber).innerHTML = "<span class=tm-yellow>" + focusNumber + ':' + "</span>";
+                }
+                else {
+                    console.log('null');
+                }
             })
                 .fail(function (data) {
                 console.log('fail');
@@ -254,7 +308,7 @@ var State;
         FITCMDController.prototype.ValidWatch = function () {
             var boolFlag = true;
             var bool = new Array();
-            console.log(this);
+            //console.log(this);
             for (var i = 0; i < this.qz.inputVarsValue.length; i++) {
                 bool[i] = this.qz.inputVarsValue.value != '' && !isNaN(this.qz.inputVarsValue[i].value) && this.qz.inputVarsValue[i].value != '';
                 if (bool[i] == false) {
@@ -287,6 +341,16 @@ var State;
             //singleton's set method
             this.concrete.setprogramText(programText);
             this.clickStart();
+        };
+        FITCMDController.prototype.start = function () {
+            //fite.clickStart();
+            //console.log('i have start');
+            this.getProgramText();
+        };
+        FITCMDController.prototype.close = function () {
+            this.qz.fieldSet.style.display = 'none';
+            this.qz.startButton.setAttribute('disabled', 'disabled');
+            //FITEQuestion.innerDiv2.innerHTML='';
         };
         /**
                 private static instance:FITE = null;

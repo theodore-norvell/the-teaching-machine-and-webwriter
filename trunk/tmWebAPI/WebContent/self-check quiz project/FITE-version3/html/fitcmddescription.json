@@ -8,8 +8,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":" /*#TS*/#include <iostream> \n /*#/TS*/ double compare(double a,double b)  { \n  $codes$ } \n",
-      "codeMain":"/*#TS*/ int main(){\n double x; \n x=compare($x$,$y$); \n  cout<<x; \n return 0;} /*#/TS*/" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare($x$,$y$); \n  cout<<x; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question2":
@@ -22,8 +22,8 @@
                   ],
                   
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b,double c){ \n  $codes$ }\n",
-      "codeMain":"int main(){ \n double x; \n x=compare($x$,$y$,$z$); \n  cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b,double c){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare($x$,$y$,$z$); \n  cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question3":
@@ -33,8 +33,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n  cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n  cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question4":
@@ -44,8 +44,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n   cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question5":
@@ -55,8 +55,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n   cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question6":
@@ -65,8 +65,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n   cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question7":
@@ -76,8 +76,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){ double x; \n x=compare($x$,$y$); \n   cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question8":
@@ -87,8 +87,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n  cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n  cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question9":
@@ -98,8 +98,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$); \n   cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare(); \n   cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       },
 "question10":
@@ -109,8 +109,8 @@
      "inputVars":[{"name":"x","defaultInitValue":10.1},
                   {"name":"y","defaultInitValue":20.0}],
       "language":"c++",
-      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }\n",
-      "codeMain":"int main(){\n double x; \n x=compare($x$,$y$);  \n  cout<<x ; \n return 0;}" ,
+      "codeFunction":"#include <iostream> \n double compare(double a,double b){ \n  $codes$ }",
+      "codeMain":"int main(){ double x; \n x=compare();  \n  cout<<x ; \n return 0;}" ,
       "category":"fillIntheCommand"
       }
     },

@@ -599,7 +599,7 @@ export  class fetchFile{
    }
    
    //director
-  export  class QuizDirector{
+  export  class FITEQuizDirector{
         quizbuilder:QuizBuilder;
         public setQuizBuilder(qb:QuizBuilder){
             this.quizbuilder=qb;

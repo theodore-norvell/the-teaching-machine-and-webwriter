@@ -1,5 +1,6 @@
 /// <reference path="../library/jquery.d.ts" />
 /// <reference path="../src/JSTM.ts" />
+/// <reference path="../state/State.ts" />
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -34,7 +35,7 @@ var quizBuilder;
             $.ajax({
                 url: this.url,
                 dataType: "json",
-                type: "POST",
+                type: "GET",
                 async: false
             })
                 .done(function (data) {
@@ -143,6 +144,14 @@ var quizBuilder;
         FITCMDQuestion.prototype.setCodeMain = function (codeMain) {
             this.codeMain = codeMain;
         };
+        //setter a reference
+        FITCMDQuestion.prototype.setController = function (controller) {
+            this.controller = controller;
+        };
+        //getter a reference
+        FITCMDQuestion.prototype.getController = function () {
+            return this.controller;
+        };
         /////////////////////////////makeHTML
         //outer div <div id='question1'>
         FITCMDQuestion.prototype.makeDiv = function () {
@@ -174,6 +183,7 @@ var quizBuilder;
         FITCMDQuestion.prototype.makeInsertDiv1 = function () {
             this.insertDiv1 = document.createElement('div');
             this.insertDiv1.setAttribute('id', this.name + '-insertDiv1');
+            this.insertDiv1.setAttribute('className', 'display-fill-in-div');
             return this.insertDiv1;
         };
         //      
@@ -184,6 +194,12 @@ var quizBuilder;
             this.startButton.setAttribute('style', 'display:none');
             this.startButton.innerHTML = 'start';
             return this.startButton;
+        };
+        //innerDiv2 <div id='question-area2'>      
+        FITCMDQuestion.prototype.makeDisplayDiv = function () {
+            this.DisplayDiv = document.createElement('div');
+            //this.DisplayDiv.setAttribute('className',"display-fill-in-div")
+            return this.DisplayDiv;
         };
         //innerDiv2 <div id='question-area2'>      
         FITCMDQuestion.prototype.makeInnerDiv2 = function () {
@@ -231,6 +247,7 @@ var quizBuilder;
             this.inputExpressionValue = document.createElement('textarea');
             this.inputExpressionValue.setAttribute('type', 'text');
             this.inputExpressionValue.setAttribute('value', '');
+            //this.inputExpressionValue.setAttribute('className','display-fill-in-div');
             return this.inputExpressionValue;
         };
         FITCMDQuestion.prototype.setinputVarsSpan = function (inputVars) {
@@ -303,6 +320,7 @@ var quizBuilder;
             this.makeFunctionDisplay();
             this.makeInsertDiv1();
             this.makeStartButton();
+            this.makeDisplayDiv();
             this.makeInnerDiv2();
             this.makeFieldSet();
             var goForwardButton = this.concreteJSTM.makeGoForwardButton();
@@ -321,6 +339,7 @@ var quizBuilder;
             //this.setoutputVarsValue(this.selectedQuestion.outPutVars)
             //
             this.Div.appendChild(this.innerDiv1);
+            this.Div.appendChild(this.DisplayDiv);
             this.Div.appendChild(this.innerDiv2);
             this.innerDiv1.appendChild(this.questionDisplay);
             this.innerDiv1.appendChild(this.functionDisplay);
@@ -343,6 +362,27 @@ var quizBuilder;
         FITCMDQuestion.prototype.getHTML = function () {
             return this.Div;
         };
+        FITCMDQuestion.prototype.addeventListener = function () {
+            var _this = this;
+            //lambda expression to hold the context this/controller
+            var handler1 = function (e) { _this.controller.ValidWatch(); };
+            this.inputExpressionValue.addEventListener('input', handler1, false);
+            for (var i = 0; i < this.inputVarsValue.length; i++) {
+                this.inputVarsValue[i].addEventListener('input', handler1, false);
+            }
+            //lambda expression to hold the context this/controller                                                       
+            var handler2 = function (e) { _this.controller.goForward(); };
+            this.concreteJSTM.goForwardButton.addEventListener('click', handler2, false);
+            //lambda expression to hold the context this/controller
+            var handler3 = function (e) { _this.controller.goBack(); };
+            this.concreteJSTM.goBackButton.addEventListener('click', handler3, false);
+            //lambda expression to hold the context this/controller
+            var handler4 = function (e) { _this.controller.close(); };
+            this.aHref.addEventListener('click', handler4, false);
+            //lambda expression to hold the context this/controller
+            var handler5 = function (e) { _this.controller.start(); };
+            this.startButton.addEventListener('click', handler5, false);
+        };
         return FITCMDQuestion;
     })(Questiion);
     quizBuilder.FITCMDQuestion = FITCMDQuestion;
@@ -360,47 +400,47 @@ var quizBuilder;
         return QuizBuilder;
     })();
     //builder
-    var FITEQuizQuizBuilder = (function (_super) {
-        __extends(FITEQuizQuizBuilder, _super);
-        function FITEQuizQuizBuilder(selectedQuestion) {
+    var FITCMDQuizQuizBuilder = (function (_super) {
+        __extends(FITCMDQuizQuizBuilder, _super);
+        function FITCMDQuizQuizBuilder(selectedQuestion) {
             _super.call(this, selectedQuestion);
         }
-        FITEQuizQuizBuilder.prototype.buildCategory = function () {
+        FITCMDQuizQuizBuilder.prototype.buildCategory = function () {
             this.quiz.setCategory(this.selectedQuestion.category);
         };
-        FITEQuizQuizBuilder.prototype.buildName = function () {
+        FITCMDQuizQuizBuilder.prototype.buildName = function () {
             this.quiz.setName(this.selectedQuestion.name);
         };
-        FITEQuizQuizBuilder.prototype.buildLanguage = function () {
+        FITCMDQuizQuizBuilder.prototype.buildLanguage = function () {
             this.quiz.setLanguage(this.selectedQuestion.language);
         };
-        FITEQuizQuizBuilder.prototype.buildText = function () {
+        FITCMDQuizQuizBuilder.prototype.buildText = function () {
             this.quiz.setText(this.selectedQuestion.text);
             this.quiz.setFunctiondescription(this.selectedQuestion.functiondescription);
         };
-        FITEQuizQuizBuilder.prototype.buildCode = function () {
+        FITCMDQuizQuizBuilder.prototype.buildCode = function () {
             this.quiz.setCodeFunction(this.selectedQuestion.codeFunction);
             this.quiz.setCodeMain(this.selectedQuestion.codeMain);
         };
-        FITEQuizQuizBuilder.prototype.buildInputVars = function () {
+        FITCMDQuizQuizBuilder.prototype.buildInputVars = function () {
             //console.log(tempIndex.inputVars);
             this.quiz.setInputVars(this.selectedQuestion.inputVars);
         };
-        return FITEQuizQuizBuilder;
+        return FITCMDQuizQuizBuilder;
     })(QuizBuilder);
-    quizBuilder.FITEQuizQuizBuilder = FITEQuizQuizBuilder;
+    quizBuilder.FITCMDQuizQuizBuilder = FITCMDQuizQuizBuilder;
     //director
-    var QuizDirector = (function () {
-        function QuizDirector() {
+    var FITCMDQuizDirector = (function () {
+        function FITCMDQuizDirector() {
         }
-        QuizDirector.prototype.setQuizBuilder = function (qb) {
+        FITCMDQuizDirector.prototype.setQuizBuilder = function (qb) {
             this.quizbuilder = qb;
         };
-        QuizDirector.prototype.getQuiz = function () {
+        FITCMDQuizDirector.prototype.getQuiz = function () {
             return this.quizbuilder.getQuiz();
         };
         //take a selectedQuestion as parameter,which is an json object
-        QuizDirector.prototype.constructQuiz = function () {
+        FITCMDQuizDirector.prototype.constructQuiz = function () {
             this.quizbuilder.createNewQuiz();
             this.quizbuilder.buildCategory();
             this.quizbuilder.buildName();
@@ -409,7 +449,7 @@ var quizBuilder;
             this.quizbuilder.buildCode();
             this.quizbuilder.buildInputVars();
         };
-        return QuizDirector;
+        return FITCMDQuizDirector;
     })();
-    quizBuilder.QuizDirector = QuizDirector;
+    quizBuilder.FITCMDQuizDirector = FITCMDQuizDirector;
 })(quizBuilder || (quizBuilder = {}));

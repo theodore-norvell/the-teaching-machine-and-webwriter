@@ -1,6 +1,6 @@
 /// <reference path="../library/jquery.d.ts" />
 /// <reference path="../src/JSTM.ts" />
-
+/// <reference path="../state/State.ts" />
 
 module quizBuilder
 {
@@ -44,7 +44,7 @@ export  class fetchFile{
     $.ajax({
             url : this.url,
             dataType:"json",
-            type:"POST",
+            type:"GET",
             async:false,
           })
     .done(function (data) { 
@@ -173,7 +173,7 @@ export  class fetchFile{
        codeMain:string;
        functiondescription:string
        //
-
+       controller:State.FITCMDController;
 
        //
        Div:HTMLElement;
@@ -182,6 +182,7 @@ export  class fetchFile{
        functionDisplay:HTMLElement;
        insertDiv1:HTMLElement;
        startButton:HTMLElement;
+       DisplayDiv:HTMLElement;
        innerDiv2:HTMLElement;
        fieldSet:HTMLElement;
        //goForwardButton:HTMLElement;
@@ -226,6 +227,17 @@ export  class fetchFile{
       this.codeMain=codeMain;  
                                      }
   
+  
+  //setter a reference
+  public setController(controller:State.FITCMDController){
+      this.controller=controller;
+  }
+  
+  //getter a reference
+  public getController(){
+      return this.controller;
+                                 }   
+  
   /////////////////////////////makeHTML
   
       //outer div <div id='question1'>
@@ -259,6 +271,7 @@ export  class fetchFile{
       public makeInsertDiv1(){
       this.insertDiv1 = document.createElement('div');
       this.insertDiv1.setAttribute('id',this.name+'-insertDiv1');
+      this.insertDiv1.setAttribute('className','display-fill-in-div');
       return this.insertDiv1;
 
       }
@@ -271,6 +284,13 @@ export  class fetchFile{
       this.startButton.innerHTML='start';
       return this.startButton;
       }
+    //innerDiv2 <div id='question-area2'>      
+      public makeDisplayDiv(){
+      this.DisplayDiv = document.createElement('div');
+      //this.DisplayDiv.setAttribute('className',"display-fill-in-div")
+      return this.DisplayDiv;
+      }
+      
       //innerDiv2 <div id='question-area2'>      
       public makeInnerDiv2(){
       this.innerDiv2 = document.createElement('div');
@@ -323,6 +343,7 @@ export  class fetchFile{
       this.inputExpressionValue=document.createElement('textarea');
       this.inputExpressionValue.setAttribute('type','text');
       this.inputExpressionValue.setAttribute('value','');
+      //this.inputExpressionValue.setAttribute('className','display-fill-in-div');
       return this.inputExpressionValue;
       
                                             }
@@ -383,6 +404,7 @@ export  class fetchFile{
     //constructDisplay area1!!!!
    // div parameter 
   public constructInsertArea1(){
+      
        var fn=this.insertDiv1.firstChild;
        while(fn){
            this.insertDiv1.removeChild(fn);
@@ -410,6 +432,7 @@ export  class fetchFile{
           this.makeFunctionDisplay();
           this.makeInsertDiv1();
           this.makeStartButton();
+          this.makeDisplayDiv();
           this.makeInnerDiv2();
           this.makeFieldSet();
           var goForwardButton:HTMLElement =this.concreteJSTM.makeGoForwardButton();
@@ -429,6 +452,7 @@ export  class fetchFile{
           //this.setoutputVarsValue(this.selectedQuestion.outPutVars)
          //
          this.Div.appendChild(this.innerDiv1);
+         this.Div.appendChild(this.DisplayDiv)
          this.Div.appendChild(this.innerDiv2);
          
          this.innerDiv1.appendChild(this.questionDisplay);
@@ -454,6 +478,37 @@ export  class fetchFile{
           return this.Div;
           
       }
+      
+      
+      
+        public addeventListener(){
+            //lambda expression to hold the context this/controller
+            var handler1 = (e:Event)=>{this.controller.ValidWatch();}
+            this.inputExpressionValue.addEventListener('input',handler1,false);
+            for(var i=0;i<this.inputVarsValue.length;i++){
+            this.inputVarsValue[i].addEventListener('input',handler1,false);
+                                                                    }  
+                                                                     
+            //lambda expression to hold the context this/controller                                                       
+            var handler2 = (e:Event)=>{this.controller.goForward();}                                                        
+            this.concreteJSTM.goForwardButton.addEventListener('click',handler2,false);
+            
+            //lambda expression to hold the context this/controller
+            var handler3 = (e:Event)=>{this.controller.goBack();} 
+            this.concreteJSTM.goBackButton.addEventListener('click',handler3,false);
+            
+            //lambda expression to hold the context this/controller
+            var handler4 = (e:Event)=>{this.controller.close();} 
+            this.aHref.addEventListener('click',handler4,false); 
+            
+            //lambda expression to hold the context this/controller
+            var handler5 = (e:Event)=>{this.controller.start();} 
+            this.startButton.addEventListener('click',handler5,false);                                                        
+                                                                             
+          }
+      
+      
+      
       
       
         
@@ -495,7 +550,7 @@ export  class fetchFile{
  
 }
    //builder
-  export  class FITEQuizQuizBuilder extends QuizBuilder{
+  export  class FITCMDQuizQuizBuilder extends QuizBuilder{
       
     constructor(selectedQuestion){
       super(selectedQuestion);
@@ -525,7 +580,7 @@ export  class fetchFile{
    }
    
    //director
-  export  class QuizDirector{
+  export  class FITCMDQuizDirector{
         quizbuilder:QuizBuilder;
         public setQuizBuilder(qb:QuizBuilder){
             this.quizbuilder=qb;

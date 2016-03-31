@@ -26,9 +26,10 @@ module jstm {
       
        //
 
-        /** Make an HTML element that displays the state of the expression.
-         *   This display will update automatically.
+       /**
+        * make a display table
         */
+        makeTMDisplay : () => HTMLElement ;
 
         /** Make a button that will move the TM state forward by
         *   the smallest interesting step.

@@ -9,6 +9,10 @@ var jstm;
         function concreteJSTM(guid) {
             this.guid = guid;
         }
+        //make disolay
+        concreteJSTM.prototype.makeTMDisplay = function () {
+            return;
+        };
         //makeGoForwardButton
         concreteJSTM.prototype.makeGoForwardButton = function (onDone, onFail) {
             this.goForwardButton = document.createElement('button');

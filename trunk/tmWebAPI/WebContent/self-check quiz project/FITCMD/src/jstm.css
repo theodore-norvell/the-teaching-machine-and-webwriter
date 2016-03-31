@@ -6,12 +6,43 @@
 	color: blue ; 
 }
 
+.tm-brown{
+    color:brown;
+}
+
+.tm-yellow{
+    color:yellow;
+}
+
 .tm-underline {
 	text-decoration: underline ;
 }
 
-body{
-	
-	background-color:#ededed;
+.body{
+	background-color: #e9eaea;
+    min-height: 100vh;
+    position: relative;
 	
 }
+
+.display-fill-in-div{
+    background-color: #354551;
+    
+}
+
+
+.dispaly-program{
+    background-color: #354551;
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.12);
+    box-sizing: border-box;
+    font: bold 16px sans-serif;
+    margin-top: 50px;
+    padding: 50px;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    
+    
+}
+
+

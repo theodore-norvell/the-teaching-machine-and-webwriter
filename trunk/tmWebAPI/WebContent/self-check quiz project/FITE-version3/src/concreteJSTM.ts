@@ -38,6 +38,19 @@ module jstm{
        
        VariableWatcher:HTMLElement;
 
+       //make disolay
+       public makeTMDisplay():HTMLElement{
+           
+           
+           
+           
+           
+           return ;
+       }
+
+
+
+
       //makeGoForwardButton
       public makeGoForwardButton(onDone ?: (jstm:JSTM) => void,onFail ?: (r:P.Rejection) => void):HTMLElement{
       this.goForwardButton = document.createElement('button');

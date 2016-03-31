@@ -51,12 +51,12 @@ var selectedQuestion=fetchFile.getselectedQuestion();
 //declare quiz object
 var FITCMDQuestion:quizBuilder.FITCMDQuestion;
 //instantiate director
-var QuizDirector:quizBuilder.QuizDirector = new quizBuilder.QuizDirector();
+var QuizDirector:quizBuilder.FITCMDQuizDirector = new quizBuilder.FITCMDQuizDirector();
 //selectedQuestion are get here : is a json object
-var fitequizBuilder:quizBuilder.FITEQuizQuizBuilder = new quizBuilder.FITEQuizQuizBuilder(selectedQuestion);
+var ficmdQuizBuilder:quizBuilder.FITCMDQuizQuizBuilder = new quizBuilder.FITCMDQuizQuizBuilder(selectedQuestion);
 
 //set director
-QuizDirector.setQuizBuilder(fitequizBuilder);
+QuizDirector.setQuizBuilder(ficmdQuizBuilder);
 
 //static method to instantiate a jstm , then instantiate fitecontroller
     jstm.concreteJSTM.createRTM()
@@ -79,54 +79,17 @@ QuizDirector.setQuizBuilder(fitequizBuilder);
           document.getElementById('FITCMD').appendChild(html);
           
           //declare fite object
-          var fiteController:State.FITCMDController;
-          fiteController= new State.FITCMDController(thisJSTM,FITCMDQuestion);
+          var ficmdController:State.FITCMDController;
+          ficmdController= new State.FITCMDController(thisJSTM,FITCMDQuestion);
+          
+          //set fiteController reference to the instance variable of FITEQuestion
+          FITCMDQuestion.setController(ficmdController);
           
           
-          //
-          addeventListener();
-
-
-
-
-
-
-
-
-//addEventListener
-          function addeventListener(){
-            FITCMDQuestion.inputExpressionValue.addEventListener('input',ValidWatch,false);
-            for(var i=0;i<FITCMDQuestion.inputVarsValue.length;i++){
-            FITCMDQuestion.inputVarsValue[i].addEventListener('input',ValidWatch,false);
-                                                                    }   
-            FITCMDQuestion.concreteJSTM.goForwardButton.addEventListener('click',goForward,false);
-            FITCMDQuestion.concreteJSTM.goBackButton.addEventListener('click',goBack,false);
-            FITCMDQuestion.aHref.addEventListener('click',close,false); 
-            FITCMDQuestion.startButton.addEventListener('click',start,false);                                                        
-                                                                             
-          }
           
-           function ValidWatch(){
-                fiteController.ValidWatch();
-                }
-           function goForward(){
-                fiteController.goForward();
-                }
-           function goBack(){
-                fiteController.goBack();
-                            }
-           function start(){
-                //fite.clickStart();
-                console.log('i have start');
-                fiteController.getProgramText();
-                            }
-           function close(){
-                FITCMDQuestion.fieldSet.style.display='none';
-                FITCMDQuestion.startButton.setAttribute('disabled','disabled');
-                //FITCMDQuestion.innerDiv2.innerHTML='';
-                    }
-          
-                     
+           //add all the html element in the FICMDQuestion that are related with the user reaction to the event handler.
+          FITCMDQuestion.addeventListener();
+
                         })
           .fail(function(data){alert('error in the testForFactory');});
 

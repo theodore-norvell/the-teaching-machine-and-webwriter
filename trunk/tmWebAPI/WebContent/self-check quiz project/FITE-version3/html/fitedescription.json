@@ -8,7 +8,7 @@
                   {"name":"y","defaultInitValue":20.0}],
       "outPutVars":[{"name":"a","initValue":0.0}],
       "language":"c++",
-      "code":"int  main(){\n double x=$x$; \n double y=$y$; \n $exp$; \n return 0; \n }",
+      "code":"/*#TS*/int  main(){\ndouble x=$x$; \n double y=$y$; /*#/TS*/\n $exp$; \n /*#TS*/return 0; \n }/*#/TS*/",
       "category":"fillInTheExpression"
       },
 "question2":

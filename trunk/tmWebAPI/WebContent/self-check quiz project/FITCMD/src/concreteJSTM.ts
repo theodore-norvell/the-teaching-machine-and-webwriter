@@ -22,7 +22,8 @@ module jstm{
         
         //the mirrorData object received from the remoteTM.        
         mirrorData:any;
-        
+        //code field,which is a Array[], each index contains a object
+        code:any;
         //qz:quizBuilder.FITEQuestion;
         
         
@@ -36,6 +37,60 @@ module jstm{
         //questiionText
        expressionDisplay:HTMLElement;
        
+
+       //make disolay
+       public makeTMDisplay():HTMLElement{
+           //code object
+           var code = [];
+           code=this.mirrorData.code;
+           var focus = this.mirrorData.focus;
+           var focusNumber=focus.lineNumber;
+           console.log(code.length);
+           
+           var table:HTMLElement = document.createElement('table');
+           table.setAttribute("class","dispaly-program");
+           console.log(table.className);
+           //number of rows
+           for (var i = 0; i < code.length; i++){
+            //lineNumber
+            var lineNumber=code[i].coords.lineNumber;
+            //chars
+            var chars=code[i].chars
+            //Array []
+            var markUp = code[i].markUp;
+            
+            var tr = document.createElement('tr');   
+            
+            var td1 = document.createElement('td');
+            var td2 = document.createElement('td');
+            
+            //var text1 = document.createTextNode(lineNumber+':');
+            var textafterprocess=this.DisplayEffect(chars,markUp);
+            var line = document.createElement('span');
+            line.setAttribute('id',lineNumber);
+            line.innerHTML="<span class=tm-red>"+lineNumber+':'+"</span>";
+            var text = document.createElement('pre');
+            text.innerHTML=textafterprocess;
+            //var text2 = textNode;
+            
+            console.log(textafterprocess);
+            
+            //td.appendChild(text1);
+            td1.appendChild(line);
+            td2.appendChild(text);
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+            table.appendChild(tr);
+           }
+           //
+           //console.log(focusNumber);
+           //console.log(document.getElementById(focusNumber));
+           
+           
+           
+           return table ;
+       }
+
 
 
       //makeGoForwardButton
@@ -273,6 +328,9 @@ module jstm{
         	var expression=thisJSTM.mirrorData.expression;
         	/**parse the characters of the expression**/
         	var expTemp = thisJSTM.ExpressionEffect(expression);
+
+           // console.log(document.getElementById(focusNumber));
+            
             //fuilfill
             d.resolve(thisJSTM);
             
@@ -318,6 +376,7 @@ module jstm{
             var expression=thisJSTM.mirrorData.expression;
             /**parse the characters of the expression**/
             var expTemp = thisJSTM.ExpressionEffect(expression);
+
             //fuillfill
             d.resolve(thisJSTM);
             
@@ -354,9 +413,139 @@ module jstm{
 	    return exp;
 	                            }
                                 
+                                
+                                
+      public DisplayEffect(chars,markUp){
+         // var PTag = document.createElement('P');
+         /** 
+          var newChar = chars.replace(/[<]/g,'&lt');
+          var newChar = newChar.replace(/[>]/g,'&gt');
+          **/
+          //var newChar = chars;
+          var effectChars=chars;
+          var effectChars = effectChars.replace(/[<]/g,'&lt');
+          var effectChars = effectChars.replace(/[>]/g,'&gt');
+          
+          if (markUp==null){
+              chars=chars.replace(/[<]/g,'&lt');
+               return chars;
+          }
+         
+          
+          else{
+          var iterateTimes = markUp.length/2;
+          for(var i=0;i<iterateTimes;i++) {
+              
+          var command = markUp[i*2].command;
+          if(command==5){
+              return effectChars;
+          }
+          var columnDown=markUp[i*2].column;
+          var columnUp=markUp[i*2+1].column;
+          //console.log(columnDown);
+          //console.log(columnUp);
+          var replacePart = [];
+          replacePart[i]=chars.substring(columnDown,columnUp);
+          switch(command){
+              //command = 1 means brown. command = 3 means brown
+              case 1:      
+                         if (i==0){
+                        var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-brown'>"+replacePart[i]+"</span>")
+                        // console.log(i);
+                         console.log(effectChars);
+                         break;
+                         }
+                         else if(replacePart[i]!=replacePart[i-1]){
+                         var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-brown'>"+replacePart[i]+"</span>")
+                        // console.log(i);
+                         console.log(effectChars);
+                         break;
+                         }
+                         break;
+              case 3:
 
+                         if (i==0){
+                        var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-brown'>"+replacePart[i]+"</span>")
+               
+                         console.log(replacePart[i]);
+                         console.log(effectChars);
+                         break;
+                         }
+                         else if(replacePart[i]!=replacePart[i-1]){
+                         var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-brown'>"+replacePart[i]+"</span>")
+                        // console.log(i);
+                         console.log(effectChars);
+                         break;
+                         }
+                         
+                         break;
+                                            
+                        
+              case 4:   
+              
+                        if (i==0){
+                        var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-blue'>"+replacePart[i]+"</span>")
+                        // console.log(i);
+                         console.log(effectChars);
+                         break;
+                         }
+                         else if(replacePart[i]!=replacePart[i-1]){
+                         var regexp = new RegExp(replacePart[i],"g");
+                         effectChars = effectChars.replace(regexp,"<span class='tm-blue'>"+replacePart[i]+"</span>")
+                        // console.log(i);
+                         console.log(effectChars);
+                         break;
+                         }
+                         
+                         break;
+                         /** 
+                         var effectChars = chars.substring(columnDown,columnUp);
+                        //subString that need css effect.
+                        var spanTag = document.createElement('span');
+                        spanTag.innerHTML="<span class='tm.blue'>"+effectChars+"</span>";
+                        PTag.appendChild(spanTag);
+                        **/
+                       // console.log(effectChars);
+               case 5:
+                                break; 
+                        
+              //command = 4 means blue
+              default : 
+                            break;
+                        }
+                                    }
+                                     
+                                    
+          
+          return  effectChars ;
+                }                      
+                                
+
+                                            }
+                                            /** 
+public expressionStringToHTML( str ) {
+	var i ;
+	var html = "" ;
+	for( i=0 ; i < str.length ; ++i ) {
+		var c = str.charAt(i) ;
+		switch( c ) {
+		case "<" : html += "&lt;" ; break ;
+		case ">" : html += "&gt;" ; break ;
+		case "&" : html += "&amp;" ; break ; 
+		case "\uffff" : html += '<span class="tm-red">' ; break ;
+		case "\ufffe" : html += '<span class="tm-underline">' ; break ;
+		case "\ufffc" : html += '<span class="tm-blue">' ; break ;
+		case "\ufffb" : html += '</span>' ; break ;
+		default : html += c ; } }
+	return html ; }
 }
-    
+    **/
 
     
+}
 }
