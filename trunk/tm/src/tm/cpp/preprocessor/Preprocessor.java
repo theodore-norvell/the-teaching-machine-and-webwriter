@@ -52,8 +52,9 @@ public class Preprocessor implements PreprocessorConstants {
     throws ParseException {
         Preprocessor pp = new Preprocessor( reader, includedFile, fileMap, codeStore, stdFileSource ) ;
         pp.translation_unit( sb ) ;
-
-        sb.append( "#line "+ getToken(1).beginLine + " \u005c"" +file.getUniqueNumber() +"\u005c"\u005cn" ) ;
+        // Output a #line directive that makes sense for the next token.
+        currentLine = getToken(1).beginLine ;
+        sb.append( "#line "+ currentLine + " \u005c"" +file.getUniqueNumber() +"\u005c"\u005cn" ) ;
     }
 
 
