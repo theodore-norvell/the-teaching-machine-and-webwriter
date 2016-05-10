@@ -21,6 +21,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Reader;
@@ -32,21 +33,26 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Properties;
 
-import javax.swing.JApplet;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import netscape.javascript.*; // Need plugin.jar from JDK on the CLASSPATH.
+import com.sun.org.apache.bcel.internal.generic.NEW;
+
 import tm.backtrack.BTTimeManager;
+import tm.configuration.ConfigurationServer;
 import tm.evaluator.Evaluator;
 import tm.evaluator.Evaluator.Refreshable;
 import tm.interfaces.CodeLine;
 import tm.interfaces.CommandInterface;
+import tm.interfaces.DisplayManagerInterface;
 import tm.interfaces.DisplayManagerPIFactoryIntf;
 import tm.interfaces.EditorPIFactoryInterface;
 import tm.interfaces.EditorPIInterface;
 import tm.interfaces.ImageSourceInterface;
+import tm.interfaces.PlatformServicesInterface;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.Scriptable;
 import tm.interfaces.SelectionInterface;
@@ -156,13 +162,21 @@ READY or EXECUTION_COMPLETE or EXECUTION_FAILED
 </PRE>
  */
 
+// TODO change name
 @SuppressWarnings("serial")
 public class TMMainPanel
-extends JPanel
-implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
-{
-	private tm.interfaces.DisplayManagerInterface dispMan ;
-	private javax.swing.JMenu viewMenu ;
+implements CommandInterface, StatusConsumer, Scriptable
+{    
+	public static final String COPYRIGHT = "(C) 1997--2015 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
+	public static final String PROGRAMMERS = "Designed and coded by\n"
+        + "Michael Bruce-Lockhart\n"
+        + "Sun Hao\n"
+        + "Theodore Norvell\n"
+        + "Derek Rielly";
+	private JLayeredPane layeredPane = new JLayeredPane() ;
+	private JPanel defaultPane = new JPanel() ;
+	private TMMenuBar menuBar ;
+	private DisplayManagerInterface dispMan ;
 	private Evaluator evaluator ;
 	private final CurrentFileManager currentFileManager = new CurrentFileManager() ;
 	private boolean testMode = false ;
@@ -179,6 +193,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	private Refreshable refreshMole = new Refreshable() {
 		public void refresh() { TMMainPanel.this.refresh() ; }
 	} ;
+	private PlatformServicesInterface platform;
 
 	static final int boStatic = 0 ;
 	static final int toStatic = 16384-1 ;
@@ -191,24 +206,18 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 
 	// CONSTRUCTORS //
 	//////////////////
-	public TMMainPanel() {
-		// If the Big Applet is being run on a webpage,
-		// we just make up a menu. This dummy menu is
-		// never seen, and exists only to assuage the
-		// Display Manager which expects a menu to play with.
-		// We also supply a raw ArgPackage; this will have all null
-		// values.
-		this( new javax.swing.JMenu(), new ArgPackage() ) ; }
 
-	public TMMainPanel(javax.swing.JMenu view, ArgPackage argPackage ) {
-		// TODO Worry about what happens if the current thread is not the Event Dispact Thread,
-		// but rather something else, such as an applet thread.
+	public TMMainPanel(ArgPackage argPackage, PlatformServicesInterface platform ) {
+		// This constructor should only be called from the Event Dispatch thread.
+		Assert.check( SwingUtilities.isEventDispatchThread() );
 
 		dispMan = null ;
-		viewMenu = view;
 		evaluator = null ;
-		setBackground(Color.WHITE) ;
-		setBackground(Color.DARK_GRAY) ;
+		this.platform = platform ;
+		defaultPane.setBackground(Color.WHITE) ;
+		layeredPane.setBackground(Color.orange) ;
+		defaultPane.setLayout( new BorderLayout() ) ;
+		layeredPane.add( defaultPane, new Integer(JLayeredPane.DEFAULT_LAYER ) ) ;
 		setUpStatusLine() ;
 
 		this.argPackage = argPackage ;
@@ -250,8 +259,17 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			}} ) ;
 		pingThread.start() ;
 	}
+	
+	public void addMenuBar( TMMenuBar menuBar ) {
+		if( this.menuBar != null ) { defaultPane.remove( menuBar ) ; }
+		this.menuBar = menuBar ;
+		this.defaultPane.add( menuBar, BorderLayout.NORTH ) ;
+	}
+	
+	public JComponent getComponent() {
+		return layeredPane ; }
 
-	   public void start() {
+    public void start() {
 	        // Load the initial configuration file.
 	        // If there is an initial configuaration file specified on the command line, use that,
 	        // otherwise use the default.tmcfg from the .jar file
@@ -279,18 +297,13 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	                }} ) ;
 	        } catch (InvocationTargetException e1) {
 	            e1.getTargetException().printStackTrace(); }
-	    }
-	    
-	    public void init() {
-	    	System.out.println("The TMBigApplet has recieved an 'init' message") ;
-	    	TMMainPanel.setLookAndFeel( this ) ;
-	    }
+	}
 
 	private void setUpStatusLine() {
 		statusLine = new JLabel();
 		statusLine.setText("Welcome to the TM.");
 		statusLine.setPreferredSize(new Dimension(60,20));
-		add(BorderLayout.SOUTH, statusLine);
+		defaultPane.add(BorderLayout.SOUTH, statusLine);
 		statusLine.setOpaque(true) ;
 		statusLine.setBackground(Color.LIGHT_GRAY);
 	}
@@ -301,6 +314,16 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			dispMan = null ; }
 	}
 
+	public void showDialog( TMDialog dialog ) {
+		int w = layeredPane.getWidth() ;
+		int h = layeredPane.getHeight() ;
+		int dw = dialog.getWidth() ;
+		int dh = dialog.getHeight() ;
+		dw = Math.max(w, dw) ;
+		dh = Math.max(h, dh) ;
+		layeredPane.add( dialog, JLayeredPane.MODAL_LAYER) ;
+		dialog.setBounds( new Rectangle((w-dw)/2,(h-dh)/2,dw, dh) ) ;
+	}
 
 	//  Implementing StatusConsumer  //
 	///////////////////////////////////
@@ -318,15 +341,12 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 
 	public void attention(String message, Throwable th ) {
 		if( ! testMode ) {
-			java.awt.Frame d = new AttentionFrame( "Attention", message, th ) ;
-			d.setVisible( true ) ; }
+			platform.showMessage( "Attention", message, th) ; }
 
 	}
 
 	public void attention(String message ) {
-		if( ! testMode ) {
-			java.awt.Frame d = new AttentionFrame( "Attention", message ) ;
-			d.setVisible( true ) ; }
+		attention( message, null ) ;
 	}
 
 	public int getStatusCode() {
@@ -380,13 +400,9 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			ConcurUtilities.doOnSwingThread( new Runnable() {
 				@Override public void run() {
 					/*dbg */Debug.getInstance().msg(Debug.CURRENT, "loadRemoteFile "+root+" "+fileName) ;/*dbg*/
-					URL url = null ;
-					try {
-						url = new URL( getDocumentBase(), root ) ; }
-					catch( MalformedURLException e ) {
-						setStatus( TMStatusCode.NO_EVALUATOR, "Malformed URL" ) ; 
-						return ; }
-					loadRemoteFile( url, fileName ) ;
+					URL url = platform.makeURL( root ) ;
+					if(  url==null ) setStatus( TMStatusCode.NO_EVALUATOR, "Malformed URL" ) ; 
+					else loadRemoteFile( url, fileName ) ;
 				}} ) ; }
 		catch (InvocationTargetException e1) {
 			e1.getTargetException().printStackTrace(); }
@@ -394,7 +410,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	}
 
 	public void loadRemoteFile( String fileName ) {
-		loadRemoteFile( getDocumentBase(), fileName ) ; }
+		loadRemoteFile( platform.getDocumentBase() , fileName ) ; }
 
 	public void loadLocalFile( final File directory, final String fileName ) {
 		try {
@@ -428,8 +444,8 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			showTM(true) ;
 			Reader reader = latestConfigurationFile.toReader() ;
 			Assert.apology( reader != null, "Can not open " + latestConfigurationFile);
+			ConfigurationServer.setPlatform( platform ); 
 			tm.configuration.ConfigurationServer server = tm.configuration.ConfigurationServer.getConfigurationServer();
-			server.setApplet(!(getAppletContext() instanceof TMMainFrameAppletStub));
 			server.readConfiguration( reader ) ;
 			//System.out.println("reconfigure with "+latestConfigurationFile.toString());server.dump();
 			reader.close() ; }
@@ -460,8 +476,8 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			ConcurUtilities.doOnSwingThread( new Runnable() {
 				@Override public void run() {
 					try {
-						TMMainPanel.this.latestConfigurationFile = new TMFile( new URLFileSource( getDocumentBase() ),
-								fileName ) ;
+						TMMainPanel.this.latestConfigurationFile 
+						= new TMFile( new URLFileSource( platform.getDocumentBase() ), fileName ) ;
 						reConfigure() ;}
 					catch( SecurityException e) {
 						reportException( e, "a security restriction" ) ; }
@@ -779,9 +795,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 		try {
 			ConcurUtilities.doOnSwingThread( new Runnable() {
 				@Override public void run() {
-					Container parent = getParent() ;
-					if( parent instanceof TMMainFrame ) {
-						((TMMainFrame) parent).showTM(visible) ; }
+					platform.showTheTM( visible ) ;
 				}} ) ; }
 		catch (InvocationTargetException e1) {
 			e1.getTargetException().printStackTrace(); }
@@ -791,12 +805,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 		try {
 			return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
 				@Override public Boolean run() {
-					// A bit messy -- we look to the parent.
-					Container parent = getParent() ;
-					if( parent instanceof TMMainFrame )
-						return ((TMMainFrame) parent).isTMShowing() ;
-					else
-						return false ;
+					return platform.isTMShowing() ;
 				}} ) ; }
 		catch (InvocationTargetException e1) {
 			e1.getTargetException().printStackTrace();
@@ -864,37 +873,14 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			//e.printStackTrace() ;
 			return false ; } }
 
-	void help(java.awt.Frame parent) {
+	void help() {
 		URL helpURL ;
 		try {
-			helpURL = new URL(getCodeBase(), "help/help.html" ) ; }
+			helpURL = new URL(platform.getCodeBase(), "help/help.html" ) ; }
 		catch( MalformedURLException ex ) {
 			return ;
 		}
-		if( getAppletContext() instanceof TMMainFrameAppletStub ) {
-			// This is an application
-			String helpFile = helpURL.toExternalForm() ;
-			//System.err.println( "HelpFile is <"+helpFile+">") ;
-			String[] browserName = { 
-					"rundll32 url.dll,FileProtocolHandler",
-					"firefox",
-					"netscape",
-					"opera",
-					"konqueror",
-					"safari",
-					"Iexplore.exe",
-					"netscape.exe",
-					"firefox.exe"
-			} ;
-			boolean success = false ;
-			for( int i=0 ; !success && i<browserName.length ; ++i ) {
-				success = tryLaunch( browserName[i], helpFile ) ; }
-			if( !success ) {
-				attention( "The Teaching Machine could not launch the browser.\n" +
-						"For help, paste the following URL into your browser:\n   " +
-						helpFile ) ; } }
-		else {
-			getAppletContext().showDocument( helpURL, "HELP" ) ; }
+		platform.showDocument( helpURL, "HELP" ) ;
 	}
 
 	//IMPLEMENTING THE EVALUATOR INTERFACE //
@@ -953,19 +939,6 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	public int getLanguage() {
 		return evaluator.getLanguage() ;
 	}
-
-
-	//IMPLEMENTING THE IMAGE SOURCE INTERFACE  //
-	//////////////////////////////////////////////
-
-	public java.awt.Image fetchImage(String name) {
-		java.net.URL imgURL = this.getClass().getResource(name);
-		if (imgURL != null) {
-			return java.awt.Toolkit.getDefaultToolkit().createImage( imgURL ); }
-		else {
-			System.err.println("Couldn't find file: " + name);
-			return null; } }
-
 
 	//Package methods //
 	/////////////////////
@@ -1033,7 +1006,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 			try {
 				evaluator = new Evaluator( lang, this, refreshMole,
 						SelectionParser.parse(CommandInterface.DEFAULT_SELECTION),
-						new SwingInputter(),
+						platform.getInputter(),
 						boStatic, toStatic,
 						boHeap, toHeap,
 						boStack, toStack,
@@ -1052,8 +1025,8 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 				dispMan = displayManagerPIFactory.createPlugin( languageName,
 						(tm.interfaces.ImageSourceInterface) this,
 						this,
-						viewMenu ) ;        
-				add( dispMan.getComponent(), "Center" ) ;
+						menuBar.getViewMenu() ) ;        
+				defaultPane.add( dispMan.getComponent(), "Center" ) ;
 				setStatus( TMStatusCode.READY_TO_COMPILE,
 						lang.getName()+" Display and evaluator built. Ready to compile") ;}
 			catch( PlugInNotFound ex ) {
@@ -1062,7 +1035,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 				return false ;
 			}
 			dispMan.createAllDisplays() ;
-			validate();
+			layeredPane.revalidate();
 			refresh() ;
 			// This reConfigure is a bit annoying as it creates all the displays again.
 			reConfigure() ;
@@ -1077,7 +1050,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	private void removeTheDisplayManagerAndEvaluator() {
 		if( dispMan != null ) {
 			dispMan.dispose();
-			remove( dispMan.getComponent() ) ;
+			defaultPane.remove( dispMan.getComponent() ) ;
 			dispMan = null ; }
 		evaluator = null ;
 	}
@@ -1085,14 +1058,10 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	private void compile( TMFile tmFile) {
 		// Precondition evaluator != null
 		Assert.check( evaluator != null  ) ;
-		java.awt.Frame dialog = new AttentionFrame( "Standby",
-				"The Teaching Machine is loading the file.") ;
-		dialog.setVisible( true ) ;
-
+		setStatus(TMStatusCode.READY_TO_COMPILE, "Compiling" );
 		evaluator.compile( tmFile );
 
-		refresh() ;
-		dialog.dispose() ; }
+		refresh() ; }
 
 	/** Convenience method for projects that have only one file */
 	private void loadTMFile( int language, TMFile tmFile ) {
@@ -1142,7 +1111,7 @@ implements CommandInterface, ImageSourceInterface, StatusConsumer, Scriptable
 	}
 
 	public TMFile getDataFile() throws Throwable {
-		return dataFiles.getDataFile(this.getDocumentBase()) ;
+		return dataFiles.getDataFile(platform.getDocumentBase()) ;
 	}
 
 	static void setLookAndFeel(java.awt.Component component) {

@@ -27,8 +27,10 @@ package tm.configuration;
 
 import java.util.*;
 import java.io.*;
+
 import tm.AttentionFrame;
 import tm.interfaces.Configurable;
+import tm.interfaces.PlatformServicesInterface;
 import tm.utilities.Debug;
 
 import org.xml.sax.SAXException;
@@ -70,7 +72,7 @@ public class ConfigurationServer extends DefaultHandler{
     //private static XMLDocument document;
     private static final String XMLDeclaration = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     private static final String configFileTag = "<configFile version=\"2.0\">";
-    private static boolean applet;
+    static PlatformServicesInterface platform ;
     /* Note: This is an error. The lead <xml> is not part of the document
     and thus not a tag.
     */
@@ -87,9 +89,14 @@ public class ConfigurationServer extends DefaultHandler{
 	    	xr.setContentHandler(this);
 	    	xr.setErrorHandler(this);
         }catch (SAXException e) {
-        	attention("Error parsing configuation file: "+e.getMessage(), e);
+        	platform.showMessage("Configuaration Error", "Error parsing configuation file: "+e.getMessage(), e);
         }
     }
+    
+    public static void setPlatform( PlatformServicesInterface p ) {
+    	platform = p ;
+    }
+    
 /**
  *  Singleton Pattern. With only one server, there is no need to pass its
  *  reference around. Instead ask the server for a reference to
@@ -106,9 +113,6 @@ public class ConfigurationServer extends DefaultHandler{
         return myself;
     }
     
-    public void setApplet(boolean flag){applet = flag;}
-    public boolean isApplet(){return applet;}
-
    /**
     * Load configuration information in from an input stream. Uses SAX xml
     * parsing
@@ -257,7 +261,7 @@ public class ConfigurationServer extends DefaultHandler{
     public void register (Configurable owner, String identifier) {
         Configuration theConfiguration = findConfig(identifier);
         if (theConfiguration == null) {
-        	attention("Can't find configuration for " + identifier);
+        	platform.showMessage("Configuration error", "Can't find configuration for " + identifier);
         } else if( theConfiguration.getOwner() == null ){
             theConfiguration.setOwner(owner);
         }
@@ -325,19 +329,6 @@ public class ConfigurationServer extends DefaultHandler{
         return null;
     }
     
-    
-
-    static void attention(String message){
-        java.awt.Frame d = new AttentionFrame( "Attention - Configuration Error:", message ) ;
-        d.setVisible( true );
-    	
-    }
-    
-    static void attention(String message, Throwable th ){
-        java.awt.Frame d = new AttentionFrame( "Attention - Configuration Error:", message, th ) ;
-        d.setVisible( true );
-        
-    }
     
     public void dump(){
         Debug d = Debug.getInstance() ;

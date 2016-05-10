@@ -20,10 +20,11 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 
 import javax.swing.*;
-import javax.swing.text.BadLocationException;
 
-public class AttentionFrame extends JFrame
+@SuppressWarnings("serial")
+public class AttentionFrame extends TMDialog
 {
+	JLabel titleLabel = new JLabel() ;
     JTextArea topTextArea = new JTextArea(5,60) ;
     JScrollPane topScrollPane = new JScrollPane(topTextArea) ;
     JPanel buttonPanel = new JPanel() ;
@@ -36,20 +37,20 @@ public class AttentionFrame extends JFrame
     public AttentionFrame(String title, String message, Throwable th) {
         this( title, message, th.getMessage() + "\n" + formatStackTrace( th ) ) ;
     }
-
-    public AttentionFrame(String title, String message) {
-	    this( title, message, (String) null ) ;
-	}
 	
 	public AttentionFrame(String title, String message, String detail){
-		super(title) ;
+		
+		titleLabel.setText( title ); 
+		titleLabel.setBackground( Color.blue ); 
+		titleLabel.setForeground( Color.white ) ;
 		
 		buttonPanel.setLayout( new FlowLayout() ) ;
 		buttonPanel.add( closeButton ) ;
 		if( detail != null ) buttonPanel.add( detailButton ) ;
 		
-		LayoutManager lm = new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS) ;
-		this.getContentPane().setLayout( lm ) ;
+		LayoutManager lm = new BoxLayout(this, BoxLayout.PAGE_AXIS) ;
+		this.setLayout( lm ) ;
+		this.add( titleLabel ) ;
 		this.add( topScrollPane ) ;
 		this.add( buttonPanel ) ;
 
@@ -62,7 +63,7 @@ public class AttentionFrame extends JFrame
 		
 		closeButton.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
-                dispose() ; }} ) ;
+                dismiss() ; }} ) ;
 
         detailButton.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -70,15 +71,15 @@ public class AttentionFrame extends JFrame
                     remove(bottomScrollPane) ;
                     detailButton.setText( "Show details" ) ;
                     detailsAreShowing = false ;
-                    AttentionFrame.this.pack() ; }
+                    AttentionFrame.this.revalidate() ; }
                 else {
                     add(bottomScrollPane) ;
                     detailButton.setText( "Hide details" ) ;
                     detailsAreShowing = true ;
-                    AttentionFrame.this.pack() ; }
+                    AttentionFrame.this.revalidate() ; }
                 }} ) ;
 
-        this.pack();
+        this.revalidate();
 	}
 
     

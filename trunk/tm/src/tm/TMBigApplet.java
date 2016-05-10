@@ -25,6 +25,7 @@ import netscape.javascript.*; // Need plugin.jar from JDK on the CLASSPATH.
 /** An applet that holds a TMMainPanel
 */
 
+@SuppressWarnings("serial")
 public class TMBigApplet extends JApplet {
 
 	private final TMMainPanel tmMainPanel ;
@@ -86,4 +87,16 @@ public class TMBigApplet extends JApplet {
     					jse.printStackTrace(); } } } ;
     		t.start() ; }
     }
+    
+    
+    //IMPLEMENTING THE IMAGE SOURCE INTERFACE  //
+	//////////////////////////////////////////////
+
+	public java.awt.Image fetchImage(String name) {
+		java.net.URL imgURL = this.getClass().getResource(name);
+		if (imgURL != null) {
+			return java.awt.Toolkit.getDefaultToolkit().createImage( imgURL ); }
+		else {
+			System.err.println("Couldn't find file: " + name);
+			return null; } }
 }

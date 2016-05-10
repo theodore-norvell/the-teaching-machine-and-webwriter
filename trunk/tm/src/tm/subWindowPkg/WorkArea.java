@@ -80,8 +80,6 @@ abstract public class WorkArea extends JPanel implements Scrollable{
 // scrollbars as well
 	private int verticalScale, horizontalScale;		// from world to view co-ordinates 
 
-	
-
 	public WorkArea(ImageSourceInterface imageSource) {
 	    mySubWindow = new SubWindow(imageSource);
 	    myWorkPane = mySubWindow.getWorkPane();

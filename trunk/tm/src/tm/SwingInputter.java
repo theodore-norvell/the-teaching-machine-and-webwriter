@@ -25,5 +25,4 @@ public class SwingInputter implements Inputter {
 		new InputFrame( evaluator ) ;
 
 	}
-
 }
