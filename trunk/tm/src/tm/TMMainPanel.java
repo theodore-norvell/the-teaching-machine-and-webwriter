@@ -18,7 +18,6 @@ import javax.swing.JPanel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -39,8 +38,6 @@ import javax.swing.JLayeredPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-
 import tm.backtrack.BTTimeManager;
 import tm.configuration.ConfigurationServer;
 import tm.evaluator.Evaluator;
@@ -51,7 +48,6 @@ import tm.interfaces.DisplayManagerInterface;
 import tm.interfaces.DisplayManagerPIFactoryIntf;
 import tm.interfaces.EditorPIFactoryInterface;
 import tm.interfaces.EditorPIInterface;
-import tm.interfaces.ImageSourceInterface;
 import tm.interfaces.PlatformServicesInterface;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.Scriptable;
@@ -79,102 +75,112 @@ import tm.virtualMachine.SelectionParser;
 
 
 
-//TMBigApplet  //
+//TMMainPanel  //
 ///////////////////
-/** An applet that coordinates the Display and the evaluation
-parts of the Teaching Machine
-
-
-States:
-<pre>
-NO_EVALUATOR
-READY_TO_COMPILE
-DID_NOT_COMPILE
-COMPILED
-READY
-BUSY_EVALUATIING
-EXECUTION_COMPLETE
-EXECUTION_FAILED
-</pre>
-
-State transitions:
-<pre>
-init --> NO_EVALUATOR
-
-any state
-|
-|  any load operation /
-|  determine language;
-|  build language object;
-|  build evaluator;
-|  build display manager ;
-|  compile 
-|
-| if any error before compilation
-<>---------------------------------> NO_EVALUATOR
-|
-| if any errors during compilation
-<>---------------------------------> DID_NOT_COMPILE
-|
-| if no errors
-V
-COMPILED
-
-            any go-forward operation,goBack, redo
-NO_EVALUATOR ------------------------------------------> NO_FILE_LOADED
-
-                              go_back [if undo is possible]
-(any state but no evaluator) ----------------------------------->(the previous state)
-
-                                 go_back [if undo is not possible]
-(any state but no evaluator) ----------------------------------->(the same state)
-
-                              redo [if redo is possible]
-(any state but no evaluator) ----------------------------------->(the next state)
-
-                                 redo  [if redo is not possible]
-(any state but no evaluator) ----------------------------------->(the same state)
-
-             any go-forward operation
-EXECUTION_COMPLETE ------------------------------->EXECUTION_COMPLETE
-
-             any go-forward operation
-EXECUTION_FAILED ---------------------------------> EXECUTION_FAILED
-
-         any go-forward operation / initialize
-COMPILED ---------------------------------------> READY or
-                                                 EXECUTION_COMPLETE or
-                                                 EXECUTION_FAILED
-
-
-READY
-|
-| any go-forward operation / corresponding evaluator opn starts
-|
-V
-BUSY_EVALUATING
-|
-| evaluator operation completes
-|
-V
-READY or EXECUTION_COMPLETE or EXECUTION_FAILED
-
-</PRE>
+/** This is the central component of the Teaching Machine. 
+ * 
+ * <p>It provides many services to other components.
+ * <ul>
+ *    <li> It implements {@link tm.interfaces.ExternalCommandInterface}
+ *    <li> It owns a JComponent that can be put on a JFrame, on a JApplet, or used to generate images
+ *         for an image-server based implementation (server-side applet).
+ *    <li> Depending on its state it may depend an Evaluator and a DisplayManager.
+ *    <li> It serves as a mediator between the Evaluator and the the DisplayManager.
+ *         <ul>
+ *            <li> It forwards refresh methods from the Evaluator to the DisplayManager.
+ *            <li> If also serves as a StatusConsumer for the Evaluator. This allows the Evaluator to report errors and statuses.
+ *            <li> It provides the ExternalCommandInterface to the DisplayManager and its displays.
+ *                 Most of the ExternalCommandInterface is implemented by forwarding requests to the
+ *                 Evaluator.
+ *         </ul>
+ * </ul> 
+ * 
+ * <p>States {@Link TMStatusCode}
+ * <pre>
+ * NO_EVALUATOR
+ * READY_TO_COMPILE
+ * DID_NOT_COMPILE
+ * COMPILED
+ * READY
+ * BUSY_EVALUATIING
+ * EXECUTION_COMPLETE
+ * EXECUTION_FAILED
+ * </pre>
+ * 
+ * State transitions:
+ * <pre>
+ * init --> NO_EVALUATOR
+ * 
+ * any state
+ * |
+ * |  any load operation /
+ * |  determine language;
+ * |  build language object;
+ * |  build evaluator;
+ * |  build display manager ;
+ * |  compile 
+ * |
+ * | if any error before compilation
+ * <>---------------------------------> NO_EVALUATOR
+ * |
+ * | if any errors during compilation
+ * <>---------------------------------> DID_NOT_COMPILE
+ * |
+ * | if no errors
+ * V
+ * COMPILED
+ * 
+ *               any go-forward operation,goBack, redo
+ * NO_EVALUATOR ------------------------------------------> NO_EVALUATOR
+ * 
+ *                               go_back [if undo is possible]
+ * (any state but no evaluator) ----------------------------------->(the previous state)
+ * 
+ *                                  go_back [if undo is not possible]
+ * (any state but no evaluator) ----------------------------------->(the same state)
+ * 
+ *                               redo [if redo is possible]
+ * (any state but no evaluator) ----------------------------------->(the next state)
+ * 
+ *                                  redo  [if redo is not possible]
+ * (any state but no evaluator) ----------------------------------->(the same state)
+ * 
+ *              any go-forward operation
+ * EXECUTION_COMPLETE ------------------------------->EXECUTION_COMPLETE
+ * 
+ *              any go-forward operation
+ * EXECUTION_FAILED ---------------------------------> EXECUTION_FAILED
+ * 
+ *          any go-forward operation / initialize
+ * COMPILED ---------------------------------------> READY or
+ *                                                  EXECUTION_COMPLETE or
+ *                                                  EXECUTION_FAILED
+ * 
+ * 
+ * READY
+ * |
+ * | any go-forward operation / corresponding evaluator opn starts
+ * |
+ * V
+ * BUSY_EVALUATING
+ * |
+ * | evaluator operation completes
+ * |
+ * V
+ * READY or EXECUTION_COMPLETE or EXECUTION_FAILED
+ * 
+ * </PRE>
  */
-
-// TODO change name
-@SuppressWarnings("serial")
 public class TMMainPanel
 implements CommandInterface, StatusConsumer, Scriptable
 {    
-	public static final String COPYRIGHT = "(C) 1997--2015 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
+	public static final String COPYRIGHT = "(C) 1997--2016 Michael P. Bruce-Lockhart, and Theodore S. Norvell.";
 	public static final String PROGRAMMERS = "Designed and coded by\n"
         + "Michael Bruce-Lockhart\n"
         + "Sun Hao\n"
         + "Theodore Norvell\n"
         + "Derek Rielly";
 	private JLayeredPane layeredPane = new JLayeredPane() ;
-	private JPanel defaultPane = new JPanel() ;
 	private TMMenuBar menuBar ;
 	private DisplayManagerInterface dispMan ;
 	private Evaluator evaluator ;
@@ -214,10 +220,9 @@ implements CommandInterface, StatusConsumer, Scriptable
 		dispMan = null ;
 		evaluator = null ;
 		this.platform = platform ;
-		defaultPane.setBackground(Color.WHITE) ;
-		layeredPane.setBackground(Color.orange) ;
-		defaultPane.setLayout( new BorderLayout() ) ;
-		layeredPane.add( defaultPane, new Integer(JLayeredPane.DEFAULT_LAYER ) ) ;
+		layeredPane.setOpaque( true );
+		layeredPane.setLayout( new BorderLayout() );
+		layeredPane.setBackground(Color.WHITE) ;
 		setUpStatusLine() ;
 
 		this.argPackage = argPackage ;
@@ -261,9 +266,11 @@ implements CommandInterface, StatusConsumer, Scriptable
 	}
 	
 	public void addMenuBar( TMMenuBar menuBar ) {
-		if( this.menuBar != null ) { defaultPane.remove( menuBar ) ; }
+		if( this.menuBar != null ) { layeredPane.remove( menuBar ) ; }
 		this.menuBar = menuBar ;
-		this.defaultPane.add( menuBar, BorderLayout.NORTH ) ;
+		layeredPane.add( menuBar, BorderLayout.NORTH ) ;
+		layeredPane.setLayer(menuBar, JLayeredPane.DEFAULT_LAYER );
+		layeredPane.revalidate(); 
 	}
 	
 	public JComponent getComponent() {
@@ -303,9 +310,11 @@ implements CommandInterface, StatusConsumer, Scriptable
 		statusLine = new JLabel();
 		statusLine.setText("Welcome to the TM.");
 		statusLine.setPreferredSize(new Dimension(60,20));
-		defaultPane.add(BorderLayout.SOUTH, statusLine);
+		layeredPane.add(statusLine, BorderLayout.SOUTH );
+		layeredPane.setLayer(statusLine, JLayeredPane.DEFAULT_LAYER );
 		statusLine.setOpaque(true) ;
 		statusLine.setBackground(Color.LIGHT_GRAY);
+		layeredPane.revalidate(); 
 	}
 
 	void dispose() {
@@ -315,14 +324,9 @@ implements CommandInterface, StatusConsumer, Scriptable
 	}
 
 	public void showDialog( TMDialog dialog ) {
-		int w = layeredPane.getWidth() ;
-		int h = layeredPane.getHeight() ;
-		int dw = dialog.getWidth() ;
-		int dh = dialog.getHeight() ;
-		dw = Math.max(w, dw) ;
-		dh = Math.max(h, dh) ;
-		layeredPane.add( dialog, JLayeredPane.MODAL_LAYER) ;
-		dialog.setBounds( new Rectangle((w-dw)/2,(h-dh)/2,dw, dh) ) ;
+		layeredPane.add( BorderLayout.CENTER, dialog) ;
+		layeredPane.setLayer(dialog, JLayeredPane.MODAL_LAYER);
+		layeredPane.revalidate(); 
 	}
 
 	//  Implementing StatusConsumer  //
@@ -341,12 +345,13 @@ implements CommandInterface, StatusConsumer, Scriptable
 
 	public void attention(String message, Throwable th ) {
 		if( ! testMode ) {
-			platform.showMessage( "Attention", message, th) ; }
+			platform.showMessage(this, "Attention", message, th) ; }
 
 	}
 
 	public void attention(String message ) {
-		attention( message, null ) ;
+		if( ! testMode ) {
+			platform.showMessage(this, "Attention", message ) ; }
 	}
 
 	public int getStatusCode() {
@@ -441,11 +446,10 @@ implements CommandInterface, StatusConsumer, Scriptable
 			throws java.lang.Exception
 	{
 		if( latestConfigurationFile != null ) {
-			showTM(true) ;
+			//  showTM(true) ;
 			Reader reader = latestConfigurationFile.toReader() ;
 			Assert.apology( reader != null, "Can not open " + latestConfigurationFile);
-			ConfigurationServer.setPlatform( platform ); 
-			tm.configuration.ConfigurationServer server = tm.configuration.ConfigurationServer.getConfigurationServer();
+			ConfigurationServer server = ConfigurationServer.getConfigurationServer();
 			server.readConfiguration( reader ) ;
 			//System.out.println("reconfigure with "+latestConfigurationFile.toString());server.dump();
 			reader.close() ; }
@@ -795,7 +799,7 @@ implements CommandInterface, StatusConsumer, Scriptable
 		try {
 			ConcurUtilities.doOnSwingThread( new Runnable() {
 				@Override public void run() {
-					platform.showTheTM( visible ) ;
+					platform.showTheTM( TMMainPanel.this, visible ) ;
 				}} ) ; }
 		catch (InvocationTargetException e1) {
 			e1.getTargetException().printStackTrace(); }
@@ -805,7 +809,7 @@ implements CommandInterface, StatusConsumer, Scriptable
 		try {
 			return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
 				@Override public Boolean run() {
-					return platform.isTMShowing() ;
+					return platform.isTMShowing(TMMainPanel.this) ;
 				}} ) ; }
 		catch (InvocationTargetException e1) {
 			e1.getTargetException().printStackTrace();
@@ -862,17 +866,6 @@ implements CommandInterface, StatusConsumer, Scriptable
 		Assert.check( evaluator != null );
 		return evaluator.getTimeManager() ;
 	}
-
-	private boolean tryLaunch( String browser, String helpFile ) {
-		try {
-			String launchString = browser + " " + helpFile ;
-			//System.err.println("Launching: <" + launchString + ">" ) ;
-			Process p = Runtime.getRuntime().exec(launchString) ;
-			return true ; }
-		catch( java.io.IOException e ) {
-			//e.printStackTrace() ;
-			return false ; } }
-
 	void help() {
 		URL helpURL ;
 		try {
@@ -880,7 +873,7 @@ implements CommandInterface, StatusConsumer, Scriptable
 		catch( MalformedURLException ex ) {
 			return ;
 		}
-		platform.showDocument( helpURL, "HELP" ) ;
+		platform.showDocument(this, helpURL, "HELP" ) ;
 	}
 
 	//IMPLEMENTING THE EVALUATOR INTERFACE //
@@ -1023,10 +1016,11 @@ implements CommandInterface, StatusConsumer, Scriptable
 						DisplayManagerPIFactoryIntf.class,
 						true ) ; 
 				dispMan = displayManagerPIFactory.createPlugin( languageName,
-						(tm.interfaces.ImageSourceInterface) this,
+						platform,
 						this,
 						menuBar.getViewMenu() ) ;        
-				defaultPane.add( dispMan.getComponent(), "Center" ) ;
+				layeredPane.add( dispMan.getComponent(), BorderLayout.CENTER ) ;
+				layeredPane.setLayer( dispMan.getComponent(), JLayeredPane.DEFAULT_LAYER );
 				setStatus( TMStatusCode.READY_TO_COMPILE,
 						lang.getName()+" Display and evaluator built. Ready to compile") ;}
 			catch( PlugInNotFound ex ) {
@@ -1050,7 +1044,8 @@ implements CommandInterface, StatusConsumer, Scriptable
 	private void removeTheDisplayManagerAndEvaluator() {
 		if( dispMan != null ) {
 			dispMan.dispose();
-			defaultPane.remove( dispMan.getComponent() ) ;
+			layeredPane.remove( dispMan.getComponent() ) ;
+			layeredPane.revalidate(); 
 			dispMan = null ; }
 		evaluator = null ;
 	}
@@ -1121,7 +1116,6 @@ implements CommandInterface, StatusConsumer, Scriptable
 				try {
 					UIManager.setLookAndFeel(lookAndFeelArray[i].getClassName()); }
 				catch (Exception e) {
-					// TODO Auto-generated catch block
 					System.err.println("Could not set the look and feel to "+lookAndFeelArray[i].getClassName()) ;
 					e.printStackTrace(); }  
 				if( component != null ) SwingUtilities.updateComponentTreeUI(component);

@@ -8,6 +8,6 @@ import javax.swing.JPanel;
 public class TMDialog extends JPanel {
 	protected void dismiss() {
 		Container parent = getParent() ;
-		if( parent != null ) parent.remove( this ); 
+		if( parent != null ) { parent.remove( this ); parent.revalidate() ; parent.repaint(); }
 	}
 }

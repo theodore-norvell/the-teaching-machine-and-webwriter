@@ -33,10 +33,6 @@ public class AttentionFrame extends TMDialog
     JTextArea bottomTextArea = new JTextArea(20,60) ;
     JScrollPane bottomScrollPane = new JScrollPane(bottomTextArea) ;
     boolean detailsAreShowing = false ;
-    
-    public AttentionFrame(String title, String message, Throwable th) {
-        this( title, message, th.getMessage() + "\n" + formatStackTrace( th ) ) ;
-    }
 	
 	public AttentionFrame(String title, String message, String detail){
 		
@@ -81,7 +77,10 @@ public class AttentionFrame extends TMDialog
 
         this.revalidate();
 	}
-
+    
+    public AttentionFrame(String title, String message, Throwable th) {
+        this( title, message, th.getMessage() + "\n" + formatStackTrace( th ) ) ;
+    }
     
     private static String formatStackTrace(Throwable th) {
         StringWriter w = new StringWriter() ;

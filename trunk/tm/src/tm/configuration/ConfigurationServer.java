@@ -29,8 +29,10 @@ import java.util.*;
 import java.io.*;
 
 import tm.AttentionFrame;
+import tm.TMMainPanel;
 import tm.interfaces.Configurable;
 import tm.interfaces.PlatformServicesInterface;
+import tm.utilities.Assert;
 import tm.utilities.Debug;
 
 import org.xml.sax.SAXException;
@@ -63,6 +65,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author mpbl
  */
 public class ConfigurationServer extends DefaultHandler{
+	// TODO Eliminate the singleton pattern.
 
     private static final String CONFIG_VERSION = "2.0";
     private static Vector<Configuration> myVector = null;
@@ -72,7 +75,8 @@ public class ConfigurationServer extends DefaultHandler{
     //private static XMLDocument document;
     private static final String XMLDeclaration = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     private static final String configFileTag = "<configFile version=\"2.0\">";
-    static PlatformServicesInterface platform ;
+    PlatformServicesInterface platform ;
+	private TMMainPanel tmMainPanel;
     /* Note: This is an error. The lead <xml> is not part of the document
     and thus not a tag.
     */
@@ -80,8 +84,10 @@ public class ConfigurationServer extends DefaultHandler{
     private static String closeConfigFileTag = "</configFile>";
     private static XMLElement current = null;  // Current open element
 
-    private ConfigurationServer() {
+    private ConfigurationServer( TMMainPanel tmMainPanel, PlatformServicesInterface p) {
     	super();
+    	this.platform = p ;
+    	this.tmMainPanel = tmMainPanel ;
         if (myVector == null) myVector = new Vector<Configuration>();
         //if (commentBlock == null) commentBlock = new Vector<String>();
         try {
@@ -89,12 +95,18 @@ public class ConfigurationServer extends DefaultHandler{
 	    	xr.setContentHandler(this);
 	    	xr.setErrorHandler(this);
         }catch (SAXException e) {
-        	platform.showMessage("Configuaration Error", "Error parsing configuation file: "+e.getMessage(), e);
+        	platform.showMessage( tmMainPanel, "Configuaration Error", "Error parsing configuation file: "+e.getMessage(), e);
         }
     }
     
-    public static void setPlatform( PlatformServicesInterface p ) {
-    	platform = p ;
+    /**  Call this once.
+     * 
+     * @param tmMainPanel
+     * @param p
+     */
+    public static void createInstance( TMMainPanel tmMainPanel, PlatformServicesInterface p ) {
+    	Assert.check( myself == null ) ;
+        myself = new ConfigurationServer(tmMainPanel, p);
     }
     
 /**
@@ -108,8 +120,9 @@ public class ConfigurationServer extends DefaultHandler{
  *  implements the factory method pattern as well.
  * @return the configuration server
  */
+    
     public static ConfigurationServer getConfigurationServer(){
-        if (myself == null) myself = new ConfigurationServer();
+    	Assert.check( myself != null ) ;
         return myself;
     }
     
@@ -261,7 +274,7 @@ public class ConfigurationServer extends DefaultHandler{
     public void register (Configurable owner, String identifier) {
         Configuration theConfiguration = findConfig(identifier);
         if (theConfiguration == null) {
-        	platform.showMessage("Configuration error", "Can't find configuration for " + identifier);
+        	platform.showMessage(tmMainPanel, "Configuration error", "Can't find configuration for " + identifier);
         } else if( theConfiguration.getOwner() == null ){
             theConfiguration.setOwner(owner);
         }

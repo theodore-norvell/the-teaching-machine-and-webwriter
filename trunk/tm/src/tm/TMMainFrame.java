@@ -56,8 +56,7 @@ import tm.virtualMachine.SelectionParser;
 //   Builds a frame containing a menu and a TMBigApplet.
 /////////////////////////////////////////////////////////
 
-public class TMMainFrame extends JFrame
-                         implements Configurable
+public class TMMainFrame extends JFrame implements Configurable, ExternalCommandInterface 
 {
     private JWindow splash ;
     private static final int SPLASH_NOT_SHOWING = 0; 
@@ -84,12 +83,10 @@ public class TMMainFrame extends JFrame
 
         setBackground(Color.BLACK) ;
         getContentPane().setBackground(Color.YELLOW) ;
-        /*Now, create an Applet that takes up the rest of the
-        space & restricts all the display frames to operate inside it!!!!*/
         tmMainPanel = new TMMainPanel( argPackage, platform );
         TMHeavyMenuBar menuBar = new TMHeavyMenuBar( tmMainPanel, platform, this );
         tmMainPanel.addMenuBar( menuBar ) ;
-        tmMainPanel.start() ;
+        
 
         getContentPane().add( tmMainPanel.getComponent(), BorderLayout.CENTER );
 
@@ -99,9 +96,12 @@ public class TMMainFrame extends JFrame
         setTitle( "The Teaching Machine 3" ) ;
         setVisible( true ) ;
 
+
+        ConfigurationServer.createInstance(tmMainPanel, platform);
+        tmMainPanel.start() ; // Forces read of configuration file.
         ConfigurationServer server = ConfigurationServer.getConfigurationServer();
         server.register(this,"mainFrame");
-        
+
         splash = makeSplash( platform ) ;
         flashSplash() ;
     }
@@ -137,9 +137,9 @@ public class TMMainFrame extends JFrame
             public void run() {
             	TMMainPanel.setLookAndFeel( null ) ;
             	
-                AppletStub appletStub = new TMMainFrameAppletStub(argPackage.installDirectory,
+                PlatformServicesInterface platform = new ApplicationPlatform(
+                		argPackage.installDirectory,
                         argPackage.installDirectory) ;
-                PlatformServicesInterface platform = new ApplicationPlatform() ;
                 TMMainFrame tmMainFrame = new TMMainFrame( argPackage, platform ) ;
 
                 // Add extra capabilites for applications.
@@ -147,13 +147,13 @@ public class TMMainFrame extends JFrame
                 
                 if( argPackage.fileToLoad != null ) {
                     String fileURL = argPackage.fileToLoad.toString(); ;
-                    tmMainFrame.getECI().loadRemoteFile( fileURL );
+                    tmMainFrame.loadRemoteFile( fileURL );
                 }
             } } ) ;
     }
     
     private JWindow makeSplash(ImageSourceInterface imageSource) {
-        String[] messages = { "The Teaching Machine 2.", tmMainPanel.getVersionString(),
+        String[] messages = { "The Teaching Machine 3.", tmMainPanel.getVersionString(),
         		TMMainPanel.COPYRIGHT };
 
         // Create a splash window.
@@ -212,26 +212,6 @@ public class TMMainFrame extends JFrame
     }
     
     void help() { tmMainPanel.help() ; }
-    
-    ExternalCommandInterface getECI() {
-    	return tmMainPanel ;
-    }
-    
-    
-    /** Show or hide the Teaching Machine's main window
-     * @param visible When this is true, the TM's main window is comes to the front of the desktop.
-     *                When this is false, the TM's main window is hidden
-     */
-    public void showTM(boolean visible){
-    	//TODO Move to application platform and 
-        setVisible( visible ) ;
-        if( visible ) {
-            int state = getExtendedState() ;
-            if( (state & JFrame.ICONIFIED) != 0 )
-                setExtendedState( state & ~ JFrame.ICONIFIED ) ;
-            toFront() ;
-        }
-    }
 
     class TMMainFrameWindowListener extends WindowAdapter {
 
@@ -273,4 +253,230 @@ public class TMMainFrame extends JFrame
         //System.out.println( "validate completed." ) ;
         
     }
+    
+    // Implementing the ExternalCommandInterface  //
+    ////////////////////////////////////////////////
+
+	@Override
+	public int getStatusCode() {
+		return tmMainPanel.getStatusCode() ;
+	}
+
+	@Override
+	public String getStatusMessage() {
+		return tmMainPanel.getStatusMessage() ;
+	}
+
+	@Override
+	public void setTestMode(boolean turnOn) {
+		tmMainPanel.setTestMode(turnOn);
+	}
+
+	@Override
+	public void loadString(String fileName, String programSource) {
+		tmMainPanel.loadString(fileName, programSource);
+	}
+
+	@Override
+	public void loadRemoteFile(String root, String fileName) {
+		tmMainPanel.loadRemoteFile(root, fileName);
+	}
+
+	@Override
+	public void loadRemoteFile(String fileName) {
+		tmMainPanel.loadRemoteFile(fileName);
+		
+	}
+
+	@Override
+	public void loadLocalFile(File directory, String fileName) {
+		tmMainPanel.loadLocalFile(directory, fileName);
+	}
+
+	@Override
+	public void readRemoteConfiguration(String fileName) {
+		tmMainPanel.readRemoteConfiguration(fileName);
+	}
+
+	@Override
+	public void registerRemoteDataFile(String fileName) {
+		tmMainPanel.readRemoteConfiguration(fileName);
+	}
+
+	@Override
+	public void clearRemoteDataFiles() {
+		tmMainPanel.clearRemoteDataFiles();
+	}
+
+	@Override
+	public void addInputString(String input) {
+		tmMainPanel.addInputString(input);
+	}
+
+	@Override
+	public void addProgramArgument(String argument) {
+		tmMainPanel.addProgramArgument(argument);
+	}
+
+	@Override
+	public String getOutputString() {
+		return tmMainPanel.getOutputString();
+	}
+
+	@Override
+	public void reStart() {
+		tmMainPanel.reStart();
+	}
+
+	@Override
+	public void editCurrentFile() {
+		tmMainPanel.editCurrentFile();
+	}
+
+	@Override
+	public void quit() {
+		tmMainPanel.quit() ;
+	}
+
+	@Override
+	public void initializeTheState() {
+		tmMainPanel.initializeTheState();
+	}
+
+	@Override
+	public void goBack() {
+		tmMainPanel.goBack();
+	}
+
+	@Override
+	public void redo() {
+		tmMainPanel.redo() ;
+	}
+
+	@Override
+	public void go(String commandString) {
+		tmMainPanel.go(commandString);
+	}
+
+	@Override
+	public void goForward() {
+		tmMainPanel.goForward();
+	}
+
+	@Override
+	public void microStep() {
+		tmMainPanel.microStep();
+	}
+
+	@Override
+	public void overAll() {
+		tmMainPanel.overAll();
+	}
+
+	@Override
+	public void intoExp() {
+		tmMainPanel.intoExp();
+	}
+
+	@Override
+	public void intoSub() {
+		tmMainPanel.intoSub();
+	}
+
+	@Override
+	public void toBreakPoint() {
+		tmMainPanel.toBreakPoint();
+	}
+
+	@Override
+	public void toCursor(String fileName, int cursor) {
+		tmMainPanel.toCursor(fileName, cursor);
+	}
+
+	@Override
+	public void autoRun() {
+		tmMainPanel.autoRun();
+	}
+
+	@Override
+	public boolean isTMShowing() {
+		return tmMainPanel.isTMShowing() ;
+	}
+    
+    
+    /** Show or hide the Teaching Machine's main window
+     * @param visible When this is true, the TM's main window is comes to the front of the desktop.
+     *                When this is false, the TM's main window is hidden
+     */
+	@Override
+    public void showTM(boolean visible){
+    	//TODO Move to application platform and 
+        setVisible( visible ) ;
+        if( visible ) {
+            int state = getExtendedState() ;
+            if( (state & JFrame.ICONIFIED) != 0 )
+                setExtendedState( state & ~ JFrame.ICONIFIED ) ;
+            toFront() ;
+        }
+    }
+
+	@Override
+	public void autoStep() {
+		tmMainPanel.autoStep(); 
+	}
+
+	@Override
+	public void autoStep(String fileName, int lineNo) {
+		tmMainPanel.autoStep(fileName, lineNo);
+	}
+
+	@Override
+	public void stopAuto() {
+		tmMainPanel.stopAuto();
+	}
+
+	@Override
+	public void setAutoStepRate(int rate) {
+		tmMainPanel.setAutoStepRate(rate);
+	}
+
+	@Override
+	public Image getSnap(String plugIn, String id) {
+		return tmMainPanel.getSnap(plugIn, id);
+	}
+
+	@Override
+	public int getLastSnapWidth() {
+		return tmMainPanel.getLastSnapWidth();
+	}
+
+	@Override
+	public int getLastSnapHeight() {
+		return tmMainPanel.getLastSnapHeight();
+	}
+
+	@Override
+	public boolean getComparison(String plugIn, int n) {
+		return tmMainPanel.getComparison(plugIn, n);
+	}
+
+	@Override
+	public long getLocalInt(String datumName) {
+		return tmMainPanel.getLocalInt(datumName);
+	}
+
+	@Override
+	public boolean isRunDone() {
+		return tmMainPanel.isRunDone();
+	}
+
+	@Override
+	public void setSelectionString(String str) {
+		tmMainPanel.setSelectionString( str );
+	}
+
+	@Override
+	public String getSelectionString() {
+		return tmMainPanel.getSelectionString() ;
+	}
 }
