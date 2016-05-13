@@ -93,20 +93,17 @@ public class ApplicationPlatform implements PlatformServicesInterface {
 
 	@Override
 	public void showMessage(TMMainPanel tmMainPanel, String title, String message, Throwable th) {
-		AttentionFrame af = new AttentionFrame(title, message, th) ;
-		tmMainPanel.showDialog( af );
+		new AttentionFrame(tmMainPanel, title, message, th).display() ;
 	}
 
 	@Override
 	public void showMessage(TMMainPanel tmMainPanel, String title, String message) {
-		AttentionFrame af = new AttentionFrame(title, message, (String) null) ;
-		tmMainPanel.showDialog( af );
+		new AttentionFrame(tmMainPanel, title, message, (String) null).display();
 	}
 
 	@Override
-	public Inputter getInputter() {
-		// TODO make sure this doesn't create a frame.
-		return new SwingInputter();
+	public Inputter getInputter(TMMainPanel tmMainPanel) {
+		return new SwingInputter(tmMainPanel);
 	}
 
 	@Override

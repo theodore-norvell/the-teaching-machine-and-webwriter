@@ -324,10 +324,16 @@ implements CommandInterface, StatusConsumer, Scriptable
 	}
 
 	public void showDialog( TMDialog dialog ) {
+	    // TODO Try replacing the Layered Pane with a JDesktopPane
 		layeredPane.add( BorderLayout.CENTER, dialog) ;
 		layeredPane.setLayer(dialog, JLayeredPane.MODAL_LAYER);
 		layeredPane.revalidate(); 
 	}
+
+    public void removeDialog( TMDialog dialog ) {
+        layeredPane.remove( dialog ) ;
+        layeredPane.revalidate(); 
+    }
 
 	//  Implementing StatusConsumer  //
 	///////////////////////////////////
@@ -999,7 +1005,7 @@ implements CommandInterface, StatusConsumer, Scriptable
 			try {
 				evaluator = new Evaluator( lang, this, refreshMole,
 						SelectionParser.parse(CommandInterface.DEFAULT_SELECTION),
-						platform.getInputter(),
+						platform.getInputter( this ),
 						boStatic, toStatic,
 						boHeap, toHeap,
 						boStack, toStack,

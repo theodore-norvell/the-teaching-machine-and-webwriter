@@ -2,6 +2,8 @@ package tm.interfaces;
 
 import java.net.URL;
 
+import tm.TMMainPanel;
+
 public interface PlatformServicesInterface extends ImageSourceInterface {
 
 	/** Return a URL for a file.
@@ -34,7 +36,7 @@ public interface PlatformServicesInterface extends ImageSourceInterface {
 	 * @param helpURL
 	 * @param string
 	 */
-	void showDocument(URL helpURL, String string);
+	void showDocument(TMMainPanel tmMainPanel, URL helpURL, String string);
 
 	/** Display a message to the user.  For example in a popup dialog.
 	 * 
@@ -42,22 +44,22 @@ public interface PlatformServicesInterface extends ImageSourceInterface {
 	 * @param message -- The message.  Newlines allowed.
 	 * @param th -- a Throwable.  This can be null.
 	 */
-	void showMessage(String title, String message, Throwable th);
+	void showMessage(TMMainPanel tmMainPanel, String title, String message, Throwable th);
 
 	/** Display a message to the user.  For example in a popup dialog.
 	 * 
 	 * @param title -- The dialogue title.
 	 * @param message -- The message.  Newlines allowed.
 	 */
-	void showMessage(String title, String message);
+	void showMessage(TMMainPanel tmMainPanel, String title, String message);
 
 	/** Obtain an object that can be used for input */
-	Inputter getInputter();
+	Inputter getInputter(TMMainPanel tmMainPanel);
 
 	/** Ensure that the user can (or cannot) see the Teaching Machine */
-	void showTheTM(boolean visible);
+	void showTheTM(TMMainPanel tmMainPanel, boolean visible);
 
-	boolean isTMShowing();
+	boolean isTMShowing(TMMainPanel tmMainPanel);
 
 	/** Shutdown or hide the TM as appropriate. */
 	void exit();

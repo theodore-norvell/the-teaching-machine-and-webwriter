@@ -19,10 +19,15 @@ import tm.interfaces.Inputter;
 import tm.interfaces.EvaluatorInterface;
 
 public class SwingInputter implements Inputter {
+    private TMMainPanel tmMainPanel ;
 
-	@Override
+	public SwingInputter(TMMainPanel tmMainPanel) {
+        this.tmMainPanel = tmMainPanel ;
+    }
+
+    @Override
 	public void requestMoreInput(EvaluatorInterface evaluator) {
-		new InputFrame( evaluator ) ;
+        new InputFrame( tmMainPanel, evaluator ).display();
 
 	}
 }

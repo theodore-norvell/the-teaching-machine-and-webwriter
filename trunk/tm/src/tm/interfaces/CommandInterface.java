@@ -23,8 +23,7 @@ import tm.backtrack.BTTimeManager;
  */
 public interface CommandInterface 
     extends ExternalCommandInterface,
-            EvaluatorInterface,
-            PluginUtilitiesInterface
+            EvaluatorInterface
 {
 
    

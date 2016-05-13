@@ -25,6 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel ;
 import javax.swing.JTextField;
 
 import tm.interfaces.EvaluatorInterface;
@@ -34,105 +35,61 @@ Input Frame.  Provides the user a way to add input to the standard input.
  */
 
 @SuppressWarnings("serial")
-public class InputFrame extends JFrame
+public class InputFrame extends TMDialog
 {
-	EvaluatorInterface evaluator ; // Where to send the strings.
-
 	JLabel label1 = new JLabel();
 	JLabel label2 = new JLabel();
 	BigJButton button1 = new BigJButton();
 	BigJButton button2 = new BigJButton();
 	JTextField textField1 = new JTextField(15);
+
 	
-	public InputFrame( EvaluatorInterface evaluator )
+	public InputFrame(  TMMainPanel tmMainPanel, final EvaluatorInterface evaluator )
 	{
-		super("Input request");
-
-		this.evaluator = evaluator ;
-
-		GridBagLayout gbl = new GridBagLayout() ;
-		GridBagConstraints constr = new GridBagConstraints() ;
-		setLayout(gbl);
-		setVisible(false);
+	    super( tmMainPanel ) ;
 		
-		label1.setText("Keyboard input required");
-		constr.gridx = 0 ;
-		constr.gridy = 0 ;
-		constr.gridheight = 1 ;
-		constr.gridwidth = 4 ;
-		constr.anchor = GridBagConstraints.LINE_START ;
-		add(label1, constr);
+		label1.setText("Keyboard input required.");
+		mainPanel.add(label1);
 		
-		label2.setText("Text:");
-		constr.gridx = 0 ;
-		constr.gridy = 1 ;
-		constr.gridheight = 1 ;
-		constr.gridwidth = 1 ;
-		constr.anchor = GridBagConstraints.LINE_START ;
-		add(label2, constr);
+		JPanel inputPanel = new JPanel() ;
+		label2.setText("Text:") ;
+		inputPanel.add(label2) ;
+		inputPanel.add(textField1) ;
 		
-		constr.gridx = 1 ;
-		constr.gridy = 1 ;
-		constr.gridheight = 1 ;
-		constr.gridwidth = 1 ;
-		constr.anchor = GridBagConstraints.LINE_START ;
-		add(textField1, constr);
+		mainPanel.add(  inputPanel ) ;
 		
+		JPanel buttonPanel = new JPanel() ;
 		button1.setBackground(Color.lightGray);
 		button1.setText("Enter text followed by newline character.");
-		constr.gridx = 3 ;
-		constr.gridy = 1 ;
-		constr.gridheight = 1 ;
-		constr.gridwidth = 2 ;
-		constr.anchor = GridBagConstraints.LINE_START ;
-		add(button1, constr);
+		buttonPanel.add(button1);
 		
 		button2.setBackground(Color.lightGray);
 		button2.setText("Enter text followed by end-of-file character.");
-		constr.gridx = 0 ;
-		constr.gridy = 2 ;
-		constr.gridheight = 1 ;
-		constr.gridwidth = 4 ;
-		constr.anchor = GridBagConstraints.LINE_START ;
-		add(button2, constr);
+		buttonPanel.add(button2);
 		
-		SymAction lSymAction = new SymAction();
-		button1.addActionListener(lSymAction);
-		button2.addActionListener(lSymAction);
-		textField1.addActionListener(lSymAction) ;
-		
-		this.pack(); 
-		this.setVisible(true) ;
-		textField1.requestFocus() ;
-	}
-	
-	class SymAction implements ActionListener
-	{
-		public void actionPerformed(ActionEvent event)
-		{
-			Object object = event.getSource();
-			if (object == button1)
-				button1_Action(event);
-			else if (object == button2)
-				button2_Action(event);
-			else if (object == textField1)
-				button1_Action(event);
-		}
-	}
+		mainPanel.add( buttonPanel ) ;
+        
+        textField1.requestFocus() ;
+        
+		ActionListener addNewlineAndDismiss = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = textField1.getText() + "\n" ;
+                evaluator.addInputString( text ) ;
+                setVisible( false ) ;
+                dismiss() ; } } ;
+                
+		button1.addActionListener( addNewlineAndDismiss );
 
-	void button1_Action(ActionEvent event)
-	{
-		String text = textField1.getText() + "\n" ;
-		evaluator.addInputString( text ) ;
-		setVisible( false ) ;
-		dispose() ;
-	}
-
-	void button2_Action(ActionEvent event)
-	{
-		String text = textField1.getText() + "\0" ;
-		evaluator.addInputString( text ) ;
-		setVisible( false ) ;
-		dispose() ;
+        textField1.addActionListener( addNewlineAndDismiss ) ;
+        
+		button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = textField1.getText() + "\0" ;
+                evaluator.addInputString( text ) ;
+                setVisible( false ) ;
+                dismiss() ;
+            } } ) ;
 	}
 }

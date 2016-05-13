@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -196,25 +197,8 @@ public class TMMenuBar extends JMenuBar {
 		}
 
 		public void actionPerformed( ActionEvent e ) {
-			String str = tmMainPanel.getSelectionString() ;
-			//TODO Put up a dialog for selection strings.
-			//			SelectionInterface sel = null ;
-			//			do {
-			//				str = JOptionPane.showInputDialog(TMMainFrame.this,
-			//						"Enter the new selection.\n"+
-			//								"Use ! for 'not', & for 'and', and | for 'or'.\n"+
-			//								"'s' is for scripts, 'l' is for library.",
-			//								str ) ;
-			//
-			//				if( str == null ) return ; // Cancel. No change.
-			//
-			//				try { sel = SelectionParser.parse( str ) ; }
-			//				catch(ApologyException apology) { }
-			//
-			//				if( sel == null ) {
-			//					JOptionPane.showMessageDialog(TMMainFrame.this, "Could not parse." ) ; }
-			//			} while( sel == null ) ;
-			//			TMMainFrame.this.commandProcessor.setSelection( sel ) ;
+			TMDialog setSelectionFrame = new SetSelectionFrame( tmMainPanel ) ;
+			tmMainPanel.showDialog( setSelectionFrame ); 
 		}
 	}
 

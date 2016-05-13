@@ -34,7 +34,6 @@ package tm.displayEngine;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.util.Iterator;
@@ -45,7 +44,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JPanel;
 import javax.swing.event.InternalFrameEvent;
@@ -76,11 +74,9 @@ import tm.utilities.TMException;
  * 
  * @author mpbl
  */
-public class DisplayManager extends JPanel implements DisplayManagerInterface, DisplayContextInterface, Observer, InternalFrameListener{
+public class DisplayManager extends JPanel
+implements DisplayManagerInterface, DisplayContextInterface, Observer, InternalFrameListener {
     
-	private static final long serialVersionUID = -7376951577050649901L;
-
-	private static String CONFIG_VERSION = "2.0";
 	private DisplayInterface myDisplays[] = new DisplayInterface[0];
     
 	private CommandInterface commandProcessor;
@@ -192,7 +188,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 //	         		higraphManager.subgraphDisplayAdded((SubgraphVisualizer)myDisplays[d]);
 			    d++;
 	        }     
-	        
         }
         catch( PlugInNotFound ex ) {
             ex.printStackTrace( System.err ) ;
@@ -374,7 +369,6 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 
 	@Override
 	public void internalFrameDeiconified(InternalFrameEvent e) {
-		DisplayInterface display = getDisplay(e);
 		
 	}
 
@@ -388,9 +382,5 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	public void internalFrameOpened(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private DisplayInterface getDisplay(InternalFrameEvent e){
-		return (DisplayInterface)e.getInternalFrame();
 	}
 }
