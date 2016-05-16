@@ -65,7 +65,7 @@ public class SubWindow extends JInternalFrame {
          */        
 	public SubWindow(ImageSourceInterface is/*,
 						int vertScrollPolicy, int horizScrollPolicy*/) {
-		super(null,true, true, true, true);
+		super(null,true, false, true, true);
 // Build the inner area for the center which will contain a workArea and possibly a toolbar
 		contentPane = new JPanel(new BorderLayout());
 
