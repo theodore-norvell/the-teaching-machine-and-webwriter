@@ -21,6 +21,8 @@ abstract public class Kit {
 
 	abstract public ContainerPeer makeContainerPeer(Container container);
 	
+	abstract public CanvasPeer makeCanvasPeer(Canvas canvas);
+	
 	public abstract ComponentPeer makeComponentPeer(Component component);
 	
 	abstract public BorderLayout getBorderLayoutManager();
