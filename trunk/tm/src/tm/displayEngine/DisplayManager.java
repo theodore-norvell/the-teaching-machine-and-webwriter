@@ -51,6 +51,7 @@ import javax.swing.JPanel;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
+import telford.common.Kit ;
 import tm.backtrack.BTTimeManager;
 import tm.configuration.Configuration;
 import tm.configuration.ConfigurationServer;
@@ -60,6 +61,7 @@ import tm.interfaces.Datum;
 import tm.interfaces.DisplayManagerInterface;
 import tm.interfaces.CommandInterface;
 import tm.interfaces.ImageSourceInterface;
+import tm.interfaces.PortableDisplayContext ;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
 import tm.scripting.ScriptManager;
@@ -388,4 +390,25 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		// TODO Auto-generated method stub
 		
 	}
+	
+	class PortableContext implements PortableDisplayContext {
+
+        @Override
+        public telford.common.Font getCodeFont() {
+            // TODO The font sould be based on preferences from the configuration.
+            return Kit.getKit().getFont() ;
+        }
+
+        @Override
+        public telford.common.Font getDisplayFont() {
+            // TODO The font sould be based on preferences from the configuration.
+            return Kit.getKit().getFont() ;
+        }
+	}
+	
+	private PortableDisplayContext portableContext = new PortableContext() ;
+
+    public PortableDisplayContext getPortableContext() {
+        return portableContext ;
+    }
 }

@@ -9,7 +9,7 @@ import tm.subWindowPkg.ToolBar ;
 public class ExpressionDisplay1 extends SwingDisplay {
 
     public ExpressionDisplay1(DisplayManager dm, String configId ) {
-        super( dm, configId, new ExpressionDisplayer(dm.getCommandProcessor(), dm ) ) ;
+        super( dm, configId, new ExpressionDisplayer(dm.getCommandProcessor(), dm.getPortableContext() ) ) ;
         
 
         ImageSourceInterface imageSource = context.getImageSource();

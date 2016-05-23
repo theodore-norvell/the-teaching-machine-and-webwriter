@@ -1,12 +1,12 @@
 package tm.portableDisplays;
 
 import telford.common.Graphics ;
-import tm.interfaces.DisplayContextInterface ;
 import tm.interfaces.EvaluatorInterface ;
+import tm.interfaces.PortableDisplayContext ;
 
 public class ExpressionDisplayer extends PortableDisplayer {
 
-    public ExpressionDisplayer( EvaluatorInterface model, DisplayContextInterface context ) {
+    public ExpressionDisplayer( EvaluatorInterface model, PortableDisplayContext context ) {
         super( model, context ) ;
     }
 
