@@ -15,6 +15,7 @@
 package tm.displayEngine;
 
 import tm.plugins.Requirement;
+import tm.portableDisplays.ExpressionDisplayer ;
 
 
 public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{
@@ -30,12 +31,11 @@ public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{
     	return new ExpressionDisplayPIFactory(parameter) ;
     }
 	
-	public DisplayInterface createPlugin(DisplayManager dm) {		
-		return new ExpressionDisplay(dm,configId);
+	public DisplayInterface createPlugin(DisplayManager dm) {
+		return new ExpressionDisplay1(dm,configId );
 	}
 
 	public Requirement[] getRequirements() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

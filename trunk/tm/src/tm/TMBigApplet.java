@@ -202,6 +202,8 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         // TODO Worry about what happens if the current thread is not the Event Dispact Thread,
         // but rather something else, such as an applet thread.
         
+        telford.common.Kit.setKit( new telford.jse.KitJSE() );
+        
         dispMan = null ;
         viewMenu = view;
         evaluator = null ;

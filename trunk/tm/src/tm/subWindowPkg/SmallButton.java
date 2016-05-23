@@ -13,7 +13,7 @@
 // governing permissions and limitations under the License.
 
 package tm.subWindowPkg;
-]
+
 import java.awt.Dimension;
 
 import javax.swing.ImageIcon;

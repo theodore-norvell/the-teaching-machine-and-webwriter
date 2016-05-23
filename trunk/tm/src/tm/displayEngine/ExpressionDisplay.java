@@ -19,7 +19,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.Vector;
 
-import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
@@ -47,7 +46,7 @@ public class ExpressionDisplay extends DisplayAdapter {
 	static String fontList[] = null;
 */
 	String theExpression = "";
-	int advances[];		// Character sizes
+	
 
 	public ExpressionDisplay(DisplayManager dm, String configId) {
 		super(dm, configId);
@@ -92,6 +91,7 @@ public class ExpressionDisplay extends DisplayAdapter {
 // =================================================================
 	public void drawArea(Graphics2D g){
 //		System.out.println("Expression drawArea ");
+	    int advances[]; // Character sizes
 		int advance = LEFTMARGIN;
 		g.setFont(context.getDisplayFont());
 
@@ -110,7 +110,7 @@ public class ExpressionDisplay extends DisplayAdapter {
 		    
 			Color currColor = Color.black ;
 			boolean currUnderline = false ;
-			Vector attrStack = new Vector() ;
+			Vector<Object> attrStack = new Vector<Object>() ;
 			for( int i = 0, sz = theExpression.length() ; i < sz ; ++ i ) {
 				char c = tempArray[i];		// Next character
 				switch (c) {

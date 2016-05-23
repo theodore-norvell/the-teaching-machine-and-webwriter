@@ -1,12 +1,19 @@
 package tm.portableDisplays;
 
-import telford.common.Canvas ;
-import tm.interfaces.CommandInterface ;
+import tm.interfaces.DisplayContextInterface ;
+import tm.interfaces.EvaluatorInterface ;
 
-public abstract class PortableDisplayer {
+public abstract class PortableDisplayer extends telford.common.Canvas {
 
-    public abstract void drawArea(Canvas canvas, CommandInterface commandProcessor) ;
+    protected EvaluatorInterface model ;
+    protected DisplayContextInterface context ;
 
-    public abstract void refresh(CommandInterface commandProcessor) ;
+    public PortableDisplayer(EvaluatorInterface model, DisplayContextInterface context) {
+        super() ;
+        this.model = model ;
+        this.context = context ;
+    }
+
+    public abstract void refresh() ;
 
 }

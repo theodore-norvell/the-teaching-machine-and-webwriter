@@ -374,8 +374,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 
 	@Override
 	public void internalFrameDeiconified(InternalFrameEvent e) {
-		DisplayInterface display = getDisplay(e);
-		
+        // TODO Auto-generated method stub
 	}
 
 	@Override
@@ -388,9 +387,5 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	public void internalFrameOpened(InternalFrameEvent e) {
 		// TODO Auto-generated method stub
 		
-	}
-	
-	private DisplayInterface getDisplay(InternalFrameEvent e){
-		return (DisplayInterface)e.getInternalFrame();
 	}
 }
