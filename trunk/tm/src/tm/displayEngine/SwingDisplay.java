@@ -3,14 +3,14 @@ package tm.displayEngine;
 import java.awt.Graphics2D ;
 
 import telford.common.Canvas ;
-import tm.portableDisplays.PortableDisplay ;
+import tm.portableDisplays.PortableDisplayer ;
 
 public class SwingDisplay extends DisplayAdapter {
 
-    private PortableDisplay displayer ;
+    private PortableDisplayer displayer ;
     Canvas canvas = new telford.common.Canvas() ;
 
-    public SwingDisplay(DisplayManager dm, String configId, PortableDisplay displayer) {
+    public SwingDisplay(DisplayManager dm, String configId, PortableDisplayer displayer) {
         super( dm, configId ) ;
         this.displayer = displayer ;
         add( (javax.swing.JComponent) canvas.getPeer().getRepresentative() ) ;
