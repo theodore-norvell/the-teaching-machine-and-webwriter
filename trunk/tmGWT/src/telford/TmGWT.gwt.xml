@@ -13,6 +13,7 @@
   <!-- the theme of your GWT application by uncommenting          -->
   <!-- any one of the following lines.                            -->
   <inherits name='com.google.gwt.user.theme.clean.Clean'/>
+  <inherits name="com.google.gwt.logging.Logging"/>
   <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
   <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
@@ -25,6 +26,7 @@
   <!-- Specify the paths for translatable code                    -->
   <source path='client'/>
   <source path='common'/>
+  <source path='gwt'/>
   <source path='shared'/>
 
   <!-- allow Super Dev Mode -->

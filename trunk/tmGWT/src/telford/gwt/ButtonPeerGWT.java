@@ -1,4 +1,4 @@
-package telford.client.view;
+package telford.gwt;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -22,7 +22,7 @@ public class ButtonPeerGWT extends telford.common.peers.ButtonPeer {
 	public void requestFocusInWindwow() {
 	}
 
-	@Override
+//	@Override
 	public Button getRepresentative() {
 		return myButton;
 	}
@@ -52,10 +52,14 @@ public class ButtonPeerGWT extends telford.common.peers.ButtonPeer {
 		 * Fired when the user clicks on the sendButton.
 		 */
 		public void onClick(ClickEvent event) {
-			String html = ((Button) event.getSource()).getHTML();
-			if ("Draw another circle".equals(html)) {
-			} else if ("Clear previous circle".equals(html)) {
-			}
+			telford.common.ActionEvent ev = new telford.common.ActionEvent() {} ;
+			((telford.common.Button)component).fireAction(ev);
+//			String html = ((Button) event.getSource()).getHTML();
+//			if ("GoForward".equals(html)) {
+//				GWTUtil.wrtLog2Console("GoForward ActionListener");
+//			} else if ("GoBack".equals(html)) {
+//				GWTUtil.wrtLog2Console("GoBack ActionListener");
+//			}
 		}
 	}
 }

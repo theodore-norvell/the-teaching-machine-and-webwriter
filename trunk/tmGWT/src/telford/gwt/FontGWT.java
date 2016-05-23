@@ -1,4 +1,4 @@
-package telford.client.view;
+package telford.gwt;
 
 public class FontGWT implements telford.common.Font {
 	String font;
@@ -9,8 +9,7 @@ public class FontGWT implements telford.common.Font {
 		this.font = f;
 	}
 	
-	public FontGWT(final String fontFamily, final int fontSize,
-            final String text) {
+	public FontGWT(final String text, final String fontFamily, final int fontSize) {
         this.fontFamily = fontFamily;
         this.fontSize = fontSize;
         this.text = text;
@@ -20,6 +19,6 @@ public class FontGWT implements telford.common.Font {
 		if(font != null)
 			return font;
 		else
-			return fontFamily + " " + fontSize;
+			return text + " " + fontFamily + " " + fontSize;
 	}
 }

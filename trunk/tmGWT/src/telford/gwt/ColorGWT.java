@@ -1,4 +1,4 @@
-package telford.client.view;
+package telford.gwt;
 
 import com.google.gwt.canvas.dom.client.CssColor;
 
@@ -7,9 +7,9 @@ public class ColorGWT implements telford.common.Color {
 	CssColor c;
 	int red, green, blue;
 
-	ColorGWT(int r, int g, int b) {
+	public ColorGWT(int r, int g, int b) {
 		if ((red > 255) || (red < 0) || (green > 255) || (green < 0) || (blue > 255) || (blue < 0)) {
-			System.out.println(GWTUtil.error(GWTUtil.ERROR_INVALID_ARGUMENT, "ColorGWT()"));
+			System.out.println(GWTUtil.error(GWTUtil.COLOR_INVALID_ARGUMENT, "ColorGWT()"));
 		}
 		red = r;
 		green = g;

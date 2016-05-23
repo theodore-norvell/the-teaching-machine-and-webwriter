@@ -1,4 +1,4 @@
-package telford.client.view;
+package telford.gwt;
 
 import telford.common.Display;
 import telford.common.Root;

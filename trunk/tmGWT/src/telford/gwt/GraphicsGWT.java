@@ -1,4 +1,4 @@
-package telford.client.view;
+package telford.gwt;
 
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.canvas.dom.client.CssColor;
@@ -58,7 +58,7 @@ public class GraphicsGWT implements telford.common.Graphics {
 
 	@Override
 	public telford.common.FontMetrics getFontMetrics(telford.common.Font f) {
-		return new FontMetricsGWT(c);
+		return new FontMetricsGWT(c, f);
 	}
 
 	@Override

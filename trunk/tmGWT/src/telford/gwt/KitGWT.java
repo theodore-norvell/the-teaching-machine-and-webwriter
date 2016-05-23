@@ -1,12 +1,14 @@
-package telford.client.view;
+package telford.gwt;
 
 
+import telford.common.Canvas;
 import telford.common.Component;
 import telford.common.Container;
 import telford.common.Display;
 import telford.common.LayoutManager;
 import telford.common.Random;
 import telford.common.Timer;
+import telford.common.peers.CanvasPeer;
 import telford.common.peers.ComponentPeer;
 import telford.common.peers.ContainerPeer;
 
@@ -19,17 +21,16 @@ public class KitGWT extends telford.common.Kit {
 		String f = "normal 16px serif";
 		return new FontGWT(f) ;
 	}
-	
-	@Override
-	public telford.common.peers.RootPeer makeRootPeer (String title, telford.common.Root root) {
-		return new RootPeerGWT( title, root ) ;
-	}
-	
 	@Override
 	public Display getDisplay() {	
 		if( display == null ) 
 			display = new DisplayGWT();
 		return display ;
+	}
+	
+	@Override
+	public telford.common.peers.RootPeer makeRootPeer (String title, telford.common.Root root) {
+		return new RootPeerGWT( title, root ) ;
 	}
 
 	@Override
@@ -39,8 +40,12 @@ public class KitGWT extends telford.common.Kit {
 
 	@Override
 	public ContainerPeer makeContainerPeer(Container container) {
-		//TODO
-		return null;
+		return new ContainerPeerGWT(container);
+	}
+	
+	@Override
+	public CanvasPeer makeCanvasPeer(Canvas canvas) {
+		return new CanvasPeerGWT(canvas);
 	}
 	
 	@Override
@@ -50,8 +55,7 @@ public class KitGWT extends telford.common.Kit {
 
 	@Override
 	public telford.common.BorderLayout getBorderLayoutManager() {
-		//TODO 
-		return null;
+		return new BorderLayoutGWT();
 	}
 
 	@Override

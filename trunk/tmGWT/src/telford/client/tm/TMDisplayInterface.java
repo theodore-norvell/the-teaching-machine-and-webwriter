@@ -1,5 +1,7 @@
 package telford.client.tm;
 
-public interface TMDisplayInterface {
+import telford.common.Graphics;
 
+public interface TMDisplayInterface {
+	public void drawArea(Graphics tg);
 }

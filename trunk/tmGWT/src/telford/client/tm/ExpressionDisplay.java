@@ -2,31 +2,18 @@ package telford.client.tm;
 
 import java.util.Vector;
 
-import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.canvas.dom.client.Context2d;
-import com.google.gwt.canvas.dom.client.CssColor;
-import com.google.gwt.dom.client.CanvasElement;
-
-import telford.client.view.GraphicsGWT;
-import telford.common.Component;
+import telford.common.Font;
+import telford.common.FontMetrics;
 import telford.common.Graphics;
+import telford.gwt.FontGWT;
+import telford.gwt.GWTUtil;
 
-public class ExpressionDisplay implements TMDisplayInterface{
-	private  String theExpression = "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32 ";//for test
-	private  Canvas canvas;
-	private final  CssColor colorBlack = CssColor.make("black");
-	private final  CssColor colorRed = CssColor.make("red");
-	private final  CssColor colorBlue = CssColor.make("blue");
-
+public class ExpressionDisplay implements TMDisplayInterface {
+	private String theExpression = "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32 ";// for
+																							// test
 	// Simply copied from TM.ExpressionDisplay.
-	private  final int LEFTMARGIN = 4;
-	private  final int TOPMARGIN = 20;
-
-	public  final char MARKER1 = '\uffff'; //red
-	public  final char MARKER2 = '\ufffe';//non underline
-	public  final char MARKER3 = '\ufffd';//underline
-	public  final char MARKER4 = '\ufffc';//blue
-	public  final char ENDMARKER = '\ufffb';
+	private final int LEFTMARGIN = 4;
+	private final int TOPMARGIN = 20;
 
 	public String getExpression() {
 		return theExpression;
@@ -41,24 +28,15 @@ public class ExpressionDisplay implements TMDisplayInterface{
 		return theExpression;
 	}
 
-	public CanvasElement getCanvasEle() {
-		return canvas.getCanvasElement();
-	}
-	public void paintComponent(Component component ) {
-		Context2d context = canvas.getContext2d();
-		drawArea(context);
-		Graphics tg = new GraphicsGWT(context) ;
-		component.paintComponent(tg);
-	}
-	public void drawArea(Context2d context) {
+	public void drawArea(Graphics tg) {
 		int advance = LEFTMARGIN;
-		context.setFont("normal 16px serif");
+		Font f = new FontGWT("normal 16px serif");
+		tg.setFont(f);
 
 		if (theExpression.length() > 0) {
 			char tempArray[] = theExpression.toCharArray();
-			
-			context.setFillStyle(colorBlack);
-			CssColor currColor = colorBlack;
+			tg.setColor(0); // black
+			int currColor = 0;
 			boolean currUnderline = false;
 			int currWidth = 0;
 			int baseline = TOPMARGIN + 12;
@@ -66,57 +44,49 @@ public class ExpressionDisplay implements TMDisplayInterface{
 			for (int i = 0, sz = theExpression.length(); i < sz; ++i) {
 				char c = tempArray[i]; // Next character
 				switch (c) {
-				case MARKER1:
+				case GWTUtil.MARKER1:
 					attrStack.addElement("red");
-					 currColor = colorRed ;
-					context.setFillStyle(currColor);
+					currColor = 0xFF;
+					tg.setColor(currColor);
 					break;
-				case MARKER2:
+				case GWTUtil.MARKER2:
 					attrStack.addElement(new Boolean(currUnderline));
 					currUnderline = false;
 					break;
-				case MARKER3:
+				case GWTUtil.MARKER3:
 					attrStack.addElement(new Boolean(currUnderline));
 					currUnderline = true;
 					break;
-				case MARKER4:
+				case GWTUtil.MARKER4:
 					attrStack.addElement("blue");
-					currColor = colorBlue ;
-					context.setFillStyle(currColor);
+					currColor = 0xFF0000;
+					tg.setColor(currColor);
 					break;
-				case ENDMARKER:
+				case GWTUtil.ENDMARKER:
 					Object temp = attrStack.elementAt(attrStack.size() - 1);
 					if (temp instanceof String) {
-						currColor = temp.equals("red") ? colorRed : colorBlue;
-						context.setFillStyle(currColor);
-					} 
-					else{
+						currColor = temp.equals("red") ? 0xFF : 0xFF0000;
+						tg.setColor(currColor);
+					} else {
 						currUnderline = ((Boolean) temp).booleanValue();
 					}
 					attrStack.removeElementAt(attrStack.size() - 1);
 					break;
 				default:
-					currWidth = (int)(context.measureText(String.valueOf(tempArray[i])).getWidth());
-					context.fillText(String.valueOf(tempArray[i]), advance, baseline);
+					FontMetrics fm = tg.getFontMetrics(f);
+					currWidth = fm.stringWidth(String.valueOf(tempArray[i]));
+					tg.drawString(String.valueOf(tempArray[i]), advance, baseline);
 					if (currUnderline) {
-						context.setFillStyle(colorBlack);
-						context.fillRect( advance, baseline+2, currWidth, +3);
-						context.setFillStyle(currColor);
+						tg.setColor(0);
+						tg.fillRect(advance, baseline + 2, currWidth, +3);
+						tg.setColor(currColor);
 					}
 					advance += currWidth;// advances[c];
 				}
 			}
 		}
 	}
-	
-	public Canvas getCanvas(){
-		return canvas;
-	}
+
 	public ExpressionDisplay() {
-		canvas = Canvas.createIfSupported();
-		CanvasElement canvasEle = canvas.getCanvasElement();
-		canvasEle.setAttribute("class", "tm-canvas");
-//		canvasEle.setAttribute("name", "tm-expEngineCanvas");
-//		canvasEle.setAttribute("id", "tm-expEngineCanvas");
 	}
 }

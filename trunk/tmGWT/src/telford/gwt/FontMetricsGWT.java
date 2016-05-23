@@ -1,6 +1,8 @@
-package telford.client.view;
+package telford.gwt;
 
 import com.google.gwt.canvas.dom.client.Context2d;
+
+import telford.common.Font;
 
 /**
  * Instances of this class may be used to calculate the width of any font. This
@@ -18,25 +20,30 @@ import com.google.gwt.canvas.dom.client.Context2d;
  * @author Miroslav Pokorny
  */
 public class FontMetricsGWT extends telford.common.FontMetrics {
-	Context2d c ;
-	
-	FontMetricsGWT( Context2d c ) {this.c = c ; }
-	
+	Context2d context;
+	Font font;
+
+	FontMetricsGWT(Context2d c, Font f) {
+		this.context = c;
+		this.font = f;
+	}
+
 	@Override
 	public int getHeight() {
-		//TODO
-		//the height of the text in pixels is equal to the font size in pts when the font is defined with the font property of the canvas context
-		return (int)c.measureText("M").getWidth();
+		// TODO
+		// the height of the text in pixels is equal to the font size in pts
+		// when the font is defined with the font property of the canvas context
+		return (int) context.measureText("M").getWidth();
 	}
 
 	@Override
 	public int stringWidth(String str) {
-		return (int)c.measureText(str).getWidth();
+		return (int) context.measureText(str).getWidth();
 	}
 
 	@Override
 	public int getAscent() {
-//		return c.measureText("");
-		return (int)c.measureText("M").getWidth();
+		// return c.measureText("");
+		return (int) context.measureText("M").getWidth();
 	}
 }
