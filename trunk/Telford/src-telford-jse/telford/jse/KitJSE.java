@@ -1,13 +1,15 @@
 package telford.jse;
 
-import java.awt.*;
+import java.awt.Font;
 
+import telford.common.Canvas;
 import telford.common.Component;
 import telford.common.Container;
 import telford.common.Display;
 import telford.common.LayoutManager;
 import telford.common.Random;
 import telford.common.Timer;
+import telford.common.peers.CanvasPeer;
 import telford.common.peers.ComponentPeer;
 import telford.common.peers.ContainerPeer;
 
@@ -41,6 +43,11 @@ public class KitJSE extends telford.common.Kit {
 	@Override
 	public ContainerPeer makeContainerPeer(Container container) {
 		return new ContainerPeerJSE (container);
+	}
+	
+	@Override
+	public CanvasPeer makeCanvasPeer(Canvas canvas) {
+		return new CanvasPeerJSE (canvas);
 	}
 	
 	@Override

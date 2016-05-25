@@ -22,6 +22,9 @@ import java.io.OutputStream;
 
 import javax.swing.JFrame;
 
+import telford.common.Kit;
+import telford.jse.KitJSE;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -408,6 +411,7 @@ public class TMMainFrame extends JFrame
     //////////////////
 
     public static void main( String[] arg ) {
+    	Kit.setKit( new KitJSE() ) ; //Set global static Kit variable
         
         final ArgPackage argPackage = ArgPackage.processArgs( arg ) ;
         if( argPackage == null ) {
