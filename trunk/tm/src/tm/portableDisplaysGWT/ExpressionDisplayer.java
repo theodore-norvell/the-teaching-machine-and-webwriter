@@ -1,18 +1,15 @@
-package tm.portableDisplays;
+package tm.portableDisplaysGWT;
 
 import java.util.Vector;
 
 import telford.common.FontMetrics;
 import telford.common.Graphics ;
-import tm.interfaces.EvaluatorInterface;
-import tm.portableDisplays.PortableDisplayer;
-import tm.portableDisplaysGWT.PortableContextInterface;
 
 public class ExpressionDisplayer extends PortableDisplayer {
-    public ExpressionDisplayer( EvaluatorInterface model, PortableContextInterface context ) {
+    //Temporarily for GWT due to it is hard to refer EvaluatorInterface in GWT project
+    public ExpressionDisplayer( StateInterface model, PortableContextInterface context ) {
         super( model, context ) ;
     }
-    
     private static final int LEFTMARGIN = 4;
     private static final int TOPMARGIN = 2;
 
@@ -23,7 +20,7 @@ public class ExpressionDisplayer extends PortableDisplayer {
     public static final char ENDMARKER = '\ufffb';
     
 
-    String theExpression = "";
+    public String theExpression = "";
 
     @Override
     public void refresh() {

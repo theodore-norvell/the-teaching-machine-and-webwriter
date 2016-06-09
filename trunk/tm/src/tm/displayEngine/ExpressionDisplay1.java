@@ -1,7 +1,7 @@
 package tm.displayEngine;
 
 import tm.interfaces.ImageSourceInterface ;
-import tm.portableDisplays.ExpressionDisplayer ;
+import tm.portableDisplays.ExpressionDisplayer;
 import tm.subWindowPkg.SmallButton ;
 import tm.subWindowPkg.ToolBar ;
 

@@ -21,5 +21,10 @@ public class FontMetricsJSE extends telford.common.FontMetrics {
 	public int getAscent() {
 		return fm.getAscent();
 	}
+	
+	@Override
+	public int getDescent() {
+		return fm.getDescent();
+	}
 
 }

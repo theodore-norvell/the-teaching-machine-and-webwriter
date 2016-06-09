@@ -23,6 +23,11 @@ public class KitJSE extends telford.common.Kit {
 		return new FontJSE(f) ;
 	}
 	
+	public telford.common.Font getFont(Font primary, int style, int size) {
+		Font f = new java.awt.Font(primary.getFontName(), style, size);
+		return new FontJSE(f) ;
+	}
+	
 	@Override
 	public telford.common.peers.RootPeer makeRootPeer (String title, telford.common.Root root) {
 		return new RootPeerJSE( title, root ) ;
