@@ -3,8 +3,8 @@ package tm.displayEngine;
 import java.awt.BorderLayout ;
 import java.awt.Graphics2D ;
 
-import telford.common.Canvas ;
-import tm.portableDisplays.PortableDisplayer ;
+import tm.configuration.Configuration;
+import tm.portableDisplays.PortableDisplayer;
 
 public class SwingDisplay extends DisplayAdapter {
 
@@ -26,5 +26,16 @@ public class SwingDisplay extends DisplayAdapter {
         super.refresh(); 
         displayer.refresh( ) ;
     }
-
+    @Override 
+    public void notifyOfSave(Configuration config) {
+    	super.notifyOfSave(config);
+    	displayer.notifyOfSave(config);
+    	
+    }
+    @Override 
+    public void notifyOfLoad(Configuration config) {
+    	super.notifyOfLoad(config);
+    	displayer.notifyOfLoad(config);
+    	
+    }
 }

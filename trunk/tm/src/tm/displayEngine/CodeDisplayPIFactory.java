@@ -37,7 +37,7 @@ public class CodeDisplayPIFactory implements DisplayPIFactoryIntf{
     }
 	
 	public DisplayInterface createPlugin(DisplayManager dm) {		
-		return new CodeDisplay(dm,configId);
+		return new CodeDisplay1(dm,configId);
 	}
 
 	public Requirement[] getRequirements() {

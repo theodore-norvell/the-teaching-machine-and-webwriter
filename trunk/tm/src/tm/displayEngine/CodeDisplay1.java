@@ -14,9 +14,7 @@
 
 package tm.displayEngine;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ItemEvent;
@@ -44,36 +42,9 @@ public class CodeDisplay1 extends SwingDisplay {
 	 * 
 	 */
 	private static final long serialVersionUID = 2180490760572023332L;
-	private final static int LEFT_MARGIN = 10; // These units are in pixels
-//	private final static int TOP_MARGIN = 0;
 	private final static int LINE_PADDING = 1; // Space between lines
 
 	// Printing modes
-	private final static int NORMAL = 0;
-	private final static int KEYWORD = 1;
-	private final static int COMMENT = 2;
-	private final static int PREPROCESSOR = 3;
-	private final static int CONSTANT = 4;
-	private final static int LINE_NUMBER = 5;
-	// Font styles
-	private final static int PLAIN = 0;
-	private final static int BOLD = 1;
-	private final static int ITALIC = 2;
-	private final static int BOLD_ITALIC = 3;
-
-	private Font myFonts[] = { null, null, null, null }; // Indexed by font
-															// style
-
-	// Configurables
-	private int fontMapper[] = { PLAIN, PLAIN, ITALIC, PLAIN, BOLD, PLAIN };
-	private Color fontColor[] = { Color.black, Color.blue, Color.black, Color.red, Color.black, Color.red };
-	private static int tabSpaces = 4;
-
-	private Color cursorColor = Color.green;
-
-	// Critical references
-
-	// private CommandInterface commandProcessor;
 
 	private int cursorLine; // The line which contains the user-settable cursor
 	private int cursorChar; // The char which the cursor is on
@@ -301,73 +272,14 @@ public class CodeDisplay1 extends SwingDisplay {
 	 */
 	public void notifyOfSave(Configuration config) {
 		super.notifyOfSave(config);
-		config.setValue("fontMapper[NORMAL]", Integer.toString(fontMapper[NORMAL]));
-		config.setValue("fontMapper[KEYWORD]", Integer.toString(fontMapper[KEYWORD]));
-		config.setValue("fontMapper[COMMENT]", Integer.toString(fontMapper[COMMENT]));
-		config.setValue("fontMapper[PREPROCESSOR]", Integer.toString(fontMapper[PREPROCESSOR]));
-		config.setValue("fontMapper[CONSTANT]", Integer.toString(fontMapper[CONSTANT]));
-		config.setValue("fontMapper[LINE_NUMBER]", Integer.toString(fontMapper[LINE_NUMBER]));
-		config.setComment("fontMapper[NORMAL]", "0 = PLAIN, 1 = BOLD, 2 = ITALICS, 3 = BOLDITALICS");
-		config.setValue("fontColor[NORMAL]", Integer.toString(0x00ffffff & fontColor[NORMAL].getRGB()));
-		config.setValue("fontColor[KEYWORD]", Integer.toString(0x00ffffff & fontColor[KEYWORD].getRGB()));
-		config.setValue("fontColor[COMMENT]", Integer.toString(0x00ffffff & fontColor[COMMENT].getRGB()));
-		config.setValue("fontColor[PREPROCESSOR]", Integer.toString(0x00ffffff & fontColor[PREPROCESSOR].getRGB()));
-		config.setValue("fontColor[CONSTANT]", Integer.toString(0x00ffffff & fontColor[CONSTANT].getRGB()));
-		config.setValue("fontColor[LINE_NUMBER]", Integer.toString(0x00ffffff & fontColor[LINE_NUMBER].getRGB()));
-		config.setValue("cursorColor", Integer.toString(0x00ffffff & cursorColor.getRGB()));
-		String comment = "Using 24 bit RGB colour model. Take care when hand editing as colour support can be quite limited\n";
-		comment += "See appendix C of \"Using HTML 4, 4th edition\" by Lee Anne Phillips, Que Books, ISBN 0-7897-1562-7\n";
-		comment += "for a useful discussion of this issue.\n";
-		config.setComment("fontColor[NORMAL]", comment);
-		config.setValue("tabSpaces", Integer.toString(tabSpaces));
 		config.setValue("lineNumbers", String.valueOf(lineNumbersCheckBox.getState()));
+		
 	}
 
 	public void notifyOfLoad(Configuration config) {
 		super.notifyOfLoad(config);
 		String temp = config.getValue("fontMapper[NORMAL]");
 		Debug.getInstance().msg(Debug.DISPLAY, "temp is " + temp);
-		if (temp != null)
-			fontMapper[NORMAL] = new Integer(temp).intValue();
-		temp = config.getValue("fontMapper[KEYWORD]");
-		if (temp != null)
-			fontMapper[KEYWORD] = new Integer(temp).intValue();
-		temp = config.getValue("fontMapper[COMMENT]");
-		if (temp != null)
-			fontMapper[COMMENT] = new Integer(temp).intValue();
-		temp = config.getValue("fontMapper[PREPROCESSOR]");
-		if (temp != null)
-			fontMapper[PREPROCESSOR] = new Integer(temp).intValue();
-		temp = config.getValue("fontMapper[CONSTANT]");
-		if (temp != null)
-			fontMapper[CONSTANT] = new Integer(temp).intValue();
-		temp = config.getValue("fontMapper[LINE_NUMBER]");
-		if (temp != null)
-			fontMapper[LINE_NUMBER] = new Integer(temp).intValue();
-		temp = config.getValue("fontColor[NORMAL]");
-		if (temp != null)
-			fontColor[NORMAL] = Color.decode(temp);
-		temp = config.getValue("fontColor[KEYWORD]");
-		if (temp != null)
-			fontColor[KEYWORD] = Color.decode(temp);
-		temp = config.getValue("fontColor[COMMENT]");
-		if (temp != null)
-			fontColor[COMMENT] = Color.decode(temp);
-		temp = config.getValue("fontColor[PREPROCESSOR]");
-		if (temp != null)
-			fontColor[PREPROCESSOR] = Color.decode(temp);
-		temp = config.getValue("fontColor[CONSTANT]");
-		if (temp != null)
-			fontColor[CONSTANT] = Color.decode(temp);
-		temp = config.getValue("fontColor[LINE_NUMBER]");
-		if (temp != null)
-			fontColor[LINE_NUMBER] = Color.decode(temp);
-		temp = config.getValue("cursorColor");
-		if (temp != null)
-			cursorColor = Color.decode(temp);
-		temp = config.getValue("tabSpaces");
-		if (temp != null)
-			tabSpaces = new Integer(temp).intValue();
 		temp = config.getValue("lineNumbers");
 		if (temp != null) {
 			setLineNumbering(temp.compareTo("true") == 0);
