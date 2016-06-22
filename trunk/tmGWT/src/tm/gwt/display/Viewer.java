@@ -1,0 +1,21 @@
+package tm.gwt.display;
+
+import tm.portableDisplaysGWT.PortableDisplayer;
+
+public class Viewer {
+	PortableDisplayer displayer;
+	public Viewer(PortableDisplayer displayer) {
+		super();
+		this.displayer = displayer;
+		repaint();
+	}
+
+	public void repaint() {
+		displayer.refresh();
+		displayer.repaint();
+	}
+	
+	public PortableDisplayer getPlayer(){
+		return this.displayer;
+	}
+}
