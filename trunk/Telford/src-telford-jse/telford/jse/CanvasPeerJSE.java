@@ -40,7 +40,10 @@ public class CanvasPeerJSE extends telford.common.peers.CanvasPeer {
 		UtilJSE.repaint(myCanvas);
 	}
 	
-
+	@Override
+	public void setStyleName(String styleName){
+		
+	}
 	class MyCanvas extends JPanel{
 		@Override public void paintComponent( Graphics g) {
 			setBackground(Color.white);

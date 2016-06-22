@@ -12,6 +12,8 @@ abstract public class Kit {
 	public static void setKit(Kit kit) { Kit.kit = kit ; }
 		
 	abstract public Font getFont() ;
+	
+	abstract public Font getFont(String name, int style, int size) ;
 		
 	abstract public RootPeer makeRootPeer( String title, Root root ) ;
 	
@@ -20,6 +22,8 @@ abstract public class Kit {
 	abstract public ButtonPeer makeButtonPeer (String title, Button button);
 
 	abstract public ContainerPeer makeContainerPeer(Container container);
+	
+	abstract public ContainerPeer makeContainerPeer(Container container, int type);
 	
 	abstract public CanvasPeer makeCanvasPeer(Canvas canvas);
 	

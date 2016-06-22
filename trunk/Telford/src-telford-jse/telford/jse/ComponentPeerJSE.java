@@ -39,7 +39,11 @@ public class ComponentPeerJSE extends telford.common.peers.ComponentPeer{
 		UtilJSE.repaint(myComponent);
 	}
 	
-
+	@Override
+	public void setStyleName(String styleName){
+		
+	}
+	
 	class MyComponent extends JPanel{
 		@Override public void paintComponent( Graphics g) {
 			super.paintComponent(g);

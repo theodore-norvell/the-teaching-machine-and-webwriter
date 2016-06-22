@@ -26,6 +26,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import telford.common.Font;
 import tm.configuration.Configuration;
 import tm.interfaces.CodeLine;
 import tm.interfaces.ImageSourceInterface;
@@ -43,16 +44,36 @@ public class CodeDisplay1 extends SwingDisplay {
 	 */
 	private static final long serialVersionUID = 2180490760572023332L;
 	private final static int LINE_PADDING = 1; // Space between lines
-
+	
 	// Printing modes
+	private final static int NORMAL = 0;
+	private final static int KEYWORD = 1;
+	private final static int COMMENT = 2;
+	private final static int PREPROCESSOR = 3;
+	private final static int CONSTANT = 4;
+	private final static int LINE_NUMBER = 5;
+	
+	private final static int PLAIN = 0;
+	private final static int BOLD = 1;
+	private final static int ITALIC = 2;
+//	private final static int BOLD_ITALIC = 3;
+	// Printing modes
+	private Font myFonts[] = { null, null, null, null }; // Indexed by font
 
+	// Configurables
+	private int fontMapper[] = { PLAIN, PLAIN, ITALIC, PLAIN, BOLD, PLAIN };
+	private int fontColor[] = { 0x000000, 0x0000FF, 0x000000, 0xFF0000, 0x000000, 0xFF0000 };
+	private static int tabSpaces = 4;
+	
+	private int cursorColor = 0x008000;
 	private int cursorLine; // The line which contains the user-settable cursor
-	private int cursorChar; // The char which the cursor is on
+//	private int cursorChar; // The char which the cursor is on
 	private SourceCoords cursorLineCoords;
 	private TMFile theFile = null; // The file currently being displayed.
 	private SelectionInterface theSelection;
 	private int rate = 50; // Middle of arbitrary 0-100 scale
 	private JSlider slider;
+	private CodeDisplayer codeDisplayer;
 	private final JCheckBoxMenuItem lineNumbersCheckBox = new JCheckBoxMenuItem("Line Numbers", true);
 
 	{
@@ -66,11 +87,14 @@ public class CodeDisplay1 extends SwingDisplay {
 
 	public CodeDisplay1(DisplayManager dm, String configId) {
 		// super(dm, configId);
+		
 		super(dm, configId, new CodeDisplayer(dm.getCommandProcessor(), dm.getPortableContext()));
 		cursorLine = 0;
-		cursorChar = 0;
+//		cursorChar = 0;
 		cursorLineCoords = null;
-
+		if(this.displayer instanceof CodeDisplayer){
+			this.codeDisplayer = (CodeDisplayer)this.displayer;
+		}
 		/** dbg */
 		Debug.getInstance().msg(Debug.CURRENT,
 				"CodeDisplay " + hashCode() + " adding " + lineNumbersCheckBox.hashCode()); /**/
@@ -119,6 +143,7 @@ public class CodeDisplay1 extends SwingDisplay {
 	public void refresh() {
 		refreshTheButtons();
 		boolean allowGaps = lineNumbersCheckBox.getState();
+		codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(allowGaps);
 		SourceCoords focus = commandProcessor.getCodeFocus();
 		TMFile file = focus.getFile();
 		/*
@@ -140,6 +165,7 @@ public class CodeDisplay1 extends SwingDisplay {
 													// bottom
 			cursorLine = 0;
 			cursorLineCoords = null;
+			codeDisplayer.getDisplayInfo().setCursorLine(0);
 			theFile = file;
 			theSelection = commandProcessor.getSelection();
 			setPreferredSize(new Dimension(portWidth, portHeight));
@@ -222,12 +248,14 @@ public class CodeDisplay1 extends SwingDisplay {
 	public void moveCursor(MouseEvent evt) {
 		cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (getFontMetrics(context.getCodeFont()).getHeight() + LINE_PADDING)
 				- 1;
-		cursorChar = 0; // Just for now
+		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
+//		cursorChar = 0; // Just for now
 		refresh();
 	}
 
 	public void setLineNumbering(boolean on) {
 		lineNumbersCheckBox.setState(on);
+		codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(on);
 	}
 
 	// Button handler
@@ -272,7 +300,27 @@ public class CodeDisplay1 extends SwingDisplay {
 	 */
 	public void notifyOfSave(Configuration config) {
 		super.notifyOfSave(config);
+		config.setValue("fontMapper[NORMAL]", Integer.toString(fontMapper[NORMAL]));
+		config.setValue("fontMapper[KEYWORD]", Integer.toString(fontMapper[KEYWORD]));
+		config.setValue("fontMapper[COMMENT]", Integer.toString(fontMapper[COMMENT]));
+		config.setValue("fontMapper[PREPROCESSOR]", Integer.toString(fontMapper[PREPROCESSOR]));
+		config.setValue("fontMapper[CONSTANT]", Integer.toString(fontMapper[CONSTANT]));
+		config.setValue("fontMapper[LINE_NUMBER]", Integer.toString(fontMapper[LINE_NUMBER]));
+		config.setComment("fontMapper[NORMAL]", "0 = PLAIN, 1 = BOLD, 2 = ITALICS, 3 = BOLDITALICS");
+		config.setValue("fontColor[NORMAL]", Integer.toString(0x00ffffff & fontColor[NORMAL]));
+		config.setValue("fontColor[KEYWORD]", Integer.toString(0x00ffffff & fontColor[KEYWORD]));
+		config.setValue("fontColor[COMMENT]", Integer.toString(0x00ffffff & fontColor[COMMENT]));
+		config.setValue("fontColor[PREPROCESSOR]", Integer.toString(0x00ffffff & fontColor[PREPROCESSOR]));
+		config.setValue("fontColor[CONSTANT]", Integer.toString(0x00ffffff & fontColor[CONSTANT]));
+		config.setValue("fontColor[LINE_NUMBER]", Integer.toString(0x00ffffff & fontColor[LINE_NUMBER]));
+		config.setValue("cursorColor", Integer.toString(0x00ffffff & cursorColor));
+		String comment = "Using 24 bit RGB colour model. Take care when hand editing as colour support can be quite limited\n";
+		comment += "See appendix C of \"Using HTML 4, 4th edition\" by Lee Anne Phillips, Que Books, ISBN 0-7897-1562-7\n";
+		comment += "for a useful discussion of this issue.\n";
+		config.setComment("fontColor[NORMAL]", comment);
+		config.setValue("tabSpaces", Integer.toString(tabSpaces));
 		config.setValue("lineNumbers", String.valueOf(lineNumbersCheckBox.getState()));
+		
 		
 	}
 
@@ -280,11 +328,55 @@ public class CodeDisplay1 extends SwingDisplay {
 		super.notifyOfLoad(config);
 		String temp = config.getValue("fontMapper[NORMAL]");
 		Debug.getInstance().msg(Debug.DISPLAY, "temp is " + temp);
+		if (temp != null)
+			fontMapper[NORMAL] = new Integer(temp).intValue();
+		temp = config.getValue("fontMapper[KEYWORD]");
+		if (temp != null)
+			fontMapper[KEYWORD] = new Integer(temp).intValue();
+		temp = config.getValue("fontMapper[COMMENT]");
+		if (temp != null)
+			fontMapper[COMMENT] = new Integer(temp).intValue();
+		temp = config.getValue("fontMapper[PREPROCESSOR]");
+		if (temp != null)
+			fontMapper[PREPROCESSOR] = new Integer(temp).intValue();
+		temp = config.getValue("fontMapper[CONSTANT]");
+		if (temp != null)
+			fontMapper[CONSTANT] = new Integer(temp).intValue();
+		temp = config.getValue("fontMapper[LINE_NUMBER]");
+		if (temp != null)
+			fontMapper[LINE_NUMBER] = new Integer(temp).intValue();
+		temp = config.getValue("fontColor[NORMAL]");
+		if (temp != null)
+			fontColor[NORMAL] = Integer.valueOf(temp);
+		temp = config.getValue("fontColor[KEYWORD]");
+		if (temp != null)
+			fontColor[KEYWORD] = Integer.valueOf(temp);
+		temp = config.getValue("fontColor[COMMENT]");
+		if (temp != null)
+			fontColor[COMMENT] = Integer.valueOf(temp);
+		temp = config.getValue("fontColor[PREPROCESSOR]");
+		if (temp != null)
+			fontColor[PREPROCESSOR] = Integer.valueOf(temp);
+		temp = config.getValue("fontColor[CONSTANT]");
+		if (temp != null)
+			fontColor[CONSTANT] = Integer.valueOf(temp);
+		temp = config.getValue("fontColor[LINE_NUMBER]");
+		if (temp != null)
+			fontColor[LINE_NUMBER] = Integer.valueOf(temp);
+		temp = config.getValue("cursorColor");
+		if (temp != null)
+			cursorColor = Integer.valueOf(temp);
+		temp = config.getValue("tabSpaces");
+		if (temp != null)
+			tabSpaces = new Integer(temp).intValue();
 		temp = config.getValue("lineNumbers");
 		if (temp != null) {
 			setLineNumbering(temp.compareTo("true") == 0);
-			// (ViewStateManager.getViewStateManager()).setLineNumbering(lineNumbers);
+			codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(temp.compareTo("true") == 0);
 		}
-
+		codeDisplayer.getDisplayInfo().setFontMapper(fontMapper);
+		codeDisplayer.getDisplayInfo().setFontColor(fontColor);
+		codeDisplayer.getDisplayInfo().setCursorColor(cursorColor);
+		codeDisplayer.getDisplayInfo().setTabSpaces(tabSpaces);
 	}
 }

@@ -57,6 +57,11 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 		myButton.repaint();
 	}
 	
+	@Override
+	public void setStyleName(String styleName){
+		
+	}
+	
 	class MyButton extends JButton {
 		
 		MyButton(String title) {

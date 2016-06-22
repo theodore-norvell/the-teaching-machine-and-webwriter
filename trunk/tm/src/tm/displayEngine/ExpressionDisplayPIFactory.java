@@ -15,7 +15,6 @@
 package tm.displayEngine;
 
 import tm.plugins.Requirement;
-import tm.portableDisplays.ExpressionDisplayer ;
 
 
 public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{

@@ -16,6 +16,11 @@ public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
 		super ( container );
 		myContainer = new MyContainer();
 	}
+	
+	ContainerPeerJSE(telford.common.Container container, int type) {
+		super ( container );
+		myContainer = new MyContainer();
+	}
 
 	@Override
 	public void add(telford.common.Component component) {
@@ -61,7 +66,11 @@ public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
 	public void addMouseListener(int count) {
 		UtilJSE.addMouseListener(myContainer, count, component);
 	}
-
+	
+	@Override
+	public void setStyleName(String styleName){
+		
+	}
 	class MyContainer extends JPanel {
 	}
 

@@ -42,4 +42,8 @@ public class Component {
 		return getPeer().getHeight();
 	}
 	
+	public void setStyleName(String styleName){
+		getPeer().setStyleName(styleName);
+	}
+	
 }

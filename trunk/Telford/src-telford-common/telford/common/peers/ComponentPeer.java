@@ -19,5 +19,7 @@ public abstract class ComponentPeer {
 	public abstract int getHeight() ;
 	
 	public abstract void repaint();
+	
+	public abstract void setStyleName(String styleName);
 
 }

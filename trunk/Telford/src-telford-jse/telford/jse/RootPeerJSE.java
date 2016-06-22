@@ -31,6 +31,11 @@ class RootPeerJSE extends telford.common.peers.RootPeer{
 	}
 	
 	@Override
+	public void setStyleName(String styleName){
+		
+	}
+	
+	@Override
 	public void add(telford.common.Component component) {
 		myPanel.add((Component) component.getPeer().getRepresentative());
 	}
