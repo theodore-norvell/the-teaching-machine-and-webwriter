@@ -1,6 +1,7 @@
 package tm.gwt.telford;
 
 import com.google.gwt.dom.client.Style.FontStyle;
+import com.google.gwt.dom.client.Style.FontWeight;
 import com.google.gwt.dom.client.Style.Unit;
 
 public class FontGWT implements telford.common.Font {
@@ -49,7 +50,7 @@ public class FontGWT implements telford.common.Font {
 			fontStyle = FontStyle.NORMAL.getCssName();// "plain";
 			break;
 		case 1:
-			fontStyle = FontStyle.OBLIQUE.getCssName();// "bold";
+			fontStyle = FontWeight.BOLD.getCssName();// "bold";
 			break;
 		case 2:
 			fontStyle = FontStyle.ITALIC.getCssName();// "italic";
