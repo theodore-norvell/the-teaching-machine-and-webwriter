@@ -4,12 +4,9 @@ import java.util.Vector;
 
 import telford.common.FontMetrics;
 import telford.common.Graphics ;
-import tm.interfaces.EvaluatorInterface;
-import tm.portableDisplays.PortableDisplayer;
-import tm.portableDisplaysGWT.PortableContextInterface;
 
 public class ExpressionDisplayer extends PortableDisplayer {
-    public ExpressionDisplayer( EvaluatorInterface model, PortableContextInterface context ) {
+    public ExpressionDisplayer( StateInterface model, PortableContextInterface context ) {
         super( model, context ) ;
     }
     
@@ -23,7 +20,7 @@ public class ExpressionDisplayer extends PortableDisplayer {
     public static final char ENDMARKER = '\ufffb';
     
 
-    String theExpression = "";
+    protected String theExpression = "";
 
     @Override
     public void refresh() {
@@ -92,4 +89,9 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			}  // For loop
 		}   // End if we have an expression
 	}   // End drawArea
+    
+    public int calFocusPosition(){
+		int position = 0;
+		return position;
+	}
 }

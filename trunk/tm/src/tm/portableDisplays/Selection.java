@@ -15,10 +15,8 @@
 /*
  * Created on 2009-06-03 by Theodore S. Norvell. 
  */
-package tm.virtualMachine;
+package tm.portableDisplays;
 
-import tm.interfaces.SelectionInterface;
-import tm.utilities.Assert;
 
 public class Selection implements SelectionInterface {
 
@@ -59,7 +57,7 @@ public class Selection implements SelectionInterface {
         case OR:
             if( children[0].evaluate(tagSet) ) return true ;
             else return children[1].evaluate(tagSet) ;
-        default: Assert.check(false) ; return false ;
+        default: SuperAssert.check(false) ; return false ;
         }
     }
     
@@ -86,7 +84,7 @@ public class Selection implements SelectionInterface {
             if( p > 1)
                 return "(" + y + ")" ;
             else return y ;
-        default: Assert.check(false) ; return "" ;
+        default: SuperAssert.check(false) ; return "" ;
         }
     }
 }

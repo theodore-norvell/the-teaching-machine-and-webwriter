@@ -1,4 +1,4 @@
-package tm.portableDisplaysGWT;
+package tm.portableDisplays;
 
 import telford.common.Font ; 
 

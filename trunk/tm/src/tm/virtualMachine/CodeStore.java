@@ -16,10 +16,10 @@ package tm.virtualMachine;
 
 import java.util.* ;
 
-import tm.interfaces.CodeLine;
 import tm.interfaces.ExternalCommandInterface;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.SelectionInterface;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMFile;
@@ -72,7 +72,7 @@ public class CodeStore {
      */
     public void addCodeLine( VMCodeLine codeLine ) {
         /*dgb*/ Debug.getInstance().msg(Debug.COMPILE, " Adding "+codeLine ) ; /**/
-        setCurrentFile( codeLine.getCoords().getFile() ) ;
+        setCurrentFile( (TMFile)codeLine.getCoords().getFile() ) ;
         Assert.check( current.size()+1==codeLine.getCoords().getLineNumber() ) ;
         current.addElement( codeLine );
         if( codeLine.isSelected( currentSelection ) ) {
@@ -157,7 +157,7 @@ public class CodeStore {
         setCurrentFile( tmFile ) ;
         if( current.size()==0 ) return SourceCoords.UNKNOWN ;
         VMCodeLine codeLine = current.elementAt(current.size() - 1) ;
-        return codeLine.getCoords();
+        return (SourceCoords)codeLine.getCoords();
     }
 
     private void setCurrentFile( TMFile file ) {

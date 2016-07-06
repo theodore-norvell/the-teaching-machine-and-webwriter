@@ -15,17 +15,18 @@
 package tm.utilities;
 
 import java.awt.image.BufferedImage;
-import java.io.Reader;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.Reader;
 import java.util.Observable;
+
+import tm.portableDisplays.SuperTMFile;
 
 /**
  * A representation of a Teaching Machine file
  *
  * @author TN
  */
-public class TMFile extends Observable {
+public class TMFile extends Observable implements SuperTMFile{
     static int fileCount = 0 ;
     private FileSource fileSource ;	// the location of the file
     private String fileName ;

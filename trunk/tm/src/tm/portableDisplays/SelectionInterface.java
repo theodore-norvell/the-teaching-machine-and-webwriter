@@ -15,9 +15,7 @@
 /*
  * Created on 2009-06-08 by Theodore S. Norvell. 
  */
-package tm.interfaces;
-
-import tm.virtualMachine.TagSet;
+package tm.portableDisplays;
 
 public interface SelectionInterface {
     public boolean evaluate( TagSet tagSet ) ;

@@ -1,4 +1,4 @@
-package tm.portableDisplaysGWT;
+package tm.portableDisplays;
 
 import telford.common.Font;
 
@@ -14,6 +14,24 @@ public class CodeDisplayerInfo {
 	private int cursorColor = 0x008000;
 	private int cursorLine = 0;
 	private boolean lineNumbersCheckStatus = true;//show line number by default
+	private SuperTMFile tmFile;
+	private int focusLineNumber = 1;
+	public int getFocusLineNumber() {
+		return focusLineNumber;
+	}
+
+	public void setFocusLineNumber(int focusLineNumber) {
+		this.focusLineNumber = focusLineNumber;
+	}
+
+	public SuperTMFile getTmFile() {
+		return tmFile;
+	}
+
+	public void setTmFile(SuperTMFile tmFile) {
+		this.tmFile = tmFile;
+	}
+
 	public int getCursorLine() {
 		return cursorLine;
 	}

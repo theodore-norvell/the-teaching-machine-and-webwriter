@@ -20,13 +20,13 @@ import java.util.Set;
 import java.util.Vector;
 
 import tm.interfaces.ExternalCommandInterface;
-import tm.interfaces.MarkUp;
 import tm.interfaces.SourceCoords;
-import tm.interfaces.TagSetInterface;
+import tm.portableDisplays.MarkUp;
+import tm.portableDisplays.TagSet;
+import tm.portableDisplays.TagSetInterface;
 import tm.utilities.Assert;
 import tm.utilities.TMFile;
 import tm.virtualMachine.CodeStore;
-import tm.virtualMachine.TagSet;
 import tm.virtualMachine.VMCodeLine;
 
 /**

@@ -14,8 +14,6 @@
 
 package tm.interfaces;
 
-import tm.backtrack.BTTimeManager;
-
 /** This interface collects together commands from the {@link ExternalCommandInterface}
  * and from the {@link EvaluatorInterface}.
  * 

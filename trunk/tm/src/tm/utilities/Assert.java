@@ -17,9 +17,10 @@ package tm.utilities;
 import java.text.MessageFormat;
 
 import tm.interfaces.SourceCoords;
+import tm.portableDisplays.SuperAssert;
 
 
-public class Assert {
+public class Assert extends SuperAssert{
     /** Check for internal consistency.
      *  Assert.checks should only be thrown the TM is behaving in a way it shouldn't
      */

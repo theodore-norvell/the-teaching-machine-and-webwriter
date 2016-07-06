@@ -12,15 +12,10 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.virtualMachine;
+package tm.portableDisplays;
 
 import java.util.Set;
 import java.util.TreeSet;
-
-import tm.interfaces.ExternalCommandInterface;
-import tm.interfaces.SelectionInterface;
-import tm.interfaces.TagSetInterface ;
-import tm.utilities.Assert;
 
 /** A tag set is an immutable set of tags.
  *  We use tag sets to decide which portions of the code

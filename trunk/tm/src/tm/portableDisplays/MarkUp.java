@@ -12,7 +12,7 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.interfaces;
+package tm.portableDisplays;
 
 public class MarkUp {
 
@@ -20,7 +20,7 @@ public class MarkUp {
 
     public int command ;
     
-    public TagSetInterface tagSet ;
+	public TagSetInterface tagSet ;
 
     public MarkUp( int col, short comm ) {
         column = col ;
@@ -29,7 +29,8 @@ public class MarkUp {
     public MarkUp( int col, short comm, TagSetInterface ts ) {
         column = col ;
         command = comm ;
-        tagSet = ts ;}
+        tagSet = ts ;
+        }
 
     public static final short NORMAL = 0,
                               KEYWORD = 1,
