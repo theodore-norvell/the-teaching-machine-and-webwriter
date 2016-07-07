@@ -81,6 +81,11 @@ module jstm {
                     d.innerHTML = tempF ) ; }
         }
 
+        makeTMDisplay() : HTMLElement {
+            //assert( false ) ;
+            return null ; 
+        }
+
         makeExpressionDisplay() : HTMLElement {
             var  expDisp = document.createElement( "div" ) ;
             expDisp.setAttribute( "class", "tm-expression-display" ) ;

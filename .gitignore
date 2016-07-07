@@ -3,3 +3,4 @@
 *.working
 *.settings
 *.map
+trunk/JSTM/src/*.js
