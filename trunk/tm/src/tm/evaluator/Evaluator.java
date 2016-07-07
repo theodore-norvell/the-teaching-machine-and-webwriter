@@ -21,11 +21,9 @@ import java.util.Enumeration;
 import javax.swing.Timer;
 
 import tm.backtrack.BTTimeManager;
-import tm.interfaces.CodeLine;
 import tm.interfaces.EvaluatorInterface;
 import tm.interfaces.Inputter;
 import tm.interfaces.RegionInterface;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.STEntry;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
@@ -34,6 +32,9 @@ import tm.interfaces.ViewableST;
 import tm.languageInterface.ExpressionInterface;
 import tm.languageInterface.Language;
 import tm.languageInterface.NodeInterface;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.SelectionInterface;
+import tm.portableDisplays.SuperTMFile;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMException;
@@ -217,7 +218,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     private boolean runStopRequested;
     private Inputter inputter ;
 
-    public Evaluator( Language lang,
+	public Evaluator( Language lang,
                       StatusConsumer statusReporter,
                       Refreshable observer,
                       SelectionInterface initialSelection, 
@@ -523,12 +524,16 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     public SourceCoords getCodeFocus() {
         return vms.getCurrentSelectedCoords() ; }
 
-    public int getNumSelectedCodeLines(TMFile tmFile, boolean allowGaps) {
-        return vms.getCodeStore().getNumSelectedCodeLines( tmFile, allowGaps ) ;
+    public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
+        return vms.getCodeStore().getNumSelectedCodeLines( (TMFile)tmFile, allowGaps ) ;
     }
 
-    public CodeLine getSelectedCodeLine(TMFile tmFile, boolean allowGaps, int index) {
-        return vms.getCodeStore().getSelectedCodeLine( tmFile, allowGaps, index ) ;
+//    public CodeLine getSelectedCodeLine(TMFile tmFile, boolean allowGaps, int index) {
+//        return vms.getCodeStore().getSelectedCodeLine( tmFile, allowGaps, index ) ;
+//    }
+    
+    public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
+        return vms.getCodeStore().getSelectedCodeLine( (TMFile)tmFile, allowGaps, index ) ;
     }
     
     public String getOutputLine(int l) {

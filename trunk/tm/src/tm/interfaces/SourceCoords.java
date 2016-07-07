@@ -14,13 +14,14 @@
 
 package tm.interfaces;
 
+import tm.portableDisplays.SuperSourceCoords;
 import tm.utilities.StringFileSource;
 import tm.utilities.TMFile;
 
 /** Represents a line number within a file.
  */
 
-public class SourceCoords {
+public class SourceCoords implements SuperSourceCoords{
 
     private TMFile file ;
 

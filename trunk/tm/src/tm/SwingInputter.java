@@ -15,8 +15,8 @@
 package tm;
 
 
-import tm.interfaces.Inputter;
 import tm.interfaces.EvaluatorInterface;
+import tm.interfaces.Inputter;
 
 public class SwingInputter implements Inputter {
 

@@ -14,7 +14,6 @@
 
 package tm.displayEngine;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Vector;
@@ -24,7 +23,6 @@ import tm.configuration.ConfigurationServer;
 import tm.interfaces.CommandInterface;
 import tm.interfaces.Datum;
 import tm.interfaces.DisplayContextInterface;
-import tm.scripting.ScriptManager;
 import tm.subWindowPkg.ToolBar;
 import tm.subWindowPkg.WorkArea;
 

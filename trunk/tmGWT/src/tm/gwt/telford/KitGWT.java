@@ -43,10 +43,10 @@ public class KitGWT extends telford.common.Kit {
 		return new ContainerPeerGWT(container);
 	}
 	
-	@Override
-	public ContainerPeer makeContainerPeer(Container container, int type) {
-		return new ContainerPeerGWT(container, type);
-	}
+//	@Override
+//	public ContainerPeer makeContainerPeer(Container container, int type) {
+//		return new ContainerPeerGWT(container, type);
+//	}
 	
 	@Override
 	public CanvasPeer makeCanvasPeer(Canvas canvas) {

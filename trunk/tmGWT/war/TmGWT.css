@@ -40,17 +40,14 @@ h1 {
 }
 
 .tm-largeCanvas {
-	width: 380px ; 
+	width: 400px ; 
+	height: 800px ;
+}
+
+.tm-flowPanel {
+	border: groove ; 
+	width: 450px ; 
 	height: 300px ;
-}
-
-.tm-codeScrollPanel {
-	border: groove ;
-	width: 420px ; 
-	height: 200px ;
-}
-
-.tm-expScrollPanel {
-	width: 320px ; 
-	height: 160px ;
+	/*display: block;*/
+    overflow: auto;
 }

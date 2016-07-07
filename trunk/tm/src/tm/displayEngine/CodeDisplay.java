@@ -26,29 +26,25 @@ import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
 
-import javax.swing.JMenuItem;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import tm.configuration.Configuration;
-import tm.interfaces.CodeLine;
-import tm.interfaces.CommandInterface;
-import tm.interfaces.Datum;
-import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
-import tm.interfaces.MarkUp;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.MarkUp;
+import tm.portableDisplays.SelectionInterface;
+import tm.portableDisplays.SuperSourceCoords;
+import tm.portableDisplays.TagSet;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMFile;
-import tm.virtualMachine.TagSet;
 
 public class CodeDisplay extends DisplayAdapter {
     /**
@@ -88,7 +84,7 @@ public class CodeDisplay extends DisplayAdapter {
 
     private int cursorLine;		// The line which contains the user-settable cursor
     private int cursorChar;     // The char which the cursor is on
-    private SourceCoords cursorLineCoords ;
+    private SuperSourceCoords cursorLineCoords ;
     private TMFile theFile = null ; // The file currently being displayed.
     private SelectionInterface theSelection ;
     private int rate = 50; // Middle of arbitrary 0-100 scale

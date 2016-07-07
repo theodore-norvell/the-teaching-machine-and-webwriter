@@ -19,17 +19,17 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public int getWidth() {
-		return myCanvas.getCanvas().getCoordinateSpaceWidth();
+		return myCanvas.getPeer().getCoordinateSpaceWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return myCanvas.getCanvas().getCoordinateSpaceHeight();
+		return myCanvas.getPeer().getCoordinateSpaceHeight();
 	}
 
 	@Override
 	public Object getRepresentative() {
-		return myCanvas.getCanvas();
+		return myCanvas.getPeer();
 	}
 
 	@Override
@@ -38,12 +38,12 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public void setStyleName(String styleName) {
-		myCanvas.getCanvas().setStyleName(styleName);
+		myCanvas.getPeer().setStyleName(styleName);
 	}
 	@Override
 	public void resetSize(int width, int height) {
-		myCanvas.getCanvas().setCoordinateSpaceWidth(width);
-		myCanvas.getCanvas().setCoordinateSpaceHeight(height);
+		myCanvas.getPeer().setCoordinateSpaceWidth(width);
+		myCanvas.getPeer().setCoordinateSpaceHeight(height);
 	}
 
 	class MyCanvas {
@@ -52,7 +52,6 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 		public MyCanvas() {
 			if (Canvas.isSupported()) {
 				canvas = Canvas.createIfSupported();
-				canvas.setStyleName("tm-canvas");// default canvas style
 			} else {
 				GWTUtil.error(GWTUtil.ERROR_NOT_SUPPORT_CANVAS, "MyCanvas constructor");
 			}
@@ -65,7 +64,7 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 			component.paintComponent(tg);
 		}
 
-		public Canvas getCanvas() {
+		public Canvas getPeer() {
 			return canvas;
 		}
 	}

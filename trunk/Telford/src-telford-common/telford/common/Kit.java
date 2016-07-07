@@ -23,7 +23,7 @@ abstract public class Kit {
 
 	abstract public ContainerPeer makeContainerPeer(Container container);
 	
-	abstract public ContainerPeer makeContainerPeer(Container container, int type);
+//	abstract public ContainerPeer makeContainerPeer(Container container, int type);
 	
 	abstract public CanvasPeer makeCanvasPeer(Canvas canvas);
 	

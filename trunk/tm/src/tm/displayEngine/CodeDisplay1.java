@@ -26,13 +26,12 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import telford.common.Font;
 import tm.configuration.Configuration;
-import tm.interfaces.CodeLine;
 import tm.interfaces.ImageSourceInterface;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
 import tm.portableDisplays.CodeDisplayer;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.SelectionInterface;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 import tm.utilities.Debug;
@@ -58,7 +57,7 @@ public class CodeDisplay1 extends SwingDisplay {
 	private final static int ITALIC = 2;
 //	private final static int BOLD_ITALIC = 3;
 	// Printing modes
-	private Font myFonts[] = { null, null, null, null }; // Indexed by font
+//	private Font myFonts[] = { null, null, null, null }; // Indexed by font
 
 	// Configurables
 	private int fontMapper[] = { PLAIN, PLAIN, ITALIC, PLAIN, BOLD, PLAIN };
@@ -70,6 +69,7 @@ public class CodeDisplay1 extends SwingDisplay {
 //	private int cursorChar; // The char which the cursor is on
 	private SourceCoords cursorLineCoords;
 	private TMFile theFile = null; // The file currently being displayed.
+//	private SourceCoords focus = null;// Added by xiuhuali TODO
 	private SelectionInterface theSelection;
 	private int rate = 50; // Middle of arbitrary 0-100 scale
 	private JSlider slider;
@@ -146,6 +146,8 @@ public class CodeDisplay1 extends SwingDisplay {
 		codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(allowGaps);
 		SourceCoords focus = commandProcessor.getCodeFocus();
 		TMFile file = focus.getFile();
+		codeDisplayer.getDisplayInfo().setTmFile(file);
+		codeDisplayer.getDisplayInfo().setFocusLineNumber(focus.getLineNumber());
 		/*
 		 * DBG System.out.println("Current file is " + file.getFileName());/*DBG
 		 */

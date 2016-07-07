@@ -21,8 +21,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import tm.expressionParser.*;
+import tm.portableDisplays.Selection;
+import tm.portableDisplays.Selection.TokenType;
 import tm.utilities.Assert;
-import tm.virtualMachine.Selection.TokenType;
 
 public class SelectionParser
     extends  AbstractExpressionParser< Selection, SelectionParser.Token>

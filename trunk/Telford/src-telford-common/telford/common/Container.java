@@ -17,11 +17,11 @@ public class Container extends Component {
 		}
 	}
 
-	public Container(int type) {
-		super(false);
-		peer = Kit.getKit().makeContainerPeer(this, type);
-		setLayoutManager(Kit.getKit().getFlowLayoutManager());
-	}
+//	public Container(int type) {
+//		super(false);
+//		peer = Kit.getKit().makeContainerPeer(this, type);
+//		setLayoutManager(Kit.getKit().getFlowLayoutManager());
+//	}
 
 	public void add(Component component) {
 		// TODO: ask layout manager whether a null constraint is allowed, and

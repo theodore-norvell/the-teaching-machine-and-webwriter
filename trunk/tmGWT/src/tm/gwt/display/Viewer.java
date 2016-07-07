@@ -1,6 +1,6 @@
 package tm.gwt.display;
 
-import tm.portableDisplaysGWT.PortableDisplayer;
+import tm.portableDisplays.PortableDisplayer;
 
 public class Viewer {
 	PortableDisplayer displayer;

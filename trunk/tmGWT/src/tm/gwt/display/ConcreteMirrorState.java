@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import tm.portableDisplaysGWT.CodeLine;
-import tm.portableDisplaysGWT.MarkUp;
+import tm.gwt.jsInterface.MirrorState;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.MarkUp;
+import tm.portableDisplays.SelectionInterface;
+import tm.portableDisplays.SuperTMFile;
 
 public class ConcreteMirrorState implements MirrorState {
-	private List<CodeLine> lines = null;
+	private List<GWTCodeLineTemp> lines = null;
+	private SelectionInterface selection;
 
-	public ConcreteMirrorState() {
+	public ConcreteMirrorState(SelectionInterface sc) {
+		this.selection = sc;
 		parserSourceFile();
 	}
 
@@ -18,29 +23,35 @@ public class ConcreteMirrorState implements MirrorState {
 		return "";
 	}
 
-	public CodeLine getSelectedCodeLine(boolean allowGaps, int index) {
+	public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
 		CodeLine c = lines.get(index);
 		return c;
 	};
 
-	public int getNumSelectedCodeLines(boolean allowGaps) {
+	public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
 		return lines.size();
 	}
+	
+	public void setSelection(SelectionInterface selection){
+		this.selection = selection;
+	}
+	
+	public SelectionInterface getSelection() {return selection;};
 
-	/* TODO CodeLines should come from StateInterface */
+	/*CodeLines should come from StateInterface */
 	private void parserSourceFile() {
-		lines = new ArrayList<CodeLine>();
+		lines = new ArrayList<GWTCodeLineTemp>();
 		StringBuffer sb0 = new StringBuffer("package test;");
 		Vector<MarkUp> markUp0 = new Vector<MarkUp>();
 		markUp0.add(0, new MarkUp(0, MarkUp.KEYWORD));
 		markUp0.add(1, new MarkUp(7, MarkUp.NORMAL));
-		CodeLine cl0 = new CodeLine(sb0, markUp0);
+		GWTCodeLineTemp cl0 = new GWTCodeLineTemp(sb0, markUp0, new GWTSourceCoords(1));
 		cl0.setLineNumber(1);
 		lines.add(0, cl0);
 		
 		StringBuffer sb1 = new StringBuffer("");
 		Vector<MarkUp> markUp1 = new Vector<MarkUp>();
-		CodeLine cl1 = new CodeLine(sb1, markUp1);
+		GWTCodeLineTemp cl1 = new GWTCodeLineTemp(sb1, markUp1, new GWTSourceCoords(2));
 		cl1.setLineNumber(2);
 		lines.add(1, cl1);
 		
@@ -50,7 +61,7 @@ public class ConcreteMirrorState implements MirrorState {
 		markUp2.add(1, new MarkUp(6, MarkUp.NORMAL));
 		markUp2.add(2, new MarkUp(7, MarkUp.KEYWORD));
 		markUp2.add(3, new MarkUp(12, MarkUp.NORMAL));
-		CodeLine cl2 = new CodeLine(sb2, markUp2);
+		GWTCodeLineTemp cl2 = new GWTCodeLineTemp(sb2, markUp2, new GWTSourceCoords(3));
 		cl2.setLineNumber(3);
 		lines.add(2, cl2);
 		
@@ -63,7 +74,7 @@ public class ConcreteMirrorState implements MirrorState {
 		markUp3.add(3, new MarkUp(13, MarkUp.NORMAL));
 		markUp3.add(4, new MarkUp(14, MarkUp.KEYWORD));
 		markUp3.add(5, new MarkUp(18, MarkUp.NORMAL));
-		CodeLine cl3 = new CodeLine(sb3, markUp3);
+		GWTCodeLineTemp cl3 = new GWTCodeLineTemp(sb3, markUp3, new GWTSourceCoords(4));
 		cl3.setLineNumber(4);
 		lines.add(3, cl3);
 		
@@ -75,7 +86,7 @@ public class ConcreteMirrorState implements MirrorState {
 		markUp4.add(3, new MarkUp(10, MarkUp.NORMAL));
 		markUp4.add(4, new MarkUp(11, MarkUp.COMMENT));
 		markUp4.add(5, new MarkUp(25, MarkUp.NORMAL));
-		CodeLine cl4 = new CodeLine(sb4, markUp4);
+		GWTCodeLineTemp cl4 = new GWTCodeLineTemp(sb4, markUp4, new GWTSourceCoords(5));
 		cl4.setLineNumber(5);
 		lines.add(4, cl4);
 		
@@ -83,39 +94,54 @@ public class ConcreteMirrorState implements MirrorState {
 		Vector<MarkUp> markUp5 = new Vector<MarkUp>();
 		markUp5.add(0, new MarkUp(1, MarkUp.KEYWORD));
 		markUp5.add(1, new MarkUp(4, MarkUp.NORMAL));
-		markUp5.add(2, new MarkUp(9, MarkUp.CONSTANT));
-		markUp5.add(3, new MarkUp(10, MarkUp.NORMAL));
-		markUp5.add(4, new MarkUp(11, MarkUp.COMMENT));
-		markUp5.add(5, new MarkUp(25, MarkUp.NORMAL));
-		CodeLine cl5 = new CodeLine(sb5, markUp5);
+		markUp5.add(2, new MarkUp(7, MarkUp.CONSTANT));
+		markUp5.add(3, new MarkUp(8, MarkUp.NORMAL));
+		GWTCodeLineTemp cl5 = new GWTCodeLineTemp(sb5, markUp5, new GWTSourceCoords(6));
 		cl5.setLineNumber(6);
 		lines.add(5, cl5);
 		
+		for (int i = 6; i < 36; i++) {
+			addNewLine(lines, i);
+		}
 		
-		StringBuffer sb6 = new StringBuffer("	int r = i + j;");
-		Vector<MarkUp> markUp6 = new Vector<MarkUp>();
-		markUp6.add(0, new MarkUp(1, MarkUp.KEYWORD));
-		markUp6.add(1, new MarkUp(4, MarkUp.NORMAL));
-		CodeLine cl6 = new CodeLine(sb6, markUp6);
-		cl6.setLineNumber(7);
-		lines.add(6, cl6);
 		
-		StringBuffer sb7 = new StringBuffer("	System.out.println(r);");
-		Vector<MarkUp> markUp7 = new Vector<MarkUp>();
-		CodeLine cl7 = new CodeLine(sb7, markUp7);
-		cl7.setLineNumber(8);
-		lines.add(7, cl7);
+		StringBuffer sb36 = new StringBuffer("	int r = i + j;");
+		Vector<MarkUp> markUp36 = new Vector<MarkUp>();
+		markUp36.add(0, new MarkUp(1, MarkUp.KEYWORD));
+		markUp36.add(1, new MarkUp(4, MarkUp.NORMAL));
+		GWTCodeLineTemp cl36 = new GWTCodeLineTemp(sb36, markUp36, new GWTSourceCoords(37));
+		cl36.setLineNumber(37);
+		lines.add(36, cl36);
 		
-		StringBuffer sb8 = new StringBuffer("}");
-		Vector<MarkUp> markUp8 = new Vector<MarkUp>();
-		CodeLine cl8 = new CodeLine(sb8, markUp8);
-		cl8.setLineNumber(9);
-		lines.add(8, cl8);
+		StringBuffer sb37 = new StringBuffer("	System.out.println(r);");
+		Vector<MarkUp> markUp37 = new Vector<MarkUp>();
+		GWTCodeLineTemp cl37 = new GWTCodeLineTemp(sb37, markUp37, new GWTSourceCoords(38));
+		cl37.setLineNumber(38);
+		lines.add(37, cl37);
 		
-		StringBuffer sb9 = new StringBuffer("}");
-		Vector<MarkUp> markUp9 = new Vector<MarkUp>();
-		CodeLine cl9 = new CodeLine(sb9, markUp9);
-		cl9.setLineNumber(10);
-		lines.add(9, cl9);
+		StringBuffer sb38 = new StringBuffer("}");
+		Vector<MarkUp> markUp38 = new Vector<MarkUp>();
+		GWTCodeLineTemp cl38 = new GWTCodeLineTemp(sb38, markUp38, new GWTSourceCoords(39));
+		cl38.setLineNumber(39);
+		lines.add(38, cl38);
+		
+		StringBuffer sb39 = new StringBuffer("}");
+		Vector<MarkUp> markUp39 = new Vector<MarkUp>();
+		GWTCodeLineTemp c39 = new GWTCodeLineTemp(sb39, markUp39, new GWTSourceCoords(40));
+		c39.setLineNumber(40);
+		lines.add(39, c39);
+	}
+	
+	private void addNewLine(List<GWTCodeLineTemp> lines, int i){
+//		String index = String.valueOf(i-5);
+		StringBuffer sb = new StringBuffer("	int j=2;");
+		Vector<MarkUp> markUp = new Vector<MarkUp>();
+		markUp.add(0, new MarkUp(1, MarkUp.KEYWORD));
+		markUp.add(1, new MarkUp(4, MarkUp.NORMAL));
+		markUp.add(2, new MarkUp(7, MarkUp.CONSTANT));
+		markUp.add(3, new MarkUp(8, MarkUp.NORMAL));
+		GWTCodeLineTemp cl = new GWTCodeLineTemp(sb, markUp, new GWTSourceCoords(i+1));
+		cl.setLineNumber(i+1);
+		lines.add(i, cl);
 	}
 }

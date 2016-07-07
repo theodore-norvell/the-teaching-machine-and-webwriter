@@ -35,12 +35,11 @@ import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import netscape.javascript.*; // Need plugin.jar from JDK on the CLASSPATH.
-
+// Need plugin.jar from JDK on the CLASSPATH.
+import netscape.javascript.JSObject;
 import tm.backtrack.BTTimeManager;
 import tm.evaluator.Evaluator;
 import tm.evaluator.Evaluator.Refreshable;
-import tm.interfaces.CodeLine;
 import tm.interfaces.CommandInterface;
 import tm.interfaces.DisplayManagerPIFactoryIntf;
 import tm.interfaces.EditorPIFactoryInterface;
@@ -48,7 +47,6 @@ import tm.interfaces.EditorPIInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.Scriptable;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
 import tm.interfaces.TMStatusCode;
@@ -56,6 +54,9 @@ import tm.languageInterface.Language;
 import tm.languageInterface.LanguagePIFactoryIntf;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.SelectionInterface;
+import tm.portableDisplays.SuperTMFile;
 import tm.scripting.ScriptManager;
 import tm.utilities.Assert;
 import tm.utilities.CachingFileSource;
@@ -954,11 +955,11 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     public Enumeration<TMFile> getSourceFiles() {
         return evaluator.getSourceFiles() ; }
 
-    public int getNumSelectedCodeLines(TMFile tmFile, boolean allowGaps) {
+    public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
         return evaluator.getNumSelectedCodeLines( tmFile, allowGaps ) ;
     }
 
-    public CodeLine getSelectedCodeLine(TMFile tmFile, boolean allowGaps, int index) {
+    public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
         return evaluator.getSelectedCodeLine( tmFile, allowGaps, index ) ; }
 
     public int getNumConsoleLines() {

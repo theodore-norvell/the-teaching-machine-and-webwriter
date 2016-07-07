@@ -3,20 +3,10 @@ package tm.portableDisplays;
 import telford.common.Font;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
-import telford.jse.FontJSE;
-import tm.interfaces.CodeLine;
-import tm.interfaces.EvaluatorInterface;
-import tm.interfaces.MarkUp;
-import tm.interfaces.SelectionInterface;
-import tm.interfaces.SourceCoords;
-import tm.portableDisplaysGWT.CodeDisplayerInfo;
-import tm.portableDisplaysGWT.PortableContextInterface;
-import tm.utilities.Assert;
-import tm.utilities.TMFile;
-import tm.virtualMachine.TagSet;
+import telford.common.Kit;
 
 public class CodeDisplayer extends PortableDisplayer {
-	public CodeDisplayer(EvaluatorInterface model, PortableContextInterface context) {
+	public CodeDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);
 	}
 
@@ -42,7 +32,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		this.displayInfo = displayInfo;
 	}
 
-	private TMFile theFile = null; // The file currently being displayed.
+	private SuperTMFile theFile = null; // The file currently being displayed.
 
 	@Override
 	public void refresh() {
@@ -52,26 +42,27 @@ public class CodeDisplayer extends PortableDisplayer {
 	public void paintComponent(Graphics g) {
 		drawArea(g);
 	}
-
+	
 	public void drawArea(Graphics screen) {
 		setMode(screen, NORMAL); // Always start in normal mode
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 
 		final int lineHeight = fm.getHeight();
 		int baseLine = lineHeight + LINE_PADDING;
-
-		SourceCoords focus = model.getCodeFocus();
+		vScale = baseLine;
+//		SourceCoords focus = model.getCodeFocus();
 		/*
 		 * DBG System.out.println("Current file is " + file.getFileName());/*DBG
 		 */
 		if (theFile == null)
-			theFile = focus.getFile();
+			theFile = displayInfo.getTmFile();
 		boolean allowGaps = displayInfo.getLineNumbersCheckStatus();
 		int n = model.getNumSelectedCodeLines(theFile, allowGaps);
 		for (int i = 0; i < n; i++) {
 			baseLine += lineHeight + LINE_PADDING;
 			CodeLine theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
-			if (theLine != null && theLine.getCoords().equals(focus)) {
+			//TODO error here
+			if (theLine != null&& theLine.getCoords().getLineNumber() == displayInfo.getFocusLineNumber()) {
 				int save = screen.getColor();
 				screen.setColor(context.getHighlightColor());
 				screen.fillRect(0, baseLine - fm.getAscent(), getWidth(), fm.getAscent() + fm.getDescent());
@@ -82,11 +73,6 @@ public class CodeDisplayer extends PortableDisplayer {
 				screen.setColor(displayInfo.getCursorColor());
 				screen.fillRect(0, baseLine - fm.getAscent(), 10, fm.getAscent() + fm.getDescent());
 				screen.setColor(save);
-				// Update the cursorLineCoords
-//				if (theLine == null)
-//					cursorLineCoords = null;
-//				else
-//					cursorLineCoords = theLine.getCoords();
 			}
 			drawLine(theLine, LEFT_MARGIN - 0, baseLine - 0, screen);
 		}
@@ -106,13 +92,12 @@ public class CodeDisplayer extends PortableDisplayer {
 
 	// Creates the style variations on the current font
 	private void setSecondaryFonts(Font primary) {
-		displayInfo.setMyFontByIndex(new FontJSE(primary.getName(), BOLD, primary.getSize()), BOLD);
-		displayInfo.setMyFontByIndex(new FontJSE(primary.getName(), ITALIC, primary.getSize()), ITALIC);
-		displayInfo.setMyFontByIndex(new FontJSE(primary.getName(), BOLD_ITALIC, primary.getSize()), BOLD_ITALIC);
+		displayInfo.setMyFontByIndex(Kit.getKit().getFont(primary.getName(), BOLD, primary.getSize()), BOLD);
+		displayInfo.setMyFontByIndex(Kit.getKit().getFont(primary.getName(), ITALIC, primary.getSize()), ITALIC);
+		displayInfo.setMyFontByIndex(Kit.getKit().getFont(primary.getName(), BOLD_ITALIC, primary.getSize()), BOLD_ITALIC);
 	}
 
 	private void drawLine(CodeLine codeLine, int x, int y, Graphics screen) {
-		// System.out.println( "Displaying "+codeLine );
 		setMode(screen, NORMAL);
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 		final int em = fm.stringWidth("M"); 
@@ -185,7 +170,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				}
 					break;
 				default: {
-					Assert.check(false);
+					SuperAssert.check(false);
 				}
 				}
 				m++;
@@ -198,7 +183,7 @@ public class CodeDisplayer extends PortableDisplayer {
 					// column 0 1 2 3 4 5 6 7 8 9 10 11 12 13
 					// newcolumn 4 4 4 4 8 8 8 8 12 12 12 12 16
 					int newColumn = (column / displayInfo.getTabSpaces() + 1) * displayInfo.getTabSpaces();
-					Assert.check(newColumn > column);
+					SuperAssert.check(newColumn > column);
 					char[] space = new char[] { ' ' };
 					
 					x += (newColumn - column) * fm.stringWidth(String.valueOf(space[0]));
@@ -211,5 +196,27 @@ public class CodeDisplayer extends PortableDisplayer {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * calculate position of focus line that is used set scrollTop value to its parent panel to avoid it off screen
+	 * */
+	public int calFocusPosition(){
+		int position = 50;
+		int focusLine = 0;
+		boolean found = false;
+		boolean allowGaps = displayInfo.getLineNumbersCheckStatus();
+		for (int sz = model.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
+			CodeLine codeLine = model.getSelectedCodeLine(theFile, allowGaps, focusLine);
+			if (codeLine != null && codeLine.getCoords().getLineNumber() == displayInfo.getFocusLineNumber()) {
+				found = true;
+				break;
+			}
+		}
+		if (found) {
+			int topLine = (1 + focusLine) * vScale;
+			position = topLine + getVScale();
+		}
+		return position;
 	}
 }

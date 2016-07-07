@@ -14,13 +14,14 @@
 
 package tm.interfaces;
 
-import tm.backtrack.BTTimeManager;
-import tm.displayEngine.ConsoleDisplay;
-import tm.displayEngine.ExpressionDisplay;
-import tm.utilities.TMFile;
 import java.util.Enumeration ;
 
-public interface EvaluatorInterface {
+import tm.backtrack.BTTimeManager;
+import tm.displayEngine.ConsoleDisplay;
+import tm.portableDisplays.StateInterface;
+import tm.utilities.TMFile;
+
+public interface EvaluatorInterface extends StateInterface{
 	
 // Mutators
 	
@@ -63,23 +64,27 @@ public interface EvaluatorInterface {
      * which parts of selected lines are visible.
      * @return The current selection expression.
      */
-    public SelectionInterface getSelection() ;
+  //TODO move into StateInterface by xiuhuali
+//    public SelectionInterface getSelection() ;
     
     /** Set the current selection expression.
      * <p>The selection determines which code lines are visible and
      * which parts of selected lines are visible.
      */
-    public void setSelection(SelectionInterface selection) ;
+  //TODO move into StateInterface by xiuhuali
+//    public void setSelection(SelectionInterface selection) ;
 
     /** The number of code lines in a file that are visible in the current selection.
      * This may include gaps, depending on whether gaps are allowed .
      */
-    public int getNumSelectedCodeLines( TMFile tmFile, boolean allowGaps ) ;
+    //TODO move into StateInterface by xiuhuali
+//    public int getNumSelectedCodeLines( TMFile tmFile, boolean allowGaps ) ;
 
     /** Get a selected line from a file.
      *  @precond 0 &lt;= index &amp;&amp; index &lt; getNumSelectedCodeLines( tmFile )
      *  when */
-    public CodeLine getSelectedCodeLine( TMFile tmFile, boolean allowGaps, int index ) ;
+  //TODO move into StateInterface by xiuhuali
+//    public CodeLine getSelectedCodeLine( TMFile tmFile, boolean allowGaps, int index ) ;
     
     /** The number of lines that are currently on the console. */
     public int getNumConsoleLines() ;
@@ -100,7 +105,8 @@ public interface EvaluatorInterface {
      * The string returned is marked up using constants from {@link ExpressionDisplay}.
      * @return A marked up string representing a partially evaluated expression.
      */
-    public String getExpression() ;
+  //TODO move into StateInterface
+//    public String getExpression() ;
 
     /** Returns the static region.
      */

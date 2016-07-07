@@ -14,21 +14,21 @@
 
 package tm.virtualMachine;
 
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.Vector;
 
-import tm.interfaces.CodeLine;
-import tm.interfaces.MarkUp;
-import tm.interfaces.SelectionInterface;
 import tm.interfaces.SourceCoords;
-import tm.interfaces.TagSetInterface;
+import tm.portableDisplays.CodeLine;
+import tm.portableDisplays.MarkUp;
+import tm.portableDisplays.SelectionInterface;
+import tm.portableDisplays.SuperSourceCoords;
+import tm.portableDisplays.TagSetInterface;
 
 
 public class VMCodeLine implements CodeLine {
     private char[] chars ;
     private MarkUp[] markUp ;
-    private SourceCoords coords ;
+    private SuperSourceCoords coords ;
     /** A list of all tag sets that apply anywhere on this line */
     private Set<TagSetInterface> tagSets ;
 
@@ -47,7 +47,7 @@ public class VMCodeLine implements CodeLine {
 
     public char[] getChars() { return chars ; }
 
-    public SourceCoords getCoords() { return coords ; }
+    public SuperSourceCoords getCoords() { return coords ; }
 
     public MarkUp[] markUp() { return markUp ; }
 
