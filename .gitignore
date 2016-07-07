@@ -4,3 +4,5 @@
 *.settings
 *.map
 trunk/JSTM/src/*.js
+trunk/tmGWT/gwt-unitCache
+tmgwt.nocache.js
