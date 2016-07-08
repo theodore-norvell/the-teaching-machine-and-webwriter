@@ -16,10 +16,10 @@ package tm.virtualMachine;
 
 import java.util.* ;
 
+import tm.interfaces.CodeLineI ;
 import tm.interfaces.ExternalCommandInterface;
+import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
-import tm.portableDisplays.CodeLine;
-import tm.portableDisplays.SelectionInterface;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMFile;
@@ -147,7 +147,7 @@ public class CodeStore {
         return selectedLines.size() ;
     }
 
-    public CodeLine getSelectedCodeLine(TMFile tmFile, boolean allowGaps, int index) {
+    public CodeLineI getSelectedCodeLine(TMFile tmFile, boolean allowGaps, int index) {
         setCurrentFile( tmFile ) ;
         setAllowGaps( allowGaps ) ;
         return selectedLines.elementAt(index) ;

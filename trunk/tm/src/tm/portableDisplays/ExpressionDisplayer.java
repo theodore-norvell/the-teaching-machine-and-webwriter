@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import telford.common.FontMetrics;
 import telford.common.Graphics ;
+import tm.interfaces.StateInterface ;
 
 public class ExpressionDisplayer extends PortableDisplayer {
     public ExpressionDisplayer( StateInterface model, PortableContextInterface context ) {

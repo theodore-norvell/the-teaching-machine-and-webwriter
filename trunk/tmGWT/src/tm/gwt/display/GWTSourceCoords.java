@@ -1,9 +1,9 @@
 package tm.gwt.display;
 
-import tm.portableDisplays.SuperSourceCoords;
-import tm.portableDisplays.TMFileI;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.TMFileI ;
 
-public class GWTSourceCoords implements SuperSourceCoords {
+public class GWTSourceCoords implements SourceCoordsI {
 
 	private int lineNumber;
 

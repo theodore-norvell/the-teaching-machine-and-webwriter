@@ -20,8 +20,8 @@ import tm.gwt.display.GWTContext;
 import tm.gwt.display.Viewer;
 import tm.gwt.jsInterface.MirrorState;
 import tm.gwt.telford.KitGWT;
+import tm.interfaces.Selection ;
 import tm.portableDisplays.PortableContextInterface;
-import tm.portableDisplays.Selection;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.

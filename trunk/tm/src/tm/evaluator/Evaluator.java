@@ -21,20 +21,20 @@ import java.util.Enumeration;
 import javax.swing.Timer;
 
 import tm.backtrack.BTTimeManager;
+import tm.interfaces.CodeLineI ;
 import tm.interfaces.EvaluatorInterface;
 import tm.interfaces.Inputter;
 import tm.interfaces.RegionInterface;
 import tm.interfaces.STEntry;
+import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
+import tm.interfaces.TMFileI ;
 import tm.interfaces.TMStatusCode;
 import tm.interfaces.ViewableST;
 import tm.languageInterface.ExpressionInterface;
 import tm.languageInterface.Language;
 import tm.languageInterface.NodeInterface;
-import tm.portableDisplays.CodeLine;
-import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.TMFileI;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMException;
@@ -532,7 +532,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 //        return vms.getCodeStore().getSelectedCodeLine( tmFile, allowGaps, index ) ;
 //    }
     
-    public CodeLine getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
+    public CodeLineI getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
         return vms.getCodeStore().getSelectedCodeLine( (TMFile)tmFile, allowGaps, index ) ;
     }
     

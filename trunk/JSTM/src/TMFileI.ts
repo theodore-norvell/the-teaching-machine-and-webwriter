@@ -1,7 +1,7 @@
 module jstm {
     export interface TMFileI {
 
-        toString : () => string ;
+        getFileName : () => string ;
 
         equals : ( other : Object ) => boolean ;
     }

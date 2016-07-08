@@ -21,8 +21,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import tm.expressionParser.*;
-import tm.portableDisplays.Selection;
-import tm.portableDisplays.Selection.TokenType;
+import tm.interfaces.Selection ;
+import tm.interfaces.Selection.TokenType ;
 import tm.utilities.Assert;
 
 public class SelectionParser

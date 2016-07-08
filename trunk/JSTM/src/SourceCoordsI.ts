@@ -3,7 +3,7 @@ module jstm {
 
         getFile : () => TMFileI ;
 
-        getLine : () => number ;
+        getLineNumber : () => number ;
 
         toString : () => string ; 
 

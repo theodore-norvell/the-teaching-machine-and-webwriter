@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Observable;
 
-import tm.portableDisplays.TMFileI;
+import tm.interfaces.TMFileI ;
 
 /**
  * A representation of a Teaching Machine file

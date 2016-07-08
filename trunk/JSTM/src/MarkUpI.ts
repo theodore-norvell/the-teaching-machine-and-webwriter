@@ -1,11 +1,10 @@
 module jstm {
     export interface MarkUpI {
 
-        column : number ;
+        getColumn : () => number ;
 
-        command : number ;
+        getCommand : () => number ;
 
-        tagSet : TagSetInterface ;
-
+        getTagSet : () => TagSetInterface ;
     }
 }

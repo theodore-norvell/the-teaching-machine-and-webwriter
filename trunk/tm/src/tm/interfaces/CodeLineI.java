@@ -12,11 +12,12 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-/*
- * Created on 2009-06-08 by Theodore S. Norvell. 
- */
-package tm.portableDisplays;
+package tm.interfaces;
 
-public interface SelectionInterface {
-    public boolean evaluate( TagSet tagSet ) ;
+
+/** Represents a single marked-up line. */
+public interface CodeLineI {
+   char [] getChars() ;
+   SourceCoordsI getCoords() ;
+   MarkUpI [] markUp() ;
 }

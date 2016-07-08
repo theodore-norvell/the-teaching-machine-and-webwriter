@@ -1,4 +1,4 @@
-package tm.portableDisplays;
+package tm.interfaces;
 
 public interface TMFileI {
 	public boolean equals( Object obj );

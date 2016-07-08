@@ -20,12 +20,12 @@ import tm.backtrack.BTStack;
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.BTVar;
 import tm.backtrack.BTVector;
+import tm.interfaces.SelectionInterface ;
 import tm.interfaces.TMStatusCode;
 import tm.interfaces.Datum;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.ViewableST;
 import tm.languageInterface.NodeInterface;
-import tm.portableDisplays.SelectionInterface;
 import tm.utilities.Assert;
 
 public class VMState {

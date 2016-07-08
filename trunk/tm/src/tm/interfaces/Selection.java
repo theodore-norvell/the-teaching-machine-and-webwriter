@@ -15,7 +15,9 @@
 /*
  * Created on 2009-06-03 by Theodore S. Norvell. 
  */
-package tm.portableDisplays;
+package tm.interfaces;
+
+import tm.portableDisplays.SuperAssert ;
 
 
 public class Selection implements SelectionInterface {
@@ -44,7 +46,7 @@ public class Selection implements SelectionInterface {
         children = new Selection[] { left, right } ; 
     }
     
-    public boolean evaluate( TagSet tagSet ) {
+    public boolean evaluate( TagSetInterface tagSet ) {
         switch( type ) {
         case TRUE : return true ;
         case FALSE : return false ;

@@ -15,8 +15,10 @@
 /*
  * Created on 2009-06-02 by Theodore S. Norvell. 
  */
-package tm.portableDisplays;
+package tm.interfaces;
+
 
 public interface TagSetInterface {
     boolean selectionIsValid( SelectionInterface seletion ) ;
+    boolean contains( String tag ) ;
 }

@@ -12,7 +12,7 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.portableDisplays;
+package tm.interfaces;
 
 import java.util.Set;
 import java.util.TreeSet;

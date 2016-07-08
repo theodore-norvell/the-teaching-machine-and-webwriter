@@ -17,18 +17,18 @@ package tm.virtualMachine;
 import java.util.Set;
 import java.util.Vector;
 
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.MarkUp ;
+import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
-import tm.portableDisplays.CodeLine;
-import tm.portableDisplays.MarkUp;
-import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.SuperSourceCoords;
-import tm.portableDisplays.TagSetInterface;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.TagSetInterface ;
 
 
-public class VMCodeLine implements CodeLine {
+public class VMCodeLine implements CodeLineI {
     private char[] chars ;
     private MarkUp[] markUp ;
-    private SuperSourceCoords coords ;
+    private SourceCoordsI coords ;
     /** A list of all tag sets that apply anywhere on this line */
     private Set<TagSetInterface> tagSets ;
 
@@ -47,7 +47,7 @@ public class VMCodeLine implements CodeLine {
 
     public char[] getChars() { return chars ; }
 
-    public SuperSourceCoords getCoords() { return coords ; }
+    public SourceCoordsI getCoords() { return coords ; }
 
     public MarkUp[] markUp() { return markUp ; }
 

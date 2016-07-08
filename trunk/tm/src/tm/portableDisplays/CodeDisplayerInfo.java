@@ -1,6 +1,7 @@
 package tm.portableDisplays;
 
 import telford.common.Font;
+import tm.interfaces.TMFileI ;
 
 public class CodeDisplayerInfo {
 	// Font styles

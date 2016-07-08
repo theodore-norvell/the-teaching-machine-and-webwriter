@@ -1,6 +1,6 @@
 module jstm {
     
-    export interface EvaluatorInterface {
+    export interface StateInterface {
         
         getExpression : () => string ;
 
@@ -11,5 +11,7 @@ module jstm {
         getNumSelectedCodeLines : (tmf : TMFileI, allowGaps : boolean ) => number ;
 
         getSelectedCodeLine : (tmf : TMFileI, allowGaps : boolean, i : number) => CodeLineI ;
+
+        getSelection : () => SelectionInterface ;
     }
 }

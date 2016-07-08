@@ -18,7 +18,6 @@ import java.util.Enumeration ;
 
 import tm.backtrack.BTTimeManager;
 import tm.displayEngine.ConsoleDisplay;
-import tm.portableDisplays.StateInterface;
 import tm.utilities.TMFile;
 
 public interface EvaluatorInterface extends StateInterface{
@@ -59,33 +58,12 @@ public interface EvaluatorInterface extends StateInterface{
     /** Get a list of all source files. */
     public Enumeration<TMFile> getSourceFiles() ;
     
-    /** Get the current selection expression.
-     * <p>The selection determines which code lines are visible and
-     * which parts of selected lines are visible.
-     * @return The current selection expression.
-     */
-  //TODO move into StateInterface by xiuhuali
-//    public SelectionInterface getSelection() ;
-    
     /** Set the current selection expression.
      * <p>The selection determines which code lines are visible and
      * which parts of selected lines are visible.
      */
-  //TODO move into StateInterface by xiuhuali
-//    public void setSelection(SelectionInterface selection) ;
+    public void setSelection(SelectionInterface selection) ;
 
-    /** The number of code lines in a file that are visible in the current selection.
-     * This may include gaps, depending on whether gaps are allowed .
-     */
-    //TODO move into StateInterface by xiuhuali
-//    public int getNumSelectedCodeLines( TMFile tmFile, boolean allowGaps ) ;
-
-    /** Get a selected line from a file.
-     *  @precond 0 &lt;= index &amp;&amp; index &lt; getNumSelectedCodeLines( tmFile )
-     *  when */
-  //TODO move into StateInterface by xiuhuali
-//    public CodeLine getSelectedCodeLine( TMFile tmFile, boolean allowGaps, int index ) ;
-    
     /** The number of lines that are currently on the console. */
     public int getNumConsoleLines() ;
     
@@ -98,16 +76,6 @@ public interface EvaluatorInterface extends StateInterface{
     /** A string representation of the line number of the code line currently in focus. */
     public String getPCLocation();
     
-    /** A string representation of the current stat of 
-     * the expression that is currently being
-     * evaluated.
-     * <P>
-     * The string returned is marked up using constants from {@link ExpressionDisplay}.
-     * @return A marked up string representing a partially evaluated expression.
-     */
-  //TODO move into StateInterface
-//    public String getExpression() ;
-
     /** Returns the static region.
      */
     public RegionInterface getStaticRegion() ;

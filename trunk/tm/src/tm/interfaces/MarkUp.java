@@ -12,15 +12,16 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.portableDisplays;
+package tm.interfaces;
 
-public class MarkUp {
 
-    public int column ;
+public class MarkUp implements MarkUpI {
 
-    public int command ;
+    private int column ;
+
+    private int command ;
     
-	public TagSetInterface tagSet ;
+	private TagSetInterface tagSet ;
 
     public MarkUp( int col, short comm ) {
         column = col ;
@@ -32,13 +33,25 @@ public class MarkUp {
         tagSet = ts ;
         }
 
-    public static final short NORMAL = 0,
-                              KEYWORD = 1,
-                              COMMENT = 2,
-                              PREPROCESSOR = 3,
-                              CONSTANT = 4,
-                              CHANGE_TAG_SET = 5 ;
-
+    /* (non-Javadoc)
+     * @see tm.interfaces.MarkUpI#toString()
+     */
+    @Override
     public String toString() {
         return "("+column+", "+command+")" ; }
+
+    @Override
+    public int getColumn() {
+        return column ;
+    }
+
+    @Override
+    public int getCommand() {
+        return command ;
+    }
+
+    @Override
+    public TagSetInterface getTagSet() {
+        return tagSet ;
+    }
 }

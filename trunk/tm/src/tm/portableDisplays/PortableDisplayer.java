@@ -1,5 +1,7 @@
 package tm.portableDisplays;
 
+import tm.interfaces.StateInterface ;
+
 public abstract class PortableDisplayer extends telford.common.Canvas {
 
 	protected StateInterface model;

@@ -4,6 +4,13 @@ import telford.common.Font;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
 import telford.common.Kit;
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.MarkUp ;
+import tm.interfaces.MarkUpI ;
+import tm.interfaces.SelectionInterface ;
+import tm.interfaces.StateInterface ;
+import tm.interfaces.TMFileI ;
+import tm.interfaces.TagSet ;
 
 public class CodeDisplayer extends PortableDisplayer {
 	public CodeDisplayer(StateInterface model, PortableContextInterface context) {
@@ -60,7 +67,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		int n = model.getNumSelectedCodeLines(theFile, allowGaps);
 		for (int i = 0; i < n; i++) {
 			baseLine += lineHeight + LINE_PADDING;
-			CodeLine theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
+			CodeLineI theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
 			//TODO error here
 			if (theLine != null&& theLine.getCoords().getLineNumber() == displayInfo.getFocusLineNumber()) {
 				int save = screen.getColor();
@@ -97,7 +104,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		displayInfo.setMyFontByIndex(Kit.getKit().getFont(primary.getName(), BOLD_ITALIC, primary.getSize()), BOLD_ITALIC);
 	}
 
-	private void drawLine(CodeLine codeLine, int x, int y, Graphics screen) {
+	private void drawLine(CodeLineI codeLine, int x, int y, Graphics screen) {
 		setMode(screen, NORMAL);
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 		final int em = fm.stringWidth("M"); 
@@ -130,43 +137,43 @@ public class CodeDisplayer extends PortableDisplayer {
 		int column = 0;
 		int m = 0; // index into the markup array
 		char[] chars = codeLine.getChars();
-		MarkUp[] markUp = codeLine.markUp();
+		MarkUpI[] markUp = codeLine.markUp();
 		setMode(screen, NORMAL);
 		fm = screen.getFontMetrics(screen.getFont());
 		SelectionInterface selection = model.getSelection();
 		boolean visible = TagSet.EMPTY.selectionIsValid(selection);
 		for (int i = 0, sz = chars.length; i < sz; ++i) {
 			// Process all MarkUp commands that apply up to column i.
-			while (m < markUp.length && markUp[m].column <= i) {
-				int command = markUp[m].command;
+			while (m < markUp.length && markUp[m].getColumn() <= i) {
+				int command = markUp[m].getCommand();
 				switch (command) {
-				case MarkUp.NORMAL: {
+				case MarkUpI.NORMAL: {
 					setMode(screen, NORMAL);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.KEYWORD: {
+				case MarkUpI.KEYWORD: {
 					setMode(screen, KEYWORD);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.COMMENT: {
+				case MarkUpI.COMMENT: {
 					setMode(screen, COMMENT);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.PREPROCESSOR: {
+				case MarkUpI.PREPROCESSOR: {
 					setMode(screen, PREPROCESSOR);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.CONSTANT: {
+				case MarkUpI.CONSTANT: {
 					setMode(screen, CONSTANT);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.CHANGE_TAG_SET: {
-					visible = markUp[m].tagSet.selectionIsValid(selection);
+				case MarkUpI.CHANGE_TAG_SET: {
+					visible = markUp[m].getTagSet().selectionIsValid(selection);
 				}
 					break;
 				default: {
@@ -207,7 +214,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		boolean found = false;
 		boolean allowGaps = displayInfo.getLineNumbersCheckStatus();
 		for (int sz = model.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
-			CodeLine codeLine = model.getSelectedCodeLine(theFile, allowGaps, focusLine);
+			CodeLineI codeLine = model.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().getLineNumber() == displayInfo.getFocusLineNumber()) {
 				found = true;
 				break;
