@@ -1,6 +1,6 @@
 package tm.gwt.display;
 
-import tm.portableDisplaysGWT.PortableContext;
+import tm.portableDisplays.PortableContext;
 
 public class Context extends PortableContext{
 }

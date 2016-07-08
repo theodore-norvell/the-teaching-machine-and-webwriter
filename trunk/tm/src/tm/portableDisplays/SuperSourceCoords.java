@@ -1,7 +1,7 @@
 package tm.portableDisplays;
 
 public interface SuperSourceCoords {
-	public SuperTMFile getFile();
+	public TMFileI getFile();
 
     /** Line number counting from 1. */
     public int getLineNumber();

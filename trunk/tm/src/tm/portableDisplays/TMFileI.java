@@ -1,6 +1,6 @@
 package tm.portableDisplays;
 
-public interface SuperTMFile {
+public interface TMFileI {
 	public boolean equals( Object obj );
 	public String getFileName();
 }

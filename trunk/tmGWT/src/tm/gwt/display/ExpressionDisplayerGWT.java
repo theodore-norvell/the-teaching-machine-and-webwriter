@@ -1,7 +1,7 @@
 package tm.gwt.display;
 
-import tm.portableDisplaysGWT.ExpressionDisplayer;
-import tm.portableDisplaysGWT.PortableContextInterface;
+import tm.portableDisplays.ExpressionDisplayer;
+import tm.portableDisplays.PortableContextInterface;
 
 public class ExpressionDisplayerGWT extends ExpressionDisplayer {
 	MirrorState evaluator;

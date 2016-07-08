@@ -2,8 +2,8 @@ package tm.gwt.display;
 
 import telford.common.Font;
 import telford.common.Kit;
-import tm.portableDisplaysGWT.CodeDisplayer;
-import tm.portableDisplaysGWT.PortableContextInterface;
+import tm.portableDisplays.CodeDisplayer;
+import tm.portableDisplays.PortableContextInterface;
 
 public class CodeDisplayerGWT extends CodeDisplayer {
 	MirrorState evaluator;

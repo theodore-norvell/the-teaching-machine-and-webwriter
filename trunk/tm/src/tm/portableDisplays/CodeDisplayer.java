@@ -32,7 +32,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		this.displayInfo = displayInfo;
 	}
 
-	private SuperTMFile theFile = null; // The file currently being displayed.
+	private TMFileI theFile = null; // The file currently being displayed.
 
 	@Override
 	public void refresh() {

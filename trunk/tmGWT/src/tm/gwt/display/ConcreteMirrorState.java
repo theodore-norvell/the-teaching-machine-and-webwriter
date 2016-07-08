@@ -8,7 +8,7 @@ import tm.gwt.jsInterface.MirrorState;
 import tm.portableDisplays.CodeLine;
 import tm.portableDisplays.MarkUp;
 import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.SuperTMFile;
+import tm.portableDisplays.TMFileI;
 
 public class ConcreteMirrorState implements MirrorState {
 	private List<GWTCodeLineTemp> lines = null;
@@ -23,12 +23,12 @@ public class ConcreteMirrorState implements MirrorState {
 		return "";
 	}
 
-	public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
+	public CodeLine getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
 		CodeLine c = lines.get(index);
 		return c;
 	};
 
-	public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
+	public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
 		return lines.size();
 	}
 	

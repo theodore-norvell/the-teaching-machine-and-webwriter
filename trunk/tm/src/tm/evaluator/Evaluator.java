@@ -34,7 +34,7 @@ import tm.languageInterface.Language;
 import tm.languageInterface.NodeInterface;
 import tm.portableDisplays.CodeLine;
 import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.SuperTMFile;
+import tm.portableDisplays.TMFileI;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMException;
@@ -524,7 +524,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     public SourceCoords getCodeFocus() {
         return vms.getCurrentSelectedCoords() ; }
 
-    public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
+    public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
         return vms.getCodeStore().getNumSelectedCodeLines( (TMFile)tmFile, allowGaps ) ;
     }
 
@@ -532,7 +532,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 //        return vms.getCodeStore().getSelectedCodeLine( tmFile, allowGaps, index ) ;
 //    }
     
-    public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
+    public CodeLine getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
         return vms.getCodeStore().getSelectedCodeLine( (TMFile)tmFile, allowGaps, index ) ;
     }
     

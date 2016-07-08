@@ -56,7 +56,7 @@ import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
 import tm.portableDisplays.CodeLine;
 import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.SuperTMFile;
+import tm.portableDisplays.TMFileI;
 import tm.scripting.ScriptManager;
 import tm.utilities.Assert;
 import tm.utilities.CachingFileSource;
@@ -955,11 +955,11 @@ public class TMBigApplet extends JApplet implements CommandInterface,
     public Enumeration<TMFile> getSourceFiles() {
         return evaluator.getSourceFiles() ; }
 
-    public int getNumSelectedCodeLines(SuperTMFile tmFile, boolean allowGaps) {
+    public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
         return evaluator.getNumSelectedCodeLines( tmFile, allowGaps ) ;
     }
 
-    public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
+    public CodeLine getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
         return evaluator.getSelectedCodeLine( tmFile, allowGaps, index ) ; }
 
     public int getNumConsoleLines() {
