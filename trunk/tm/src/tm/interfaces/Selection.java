@@ -17,7 +17,7 @@
  */
 package tm.interfaces;
 
-import tm.portableDisplays.SuperAssert ;
+import tm.utilities.Assert ;
 
 
 public class Selection implements SelectionInterface {
@@ -59,7 +59,7 @@ public class Selection implements SelectionInterface {
         case OR:
             if( children[0].evaluate(tagSet) ) return true ;
             else return children[1].evaluate(tagSet) ;
-        default: SuperAssert.check(false) ; return false ;
+        default: Assert.check(false) ; return false ;
         }
     }
     
@@ -86,7 +86,7 @@ public class Selection implements SelectionInterface {
             if( p > 1)
                 return "(" + y + ")" ;
             else return y ;
-        default: SuperAssert.check(false) ; return "" ;
+        default: Assert.check(false) ; return "" ;
         }
     }
 }
