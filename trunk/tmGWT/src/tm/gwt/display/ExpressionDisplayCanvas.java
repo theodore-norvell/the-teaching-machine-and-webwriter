@@ -1,11 +1,11 @@
 package tm.gwt.display;
 
-import tm.gwt.jsInterface.MirrorState;
+import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
 public class ExpressionDisplayCanvas extends ExpressionDisplayer {
-	MirrorState evaluator;
+	StateInterface evaluator;
 
 	public ExpressionDisplayCanvas(PortableContextInterface context) {
 		super(null, context);
