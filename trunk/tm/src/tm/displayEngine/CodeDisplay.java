@@ -468,7 +468,7 @@ public class CodeDisplay extends DisplayAdapter {
         setMode( screen, NORMAL ) ;
         fm = screen.getFontMetrics() ;
         SelectionInterface selection = commandProcessor.getSelection() ;
-        boolean visible = TagSet.EMPTY.selectionIsValid( selection ) ;
+        boolean visible = selection.isValidForEmptyTagSet() ;
         final int x0 = x ; // x0 is the x of the first character.
         for( int i=0, sz = chars.length ; i < sz ; ++i ) {
             // Process all MarkUp commands that apply up to column i.

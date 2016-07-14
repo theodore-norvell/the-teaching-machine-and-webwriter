@@ -20,4 +20,5 @@ package tm.interfaces;
 
 public interface SelectionInterface {
     public boolean evaluate( TagSetInterface tagSet ) ;
+    public boolean isValidForEmptyTagSet() ;
 }

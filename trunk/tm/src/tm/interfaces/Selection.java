@@ -46,6 +46,23 @@ public class Selection implements SelectionInterface {
         children = new Selection[] { left, right } ; 
     }
     
+    public boolean isValidForEmptyTagSet() {
+        switch( type ) {
+        case TRUE : return true ;
+        case FALSE : return false ;
+        case TAG: return false ;
+        case NOT: return ! children[0].isValidForEmptyTagSet() ;
+        case AND:
+            if( children[0].isValidForEmptyTagSet() )
+                return children[1].isValidForEmptyTagSet() ;
+            else return false ;
+        case OR:
+            if( children[0].isValidForEmptyTagSet() ) return true ;
+            else return children[1].isValidForEmptyTagSet() ;
+        default: Assert.check(false) ; return false ;
+        }
+    }
+    
     public boolean evaluate( TagSetInterface tagSet ) {
         switch( type ) {
         case TRUE : return true ;

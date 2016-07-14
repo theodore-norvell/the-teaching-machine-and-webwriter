@@ -9,7 +9,7 @@ import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
-import tm.interfaces.TagSet ;
+import tm.interfaces.TagSetInterface ;
 import tm.utilities.Assert ;
 
 public class CodeDisplayer extends PortableDisplayer {
@@ -141,7 +141,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		setMode(screen, NORMAL);
 		fm = screen.getFontMetrics(screen.getFont());
 		SelectionInterface selection = model.getSelection();
-		boolean visible = TagSet.EMPTY.selectionIsValid(selection);
+		boolean visible = selection.isValidForEmptyTagSet();
 		for (int i = 0, sz = chars.length; i < sz; ++i) {
 			// Process all MarkUp commands that apply up to column i.
 			while (m < markUp.length && markUp[m].getColumn() <= i) {

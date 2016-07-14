@@ -5,7 +5,8 @@
 <module rename-to='tm'>
     <inherits name='com.google.gwt.user.User' />
     <source path="portableDisplays" />
+    <source path="interfaces" includes="CodeLineI.java,MarkUpI.java,SelectionInterface.java,SourceCoordsI.java,StateInterface.java,TagSetInterface.java,TMFileI.java"/>
     <!-- <source path="portableDisplays.PortableContextInterface" /> -->
-   <!--  <source path="backtrack" />
+    <!--  <source path="backtrack" />
     <source path="utilities" /> -->
 </module>

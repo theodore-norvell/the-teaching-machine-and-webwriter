@@ -49,7 +49,7 @@ public class Colourizer {
     Vector<MarkUp> currentMarkUp = new Vector<MarkUp>() ;
     
     /** The set of all tags that currently apply. */
-    TagSet currentTagSet = TagSet.EMPTY ;
+    TagSet currentTagSet = TagSet.getEmpty() ;
     
     /** A list of all TagSets that apply to the current line. */
     Set<TagSetInterface> tagSetsForCurrentLine   ;
@@ -127,7 +127,7 @@ public class Colourizer {
         currentMarkUp.setSize(0) ;
         tagSetsForCurrentLine = new HashSet<TagSetInterface>() ; 
         // Emit a mark-up command to set the current tag set
-        if( currentTagSet != TagSet.EMPTY ) 
+        if( ! currentTagSet.isEmpty() ) 
             emitCommand( MarkUpI.CHANGE_TAG_SET, currentTagSet ) ;
         
         startColour(colourClass) ;

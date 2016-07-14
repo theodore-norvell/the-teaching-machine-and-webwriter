@@ -43,7 +43,7 @@ public class ConcreteMirrorState implements MirrorState {
 	private void parserSourceFile() {
 		lines = new ArrayList<GWTCodeLineTemp>();
 		StringBuffer sb0 = new StringBuffer("package test;");
-		Vector<MarkUp> markUp0 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp0 = new Vector<MarkUpI>();
 		markUp0.add(0, new MarkUp(0, MarkUpI.KEYWORD));
 		markUp0.add(1, new MarkUp(7, MarkUpI.NORMAL));
 		GWTCodeLineTemp cl0 = new GWTCodeLineTemp(sb0, markUp0, new GWTSourceCoords(1));
@@ -51,13 +51,13 @@ public class ConcreteMirrorState implements MirrorState {
 		lines.add(0, cl0);
 		
 		StringBuffer sb1 = new StringBuffer("");
-		Vector<MarkUp> markUp1 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp1 = new Vector<MarkUpI>();
 		GWTCodeLineTemp cl1 = new GWTCodeLineTemp(sb1, markUp1, new GWTSourceCoords(2));
 		cl1.setLineNumber(2);
 		lines.add(1, cl1);
 		
 		StringBuffer sb2 = new StringBuffer("public class Test {");
-		Vector<MarkUp> markUp2 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp2 = new Vector<MarkUpI>();
 		markUp2.add(0, new MarkUp(0, MarkUpI.KEYWORD));
 		markUp2.add(1, new MarkUp(6, MarkUpI.NORMAL));
 		markUp2.add(2, new MarkUp(7, MarkUpI.KEYWORD));
@@ -68,7 +68,7 @@ public class ConcreteMirrorState implements MirrorState {
 		
 		
 		StringBuffer sb3 = new StringBuffer("public static void main(String[] args) {");
-		Vector<MarkUp> markUp3 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp3 = new Vector<MarkUpI>();
 		markUp3.add(0, new MarkUp(0, MarkUpI.KEYWORD));
 		markUp3.add(1, new MarkUp(6, MarkUpI.NORMAL));
 		markUp3.add(2, new MarkUp(7, MarkUpI.KEYWORD));
@@ -80,7 +80,7 @@ public class ConcreteMirrorState implements MirrorState {
 		lines.add(3, cl3);
 		
 		StringBuffer sb4 = new StringBuffer("	int i = 1;//test comment");
-		Vector<MarkUp> markUp4 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp4 = new Vector<MarkUpI>();
 		markUp4.add(0, new MarkUp(1, MarkUpI.KEYWORD));
 		markUp4.add(1, new MarkUp(4, MarkUpI.NORMAL));
 		markUp4.add(2, new MarkUp(9, MarkUpI.CONSTANT));
@@ -92,7 +92,7 @@ public class ConcreteMirrorState implements MirrorState {
 		lines.add(4, cl4);
 		
 		StringBuffer sb5 = new StringBuffer("	int j=2;");
-		Vector<MarkUp> markUp5 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp5 = new Vector<MarkUpI>();
 		markUp5.add(0, new MarkUp(1, MarkUpI.KEYWORD));
 		markUp5.add(1, new MarkUp(4, MarkUpI.NORMAL));
 		markUp5.add(2, new MarkUp(7, MarkUpI.CONSTANT));
@@ -107,7 +107,7 @@ public class ConcreteMirrorState implements MirrorState {
 		
 		
 		StringBuffer sb36 = new StringBuffer("	int r = i + j;");
-		Vector<MarkUp> markUp36 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp36 = new Vector<MarkUpI>();
 		markUp36.add(0, new MarkUp(1, MarkUpI.KEYWORD));
 		markUp36.add(1, new MarkUp(4, MarkUpI.NORMAL));
 		GWTCodeLineTemp cl36 = new GWTCodeLineTemp(sb36, markUp36, new GWTSourceCoords(37));
@@ -115,19 +115,19 @@ public class ConcreteMirrorState implements MirrorState {
 		lines.add(36, cl36);
 		
 		StringBuffer sb37 = new StringBuffer("	System.out.println(r);");
-		Vector<MarkUp> markUp37 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp37 = new Vector<MarkUpI>();
 		GWTCodeLineTemp cl37 = new GWTCodeLineTemp(sb37, markUp37, new GWTSourceCoords(38));
 		cl37.setLineNumber(38);
 		lines.add(37, cl37);
 		
 		StringBuffer sb38 = new StringBuffer("}");
-		Vector<MarkUp> markUp38 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp38 = new Vector<MarkUpI>();
 		GWTCodeLineTemp cl38 = new GWTCodeLineTemp(sb38, markUp38, new GWTSourceCoords(39));
 		cl38.setLineNumber(39);
 		lines.add(38, cl38);
 		
 		StringBuffer sb39 = new StringBuffer("}");
-		Vector<MarkUp> markUp39 = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp39 = new Vector<MarkUpI>();
 		GWTCodeLineTemp c39 = new GWTCodeLineTemp(sb39, markUp39, new GWTSourceCoords(40));
 		c39.setLineNumber(40);
 		lines.add(39, c39);
@@ -136,7 +136,7 @@ public class ConcreteMirrorState implements MirrorState {
 	private void addNewLine(List<GWTCodeLineTemp> lines, int i){
 //		String index = String.valueOf(i-5);
 		StringBuffer sb = new StringBuffer("	int j=2;");
-		Vector<MarkUp> markUp = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp = new Vector<MarkUpI>();
 		markUp.add(0, new MarkUp(1, MarkUpI.KEYWORD));
 		markUp.add(1, new MarkUp(4, MarkUpI.NORMAL));
 		markUp.add(2, new MarkUp(7, MarkUpI.CONSTANT));

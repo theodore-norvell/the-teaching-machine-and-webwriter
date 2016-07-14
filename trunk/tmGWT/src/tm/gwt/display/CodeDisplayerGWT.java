@@ -2,6 +2,7 @@ package tm.gwt.display;
 
 import telford.common.Font;
 import telford.common.Kit;
+import tm.gwt.jsInterface.MirrorState ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 

@@ -21,4 +21,5 @@ package tm.interfaces;
 public interface TagSetInterface {
     boolean selectionIsValid( SelectionInterface seletion ) ;
     boolean contains( String tag ) ;
+    boolean isEmpty() ;
 }

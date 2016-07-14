@@ -37,8 +37,8 @@ public class TagSet implements TagSetInterface{
     }
 
     public static TagSet union( TagSet a, TagSet b ) {
-        if( a == EMPTY || a==b ) return b ;
-        if( b == EMPTY ) return a ;
+        if( a.isEmpty() || a==b ) return b ;
+        if( b.isEmpty() ) return a ;
         TagSet c = new TagSet(  ) ;
         for( String s : a.rep ) c.rep.add( s ) ;
         for( String s : b.rep ) c.rep.add( s ) ;
@@ -46,15 +46,17 @@ public class TagSet implements TagSetInterface{
     }
 
     public static TagSet subtract( TagSet a, TagSet b ) {
-        if( a == EMPTY || a==b ) return EMPTY ;
-        if( b == EMPTY ) return a ;
+        if( a.isEmpty() || a==b ) return EMPTY ;
+        if( b.isEmpty() ) return a ;
         TagSet c = new TagSet(  ) ;
         for( String s : a.rep ) c.rep.add( s ) ;
         for( String s : b.rep ) c.rep.remove( s ) ;
         return c ;
     }
 
-    public static TagSet EMPTY = new TagSet() ;
+    private static TagSet EMPTY = new TagSet() ;
+    
+    public static TagSet getEmpty() { return EMPTY ; }
 
     public boolean contains( String str ) {
         str = str.toLowerCase() ;
@@ -76,5 +78,10 @@ public class TagSet implements TagSetInterface{
 
     public boolean selectionIsValid(SelectionInterface selection) {
         return selection.evaluate( this ) ;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return rep.isEmpty() ;
     }
 }
