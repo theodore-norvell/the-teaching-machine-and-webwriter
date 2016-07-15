@@ -59,7 +59,7 @@ public class Selection implements SelectionInterface {
         case OR:
             if( children[0].isValidForEmptyTagSet() ) return true ;
             else return children[1].isValidForEmptyTagSet() ;
-        default: Assert.check(false) ; return false ;
+        default: /*Unreachable*/; return false ;
         }
     }
     
@@ -76,7 +76,7 @@ public class Selection implements SelectionInterface {
         case OR:
             if( children[0].evaluate(tagSet) ) return true ;
             else return children[1].evaluate(tagSet) ;
-        default: Assert.check(false) ; return false ;
+        default: /* Unreachable*/ return false ;
         }
     }
     
@@ -103,7 +103,7 @@ public class Selection implements SelectionInterface {
             if( p > 1)
                 return "(" + y + ")" ;
             else return y ;
-        default: Assert.check(false) ; return "" ;
+        default: /*Unreachable*/ return "" ;
         }
     }
 }

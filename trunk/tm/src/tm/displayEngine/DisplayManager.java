@@ -60,7 +60,6 @@ import tm.interfaces.DisplayManagerInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
-import tm.portableDisplays.PortableContext;
 import tm.portableDisplays.PortableContextInterface;
 import tm.scripting.ScriptManager;
 import tm.utilities.Assert;
@@ -389,7 +388,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		
 	}
 	
-	private PortableContextInterface portableContext = new PortableContext() ;
+	private PortableContextInterface portableContext = new SwingPortableContext() ;
 
     public PortableContextInterface getPortableContext() {
         return portableContext ;

@@ -9,8 +9,6 @@ import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
-import tm.interfaces.TagSetInterface ;
-import tm.utilities.Assert ;
 
 public class CodeDisplayer extends PortableDisplayer {
 	public CodeDisplayer(StateInterface model, PortableContextInterface context) {
@@ -177,7 +175,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				}
 					break;
 				default: {
-					Assert.check(false);
+					context.getAsserter().check("Unreachable code reached.");
 				}
 				}
 				m++;
@@ -190,7 +188,7 @@ public class CodeDisplayer extends PortableDisplayer {
 					// column 0 1 2 3 4 5 6 7 8 9 10 11 12 13
 					// newcolumn 4 4 4 4 8 8 8 8 12 12 12 12 16
 					int newColumn = (column / displayInfo.getTabSpaces() + 1) * displayInfo.getTabSpaces();
-					Assert.check(newColumn > column);
+					context.getAsserter().check(newColumn > column);
 					char[] space = new char[] { ' ' };
 					
 					x += (newColumn - column) * fm.stringWidth(String.valueOf(space[0]));

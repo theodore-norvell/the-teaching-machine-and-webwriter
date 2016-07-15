@@ -14,38 +14,36 @@
 
 package tm.displayEngine;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
+import java.awt.Color ;
+import java.awt.Dimension ;
+import java.awt.Font ;
+import java.awt.FontMetrics ;
+import java.awt.Graphics ;
+import java.awt.Graphics2D ;
+import java.awt.Paint ;
+import java.awt.Point ;
+import java.awt.Rectangle ;
+import java.awt.event.ItemEvent ;
+import java.awt.event.ItemListener ;
+import java.awt.event.MouseEvent ;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JCheckBoxMenuItem ;
+import javax.swing.JSlider ;
+import javax.swing.event.ChangeEvent ;
+import javax.swing.event.ChangeListener ;
 
-import tm.configuration.Configuration;
+import tm.configuration.Configuration ;
 import tm.interfaces.CodeLineI ;
-import tm.interfaces.ImageSourceInterface;
-import tm.interfaces.MarkUp ;
+import tm.interfaces.ImageSourceInterface ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
-import tm.interfaces.SourceCoords;
+import tm.interfaces.SourceCoords ;
 import tm.interfaces.SourceCoordsI ;
-import tm.interfaces.TagSet ;
-import tm.subWindowPkg.SmallButton;
-import tm.subWindowPkg.ToolBar;
-import tm.utilities.Assert;
-import tm.utilities.Debug;
-import tm.utilities.TMFile;
+import tm.subWindowPkg.SmallButton ;
+import tm.subWindowPkg.ToolBar ;
+import tm.utilities.Assert ;
+import tm.utilities.Debug ;
+import tm.utilities.TMFile ;
 
 public class CodeDisplay extends DisplayAdapter {
     /**
