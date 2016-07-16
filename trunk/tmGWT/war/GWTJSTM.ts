@@ -10,16 +10,16 @@ module jstm {
             this.objState = new MirrorState();
         }
 
-//        updateExpression(): void {
-//            refreshExpression(this.expDisp, this.objState);// call method defined in TmGWT via JSNI
-//        }
-
         setMirrorState(): void {
             setMirrorState(this.expDisp, this.objState);// call method defined in TmGWT via JSNI
         }
 
-        test(newExp: string) {
+        updateExpression(newExp: string) {
             this.objState.setExpression(newExp);
+        }
+        
+        getExpression(): String{
+        	return this.objState.getExpression();
         }
     }
 }

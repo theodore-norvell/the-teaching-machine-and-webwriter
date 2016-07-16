@@ -1,8 +1,9 @@
 package tm.gwt.server;
 
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import tm.gwt.client.GreetingService;
 import tm.gwt.shared.FieldVerifier;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * The server-side implementation of the RPC service.

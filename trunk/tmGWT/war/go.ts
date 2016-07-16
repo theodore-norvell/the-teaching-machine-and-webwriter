@@ -8,5 +8,5 @@ function init(): void {
 }
 
 function updateValue(): void {
-    tm.test("\ufffd\ufffci = \uffff1");//"\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32 ");
+    tm.updateExpression("\ufffd\ufffci = \uffff1");
 }
