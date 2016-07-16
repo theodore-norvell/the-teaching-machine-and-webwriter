@@ -54,7 +54,8 @@ public interface EvaluatorInterface extends StateInterface{
      * <p>
      * When execution pauses, the line in focus should contain the
      * next operation to execute. */
-    public SourceCoords getCodeFocus() ;
+  //TODO move into StateInterface by xiuhuali
+//    public SourceCoords getCodeFocus() ;
     
     /** Get a list of all source files. */
     public Enumeration<TMFile> getSourceFiles() ;

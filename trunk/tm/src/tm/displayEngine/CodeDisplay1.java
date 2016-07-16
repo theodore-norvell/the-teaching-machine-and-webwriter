@@ -69,7 +69,6 @@ public class CodeDisplay1 extends SwingDisplay {
 //	private int cursorChar; // The char which the cursor is on
 	private SourceCoords cursorLineCoords;
 	private TMFile theFile = null; // The file currently being displayed.
-//	private SourceCoords focus = null;// Added by xiuhuali TODO
 	private SelectionInterface theSelection;
 	private int rate = 50; // Middle of arbitrary 0-100 scale
 	private JSlider slider;
@@ -144,7 +143,7 @@ public class CodeDisplay1 extends SwingDisplay {
 		refreshTheButtons();
 		boolean allowGaps = lineNumbersCheckBox.getState();
 		codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(allowGaps);
-		SourceCoords focus = commandProcessor.getCodeFocus();
+		SourceCoords focus = (SourceCoords)commandProcessor.getCodeFocus();
 		TMFile file = focus.getFile();
 		codeDisplayer.getDisplayInfo().setTmFile(file);
 		codeDisplayer.getDisplayInfo().setFocusLineNumber(focus.getLineNumber());
