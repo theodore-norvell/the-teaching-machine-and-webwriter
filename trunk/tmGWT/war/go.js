@@ -7,6 +7,7 @@ function init() {
     tm.setMirrorState();
 }
 function updateValue() {
-    tm.test("\ufffd\ufffci = \uffff1"); //"\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32 ");
+    tm.updateExpression("\ufffd\ufffci = \uffff1");
+//    alert(tm.getExpression());
 }
 //# sourceMappingURL=go.js.map

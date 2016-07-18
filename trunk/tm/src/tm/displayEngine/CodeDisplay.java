@@ -146,7 +146,7 @@ public class CodeDisplay extends DisplayAdapter {
     public void refresh(){
         refreshTheButtons() ;
         boolean allowGaps = lineNumbersCheckBox.getState() ;
-        SourceCoords focus = commandProcessor.getCodeFocus();
+        SourceCoords focus = (SourceCoords)commandProcessor.getCodeFocus();
         TMFile file = focus.getFile() ;
         /*DBG System.out.println("Current file is " + file.getFileName());/*DBG*/
         Graphics screen = getGraphics();
@@ -388,7 +388,7 @@ public class CodeDisplay extends DisplayAdapter {
 //	System.out.println("Line height at draw is: " + lineHeight + " for font " + screen.getFont());
         int baseLine = lineHeight + LINE_PADDING;
 
-        SourceCoords focus = commandProcessor.getCodeFocus();
+        SourceCoords focus = (SourceCoords)commandProcessor.getCodeFocus();
         /*DBG System.out.println("Current file is " + file.getFileName());/*DBG*/
         if (theFile == null) theFile = focus.getFile();
         boolean allowGaps = lineNumbersCheckBox.getState() ;

@@ -2,6 +2,7 @@ package tm.gwt.telford;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
+import com.google.gwt.dom.client.Style.Unit;
 
 public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
@@ -42,6 +43,8 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 	}
 	@Override
 	public void resetSize(int width, int height) {
+		myCanvas.getPeer().setWidth(width + Unit.PX.getType());
+		myCanvas.getPeer().setHeight(height + Unit.PX.getType());
 		myCanvas.getPeer().setCoordinateSpaceWidth(width);
 		myCanvas.getPeer().setCoordinateSpaceHeight(height);
 	}

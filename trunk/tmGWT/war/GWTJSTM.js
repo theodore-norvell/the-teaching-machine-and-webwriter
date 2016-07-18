@@ -11,14 +11,14 @@ var jstm;
             this.expDisp = getExpressionDisplay(); // call method defined in TmGWT via JSNI
             this.objState = new jstm.MirrorState();
         };
-        //        updateExpression(): void {
-        //            refreshExpression(this.expDisp, this.objState);// call method defined in TmGWT via JSNI
-        //        }
         GWTJSTM.prototype.setMirrorState = function () {
             setMirrorState(this.expDisp, this.objState); // call method defined in TmGWT via JSNI
         };
-        GWTJSTM.prototype.test = function (newExp) {
+        GWTJSTM.prototype.updateExpression = function (newExp) {
             this.objState.setExpression(newExp);
+        };
+        GWTJSTM.prototype.getExpression = function () {
+            return this.objState.getExpression();
         };
         return GWTJSTM;
     })();

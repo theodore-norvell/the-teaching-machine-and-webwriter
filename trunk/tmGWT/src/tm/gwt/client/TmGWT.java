@@ -2,23 +2,19 @@ package tm.gwt.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.Command;
+import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.MenuBar;
+import com.google.gwt.user.client.ui.MenuItem;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.Widget;
 
-import telford.common.ActionEvent;
-import telford.common.ActionListener;
-import telford.common.Button;
-import telford.common.Container;
-import telford.common.Display;
 import telford.common.Kit;
-import telford.common.Root;
-import tm.gwt.display.CodeDisplayCanvas;
+import tm.gwt.display.CodeDisplay1;
 import tm.gwt.display.ConcreteMirrorState;
-import tm.gwt.display.ExpressionDisplayCanvas;
+import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
-import tm.gwt.display.Viewer;
-import tm.gwt.jsInterface.MirrorState;
+import tm.gwt.jsInterface.MirrorStateTest;
 import tm.gwt.telford.KitGWT;
 import tm.interfaces.Selection ;
 import tm.portableDisplays.PortableContextInterface;
@@ -27,108 +23,103 @@ import tm.portableDisplays.PortableContextInterface;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class TmGWT implements EntryPoint {
-	private static Viewer expView;
-	private static Viewer codeView;
-	private Root expRoot;
-	private Root codeRoot;
-
-	private Container expContainer;
-	private Container codeContainer;
-
+	private static ExpressionDisplay1 expDisplay;
 	public void onModuleLoad() {
-		GWT.log("Start GWT test.", null);
-		Kit.setKit(new KitGWT());
-		Display expDisplay = Kit.getKit().getDisplay();
-		expRoot = new Root("expDisplayPanel");
-		expDisplay.setRoot(expRoot);
-
-		Display codeDisplay = Kit.getKit().getDisplay();
-		codeRoot = new Root("codeDisplayPanel");
-		codeDisplay.setRoot(codeRoot);
-
-		// Button goForwardButton = new Button("-&gt;");
-		// Button goBackdButton = new Button("&lt;-");
-		Button goForwardButton = new Button("<img src='/images/Advance.gif'/>");
-		Button goBackdButton = new Button("<img src='/images/Backup.gif'/>");
-		goForwardButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// expression display refresh operation
-				expView.repaint();
-				expRoot.add(expContainer);
-				codeRoot.add(codeContainer);
-			}
-		});
-
-		goBackdButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				expView.repaint();
-				expRoot.add(expContainer);
-				codeRoot.add(codeContainer);
-			}
-		});
-
-		Container toolBar = new Container();
-		toolBar.add(goBackdButton);
-		toolBar.add(goForwardButton);
-
-		expContainer = new Container();
-		expContainer.add(toolBar);
-
-		codeContainer = new Container();
-		codeContainer.setStyleName("tm-flowPanel");
-
-		PortableContextInterface context = new GWTContext();
-
-		// the first parameter of constructor (i.e. MirrorEvaluator) will be set
-		// later by JS side
-		expView = new Viewer(new ExpressionDisplayCanvas(context));
-		expView.getPlayer().setStyleName("tm-smallCanvas");
-		codeView = new Viewer(
-				new CodeDisplayCanvas(new ConcreteMirrorState(new Selection(Selection.TokenType.TRUE)), context));
-		codeView.getPlayer().setStyleName("tm-largeCanvas");
-		codeView.getPlayer().resetSize(380, 800);
-		expView.repaint();
-		codeView.repaint();
-		expContainer.add(expView.getPlayer());
-		codeContainer.add(codeView.getPlayer());
-
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-
-			@Override
-			public void execute() {
-				int bottomLine = codeView.getPlayer().calFocusPosition();
-				FlowPanel fp = (FlowPanel) codeContainer.getPeer().getRepresentative();
-				int scrollBottom = fp.getElement().getScrollTop() + fp.getElement().getClientHeight();
-				if(bottomLine >  scrollBottom) {
-					fp.getElement().setScrollTop(bottomLine - 4 * codeView.getPlayer().getVScale()); 
-				}
-				
-//				int vertValue = myWorkPane.getVerticalScrollBar().getValue();
-//				if (topLine < vertValue || bottomLine > vertValue + myWorkPane.getViewport().getHeight()) {
-//					paintImmediately(getBounds());
-//					myWorkPane.getVerticalScrollBar().setValue(topLine - 3 * getVScale());
-//				}
-//				((FlowPanel) codeContainer.getPeer().getRepresentative()).getElement()
-//						.setScrollTop(codeView.getPlayer().calFocusPosition());
-			}
-		});
-
-		expRoot.add(expContainer);
-		codeRoot.add(codeContainer);
-		// to explore JSNI method to JS
 		getExpressionDisplay();
 		setMirrorState();
+		
+		GWT.log("Start GWT test.", null);
+		Kit.setKit(new KitGWT());
+		RootPanel menu = RootPanel.get("menuBar");
+		menu.add(this.createMenu());
+		PortableContextInterface context = new GWTContext();
+		CodeDisplay1 codeDisplay = new CodeDisplay1(new ConcreteMirrorState(new Selection(Selection.TokenType.TRUE)),
+				context);
+		codeDisplay.refresh();
+		
+		expDisplay = new ExpressionDisplay1(new ConcreteMirrorState(new Selection(Selection.TokenType.TRUE)),
+				context);
+		expDisplay.refresh();
+		
 	}
 
-	private static ExpressionDisplayCanvas getDisplayer() {
-		return (ExpressionDisplayCanvas) expView.getPlayer();
+	private static ExpressionDisplay1 getDisplayer() {
+		return expDisplay;
 	}
 
-	private static void setEvaluator(ExpressionDisplayCanvas expDisplay, MirrorState evaluator) {
-		expDisplay.setEvaluator(evaluator);
+	private static void setEvaluator(ExpressionDisplay1 expDisplay, MirrorStateTest evaluator) {
+		expDisplay.setJsMirrorStateTest(evaluator);
 	}
+	
+	public Widget createMenu() {
+	    // Create a command that will execute on menu item selection
+	    Command menuCommand = new Command() {
+	      private int curPhrase = 0;
+	      private final String[] phrases = {"Don't click me","Simple menu sample","Try another one"};
+
+	      public void execute() {
+	        Window.alert(phrases[curPhrase]);
+	        curPhrase = (curPhrase + 1) % phrases.length;
+	      }
+	    };
+
+	    // Create a menu bar
+	    MenuBar menu = new MenuBar();
+	    menu.setAutoOpen(true);
+	    menu.setWidth("325px");
+	    menu.setAnimationEnabled(true);
+
+	    // Create a sub menu of recent documents
+	    MenuBar recentDocsMenu = new MenuBar(true);
+	    String[] recentDocs = {"Finishing","How to","Guide"};
+	    for (int i = 0; i < recentDocs.length; i++) {
+	      recentDocsMenu.addItem(recentDocs[i], menuCommand);
+	    }
+
+	    // Create the file menu
+	    MenuBar fileMenu = new MenuBar(true);
+	    fileMenu.setAnimationEnabled(true);
+	    menu.addItem(new MenuItem("File", fileMenu));
+	    String[] fileOptions = {"New","Open","Close","Recent","Exit"};
+	    for (int i = 0; i < fileOptions.length; i++) {
+	      if (i == 3) {
+	        fileMenu.addSeparator();
+	        fileMenu.addItem(fileOptions[i], recentDocsMenu);
+	        fileMenu.addSeparator();
+	      } else {
+	        fileMenu.addItem(fileOptions[i], menuCommand);
+	      }
+	    }
+	    
+	 // Create the edit menu
+	    MenuBar editMenu = new MenuBar(true);
+	    menu.addItem(new MenuItem("Edit", editMenu));
+	    String[] editOptions = {"Undo","Redo","Cut","Copy","Paste"};
+	    for (int i = 0; i < editOptions.length; i++) {
+	      editMenu.addItem(editOptions[i], menuCommand);
+	    }
+
+	    // Create the GWT menu
+	    MenuBar gwtMenu = new MenuBar(true);
+	    menu.addItem(new MenuItem("GWT", true, gwtMenu));
+	    String[] gwtOptions = {"Download","Examples","Source Code","GWT wit's the program"};
+	    for (int i = 0; i < gwtOptions.length; i++) {
+	      gwtMenu.addItem(gwtOptions[i], menuCommand);
+	    }
+
+	    // Create the help menu
+	    MenuBar helpMenu = new MenuBar(true);
+	    menu.addSeparator();
+	    menu.addItem(new MenuItem("Help", helpMenu));
+	    String[] helpOptions = {"Contents","Cookies","About GWT"};
+	    for (int i = 0; i < helpOptions.length; i++) {
+	      helpMenu.addItem(helpOptions[i], menuCommand);
+	    }
+
+	    // Return the menu
+	    menu.ensureDebugId("cwMenuBar");
+	    return menu;
+	  }
 
 	// ==========JSNI methods================
 	private static native void getExpressionDisplay() /*-{
@@ -139,7 +130,7 @@ public class TmGWT implements EntryPoint {
 
 	private static native void setMirrorState() /*-{
 		$wnd.setMirrorState = function(obj1, obj2) {
-			@tm.gwt.client.TmGWT::setEvaluator(Ltm/gwt/display/ExpressionDisplayCanvas;Ltm/gwt/jsInterface/MirrorState;)(obj1,obj2);
+			@tm.gwt.client.TmGWT::setEvaluator(Ltm/gwt/display/ExpressionDisplay1;Ltm/gwt/jsInterface/MirrorStateTest;)(obj1,obj2);
 		}
 	}-*/;
 }

@@ -1,15 +1,11 @@
 package tm.gwt.jsInterface;
 
 import com.google.gwt.core.client.js.JsProperty;
+import com.google.gwt.core.client.js.JsType;
 
-<<<<<<< HEAD
-import tm.interfaces.StateInterface ;
-
-=======
 import tm.portableDisplays.StateInterface;
->>>>>>> PortableDisplayCode-XL
-//@JsType
-public interface MirrorState extends StateInterface{
+@JsType
+public interface MirrorStateTest extends StateInterface{
 	@JsProperty
 	public String getExpression();
 }
