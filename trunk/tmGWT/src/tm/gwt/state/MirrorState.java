@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.SelectionInterface ;
+import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
 
@@ -59,6 +60,12 @@ public class MirrorState implements StateInterface, IsSerializable {
     @Override
     public SelectionInterface getSelection() {
         return selection ;
+    }
+
+    @Override
+    public SourceCoordsI getCodeFocus() {
+        // TODO Auto-generated method stub
+        return null ;
     }
 
 }

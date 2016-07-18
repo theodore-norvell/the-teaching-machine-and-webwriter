@@ -4,10 +4,10 @@ import com.google.gwt.user.client.ui.Button;
 
 import tm.gwt.jsInterface.GWTSuperTMFile;
 import tm.gwt.jsInterface.MirrorState;
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.SourceCoordsI ;
 import tm.portableDisplays.CodeDisplayer;
-import tm.portableDisplays.CodeLine;
 import tm.portableDisplays.PortableContextInterface;
-import tm.portableDisplays.SuperSourceCoords;
 
 public class CodeDisplay1 extends DisplayAdapter {
 	private GWTSuperTMFile theFile;
@@ -47,11 +47,11 @@ public class CodeDisplay1 extends DisplayAdapter {
 		boolean allowGaps = true;
 		setScale(1, 16);
 
-		SuperSourceCoords focus = evaluator.getCodeFocus();
+		SourceCoordsI focus = evaluator.getCodeFocus();
 		int focusLine = 0;
 		boolean found = false;
 		for (int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
-			CodeLine codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
+			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
 				break;

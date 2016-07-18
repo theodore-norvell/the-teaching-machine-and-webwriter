@@ -10,6 +10,9 @@ import tm.utilities.Asserter ;
  * This class used for GWT special context requirement 
  **/
 public class GWTContext implements PortableContextInterface {
+    
+    private AsserterI asserter = new GWTAsserter() ;
+    
 	public CodeDisplayerInfo getCodeDisplayerInfo() {
 		CodeDisplayerInfo info = new CodeDisplayerInfo();
 		// TODO should coming from server side
@@ -30,4 +33,25 @@ public class GWTContext implements PortableContextInterface {
 		info.setFontColor(fontColor);
 		return info;
 	}
+
+    @Override
+    public Font getCodeFont() {
+        return Kit.getKit().getFont("Monospaced", 0, 12) ;
+    }
+
+    @Override
+    public Font getDisplayFont() {
+        // TODO Auto-generated method stub
+        return Kit.getKit().getFont("Dialog", 0, 12) ;
+    }
+
+    @Override
+    public int getHighlightColor() {
+        return 0xFFFF00;
+    }
+
+    @Override
+    public AsserterI getAsserter() {
+        return asserter ;
+    }
 }

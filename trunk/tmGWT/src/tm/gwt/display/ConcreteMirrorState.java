@@ -9,6 +9,7 @@ import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
+import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.TMFileI ;
 
 public class ConcreteMirrorState implements MirrorState {
@@ -26,13 +27,12 @@ public class ConcreteMirrorState implements MirrorState {
 		return "";
 	}
 
-	public SuperSourceCoords getCodeFocus() {
+	public SourceCoordsI getCodeFocus() {
 		return focus;
 	}
 
-	public CodeLine getSelectedCodeLine(SuperTMFile tmFile, boolean allowGaps, int index) {
-		CodeLine c = lines.get(index);
-		return c;
+	public CodeLineI getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
+		return lines.get(index);
 	};
 
 	public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
@@ -142,7 +142,7 @@ public class ConcreteMirrorState implements MirrorState {
 	private void addNewLine(List<GWTCodeLineTemp> lines, int i) {
 		// String index = String.valueOf(i-5);
 		StringBuffer sb = new StringBuffer("	int j=2;");
-		Vector<MarkUp> markUp = new Vector<MarkUp>();
+		Vector<MarkUpI> markUp = new Vector<MarkUpI>();
 		markUp.add(0, new MarkUp(1, MarkUp.KEYWORD));
 		markUp.add(1, new MarkUp(4, MarkUp.NORMAL));
 		markUp.add(2, new MarkUp(7, MarkUp.CONSTANT));
