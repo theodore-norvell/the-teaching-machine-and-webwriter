@@ -39,11 +39,11 @@ import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords ;
 import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.TMFileI ;
 import tm.subWindowPkg.SmallButton ;
 import tm.subWindowPkg.ToolBar ;
 import tm.utilities.Assert ;
 import tm.utilities.Debug ;
-import tm.utilities.TMFile ;
 
 public class CodeDisplay extends DisplayAdapter {
     /**
@@ -84,7 +84,7 @@ public class CodeDisplay extends DisplayAdapter {
     private int cursorLine;		// The line which contains the user-settable cursor
     private int cursorChar;     // The char which the cursor is on
     private SourceCoordsI cursorLineCoords ;
-    private TMFile theFile = null ; // The file currently being displayed.
+    private TMFileI theFile = null ; // The file currently being displayed.
     private SelectionInterface theSelection ;
     private int rate = 50; // Middle of arbitrary 0-100 scale
     private JSlider slider;
@@ -146,8 +146,8 @@ public class CodeDisplay extends DisplayAdapter {
     public void refresh(){
         refreshTheButtons() ;
         boolean allowGaps = lineNumbersCheckBox.getState() ;
-        SourceCoords focus = (SourceCoords)commandProcessor.getCodeFocus();
-        TMFile file = focus.getFile() ;
+        SourceCoordsI focus = commandProcessor.getCodeFocus();
+        TMFileI file = focus.getFile() ;
         /*DBG System.out.println("Current file is " + file.getFileName());/*DBG*/
         Graphics screen = getGraphics();
         if (screen == null) return;

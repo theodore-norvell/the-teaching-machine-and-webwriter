@@ -7,6 +7,7 @@ import telford.common.Kit;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
+import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
 
@@ -62,7 +63,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		SourceCoordsI focus = model.getCodeFocus();
 		for (int i = 0; i < n; i++) {
 			baseLine += lineHeight + LINE_PADDING;
-			CodeLine theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
+			CodeLineI theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
 			if (theLine != null && theLine.getCoords().equals( focus )) {
 				int save = screen.getColor();
 				screen.setColor(context.getHighlightColor());
