@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import tm.gwt.jsInterface.MirrorState;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
 import tm.interfaces.MarkUpI ;
@@ -12,7 +11,7 @@ import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.TMFileI ;
 
-public class ConcreteMirrorState implements MirrorState {
+public class ConcreteMirrorState extends tm.gwt.state.MirrorState {
 	private List<GWTCodeLineTemp> lines = null;
 	private SelectionInterface selection;
 	private SourceCoordsI focus;//TODO temporarily for test 

@@ -17,7 +17,6 @@ package tm.displayEngine;
 
 import tm.interfaces.Datum;
 import tm.interfaces.RegionInterface;
-import tm.utilities.Assert;
   
   
   public class StoreLayoutManager {

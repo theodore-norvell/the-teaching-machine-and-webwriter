@@ -32,9 +32,10 @@ import tm.utilities.Debug;
 import tm.virtualMachine.Console;
 import tm.virtualMachine.Memory;
 import tm.virtualMachine.PropertyList;
+import tm.virtualMachine.VMDatum ;
 import tm.virtualMachine.VMState;
 
-public abstract class AbstractDatum extends PropertyList implements Datum {
+public abstract class AbstractDatum extends PropertyList implements VMDatum {
 	protected int address;
 	protected Datum parent;
 	protected int size;

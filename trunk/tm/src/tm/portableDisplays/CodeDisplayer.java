@@ -46,11 +46,7 @@ public class CodeDisplayer extends PortableDisplayer {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		drawArea(g);
-	}
-
-	public void drawArea(Graphics screen) {
+	public void paintComponent(Graphics screen) {
 		setMode(screen, NORMAL); // Always start in normal mode
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 

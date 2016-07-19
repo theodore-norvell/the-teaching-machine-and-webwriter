@@ -3,17 +3,17 @@ package tm.gwt.display;
 import telford.common.ActionEvent;
 import telford.common.ActionListener;
 import telford.common.Button;
-import tm.gwt.jsInterface.MirrorState;
 import tm.gwt.jsInterface.MirrorStateTest;
+import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
 public class ExpressionDisplay1 extends DisplayAdapter {
-	MirrorState evaluator;
+	StateInterface evaluator;
 	MirrorStateTest testModel;
 	PortableContextInterface context = new GWTContext();
 
-	public ExpressionDisplay1(MirrorState evaluator, PortableContextInterface context) {
+	public ExpressionDisplay1(StateInterface evaluator, PortableContextInterface context) {
 		super(new ExpressionDisplayer(evaluator, context), "expDisplayPanel", "Expression Display", 150, 75);
 		this.evaluator = evaluator;
 		this.context = context;
@@ -44,7 +44,7 @@ public class ExpressionDisplay1 extends DisplayAdapter {
 		super.refresh();
 	}
 
-	public void setJsMirrorState(MirrorState e) {
+	public void setJsMirrorState(StateInterface e) {
 		if (displayer instanceof ExpressionDisplayer) {
 			((ExpressionDisplayer) displayer).setState(e);
 		}

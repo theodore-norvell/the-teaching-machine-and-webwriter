@@ -14,8 +14,7 @@
 
 package tm.displayEngine;
 
-import java.awt.*;
-
+import java.awt.Dimension ;
 
 /* Updated 2005.11.06 by refactoring names
  * parent class for displays of datums, such as storeDisplay or linkedDisplay

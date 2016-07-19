@@ -160,7 +160,7 @@ public class Store {
                                      TypeInterface type,
                                      boolean virtual ) {
         
-        if( address == d.getAddress() && type.equal_types( d.getType() ) ) {
+        if( address == d.getAddress() && type.equal_types( ((VMDatum)d).getType() ) ) {
             return d ; }
 
         else {

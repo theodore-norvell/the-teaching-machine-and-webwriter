@@ -30,4 +30,22 @@ public interface StateInterface {
      * @return The current selection expression.
      */
 	public SelectionInterface getSelection() ;
+	
+    /** Returns the static region.
+     */
+    public RegionInterface getStaticRegion() ;
+    
+    /** Returns the stack region.
+     */
+    public RegionInterface getStackRegion() ;
+    
+    /** Returns the heap region.
+     */
+    public RegionInterface getHeapRegion() ;
+    
+    /** Returns the scratch region.
+     * <p>
+     * The scratch region is used mostly for compiler temporary variables (temps).
+     */
+    public RegionInterface getScratchRegion() ;
 }

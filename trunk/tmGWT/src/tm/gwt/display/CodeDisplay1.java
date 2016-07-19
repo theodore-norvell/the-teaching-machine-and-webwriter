@@ -3,18 +3,18 @@ package tm.gwt.display;
 import com.google.gwt.user.client.ui.Button;
 
 import tm.gwt.jsInterface.GWTSuperTMFile;
-import tm.gwt.jsInterface.MirrorState;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
 public class CodeDisplay1 extends DisplayAdapter {
 	private GWTSuperTMFile theFile;
-	MirrorState evaluator;
+	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
 
-	public CodeDisplay1(MirrorState e, PortableContextInterface context) {
+	public CodeDisplay1(StateInterface e, PortableContextInterface context) {
 		super(new CodeDisplayer(e, context), "codeDisplayPanel", "Test.java", 300, 600);
 		this.evaluator = e;
 		this.context = context;

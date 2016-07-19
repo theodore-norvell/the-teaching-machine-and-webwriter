@@ -14,14 +14,14 @@
 
 package tm.clc.datum;
 
-import tm.interfaces.Datum;
+import tm.virtualMachine.VMDatum ;
 
 /**
  * A language independent representation of arrays
  * 
  * @author tsn
  */
-public interface AbstractArrayDatum extends Datum
+public interface AbstractArrayDatum extends VMDatum
 {
 /**
  * 

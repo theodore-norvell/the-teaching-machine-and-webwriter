@@ -18,6 +18,11 @@ public class SwingDisplay extends DisplayAdapter {
 
     @Override
     public void drawArea(Graphics2D screen) {
+        // Draw area doesn't need to do anything.  Here is why:
+        // drawArea is called only when the component is painted. 
+        // When the component is painted, the displayer's peer will be painted.
+        // So whatever functionality would go here in the classic displays should
+        // be moved to the displayer's paintComponent method in the Telford system.
     }
     
     @Override 

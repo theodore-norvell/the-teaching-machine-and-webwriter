@@ -25,6 +25,7 @@
 	<source path='shared' />
 	<source path='jsInterface' />
 	<source path='display' />
+	<source path='state' />
 	<source path='telford' />
 
 	<!-- allow Super Dev Mode -->

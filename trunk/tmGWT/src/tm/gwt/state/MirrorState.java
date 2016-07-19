@@ -5,6 +5,7 @@ import java.util.ArrayList ;
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.CodeLineI ;
+import tm.interfaces.RegionInterface ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
@@ -15,6 +16,11 @@ public class MirrorState implements StateInterface, IsSerializable {
     private String expression ;
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
     private SelectionInterface selection ;
+    private SourceCoordsI codeFocus ;
+    private MirrorRegion staticRegion ;
+    private MirrorRegion stackRegion ;
+    private MirrorRegion heapRegion ;
+    private MirrorRegion scratchRegion ;
 
     public void putExpression( String exp ) {
         this.expression = exp ;
@@ -62,10 +68,33 @@ public class MirrorState implements StateInterface, IsSerializable {
         return selection ;
     }
 
+    public void setCodeFocus(SourceCoordsI coords) {
+        this.codeFocus = coords ;
+    }
+
     @Override
     public SourceCoordsI getCodeFocus() {
-        // TODO Auto-generated method stub
-        return null ;
+        return this.codeFocus ;
+    }
+
+    @Override
+    public RegionInterface getStaticRegion() {
+        return this.staticRegion ;
+    }
+
+    @Override
+    public RegionInterface getStackRegion() {
+        return this.stackRegion ;
+    }
+
+    @Override
+    public RegionInterface getHeapRegion() {
+        return this.heapRegion ;
+    }
+
+    @Override
+    public RegionInterface getScratchRegion() {
+        return this.scratchRegion ;
     }
 
 }

@@ -15,6 +15,7 @@ import tm.gwt.display.ConcreteMirrorState;
 import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
 import tm.gwt.jsInterface.MirrorStateTest;
+import tm.gwt.state.MirrorState ;
 import tm.gwt.telford.KitGWT;
 import tm.interfaces.Selection ;
 import tm.portableDisplays.PortableContextInterface;

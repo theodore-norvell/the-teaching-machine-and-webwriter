@@ -77,24 +77,6 @@ public interface EvaluatorInterface extends StateInterface{
     /** A string representation of the line number of the code line currently in focus. */
     public String getPCLocation();
     
-    /** Returns the static region.
-     */
-    public RegionInterface getStaticRegion() ;
-    
-    /** Returns the stack region.
-     */
-    public RegionInterface getStackRegion() ;
-    
-    /** Returns the heap region.
-     */
-    public RegionInterface getHeapRegion() ;
-    
-    /** Returns the scratch region.
-     * <p>
-     * The scratch region is used mostly for compiler temporary variables (temps).
-     */
-    public RegionInterface getScratchRegion() ;
-    
     /**
      * Gets a constant indicating the language being used by the code currently running
      * in the TM. Current valid language constants are CPP_LANG,
