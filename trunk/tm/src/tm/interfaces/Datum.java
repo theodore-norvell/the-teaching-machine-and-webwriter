@@ -61,6 +61,14 @@ public interface Datum {
      */
     public int getHighlight() ;
 	//-------------------------------------------------------------------------
+    
+    /**
+     * return a unique serial number for this datum
+     * 
+     * @return a valid highlighting constant 
+     */
+    public int getSerialNumber() ;
+    //-------------------------------------------------------------------------
    
 	/**
 	 * gets the compound Datum to which this Datum object belongs

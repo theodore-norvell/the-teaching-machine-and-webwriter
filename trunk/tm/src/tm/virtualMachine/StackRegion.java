@@ -29,12 +29,7 @@ class StackRegion extends MemRegion{
         super(timeMan, first, size, store, symTab, name) ;
         marks = new BTStack(timeMan) ;
         setMark() ; }
-
-    public Datum copy(){
-    	Assert.check("Sorry. Copy shouldn't be called on a Stack region.");
-		return null;
-    }
-
+    
     /** Find space on the stack. This routine does not reserve the space,
         so a datum should immediately be created that uses the space and
         that datum should be added to the store via addDatum.

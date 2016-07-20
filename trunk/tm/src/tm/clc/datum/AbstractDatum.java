@@ -87,6 +87,9 @@ public abstract class AbstractDatum extends PropertyList implements VMDatum {
     public int getHighlight() {
         return ((Integer)highlight.get()).intValue() ; }
     
+
+    public int getSerialNumber() { return serialNumber ; }
+    
 	public int getAddress() {return address;}
 
 	public int getByte(int i){

@@ -24,11 +24,6 @@ class HeapRegion extends MemRegion{
     HeapRegion(BTTimeManager timeMan, int first, int size, Store store, ViewableST symTab, String name) {
         super(timeMan, first, size, store, symTab, name ) ;
 }
-    
-    public Datum copy(){
-    	Assert.check("Sorry. Copy shouldn't be called on a Heap region.");
-    	return null;
-    }
 
     /**Find space in the heap This routine does not reserve the space,
         so a datum should immediately be created that uses the space and
