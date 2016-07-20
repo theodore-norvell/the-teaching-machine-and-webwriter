@@ -13,10 +13,39 @@ public class MirrorDatum implements Datum {
     final protected String valueString ;
     final protected byte[] bytes ;
     final protected int highlight ;
-    final protected int birthOrder = 0;
+    final protected int birthOrder ;
     final protected int serialNumber ;
-    private ArrayList<MirrorDatum> children = null ;
+    final protected MirrorDatum[] children ;
+    final protected String[] childLabel ;
 
+    public MirrorDatum( Datum d, MirrorDatum parent ) {
+        address = d.getAddress() ;
+        this.parent = parent ;
+        name = d.getName() ;
+        typeString = d.getTypeString() ;
+        valueString = d.getValueString() ;
+        bytes = new byte[d.getNumBytes() ] ;
+        for( int i=0 ; i < bytes.length ; ++i ) bytes[i] = (byte) d.getByte( i ) ;
+        highlight = d.getHighlight() ;
+        birthOrder = d.getBirthOrder() ;
+        serialNumber = d.getSerialNumber() ;
+        int numChildren = d.getNumChildren() ;
+        if( numChildren == 0 ) {
+            children = null ;
+            childLabel = null ;
+        }
+        else {
+            children = new MirrorDatum[ numChildren ] ;
+            childLabel = new String[ numChildren ] ;
+            for( int i = 0 ; i < numChildren ; ++i ) {
+                MirrorDatum thisOrNull = (this instanceof MirrorRegion) ? null : this ;
+                MirrorDatum child = new MirrorDatum( d, thisOrNull ) ;
+                children[i] = child ;
+                childLabel[i] = d.getChildLabelAt( i ) ;
+            }
+        }
+    }
+    
     @Override
     public int getHighlight() {
         return highlight ;
@@ -60,13 +89,12 @@ public class MirrorDatum implements Datum {
     @Override
     public int getNumChildren() {
         if( children == null ) return 0 ;
-        else return children.size() ;
+        else return children.length ;
     }
 
     @Override
     public Datum getChildAt(int i) {
-        if( children == null ) throw new AssertionError("No child") ;
-        else return children.get( i ) ;
+        return children[ i ] ;
     }
 
     @Override
@@ -76,8 +104,7 @@ public class MirrorDatum implements Datum {
 
     @Override
     public String getChildLabelAt(int i) {
-        // TODO Auto-generated method stub
-        return null ;
+        return childLabel[i] ;
     }
 
     @Override
