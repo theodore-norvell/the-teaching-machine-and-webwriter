@@ -39,14 +39,6 @@ This class represents an datum of class or struct type.
 	public ObjectDatum(int add, Datum p, Memory m, String n, TyAbstractClass tp, BTTimeManager timeMan) {
 		super(add, p, m, n, tp, timeMan);
     }
-    
-    protected ObjectDatum(ObjectDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ObjectDatum(this);
-    }
 
 	public String getValueString(){
 		return type.getTypeString()+"{..}";

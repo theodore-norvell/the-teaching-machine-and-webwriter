@@ -44,14 +44,6 @@ public class IntDatum extends AbstractIntDatum {
 	public IntDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-	
-    protected IntDatum(IntDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new IntDatum(this);
-    }
 
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputInt( vms, this, size, false ) ;

@@ -43,10 +43,6 @@ abstract public class AbstractRefDatum extends AbstractPointerDatum {
 	public AbstractRefDatum(int a, Memory m, String n, TypeNode tp, Store str, BTTimeManager timeMan) {
 		this(a, null, m, n, tp, str, timeMan);
 	}
-	
-	protected AbstractRefDatum(AbstractRefDatum original){
-		super(original);
-	}
 
 	public boolean isNull() {return 0==getValue() ;}
 

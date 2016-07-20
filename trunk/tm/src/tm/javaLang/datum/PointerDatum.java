@@ -49,14 +49,6 @@ public class PointerDatum extends tm.clc.datum.AbstractPointerDatum {
         this(a, null, m, n, tp, str, timeMan);
     }
 
-    protected PointerDatum(PointerDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new PointerDatum(this);
-    }
-
     public TypeInterface getPointeeType() {
         return ((TyPointer) type).getPointeeType();
     }

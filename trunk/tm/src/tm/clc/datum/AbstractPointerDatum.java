@@ -35,11 +35,6 @@ abstract public class AbstractPointerDatum
 		super(a, size, p, m, n, tp, timeMan);
 		theStore = str ;
 	}
-	
-	protected AbstractPointerDatum(AbstractPointerDatum original){
-		super(original);
-		theStore = original.theStore; // This should be fine since it has to point to the same store
-	}
 
 	public void putValue( AbstractDatum pointee ) {
 		putValue( pointee.getAddress() ) ; }

@@ -34,14 +34,6 @@ public class ArrayDatum extends AbstractDatum implements AbstractArrayDatum
         element = new AbstractDatum[noe] ;
         elementSize = el_size ;}
     
-    protected ArrayDatum(ArrayDatum original){
-    	super(original);
-    	element = new AbstractDatum[original.element.length];
-    	elementSize = original.elementSize;
-    	for (int i = 0; i < element.length; i++)
-    		element[i] = (AbstractDatum)original.element[i].copy();   	
-    }
-    
     public int getNumChildren() {
         return element.length ; }
 
@@ -74,10 +66,6 @@ public class ArrayDatum extends AbstractDatum implements AbstractArrayDatum
     public void defaultInitialize() {
         for (int d = 0; d < element.length; d++)
             element[d].defaultInitialize();     
-    }
-    
-    public Datum copy(){
-    	return new ArrayDatum(this);
     }
     
 }

@@ -63,22 +63,6 @@ This class represents an structured data item stored in memory.
         type = tp ;
         subObject = new AbstractObjectDatum[ tp.superClassCount() ] ;
         field = new AbstractDatum[ tp.fieldCount() + numberOfElements ] ; }
-   
-   protected AbstractObjectDatum(AbstractObjectDatum original){
-	   super(original);
-	   // watch out for superObject
-	   Assert.check(original.outerObject == null, "Sorry, can't clone inner objects");
-	   type = original.type;
-	   superObject = null;
-	   subObject = new AbstractObjectDatum[original.subObject.length];
-	   for (int i = 0; i < subObject.length; i++){
-		   subObject[i] = (AbstractObjectDatum)original.subObject[i].copy();
-		   if (original.superObject==original.subObject[i]) superObject = subObject[i];
-	   }
-	   field = new AbstractDatum[original.field.length];
-	   for (int j = 0; j < field.length; j++)
-		   field[j] = (AbstractDatum)original.field[j].copy();
-   }
     
     /** This method should be called immediately after construction.
       * Subobjects must be added before fields.

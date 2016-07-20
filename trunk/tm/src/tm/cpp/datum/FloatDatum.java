@@ -44,13 +44,5 @@ public class FloatDatum extends AbstractFloatDatum32 {
 		this(add,null, m, name, timeMan);
 	}
 
-    protected FloatDatum(FloatDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new FloatDatum(this);
-    }
-
 }
 

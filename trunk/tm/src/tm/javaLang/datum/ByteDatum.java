@@ -43,14 +43,6 @@ public class ByteDatum extends AbstractIntDatum {
         this(add,null, m, name, timeMan);
     }
 
-    protected ByteDatum(ByteDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ByteDatum(this);
-    }
-
     public void putNativeValue(Object obj) {
    		Assert.check(obj instanceof Byte);
    		putValue(((Byte)obj).byteValue());

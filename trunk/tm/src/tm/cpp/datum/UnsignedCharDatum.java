@@ -46,14 +46,6 @@ public class UnsignedCharDatum extends AbstractIntDatum {
 		this(add,null, m, name, timeMan);
 	}
 
-    protected UnsignedCharDatum(UnsignedCharDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new UnsignedCharDatum(this);
-    }
-
 	public String getValueString(){
 		return "'" + DatumUtilities.asciiToString( (byte) getValue() ) + "'" ;
 	}

@@ -61,19 +61,6 @@ public abstract class AbstractDatum extends PropertyList implements VMDatum {
         serialNumber = nextSerialNumber++ ;
 	}
 	
-	// Copy constructor
-	protected AbstractDatum(AbstractDatum orig){
-		super(orig);
-		address = orig.address;
-		size = orig.size;
-		parent = orig.parent;
-		mem = orig.mem;
-		type = orig.type;
-		name = orig.name;
-		highlight = orig.highlight;  // This is NOT a proper deep copy!
-		birthOrder = orig.birthOrder;
-	}
-
 // These methods are common to all Datums
 
 	public int getNumBytes() { return size;}

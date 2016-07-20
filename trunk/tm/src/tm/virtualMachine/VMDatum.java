@@ -15,11 +15,4 @@ public interface VMDatum extends Datum {
     */ 
     public boolean isEqual(Datum another);
     //-------------------------------------------------------------------------
-
-    /** Datum equivalent of clone. i.e. d.copy() != d and d.copy().isEqual(d) should
-     * be true.
-     * Datums should implement deep copy (or lazy copy)
-    */ 
-    public Datum copy();
-    //-------------------------------------------------------------------------
 }

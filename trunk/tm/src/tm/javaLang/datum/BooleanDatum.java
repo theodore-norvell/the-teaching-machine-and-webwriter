@@ -44,14 +44,6 @@ public class BooleanDatum extends AbstractIntDatum {
         this(add,null, m, name, timeMan);
     }
 
-    protected BooleanDatum(BooleanDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new BooleanDatum(this);
-    }
-
     public void putValue(long v ) {
         Assert.check( v==0 || v==1 ) ;
         super.putValue( v ) ;

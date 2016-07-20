@@ -41,14 +41,6 @@ public class DoubleDatum extends AbstractFloatDatum64 {
     public DoubleDatum(int add, Memory m, String name, BTTimeManager timeMan) {
         this(add, null, m, name, timeMan);
     }
-    
-    protected DoubleDatum(DoubleDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new DoubleDatum(this);
-    }
 
     public double getValue() {
         long bits = 0;

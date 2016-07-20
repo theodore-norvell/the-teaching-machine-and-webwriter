@@ -42,14 +42,6 @@ public class FloatDatum extends AbstractFloatDatum32 {
     public FloatDatum(int add, Memory m, String name, BTTimeManager timeMan) { 
         this(add,null, m, name, timeMan);
     }
-    
-    protected FloatDatum(FloatDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new FloatDatum(this);
-    }
 
     public void putNativeValue(Object obj){
         Assert.check(obj instanceof Float);

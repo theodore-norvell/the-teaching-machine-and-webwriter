@@ -50,14 +50,6 @@ public class CharDatum extends AbstractIntDatum {
     public CharDatum(int add, Memory m, String name, BTTimeManager timeMan) {
         this(add,null, m, name, timeMan);
     }
-    
-    protected CharDatum(CharDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new CharDatum(this);
-    }
 
     public String getValueString(){
         return "'" + DatumUtilities.asciiToString( (byte) getValue() ) + "'" ;

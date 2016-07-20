@@ -34,14 +34,6 @@ public class ArrayDatum extends ObjectDatum  implements AbstractArrayDatum {
         super(add, null, m, "", tp, numberOfElements, timeMan );
     }
 
-    protected ArrayDatum(ArrayDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ArrayDatum(this);
-    }
-
     public IntDatum getLength() { return (IntDatum)getChildAt(1); }
 
 

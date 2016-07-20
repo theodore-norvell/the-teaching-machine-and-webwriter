@@ -31,11 +31,6 @@ public class AbstractFloatDatum32 extends AbstractFloatDatum {
         super(add, sz, p, m, n, tp, timeMan);
     }
 
-	protected AbstractFloatDatum32(AbstractFloatDatum32 original){
-		super(original);
-	}
-
-
 
     public void putValue(double value) {
         float floatVal = (float) value ; // No exception on overflow!
@@ -63,10 +58,6 @@ public class AbstractFloatDatum32 extends AbstractFloatDatum {
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputFloat( vms, this ) ;
         return success ;
-    }
-    
-    public Datum copy(){
-    	return new AbstractFloatDatum32(this);
     }
 
 }
