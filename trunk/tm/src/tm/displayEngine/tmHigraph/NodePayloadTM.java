@@ -39,8 +39,9 @@ public class NodePayloadTM implements Payload<NodePayloadTM> {
     
 
     public NodePayloadTM copy() {
-    	Datum dup = datum.copy();
-        return new NodePayloadTM(dup);
+        // We use to copy the Datum.  That doesn't seem right.
+    	//Datum dup = datum.copy();
+        return new NodePayloadTM(datum);
     }
     
     public String toString(){

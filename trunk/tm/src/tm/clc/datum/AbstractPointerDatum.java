@@ -23,6 +23,7 @@ import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.virtualMachine.Memory;
 import tm.virtualMachine.Store;
+import tm.virtualMachine.VMDatum ;
 
 abstract public class AbstractPointerDatum
     extends tm.clc.datum.AbstractScalarDatum
@@ -73,7 +74,7 @@ abstract public class AbstractPointerDatum
 	public boolean isEqual(Datum another){
 		Assert.check(another instanceof AbstractPointerDatum, "Can't check equality of a pointer to another type");
 		AbstractPointerDatum theOther = (AbstractPointerDatum) another;
-		return deref().isEqual(theOther.deref());
+		return ((VMDatum)deref()).isEqual(theOther.deref());
 	}
 
 

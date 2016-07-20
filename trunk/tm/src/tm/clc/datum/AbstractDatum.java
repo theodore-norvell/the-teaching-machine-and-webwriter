@@ -44,6 +44,8 @@ public abstract class AbstractDatum extends PropertyList implements VMDatum {
 	protected String name ;
 	protected BTVar<Integer> highlight ;
 	protected int birthOrder = 0;
+	protected int serialNumber ;
+	static protected int nextSerialNumber = 0 ;
 
 	protected AbstractDatum(int add, int s, Datum p, Memory m, String n,
 	                       TypeNode tp, BTTimeManager timeMan) {
@@ -56,7 +58,9 @@ public abstract class AbstractDatum extends PropertyList implements VMDatum {
 		name = n ;
         highlight = new BTVar<Integer>(timeMan) ;
         highlight.set( new Integer( Datum.PLAIN ) ) ;
+        serialNumber = nextSerialNumber++ ;
 	}
+	
 	// Copy constructor
 	protected AbstractDatum(AbstractDatum orig){
 		super(orig);
@@ -183,7 +187,7 @@ public abstract class AbstractDatum extends PropertyList implements VMDatum {
 		if (getNumChildren() != theOther.getNumChildren()) return false;
 		if (getNumChildren() == 0) return localEqualityCheck(theOther);		
 		for (int i = 0; i < getNumChildren(); i++)
-			if (!getChildAt(i).isEqual(theOther.getChildAt(i))) return false;
+			if (!((VMDatum)getChildAt(i)).isEqual(theOther.getChildAt(i))) return false;
 		return true;
 	}
 	
