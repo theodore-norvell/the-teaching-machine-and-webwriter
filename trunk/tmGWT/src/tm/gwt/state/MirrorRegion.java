@@ -10,6 +10,9 @@ public class MirrorRegion extends MirrorDatum implements RegionInterface {
         super( region, null ) ;
         frameBoundary = region.getFrameBoundary() ;
     }
+    public MirrorRegion() {
+        super() ;
+    }
     @Override
     public int getFrameBoundary() {
         return frameBoundary ;

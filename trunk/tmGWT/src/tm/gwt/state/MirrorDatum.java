@@ -2,9 +2,11 @@ package tm.gwt.state;
 
 import java.util.ArrayList ;
 
+import com.google.gwt.user.client.rpc.IsSerializable ;
+
 import tm.interfaces.Datum ;
 
-public class MirrorDatum implements Datum {
+public class MirrorDatum implements Datum, IsSerializable {
 
     final protected int address;
     protected Datum parent;
@@ -46,6 +48,20 @@ public class MirrorDatum implements Datum {
         }
     }
     
+    public MirrorDatum() {
+        address = 0 ;
+        parent = null ;
+        name = "" ;
+        typeString = "" ;
+        valueString = "" ;
+        bytes = new byte[4] ;
+        highlight = PLAIN ;
+        birthOrder = 0 ;
+        serialNumber = Integer.MAX_VALUE ;
+        children = null ;
+        childLabel = null ;
+    }
+
     @Override
     public int getHighlight() {
         return highlight ;

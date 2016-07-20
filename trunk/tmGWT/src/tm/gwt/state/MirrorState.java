@@ -13,18 +13,17 @@ import tm.interfaces.TMFileI ;
 
 public class MirrorState implements StateInterface, IsSerializable {
 
-    private String expression ;
+    private String expression = "" ;
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
-    private SelectionInterface selection ;
-    private SourceCoordsI codeFocus ;
-    private MirrorRegion staticRegion ;
-    private MirrorRegion stackRegion ;
-    private MirrorRegion heapRegion ;
-    private MirrorRegion scratchRegion ;
-    
-    public MirrorState( StateInterface state ) {
-        putExpression( state.getExpression() );
-        // TODO 
+    private SelectionInterface selection = new MirrorSelection() ;
+    private SourceCoordsI codeFocus = new MirrorCoords() ;
+    private MirrorRegion staticRegion = new MirrorRegion( );
+    private MirrorRegion stackRegion  = new MirrorRegion( );
+    private MirrorRegion heapRegion  = new MirrorRegion( );
+    private MirrorRegion scratchRegion  = new MirrorRegion( );
+
+    public MirrorState() {
+        // Create a default state.
     }
 
     public void putExpression( String exp ) {
@@ -80,6 +79,22 @@ public class MirrorState implements StateInterface, IsSerializable {
     @Override
     public SourceCoordsI getCodeFocus() {
         return this.codeFocus ;
+    }
+    
+    public void setStaticRegion( MirrorRegion region ) {
+        this.staticRegion = region ;
+    }
+    
+    public void setStackRegion( MirrorRegion region ) {
+        this.stackRegion = region ;
+    }
+    
+    public void setHeapRegion( MirrorRegion region ) {
+        this.heapRegion = region ;
+    }
+    
+    public void setScratchRegion( MirrorRegion region ) {
+        this.scratchRegion = region ;
     }
 
     @Override
