@@ -1,89 +1,81 @@
 package tm.gwt.state;
 
+import java.util.ArrayList ;
+
 import tm.interfaces.Datum ;
 
 public class MirrorDatum implements Datum {
 
+    final protected int address;
+    protected Datum parent;
+    final protected String name ;
+    final protected String typeString ;
+    final protected String valueString ;
+    final protected byte[] bytes ;
+    final protected int highlight ;
+    final protected int birthOrder = 0;
+    final protected int serialNumber ;
+    private ArrayList<MirrorDatum> children = null ;
+
     @Override
     public int getHighlight() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return highlight ;
     }
 
     @Override
     public Datum getParent() {
-        // TODO Auto-generated method stub
-        return null ;
+        return parent ;
     }
 
     @Override
     public String getTypeString() {
-        // TODO Auto-generated method stub
-        return null ;
+        return typeString ;
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null ;
+        return name ;
     }
 
     @Override
     public String getValueString() {
-        // TODO Auto-generated method stub
-        return null ;
+        return valueString ;
     }
 
     @Override
     public int getNumBytes() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return bytes.length ;
     }
 
     @Override
     public int getAddress() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return address ;
     }
 
     @Override
     public int getByte(int i) {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return bytes[i] ;
     }
 
     @Override
     public int getNumChildren() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        if( children == null ) return 0 ;
+        else return children.size() ;
     }
 
     @Override
     public Datum getChildAt(int i) {
-        // TODO Auto-generated method stub
-        return null ;
+        if( children == null ) throw new AssertionError("No child") ;
+        else return children.get( i ) ;
     }
 
     @Override
     public int getBirthOrder() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return birthOrder ;
     }
 
     @Override
     public String getChildLabelAt(int i) {
-        // TODO Auto-generated method stub
-        return null ;
-    }
-
-    @Override
-    public boolean isEqual(Datum another) {
-        // TODO Auto-generated method stub
-        return false ;
-    }
-
-    @Override
-    public Datum copy() {
         // TODO Auto-generated method stub
         return null ;
     }
@@ -98,6 +90,11 @@ public class MirrorDatum implements Datum {
     public Object getProperty(String name) {
         // TODO Auto-generated method stub
         return null ;
+    }
+
+    @Override
+    public int getSerialNumber() {
+        return serialNumber ;
     }
 
 }

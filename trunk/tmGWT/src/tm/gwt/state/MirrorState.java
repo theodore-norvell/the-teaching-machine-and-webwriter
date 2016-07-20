@@ -17,10 +17,15 @@ public class MirrorState implements StateInterface, IsSerializable {
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
     private SelectionInterface selection ;
     private SourceCoordsI codeFocus ;
-    private MirrorRegion staticRegion ;
-    private MirrorRegion stackRegion ;
-    private MirrorRegion heapRegion ;
-    private MirrorRegion scratchRegion ;
+    private MirrorRegion staticRegion = new MirrorRegion() ;
+    private MirrorRegion stackRegion = new MirrorRegion() ;
+    private MirrorRegion heapRegion = new MirrorRegion() ;
+    private MirrorRegion scratchRegion = new MirrorRegion() ;
+    
+    public MirrorState( StateInterface state ) {
+        putExpression( state.getExpression() );
+        // TODO 
+    }
 
     public void putExpression( String exp ) {
         this.expression = exp ;
