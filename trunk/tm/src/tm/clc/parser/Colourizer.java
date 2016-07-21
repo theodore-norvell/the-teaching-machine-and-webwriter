@@ -25,10 +25,10 @@ import tm.interfaces.MarkUpI ;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.TagSet ;
 import tm.interfaces.TagSetInterface ;
+import tm.interfaces.CodeLine ;
 import tm.utilities.Assert;
 import tm.utilities.TMFile;
 import tm.virtualMachine.CodeStore;
-import tm.virtualMachine.VMCodeLine;
 
 /**
  * <p>Title: </p>
@@ -94,7 +94,7 @@ public class Colourizer {
                 endColour() ;
                 if( tagSetsForCurrentLine.isEmpty() )
                     tagSetsForCurrentLine.add(currentTagSet) ;
-                VMCodeLine codeLine = new VMCodeLine( currentLine,
+                CodeLine codeLine = new CodeLine( currentLine,
                                                         currentMarkUp,
                                                         new SourceCoords( tmFile, lineNumber ),
                                                         tagSetsForCurrentLine ) ;

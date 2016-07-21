@@ -31,6 +31,7 @@ import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
 import tm.interfaces.TMFileI ;
 import tm.interfaces.TMStatusCode;
+import tm.interfaces.CodeLine ;
 import tm.interfaces.ViewableST;
 import tm.languageInterface.ExpressionInterface;
 import tm.languageInterface.Language;
@@ -43,7 +44,6 @@ import tm.virtualMachine.Evaluation;
 import tm.virtualMachine.ExpressionEvaluation;
 import tm.virtualMachine.FunctionEvaluation;
 import tm.virtualMachine.TriggeredCall;
-import tm.virtualMachine.VMCodeLine;
 import tm.virtualMachine.VMState;
 
 abstract class StopTest {
@@ -87,7 +87,7 @@ abstract class StopTest {
             // Check whether the current line is currently visible.
             if( vms.getCurrentCoords() == SourceCoords.UNKNOWN ) return false ;
             SelectionInterface selection = vms.getCodeStore().getSelection() ;
-            VMCodeLine currentLine = vms.getCodeStore().getCodeLine( vms.getCurrentCoords() ) ;
+            CodeLine currentLine = vms.getCodeStore().getCodeLine( vms.getCurrentCoords() ) ;
             if( currentLine == null ) return false ;
             return currentLine.isSelected(selection) ; }
 }

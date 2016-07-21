@@ -24,6 +24,7 @@ import tm.interfaces.SelectionInterface ;
 import tm.interfaces.TMStatusCode;
 import tm.interfaces.Datum;
 import tm.interfaces.SourceCoords;
+import tm.interfaces.CodeLine ;
 import tm.interfaces.ViewableST;
 import tm.languageInterface.NodeInterface;
 import tm.utilities.Assert;
@@ -210,7 +211,7 @@ public class VMState {
                 if( coords != null && coords != SourceCoords.UNKNOWN ) {
                     SelectionInterface currentSelection = codeStore.getSelection() ;
                     if( mustBeSelectedLine ) {
-                        VMCodeLine line = codeStore.getCodeLine( coords ) ;
+                        CodeLine line = codeStore.getCodeLine( coords ) ;
                         if( line != null && line.isSelected(currentSelection) )
                             return coords ; }
                     else return coords ;  } } }

@@ -20,6 +20,7 @@ import tm.interfaces.CodeLineI ;
 import tm.interfaces.ExternalCommandInterface;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
+import tm.interfaces.CodeLine ;
 import tm.utilities.Assert;
 import tm.utilities.Debug;
 import tm.utilities.TMFile;
@@ -36,12 +37,12 @@ import tm.utilities.TMFile;
 public class CodeStore {
 
     // Table to map files to Vectors. Each vector element is a line of code
-    private Hashtable<TMFile, Vector<VMCodeLine> > fileToVector ;
-    { fileToVector = new Hashtable<TMFile, Vector<VMCodeLine> >() ;
+    private Hashtable<TMFile, Vector<CodeLine> > fileToVector ;
+    { fileToVector = new Hashtable<TMFile, Vector<CodeLine> >() ;
       startNewFile( SourceCoords.UNKNOWN.getFile() ) ;
     }
     private TMFile currentFile ;
-    private Vector<VMCodeLine> current ; // Vector of CodeLine
+    private Vector<CodeLine> current ; // Vector of CodeLine
     private SelectionInterface currentSelection = SelectionParser.parse( ExternalCommandInterface.DEFAULT_SELECTION ) ;
 
     /** Invariant: selectedLines is the subsequence of lines in Vector current that have some
@@ -51,7 +52,7 @@ public class CodeStore {
      * contains (null, 3, 4, null, 6, 7, null). However if allowGaps is false, then
      * there will be no nulls. In the example, the selected lines would be (3,4,6,7).
      */
-    private Vector<VMCodeLine> selectedLines; // Vector of CodeLine
+    private Vector<CodeLine> selectedLines; // Vector of CodeLine
     private boolean allowGaps = true ;
 
 
@@ -59,8 +60,8 @@ public class CodeStore {
      *  If a previous file has the same name, it is overwritten.
      *  The new file becomes the current file. */
     public void startNewFile( TMFile file ) {
-        current = new Vector<VMCodeLine>() ;
-        selectedLines = new Vector<VMCodeLine>() ;
+        current = new Vector<CodeLine>() ;
+        selectedLines = new Vector<CodeLine>() ;
         currentFile = file ;
         fileToVector.put( file, current ) ; }
 
@@ -70,7 +71,7 @@ public class CodeStore {
      *  <p>Precond: If this is the first line then it must have a line number of 1.
      *              Otherwise it must be the next line number after the previous line.
      */
-    public void addCodeLine( VMCodeLine codeLine ) {
+    public void addCodeLine( CodeLine codeLine ) {
         /*dgb*/ Debug.getInstance().msg(Debug.COMPILE, " Adding "+codeLine ) ; /**/
         setCurrentFile( (TMFile)codeLine.getCoords().getFile() ) ;
         Assert.check( current.size()+1==codeLine.getCoords().getLineNumber() ) ;
@@ -86,7 +87,7 @@ public class CodeStore {
      * @param coords The coords must not be SourceCoords.UNKNOWN.
      * @return Returns the line.
      */
-    public VMCodeLine getCodeLine( SourceCoords coords ) {
+    public CodeLine getCodeLine( SourceCoords coords ) {
         if( coords.equals( SourceCoords.UNKNOWN ) ) return null ;
         setCurrentFile( coords.getFile() ) ;
         int lineNum = coords.getLineNumber() ;
@@ -106,7 +107,7 @@ public class CodeStore {
         //   current or in selectedLines):
         //     The invariant for selectedLines holds
         if( ! allowGaps ) return ;
-        VMCodeLine codeLine = current.elementAt(n-1) ;
+        CodeLine codeLine = current.elementAt(n-1) ;
         if( ! codeLine.isSelected( currentSelection ) ) {
             if( n==1 ) {
                 // The first line of the file is not selected, so there is a gap
@@ -118,9 +119,9 @@ public class CodeStore {
     }
 
     private void rebuildSelectedLines() {
-        selectedLines = new Vector<VMCodeLine>() ;
+        selectedLines = new Vector<CodeLine>() ;
         for( int i=0, sz=current.size() ; i < sz ; ++i ) {
-            VMCodeLine codeLine = current.elementAt(i) ;
+            CodeLine codeLine = current.elementAt(i) ;
             if( codeLine.isSelected(currentSelection) ) selectedLines.addElement( codeLine );
             else adjustGaps(i+1);}
     }
@@ -156,7 +157,7 @@ public class CodeStore {
     public SourceCoords getCoordsOfLastLine( TMFile tmFile ) {
         setCurrentFile( tmFile ) ;
         if( current.size()==0 ) return SourceCoords.UNKNOWN ;
-        VMCodeLine codeLine = current.elementAt(current.size() - 1) ;
+        CodeLine codeLine = current.elementAt(current.size() - 1) ;
         return (SourceCoords)codeLine.getCoords();
     }
 

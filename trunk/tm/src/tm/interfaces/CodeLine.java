@@ -12,27 +12,20 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.virtualMachine;
+package tm.interfaces;
 
 import java.util.Set;
 import java.util.Vector;
 
-import tm.interfaces.CodeLineI ;
-import tm.interfaces.MarkUp ;
-import tm.interfaces.SelectionInterface ;
-import tm.interfaces.SourceCoords;
-import tm.interfaces.SourceCoordsI ;
-import tm.interfaces.TagSetInterface ;
 
-
-public class VMCodeLine implements CodeLineI {
+public class CodeLine implements CodeLineI {
     private char[] chars ;
     private MarkUp[] markUp ;
     private SourceCoordsI coords ;
     /** A list of all tag sets that apply anywhere on this line */
     private Set<TagSetInterface> tagSets ;
 
-    public VMCodeLine( StringBuffer buff, Vector<MarkUp> markUpVector, SourceCoords sc, Set<TagSetInterface> tagSets) {
+    public CodeLine( StringBuffer buff, Vector<MarkUp> markUpVector, SourceCoordsI sc, Set<TagSetInterface> tagSets) {
         chars = new char[ buff.length() ] ;
         if( buff.length() > 0 ) // Work around jview bug!
             buff.getChars(0, buff.length(), chars, 0);
