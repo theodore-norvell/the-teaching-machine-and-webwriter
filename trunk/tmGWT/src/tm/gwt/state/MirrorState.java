@@ -17,10 +17,7 @@ public class MirrorState implements StateInterface, IsSerializable {
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
     private SelectionInterface selection = new MirrorSelection() ;
     private SourceCoordsI codeFocus = new MirrorCoords() ;
-    private MirrorRegion staticRegion = new MirrorRegion( );
-    private MirrorRegion stackRegion  = new MirrorRegion( );
-    private MirrorRegion heapRegion  = new MirrorRegion( );
-    private MirrorRegion scratchRegion  = new MirrorRegion( );
+    private MirrorStore store = new MirrorStore() ;
 
     public MirrorState() {
         // Create a default state.
@@ -80,41 +77,25 @@ public class MirrorState implements StateInterface, IsSerializable {
     public SourceCoordsI getCodeFocus() {
         return this.codeFocus ;
     }
-    
-    public void setStaticRegion( MirrorRegion region ) {
-        this.staticRegion = region ;
-    }
-    
-    public void setStackRegion( MirrorRegion region ) {
-        this.stackRegion = region ;
-    }
-    
-    public void setHeapRegion( MirrorRegion region ) {
-        this.heapRegion = region ;
-    }
-    
-    public void setScratchRegion( MirrorRegion region ) {
-        this.scratchRegion = region ;
-    }
 
     @Override
     public RegionInterface getStaticRegion() {
-        return this.staticRegion ;
+        return this.store.staticRegion ;
     }
 
     @Override
     public RegionInterface getStackRegion() {
-        return this.stackRegion ;
+        return this.store.stackRegion ;
     }
 
     @Override
     public RegionInterface getHeapRegion() {
-        return this.heapRegion ;
+        return this.store.heapRegion ;
     }
 
     @Override
     public RegionInterface getScratchRegion() {
-        return this.scratchRegion ;
+        return this.store.scratchRegion ;
     }
 
 }

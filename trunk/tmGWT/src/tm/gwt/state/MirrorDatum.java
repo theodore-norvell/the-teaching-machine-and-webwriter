@@ -1,15 +1,17 @@
 package tm.gwt.state;
 
-import java.util.ArrayList ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.Datum ;
+import tm.interfaces.PointerInterface ;
+import tm.interfaces.RegionInterface ;
+import tm.interfaces.ScalarInterface ;
 
 public class MirrorDatum implements Datum, IsSerializable {
 
     final protected int address;
-    protected Datum parent;
+    final protected Datum parent;
     final protected String name ;
     final protected String typeString ;
     final protected String valueString ;
@@ -19,8 +21,16 @@ public class MirrorDatum implements Datum, IsSerializable {
     final protected int serialNumber ;
     final protected MirrorDatum[] children ;
     final protected String[] childLabel ;
+    final protected MirrorStore store ;
+    
+    public static MirrorDatum makeMirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
+        if( d instanceof RegionInterface ) return new MirrorRegion((RegionInterface) d, ms ) ;
+        if( d instanceof PointerInterface ) return new MirrorPointerDatum( (PointerInterface)d, parent, ms ) ;
+        else if( d instanceof ScalarInterface ) return new MirrorScalarDatum( (ScalarInterface)d, parent, ms ) ;
+        else return new MirrorDatum( d, parent, ms ) ;
+    }
 
-    public MirrorDatum( Datum d, MirrorDatum parent ) {
+    private MirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
         address = d.getAddress() ;
         this.parent = parent ;
         name = d.getName() ;
@@ -41,14 +51,16 @@ public class MirrorDatum implements Datum, IsSerializable {
             childLabel = new String[ numChildren ] ;
             for( int i = 0 ; i < numChildren ; ++i ) {
                 MirrorDatum thisOrNull = (this instanceof MirrorRegion) ? null : this ;
-                MirrorDatum child = new MirrorDatum( d, thisOrNull ) ;
+                MirrorDatum child = makeMirrorDatum( d, thisOrNull, ms ) ;
                 children[i] = child ;
                 childLabel[i] = d.getChildLabelAt( i ) ;
             }
         }
+        this.store = ms ;
+        ms.put( serialNumber, this ) ;
     }
     
-    public MirrorDatum() {
+    public MirrorDatum( MirrorStore ms ) {
         address = 0 ;
         parent = null ;
         name = "" ;
@@ -60,6 +72,7 @@ public class MirrorDatum implements Datum, IsSerializable {
         serialNumber = Integer.MAX_VALUE ;
         children = null ;
         childLabel = null ;
+        this.store = ms ;
     }
 
     @Override
@@ -138,6 +151,64 @@ public class MirrorDatum implements Datum, IsSerializable {
     @Override
     public int getSerialNumber() {
         return serialNumber ;
+    }
+    
+    protected static class MirrorRegion extends MirrorDatum implements RegionInterface {
+
+        private int frameBoundary ;
+        
+        protected MirrorRegion( RegionInterface region, MirrorStore ms ) {
+            super( region, null, ms ) ;
+            frameBoundary = region.getFrameBoundary() ;
+        }
+        
+        public MirrorRegion(MirrorStore ms) {
+            super( ms ) ;
+        }
+        
+        @Override
+        public int getFrameBoundary() {
+            return frameBoundary ;
+        }
+        
+    }
+    
+    protected static class MirrorScalarDatum extends MirrorDatum implements ScalarInterface {
+         protected MirrorScalarDatum( ScalarInterface datum, MirrorDatum parent, MirrorStore ms ) {
+             super( datum, parent, ms ) ;
+         }
+    }
+    
+    protected static class MirrorPointerDatum extends MirrorDatum implements PointerInterface {
+        
+        private final boolean isNull ;
+        private final int targetSerialNumber ;
+        
+        protected MirrorPointerDatum( PointerInterface datum, MirrorDatum parent, MirrorStore ms ) {
+            super( datum, parent, ms ) ;
+            this.isNull = datum.isNull() ;
+            if( isNull ) targetSerialNumber = Integer.MIN_VALUE ;
+            else {
+                Datum d = datum.deref() ;
+                if( d == null ) targetSerialNumber = Integer.MIN_VALUE ;
+                else targetSerialNumber = d.getSerialNumber() ;
+            }
+        }
+
+        @Override
+        public Datum deref() {
+            if( targetSerialNumber == Integer.MIN_VALUE ) return null ;
+            else { 
+                Datum result = this.store.get( targetSerialNumber ) ;
+                if( result == null ) throw new AssertionError( "MirrorPointerDatum.deref()") ;
+                return result ;
+            }
+        }
+
+        @Override
+        public boolean isNull() {
+            return isNull ;
+        }
     }
 
 }

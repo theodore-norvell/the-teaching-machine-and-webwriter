@@ -8,13 +8,13 @@ public class MirrorSelection implements SelectionInterface {
     @Override
     public boolean evaluate(TagSetInterface tagSet) {
         // TODO Auto-generated method stub
-        return false ;
+        return true ;
     }
 
     @Override
     public boolean isValidForEmptyTagSet() {
         // TODO Auto-generated method stub
-        return false ;
+        return true ;
     }
 
 }
