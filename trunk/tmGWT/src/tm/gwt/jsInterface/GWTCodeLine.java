@@ -1,7 +1,7 @@
 package tm.gwt.jsInterface;
 
-import tm.portableDisplays.CodeLine;
+import tm.interfaces.CodeLineI ;
 
-public interface GWTCodeLine extends CodeLine{
+public interface GWTCodeLine extends CodeLineI{
 
 }

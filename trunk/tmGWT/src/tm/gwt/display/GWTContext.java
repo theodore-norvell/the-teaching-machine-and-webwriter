@@ -2,14 +2,18 @@ package tm.gwt.display;
 
 import telford.common.Font;
 import telford.common.Kit;
+import tm.gwt.state.MirrorRegion;
+import tm.interfaces.AsserterI ;
 import tm.portableDisplays.CodeDisplayerInfo;
+import tm.portableDisplays.PortableContextInterface ;
+import tm.portableDisplays.StoreDisplayerInfo;
 /**
  * This class used for GWT special context requirement 
  **/
-import tm.portableDisplays.PortableContext;
-
-public class GWTContext extends PortableContext {
-
+public class GWTContext implements PortableContextInterface {
+    
+    private AsserterI asserter = new GWTAsserter() ;
+    
 	public CodeDisplayerInfo getCodeDisplayerInfo() {
 		CodeDisplayerInfo info = new CodeDisplayerInfo();
 		// TODO should coming from server side
@@ -30,4 +34,33 @@ public class GWTContext extends PortableContext {
 		info.setFontColor(fontColor);
 		return info;
 	}
+	
+	// TODO should coming from server side
+	public StoreDisplayerInfo getStoreDisplayerInfo() {
+		StoreDisplayerInfo info = new StoreDisplayerInfo();
+		MirrorRegion region = new MirrorRegion();
+		info.setRegion(region);
+		return info;
+	}
+
+    @Override
+    public Font getCodeFont() {
+        return Kit.getKit().getFont("Monospaced", 0, 12) ;
+    }
+
+    @Override
+    public Font getDisplayFont() {
+        // TODO Auto-generated method stub
+        return Kit.getKit().getFont("Dialog", 0, 12) ;
+    }
+
+    @Override
+    public int getHighlightColor() {
+        return 0xFFFF00;
+    }
+
+    @Override
+    public AsserterI getAsserter() {
+        return asserter ;
+    }
 }

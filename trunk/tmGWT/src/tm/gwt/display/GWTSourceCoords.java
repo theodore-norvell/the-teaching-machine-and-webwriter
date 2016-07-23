@@ -1,9 +1,9 @@
 package tm.gwt.display;
 
-import tm.portableDisplays.SuperSourceCoords;
-import tm.portableDisplays.SuperTMFile;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.TMFileI ;
 
-public class GWTSourceCoords implements SuperSourceCoords {
+public class GWTSourceCoords implements SourceCoordsI {
 
 	private int lineNumber;
 
@@ -19,7 +19,7 @@ public class GWTSourceCoords implements SuperSourceCoords {
 	}
 
 	/** The TMFile. May be hashed or tested for equality. */
-	public SuperTMFile getFile() {
+	public TMFileI getFile() {
 		return null;
 	}
 

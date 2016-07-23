@@ -2,8 +2,8 @@ package tm.gwt.jsInterface;
 
 import com.google.gwt.core.client.js.JsType;
 
-import tm.portableDisplays.SuperSourceCoords;
+import tm.interfaces.SourceCoordsI ;
 
 @JsType
-public interface GWTSuperSourceCoords extends SuperSourceCoords {
+public interface GWTSuperSourceCoords extends SourceCoordsI {
 }

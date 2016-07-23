@@ -11,13 +11,13 @@ import com.google.gwt.user.client.ui.Widget;
 
 import telford.common.Kit;
 import tm.gwt.display.CodeDisplay1;
-import tm.gwt.display.ConcreteMirrorState;
 import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
+import tm.gwt.display.StoreDisplay1;
 import tm.gwt.jsInterface.MirrorStateTest;
+import tm.gwt.state.MirrorState ;
 import tm.gwt.telford.KitGWT;
 import tm.portableDisplays.PortableContextInterface;
-import tm.portableDisplays.Selection;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -33,13 +33,25 @@ public class TmGWT implements EntryPoint {
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
-		CodeDisplay1 codeDisplay = new CodeDisplay1(new ConcreteMirrorState(new Selection(Selection.TokenType.TRUE)),
-				context);
+		MirrorState theState = new MirrorState( );
+		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
 		codeDisplay.refresh();
 		
-		expDisplay = new ExpressionDisplay1(new ConcreteMirrorState(new Selection(Selection.TokenType.TRUE)),
-				context);
+		expDisplay = new ExpressionDisplay1( theState, context);
 		expDisplay.refresh();
+		
+		StoreDisplay1 staticDisplay = new StoreDisplay1(theState, context, "Static");
+		staticDisplay.refresh(); 
+		
+		StoreDisplay1 heapDisplay = new StoreDisplay1(theState, context, "Heap");
+		heapDisplay.refresh(); 
+		
+		StoreDisplay1 stackDisplay = new StoreDisplay1(theState, context, "Stack");
+		stackDisplay.refresh(); 
+		
+		StoreDisplay1 scratchDisplay = new StoreDisplay1(theState, context, "Scratch");
+		scratchDisplay.refresh(); 
+		
 		
 	}
 

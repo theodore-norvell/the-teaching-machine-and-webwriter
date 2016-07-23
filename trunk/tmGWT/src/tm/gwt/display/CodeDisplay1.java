@@ -3,18 +3,18 @@ package tm.gwt.display;
 import com.google.gwt.user.client.ui.Button;
 
 import tm.gwt.jsInterface.GWTSuperTMFile;
-import tm.gwt.jsInterface.MirrorState;
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
-import tm.portableDisplays.CodeLine;
 import tm.portableDisplays.PortableContextInterface;
-import tm.portableDisplays.SuperSourceCoords;
 
 public class CodeDisplay1 extends DisplayAdapter {
 	private GWTSuperTMFile theFile;
-	MirrorState evaluator;
+	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
 
-	public CodeDisplay1(MirrorState e, PortableContextInterface context) {
+	public CodeDisplay1(StateInterface e, PortableContextInterface context) {
 		super(new CodeDisplayer(e, context), "codeDisplayPanel", "Test.java", 300, 600);
 		this.evaluator = e;
 		this.context = context;
@@ -47,11 +47,11 @@ public class CodeDisplay1 extends DisplayAdapter {
 		boolean allowGaps = true;
 		setScale(1, 16);
 
-		SuperSourceCoords focus = evaluator.getCodeFocus();
+		SourceCoordsI focus = evaluator.getCodeFocus();
 		int focusLine = 0;
 		boolean found = false;
 		for (int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
-			CodeLine codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
+			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
 				break;

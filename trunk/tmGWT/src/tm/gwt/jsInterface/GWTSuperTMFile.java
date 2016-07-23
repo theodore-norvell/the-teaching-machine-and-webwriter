@@ -2,7 +2,7 @@ package tm.gwt.jsInterface;
 
 import com.google.gwt.core.client.js.JsType;
 
-import tm.portableDisplays.SuperTMFile;
+import tm.interfaces.TMFileI ;
 @JsType
-public interface GWTSuperTMFile extends SuperTMFile{
+public interface GWTSuperTMFile extends TMFileI{
 }
