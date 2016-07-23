@@ -27,11 +27,11 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import tm.configuration.Configuration;
+import tm.interfaces.CodeLineI ;
 import tm.interfaces.ImageSourceInterface;
+import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
 import tm.portableDisplays.CodeDisplayer;
-import tm.portableDisplays.CodeLine;
-import tm.portableDisplays.SelectionInterface;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 import tm.utilities.Debug;
@@ -180,7 +180,7 @@ public class CodeDisplay1 extends SwingDisplay {
 		int focusLine = 0;
 		boolean found = false;
 		for (int sz = commandProcessor.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
-			CodeLine codeLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, focusLine);
+			CodeLineI codeLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
 				break;

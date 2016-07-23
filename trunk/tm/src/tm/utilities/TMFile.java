@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Observable;
 
-import tm.portableDisplays.SuperTMFile;
+import tm.interfaces.TMFileI ;
 
 /**
  * A representation of a Teaching Machine file
  *
  * @author TN
  */
-public class TMFile extends Observable implements SuperTMFile{
+public class TMFile extends Observable implements TMFileI{
     static int fileCount = 0 ;
     private FileSource fileSource ;	// the location of the file
     private String fileName ;

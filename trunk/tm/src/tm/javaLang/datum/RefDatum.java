@@ -41,14 +41,6 @@ public class RefDatum extends AbstractRefDatum {
         this(a, null, m, n, tp, str, timeMan);
     }
 
-    protected RefDatum(RefDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new RefDatum(this);
-    }
-
     public void putValueString(String str) { targetName = str; }
 
     public String getValueString() {

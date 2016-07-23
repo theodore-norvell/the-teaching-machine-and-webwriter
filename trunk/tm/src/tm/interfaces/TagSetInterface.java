@@ -12,11 +12,14 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.portableDisplays;
+/*
+ * Created on 2009-06-02 by Theodore S. Norvell. 
+ */
+package tm.interfaces;
 
-/** Represents a single marked-up line. */
-public interface CodeLine {
-   char [] getChars() ;
-   SuperSourceCoords getCoords() ;
-   MarkUp [] markUp() ;
+
+public interface TagSetInterface {
+    boolean selectionIsValid( SelectionInterface seletion ) ;
+    boolean contains( String tag ) ;
+    boolean isEmpty() ;
 }

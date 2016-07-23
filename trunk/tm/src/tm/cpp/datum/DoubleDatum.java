@@ -47,13 +47,5 @@ public class DoubleDatum extends AbstractFloatDatum64 {
 		this(add, null, m, name, timeMan);
 	}
 
-    protected DoubleDatum(DoubleDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new DoubleDatum(this);
-    }
-
 }
 

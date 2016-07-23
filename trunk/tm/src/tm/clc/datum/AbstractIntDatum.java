@@ -37,10 +37,6 @@ This abstract class groups all integral types..
 	public AbstractIntDatum(int add, int sz, Datum p, Memory m, String n, TypeNode tp, BTTimeManager timeMan) {
 		super(add,sz,p, m, n, tp, timeMan);
 	}
-	
-	protected AbstractIntDatum(AbstractIntDatum original){
-		super(original);
-	}
 
 
 	public void putValue(long v ) {

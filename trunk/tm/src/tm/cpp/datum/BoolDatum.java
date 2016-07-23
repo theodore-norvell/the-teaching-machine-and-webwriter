@@ -46,14 +46,6 @@ public class BoolDatum extends AbstractIntDatum {
     public BoolDatum(int add, Memory m, String name, BTTimeManager timeMan) {
         this(add,null, m, name, timeMan);
     }
-    
-    protected BoolDatum(BoolDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new BoolDatum(this);
-    }
 
     public void putValue(long v ) {
         int a = address ;

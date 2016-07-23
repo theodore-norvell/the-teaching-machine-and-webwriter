@@ -19,6 +19,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.PointerInterface;
 import tm.utilities.Assert;

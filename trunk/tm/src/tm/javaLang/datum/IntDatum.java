@@ -41,14 +41,6 @@ public class IntDatum extends AbstractIntDatum {
     public IntDatum(int add, Memory m, String name, BTTimeManager timeMan) {
         this(add,null, m, name, timeMan); }
 
-    protected IntDatum(IntDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new IntDatum(this);
-    }
-
     public void putNativeValue(Object obj) {
    		Assert.check(obj instanceof Integer);
    		putValue(((Integer)obj).intValue());

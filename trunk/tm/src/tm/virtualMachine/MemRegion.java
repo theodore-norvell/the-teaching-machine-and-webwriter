@@ -33,6 +33,8 @@ public abstract class MemRegion extends PropertyList implements RegionInterface 
 
     private ViewableST symTab ;
     protected String name ;
+    private int serialNumber ;
+    private static int nextSerialNumber = -1 ;
 
     MemRegion(BTTimeManager timeMan, int first, int size, Store store, ViewableST symTab, String name) {
         super( timeMan ) ;
@@ -41,8 +43,12 @@ public abstract class MemRegion extends PropertyList implements RegionInterface 
         theStore = store ;
         regionDatums = new BTVector( timeMan ) ;
         this.symTab = symTab ;
-        this.name = name ; }
+        this.name = name ;
+        this.serialNumber = nextSerialNumber-- ; 
+   }
 
+    public int getSerialNumber() { return serialNumber ; }
+    
     public abstract int findSpace(int i) ;
 
     void addDatum(Datum newDatum) {
@@ -127,13 +133,6 @@ public abstract class MemRegion extends PropertyList implements RegionInterface 
 	public void defaultInitialize() {
 		// I don't think this should ever happen.
 		Assert.apology("defaultInitialize executed on memory region") ;
-	}
-	
-	public boolean isEqual(Datum another){
-		// I don't think this should ever happen.
-		Assert.apology("isEqual executed on memory region") ;
-		return false;
-		
 	}
 
 }

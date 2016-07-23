@@ -30,9 +30,6 @@ public class VoidDatum extends AbstractDatum
 		super(0, 1, null, m, "", tp, timeMan) ;
 	}
 	
-	protected VoidDatum(VoidDatum original){
-		super(original);
-	}
 	
 	public String getValueString(){
 	    return "no value" ;}
@@ -53,8 +50,4 @@ public class VoidDatum extends AbstractDatum
 	public void putNativeValue(Object obj, VMState vms){
 //    	Deliberate nop to override Assert.unsupported("Native objects");
 	}
-	
-    public Datum copy(){
-    	return new VoidDatum(this);
-    }
 }

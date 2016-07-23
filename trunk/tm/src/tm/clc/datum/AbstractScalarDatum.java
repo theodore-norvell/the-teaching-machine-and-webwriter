@@ -30,8 +30,4 @@ abstract public class AbstractScalarDatum extends tm.clc.datum.AbstractDatum
 		super(add,s,p, m, name, tp, timeMan);
 	}
 	
-	protected AbstractScalarDatum(AbstractScalarDatum original){
-		super(original);
-	}
-	
 }

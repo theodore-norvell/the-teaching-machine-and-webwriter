@@ -38,10 +38,6 @@ This abstract class groups all floating point types..
 		super(add,sz,p, m, n, tp, timeMan);
 	}
 
-	protected AbstractFloatDatum(AbstractFloatDatum original){
-		super(original);
-	}
-
 	public abstract void putValue(double v ) ;
 	
 	public abstract double getValue() ;

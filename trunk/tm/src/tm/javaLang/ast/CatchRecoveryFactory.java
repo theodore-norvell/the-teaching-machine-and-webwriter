@@ -57,7 +57,7 @@ public class CatchRecoveryFactory extends ClcRecoveryFactory {
                 PointerDatum ptr = (PointerDatum) thrownDatum ;
                 Datum thrownObject = ptr.deref() ;
                 return JavaLangASTUtilities.assignableReferenceType(
-                                                (TyJava) thrownDatum.getType(),
+                                                (TyJava) ptr.getType(),
                                                 (TyJava) parameterType ) ; }
             else {
                return false; }

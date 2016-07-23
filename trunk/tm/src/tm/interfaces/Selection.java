@@ -15,8 +15,7 @@
 /*
  * Created on 2009-06-03 by Theodore S. Norvell. 
  */
-package tm.portableDisplays;
-
+package tm.interfaces;
 
 public class Selection implements SelectionInterface {
 
@@ -44,7 +43,24 @@ public class Selection implements SelectionInterface {
         children = new Selection[] { left, right } ; 
     }
     
-    public boolean evaluate( TagSet tagSet ) {
+    public boolean isValidForEmptyTagSet() {
+        switch( type ) {
+        case TRUE : return true ;
+        case FALSE : return false ;
+        case TAG: return false ;
+        case NOT: return ! children[0].isValidForEmptyTagSet() ;
+        case AND:
+            if( children[0].isValidForEmptyTagSet() )
+                return children[1].isValidForEmptyTagSet() ;
+            else return false ;
+        case OR:
+            if( children[0].isValidForEmptyTagSet() ) return true ;
+            else return children[1].isValidForEmptyTagSet() ;
+        default: /*Unreachable*/; return false ;
+        }
+    }
+    
+    public boolean evaluate( TagSetInterface tagSet ) {
         switch( type ) {
         case TRUE : return true ;
         case FALSE : return false ;
@@ -57,7 +73,7 @@ public class Selection implements SelectionInterface {
         case OR:
             if( children[0].evaluate(tagSet) ) return true ;
             else return children[1].evaluate(tagSet) ;
-        default: SuperAssert.check(false) ; return false ;
+        default: /* Unreachable*/ return false ;
         }
     }
     
@@ -84,7 +100,7 @@ public class Selection implements SelectionInterface {
             if( p > 1)
                 return "(" + y + ")" ;
             else return y ;
-        default: SuperAssert.check(false) ; return "" ;
+        default: /*Unreachable*/ return "" ;
         }
     }
 }

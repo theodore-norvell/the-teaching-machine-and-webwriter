@@ -14,23 +14,20 @@
 
 package tm.displayEngine;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
-import tm.displayEngine.generators.AbstractGenerator;
 import tm.displayEngine.generators.RegionGenerator;
 import tm.displayEngine.generators.SelectionGenerator;
 import tm.displayEngine.generators.StoreGenerator;
 import tm.interfaces.CommandInterface;
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
-import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.subWindowPkg.SmallToggleButton;
 import tm.subWindowPkg.ToolBar;
-import tm.subWindowPkg.WorkArea;
 import tm.utilities.Assert;
 
 

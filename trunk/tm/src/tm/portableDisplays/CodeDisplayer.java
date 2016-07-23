@@ -4,6 +4,12 @@ import telford.common.Font;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
 import telford.common.Kit;
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.MarkUpI ;
+import tm.interfaces.SelectionInterface ;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.StateInterface ;
+import tm.interfaces.TMFileI ;
 
 public class CodeDisplayer extends PortableDisplayer {
 	public CodeDisplayer(StateInterface model, PortableContextInterface context) {
@@ -33,18 +39,14 @@ public class CodeDisplayer extends PortableDisplayer {
 		this.displayInfo = displayInfo;
 	}
 
-	private SuperTMFile theFile = null;
+	private TMFileI theFile = null;
 
 	@Override
 	public void refresh() {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		drawArea(g);
-	}
-
-	public void drawArea(Graphics screen) {
+	public void paintComponent(Graphics screen) {
 		setMode(screen, NORMAL); // Always start in normal mode
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 
@@ -54,10 +56,10 @@ public class CodeDisplayer extends PortableDisplayer {
 			theFile = displayInfo.getTmFile();
 		boolean allowGaps = displayInfo.getLineNumbersCheckStatus();
 		int n = model.getNumSelectedCodeLines(theFile, allowGaps);
-		SuperSourceCoords focus = (SuperSourceCoords)model.getCodeFocus();
+		SourceCoordsI focus = model.getCodeFocus();
 		for (int i = 0; i < n; i++) {
 			baseLine += lineHeight + LINE_PADDING;
-			CodeLine theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
+			CodeLineI theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
 			if (theLine != null && theLine.getCoords().equals( focus )) {
 				int save = screen.getColor();
 				screen.setColor(context.getHighlightColor());
@@ -94,7 +96,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				BOLD_ITALIC);
 	}
 
-	private void drawLine(CodeLine codeLine, int x, int y, Graphics screen) {
+	private void drawLine(CodeLineI codeLine, int x, int y, Graphics screen) {
 		setMode(screen, NORMAL);
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 		final int em = fm.stringWidth("M");
@@ -127,47 +129,47 @@ public class CodeDisplayer extends PortableDisplayer {
 		int column = 0;
 		int m = 0; // index into the markup array
 		char[] chars = codeLine.getChars();
-		MarkUp[] markUp = codeLine.markUp();
+		MarkUpI[] markUp = codeLine.markUp();
 		setMode(screen, NORMAL);
 		fm = screen.getFontMetrics(screen.getFont());
 		SelectionInterface selection = model.getSelection();
-		boolean visible = TagSet.EMPTY.selectionIsValid(selection);
+		boolean visible = selection.isValidForEmptyTagSet();
 		for (int i = 0, sz = chars.length; i < sz; ++i) {
 			// Process all MarkUp commands that apply up to column i.
-			while (m < markUp.length && markUp[m].column <= i) {
-				int command = markUp[m].command;
+			while (m < markUp.length && markUp[m].getColumn() <= i) {
+				int command = markUp[m].getCommand();
 				switch (command) {
-				case MarkUp.NORMAL: {
+				case MarkUpI.NORMAL: {
 					setMode(screen, NORMAL);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.KEYWORD: {
+				case MarkUpI.KEYWORD: {
 					setMode(screen, KEYWORD);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.COMMENT: {
+				case MarkUpI.COMMENT: {
 					setMode(screen, COMMENT);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.PREPROCESSOR: {
+				case MarkUpI.PREPROCESSOR: {
 					setMode(screen, PREPROCESSOR);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.CONSTANT: {
+				case MarkUpI.CONSTANT: {
 					setMode(screen, CONSTANT);
 					fm = screen.getFontMetrics(screen.getFont());
 				}
 					break;
-				case MarkUp.CHANGE_TAG_SET: {
-					visible = markUp[m].tagSet.selectionIsValid(selection);
+				case MarkUpI.CHANGE_TAG_SET: {
+					visible = markUp[m].getTagSet().selectionIsValid(selection);
 				}
 					break;
 				default: {
-					SuperAssert.check(false);
+					context.getAsserter().check("Unreachable code reached.");
 				}
 				}
 				m++;
@@ -177,7 +179,7 @@ public class CodeDisplayer extends PortableDisplayer {
 			if (visible) {
 				if (chars[i] == '\t') {
 					int newColumn = (column / displayInfo.getTabSpaces() + 1) * displayInfo.getTabSpaces();
-					SuperAssert.check(newColumn > column);
+					context.getAsserter().check(newColumn > column);
 					char[] space = new char[] { ' ' };
 
 					x += (newColumn - column) * fm.stringWidth(String.valueOf(space[0]));

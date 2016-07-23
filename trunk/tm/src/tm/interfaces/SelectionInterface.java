@@ -13,10 +13,12 @@
 // governing permissions and limitations under the License.
 
 /*
- * Created on 2009-06-02 by Theodore S. Norvell. 
+ * Created on 2009-06-08 by Theodore S. Norvell. 
  */
-package tm.portableDisplays;
+package tm.interfaces;
 
-public interface TagSetInterface {
-    boolean selectionIsValid( SelectionInterface seletion ) ;
+
+public interface SelectionInterface {
+    public boolean evaluate( TagSetInterface tagSet ) ;
+    public boolean isValidForEmptyTagSet() ;
 }

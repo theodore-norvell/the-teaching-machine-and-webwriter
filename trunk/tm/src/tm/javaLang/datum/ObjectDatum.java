@@ -47,14 +47,6 @@ public class ObjectDatum extends AbstractObjectDatum {
             TyAbstractClass tp, int numberOfElements, BTTimeManager timeMan) {
         super(add, p, m, n, tp, numberOfElements, timeMan);
     }
-
-    protected ObjectDatum(ObjectDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ObjectDatum(this);
-    }
     
     public ArrayDatum getStringArrayDatum(){
 		AbstractDatum stringRef = getField(0);

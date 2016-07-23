@@ -42,12 +42,5 @@ public class SignedCharDatum extends CharDatum {
 	public SignedCharDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-    protected SignedCharDatum(SignedCharDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new SignedCharDatum(this);
-    }
 
 }

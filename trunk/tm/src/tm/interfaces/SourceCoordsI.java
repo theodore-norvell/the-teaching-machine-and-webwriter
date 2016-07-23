@@ -1,7 +1,9 @@
-package tm.portableDisplays;
+package tm.interfaces;
 
-public interface SuperSourceCoords {
-	public SuperTMFile getFile();
+
+public interface SourceCoordsI {
+    
+	public TMFileI getFile();
 
     /** Line number counting from 1. */
     public int getLineNumber();

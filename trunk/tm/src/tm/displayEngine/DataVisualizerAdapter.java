@@ -14,7 +14,6 @@
 
 package tm.displayEngine;
 
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.Vector;
@@ -28,9 +27,6 @@ import tm.displayEngine.generators.AbstractGenerator;  //Rev94 all three
 import tm.displayEngine.generators.MalleableGenerator;
 import tm.displayEngine.generators.SelectionGenerator;
 import tm.interfaces.Datum;
-import tm.interfaces.DisplayContextInterface;
-import tm.subWindowPkg.ToolBar;
-import tm.subWindowPkg.WorkArea;
 import tm.utilities.Assert;  //Rev 94
 import tm.utilities.Debug;
 
@@ -148,7 +144,9 @@ public abstract class DataVisualizerAdapter extends DisplayAdapter{
 	//Rev94 removed SetReference and CompareReference methods
 	public final void compareDatums(Datum datum1, Datum datum2){
     	if (comparisonSet == null) comparisonSet = new Vector<Boolean>();
-    	boolean result = datum1.isEqual(datum2);
+    	// Since isEqual is no longer available to the visualization side,
+    	// we replace `boolean result = datum1.isEqual(datum2);` with
+    	boolean result = datum1.getValueString().equals( datum2.getValueString() ) ;
     	Debug.getInstance().msg(Debug.DISPLAY, "result is " + result);
     	comparisonSet.add(new Boolean(result));
 	}

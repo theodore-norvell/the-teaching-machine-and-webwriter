@@ -14,37 +14,36 @@
 
 package tm.displayEngine;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Paint;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.MouseEvent;
+import java.awt.Color ;
+import java.awt.Dimension ;
+import java.awt.Font ;
+import java.awt.FontMetrics ;
+import java.awt.Graphics ;
+import java.awt.Graphics2D ;
+import java.awt.Paint ;
+import java.awt.Point ;
+import java.awt.Rectangle ;
+import java.awt.event.ItemEvent ;
+import java.awt.event.ItemListener ;
+import java.awt.event.MouseEvent ;
 
-import javax.swing.JCheckBoxMenuItem;
-import javax.swing.JSlider;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import javax.swing.JCheckBoxMenuItem ;
+import javax.swing.JSlider ;
+import javax.swing.event.ChangeEvent ;
+import javax.swing.event.ChangeListener ;
 
-import tm.configuration.Configuration;
-import tm.interfaces.ImageSourceInterface;
-import tm.interfaces.SourceCoords;
-import tm.portableDisplays.CodeLine;
-import tm.portableDisplays.MarkUp;
-import tm.portableDisplays.SelectionInterface;
-import tm.portableDisplays.SuperSourceCoords;
-import tm.portableDisplays.TagSet;
-import tm.subWindowPkg.SmallButton;
-import tm.subWindowPkg.ToolBar;
-import tm.utilities.Assert;
-import tm.utilities.Debug;
-import tm.utilities.TMFile;
+import tm.configuration.Configuration ;
+import tm.interfaces.CodeLineI ;
+import tm.interfaces.ImageSourceInterface ;
+import tm.interfaces.MarkUpI ;
+import tm.interfaces.SelectionInterface ;
+import tm.interfaces.SourceCoords ;
+import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.TMFileI ;
+import tm.subWindowPkg.SmallButton ;
+import tm.subWindowPkg.ToolBar ;
+import tm.utilities.Assert ;
+import tm.utilities.Debug ;
 
 public class CodeDisplay extends DisplayAdapter {
     /**
@@ -84,8 +83,8 @@ public class CodeDisplay extends DisplayAdapter {
 
     private int cursorLine;		// The line which contains the user-settable cursor
     private int cursorChar;     // The char which the cursor is on
-    private SuperSourceCoords cursorLineCoords ;
-    private TMFile theFile = null ; // The file currently being displayed.
+    private SourceCoordsI cursorLineCoords ;
+    private TMFileI theFile = null ; // The file currently being displayed.
     private SelectionInterface theSelection ;
     private int rate = 50; // Middle of arbitrary 0-100 scale
     private JSlider slider;
@@ -147,8 +146,8 @@ public class CodeDisplay extends DisplayAdapter {
     public void refresh(){
         refreshTheButtons() ;
         boolean allowGaps = lineNumbersCheckBox.getState() ;
-        SourceCoords focus = (SourceCoords)commandProcessor.getCodeFocus();
-        TMFile file = focus.getFile() ;
+        SourceCoordsI focus = commandProcessor.getCodeFocus();
+        TMFileI file = focus.getFile() ;
         /*DBG System.out.println("Current file is " + file.getFileName());/*DBG*/
         Graphics screen = getGraphics();
         if (screen == null) return;
@@ -190,7 +189,7 @@ public class CodeDisplay extends DisplayAdapter {
         int focusLine = 0;
         boolean found = false ;
         for( int sz = commandProcessor.getNumSelectedCodeLines(theFile, allowGaps) ; focusLine < sz ; ++focusLine ) {
-            CodeLine codeLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, focusLine) ;
+            CodeLineI codeLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, focusLine) ;
             if( codeLine != null && codeLine.getCoords().equals( focus ) ) {
                 found = true ;
                 break ; } }
@@ -404,7 +403,7 @@ public class CodeDisplay extends DisplayAdapter {
             /*if ( scroll.y <= baseLine+descent && baseLine-ascent <= scroll.y + port.height) */ {     
                 // assert baseLine - (lineHeight+LINEPADDING <= scroll.y + port.height
 //            	System.out.println("Drawing line " + i);
-	            CodeLine theLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, i);
+	            CodeLineI theLine = commandProcessor.getSelectedCodeLine(theFile, allowGaps, i);
 	            if ( theLine != null && theLine.getCoords().equals( focus ) ){
 	                Paint save = screen.getPaint();
 	                screen.setPaint(context.getHighlightColor());
@@ -434,7 +433,7 @@ public class CodeDisplay extends DisplayAdapter {
 
 
     // Draws a single line, taking mode changes into account
-    private void drawLine(CodeLine codeLine, int x, int y, Graphics2D screen) {
+    private void drawLine(CodeLineI codeLine, int x, int y, Graphics2D screen) {
         //System.out.println( "Displaying "+codeLine );
         setMode( screen, NORMAL ) ;
         FontMetrics fm = screen.getFontMetrics() ;
@@ -463,39 +462,39 @@ public class CodeDisplay extends DisplayAdapter {
         int column = 0 ;
         int m = 0 ; // index into the markup array
         char[] chars = codeLine.getChars() ;
-        MarkUp[] markUp = codeLine.markUp() ;
+        MarkUpI[] markUp = codeLine.markUp() ;
         setMode( screen, NORMAL ) ;
         fm = screen.getFontMetrics() ;
         SelectionInterface selection = commandProcessor.getSelection() ;
-        boolean visible = TagSet.EMPTY.selectionIsValid( selection ) ;
+        boolean visible = selection.isValidForEmptyTagSet() ;
         final int x0 = x ; // x0 is the x of the first character.
         for( int i=0, sz = chars.length ; i < sz ; ++i ) {
             // Process all MarkUp commands that apply up to column i.
-            while( m < markUp.length && markUp[m].column <= i ) {
-                int command = markUp[m].command ;
+            while( m < markUp.length && markUp[m].getColumn() <= i ) {
+                int command = markUp[m].getCommand() ;
                 switch( command ) {
-                    case MarkUp.NORMAL: {
+                    case MarkUpI.NORMAL: {
                         setMode( screen, NORMAL ) ;
                         fm = screen.getFontMetrics() ; }
                     break ;
-                    case MarkUp.KEYWORD : {
+                    case MarkUpI.KEYWORD : {
                         setMode( screen, KEYWORD ) ;
                         fm = screen.getFontMetrics() ; }
                     break ;
-                    case MarkUp.COMMENT : {
+                    case MarkUpI.COMMENT : {
                         setMode( screen, COMMENT ) ;
                         fm = screen.getFontMetrics() ; }
                     break ;
-                    case MarkUp.PREPROCESSOR : {
+                    case MarkUpI.PREPROCESSOR : {
                         setMode( screen, PREPROCESSOR ) ;
                         fm = screen.getFontMetrics() ; }
                     break ;
-                    case MarkUp.CONSTANT : {
+                    case MarkUpI.CONSTANT : {
                         setMode( screen, CONSTANT ) ;
                         fm = screen.getFontMetrics() ; }
                     break ;
-                    case MarkUp.CHANGE_TAG_SET : {
-                        visible = markUp[m].tagSet.selectionIsValid( selection ) ; }
+                    case MarkUpI.CHANGE_TAG_SET : {
+                        visible = markUp[m].getTagSet().selectionIsValid( selection ) ; }
                     break ;
                     default : {
                         Assert.check(false) ; } }

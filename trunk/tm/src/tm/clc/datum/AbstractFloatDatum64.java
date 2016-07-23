@@ -32,10 +32,6 @@ public class AbstractFloatDatum64 extends AbstractFloatDatum {
         super(add, sz, p, m, n, tp, timeMan);
     }
 
-	protected AbstractFloatDatum64(AbstractFloatDatum64 original){
-		super(original);
-	}
-
     public void putValue(double v ) {
         long bits = Double.doubleToLongBits(v);
         int a = address ;
@@ -61,9 +57,5 @@ public class AbstractFloatDatum64 extends AbstractFloatDatum {
     public boolean input(VMState vms) {
         boolean success = DatumUtilities.inputFloat(vms, this);
         return success;
-    }
-
-    public Datum copy(){
-    	return new AbstractFloatDatum64(this);
     }
 }

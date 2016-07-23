@@ -14,6 +14,7 @@
 
 /* (C) Theodore Norvell 1999 */
 package tm.interfaces;
+
 public interface RegionInterface extends tm.interfaces.Datum
 {
     /** The frame boundary is the number of datums in the

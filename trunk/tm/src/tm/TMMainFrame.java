@@ -14,6 +14,7 @@
 
 package tm;
 import java.applet.AppletStub;
+
 import javax.swing.* ;
 
 import java.io.File;
@@ -42,9 +43,9 @@ import tm.configuration.ConfigurationServer;
 import tm.interfaces.Configurable;
 import tm.interfaces.ExternalCommandInterface;
 import tm.interfaces.ImageSourceInterface;
+import tm.interfaces.SelectionInterface ;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInManagerDialog;
-import tm.portableDisplays.SelectionInterface;
 import tm.scripting.ScriptManager;
 import tm.utilities.ApologyException;
 import tm.virtualMachine.SelectionParser;

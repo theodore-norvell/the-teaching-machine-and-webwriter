@@ -41,12 +41,5 @@ public class LongDoubleDatum extends DoubleDatum {
 	public LongDoubleDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-    protected LongDoubleDatum(LongDoubleDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new LongDoubleDatum(this);
-    }
 
 }

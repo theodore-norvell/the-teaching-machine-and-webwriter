@@ -14,24 +14,7 @@
 
 package tm.displayEngine;
 
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-
-import tm.configuration.Configuration;
-import tm.configuration.ConfigurationServer;
-import tm.interfaces.CommandInterface;
-import tm.interfaces.Datum;
-import tm.interfaces.DisplayContextInterface;
-import tm.interfaces.ImageSourceInterface;
-import tm.interfaces.RegionInterface;
 import tm.plugins.Requirement;
-import tm.subWindowPkg.SmallToggleButton;
-import tm.subWindowPkg.SubWindow;
-import tm.subWindowPkg.ToolBar;
-import tm.subWindowPkg.WorkArea;
-import tm.utilities.Assert;
 
 /**
  * 
@@ -53,7 +36,7 @@ public class StoreDisplayPIFactory implements DisplayPIFactoryIntf{
     }
 	
 	public DisplayInterface createPlugin(DisplayManager dm) {		
-		return new StoreDisplay(dm, configId);
+		return new StoreDisplay1(dm, configId);
 	}
 
 	public Requirement[] getRequirements() {

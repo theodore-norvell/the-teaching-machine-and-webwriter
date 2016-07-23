@@ -59,14 +59,6 @@ public class ClassDatum extends AbstractObjectDatum  {
         hasBeenInitialized.set( Boolean.FALSE ) ;
     }
 
-    protected ClassDatum(ClassDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ClassDatum(this);
-    }
-
     public String getValueString(){
         return type.getTypeString()+"{..}";
     }

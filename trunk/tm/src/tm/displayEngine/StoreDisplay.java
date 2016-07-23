@@ -21,6 +21,7 @@ import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import tm.configuration.Configuration;
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;

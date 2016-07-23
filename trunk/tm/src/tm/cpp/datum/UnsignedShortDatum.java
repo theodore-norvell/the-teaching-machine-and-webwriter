@@ -44,14 +44,6 @@ public class UnsignedShortDatum extends AbstractIntDatum {
 	public UnsignedShortDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-	
-    protected UnsignedShortDatum(UnsignedShortDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new UnsignedShortDatum(this);
-    }
 
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputInt( vms, this, size, true ) ;

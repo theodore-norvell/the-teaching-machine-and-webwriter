@@ -32,9 +32,10 @@ import tm.utilities.Debug;
 import tm.virtualMachine.Console;
 import tm.virtualMachine.Memory;
 import tm.virtualMachine.PropertyList;
+import tm.virtualMachine.VMDatum ;
 import tm.virtualMachine.VMState;
 
-public abstract class AbstractDatum extends PropertyList implements Datum {
+public abstract class AbstractDatum extends PropertyList implements VMDatum {
 	protected int address;
 	protected Datum parent;
 	protected int size;
@@ -43,6 +44,8 @@ public abstract class AbstractDatum extends PropertyList implements Datum {
 	protected String name ;
 	protected BTVar<Integer> highlight ;
 	protected int birthOrder = 0;
+	protected int serialNumber ;
+	static protected int nextSerialNumber = 0 ;
 
 	protected AbstractDatum(int add, int s, Datum p, Memory m, String n,
 	                       TypeNode tp, BTTimeManager timeMan) {
@@ -55,20 +58,9 @@ public abstract class AbstractDatum extends PropertyList implements Datum {
 		name = n ;
         highlight = new BTVar<Integer>(timeMan) ;
         highlight.set( new Integer( Datum.PLAIN ) ) ;
+        serialNumber = nextSerialNumber++ ;
 	}
-	// Copy constructor
-	protected AbstractDatum(AbstractDatum orig){
-		super(orig);
-		address = orig.address;
-		size = orig.size;
-		parent = orig.parent;
-		mem = orig.mem;
-		type = orig.type;
-		name = orig.name;
-		highlight = orig.highlight;  // This is NOT a proper deep copy!
-		birthOrder = orig.birthOrder;
-	}
-
+	
 // These methods are common to all Datums
 
 	public int getNumBytes() { return size;}
@@ -81,6 +73,9 @@ public abstract class AbstractDatum extends PropertyList implements Datum {
     
     public int getHighlight() {
         return ((Integer)highlight.get()).intValue() ; }
+    
+
+    public int getSerialNumber() { return serialNumber ; }
     
 	public int getAddress() {return address;}
 
@@ -182,7 +177,7 @@ public abstract class AbstractDatum extends PropertyList implements Datum {
 		if (getNumChildren() != theOther.getNumChildren()) return false;
 		if (getNumChildren() == 0) return localEqualityCheck(theOther);		
 		for (int i = 0; i < getNumChildren(); i++)
-			if (!getChildAt(i).isEqual(theOther.getChildAt(i))) return false;
+			if (!((VMDatum)getChildAt(i)).isEqual(theOther.getChildAt(i))) return false;
 		return true;
 	}
 	

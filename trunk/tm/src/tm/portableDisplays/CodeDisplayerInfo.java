@@ -1,6 +1,7 @@
 package tm.portableDisplays;
 
 import telford.common.Font;
+import tm.interfaces.TMFileI ;
 
 public class CodeDisplayerInfo {
 	// Font styles
@@ -14,7 +15,7 @@ public class CodeDisplayerInfo {
 	private int cursorColor = 0x008000;
 	private int cursorLine = 0;
 	private boolean lineNumbersCheckStatus = true;//show line number by default
-	private SuperTMFile tmFile;
+	private TMFileI tmFile;
 	private int focusLineNumber = 1;
 	public int getFocusLineNumber() {
 		return focusLineNumber;
@@ -24,11 +25,11 @@ public class CodeDisplayerInfo {
 		this.focusLineNumber = focusLineNumber;
 	}
 
-	public SuperTMFile getTmFile() {
+	public TMFileI getTmFile() {
 		return tmFile;
 	}
 
-	public void setTmFile(SuperTMFile tmFile) {
+	public void setTmFile(TMFileI tmFile) {
 		this.tmFile = tmFile;
 	}
 

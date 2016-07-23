@@ -20,10 +20,11 @@ import java.util.Set;
 import java.util.Vector;
 
 import tm.interfaces.ExternalCommandInterface;
+import tm.interfaces.MarkUp ;
+import tm.interfaces.MarkUpI ;
 import tm.interfaces.SourceCoords;
-import tm.portableDisplays.MarkUp;
-import tm.portableDisplays.TagSet;
-import tm.portableDisplays.TagSetInterface;
+import tm.interfaces.TagSet ;
+import tm.interfaces.TagSetInterface ;
 import tm.utilities.Assert;
 import tm.utilities.TMFile;
 import tm.virtualMachine.CodeStore;
@@ -48,7 +49,7 @@ public class Colourizer {
     Vector<MarkUp> currentMarkUp = new Vector<MarkUp>() ;
     
     /** The set of all tags that currently apply. */
-    TagSet currentTagSet = TagSet.EMPTY ;
+    TagSet currentTagSet = TagSet.getEmpty() ;
     
     /** A list of all TagSets that apply to the current line. */
     Set<TagSetInterface> tagSetsForCurrentLine   ;
@@ -112,13 +113,13 @@ public class Colourizer {
     public void startSelection( String tagName )  {
         if( ! newLineStarted ) startNewLine(PLAIN) ;
         currentTagSet = TagSet.union( currentTagSet, new TagSet(tagName)) ;
-        emitCommand(MarkUp.CHANGE_TAG_SET, currentTagSet) ;
+        emitCommand(MarkUpI.CHANGE_TAG_SET, currentTagSet) ;
     }
 
     public void endSelection( String tagName )  {
         if( ! newLineStarted ) startNewLine(PLAIN) ;
         currentTagSet = TagSet.subtract( currentTagSet, new TagSet(tagName)) ;
-        emitCommand(MarkUp.CHANGE_TAG_SET, currentTagSet) ;
+        emitCommand(MarkUpI.CHANGE_TAG_SET, currentTagSet) ;
     }
 
     private void startNewLine(int colourClass) {
@@ -126,8 +127,8 @@ public class Colourizer {
         currentMarkUp.setSize(0) ;
         tagSetsForCurrentLine = new HashSet<TagSetInterface>() ; 
         // Emit a mark-up command to set the current tag set
-        if( currentTagSet != TagSet.EMPTY ) 
-            emitCommand( MarkUp.CHANGE_TAG_SET, currentTagSet ) ;
+        if( ! currentTagSet.isEmpty() ) 
+            emitCommand( MarkUpI.CHANGE_TAG_SET, currentTagSet ) ;
         
         startColour(colourClass) ;
         lineNumber += 1 ;
@@ -144,19 +145,19 @@ public class Colourizer {
           break ;
 
           case KEYWORD : {
-            emitCommand( MarkUp.KEYWORD ) ; }
+            emitCommand( MarkUpI.KEYWORD ) ; }
           break ;
 
           case COMMENT :{
-            emitCommand( MarkUp.COMMENT ) ; }
+            emitCommand( MarkUpI.COMMENT ) ; }
           break ;
 
           case CONSTANT :{
-            emitCommand( MarkUp.CONSTANT ) ; }
+            emitCommand( MarkUpI.CONSTANT ) ; }
           break ;
 
           case PREPROCESSOR : {
-            emitCommand( MarkUp.PREPROCESSOR ) ; }
+            emitCommand( MarkUpI.PREPROCESSOR ) ; }
           break ;
 
           default : Assert.check( false ) ; }
@@ -172,7 +173,7 @@ public class Colourizer {
           case COMMENT :
           case CONSTANT :
           case PREPROCESSOR : {
-            emitCommand( MarkUp.NORMAL ) ; }
+            emitCommand( MarkUpI.NORMAL ) ; }
           break ;
 
           default : Assert.check( false ) ; }

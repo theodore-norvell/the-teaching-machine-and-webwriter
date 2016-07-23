@@ -43,14 +43,6 @@ public class ShortDatum extends AbstractIntDatum {
 	public ShortDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-	
-    protected ShortDatum(ShortDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new ShortDatum(this);
-    }
 
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputInt( vms, this, size, false ) ;

@@ -43,14 +43,6 @@ public class LongDatum extends AbstractIntDatum {
 	public LongDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-	
-    protected LongDatum(LongDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new LongDatum(this);
-    }
 
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputInt( vms, this, size, false ) ;

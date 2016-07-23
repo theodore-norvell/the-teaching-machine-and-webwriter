@@ -44,14 +44,6 @@ public class UnsignedLongDatum extends AbstractIntDatum {
 	public UnsignedLongDatum(int add, Memory m, String name, BTTimeManager timeMan) {
 		this(add,null, m, name, timeMan);
 	}
-	
-    protected UnsignedLongDatum(UnsignedLongDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new UnsignedLongDatum(this);
-    }
 
     public boolean input( VMState vms ) {
         boolean success = DatumUtilities.inputInt( vms, this, size, true ) ;

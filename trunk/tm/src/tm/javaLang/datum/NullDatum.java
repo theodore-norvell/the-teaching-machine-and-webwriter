@@ -38,14 +38,6 @@ public class NullDatum extends tm.clc.datum.AbstractPointerDatum {
         this(a, null, m, n, tp, str, timeMan);
     }
 
-    protected NullDatum(NullDatum original){
-    	super(original);
-    }
-    
-    public Datum copy(){
-    	return new NullDatum(this);
-    }
-
     public TypeInterface getPointeeType() {
         Assert.check( false ) ;
         return null;
