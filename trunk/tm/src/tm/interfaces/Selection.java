@@ -17,9 +17,6 @@
  */
 package tm.interfaces;
 
-import tm.utilities.Assert ;
-
-
 public class Selection implements SelectionInterface {
 
     public enum TokenType{ AND, OR, NOT, TRUE, FALSE, TAG }

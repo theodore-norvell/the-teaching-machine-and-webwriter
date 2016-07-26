@@ -74,6 +74,47 @@ public class MirrorDatum implements Datum, IsSerializable {
         childLabel = null ;
         this.store = ms ;
     }
+    
+    /** The following constructor is for test purposes only, at the moment. */
+    public MirrorDatum(
+            int address,
+            Datum parent,
+            String name ,
+            String typeString ,
+            String valueString ,
+            byte[] bytes ,
+            int highlight ,
+            int birthOrder ,
+            int serialNumber ,
+            int childCount,
+            MirrorStore ms
+    ) {
+        this.address = address ;
+        this.parent = parent ;
+        this.name = name ;
+        this.typeString = typeString ;
+        this.valueString = valueString ;
+        this.bytes = bytes ;
+        this.highlight = highlight ;
+        this.birthOrder = birthOrder ;
+        this.serialNumber = serialNumber ;
+        if( childCount == 0 ) {
+            this.children = null ;
+            this.childLabel = null ; }
+        else {
+            this.children = new MirrorDatum[ childCount ] ;
+            this.childLabel = new String[ childCount ] ; }
+        this.store = ms ;
+    }
+    
+    /** The following method is for test purposes only, at the moment. */
+    public void addChild( String label, MirrorDatum child, int i) {
+        if( child.parent != null && child.parent != this || child.parent == null && !(this instanceof RegionInterface) ) 
+            throw new AssertionError( "child has wrong parent") ;
+        if( child.birthOrder != i ) throw new AssertionError( "child has wrong position") ;
+        childLabel[i] = label ;
+        children[i] = child ;
+    }
 
     @Override
     public int getHighlight() {

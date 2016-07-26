@@ -6,6 +6,7 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.RegionInterface ;
+import tm.interfaces.Selection ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
@@ -15,7 +16,7 @@ public class MirrorState implements StateInterface, IsSerializable {
 
     private String expression = "" ;
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
-    private SelectionInterface selection = new MirrorSelection() ;
+    private SelectionInterface selection = new Selection(Selection.TokenType.TRUE) ;
     private SourceCoordsI codeFocus = new MirrorCoords() ;
     private MirrorStore store = new MirrorStore() ;
 
@@ -23,7 +24,7 @@ public class MirrorState implements StateInterface, IsSerializable {
         // Create a default state.
     }
 
-    public void putExpression( String exp ) {
+    public void setExpression( String exp ) {
         this.expression = exp ;
     }
     
@@ -60,7 +61,7 @@ public class MirrorState implements StateInterface, IsSerializable {
             return c ; }
     }
     
-    public void putSelection( SelectionInterface selection ) {
+    public void setSelection( SelectionInterface selection ) {
         this.selection = selection ;
     }
 

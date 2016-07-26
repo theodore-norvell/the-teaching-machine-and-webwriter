@@ -16,6 +16,7 @@ import tm.gwt.display.GWTContext;
 import tm.gwt.jsInterface.MirrorStateTest;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.telford.KitGWT;
+import tm.gwt.test.TestState ;
 import tm.interfaces.Selection ;
 import tm.portableDisplays.PortableContextInterface;
 
@@ -33,7 +34,7 @@ public class TmGWT implements EntryPoint {
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
-		MirrorState theState = new MirrorState( ) ;
+		MirrorState theState = new TestState( ) ;
 		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
 		codeDisplay.refresh();
 		
