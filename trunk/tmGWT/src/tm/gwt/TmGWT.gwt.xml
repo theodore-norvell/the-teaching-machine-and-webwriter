@@ -27,6 +27,7 @@
 	<source path='display' />
 	<source path='state' />
 	<source path='telford' />
+	<source path='test' />
 
 	<!-- allow Super Dev Mode -->
 	<add-linker name="xsiframe" />

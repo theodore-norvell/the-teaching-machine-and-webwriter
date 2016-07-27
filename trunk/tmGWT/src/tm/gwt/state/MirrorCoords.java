@@ -5,16 +5,22 @@ import tm.interfaces.TMFileI ;
 
 public class MirrorCoords implements SourceCoordsI {
 
+    private TMFileI file ;
+    private int line ;
+
+    public MirrorCoords(TMFileI file, int line ) {
+        this.file = file ;
+        this.line = line ;
+    }
+    
     @Override
     public TMFileI getFile() {
-        // TODO Auto-generated method stub
-        return null ;
+        return file ;
     }
 
     @Override
     public int getLineNumber() {
-        // TODO Auto-generated method stub
-        return 0 ;
+        return line ;
     }
 
 }
