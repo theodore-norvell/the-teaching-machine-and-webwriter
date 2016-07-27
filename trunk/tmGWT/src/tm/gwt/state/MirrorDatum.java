@@ -1,6 +1,5 @@
 package tm.gwt.state;
 
-
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.Datum ;
@@ -11,6 +10,7 @@ import tm.interfaces.ScalarInterface ;
 public class MirrorDatum implements Datum, IsSerializable {
 
     final protected int address;
+
     final protected Datum parent;
     final protected String name ;
     final protected String typeString ;

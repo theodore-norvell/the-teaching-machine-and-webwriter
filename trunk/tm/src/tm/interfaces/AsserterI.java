@@ -1,13 +1,5 @@
 package tm.interfaces;
 
-import java.text.MessageFormat ;
-
-import tm.utilities.ApologyException ;
-import tm.utilities.AssertException ;
-import tm.utilities.CompileException ;
-import tm.utilities.RunTimeException ;
-import tm.utilities.TMException ;
-
 public interface AsserterI {
 
     /** Check for internal consistency.

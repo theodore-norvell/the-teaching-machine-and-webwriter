@@ -2,10 +2,11 @@ package tm.gwt.display;
 
 import telford.common.Font;
 import telford.common.Kit;
-import tm.portableDisplays.CodeDisplayerInfo;
 import tm.interfaces.AsserterI ;
+import tm.portableDisplays.CodeDisplayerInfo;
+import tm.portableDisplays.StoreDisplayerInfo ;
 import tm.portableDisplays.PortableContextInterface ;
-import tm.utilities.Asserter ;
+
 /**
  * This class used for GWT special context requirement 
  **/
@@ -31,6 +32,14 @@ public class GWTContext implements PortableContextInterface {
 		info.setMyFontByIndex(f4, 3);
 		info.setFontMapper(fontMapper);
 		info.setFontColor(fontColor);
+		return info;
+	}
+	
+	// TODO should coming from server side
+	public StoreDisplayerInfo getStoreDisplayerInfo() {
+		StoreDisplayerInfo info = new StoreDisplayerInfo();
+		//MirrorRegion region = new MirrorRegion(); 
+		//info.setRegion(region);
 		return info;
 	}
 

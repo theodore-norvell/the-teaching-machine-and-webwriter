@@ -13,6 +13,7 @@ import telford.common.Kit;
 import tm.gwt.display.CodeDisplay1;
 import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
+import tm.gwt.display.StoreDisplay1;
 import tm.gwt.jsInterface.MirrorStateTest;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.telford.KitGWT;
@@ -40,6 +41,19 @@ public class TmGWT implements EntryPoint {
 		
 		expDisplay = new ExpressionDisplay1( theState, context);
 		expDisplay.refresh();
+		
+		StoreDisplay1 staticDisplay = new StoreDisplay1(theState, context, "Static");
+		staticDisplay.refresh(); 
+		
+		StoreDisplay1 heapDisplay = new StoreDisplay1(theState, context, "Heap");
+		heapDisplay.refresh(); 
+		
+		StoreDisplay1 stackDisplay = new StoreDisplay1(theState, context, "Stack");
+		stackDisplay.refresh(); 
+		
+		StoreDisplay1 scratchDisplay = new StoreDisplay1(theState, context, "Scratch");
+		scratchDisplay.refresh(); 
+		
 		
 	}
 

@@ -14,6 +14,7 @@
 
 package tm.displayEngine;
 import tm.displayEngine.generators.AbstractGenerator;
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.PointerInterface;
 import tm.utilities.Assert;

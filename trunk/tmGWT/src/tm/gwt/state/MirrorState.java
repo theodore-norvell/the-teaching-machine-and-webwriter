@@ -17,7 +17,7 @@ public class MirrorState implements StateInterface, IsSerializable {
     private String expression = "" ;
     private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
     private SelectionInterface selection = new Selection(Selection.TokenType.TRUE) ;
-    private SourceCoordsI codeFocus = new MirrorCoords() ;
+    private SourceCoordsI codeFocus = new MirrorCoords(new MirrorTMFile( "" ), 1) ;
     private MirrorStore store = new MirrorStore() ;
 
     public MirrorState() {

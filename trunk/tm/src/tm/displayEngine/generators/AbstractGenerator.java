@@ -52,8 +52,8 @@ package tm.displayEngine.generators;
 
 import java.util.Vector;
 
-import tm.displayEngine.DataDisplayView;
 import tm.displayEngine.LinkedD3Iterator;
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.utilities.Assert;
  

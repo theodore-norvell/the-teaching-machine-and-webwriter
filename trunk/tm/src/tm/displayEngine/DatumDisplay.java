@@ -20,6 +20,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 
 
