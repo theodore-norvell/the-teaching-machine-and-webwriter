@@ -17,6 +17,7 @@ import tm.displayEngine.generators.AbstractGenerator;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.PointerInterface;
+import tm.portableDisplays.D3Iterator1 ;
 import tm.utilities.Assert;
 //import java.util.*;
 

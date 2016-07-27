@@ -21,7 +21,6 @@ import telford.common.Kit;
 import telford.common.Line;
 import telford.common.Point;
 import telford.common.Rectangle;
-import tm.displayEngine.D3Iterator1;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 

@@ -12,10 +12,9 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.displayEngine;
+package tm.portableDisplays;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
-import tm.utilities.Assert;
 //import java.util.*;
 
 /*
@@ -57,7 +56,7 @@ public class D3Iterator1 extends Object {
     }
     
     public void increment(){
-        Assert.check(current != null);
+        //Assert.check(current != null);//TODO reinstate
         Datum next = oneStep(current.getDatum());  // one step from current
    // Keep stepping until a scalar datum is found or we run out
         while (next != null && !isLeaf(next)) {
@@ -93,7 +92,7 @@ public class D3Iterator1 extends Object {
     }
 
     public tm.portableDisplays.DatumDisplay getNode(){
-        Assert.check (current != null);
+        //Assert.check (current != null);//TODO reinstate
         return current;
     }
     

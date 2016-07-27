@@ -17,7 +17,6 @@ package tm.portableDisplays;
 import telford.common.Graphics;
 import telford.common.Point;
 import tm.displayEngine.Attachment1;
-import tm.displayEngine.D3Iterator1;
 import tm.displayEngine.Link1;
 import tm.displayEngine.LinkedD3Iterator;
 import tm.displayEngine.LinkedDisplay;
