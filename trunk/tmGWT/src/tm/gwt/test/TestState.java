@@ -8,6 +8,7 @@ import java.util.Vector ;
 import tm.gwt.state.MirrorCoords ;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.state.MirrorTMFile ;
+import tm.gwt.state.StateCommander ;
 import tm.interfaces.CodeLine ;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
@@ -16,7 +17,7 @@ import tm.interfaces.TMFileI ;
 import tm.interfaces.TagSet ;
 import tm.interfaces.TagSetInterface ;
 
-public class TestState extends MirrorState {
+public class TestState extends MirrorState implements StateCommander {
     int count = 0 ;
     TMFileI file = new MirrorTMFile( "fred.cpp" ) ;
     ArrayList<CodeLineI> lines = new ArrayList<CodeLineI>() ;
@@ -110,5 +111,25 @@ public class TestState extends MirrorState {
             count = 0 ;
         } break ;
         }
+    }
+
+    @Override
+    public void goForward() {
+        next() ;
+    }
+
+    @Override
+    public void intoExp() {
+        next() ;
+    }
+
+    @Override
+    public void overAll() {
+        next() ;
+    }
+
+    @Override
+    public void intoSub() {
+        next() ;
     }
 }

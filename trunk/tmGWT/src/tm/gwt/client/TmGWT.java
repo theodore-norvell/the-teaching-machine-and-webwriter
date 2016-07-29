@@ -1,7 +1,10 @@
 package tm.gwt.client;
 
+import java.util.ArrayList ;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler ;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.MenuBar;
@@ -11,58 +14,55 @@ import com.google.gwt.user.client.ui.Widget;
 
 import telford.common.Kit;
 import tm.gwt.display.CodeDisplay1;
+import tm.gwt.display.DisplayAdapter ;
 import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
 import tm.gwt.display.StoreDisplay1;
-import tm.gwt.jsInterface.MirrorStateTest;
-import tm.gwt.state.MirrorState ;
+import tm.gwt.state.StateCommander ;
 import tm.gwt.telford.KitGWT;
 import tm.gwt.test.TestState ;
-import tm.interfaces.Selection ;
 import tm.portableDisplays.PortableContextInterface;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class TmGWT implements EntryPoint {
-	private static ExpressionDisplay1 expDisplay;
+    
+    ArrayList<DisplayAdapter> displays = new ArrayList<DisplayAdapter>() ;
+    
 	public void onModuleLoad() {
-		getExpressionDisplay();
-		setMirrorState();
 		
 		GWT.log("Start GWT test.", null);
 		Kit.setKit(new KitGWT());
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
-		MirrorState theState = new TestState( ) ;
-		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
-		codeDisplay.refresh();
+		TestState theState = new TestState( ) ;
+		StateCommander commander = this.new TestStateCommander(theState) ;
 		
-		expDisplay = new ExpressionDisplay1( theState, context);
-		expDisplay.refresh();
+		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
+		displays.add( codeDisplay ) ;
+		
+		ExpressionDisplay1 expDisplay = new ExpressionDisplay1( theState, commander, context);
+        displays.add( expDisplay ) ;
 		
 		StoreDisplay1 staticDisplay = new StoreDisplay1(theState, context, "Static");
-		staticDisplay.refresh(); 
+        displays.add( staticDisplay ) ;
 		
 		StoreDisplay1 heapDisplay = new StoreDisplay1(theState, context, "Heap");
-		heapDisplay.refresh(); 
+        displays.add( heapDisplay ) ;
 		
 		StoreDisplay1 stackDisplay = new StoreDisplay1(theState, context, "Stack");
-		stackDisplay.refresh(); 
+        displays.add( stackDisplay ) ;
 		
 		StoreDisplay1 scratchDisplay = new StoreDisplay1(theState, context, "Scratch");
-		scratchDisplay.refresh(); 
+        displays.add( scratchDisplay ) ;
 		
-		
+		refresh() ;
 	}
-
-	private static ExpressionDisplay1 getDisplayer() {
-		return expDisplay;
-	}
-
-	private static void setEvaluator(ExpressionDisplay1 expDisplay, MirrorStateTest evaluator) {
-		expDisplay.setJsMirrorStateTest(evaluator);
+	
+	private void refresh() {
+	    for( DisplayAdapter d : displays ) d.refresh(); 
 	}
 	
 	public Widget createMenu() {
@@ -134,17 +134,46 @@ public class TmGWT implements EntryPoint {
 	    menu.ensureDebugId("cwMenuBar");
 	    return menu;
 	  }
+	
+	private class TestStateCommander implements StateCommander {
 
-	// ==========JSNI methods================
-	private static native void getExpressionDisplay() /*-{
-		$wnd.getExpressionDisplay = function() {
-			return @tm.gwt.client.TmGWT::getDisplayer()();
-		}
-	}-*/;
+	    private TestState theState ;
 
-	private static native void setMirrorState() /*-{
-		$wnd.setMirrorState = function(obj1, obj2) {
-			@tm.gwt.client.TmGWT::setEvaluator(Ltm/gwt/display/ExpressionDisplay1;Ltm/gwt/jsInterface/MirrorStateTest;)(obj1,obj2);
-		}
-	}-*/;
+        TestStateCommander( TestState state ) {
+	        this.theState = state ;
+	    }
+        
+        private Scheduler.ScheduledCommand refreshCommand
+        = new Scheduler.ScheduledCommand() {
+            @Override public void execute() { TmGWT.this.refresh() ; } } ;
+        
+        private void refresh() {
+            Scheduler.get().scheduleDeferred( refreshCommand );
+        }
+        
+        @Override
+        public void goForward() {
+            theState.goForward();
+            refresh() ;
+        }
+
+        @Override
+        public void intoExp() {
+            theState.intoExp();
+            refresh() ;   
+        }
+
+        @Override
+        public void overAll() {
+            theState.overAll();
+            refresh() ;
+        }
+
+        @Override
+        public void intoSub() {
+            theState.intoSub();
+            refresh() ;
+        }
+	    
+	}
 }
