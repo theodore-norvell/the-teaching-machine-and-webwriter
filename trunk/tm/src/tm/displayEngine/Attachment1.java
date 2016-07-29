@@ -1,69 +1,69 @@
-//     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+////     Copyright 1998--2010 Michael Bruce-Lockhart and Theodore S. Norvell
+////
+//// Licensed under the Apache License, Version 2.0 (the "License");
+//// you may not use this file except in compliance with the License. 
+//// You may obtain a copy of the License at 
+////
+////     http://www.apache.org/licenses/LICENSE-2.0 
+////
+//// Unless required by applicable law or agreed to in writing, 
+//// software distributed under the License is distributed on an 
+//// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+//// either express or implied. See the License for the specific language 
+//// governing permissions and limitations under the License.
 //
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License. 
-// You may obtain a copy of the License at 
+//package tm.displayEngine;
 //
-//     http://www.apache.org/licenses/LICENSE-2.0 
+//import telford.common.Point;
+//import tm.utilities.Assert;
 //
-// Unless required by applicable law or agreed to in writing, 
-// software distributed under the License is distributed on an 
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
-// either express or implied. See the License for the specific language 
-// governing permissions and limitations under the License.
-
-package tm.displayEngine;
-
-import telford.common.Point;
-import tm.utilities.Assert;
-
-public class Attachment1 extends Object{
-    private boolean input = false;  // true if input attached to this point
-    private Link1 myLink = null;    // the link attached 
-    private int attachNo;      // which reference point on LinkedDatumDisplay
-    private tm.portableDisplays.LinkedDatumDisplay myOwner;
-    
-    public Attachment1(tm.portableDisplays.LinkedDatumDisplay owner, int n){
-        myOwner=owner;
-        attachNo = n;
-    }
-    
-    boolean isConnected(){
-        return (myLink != null);
-    }
-    
-    boolean isInput(){
-        Assert.check(isConnected());
-        return input;
-    }
-    
-    Point getPoint(){
-        return myOwner.getAPoint(attachNo);
-    }
-    
-    Point getStub(){
-        return myOwner.getAStub(attachNo);
-    }
-    
-    tm.portableDisplays.LinkedDatumDisplay getOwner(){
-        return myOwner;
-    }
-    
-    int getAttachNo(){
-        return attachNo;
-    }
-
-    
-    void makeConnect(Link1 link, boolean in){
-        myLink = link;
-        input = in;
-    }
-    
-    void breakConnect(){
-        myLink = null;
-    }
-    
-    public String toString(){
-    	return "attachment #" + attachNo + " of " + myOwner.toString();
-    }
-}
+//public class Attachment1 extends Object{
+//    private boolean input = false;  // true if input attached to this point
+//    private Link1 myLink = null;    // the link attached 
+//    private int attachNo;      // which reference point on LinkedDatumDisplay
+//    private tm.portableDisplays.LinkedDatumDisplay myOwner;
+//    
+//    public Attachment1(tm.portableDisplays.LinkedDatumDisplay owner, int n){
+//        myOwner=owner;
+//        attachNo = n;
+//    }
+//    
+//    boolean isConnected(){
+//        return (myLink != null);
+//    }
+//    
+//    boolean isInput(){
+//        Assert.check(isConnected());
+//        return input;
+//    }
+//    
+//    Point getPoint(){
+//        return myOwner.getAPoint(attachNo);
+//    }
+//    
+//    Point getStub(){
+//        return myOwner.getAStub(attachNo);
+//    }
+//    
+//    tm.portableDisplays.LinkedDatumDisplay getOwner(){
+//        return myOwner;
+//    }
+//    
+//    int getAttachNo(){
+//        return attachNo;
+//    }
+//
+//    
+//    void makeConnect(Link1 link, boolean in){
+//        myLink = link;
+//        input = in;
+//    }
+//    
+//    void breakConnect(){
+//        myLink = null;
+//    }
+//    
+//    public String toString(){
+//    	return "attachment #" + attachNo + " of " + myOwner.toString();
+//    }
+//}
