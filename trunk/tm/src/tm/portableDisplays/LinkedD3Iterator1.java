@@ -12,12 +12,14 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.displayEngine;
+package tm.portableDisplays;
+import tm.displayEngine.D3Iterator ;
+import tm.displayEngine.LinkedDatumDisplay ;
+import tm.displayEngine.LinkedDisplay ;
 import tm.displayEngine.generators.AbstractGenerator;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.PointerInterface;
-import tm.portableDisplays.D3Iterator1 ;
 import tm.utilities.Assert;
 //import java.util.*;
 

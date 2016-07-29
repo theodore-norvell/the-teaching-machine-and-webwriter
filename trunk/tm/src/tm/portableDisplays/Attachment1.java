@@ -12,10 +12,10 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.displayEngine;
+package tm.portableDisplays;
 
 import telford.common.Point;
-import tm.utilities.Assert;
+//import tm.utilities.Assert;
 
 public class Attachment1 extends Object{
     private boolean input = false;  // true if input attached to this point
@@ -23,7 +23,7 @@ public class Attachment1 extends Object{
     private int attachNo;      // which reference point on LinkedDatumDisplay
     private tm.portableDisplays.LinkedDatumDisplay myOwner;
     
-    public Attachment1(tm.portableDisplays.LinkedDatumDisplay owner, int n){
+    public Attachment1(LinkedDatumDisplay owner, int n){
         myOwner=owner;
         attachNo = n;
     }
@@ -33,7 +33,7 @@ public class Attachment1 extends Object{
     }
     
     boolean isInput(){
-        Assert.check(isConnected());
+        //Assert.check(isConnected());// TODO Reinstate
         return input;
     }
     

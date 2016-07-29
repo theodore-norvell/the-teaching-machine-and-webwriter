@@ -17,6 +17,7 @@ package tm.displayEngine;
 import java.awt.Dimension;
 
 import tm.displayEngine.generators.AbstractGenerator;
+import tm.portableDisplays.LinkedD3Iterator1 ;
   
     
   public class LinkedLayoutManager1 {

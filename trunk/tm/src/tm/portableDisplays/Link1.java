@@ -12,14 +12,13 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.displayEngine;
+package tm.portableDisplays;
 
 import java.util.Vector;
 
 import telford.common.Graphics;
 import telford.common.Line;
 import telford.common.Point;
-import tm.utilities.Assert;
 
 
 /* A link is the on screen representation of a pointer connection between two datums.
@@ -52,7 +51,7 @@ public class Link1 extends Object{
     
     
     public Link1(Attachment1 s, Attachment1 e){
-        Assert.check(s != null);
+        // Assert.check(s != null); // TODO Reinstate
         start = s;
         end = e;
         start.makeConnect(this, true);
@@ -93,7 +92,7 @@ public class Link1 extends Object{
     }
     
     public void setNull(boolean isN){
-        Assert.check(end == null);
+        // Assert.check(end == null); // TODO Reinstate
         isNull = isN;
     }
     
