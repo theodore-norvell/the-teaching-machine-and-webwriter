@@ -3,6 +3,7 @@ package tm.portableDisplays;
 import java.util.ArrayList;
 import java.util.List;
 
+import tm.displayEngine.LinkedD3Iterator1;
 import tm.displayEngine.generators.AbstractGenerator;
 
 public class LinkedDisplayerInfo {

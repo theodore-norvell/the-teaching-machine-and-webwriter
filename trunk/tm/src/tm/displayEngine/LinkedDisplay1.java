@@ -25,7 +25,6 @@ import tm.interfaces.CommandInterface;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.ImageSourceInterface;
-import tm.portableDisplays.LinkedD3Iterator1 ;
 import tm.subWindowPkg.SmallToggleButton;
 import tm.subWindowPkg.ToolBar;
 import tm.utilities.Assert;

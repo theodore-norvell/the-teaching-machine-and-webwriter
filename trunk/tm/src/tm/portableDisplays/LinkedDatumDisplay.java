@@ -16,12 +16,14 @@ package tm.portableDisplays;
 
 import telford.common.Graphics;
 import telford.common.Point;
+import tm.displayEngine.Attachment1;
+import tm.displayEngine.Link1;
 import tm.displayEngine.LinkedD3Iterator;
 import tm.displayEngine.LinkedDisplay;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 import tm.interfaces.PointerInterface;
-// import tm.utilities.Assert; 
+import tm.utilities.Assert;
 
 
 /**
@@ -211,7 +213,7 @@ public void setStep(int s){
 }
 
 public Attachment1 getAttachment(int i){
- // Assert.check( i>=RCI && i <= LT); // TODO reinstate
+ Assert.check( i>=RCI && i <= LT);
  return attachments[i];
 }
 
