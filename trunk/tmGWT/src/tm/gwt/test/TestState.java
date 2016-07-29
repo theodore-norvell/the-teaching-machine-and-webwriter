@@ -119,6 +119,12 @@ public class TestState extends MirrorState implements StateCommander {
     }
 
     @Override
+    public void goBack() {
+        int temp = ((count + 7) - 1) % 7;
+        while( count != temp ) next() ;
+    }
+
+    @Override
     public void intoExp() {
         next() ;
     }

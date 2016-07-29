@@ -156,6 +156,12 @@ public class TmGWT implements EntryPoint {
             theState.goForward();
             refresh() ;
         }
+        
+        @Override
+        public void goBack() {
+            theState.goBack();
+            refresh() ;
+        }
 
         @Override
         public void intoExp() {

@@ -3,7 +3,6 @@ package tm.gwt.display;
 import telford.common.ActionEvent;
 import telford.common.ActionListener;
 import telford.common.Button;
-import tm.gwt.jsInterface.MirrorStateTest;
 import tm.gwt.state.StateCommander ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
@@ -30,7 +29,7 @@ public class ExpressionDisplay1 extends DisplayAdapter {
 		goBackdButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-                // TODO
+                commander.goBack() ;
 			}
 		});
 		toolBar.add((com.google.gwt.user.client.ui.Button) goForwardButton.getPeer().getRepresentative());
