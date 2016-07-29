@@ -4,33 +4,31 @@ import telford.common.ActionEvent;
 import telford.common.ActionListener;
 import telford.common.Button;
 import tm.gwt.jsInterface.MirrorStateTest;
-import tm.gwt.state.StateCommander ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
 public class ExpressionDisplay1 extends DisplayAdapter {
-	final StateInterface evaluator;
-	final StateCommander commander ;
-	final PortableContextInterface context ;
+	StateInterface evaluator;
+	MirrorStateTest testModel;
+	PortableContextInterface context = new GWTContext();
 
-	public ExpressionDisplay1(StateInterface evaluator, final StateCommander commander, PortableContextInterface context) {
+	public ExpressionDisplay1(StateInterface evaluator, PortableContextInterface context) {
 		super(new ExpressionDisplayer(evaluator, context), "expDisplayPanel", "Expression Display", 150, 75);
-		this.evaluator = evaluator ;
-        this.commander = commander ;
+		this.evaluator = evaluator;
 		this.context = context;
 		Button goForwardButton = new Button("<img src='/images/Advance.gif'/>");
 		goForwardButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				commander.goForward();
+				refresh();
 			}
 		});
 		Button goBackdButton = new Button("<img src='/images/Backup.gif'/>");
 		goBackdButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-                // TODO
+				refresh();
 			}
 		});
 		toolBar.add((com.google.gwt.user.client.ui.Button) goForwardButton.getPeer().getRepresentative());
@@ -40,7 +38,9 @@ public class ExpressionDisplay1 extends DisplayAdapter {
 
 	@Override
 	public void refresh() {
-		((ExpressionDisplayer) displayer).updateExp(evaluator.getExpression());
+		if (displayer instanceof ExpressionDisplayer && testModel != null) {
+			((ExpressionDisplayer) displayer).updateExp(testModel.getExpression());
+		}
 		super.refresh();
 	}
 
@@ -48,5 +48,9 @@ public class ExpressionDisplay1 extends DisplayAdapter {
 		if (displayer instanceof ExpressionDisplayer) {
 			((ExpressionDisplayer) displayer).setState(e);
 		}
+	}
+
+	public void setJsMirrorStateTest(MirrorStateTest e) {
+		testModel = e;
 	}
 }
