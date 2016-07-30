@@ -1,5 +1,6 @@
 package tm.gwt.state;
 
+import java.util.ArrayList ;
 import java.util.Vector ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
@@ -23,16 +24,16 @@ public class MirrorDatum implements Datum, IsSerializable {
     protected int highlight ;
     protected int birthOrder ;
     protected int serialNumber ;
-    // Invariant. Either children==null and childLabel==null
-    //            or     children==null and childLabel==null and children.length==childLabel.length
-    protected MirrorDatum[] children ;
-    protected String[] childLabel ;
+    // Invariant chidren.size() == childLabel.size() 
+    protected ArrayList<MirrorDatum> children = new ArrayList<MirrorDatum>() ;
+    protected ArrayList<String> childLabel = new ArrayList<String>()  ;
     final protected MirrorStore store ;
     
     public static MirrorDatum makeMirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
         if( d instanceof RegionInterface ) return new MirrorRegion((RegionInterface) d, ms ) ;
         if( d instanceof PointerInterface ) return new MirrorPointerDatum( (PointerInterface)d, parent, ms ) ;
         else if( d instanceof ScalarInterface ) return new MirrorScalarDatum( (ScalarInterface)d, parent, ms ) ;
+        else if( parent instanceof RegionInterface ) return new MirrorDatum( d, null, ms ) ;
         else return new MirrorDatum( d, parent, ms ) ;
     }
 
@@ -48,19 +49,10 @@ public class MirrorDatum implements Datum, IsSerializable {
         birthOrder = d.getBirthOrder() ;
         serialNumber = d.getSerialNumber() ;
         int numChildren = d.getNumChildren() ;
-        if( numChildren == 0 ) {
-            children = null ;
-            childLabel = null ;
-        }
-        else {
-            children = new MirrorDatum[ numChildren ] ;
-            childLabel = new String[ numChildren ] ;
-            for( int i = 0 ; i < numChildren ; ++i ) {
-                MirrorDatum thisOrNull = (this instanceof MirrorRegion) ? null : this ;
-                MirrorDatum child = makeMirrorDatum( d, thisOrNull, ms ) ;
-                children[i] = child ;
-                childLabel[i] = d.getChildLabelAt( i ) ;
-            }
+        for( int i = 0 ; i < numChildren ; ++i ) {
+            MirrorDatum thisOrNull = (this instanceof MirrorRegion) ? null : this ;
+            children.add( makeMirrorDatum( d.getChildAt( i ), thisOrNull, ms ) ) ;
+            childLabel.add(  d.getChildLabelAt( i ) ) ;
         }
         this.store = ms ;
         ms.put( this ) ;
@@ -76,13 +68,12 @@ public class MirrorDatum implements Datum, IsSerializable {
         highlight = PLAIN ;
         birthOrder = 0 ;
         serialNumber = Integer.MAX_VALUE ;
-        children = null ;
-        childLabel = null ;
         this.store = ms ;
         ms.put( this ) ;
     }
     
-    /** The following constructor is for test purposes only, at the moment. */
+    /** The following constructor is for test purposes only, at the moment.
+     * Make a datum with no children. Children can be added later.*/
     public MirrorDatum(
             int address,
             Datum parent,
@@ -93,7 +84,6 @@ public class MirrorDatum implements Datum, IsSerializable {
             int highlight ,
             int birthOrder ,
             int serialNumber ,
-            int childCount,
             MirrorStore ms
     ) {
         this.address = address ;
@@ -105,19 +95,15 @@ public class MirrorDatum implements Datum, IsSerializable {
         this.highlight = highlight ;
         this.birthOrder = birthOrder ;
         this.serialNumber = serialNumber ;
-        if( childCount == 0 ) {
-            this.children = null ;
-            this.childLabel = null ; }
-        else {
-            this.children = new MirrorDatum[ childCount ] ;
-            this.childLabel = new String[ childCount ] ; }
         this.store = ms ;
         ms.put( this ) ;
     }
     
     public void update( Datum d, MirrorStore mirrorStore ) {
+        com.google.gwt.core.client.GWT.log(">>> MirrorDatum.update d==null is " +(d==null)) ;
         if( d.getSerialNumber() != this.serialNumber ) 
             throw new AssertionError() ;
+        com.google.gwt.core.client.GWT.log("   a") ;
         this.address = d.getAddress() ;
         this.name = d.getName() ;
         this.typeString = d.getTypeString() ;
@@ -126,37 +112,81 @@ public class MirrorDatum implements Datum, IsSerializable {
         this.bytes = new byte[len] ;
         for( int i=0 ; i < len ; ++i ) this.bytes[i] = (byte)d.getByte( i ) ;
         this.highlight = d.getHighlight() ;
-        // birthOrder and parent must be the same
-        // The number of children might change, at least for regions.
-        if ( d.getNumChildren() == 0 ) {
-            this.children = null ; }
-        else {
-            int childCount = d.getNumChildren() ;
-            MirrorDatum[] oldChildren = this.children ;
-            int oldCildrenLength = oldChildren==null ? 0 : oldChildren.length ;
-            if( childCount != this.children.length ) {
-                this.children = new MirrorDatum[ childCount ] ;
-                this.childLabel = new String[ childCount ] ; }
-            for( int i = 0 ; i < childCount ; ++i ) {
+        // birthOrder and parent must be the same.
+        com.google.gwt.core.client.GWT.log("   b") ;
+        if( this.birthOrder != d.getBirthOrder() ) throw new AssertionError() ;
+        // Check that the parents match up.
+        if( this.parent == null && d.getParent() != null ) {com.google.gwt.core.client.GWT.log("   x") ; throw new AssertionError() ; }
+        else if ( this.parent != null && d.getParent() == null ) {com.google.gwt.core.client.GWT.log("   y") ; throw new AssertionError() ; }
+        else if ( this.parent != null && d.getParent() != null && this.parent.getSerialNumber() != d.getParent().getSerialNumber() ){
+            com.google.gwt.core.client.GWT.log("   z") ;throw new AssertionError() ; }
+        com.google.gwt.core.client.GWT.log("   c") ;
+        if( this.getNumChildren() == 0 &&  d.getNumChildren() == 0 ) {
+            // Nothing to do.
+        } else {
+            // Recurse on the children.
+            // TODO Optimize this to avoid allocating new ArrayLists in some cases.
+            
+            ArrayList<String> newChildLabels = new ArrayList<String>() ;
+            ArrayList<MirrorDatum> oldChildren = this.children ;
+            int oldChildCount = oldChildren.size() ;
+            ArrayList<MirrorDatum> newChildren = new ArrayList<MirrorDatum>() ;
+            int newChildCount = d.getNumChildren() ;
+            for( int i = 0 ; i < newChildCount ; ++i ) {
                 Datum child = d.getChildAt( i ) ;
-                // We reuse the same MirrorDatum object
-                // if it has the same serial number as the one we are copying.
-                if( i < oldCildrenLength
-                && oldChildren[i].serialNumber == child.getSerialNumber() ) {
-                    this.children[ i ] = oldChildren[ i ] ;
-                    this.children[ i ].update( child, mirrorStore ) ; }
+                MirrorDatum oldChild =
+                        i < oldChildCount ? oldChildren.get( i ) : null ;
+                MirrorDatum newChild ;
+                // If possible, reuse the same datum object. This ensures
+                // that properties persist.
+                /*DBG*/{
+                    com.google.gwt.core.client.GWT.log("oldChildCount is " +oldChildCount+ " i is " +i+ "oldChild==null is " +(oldChild==null) ) ;
+                    com.google.gwt.core.client.GWT.log("child==null is " + (child==null) ) ;
+                    if( i < oldChildCount ) com.google.gwt.core.client.GWT.log( "oldChild.serialNumber is " +oldChild.serialNumber ) ;
+                }
+                if( i < oldChildCount
+                        && oldChild.serialNumber == child.getSerialNumber() ) {
+                    com.google.gwt.core.client.GWT.log("Recursive update. child.getSerialNumber() is " +(child.getSerialNumber()) ) ;
+                    newChild = oldChild ;
+                    newChild.update( child, mirrorStore ) ;
+                }
                 else {
-                    this.children[ i ] = makeMirrorDatum( d, this, mirrorStore ) ; }
-                this.childLabel[ i ] = d.getChildLabelAt( i ) ; } }
+                    com.google.gwt.core.client.GWT.log("Making new datum" ) ;
+                    newChild = makeMirrorDatum( child, this, mirrorStore ) ;
+                }
+                newChildren.add( newChild ) ;
+                newChildLabels.add( d.getChildLabelAt( i ) ) ;
+            }
+            this.children = newChildren ;
+            this.childLabel = newChildLabels ;
+        }
+        com.google.gwt.core.client.GWT.log("<<< MirrorDatum.update") ;
     }
     
     /** The following method is for test purposes only, at the moment. */
     public void addChild( String label, MirrorDatum child, int i) {
-        if( child.parent != null && child.parent != this || child.parent == null && !(this instanceof RegionInterface) ) 
+        if(    child.parent != null && child.parent != this
+            || child.parent == null && !(this instanceof RegionInterface) ) 
             throw new AssertionError( "child has wrong parent") ;
-        if( child.birthOrder != i ) throw new AssertionError( "child has wrong position") ;
-        childLabel[i] = label ;
-        children[i] = child ;
+        if( child.birthOrder != i )
+            throw new AssertionError( "child has wrong position") ;
+        if( i != this.children.size() )
+            throw new AssertionError( "child not added to end" ) ;
+        
+        childLabel.add(  label ) ;
+        children.add( child ) ;
+    }
+    
+    /** The following method is for test purposes only, at the moment. */
+    public void removeChild( MirrorDatum child) {
+        if(    child.parent != null && child.parent != this
+            || child.parent == null && !(this instanceof RegionInterface) ) 
+            throw new AssertionError( "child has wrong parent") ;
+        int i = child.getBirthOrder() ;
+        if( i != this.children.size()-1 )
+            throw new AssertionError( "only last child can be removed" ) ;
+        this.children.remove( i ) ;
+        this.childLabel.remove( i ) ;
     }
 
     @Override
@@ -201,13 +231,12 @@ public class MirrorDatum implements Datum, IsSerializable {
 
     @Override
     public int getNumChildren() {
-        if( children == null ) return 0 ;
-        else return children.length ;
+        return children.size() ;
     }
 
     @Override
     public Datum getChildAt(int i) {
-        return children[ i ] ;
+        return children.get( i ) ;
     }
 
     @Override
@@ -217,7 +246,7 @@ public class MirrorDatum implements Datum, IsSerializable {
 
     @Override
     public String getChildLabelAt(int i) {
-        return childLabel[i] ;
+        return childLabel.get( i ) ;
     }
 
     @Override
@@ -254,7 +283,7 @@ public class MirrorDatum implements Datum, IsSerializable {
         return serialNumber ;
     }
     
-    protected static class MirrorRegion extends MirrorDatum implements RegionInterface {
+    public static class MirrorRegion extends MirrorDatum implements RegionInterface {
 
         private int frameBoundary ;
         

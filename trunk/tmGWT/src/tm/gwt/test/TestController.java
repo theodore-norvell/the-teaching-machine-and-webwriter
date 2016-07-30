@@ -6,6 +6,7 @@ import java.util.TreeSet ;
 import java.util.Vector ;
 
 import tm.gwt.state.MirrorCoords ;
+import tm.gwt.state.MirrorDatum ;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.state.MirrorStore ;
 import tm.gwt.state.MirrorTMFile ;
@@ -73,6 +74,10 @@ public class TestController implements StateCommander {
     void next() {
         switch( count ) {
         case 0 : {
+            /*DBG*/ {
+                int k = this.state.getStackRegion().getNumChildren() ;
+                com.google.gwt.core.client.GWT.log("Stack datums:"+k ) ;
+            }
             state.setExpression( "\ufffetempF\ufffb = (tempC * 5 / 9) + 32" );
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
@@ -150,31 +155,74 @@ public class TestController implements StateCommander {
     }
     
     MirrorStore makeStore0() {
-        return null ;
+        // Make an empty store.
+        com.google.gwt.core.client.GWT.log(">>> makeStore0") ;
+        MirrorStore store0 = new MirrorStore() ;
+        
+        com.google.gwt.core.client.GWT.log("<<< makeStore0") ;
+        return store0 ;
     }
     
     MirrorStore makeStore1() {
-        return makeStore0() ;
+        com.google.gwt.core.client.GWT.log(">>> makeStore1") ;
+        MirrorStore store1 = new MirrorStore() ;
+        MirrorDatum.MirrorRegion stack = store1.getStack() ;
+        
+        MirrorDatum d0 = new MirrorDatum( 100, null, "bob", "int", "42", new byte[]{0, 0, 0, 42}, 0, 0, 13, store1 ) ;
+        stack.addChild( "Bob", d0, 0 );
+        
+        MirrorDatum d1 = new MirrorDatum( 100, null, "fred", "short", "137", new byte[]{0, 128-137}, 1, 1, 14, store1 ) ;
+        stack.addChild( "Fred", d1, 1 );
+        
+        
+        com.google.gwt.core.client.GWT.log("<<< makeStore1") ;
+        return store1 ;
     }
     
     MirrorStore makeStore2() {
-        return makeStore0() ;
+        // Make a store with 2 variables on the stack.
+        MirrorStore store2 =  makeStore1() ;
+        
+        // Add structure with 2 int fields.
+        MirrorDatum d3 = new MirrorDatum( 100, null, "s", "struct", "{...}", new byte[]{0, 0, 0, 20, 0, 0, 0, 21}, 0, 2, 14, store2 ) ;
+            MirrorDatum d3a = new MirrorDatum( 100, d3, "a", "int", "20", new byte[]{0, 0, 0, 20}, 0, 0, 15, store2 ) ;
+            d3.addChild( ".a", d3a, 0 );
+            MirrorDatum d3b = new MirrorDatum( 100, d3, "b", "int", "21", new byte[]{0, 0, 0, 21}, 0, 1, 16, store2 ) ;
+            d3.addChild( ".b", d3b, 1 );
+            
+
+        MirrorDatum.MirrorRegion stack = store2.getStack() ;
+        stack.addChild( "s", d3, 2 );
+        return store2 ;
     }
     
     MirrorStore makeStore3() {
-        return makeStore0() ;
+        // Make a store similar to store 1 but with bob and fred having different values ;
+        com.google.gwt.core.client.GWT.log(">>> makeStore3") ;
+        MirrorStore store3 = new MirrorStore() ;
+        MirrorDatum.MirrorRegion stack = store3.getStack() ;
+        
+        MirrorDatum d0 = new MirrorDatum( 100, null, "bob", "int", "0", new byte[]{0, 0, 0, 0}, 0, 0, 13, store3 ) ;
+        stack.addChild( "Bob", d0, 0 );
+        
+        MirrorDatum d1 = new MirrorDatum( 100, null, "fred", "short", "57", new byte[]{0, 57}, 1, 1, 14, store3 ) ;
+        stack.addChild( "Fred", d1, 1 );
+        
+        
+        com.google.gwt.core.client.GWT.log("<<< makeStore3") ;
+        return store3 ;
     }
     
     MirrorStore makeStore4() {
-        return makeStore0() ;
+        return makeStore1() ;
     }
     
     MirrorStore makeStore5() {
-        return makeStore0() ;
+        return makeStore1() ;
     }
     
     MirrorStore makeStore6() {
-        return makeStore0() ;
+        return makeStore1() ;
     }
     
     
