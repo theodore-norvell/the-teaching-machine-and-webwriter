@@ -18,9 +18,10 @@ import tm.gwt.display.DisplayAdapter ;
 import tm.gwt.display.ExpressionDisplay1;
 import tm.gwt.display.GWTContext;
 import tm.gwt.display.StoreDisplay1;
+import tm.gwt.state.MirrorState ;
 import tm.gwt.state.StateCommander ;
 import tm.gwt.telford.KitGWT;
-import tm.gwt.test.TestState ;
+import tm.gwt.test.TestController ;
 import tm.portableDisplays.PortableContextInterface;
 
 /**
@@ -37,8 +38,9 @@ public class TmGWT implements EntryPoint {
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
-		TestState theState = new TestState( ) ;
-		StateCommander commander = this.new TestStateCommander(theState) ;
+		MirrorState theState = new MirrorState() ;
+		StateCommander controller = new TestController( theState ) ;
+		StateCommander commander = this.new TestStateCommander(controller) ;
 		
 		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
 		displays.add( codeDisplay ) ;
@@ -137,10 +139,10 @@ public class TmGWT implements EntryPoint {
 	
 	private class TestStateCommander implements StateCommander {
 
-	    private TestState theState ;
+	    private StateCommander controller ;
 
-        TestStateCommander( TestState state ) {
-	        this.theState = state ;
+        TestStateCommander( StateCommander controller ) {
+	        this.controller = controller ;
 	    }
         
         private Scheduler.ScheduledCommand refreshCommand
@@ -153,31 +155,31 @@ public class TmGWT implements EntryPoint {
         
         @Override
         public void goForward() {
-            theState.goForward();
+            controller.goForward();
             refresh() ;
         }
         
         @Override
         public void goBack() {
-            theState.goBack();
+            controller.goBack();
             refresh() ;
         }
 
         @Override
         public void intoExp() {
-            theState.intoExp();
+            controller.intoExp();
             refresh() ;   
         }
 
         @Override
         public void overAll() {
-            theState.overAll();
+            controller.overAll();
             refresh() ;
         }
 
         @Override
         public void intoSub() {
-            theState.intoSub();
+            controller.intoSub();
             refresh() ;
         }
 	    

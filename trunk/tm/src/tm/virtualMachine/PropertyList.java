@@ -14,15 +14,10 @@
 
 package tm.virtualMachine;
 
-import java.util.Vector ;
-
-/** A function from strings to Objects. Not backtrackable.
-*/
-import java.lang.*;
-
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.*;
 
+/** A function from strings to Objects. */
 public class PropertyList
 {
     protected final BTTimeManager timeMan ;

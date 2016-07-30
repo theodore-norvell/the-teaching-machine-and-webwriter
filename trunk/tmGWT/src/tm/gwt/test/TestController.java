@@ -7,6 +7,7 @@ import java.util.Vector ;
 
 import tm.gwt.state.MirrorCoords ;
 import tm.gwt.state.MirrorState ;
+import tm.gwt.state.MirrorStore ;
 import tm.gwt.state.MirrorTMFile ;
 import tm.gwt.state.StateCommander ;
 import tm.interfaces.CodeLine ;
@@ -17,7 +18,8 @@ import tm.interfaces.TMFileI ;
 import tm.interfaces.TagSet ;
 import tm.interfaces.TagSetInterface ;
 
-public class TestState extends MirrorState implements StateCommander {
+public class TestController implements StateCommander {
+    final MirrorState state ;
     int count = 0 ;
     TMFileI file = new MirrorTMFile( "fred.cpp" ) ;
     ArrayList<CodeLineI> lines = new ArrayList<CodeLineI>() ;
@@ -63,51 +65,59 @@ public class TestState extends MirrorState implements StateCommander {
         foci.add( coords ) ;
     }
 
-    public TestState() {
-        
+    public TestController(MirrorState state) {
+        this.state = state ;
+        state.updateStore( makeStore0() ) ;
     }
     
     void next() {
         switch( count ) {
         case 0 : {
-            this.setExpression( "\ufffetempF\ufffb = (tempC * 5 / 9) + 32" );
-            this.putSelectedCodeLines( file, lines );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffetempF\ufffb = (tempC * 5 / 9) + 32" );
+            state.putSelectedCodeLines( file, lines );
+            state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
+            state.updateStore( makeStore1() ) ;
             count = 1 ;
         } break ;
         case 1 : {
-            this.setExpression( "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore2() ) ;
             count = 2 ;
         } break ;
         case 2 : {
-            this.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore3() ) ;
             count = 3 ;
         } break ;
         case 3 : {
-            this.setExpression( "\ufffctempF\ufffb = (\uffff10\ufffb * \ufffe5\ufffb / 9) + 32" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffctempF\ufffb = (\uffff10\ufffb * \ufffe5\ufffb / 9) + 32" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore4() ) ;
             count = 4 ;
         } break ;
         case 4 : {
-            this.setExpression( "\ufffctempF\ufffb = (\ufffe\uffff10\ufffb * \uffff5.0\ufffb\ufffb / 9) + 32" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffctempF\ufffb = (\ufffe\uffff10\ufffb * \uffff5.0\ufffb\ufffb / 9) + 32" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore5() ) ;
             count = 5 ;
         } break ;
         case 5 : {
-            this.setExpression( "\ufffe\ufffctempF\ufffb = \uffff50.0\ufffb\ufffb" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\ufffe\ufffctempF\ufffb = \uffff50.0\ufffb\ufffb" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore6() ) ;
             count = 6 ;
         } break ;
         case 6 : {
-            this.setExpression( "\uffff50.0\ufffb" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "\uffff50.0\ufffb" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.updateStore( makeStore0() ) ;
             count = 7 ;
         } break ;
         case 7 : {
-            this.setExpression( "" );
-            this.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.setExpression( "" );
+            state.setCodeFocus( foci.get(  count % foci.size() ) );
             count = 0 ;
         } break ;
         }
@@ -138,4 +148,34 @@ public class TestState extends MirrorState implements StateCommander {
     public void intoSub() {
         next() ;
     }
+    
+    MirrorStore makeStore0() {
+        return null ;
+    }
+    
+    MirrorStore makeStore1() {
+        return makeStore0() ;
+    }
+    
+    MirrorStore makeStore2() {
+        return makeStore0() ;
+    }
+    
+    MirrorStore makeStore3() {
+        return makeStore0() ;
+    }
+    
+    MirrorStore makeStore4() {
+        return makeStore0() ;
+    }
+    
+    MirrorStore makeStore5() {
+        return makeStore0() ;
+    }
+    
+    MirrorStore makeStore6() {
+        return makeStore0() ;
+    }
+    
+    
 }

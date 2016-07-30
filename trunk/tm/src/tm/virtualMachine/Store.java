@@ -17,6 +17,7 @@ package tm.virtualMachine;
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.BTVector;
 import tm.interfaces.Datum;
+import tm.interfaces.StoreInterface ;
 import tm.interfaces.TypeInterface;
 import tm.interfaces.ViewableST;
 import tm.utilities.Assert;
@@ -77,7 +78,7 @@ import tm.utilities.Debug;
 
   @see Backtrack
 */
-public class Store {
+public class Store implements StoreInterface {
 
     private int topOfStatic,	bottomOfHeap, topOfHeap,
                 bottomOfStack, topOfStack, bottomOfScratch, topOfMemory ;

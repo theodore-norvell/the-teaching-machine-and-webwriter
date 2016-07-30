@@ -10,6 +10,7 @@ import tm.interfaces.Selection ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
+import tm.interfaces.StoreInterface ;
 import tm.interfaces.TMFileI ;
 
 public class MirrorState implements StateInterface, IsSerializable {
@@ -77,6 +78,10 @@ public class MirrorState implements StateInterface, IsSerializable {
     @Override
     public SourceCoordsI getCodeFocus() {
         return this.codeFocus ;
+    }
+    
+    public void updateStore( StoreInterface store ) {
+        this.store.update(  store ) ;
     }
 
     @Override
