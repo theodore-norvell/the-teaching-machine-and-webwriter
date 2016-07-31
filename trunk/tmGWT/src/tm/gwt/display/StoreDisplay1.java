@@ -23,11 +23,15 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 
 
 	private int view; // Current view being used (LOGICAL, SCALED, etc.)
-
+	private StoreLayoutManager1 layoutManager;
 	private RegionInterface region; // Reference to client
 	private PortableContextInterface context = new GWTContext();
+	private StoreDisplayer storeDisplayer;
 	public StoreDisplay1(StateInterface e, PortableContextInterface context, String configId) {
-		super(new StoreDisplayer(e, context), configId, null, 150, 75);
+		super(new StoreDisplayer(e, context), configId, null, 250, 75);
+		if (this.displayer instanceof StoreDisplayer) {
+			this.storeDisplayer = (StoreDisplayer) this.displayer;
+		}
 		this.context = context;
 		if (configId.equalsIgnoreCase("Heap"))
 			region = e.getHeapRegion();
@@ -38,7 +42,8 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 		else if (configId.equalsIgnoreCase("Scratch"))
 			region = e.getScratchRegion();
 		else
-			context.getAsserter().error("No store display for region " + configId);
+			context.getAsserter().check(false,"No store display for region " + configId);
+		this.storeDisplayer.getDisplayInfo().setRegion(region);
 		view = LOGICAL;
 		Button bLogical = new Button("<img src='/images/Logical.gif'/>");
 		Button bScaled = new Button("<img src='/images/Scaled.gif'/>");
@@ -47,6 +52,7 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 		toolBar.add(bScaled);
 		toolBar.add(bBinary);
 		myWorkPane.setStyleName("tm-smallScrollPanel");
+		layoutManager = new StoreLayoutManager1(this);
 	}
 
 	/**
@@ -89,14 +95,15 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 	}
 	
 	public void refresh() {
-		if (displayer instanceof StoreDisplayer) {
-			((StoreDisplayer) displayer).setDisplayInfo(((GWTContext) context).getStoreDisplayerInfo());
-		}
+//		if (displayer instanceof StoreDisplayer) {
+//			((StoreDisplayer) displayer).setDisplayInfo(((GWTContext) context).getStoreDisplayerInfo());
+//		}
 		if (region == null)
 			return;
 		int frameBoundary = region.getFrameBoundary();
 		DatumDisplay.updateFonts(context.getDisplayFont(), 12);
 		setScale(1, DatumDisplay.baseHeight); // scrolling increment
+		storeDisplayer.getDisplayInfo().getListDD().clear();
 		for (int i = 0; i < region.getNumChildren(); i++) {
 			Datum kid = region.getChildAt(i);
 			DatumDisplay dd = DatumDisplay.getAssociated(kid, this);
@@ -104,7 +111,9 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 				dd = new StoreDatumDisplay1(kid, this, false);
 			}
 			dd.setGrayOut(i < frameBoundary);
+			storeDisplayer.getDisplayInfo().getListDD().add(dd);
 		}
+		layoutManager.layoutDisplay();
 		super.refresh();
 	}
 

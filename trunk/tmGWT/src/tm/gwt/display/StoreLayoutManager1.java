@@ -12,9 +12,7 @@
 // either express or implied. See the License for the specific language 
 // governing permissions and limitations under the License.
 
-package tm.displayEngine;
-
-import java.awt.Dimension;
+package tm.gwt.display;
 
 import tm.interfaces.Datum;
 import tm.interfaces.RegionInterface;
@@ -24,28 +22,18 @@ import tm.portableDisplays.DatumDisplay;
   
   public class StoreLayoutManager1 implements StoreLayoutManagerI{
     
-	private static final int ADDRESS_W = 55;  // minimum widths for display boxes
-	private static final int VALUE_W = 150;  // value boxes can be less since insets taken OUT of this width
-	private static final int NAME_W = 120;  // memory display boxes
-    
-    
     private StoreDisplay1 target;
-//    private Dimension mySize = new Dimension(0,0);
     
     public StoreLayoutManager1(StoreDisplay1 t){
     	target = t;
     }
     
-    public void layoutDisplay(/*DisplayTree displayTree*/){
-
-
-// width before refresh: Store is refreshed after layout		
-        int oldWidth = target.getViewportSize().width;         
+    public void layoutDisplay(){
+        int oldWidth = 150;//target.getViewportSize().width;         
         int nameWidth = (int)(.4 * (double)(oldWidth - ADDRESS_W));
 		int valueWidth = oldWidth-nameWidth-ADDRESS_W; // Base width with no room for expanders
 		if (nameWidth < NAME_W) nameWidth = NAME_W;
 		if (valueWidth < VALUE_W) valueWidth = VALUE_W;
-        
 
         int x = 0;
         int y = 0;
@@ -70,9 +58,7 @@ import tm.portableDisplays.DatumDisplay;
             if (y > target.getLastY() && lastDatum == (kids-1))
                 lastDatum = i;
 		}
-		target.setPreferredSize(new Dimension(nameWidth + valueWidth + ADDRESS_W, y+1));
-		target.setOnScreen(firstDatum, lastDatum);
+//		target.setPreferredSize(new Dimension(nameWidth + valueWidth + ADDRESS_W, y+1));
+//		target.setOnScreen(firstDatum, lastDatum);
     }
-    
-
   }
