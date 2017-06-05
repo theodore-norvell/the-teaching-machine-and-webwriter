@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+jarsExcludedFromWebInfLib=
+launchConfigExternalUrlPrefix=/installed-software/apache-tomcat-8.0.26
+warSrcDir=war
+warSrcDirIsOutput=true
