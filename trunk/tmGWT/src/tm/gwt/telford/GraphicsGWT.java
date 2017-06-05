@@ -14,6 +14,7 @@ public class GraphicsGWT implements telford.common.Graphics {
 
 	public GraphicsGWT(Context2d c) {
 		this.c = c;
+		
 	}
 
 	@Override
@@ -62,6 +63,7 @@ public class GraphicsGWT implements telford.common.Graphics {
 
 	@Override
 	public int getColor() {
+		if(currColor == null) return 0x0;
 		return currColor.getBlue() << 16 | (currColor.getBlack() << 8) | currColor.getRed();
 	}
 

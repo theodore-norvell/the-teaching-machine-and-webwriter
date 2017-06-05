@@ -7,30 +7,29 @@
 <script type="text/javascript" src="tmgwt/tmgwt.nocache.js"></script>
 </head>
 <body>
-<p>
-    <button onclick="init()">Initial Context</button>
-    <button onclick="updateValue()">updateValue</button>
-</p>
- <table>
- 	<tr>
-        <td id="menuBar"></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="codeDisplayPanel"></td>
-        <td id="expDisplayPanel"></td>
-      </tr>
-      <tr>
-        <td id="Static"></td>
-        <td id="Stack"></td>
-      </tr>
-      <tr>
-        <td id="Heap"></td>
-        <td id="Scratch"></td>
-      </tr>
-    </table>
-  </body>
-	<!-- <h1>Expression Display</h1>
-	<div id="expDisplayPanel" align="center"></div>
-	<div id="codeDisplayPanel" align="center"></div> -->
+	<!-- <p>
+		<button onclick="init()">Initial Context</button>
+		<button onclick="updateValue()">updateValue</button>
+	</p> -->
+	<table>
+		<tr>
+			<td colspan="3" id="menuBar"></td>
+		</tr>
+		<tr>
+			<td rowspan="2" id="codeDisplayPanel"></td>
+			<td id="Stack"></td>
+			<td id="Scratch"></td>
+		</tr>
+		<tr>
+			<td id="Static"></td>
+			<td id="Heap"></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td id="expDisplayPanel"></td>
+			<td></td>
+		</tr>
+		
+	</table>
+</body>
 </html>

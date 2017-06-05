@@ -138,11 +138,13 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	 * the model and view
 	 */
 	
-	public Component getComponent(){ return this;}
+	@Override
+    public Component getComponent(){ return this;}
 	
 	public String getConfigId(){return "Display Manager";}
 	
-	public Vector<Datum> getSelection(DisplayInterface target){
+	@Override
+    public Vector<Datum> getSelection(DisplayInterface target){
 		Vector<Datum> selection = new Vector<Datum>();
 		for (int d = 0; d < myDisplays.length; d++) {
 			DisplayInterface display = myDisplays[d];
@@ -155,6 +157,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		return selection;
 	}
 	
+    @Override
     public void createAllDisplays() {
     	Debug.getInstance().msg(Debug.DISPLAY, "In createAllDisplays()");
                 
@@ -223,6 +226,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 	/* refresh
        =======   Refresh all displays.
     */
+    @Override
     public void refresh() {
     	for (int d = 0; d < myDisplays.length; d++) {
     		//System.out.println("Refreshing "+ myDisplays[d].getId() ) ;
@@ -234,32 +238,40 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
  * DisplayContextInterface Implementation - the wa
  * 
  ***************************************************************/
+    @Override
     public Color getHighlightColor() { return highlightColor;}
     
+    @Override
     public Font getDisplayFont()  { return displayFont;}
     
+    @Override
     public Font getCodeFont() { return codeFont;}
 	  
-	public CommandInterface getCommandProcessor(){return commandProcessor;}
+	@Override
+    public CommandInterface getCommandProcessor(){return commandProcessor;}
       	
-	public ImageSourceInterface getImageSource(){return imageSource;}
+	@Override
+    public ImageSourceInterface getImageSource(){return imageSource;}
 
-	public String toString(){
+	@Override
+    public String toString(){
 	    return "Display Manager";
 	}
 	
+    @Override
     public void notifyOfSave(Configuration config){
 	    config.setValue("highlightColor", Integer.toString(0x00ffffff & highlightColor.getRGB()));
 	    config.setValue("displayFontName", displayFont.getName());
 	    config.setValue("displayFontStyle", Integer.toString(displayFont.getStyle()));
 	    config.setValue("displayFontSize", Integer.toString(displayFont.getSize()));
-	    config.setValue("codeFontName", displayFont.getName());
-	    config.setValue("codeFontStyle", Integer.toString(displayFont.getStyle()));
-	    config.setValue("codeFontSize", Integer.toString(displayFont.getSize()));
+	    config.setValue("codeFontName", codeFont.getName());
+	    config.setValue("codeFontStyle", Integer.toString(codeFont.getStyle()));
+	    config.setValue("codeFontSize", Integer.toString(codeFont.getSize()));
 	    config.setComment("highlightColor",
 	    "Parameters common to all displays");
     }
     
+    @Override
     public void notifyOfLoad(Configuration config){
 	    String temp = config.getValue("highlightColor");
 	    if (temp != null) highlightColor = Color.decode(temp);
@@ -295,6 +307,7 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		refresh();
     }
     
+    @Override
     public void dispose(){
         // Stop observing the plug-in-manager
         PlugInManager pim = PlugInManager.getSingleton(); ;
@@ -322,7 +335,8 @@ public class DisplayManager extends JPanel implements DisplayManagerInterface, D
 		return "Display Manager";
 	}
 
-	public void update(Observable observable, Object arg1) {
+	@Override
+    public void update(Observable observable, Object arg1) {
 		Debug.getInstance().msg(Debug.DISPLAY, "updating " + getId() + " observer");
         if( observable instanceof PlugInManager ) {
             Set<String> jackNameSet = (Set<String>) arg1 ;
