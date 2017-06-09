@@ -136,16 +136,13 @@ public final class String implements CharSequence /*,java.io.Serializable*/{
 	}
 	
 	private String concat(CharSequence seq) {
-		if (seq.length() > 0) {
-			char[] temp = new char[myString.length + seq.length()];
-			int i = 0;
-			for (; i < myString.length; i++)
-				temp[i] = myString[i];
-			for (; i < temp.length; i++)
-				temp[i] = seq.charAt(i - myString.length);
-			myString = temp;
-		}
-		return this;
+		char[] temp = new char[myString.length + seq.length()];
+		int i = 0;
+		for (i < myString.length; i++)
+			temp[i] = myString[i];
+		for (int k = 0, sz = seq.length(); k < sz; k++)
+			temp[i++] = seq.charAt(k);
+		return new String( temp ) ;
 	}
 	
 	public boolean contains(CharSequence s){
