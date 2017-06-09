@@ -1,3 +1,5 @@
+//! Run. Expect output  "Hello world" endl "Hello world" endl
+
 package library ;
 
 public class StringCatTest1 {

@@ -136,11 +136,12 @@ public final class String implements CharSequence /*,java.io.Serializable*/{
 	}
 	
 	private String concat(CharSequence seq) {
-		char[] temp = new char[myString.length + seq.length()];
+	    int seqLen = seq.length() ;
+		char[] temp = new char[myString.length + seqLen];
 		int i = 0;
-		for (i < myString.length; i++)
+		for ( ; i < myString.length ; i++ )
 			temp[i] = myString[i];
-		for (int k = 0, sz = seq.length(); k < sz; k++)
+		for (int k = 0 ; k < seqLen ; k++)
 			temp[i++] = seq.charAt(k);
 		return new String( temp ) ;
 	}
