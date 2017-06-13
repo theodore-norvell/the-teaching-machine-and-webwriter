@@ -21,6 +21,7 @@ abstract public class Kit {
 	
 	abstract public ButtonPeer makeButtonPeer (String title, Button button);
 
+	/** Make a peer for a container */
 	abstract public ContainerPeer makeContainerPeer(Container container);
 	
 //	abstract public ContainerPeer makeContainerPeer(Container container, int type);
