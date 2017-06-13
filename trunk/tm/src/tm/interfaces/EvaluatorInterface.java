@@ -20,7 +20,7 @@ import tm.backtrack.BTTimeManager;
 import tm.displayEngine.ConsoleDisplay;
 import tm.utilities.TMFile;
 
-public interface EvaluatorInterface extends StateInterface{
+public interface EvaluatorInterface extends StateInterface {
 	
 // Mutators
 	
@@ -64,15 +64,6 @@ public interface EvaluatorInterface extends StateInterface{
      * which parts of selected lines are visible.
      */
     public void setSelection(SelectionInterface selection) ;
-
-    /** The number of lines that are currently on the console. */
-    public int getNumConsoleLines() ;
-    
-    /** One line of the console
-     * <p>
-     * The string returned is marked up using constants from {@link ConsoleDisplay}.
-     * */
-    public String getConsoleLine(int l);
     
     /** A string representation of the line number of the code line currently in focus. */
     public String getPCLocation();

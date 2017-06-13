@@ -1,6 +1,5 @@
 package tm.interfaces;
 
-
 public interface StateInterface {
 
     /** A string representation of the current stat of 
@@ -48,4 +47,20 @@ public interface StateInterface {
      * The scratch region is used mostly for compiler temporary variables (temps).
      */
     public RegionInterface getScratchRegion() ;
+
+    /** The number of lines that are currently on the console. */
+    public int getNumConsoleLines() ;
+    
+    /** One line of the console
+     * <p>
+     * The string returned is marked up using constants from {@link ConsoleDisplay}.
+     * */
+    public String getConsoleLine(int l);
+    
+    /** Indicate console characters are normal (i.e. output) */
+    public static final char NORMAL_MARK = '\uffff';
+    
+    /** Indicate console characters are input */
+    public static final char INPUT_MARK = '\ufffe';
+    
 }
