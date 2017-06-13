@@ -7,7 +7,6 @@ abstract public class Kit {
 	
 	static private Kit kit ;
 		
-	/*  Return the current kit */
 	public static  Kit getKit() { return kit ; }
 	
 	public static void setKit(Kit kit) { Kit.kit = kit ; }
