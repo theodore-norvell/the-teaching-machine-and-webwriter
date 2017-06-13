@@ -1,3 +1,4 @@
+*.project
 *.class
 *.classpath
 *.working
@@ -9,3 +10,4 @@ tmgwt.nocache.js
 *.symbolMap
 *.log
 trunk/tmGWT/war/tmgwt
+trunk/tm/tm-build/
