@@ -17,7 +17,7 @@ package tm.virtualMachine;
 import tm.backtrack.BTTimeManager;
 import tm.backtrack.BTVar;
 import tm.backtrack.BTVector;
-import tm.displayEngine.ConsoleDisplay;
+import tm.interfaces.StateInterface ;
 
 /** The Console class represents standard input and output.
 
@@ -84,7 +84,7 @@ public class Console {
         inputString.set( newInput ) ;
         
         // Echo
-        putchar( ConsoleDisplay.INPUT_MARK, consoleLines );
+        putchar( StateInterface.INPUT_MARK, consoleLines );
         for( int i=0, sz=input.length() ; i < sz ; ++i ) {
             if( input.charAt(i) == '\0' ) {
                 // Char 0 represents the end of file.
@@ -93,7 +93,7 @@ public class Console {
                 putchar( 'F', consoleLines ) ; }
             else {
                 putchar( input.charAt(i), consoleLines ) ; } }
-         putchar(ConsoleDisplay.NORMAL_MARK, consoleLines);}
+         putchar(StateInterface.NORMAL_MARK, consoleLines);}
     
     public void setFailBit( ) {
         Integer i = (Integer) inputState.get() ;
@@ -158,7 +158,7 @@ public class Console {
     private void putchar(char c, BTVector where) {
         if( c == '\n' ) {
             where.addElement("") ; }
-        else if( (int)c==9 || 32 <= (int)c && (int)c <= 126 || c >=  ConsoleDisplay.INPUT_MARK) {
+        else if( (int)c==9 || 32 <= (int)c && (int)c <= 126 || c >=  StateInterface.INPUT_MARK) {
             // Tabs are taken care of at a lower level.
             // Char 7 ought to cause a BEEP, but how?
             int lastLine = getSize(where) - 1 ;

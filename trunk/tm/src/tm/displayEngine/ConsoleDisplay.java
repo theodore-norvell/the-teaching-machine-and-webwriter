@@ -21,6 +21,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+import tm.interfaces.StateInterface ;
+
 
 // =================================================================
 // =================================================================
@@ -44,9 +46,7 @@ public class ConsoleDisplay extends DisplayAdapter {
 		 */
 		private static final long serialVersionUID = 7066880211879266535L;
 		//Printing modes
-	    public static final char NORMAL_MARK = '\uffff';
-	    public static final char INPUT_MARK = '\ufffe';
-	    private static final char MARKER_BOUND = INPUT_MARK;
+	    private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
 
 	    private final static int LEFT_MARGIN = 10;
 	    private final static int TOP_MARGIN = 10;
@@ -114,7 +114,7 @@ public class ConsoleDisplay extends DisplayAdapter {
 	            for( int i = 0 ; i < expanded.length(); ++ i ) {
 	                char c = expanded.charAt(i);
 	                if ( c >= MARKER_BOUND)
-	                    screen.setColor(c==INPUT_MARK ? Color.red : Color.black);
+	                    screen.setColor(c==StateInterface.INPUT_MARK ? Color.red : Color.black);
 	                else
 	                    theWidth += advances[c];
 	            }
@@ -151,7 +151,7 @@ public class ConsoleDisplay extends DisplayAdapter {
 	            for( int i = 0; i < theLine.length(); ++ i ) {
 	                char c = tempArray[i];
 	                if ( c >= MARKER_BOUND)
-	                    screen.setColor(c==INPUT_MARK ? Color.red : Color.black);
+	                    screen.setColor(c==StateInterface.INPUT_MARK ? Color.red : Color.black);
 	                else {
 	                    screen.drawChars(tempArray,i,1,x,y);
 	                    x += advances[c];
