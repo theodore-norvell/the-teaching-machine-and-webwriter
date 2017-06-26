@@ -24,10 +24,10 @@ import tm.virtualMachine.VMState;
 abstract public class DefaultExpressionNode extends ExpressionNode
 {
 
-    private static char red = StateInterface.MARKER1 ;
-    private static char underline = StateInterface.MARKER3 ;
-    private static char blue = StateInterface.MARKER4 ;
-    private static char endEffect = StateInterface.ENDMARKER ;
+    private static char red = StateInterface.EXP_START_VALUE ;
+    private static char underline = StateInterface.EXP_START_SELECTED ;
+    private static char blue = StateInterface.EXP_START_LVALUE ;
+    private static char endEffect = StateInterface.EXP_END ;
 
     private Selector selector ;
 

@@ -3,13 +3,13 @@ package tm.interfaces;
 public interface StateInterface {
     
     /** Marks following characters as representing values */
-    public static final char MARKER1 = '\uffff';    
+    public static final char EXP_START_VALUE = '\uffff';    
     /** Marks following characters as representing the selected node. */
-    public static final char MARKER3 = '\ufffd';    
+    public static final char EXP_START_SELECTED = '\ufffd';    
     /** Marks following characters as representing a lvalue. */
-    public static final char MARKER4 = '\ufffc';
+    public static final char EXP_START_LVALUE = '\ufffc';
     /** Ends a previous markup. */
-    public static final char ENDMARKER = '\ufffb';
+    public static final char EXP_END = '\ufffb';
 
     /** A string representation of the current state of 
      * the expression that is currently being

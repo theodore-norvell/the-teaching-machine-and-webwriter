@@ -100,19 +100,19 @@ abstract public class AbstractAstTest extends TestCase {
         for( int i = 0, sz = str.length() ; i < sz ; ++ i ) {
             char c = str.charAt(i);		// Next character
             switch (c) {
-                case StateInterface.MARKER1:
+                case StateInterface.EXP_START_VALUE:
                     buf.append("<<red:") ;
                     break;
 //                case StateInterface.MARKER2:
 //                    buf.append("<<ul:") ;
 //                    break;
-                case StateInterface.MARKER3:
+                case StateInterface.EXP_START_SELECTED:
                     buf.append("<<ul:") ;
                     break;
-                case StateInterface.MARKER4:
+                case StateInterface.EXP_START_LVALUE:
                     buf.append("<<blue:") ;
                     break;
-                case StateInterface.ENDMARKER:
+                case StateInterface.EXP_END:
                     buf.append(">>") ;
                     break ;
                 default:

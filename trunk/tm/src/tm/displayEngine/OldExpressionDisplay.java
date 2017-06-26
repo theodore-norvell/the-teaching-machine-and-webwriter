@@ -109,7 +109,7 @@ public class OldExpressionDisplay extends DisplayAdapter {
 			for( int i = 0, sz = theExpression.length() ; i < sz ; ++ i ) {
 				char c = tempArray[i];		// Next character
 				switch (c) {
-				    case StateInterface.MARKER1:
+				    case StateInterface.EXP_START_VALUE:
 				        attrStack.addElement( currColor ) ;
 				        currColor = Color.red ;
 				        g.setColor( currColor ) ;
@@ -118,16 +118,16 @@ public class OldExpressionDisplay extends DisplayAdapter {
 //				        attrStack.addElement( new Boolean(currUnderline) ) ;
 //				        currUnderline = false ;
 //					    break;
-					case StateInterface.MARKER3:
+					case StateInterface.EXP_START_SELECTED:
 				        attrStack.addElement( new Boolean(currUnderline) ) ;
 				        currUnderline = true ;
 					    break;
-					case StateInterface.MARKER4:
+					case StateInterface.EXP_START_LVALUE:
 				        attrStack.addElement( currColor ) ;
 				        currColor = Color.blue ;
 				        g.setColor( currColor ) ;
 					    break;
-					case StateInterface.ENDMARKER:
+					case StateInterface.EXP_END:
 					    Object temp = attrStack.elementAt( attrStack.size() - 1 ) ;
 					    if( temp instanceof Color ) {
 					        currColor = (Color) temp ;

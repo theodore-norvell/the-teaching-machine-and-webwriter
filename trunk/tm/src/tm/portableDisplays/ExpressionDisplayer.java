@@ -46,7 +46,7 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			for (int i = 0, sz = theExpression.length(); i < sz; ++i) {
 				char c = tempArray[i]; // Next character
 				switch (c) {
-				case StateInterface.MARKER1:
+				case StateInterface.EXP_START_VALUE:
 					attrStack.addElement("red");
 					currColor = 0xFF0000;
 					g.setColor(currColor);
@@ -55,16 +55,16 @@ public class ExpressionDisplayer extends PortableDisplayer {
 				//	attrStack.addElement(new Boolean(currUnderline));
 				//	currUnderline = false;
 				//	break;
-				case StateInterface.MARKER3:
+				case StateInterface.EXP_START_SELECTED:
 					attrStack.addElement(new Boolean(currUnderline));
 					currUnderline = true;
 					break;
-				case StateInterface.MARKER4:
+				case StateInterface.EXP_START_LVALUE:
 					attrStack.addElement("blue");
 					currColor = 0x0000FF;
 					g.setColor(currColor);
 					break;
-				case StateInterface.ENDMARKER:
+				case StateInterface.EXP_END:
 					Object temp = attrStack.elementAt(attrStack.size() - 1);
 					if (temp instanceof String) {
 						currColor = temp.equals("red") ? 0xFF0000 : 0x0000FF;
