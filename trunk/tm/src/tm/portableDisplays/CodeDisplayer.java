@@ -25,6 +25,7 @@ public class CodeDisplayer extends PortableDisplayer {
 	private final static int COMMENT = 2;
 	private final static int PREPROCESSOR = 3;
 	private final static int CONSTANT = 4;
+	
 	private final static int LINE_NUMBER = 5;
 	private final static int BOLD = 1;
 	private final static int ITALIC = 2;
