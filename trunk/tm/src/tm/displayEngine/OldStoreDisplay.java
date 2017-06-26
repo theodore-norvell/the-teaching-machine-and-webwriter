@@ -48,13 +48,13 @@ import tm.utilities.Debug;
 /** New class to display the contents of a memory store. Introduced in Fall, 1999
  *    to replace older memory store display technique.
  *
- *    This class is built on top of the notion of a {@link DatumDisplay}, a lightweight
+ *    This class is built on top of the notion of a {@link OldDatumDisplay}, a lightweight
  *    class of self-drawing objects which represent the display of datums
  *    on the screen. Since Datums are hierarchial, DatumDisplay objects may
  *    be expanded or contracted, which affects the store display inasmuch as
  *    it changes the total number of DatumDisplay objects available for display.
  */
-public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
+public class OldStoreDisplay extends DisplayAdapter implements DataDisplayView {
 
 	private static final long serialVersionUID = 9057830260011019321L;
 	
@@ -82,7 +82,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 		
 
 		private RegionInterface region;	// Reference to client
-		private StoreLayoutManager layoutManager;
+		private OldStoreLayoutManager layoutManager;
 		
 		
 
@@ -96,7 +96,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 	         * @param w the subWindow which holds the display
 	         * @param b the array of buttons for the display
 	         */        
-		public StoreDisplay(DisplayManager dm, String configId) {
+		public OldStoreDisplay(DisplayManager dm, String configId) {
 			super(dm, configId);		// Automatic scrollbars
 //			System.out.println("storeDisplay configId is " + configId);
 			if (configId.equalsIgnoreCase("Heap"))
@@ -122,7 +122,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 			mySubWindow.addToolBar(toolBar);
 						
 //			setScale(1,DatumDisplay.baseHeight);	// scrolling increment
-		    layoutManager = new StoreLayoutManager(this);
+		    layoutManager = new OldStoreLayoutManager(this);
 		    mySize = new Dimension(getSize());
 		}
 
@@ -171,13 +171,13 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 	    public void refresh() {
 			if (region == null) return;
 	        int frameBoundary = region.getFrameBoundary();
-	        DatumDisplay.updateFonts(context.getDisplayFont(),getToolkit().getFontMetrics(context.getDisplayFont()).getHeight());
-			setScale(1,DatumDisplay.baseHeight);	// scrolling increment
+	        OldDatumDisplay.updateFonts(context.getDisplayFont(),getToolkit().getFontMetrics(context.getDisplayFont()).getHeight());
+			setScale(1,OldDatumDisplay.baseHeight);	// scrolling increment
 			for (int i = 0; i < region.getNumChildren(); i++) {
 			    Datum kid = region.getChildAt(i);
-			    DatumDisplay dd = DatumDisplay.getAssociated(kid,this);
+			    OldDatumDisplay dd = OldDatumDisplay.getAssociated(kid,this);
 			    if (dd == null) {
-			        dd = new StoreDatumDisplay(kid, this, false);
+			        dd = new OldStoreDatumDisplay(kid, this, false);
 //	redundant - constructor does it
 //                  kid.setProperty(getDisplayString(), dd);
 			    }
@@ -227,7 +227,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 	        Point location = evt.getPoint();
 			for (int i = 0; i < region.getNumChildren(); i++) {
 			    Datum kid = region.getChildAt(i);
-			    DatumDisplay dd = DatumDisplay.getAssociated(kid, this);
+			    OldDatumDisplay dd = OldDatumDisplay.getAssociated(kid, this);
 			    Assert.check (dd != null);
 	           if (dd.contains(location)){
 	               dd.mouseClicked(location);
@@ -265,7 +265,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 		    
 			for (int i = firstDatum; i <= lastDatum; i++) {
 			    Datum kid = region.getChildAt(i);
-			    DatumDisplay dd = DatumDisplay.getAssociated(kid, this);
+			    OldDatumDisplay dd = OldDatumDisplay.getAssociated(kid, this);
 			    if (dd == null) return;  // Punt - asynchronous paint without refresh
 			    dd.draw(screen);
 			}
@@ -304,7 +304,7 @@ public class StoreDisplay extends DisplayAdapter implements DataDisplayView {
 			Vector<Datum> selection = new Vector<Datum>();
 			for (int i = 0; i < region.getNumChildren(); i++){
 				Datum datum = region.getChildAt(i);
-				DatumDisplay dd = DatumDisplay.getAssociated(datum, this); 
+				OldDatumDisplay dd = OldDatumDisplay.getAssociated(datum, this); 
 				if (dd != null && dd.isSelected())
 					selection.add(datum);
 			}

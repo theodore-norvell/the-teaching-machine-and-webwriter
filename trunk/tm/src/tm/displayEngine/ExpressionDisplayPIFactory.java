@@ -31,7 +31,7 @@ public class ExpressionDisplayPIFactory implements DisplayPIFactoryIntf{
     }
 	
 	public DisplayInterface createPlugin(DisplayManager dm) {
-		return new ExpressionDisplay1(dm,configId );
+		return new ExpressionSwingDisplay(dm,configId );
 	}
 
 	public Requirement[] getRequirements() {

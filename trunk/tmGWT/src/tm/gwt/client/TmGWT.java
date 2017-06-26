@@ -13,11 +13,11 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import telford.common.Kit;
-import tm.gwt.display.CodeDisplay1;
+import tm.gwt.display.CodeGWTDisplay;
 import tm.gwt.display.DisplayAdapter ;
-import tm.gwt.display.ExpressionDisplay1;
+import tm.gwt.display.ExpressionGWTDisplay;
 import tm.gwt.display.GWTContext;
-import tm.gwt.display.StoreDisplay1;
+import tm.gwt.display.StoreGWTDisplay;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.state.StateCommander ;
 import tm.gwt.telford.KitGWT;
@@ -42,22 +42,22 @@ public class TmGWT implements EntryPoint {
 		StateCommander controller = new TestController( theState ) ;
 		StateCommander commander = this.new TestStateCommander(controller) ;
 		
-		CodeDisplay1 codeDisplay = new CodeDisplay1(theState, context);
+		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, context);
 		displays.add( codeDisplay ) ;
 		
-		ExpressionDisplay1 expDisplay = new ExpressionDisplay1( theState, commander, context);
+		ExpressionGWTDisplay expDisplay = new ExpressionGWTDisplay( theState, commander, context);
         displays.add( expDisplay ) ;
 		
-		StoreDisplay1 staticDisplay = new StoreDisplay1(theState, context, "Static");
+		StoreGWTDisplay staticDisplay = new StoreGWTDisplay(theState, context, "Static");
         displays.add( staticDisplay ) ;
 		
-		StoreDisplay1 heapDisplay = new StoreDisplay1(theState, context, "Heap");
+		StoreGWTDisplay heapDisplay = new StoreGWTDisplay(theState, context, "Heap");
         displays.add( heapDisplay ) ;
 		
-		StoreDisplay1 stackDisplay = new StoreDisplay1(theState, context, "Stack");
+		StoreGWTDisplay stackDisplay = new StoreGWTDisplay(theState, context, "Stack");
         displays.add( stackDisplay ) ;
 		
-		StoreDisplay1 scratchDisplay = new StoreDisplay1(theState, context, "Scratch");
+		StoreGWTDisplay scratchDisplay = new StoreGWTDisplay(theState, context, "Scratch");
         displays.add( scratchDisplay ) ;
 		
 		refresh() ;

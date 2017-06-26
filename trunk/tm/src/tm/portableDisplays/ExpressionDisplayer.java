@@ -14,12 +14,6 @@ public class ExpressionDisplayer extends PortableDisplayer {
 	private static final int LEFTMARGIN = 4;
 	private static final int TOPMARGIN = 2;
 
-	public static final char MARKER1 = '\uffff';
-	public static final char MARKER2 = '\ufffe';
-	public static final char MARKER3 = '\ufffd';
-	public static final char MARKER4 = '\ufffc';
-	public static final char ENDMARKER = '\ufffb';
-
 	public String theExpression = "initial value from JAVA";
 
 	@Override
@@ -52,25 +46,25 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			for (int i = 0, sz = theExpression.length(); i < sz; ++i) {
 				char c = tempArray[i]; // Next character
 				switch (c) {
-				case MARKER1:
+				case StateInterface.MARKER1:
 					attrStack.addElement("red");
 					currColor = 0xFF0000;
 					g.setColor(currColor);
 					break;
-				case MARKER2:
-					attrStack.addElement(new Boolean(currUnderline));
-					currUnderline = false;
-					break;
-				case MARKER3:
+				//case StateInterface.MARKER2:
+				//	attrStack.addElement(new Boolean(currUnderline));
+				//	currUnderline = false;
+				//	break;
+				case StateInterface.MARKER3:
 					attrStack.addElement(new Boolean(currUnderline));
 					currUnderline = true;
 					break;
-				case MARKER4:
+				case StateInterface.MARKER4:
 					attrStack.addElement("blue");
 					currColor = 0x0000FF;
 					g.setColor(currColor);
 					break;
-				case ENDMARKER:
+				case StateInterface.ENDMARKER:
 					Object temp = attrStack.elementAt(attrStack.size() - 1);
 					if (temp instanceof String) {
 						currColor = temp.equals("red") ? 0xFF0000 : 0x0000FF;

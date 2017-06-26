@@ -15,19 +15,19 @@
 package tm.clc.ast;
 
 import tm.clc.datum.AbstractRefDatum;
-import tm.displayEngine.ExpressionDisplay;
+import tm.displayEngine.OldExpressionDisplay;
 import tm.interfaces.Datum;
+import tm.interfaces.StateInterface ;
 import tm.utilities.Assert;
 import tm.virtualMachine.VMState;
 
 abstract public class DefaultExpressionNode extends ExpressionNode
 {
 
-    private static char red = ExpressionDisplay.MARKER1 ;
-    private static char nounderline = ExpressionDisplay.MARKER2 ;
-    private static char underline = ExpressionDisplay.MARKER3 ;
-    private static char blue = ExpressionDisplay.MARKER4 ;
-    private static char endEffect = ExpressionDisplay.ENDMARKER ;
+    private static char red = StateInterface.MARKER1 ;
+    private static char underline = StateInterface.MARKER3 ;
+    private static char blue = StateInterface.MARKER4 ;
+    private static char endEffect = StateInterface.ENDMARKER ;
 
     private Selector selector ;
 

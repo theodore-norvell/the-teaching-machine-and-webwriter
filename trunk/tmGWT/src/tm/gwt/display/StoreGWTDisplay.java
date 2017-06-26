@@ -12,10 +12,10 @@ import tm.interfaces.RegionInterface;
 import tm.interfaces.StateInterface;
 import tm.portableDisplays.DatumDisplay;
 import tm.portableDisplays.PortableContextInterface;
-import tm.portableDisplays.StoreDatumDisplay1;
+import tm.portableDisplays.StoreDatumDisplay;
 import tm.portableDisplays.StoreDisplayer;
 
-public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
+public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
 
 	public static final int LOGICAL = 0; // each variable gets a similar box
 	public static final int SCALED = 1; // box depth reflects variable's size
@@ -23,11 +23,11 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 
 
 	private int view; // Current view being used (LOGICAL, SCALED, etc.)
-	private StoreLayoutManager1 layoutManager;
+	private StoreLayoutManagerGWT layoutManager;
 	private RegionInterface region; // Reference to client
 	private PortableContextInterface context = new GWTContext();
 	private StoreDisplayer storeDisplayer;
-	public StoreDisplay1(StateInterface e, PortableContextInterface context, String configId) {
+	public StoreGWTDisplay(StateInterface e, PortableContextInterface context, String configId) {
 		super(new StoreDisplayer(e, context), configId, null, 250, 75);
 		if (this.displayer instanceof StoreDisplayer) {
 			this.storeDisplayer = (StoreDisplayer) this.displayer;
@@ -53,7 +53,7 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 		toolBar.add(bScaled);
 		toolBar.add(bBinary);
 		myWorkPane.setStyleName("tm-smallScrollPanel");
-		layoutManager = new StoreLayoutManager1(this);
+		layoutManager = new StoreLayoutManagerGWT(this);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class StoreDisplay1 extends DisplayAdapter implements DataDisplayView{
 			Datum kid = region.getChildAt(i);
 			DatumDisplay dd = DatumDisplay.getAssociated(kid, this);
 			if (dd == null) {
-				dd = new StoreDatumDisplay1(kid, this, false);
+				dd = new StoreDatumDisplay(kid, this, false);
 			}
 			dd.setGrayOut(i < frameBoundary);
 			storeDisplayer.getDisplayInfo().getListDD().add(dd);

@@ -6,9 +6,9 @@ import tm.subWindowPkg.SmallButton ;
 import tm.subWindowPkg.ToolBar ;
 
 @SuppressWarnings("serial")
-public class ExpressionDisplay1 extends SwingDisplay {
+public class ExpressionSwingDisplay extends SwingDisplay {
 
-    public ExpressionDisplay1(DisplayManager dm, String configId ) {
+    public ExpressionSwingDisplay(DisplayManager dm, String configId ) {
         super( dm, configId, new ExpressionDisplayer(dm.getCommandProcessor(), dm.getPortableContext() ) ) ;
         
 

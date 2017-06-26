@@ -21,18 +21,19 @@ import tm.interfaces.RegionInterface;
 import tm.interfaces.StoreLayoutManagerI;
 import tm.portableDisplays.DatumDisplay;
   
-  
-  public class StoreLayoutManager1 implements StoreLayoutManagerI{
+  // TODO Why is this class not made portable?
+
+  public class StoreLayoutManagerSwing implements StoreLayoutManagerI {
     
 	private static final int ADDRESS_W = 55;  // minimum widths for display boxes
 	private static final int VALUE_W = 150;  // value boxes can be less since insets taken OUT of this width
 	private static final int NAME_W = 120;  // memory display boxes
     
     
-    private StoreDisplay1 target;
+    private StoreSwingDisplay target;
 //    private Dimension mySize = new Dimension(0,0);
     
-    public StoreLayoutManager1(StoreDisplay1 t){
+    public StoreLayoutManagerSwing(StoreSwingDisplay t){
     	target = t;
     }
     

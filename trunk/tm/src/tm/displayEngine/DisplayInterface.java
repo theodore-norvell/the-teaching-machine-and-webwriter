@@ -59,8 +59,7 @@ public interface DisplayInterface extends PlugIn, Configurable, Scriptable {
 	public Component getWindowComponent();
 	/**
 	 * This method allows the {@link tm.interfaces.DisplayManagerInterface displayManager}
-	 * to discover all datums selected by a user. Currently, datums can only be
-	 * selected in {@link tm.displayEngine.StoreDisplay storeDisplays}.
+	 * to discover all datums selected by a user.
 	 * @since March, 2007
 	 * @return null for non datum displays. The set of datums selected for displays
 	 * where datums can be selected (or null if none are).

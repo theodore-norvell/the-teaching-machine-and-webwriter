@@ -49,7 +49,7 @@ import tm.interfaces.Datum;
 
 */
 
-public abstract class DatumDisplay extends Object {
+public abstract class OldDatumDisplay extends Object {
 
     static final int LAST_STEP = 20;
 
@@ -89,7 +89,7 @@ public abstract class DatumDisplay extends Object {
 /*  Reference to the datum associated with this datumDisplay.
 */
     protected Datum myDatum;
-    protected Expander myExpander;
+    protected OldExpander myExpander;
 
 /*  Reference to the toplevel display of this datumDisplay.
 */
@@ -99,9 +99,9 @@ public abstract class DatumDisplay extends Object {
 
 /*  References to the boxes that hold the various strings that define the datum
 */
-    protected StringBox nameBox;
-    protected StringBox addressBox;
-    protected StringBox valueBox; // Primary value box
+    protected OldStringBox nameBox;
+    protected OldStringBox addressBox;
+    protected OldStringBox valueBox; // Primary value box
 
    
 /*  If the associated datum is the child of another datum, specifies whether it is 
@@ -134,7 +134,7 @@ public abstract class DatumDisplay extends Object {
     the new expand argument.
 */
 
-    public DatumDisplay(Datum datum, DataDisplayView displayView, boolean expand){
+    public OldDatumDisplay(Datum datum, DataDisplayView displayView, boolean expand){
         myDataView = displayView;
         myDatum = datum;
         Datum parent = datum.getParent();
@@ -144,7 +144,7 @@ public abstract class DatumDisplay extends Object {
             birthOrder = ONLY;
         }
         else {
-        	DatumDisplay pdd = getAssociated(parent, myDataView);
+        	OldDatumDisplay pdd = getAssociated(parent, myDataView);
         	// parent is not part of display so effectively 0?????
             nestLevel = (pdd==null) ? 0 : pdd.nestLevel + 1;
             if ( parent.getNumChildren() == 1)
@@ -156,7 +156,7 @@ public abstract class DatumDisplay extends Object {
             else birthOrder = IN_BETWEEN;
         }
         if (myDatum.getNumChildren() > 0) {
-	        myExpander = new Expander();
+	        myExpander = new OldExpander();
 	        myExpander.setExpanded(expand);
 	    }
         else
@@ -166,13 +166,13 @@ public abstract class DatumDisplay extends Object {
         extent = new Rectangle(0,0,0,0);
   // Hook me into the datum
         myDatum.setProperty(myDataView.getDisplayString(), this);
-        nameBox = new StringBox(datum.getName(), false, StringBox.RIGHT, StringBox.MIDDLE);
-        valueBox = new StringBox(datum.getValueString(), true, StringBox.LEFT, StringBox.MIDDLE);
+        nameBox = new OldStringBox(datum.getName(), false, OldStringBox.RIGHT, OldStringBox.MIDDLE);
+        valueBox = new OldStringBox(datum.getValueString(), true, OldStringBox.LEFT, OldStringBox.MIDDLE);
     }
 
 // Service routine to return the DatumDisplay associated with a Datum  
-    public static DatumDisplay getAssociated(Datum datum, DataDisplayView view){
-        return (DatumDisplay)(datum.getProperty(view.getDisplayString()));
+    public static OldDatumDisplay getAssociated(Datum datum, DataDisplayView view){
+        return (OldDatumDisplay)(datum.getProperty(view.getDisplayString()));
     }
     
     
@@ -197,7 +197,7 @@ public abstract class DatumDisplay extends Object {
     public boolean contains(Point p){return extent.contains(p);}
  
     public Datum getDatum(){ return myDatum;}
-    public Expander getExpander(){ return myExpander;}
+    public OldExpander getExpander(){ return myExpander;}
 
     public void move(int x, int y){
         extent.x = x;
@@ -209,7 +209,7 @@ public abstract class DatumDisplay extends Object {
         if (myExpander != null && myExpander.getExpanded()) {
             y = 0;      // new relative positon of kids
             for (int i = 0; i < myDatum.getNumChildren(); i++){
-                DatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
+                OldDatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
                 kid.move(extent.x, extent.y + y);
                 y += kid.extent.height;
             }
@@ -223,8 +223,8 @@ public abstract class DatumDisplay extends Object {
     governs their PLACEMENT. Draw handles their appearance.
  */
     public void resize(int nWidth, int vGap, int vWidth, int aWidth){
-        vGap += Expander.EXPAND_OFFSET; // add my expander offset to gap
-        vWidth -= Expander.EXPAND_OFFSET; // and reduce my value width to compensate
+        vGap += OldExpander.EXPAND_OFFSET; // add my expander offset to gap
+        vWidth -= OldExpander.EXPAND_OFFSET; // and reduce my value width to compensate
         extent.width = nWidth + vGap + vWidth + aWidth;
         extent.height = baseHeight; // fine for scalars in logical mode
         nameBox.move(0, 0); // Change
@@ -239,11 +239,11 @@ public abstract class DatumDisplay extends Object {
             addressBox.nudge(STRING_OFFSET,0);
         }
         if (myExpander != null) {   // Compound Datum
-            myExpander.move(nWidth + vGap - Expander.EXPAND_OFFSET + Expander.EXPAND_X, Expander.EXPAND_Y);
+            myExpander.move(nWidth + vGap - OldExpander.EXPAND_OFFSET + OldExpander.EXPAND_X, OldExpander.EXPAND_Y);
             if (myExpander.getExpanded()) {
                 int y = 0;  // Kids relative vertical position
                 for (int i = 0; i < myDatum.getNumChildren(); i++){
-                    DatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
+                    OldDatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
                     kid.resize(nWidth, vGap, vWidth, aWidth);
                     kid.move(extent.x, extent.y + y);
                     y += kid.extent.height;
@@ -272,7 +272,7 @@ public abstract class DatumDisplay extends Object {
 	                myDataView.refresh();
 	            } else if (myExpander.getExpanded()) { // Only search kids if I am expanded
 	    	        for (int i = 0; i < myDatum.getNumChildren(); i++){
-	    	            DatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
+	    	            OldDatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
 	    	            kid.mouseClicked(p);
 	    	        }
 	            } else clickSelect = true;  // neither on an expander or a kid
@@ -295,7 +295,7 @@ public abstract class DatumDisplay extends Object {
         }
         if (myExpander.getExpanded()) { // Only search kids if I am expanded
 	        for (int i = 0; i < myDatum.getNumChildren(); i++){
-	            DatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
+	            OldDatumDisplay kid = getAssociated(myDatum.getChildAt(i),myDataView);
 	            if (kid.expanderHit(p))
 	                return true;
 	        }
@@ -338,16 +338,16 @@ public abstract class DatumDisplay extends Object {
         localR.width = valueBox.getExtent().x + valueBox.getExtent().width - nameBox.getExtent().width;
         screen.draw(localR /*position.x, position.y, width, extent.height*/);
 
-        localR.x +=  Expander.EXPAND_OFFSET * nestLevel;
+        localR.x +=  OldExpander.EXPAND_OFFSET * nestLevel;
 
         if (myExpander.getExpanded()) { // Draw leaders, descenders and kids
             int kids = myDatum.getNumChildren();
-            int xDesc = localR.x + Expander.EXPAND_OFFSET/2;  // descenders drop from middle
+            int xDesc = localR.x + OldExpander.EXPAND_OFFSET/2;  // descenders drop from middle
             int yEnd;               // end of descender
             int xStart, xEnd ;     // Leader start and end
             
             for (int i = 0; i < kids; i++) {
-                DatumDisplay dd = (DatumDisplay)myDatum.getChildAt(i).getProperty(myDataView.getDisplayString());
+                OldDatumDisplay dd = (OldDatumDisplay)myDatum.getChildAt(i).getProperty(myDataView.getDisplayString());
                 int depth = dd.extent.height;
                 int yLeader = localR.y + baseHeight/2;           // Leader vertical position
                 if (i > 0) { // Not the first kid
@@ -356,11 +356,11 @@ public abstract class DatumDisplay extends Object {
                     screen.drawLine(xDesc, localR.y, xDesc, yEnd); // descender
                 } else { // first kid is special
                     if (kids > 1) // no descender for only kid, otherwise start at bottom of expander
-                        screen.drawLine(xDesc, localR.y + Expander.EXPAND_X + Expander.EXPAND_H,
+                        screen.drawLine(xDesc, localR.y + OldExpander.EXPAND_X + OldExpander.EXPAND_H,
                                         xDesc, localR.y + depth); 
-                    xStart = localR.x + Expander.EXPAND_X + Expander.EXPAND_W; // leader from right of expander
+                    xStart = localR.x + OldExpander.EXPAND_X + OldExpander.EXPAND_W; // leader from right of expander
                 }
-                xEnd = localR.x + Expander.EXPAND_OFFSET * (dd.getExpander() == null ? 2 : 1);
+                xEnd = localR.x + OldExpander.EXPAND_OFFSET * (dd.getExpander() == null ? 2 : 1);
                 screen.drawLine(xStart, yLeader, xEnd, yLeader);  // Leader
                 dd.draw(screen);
                 localR.y += depth;
