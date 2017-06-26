@@ -25,7 +25,7 @@ import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 
 
-public class StoreDatumDisplay extends DatumDisplay{
+public class OldStoreDatumDisplay extends OldDatumDisplay{
     
 /*  static value providing functions. Most of them provide
     x positions for the internal components which are likely to vary from sub-class
@@ -54,17 +54,17 @@ public class StoreDatumDisplay extends DatumDisplay{
 /* 
 */
 
-    public StoreDatumDisplay(Datum datum, DataDisplayView top, boolean expand){
+    public OldStoreDatumDisplay(Datum datum, DataDisplayView top, boolean expand){
         super(datum, top, expand);
-		addressBox = new StringBox(Integer.toString(myDatum.getAddress()),false, StringBox.LEFT, StringBox.TOP);
+		addressBox = new OldStringBox(Integer.toString(myDatum.getAddress()),false, OldStringBox.LEFT, OldStringBox.TOP);
 		addressBox.nudge(STRING_OFFSET,0);
 
 	// Recursively construct DatumDisplay objects for any kids
 		for (int i = 0; i < datum.getNumChildren(); i++) {
 		    Datum kid = myDatum.getChildAt(i);
-		    DatumDisplay dd = getAssociated(kid,top);
+		    OldDatumDisplay dd = getAssociated(kid,top);
 		    if (dd == null) 
-		        dd = new StoreDatumDisplay(kid, top, false);
+		        dd = new OldStoreDatumDisplay(kid, top, false);
 		}
 }
 
@@ -72,11 +72,11 @@ public class StoreDatumDisplay extends DatumDisplay{
         super.resize(nWidth, vGap, vWidth, aWidth);
         if (myDatum.getNumChildren() > 0) return;  // Compound datums handle this by accretion
 	
-	    if (myDataView.getDatumView() != StoreDisplay.LOGICAL) {
+	    if (myDataView.getDatumView() != OldStoreDisplay.LOGICAL) {
             extent.height = myDatum.getNumBytes() * baseHeight;
         }
         valueBox.resize(valueBox.getExtent().width,
-            myDataView.getDatumView() == StoreDisplay.SCALED ?
+            myDataView.getDatumView() == OldStoreDisplay.SCALED ?
             extent.height : baseHeight );
         setValueBoxes();
     }
@@ -106,9 +106,9 @@ public class StoreDatumDisplay extends DatumDisplay{
 		valueBox.draw(screen, position, color);  // primary value box
 
 // In binary view we have to draw all the extra internal byte boxes
-	    if (myDataView.getDatumView() == StoreDisplay.BINARY) 
+	    if (myDataView.getDatumView() == OldStoreDisplay.BINARY) 
 		    for (int i = 0, d = baseHeight; i < valueBoxes.size(); i++) {
-		        StringBox vBox = (StringBox)valueBoxes.elementAt(i);
+		        OldStringBox vBox = (OldStringBox)valueBoxes.elementAt(i);
 		        vBox.move(valueBox.getExtent().x,d);
 		        vBox.resize(valueBox.getExtent().width,valueBox.getExtent().height);
 		        vBox.draw(screen, position, color);
@@ -125,7 +125,7 @@ public class StoreDatumDisplay extends DatumDisplay{
         reset.
 */
     private void setValueBoxes(){
-        boolean binary = (myDataView.getDatumView() == StoreDisplay.BINARY);
+        boolean binary = (myDataView.getDatumView() == OldStoreDisplay.BINARY);
         boolean useOld = false;     // Using existing value boxes
   // 3/13/2001: useOld added, no longer exit routine if we have the correct no. of boxes already          
         if (binary && valueBoxes.size() == (myDatum.getNumBytes() - 1)) useOld = true;
@@ -141,9 +141,9 @@ public class StoreDatumDisplay extends DatumDisplay{
         else {
             valueBox.setString(binaryByte(myDatum.getByte(0)));
             for (int i = 0; i < valueBoxes.size(); i++) {
-                StringBox sb = (StringBox)valueBoxes.elementAt(i);
+                OldStringBox sb = (OldStringBox)valueBoxes.elementAt(i);
                 if (sb == null){
-                    sb = new StringBox(binaryByte(myDatum.getByte(i+1)), true, StringBox.LEFT, StringBox.MIDDLE);
+                    sb = new OldStringBox(binaryByte(myDatum.getByte(i+1)), true, OldStringBox.LEFT, OldStringBox.MIDDLE);
                     valueBoxes.setElementAt(sb, i);
 		            sb.nudge(STRING_OFFSET, 0);
                 }

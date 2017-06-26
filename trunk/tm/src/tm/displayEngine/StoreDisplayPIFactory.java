@@ -36,7 +36,7 @@ public class StoreDisplayPIFactory implements DisplayPIFactoryIntf{
     }
 	
 	public DisplayInterface createPlugin(DisplayManager dm) {		
-		return new StoreDisplay1(dm, configId);
+		return new StoreSwingDisplay(dm, configId);
 	}
 
 	public Requirement[] getRequirements() {

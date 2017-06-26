@@ -17,7 +17,7 @@ package tm.interfaces;
 import java.util.Enumeration ;
 
 import tm.backtrack.BTTimeManager;
-import tm.displayEngine.ConsoleDisplay;
+import tm.displayEngine.OldConsoleDisplay;
 import tm.utilities.TMFile;
 
 public interface EvaluatorInterface extends StateInterface {

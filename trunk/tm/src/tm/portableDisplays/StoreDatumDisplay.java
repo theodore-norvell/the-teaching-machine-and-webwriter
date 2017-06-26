@@ -18,13 +18,13 @@ import java.util.Vector;
 
 import telford.common.Graphics;
 import telford.common.Point;
-import tm.displayEngine.StoreDisplay1;
+import tm.displayEngine.StoreSwingDisplay;
 import tm.interfaces.DataDisplayView;
 import tm.interfaces.Datum;
 
-public class StoreDatumDisplay1 extends DatumDisplay {
+public class StoreDatumDisplay extends DatumDisplay {
 	protected Vector valueBoxes = new Vector();
-	public StoreDatumDisplay1(Datum datum, DataDisplayView top, boolean expand) {
+	public StoreDatumDisplay(Datum datum, DataDisplayView top, boolean expand) {
 		super(datum, top, expand);
 		addressBox = new StringBox(Integer.toString(myDatum.getAddress()), false, StringBox.LEFT, StringBox.TOP);
 		addressBox.nudge(STRING_OFFSET, 0);
@@ -33,7 +33,7 @@ public class StoreDatumDisplay1 extends DatumDisplay {
 			Datum kid = myDatum.getChildAt(i);
 			DatumDisplay dd = getAssociated(kid, top);
 			if (dd == null)
-				dd = new StoreDatumDisplay1(kid, top, false);
+				dd = new StoreDatumDisplay(kid, top, false);
 		}
 	}
 
@@ -42,11 +42,11 @@ public class StoreDatumDisplay1 extends DatumDisplay {
 		if (myDatum.getNumChildren() > 0)
 			return; // Compound datums handle this by accretion
 
-		if (myDataView.getDatumView() != StoreDisplay1.LOGICAL) {
+		if (myDataView.getDatumView() != StoreSwingDisplay.LOGICAL) {
 			extent.height = myDatum.getNumBytes() * baseHeight;
 		}
 		valueBox.resize(valueBox.getExtent().width,
-				myDataView.getDatumView() == StoreDisplay1.SCALED ? extent.height : baseHeight);
+				myDataView.getDatumView() == StoreSwingDisplay.SCALED ? extent.height : baseHeight);
 		setValueBoxes();
 	}
 
@@ -76,7 +76,7 @@ public class StoreDatumDisplay1 extends DatumDisplay {
 		valueBox.draw(screen, position, color); // primary value box
 
 		// In binary view we have to draw all the extra internal byte boxes
-		if (myDataView.getDatumView() == StoreDisplay1.BINARY)
+		if (myDataView.getDatumView() == StoreSwingDisplay.BINARY)
 			for (int i = 0, d = baseHeight; i < valueBoxes.size(); i++) {
 				StringBox vBox = (StringBox) valueBoxes.elementAt(i);
 				vBox.move(valueBox.getExtent().x, d);
@@ -96,7 +96,7 @@ public class StoreDatumDisplay1 extends DatumDisplay {
 	 * allowing strings to be reset.
 	 */
 	private void setValueBoxes() {
-		boolean binary = (myDataView.getDatumView() == StoreDisplay1.BINARY);
+		boolean binary = (myDataView.getDatumView() == StoreSwingDisplay.BINARY);
 		boolean useOld = false; // Using existing value boxes
 		// 3/13/2001: useOld added, no longer exit routine if we have the
 		// correct no. of boxes already

@@ -40,12 +40,12 @@ import tm.utilities.Assert;
 
 public class D3Iterator extends Object {
     
-    protected DatumDisplay myRoot;    // The first Datum Display in the generator
-    protected DatumDisplay current;
+    protected OldDatumDisplay myRoot;    // The first Datum Display in the generator
+    protected OldDatumDisplay current;
     protected DataDisplayView theView;
 
 // Public Interface
-    public D3Iterator(DatumDisplay root, DataDisplayView view){
+    public D3Iterator(OldDatumDisplay root, DataDisplayView view){
         myRoot = root;
         current = myRoot;
         theView = view;
@@ -64,7 +64,7 @@ public class D3Iterator extends Object {
             next = oneStep(next);
         }
         current = (next == null) ? null :
-            DatumDisplay.getAssociated(next, theView);
+            OldDatumDisplay.getAssociated(next, theView);
 //       System.out.println(current == null ? "null" : current.toString()); // Tree trace
  
     }
@@ -88,11 +88,11 @@ public class D3Iterator extends Object {
 // Leaves are scalars and unexpanded compounds
     private boolean isLeaf(Datum datum){
         if (datum.getNumChildren()==0) return true;
-        DatumDisplay dd = DatumDisplay.getAssociated(datum, theView);
+        OldDatumDisplay dd = OldDatumDisplay.getAssociated(datum, theView);
         return (!dd.getExpander().getExpanded());
     }
 
-    public DatumDisplay getNode(){
+    public OldDatumDisplay getNode(){
         Assert.check (current != null);
         return current;
     }

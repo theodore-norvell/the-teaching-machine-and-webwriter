@@ -39,7 +39,7 @@ capacity
 */
 // =================================================================
 
-public class ConsoleDisplay extends DisplayAdapter {
+public class OldConsoleDisplay extends DisplayAdapter {
 
 	/**
 		 * 
@@ -59,7 +59,7 @@ public class ConsoleDisplay extends DisplayAdapter {
 
 
 
-	    public ConsoleDisplay(DisplayManager dm, String configId){
+	    public OldConsoleDisplay(DisplayManager dm, String configId){
 	        super(dm, configId);
 	    }
 

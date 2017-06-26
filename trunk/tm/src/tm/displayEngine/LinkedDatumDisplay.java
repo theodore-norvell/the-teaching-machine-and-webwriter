@@ -33,12 +33,12 @@ import tm.utilities.Assert;
  * @since April 12, 2001
  * @see LinkedDisplay
  * @see LinkedD3Iterator
- * @see DatumDisplay
+ * @see OldDatumDisplay
  */
 
 
 
-public class LinkedDatumDisplay extends DatumDisplay {
+public class LinkedDatumDisplay extends OldDatumDisplay {
 
 // Over-rides of sizes
 	protected static int VALUE_W = 70;  // width & position
@@ -54,14 +54,14 @@ public class LinkedDatumDisplay extends DatumDisplay {
     public static int getNameX(int nestLevel){ return 0; }
     public static int getNameW(int nestLevel) { return NAME_W; }
     public static int getValueX(int nestLevel){
-            return NAME_W + (nestLevel+1)* Expander.EXPAND_OFFSET; }
-    public static int getValueW(int nestLevel){return VALUE_W - (nestLevel)*Expander.EXPAND_OFFSET; }
+            return NAME_W + (nestLevel+1)* OldExpander.EXPAND_OFFSET; }
+    public static int getValueW(int nestLevel){return VALUE_W - (nestLevel)*OldExpander.EXPAND_OFFSET; }
     public static int getDescenderX(int nestLevel){
-            return getExpanderX(nestLevel) + Expander.EXPAND_W/2; }
+            return getExpanderX(nestLevel) + OldExpander.EXPAND_W/2; }
     public static int getExpanderX(int nestLevel){
-            return NAME_W + nestLevel*Expander.EXPAND_OFFSET + Expander.EXPAND_X; }
+            return NAME_W + nestLevel*OldExpander.EXPAND_OFFSET + OldExpander.EXPAND_X; }
     public static int getCompoundX(int nestLevel){ return NAME_W; }
-    public static int getCompoundW(int nestLevel){ return VALUE_W + Expander.EXPAND_OFFSET; }
+    public static int getCompoundW(int nestLevel){ return VALUE_W + OldExpander.EXPAND_OFFSET; }
 
 	
     
@@ -162,7 +162,7 @@ public class LinkedDatumDisplay extends DatumDisplay {
  * Get the LinkedDatumDisplay object associated with the datum. 
  */
     public static LinkedDatumDisplay getLDD(Datum datum, DataDisplayView view){
-        return (LinkedDatumDisplay)(DatumDisplay.getAssociated(datum, view));
+        return (LinkedDatumDisplay)(OldDatumDisplay.getAssociated(datum, view));
     }
     
  /* Resize is responsible for locating all subcomponents properly. Over-rides default

@@ -20,10 +20,11 @@ import java.awt.Graphics2D;
 import java.util.Vector;
 
 import tm.interfaces.ImageSourceInterface;
+import tm.interfaces.StateInterface ;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 
-public class ExpressionDisplay extends DisplayAdapter {
+public class OldExpressionDisplay extends DisplayAdapter {
 
 	/**
 	 * 
@@ -31,12 +32,6 @@ public class ExpressionDisplay extends DisplayAdapter {
 	private static final long serialVersionUID = 3372985987803053351L;
 	private static final int LEFTMARGIN = 4;
 	private static final int TOPMARGIN = 2;
-
-	public static final char MARKER1 = '\uffff';	
-	public static final char MARKER2 = '\ufffe';	
-	public static final char MARKER3 = '\ufffd';	
-	public static final char MARKER4 = '\ufffc';
-	public static final char ENDMARKER = '\ufffb';
 	
 
 // Font Control
@@ -48,7 +43,7 @@ public class ExpressionDisplay extends DisplayAdapter {
 	String theExpression = "";
 	
 
-	public ExpressionDisplay(DisplayManager dm, String configId) {
+	public OldExpressionDisplay(DisplayManager dm, String configId) {
 		super(dm, configId);
 		ImageSourceInterface imageSource = context.getImageSource();
 		SmallButton[] buttons = new SmallButton[2];
@@ -114,25 +109,25 @@ public class ExpressionDisplay extends DisplayAdapter {
 			for( int i = 0, sz = theExpression.length() ; i < sz ; ++ i ) {
 				char c = tempArray[i];		// Next character
 				switch (c) {
-				    case MARKER1:
+				    case StateInterface.EXP_START_VALUE:
 				        attrStack.addElement( currColor ) ;
 				        currColor = Color.red ;
 				        g.setColor( currColor ) ;
 					    break;
-					case MARKER2:
-				        attrStack.addElement( new Boolean(currUnderline) ) ;
-				        currUnderline = false ;
-					    break;
-					case MARKER3:
+//					case StateInterface.MARKER2:
+//				        attrStack.addElement( new Boolean(currUnderline) ) ;
+//				        currUnderline = false ;
+//					    break;
+					case StateInterface.EXP_START_SELECTED:
 				        attrStack.addElement( new Boolean(currUnderline) ) ;
 				        currUnderline = true ;
 					    break;
-					case MARKER4:
+					case StateInterface.EXP_START_LVALUE:
 				        attrStack.addElement( currColor ) ;
 				        currColor = Color.blue ;
 				        g.setColor( currColor ) ;
 					    break;
-					case ENDMARKER:
+					case StateInterface.EXP_END:
 					    Object temp = attrStack.elementAt( attrStack.size() - 1 ) ;
 					    if( temp instanceof Color ) {
 					        currColor = (Color) temp ;

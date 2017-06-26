@@ -26,13 +26,13 @@ import java.awt.*;
 */
 // =================================================================
 
-public class Expander {
+public class OldExpander {
     
 /* Expander box dimensions: 
 */
     public static final int EXPAND_X = 2;
     public static final int EXPAND_Y = EXPAND_X;
-    public static final int EXPAND_H = DatumDisplay.baseHeight - 2* EXPAND_Y;
+    public static final int EXPAND_H = OldDatumDisplay.baseHeight - 2* EXPAND_Y;
     public static final int EXPAND_W = EXPAND_H;
     public static final int EXPAND_OFFSET = EXPAND_W + 2* EXPAND_X;
 
@@ -43,7 +43,7 @@ public class Expander {
  */
     Rectangle extent;
     
-    public Expander(){
+    public OldExpander(){
         isExpanded = false;
         extent = new Rectangle(0, 0, EXPAND_H, EXPAND_W);
 }
@@ -81,9 +81,9 @@ public class Expander {
 	    
 	    screen.drawRect(x, y, w, h);
 	    if (isExpanded){
-		    StringBox.paintString("-",x+w/2, y + h/2, screen,StringBox.CENTRE,StringBox.MIDDLE);
+		    OldStringBox.paintString("-",x+w/2, y + h/2, screen,OldStringBox.CENTRE,OldStringBox.MIDDLE);
 		}
-		else StringBox.paintString("+",x+w/2, y + h/2, screen,StringBox.CENTRE,StringBox.MIDDLE);
+		else OldStringBox.paintString("+",x+w/2, y + h/2, screen,OldStringBox.CENTRE,OldStringBox.MIDDLE);
 	}
 	
 	public void drawNubbin(Graphics screen, Rectangle ownerPlace, boolean vert){
@@ -95,7 +95,7 @@ public class Expander {
 	    screen.drawLine(x + extent.width, y + extent.height/2, x + EXPAND_OFFSET, y + extent.height/2);
 	    if (isExpanded && vert) {
 	        x += extent.width/2;
-	        screen.drawLine(x, y + extent.height, x, y + DatumDisplay.baseHeight);
+	        screen.drawLine(x, y + extent.height, x, y + OldDatumDisplay.baseHeight);
 	    }
 	}
 }

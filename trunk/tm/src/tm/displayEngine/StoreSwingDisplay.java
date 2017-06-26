@@ -18,13 +18,13 @@ import tm.utilities.Assert;
  * New class to display the contents of a memory store. Introduced in Fall, 1999
  * to replace older memory store display technique.
  *
- * This class is built on top of the notion of a {@link DatumDisplay}, a
+ * This class is built on top of the notion of a {@link OldDatumDisplay}, a
  * lightweight class of self-drawing objects which represent the display of
  * datums on the screen. Since Datums are hierarchial, DatumDisplay objects may
  * be expanded or contracted, which affects the store display inasmuch as it
  * changes the total number of DatumDisplay objects available for display.
  */
-public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
+public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 
 	private static final long serialVersionUID = 9057830260011019321L;
 
@@ -39,7 +39,7 @@ public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
 	private int view; // Current view being used (LOGICAL, SCALED, etc.)
 
 	private RegionInterface region; // Reference to client
-	private tm.displayEngine.StoreLayoutManager1 layoutManager;
+	private tm.displayEngine.StoreLayoutManagerSwing layoutManager;
 	private StoreDisplayer storeDisplayer;
 	// =================================================================
 	// Constructor
@@ -57,7 +57,7 @@ public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
 	 * @param b
 	 *            the array of buttons for the display
 	 */
-	public StoreDisplay1(DisplayManager dm, String configId) {
+	public StoreSwingDisplay(DisplayManager dm, String configId) {
 		super(dm, configId, new StoreDisplayer(dm.getCommandProcessor(), dm.getPortableContext()));
 		if (this.displayer instanceof StoreDisplayer) {
 			this.storeDisplayer = (StoreDisplayer) this.displayer;
@@ -86,7 +86,7 @@ public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
 		buttons[view].setButton(true);
 		toolBar = new ToolBar(buttons);
 		mySubWindow.addToolBar(toolBar);
-		layoutManager = new tm.displayEngine.StoreLayoutManager1(this);
+		layoutManager = new tm.displayEngine.StoreLayoutManagerSwing(this);
 //		this.storeDisplayer.getDisplayInfo().setLayoutManager(layoutManager);
 		// mySize = new Dimension(getSize());
 	}
@@ -144,15 +144,15 @@ public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
 		if (region == null)
 			return;
 		int frameBoundary = region.getFrameBoundary();
-		DatumDisplay.updateFonts(context.getDisplayFont(),
+		OldDatumDisplay.updateFonts(context.getDisplayFont(),
 				getToolkit().getFontMetrics(context.getDisplayFont()).getHeight());
-		setScale(1, DatumDisplay.baseHeight); // scrolling increment
+		setScale(1, OldDatumDisplay.baseHeight); // scrolling increment
 		storeDisplayer.getDisplayInfo().getListDD().clear();
 		for (int i = 0; i < region.getNumChildren(); i++) {
 			Datum kid = region.getChildAt(i);
 			tm.portableDisplays.DatumDisplay dd = tm.portableDisplays.DatumDisplay.getAssociated(kid, this);
 			if (dd == null) {
-				dd = new tm.portableDisplays.StoreDatumDisplay1(kid, this, false);
+				dd = new tm.portableDisplays.StoreDatumDisplay(kid, this, false);
 			}
 			dd.setGrayOut(i < frameBoundary);
 			storeDisplayer.getDisplayInfo().getListDD().add(dd);
@@ -228,7 +228,7 @@ public class StoreDisplay1 extends SwingDisplay implements DataDisplayView {
 		Vector<Datum> selection = new Vector<Datum>();
 		for (int i = 0; i < region.getNumChildren(); i++) {
 			Datum datum = region.getChildAt(i);
-			DatumDisplay dd = DatumDisplay.getAssociated(datum, this);
+			OldDatumDisplay dd = OldDatumDisplay.getAssociated(datum, this);
 			if (dd != null && dd.isSelected())
 				selection.add(datum);
 		}
