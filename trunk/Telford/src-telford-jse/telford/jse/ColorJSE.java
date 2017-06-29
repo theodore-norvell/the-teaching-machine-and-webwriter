@@ -11,17 +11,17 @@ public class ColorJSE implements telford.common.Color {
 	}
 
 	@Override
-	public int getBlack() {
-		return Color.BLACK.getRGB();
+	public int getGreen() {
+		return c.getGreen();
 	}
 
 	@Override
 	public int getRed() {
-		return Color.RED.getRGB();
+		return c.getRed() ;
 	}
 
 	@Override
 	public int getBlue() {
-		return Color.BLUE.getRGB();
+		return c.getBlue() ;
 	}
 }

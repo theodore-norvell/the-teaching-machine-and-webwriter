@@ -2,7 +2,7 @@ package telford.common;
 
 public interface Color {
 
-	int getBlack();
+	int getGreen();
 	
 	int getRed();
 	

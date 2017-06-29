@@ -13,6 +13,9 @@ public interface Graphics {
 	public void setFont( Font f) ;
 	
 	public Font getFont() ;
+	
+	/** Draw characters chars[i]. chars[i+1], ..., chars[i+len-1] */
+    public void drawString( char[] chars, int i, int count, int x, int y ) ;
 
 	public void drawString( String message, int x, int y ) ;
 	

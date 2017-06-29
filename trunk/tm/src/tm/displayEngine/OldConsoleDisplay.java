@@ -131,14 +131,13 @@ public class OldConsoleDisplay extends DisplayAdapter {
 	        FontMetrics fm = g.getFontMetrics();
 	        int baseLine = TOP_MARGIN;
 	        String theLine = null;
-	        Point scroll = getScrollPosition();
 
 	    //	if (getLastShowing() > 0)
 	            for (int i = 0; i< numLines; i++) {
 	                baseLine += fm.getAscent();
 	                theLine = commandProcessor.getConsoleLine(i);
 	                if(theLine != null)
-	                    drawLine(expandTabs(theLine),LEFT_MARGIN-scroll.x,baseLine-scroll.y, g);
+	                    drawLine(expandTabs(theLine), LEFT_MARGIN, baseLine, g);
 	            }
 	    }
 

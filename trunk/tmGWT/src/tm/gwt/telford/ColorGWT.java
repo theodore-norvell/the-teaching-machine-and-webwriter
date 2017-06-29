@@ -8,7 +8,7 @@ public class ColorGWT implements telford.common.Color {
 
 	public ColorGWT(int r, int g, int b) {
 		if ((red > 255) || (red < 0) || (green > 255) || (green < 0) || (blue > 255) || (blue < 0)) {
-			System.out.println(GWTUtil.error(GWTUtil.COLOR_INVALID_ARGUMENT, "ColorGWT()"));
+			throw new java.lang.IllegalArgumentException();
 		}
 		red = r;
 		green = g;
@@ -17,7 +17,7 @@ public class ColorGWT implements telford.common.Color {
 	}
 
 	@Override
-	public int getBlack() {
+	public int getGreen() {
 		return green;
 	}
 

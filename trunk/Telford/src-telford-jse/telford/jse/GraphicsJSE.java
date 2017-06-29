@@ -31,6 +31,13 @@ public class GraphicsJSE implements telford.common.Graphics {
 	public telford.common.Font getFont() {
 		return new FontJSE( g.getFont() ) ;
 	}
+
+
+    @Override
+    public void drawString(char[] chars, int i, int count, int x, int y) {
+        g.drawChars( chars,  i, count, x, y ) ;
+    }
+    
 	@Override
 	public void drawString(String str, int x, int y) {
 		g.drawString( str, x, y) ;
