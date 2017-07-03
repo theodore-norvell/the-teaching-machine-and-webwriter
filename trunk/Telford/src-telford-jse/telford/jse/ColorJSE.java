@@ -4,22 +4,22 @@ import java.awt.Color;
 
 public class ColorJSE implements telford.common.Color {
 	
-	Color c;
+	static Color c;
 	
 	ColorJSE(Color c){
-		this.c = c;
+		ColorJSE.c = c;
 	}
 
-	public int getBlack() {
-		return Color.BLACK.getRGB();
+	public int getGreen() {
+		return c.getGreen();
 	}
 
 	public int getRed() {
-		return Color.RED.getRGB();
+		return c.getRed() ;
 	}
 
 	@Override
 	public int getBlue() {
-		return Color.BLUE.getRGB();
+		return c.getBlue() ;
 	}
 }

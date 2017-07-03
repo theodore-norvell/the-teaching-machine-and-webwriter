@@ -35,7 +35,7 @@ import tm.utilities.Debug;
     See Datum Display class for more information on it.
 */
 
-public class StringBox extends Object {
+public class OldStringBox extends Object {
 // String alignments, horizontal, then vertical	
 	public static final int LEFT = 0;
 	public static final int CENTRE = 1;
@@ -60,7 +60,7 @@ public class StringBox extends Object {
     private int alignH;
     private int alignV;
     
-    public StringBox(String s, boolean o, int hor, int vert){
+    public OldStringBox(String s, boolean o, int hor, int vert){
         extent = new Rectangle (0,0,0,0);
         theString = s;
         outlined = o;

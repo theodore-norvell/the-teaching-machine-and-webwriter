@@ -25,6 +25,7 @@ public class CodeDisplayer extends PortableDisplayer {
 	private final static int COMMENT = 2;
 	private final static int PREPROCESSOR = 3;
 	private final static int CONSTANT = 4;
+	
 	private final static int LINE_NUMBER = 5;
 	private final static int BOLD = 1;
 	private final static int ITALIC = 2;
@@ -35,6 +36,9 @@ public class CodeDisplayer extends PortableDisplayer {
 		return displayInfo;
 	}
 
+	// TODO: This is rather ugly. Why do why can't the displayer get the information
+    // it needs from the portable context and the portable model directly?
+    
 	public void setDisplayInfo(CodeDisplayerInfo displayInfo) {
 		this.displayInfo = displayInfo;
 	}
@@ -139,38 +143,38 @@ public class CodeDisplayer extends PortableDisplayer {
 			while (m < markUp.length && markUp[m].getColumn() <= i) {
 				int command = markUp[m].getCommand();
 				switch (command) {
-				case MarkUpI.NORMAL: {
-					setMode(screen, NORMAL);
-					fm = screen.getFontMetrics(screen.getFont());
-				}
-					break;
-				case MarkUpI.KEYWORD: {
-					setMode(screen, KEYWORD);
-					fm = screen.getFontMetrics(screen.getFont());
-				}
-					break;
-				case MarkUpI.COMMENT: {
-					setMode(screen, COMMENT);
-					fm = screen.getFontMetrics(screen.getFont());
-				}
-					break;
-				case MarkUpI.PREPROCESSOR: {
-					setMode(screen, PREPROCESSOR);
-					fm = screen.getFontMetrics(screen.getFont());
-				}
-					break;
-				case MarkUpI.CONSTANT: {
-					setMode(screen, CONSTANT);
-					fm = screen.getFontMetrics(screen.getFont());
-				}
-					break;
-				case MarkUpI.CHANGE_TAG_SET: {
-					visible = markUp[m].getTagSet().selectionIsValid(selection);
-				}
-					break;
-				default: {
-					context.getAsserter().check("Unreachable code reached.");
-				}
+    				case MarkUpI.NORMAL: {
+    					setMode(screen, NORMAL);
+    					fm = screen.getFontMetrics(screen.getFont());
+    				}
+    				break;
+    				case MarkUpI.KEYWORD: {
+    					setMode(screen, KEYWORD);
+    					fm = screen.getFontMetrics(screen.getFont());
+    				}
+    				break;
+    				case MarkUpI.COMMENT: {
+    					setMode(screen, COMMENT);
+    					fm = screen.getFontMetrics(screen.getFont());
+    				}
+    				break;
+    				case MarkUpI.PREPROCESSOR: {
+    					setMode(screen, PREPROCESSOR);
+    					fm = screen.getFontMetrics(screen.getFont());
+    				}
+    				break;
+    				case MarkUpI.CONSTANT: {
+    					setMode(screen, CONSTANT);
+    					fm = screen.getFontMetrics(screen.getFont());
+    				}
+    				break;
+    				case MarkUpI.CHANGE_TAG_SET: {
+    					visible = markUp[m].getTagSet().selectionIsValid(selection);
+    				}
+    				break;
+    				default: {
+    					context.getAsserter().check("Unreachable code reached.");
+    				}
 				}
 				m++;
 			}

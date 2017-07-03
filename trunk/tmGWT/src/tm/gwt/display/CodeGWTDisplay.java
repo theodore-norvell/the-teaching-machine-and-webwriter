@@ -9,15 +9,20 @@ import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
-public class CodeDisplay1 extends DisplayAdapter {
+public class CodeGWTDisplay extends DisplayAdapter {
 	private GWTSuperTMFile theFile;
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
+	CodeDisplayer codeDisplayer ;
 
-	public CodeDisplay1(StateInterface e, PortableContextInterface context) {
+	public CodeGWTDisplay(StateInterface e, PortableContextInterface context) {
 		super(new CodeDisplayer(e, context), "codeDisplayPanel", "Test.java", 300, 600);
 		this.evaluator = e;
 		this.context = context;
+		
+		context.getAsserter().check( this.displayer instanceof CodeDisplayer ) ;
+        this.codeDisplayer = (CodeDisplayer)this.displayer;
+        
 
 		Button bBackup = new Button("<img src='/images/Backup.gif'/>");
 		Button bStepOver = new Button("<img src='/images/stepOver.gif'/>");
@@ -40,10 +45,11 @@ public class CodeDisplay1 extends DisplayAdapter {
 	}
 
 	public void refresh() {
+	    // TODO: Compare to CodeDisplaySwing: Why so different?
+	    
 //		myWorkPane.setStyleName("tm-scrollPanel");
-		if (displayer instanceof CodeDisplayer) {
-			((CodeDisplayer) displayer).setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
-		}
+
+	    codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
 		boolean allowGaps = true;
 		setScale(1, 16);
 

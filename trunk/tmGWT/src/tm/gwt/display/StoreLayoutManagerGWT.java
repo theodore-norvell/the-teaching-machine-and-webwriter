@@ -19,12 +19,14 @@ import tm.interfaces.RegionInterface;
 import tm.interfaces.StoreLayoutManagerI;
 import tm.portableDisplays.DatumDisplay;
   
-  
-  public class StoreLayoutManager1 implements StoreLayoutManagerI{
+
+  // TODO Why can't this class be made portable?
+
+  public class StoreLayoutManagerGWT implements StoreLayoutManagerI{
     
-    private StoreDisplay1 target;
+    private StoreGWTDisplay target;
     
-    public StoreLayoutManager1(StoreDisplay1 t){
+    public StoreLayoutManagerGWT(StoreGWTDisplay t){
     	target = t;
     }
     

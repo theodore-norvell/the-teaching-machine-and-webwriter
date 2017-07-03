@@ -8,12 +8,12 @@ import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
-public class ExpressionDisplay1 extends DisplayAdapter {
+public class ExpressionGWTDisplay extends DisplayAdapter {
 	final StateInterface evaluator;
 	final StateCommander commander ;
 	final PortableContextInterface context ;
 
-	public ExpressionDisplay1(StateInterface evaluator, final StateCommander commander, PortableContextInterface context) {
+	public ExpressionGWTDisplay(StateInterface evaluator, final StateCommander commander, PortableContextInterface context) {
 		super(new ExpressionDisplayer(evaluator, context), "expDisplayPanel", "Expression Display", 150, 75);
 		this.evaluator = evaluator ;
         this.commander = commander ;

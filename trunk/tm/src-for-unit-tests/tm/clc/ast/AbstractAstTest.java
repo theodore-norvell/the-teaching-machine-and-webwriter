@@ -8,7 +8,6 @@ import tm.cpp.CPlusPlusLang ;
 import tm.cpp.ast.* ;
 import tm.cpp.datum.* ;
 import tm.clc.rtSymTab.RT_Symbol_Table;
-import tm.displayEngine.ExpressionDisplay;
 import tm.interfaces.* ;
 import tm.languageInterface.Language ;
 import tm.languageInterface.ExpressionInterface;
@@ -101,19 +100,19 @@ abstract public class AbstractAstTest extends TestCase {
         for( int i = 0, sz = str.length() ; i < sz ; ++ i ) {
             char c = str.charAt(i);		// Next character
             switch (c) {
-                case ExpressionDisplay.MARKER1:
+                case StateInterface.EXP_START_VALUE:
                     buf.append("<<red:") ;
                     break;
-                case ExpressionDisplay.MARKER2:
+//                case StateInterface.MARKER2:
+//                    buf.append("<<ul:") ;
+//                    break;
+                case StateInterface.EXP_START_SELECTED:
                     buf.append("<<ul:") ;
                     break;
-                case ExpressionDisplay.MARKER3:
-                    buf.append("<<ul:") ;
-                    break;
-                case ExpressionDisplay.MARKER4:
+                case StateInterface.EXP_START_LVALUE:
                     buf.append("<<blue:") ;
                     break;
-                case ExpressionDisplay.ENDMARKER:
+                case StateInterface.EXP_END:
                     buf.append(">>") ;
                     break ;
                 default:

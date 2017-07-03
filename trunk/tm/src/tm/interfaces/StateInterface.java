@@ -1,12 +1,21 @@
 package tm.interfaces;
 
 public interface StateInterface {
+    
+    /** Marks following characters as representing values */
+    public static final char EXP_START_VALUE = '\uffff';    
+    /** Marks following characters as representing the selected node. */
+    public static final char EXP_START_SELECTED = '\ufffd';    
+    /** Marks following characters as representing a lvalue. */
+    public static final char EXP_START_LVALUE = '\ufffc';
+    /** Ends a previous markup. */
+    public static final char EXP_END = '\ufffb';
 
-    /** A string representation of the current stat of 
+    /** A string representation of the current state of 
      * the expression that is currently being
      * evaluated.
      * <P>
-     * The string returned is marked up using constants from {@link ExpressionDisplay}.
+     * The string returned is marked up using constants from {@link StateInterface}.
      * @return A marked up string representing a partially evaluated expression.
      */
 	public String getExpression();
@@ -53,14 +62,14 @@ public interface StateInterface {
     
     /** One line of the console
      * <p>
-     * The string returned is marked up using constants from {@link ConsoleDisplay}.
+     * The string returned is marked up using constants from {@link OldConsoleDisplay}.
      * */
     public String getConsoleLine(int l);
     
     /** Indicate console characters are normal (i.e. output) */
-    public static final char NORMAL_MARK = '\uffff';
+    public final char NORMAL_MARK = '\uffff';
     
     /** Indicate console characters are input */
-    public static final char INPUT_MARK = '\ufffe';
+    public final char INPUT_MARK = '\ufffe';
     
 }

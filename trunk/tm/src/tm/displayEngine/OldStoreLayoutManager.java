@@ -19,17 +19,17 @@ import tm.interfaces.Datum;
 import tm.interfaces.RegionInterface;
   
   
-  public class StoreLayoutManager {
+  public class OldStoreLayoutManager {
     
 	private static final int ADDRESS_W = 55;  // minimum widths for display boxes
 	private static final int VALUE_W = 150;  // value boxes can be less since insets taken OUT of this width
 	private static final int NAME_W = 120;  // memory display boxes
     
     
-    private StoreDisplay target;
+    private OldStoreDisplay target;
 //    private Dimension mySize = new Dimension(0,0);
     
-    public StoreLayoutManager(StoreDisplay t){
+    public OldStoreLayoutManager(OldStoreDisplay t){
     	target = t;
     }
     
@@ -83,12 +83,12 @@ import tm.interfaces.RegionInterface;
 		for (int i = 0; i < kids; i++) {
 //			System.out.println("Laying out Datum " + i);
 		    Datum kid = region.getChildAt(i);
-		    DatumDisplay dd = DatumDisplay.getAssociated(kid,target);
+		    OldDatumDisplay dd = OldDatumDisplay.getAssociated(kid,target);
 		    // This suppresses errors to Java console caused by asynchronous repaint requests
 		    if(dd == null) return; // asynchronous request, no refresh, punt
             dd.move(x,y);
             dd.resize(nameWidth,0,valueWidth,ADDRESS_W);    // height will be sized automatically
-            Expander expander = dd.getExpander();
+            OldExpander expander = dd.getExpander();
             y += dd.getSize().height;
             if (y < target.getFirstY())
                 firstDatum = i;

@@ -37,10 +37,11 @@ import tm.subWindowPkg.ToolBar;
 import tm.utilities.Debug;
 import tm.utilities.TMFile;
 
-public class CodeDisplay1 extends SwingDisplay {
-	/**
-	 * 
-	 */
+
+/**
+ * 
+ */
+public class CodeSwingDisplay extends SwingDisplay {
 	private static final long serialVersionUID = 2180490760572023332L;
 	private final static int LINE_PADDING = 1; // Space between lines
 	
@@ -84,16 +85,17 @@ public class CodeDisplay1 extends SwingDisplay {
 		});
 	}
 
-	public CodeDisplay1(DisplayManager dm, String configId) {
+	public CodeSwingDisplay(DisplayManager dm, String configId) {
 		// super(dm, configId);
 		
 		super(dm, configId, new CodeDisplayer(dm.getCommandProcessor(), dm.getPortableContext()));
 		cursorLine = 0;
 //		cursorChar = 0;
 		cursorLineCoords = null;
-		if(this.displayer instanceof CodeDisplayer){
-			this.codeDisplayer = (CodeDisplayer)this.displayer;
-		}
+		
+		dm.getPortableContext().getAsserter().check( this.displayer instanceof CodeDisplayer ) ;
+		this.codeDisplayer = (CodeDisplayer)this.displayer;
+		
 		/** dbg */
 		Debug.getInstance().msg(Debug.CURRENT,
 				"CodeDisplay " + hashCode() + " adding " + lineNumbersCheckBox.hashCode()); /**/

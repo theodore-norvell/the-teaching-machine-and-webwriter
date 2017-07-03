@@ -45,7 +45,7 @@ import tm.subWindowPkg.ToolBar ;
 import tm.utilities.Assert ;
 import tm.utilities.Debug ;
 
-public class CodeDisplay extends DisplayAdapter {
+public class OldCodeDisplay extends DisplayAdapter {
     /**
 	 * 
 	 */
@@ -96,7 +96,7 @@ public class CodeDisplay extends DisplayAdapter {
             }} ) ;
     }
 
-    public CodeDisplay(DisplayManager dm, String configId){
+    public OldCodeDisplay(DisplayManager dm, String configId){
         super(dm, configId);
         cursorLine = 0;
         cursorChar = 0;
