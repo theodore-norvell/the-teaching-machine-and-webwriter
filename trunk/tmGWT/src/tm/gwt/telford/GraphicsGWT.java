@@ -87,4 +87,11 @@ public class GraphicsGWT implements telford.common.Graphics {
 		c.lineTo(line.p1.getX(), line.p1.getY());
 		c.stroke();
 	}
+
+	//new method
+	public void drawString(char[] chars, int i, int count, int x, int y) {
+		String str = new String(chars, i, count);
+		drawString(str,x,y);
+		
+	}
 }

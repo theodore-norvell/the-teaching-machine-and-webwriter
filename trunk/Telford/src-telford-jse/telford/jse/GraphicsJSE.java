@@ -56,4 +56,10 @@ public class GraphicsJSE implements telford.common.Graphics {
 		g.drawLine((int)line.p0.getX(), (int)line.p0.getY(), (int)line.p1.getX(), (int)line.p1.getY());;
 	}
 
+	//new
+	public void drawString(char[] chars, int i, int count, int x, int y) {
+		g.drawString(str, x, y);
+		
+	}
+
 }

@@ -2,9 +2,15 @@ package telford.common;
 
 public interface Color {
 
-	int getBlack();
+	static int getBlack() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
-	int getRed();
+	static int getRed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	int getBlue();
 }
