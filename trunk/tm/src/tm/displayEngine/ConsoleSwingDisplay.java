@@ -18,7 +18,6 @@ public class ConsoleSwingDisplay extends SwingDisplay{
     private final static int TABSPACE = 4;
 
     private int numLines = 0;
-    private int xInsert = 0;
     private int advances[];
     
 	private ConsoleDisplayer consoleDisplayer;
@@ -64,9 +63,6 @@ public class ConsoleSwingDisplay extends SwingDisplay{
             }
             setPreferredSize (new Dimension(width+LEFT_MARGIN,n*getVScale()));
             numLines = n;
-            xInsert = (theLine == null || theLine.length() == 0 ||
-                theLine.charAt(theLine.length()-1) == '\n') ?  // where input goes
-                0 : theWidth;
         }
         super.refresh();
         g.dispose();

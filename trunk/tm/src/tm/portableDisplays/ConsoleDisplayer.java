@@ -10,11 +10,9 @@ import tm.interfaces.StateInterface;
 public class ConsoleDisplayer extends PortableDisplayer{
 	
 	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
-	private int advances[];
     private final static int LEFT_MARGIN = 10;
     private final static int TOP_MARGIN = 10;
     private final static int TABSPACE = 4;
-    private int numLines = 0;
 	
 	public ConsoleDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);		
@@ -27,64 +25,42 @@ public class ConsoleDisplayer extends PortableDisplayer{
 		
 	}
 
-	
-    private int stringWidth(String theLine, Graphics screen){
-        int theWidth = 0;
-        if (theLine.length() > 0) {
-            String expanded = expandTabs(theLine);
-            for( int i = 0 ; i < expanded.length(); ++ i ) {
-                char c = expanded.charAt(i);
-                
-                theWidth += advances[c]; //needs to be modified
-                /* 
-                if ( c >= MARKER_BOUND)
-                	screen.setColor(c==StateInterface.INPUT_MARK ? Color.getRed() : Color.getBlack());                	              
-                else
-                    theWidth += advances[c]; */
-            }
-        }
-        return theWidth;
-    }
 // =================================================================
 // Graphics Methods
 // =================================================================
 
+    @Override
     public void paintComponent(Graphics g){
     	//if( model == null ) return ;
         g.setFont(context.getCodeFont());
         FontMetrics fm = g.getFontMetrics(g.getFont());
         int baseLine = TOP_MARGIN;
-        String theLine = null;
 
-    //	if (getLastShowing() > 0)
-            for (int i = 0; i< numLines; i++) {
-                baseLine += fm.getAscent();
-                theLine = model.getConsoleLine(i);
-                if(theLine != null)
-                    drawLine(expandTabs(theLine),LEFT_MARGIN,baseLine, g);
-            }
+        int numLines = model.getNumConsoleLines() ;
+        
+        for (int i = 0; i< numLines; i++) {
+            baseLine += fm.getAscent();
+            String theLine = model.getConsoleLine(i);
+            if(theLine != null)
+                drawLine(expandTabs(theLine),LEFT_MARGIN,baseLine, g, fm);
+        }
     }
 
 // Draws a single line, taking mode changes into account
-    private void drawLine(String theLine, int x, int y, Graphics screen) {
+    private void drawLine(String theLine, int x, int y, Graphics screen, FontMetrics fm) {
     // Must convert expression to array of characters as drawChars can only work with
     // char arrays
         if (theLine.length() > 0) {
             char[] tempArray = theLine.toCharArray();
             for( int i = 0; i < theLine.length(); ++ i ) {
                 char c = tempArray[i];
-                
-                //needs to be modified
-                screen.drawString(tempArray, i, 1, x, y);             
-                x += advances[c];
-                /*
+ 
                 if ( c >= MARKER_BOUND)
-                    screen.setColor(c==StateInterface.INPUT_MARK ? Color.getRed() : Color.getBlack());
+                    screen.setColor(c==StateInterface.INPUT_MARK ? 0xFF0000 : 0x000000 );
                 else {
-                    screen.drawString(tempArray, i, 1, x, y);
-                   
-                    x += advances[c]; 
-                } */
+                    screen.drawString(tempArray, i, 1, x, y);             
+                    x += fm.stringWidth( tempArray, i, 1 ) ;
+                }
             }
         }
     }
@@ -104,8 +80,4 @@ public class ConsoleDisplayer extends PortableDisplayer{
                 column += 1 ;
                 buf.append(c) ; } }
         return buf.toString() ; }
-
-
-
-	
 }
