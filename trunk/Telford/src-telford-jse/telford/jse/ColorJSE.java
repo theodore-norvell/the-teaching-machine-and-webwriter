@@ -4,10 +4,10 @@ import java.awt.Color;
 
 public class ColorJSE implements telford.common.Color {
 	
-	static Color c;
+	Color c;
 	
 	ColorJSE(Color c){
-		ColorJSE.c = c;
+		this.c = c;
 	}
 
 	public int getGreen() {
