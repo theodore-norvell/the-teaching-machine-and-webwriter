@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 import telford.common.Kit;
 import tm.gwt.display.CodeGWTDisplay;
+import tm.gwt.display.ConsoleGWTDisplay;
 import tm.gwt.display.DisplayAdapter ;
 import tm.gwt.display.ExpressionGWTDisplay;
 import tm.gwt.display.GWTContext;
@@ -22,6 +23,7 @@ import tm.gwt.state.MirrorState ;
 import tm.gwt.state.StateCommander ;
 import tm.gwt.telford.KitGWT;
 import tm.gwt.test.TestController ;
+import tm.interfaces.StateInterface;
 import tm.portableDisplays.PortableContextInterface;
 
 /**
@@ -44,6 +46,9 @@ public class TmGWT implements EntryPoint {
 		
 		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, context);
 		displays.add( codeDisplay ) ;
+		
+		ConsoleGWTDisplay consoleDisplay = new ConsoleGWTDisplay(theState, context);
+		displays.add( consoleDisplay ) ;
 		
 		ExpressionGWTDisplay expDisplay = new ExpressionGWTDisplay( theState, commander, context);
         displays.add( expDisplay ) ;
