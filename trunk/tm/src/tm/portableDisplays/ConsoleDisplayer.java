@@ -47,7 +47,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
     }
 
 // Draws a single line, taking mode changes into account
-    public void drawLine(String theLine, int x, int y, Graphics screen, FontMetrics fm) {
+    private void drawLine(String theLine, int x, int y, Graphics screen, FontMetrics fm) {
     // Must convert expression to array of characters as drawChars can only work with
     // char arrays
         if (theLine.length() > 0) {
@@ -66,7 +66,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
     }
     
 
-    public String expandTabs( String theLine ) {
+    private String expandTabs( String theLine ) {
         int column = 0 ;
         StringBuffer buf = new StringBuffer() ;
         for( int i=0 , sz = theLine.length() ; i < sz ; ++i ) {
@@ -80,18 +80,4 @@ public class ConsoleDisplayer extends PortableDisplayer{
                 column += 1 ;
                 buf.append(c) ; } }
         return buf.toString() ; }
-    
-    /*
-     * Method for other platforms to get the number of console lines
-     */
-    public int getNumConsoleLines(){
-    	return model.getNumConsoleLines();
-    }
-    
-    /*
-     * Method for other platforms to get console lines
-     */
-    public String getConsoleLine(int i){
-    	return model.getConsoleLine(i);
-    }
 }

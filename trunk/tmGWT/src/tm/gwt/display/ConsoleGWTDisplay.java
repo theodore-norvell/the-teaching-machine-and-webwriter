@@ -1,8 +1,6 @@
 package tm.gwt.display;
 
-import telford.common.FontMetrics;
 import tm.gwt.jsInterface.GWTSuperTMFile;
-import tm.gwt.telford.GraphicsGWT;
 import tm.interfaces.StateInterface;
 import tm.portableDisplays.ConsoleDisplayer;
 import tm.portableDisplays.PortableContextInterface;
@@ -10,77 +8,62 @@ import tm.portableDisplays.PortableContextInterface;
 public class ConsoleGWTDisplay extends DisplayAdapter {
 
 	private GWTSuperTMFile theFile;
-	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
-    private final static int LEFT_MARGIN = 10;
-    private final static int TOP_MARGIN = 10;
-    private final static int TABSPACE = 4;
-    
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
 	ConsoleDisplayer consoleDisplayer;
 	private int advances[];
-
+	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
+    private final static int TABSPACE = 4;
 	
 	public ConsoleGWTDisplay(StateInterface e, PortableContextInterface context) {
-		super(new ConsoleDisplayer(e,context), "ConsoleDisplayPanel", "Console", 300, 75);
+		super(new ConsoleDisplayer(e,context), "ConsoleDisplayPanel", "Console", 300, 100);
 		this.evaluator = e;
-		this.context = context;	
-		myWorkPane.setStyleName("tm-smallScrollPanel");
+		this.context = context;			
 	}
-	
-    public void paintComponent(GraphicsGWT g){
-        g.setFont(context.getCodeFont());
-        FontMetrics fm = g.getFontMetrics(g.getFont());
-        for(int i = 0; i <= advances.length; i++){
-        	advances[i] = fm.getHeight();
-        }
-        int baseLine = TOP_MARGIN;
-        int numLines = consoleDisplayer.getNumConsoleLines() ;
-        
-        for (int i = 0; i< numLines; i++) {
-            baseLine += fm.getAscent();
-            String theLine = consoleDisplayer.getConsoleLine(i);
-            if(theLine != null)
-                consoleDisplayer.drawLine(consoleDisplayer.expandTabs(theLine),LEFT_MARGIN,baseLine, g, fm);
-        }
-    }
-	
 	
 	public void refresh(){		
 		
-		int n= consoleDisplayer.getNumConsoleLines();
+		int n = evaluator.getNumConsoleLines();
 		int numLines = 0;
         if (n != numLines) {
             int width = 0;
             int theWidth = 0;
-            String theLine = null;    
+            String theLine = null;
             setScale(1,12);
-            for (int i = 0; i <= n; i++) {
-                theLine = consoleDisplayer.getConsoleLine(i);
+            
+            for (int i = 0; i < n; i++) {
+                theLine = evaluator.getConsoleLine(i);
                 if(theLine != null) {
                     theWidth = stringWidth(theLine);
                     if (theWidth > width) width = theWidth;
                 }
-             
-         }
-		 setScale(1,700);
-         super.refresh(); }
-       
+            }
+            
+            numLines = n;
+                       
+        }
+        
+        super.refresh();
         
 	}
-    
+	
     private int stringWidth(String theLine){
         int theWidth = 0;
         if (theLine.length() > 0) {
             String expanded = expandTabs(theLine);
             for( int i = 0 ; i < expanded.length(); ++ i ) {
                 char c = expanded.charAt(i);
+                /*
+                if ( c >= MARKER_BOUND)
+                    g.setColor(c==StateInterface.INPUT_MARK ? 0xFF0000: 0x000000);
+                else
+                */
                     theWidth += advances[c];
             }
         }
         return theWidth;
     }
-
+    
     private String expandTabs( String theLine ) {
         int column = 0 ;
         StringBuffer buf = new StringBuffer() ;
@@ -94,8 +77,7 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
             else {
                 column += 1 ;
                 buf.append(c) ; } }
-        return buf.toString() ; }  
-
+        return buf.toString() ; }
 	
 
 }
