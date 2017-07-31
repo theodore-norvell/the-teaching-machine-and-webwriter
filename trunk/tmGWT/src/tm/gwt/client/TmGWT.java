@@ -23,7 +23,6 @@ import tm.gwt.state.MirrorState ;
 import tm.gwt.state.StateCommander ;
 import tm.gwt.telford.KitGWT;
 import tm.gwt.test.TestController ;
-import tm.interfaces.StateInterface;
 import tm.portableDisplays.PortableContextInterface;
 
 /**
