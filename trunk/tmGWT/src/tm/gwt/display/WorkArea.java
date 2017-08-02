@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
+
 public abstract class WorkArea {
 	private RootPanel codeRoot;
 	protected ScrollPanel myWorkPane;

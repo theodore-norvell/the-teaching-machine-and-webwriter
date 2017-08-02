@@ -104,6 +104,10 @@ public class MirrorState implements StateInterface, IsSerializable {
         return this.store.scratchRegion ;
     }
 
+    public void addConsoleLine( String line ) {
+        // TODO Auto-generated method stub
+    }
+
 	@Override
 	public int getNumConsoleLines() {
 		// TODO Auto-generated method stub

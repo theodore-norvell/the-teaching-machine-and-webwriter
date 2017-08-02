@@ -25,6 +25,10 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
 		super(new ConsoleDisplayer(e,context), "ConsoleDisplayPanel", "Console", 300, 75);
 		this.evaluator = e;
 		this.context = context;	
+		
+	    context.getAsserter().check( this.displayer instanceof ConsoleDisplayer ) ;
+	    this.consoleDisplayer = (ConsoleDisplayer)this.displayer;
+	        
 		myWorkPane.setStyleName("tm-smallScrollPanel");
 	}
 	
