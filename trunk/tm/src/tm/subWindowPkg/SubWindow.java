@@ -49,7 +49,7 @@ public class SubWindow extends JInternalFrame {
 	private JScrollPane workPane;
 /** The actual drawing surface for the display from which all displays are
  *  derived */
-	private WorkArea workArea;
+	private WorkAreaInterface workArea;
 /** The current location of the mouse */	
 //	private Point mouseAt = new Point(0,0); // Make sure it is initialized
 	private final static int MIN_DIM = 40;
@@ -92,7 +92,7 @@ public class SubWindow extends JInternalFrame {
          */        
 	public void addWorkArea(WorkArea wa){
 		workArea = wa;
-	    workPane.setViewportView(workArea);
+	    workPane.setViewportView( workArea.getSwingComponent() );
 /**
  * TO BE DONE: If I try to use the new BLIT_SCROLL_MODE clipping doesn't work
  * properly with storeDisplays and the STDisplay (although its fine with the
