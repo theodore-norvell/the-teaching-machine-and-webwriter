@@ -50,7 +50,8 @@ public class ExpressionDisplayer extends PortableDisplayer {
                 context.log("character is"+ (int)c) ;
 				switch (c) {
 				case StateInterface.EXP_START_VALUE:
-					attrStack.addElement("red");
+	                context.log("Start value") ;
+					attrStack.addElement( new Integer( currColor ) );
 					currColor = 0xFF0000;
 					g.setColor(currColor);
 					break;
@@ -59,25 +60,32 @@ public class ExpressionDisplayer extends PortableDisplayer {
 				//	currUnderline = false;
 				//	break;
 				case StateInterface.EXP_START_SELECTED:
+                    context.log("Start selected") ;
 					attrStack.addElement(new Boolean(currUnderline));
 					currUnderline = true;
 					break;
 				case StateInterface.EXP_START_LVALUE:
-					attrStack.addElement("blue");
+                    context.log("Start lvalue") ;
+                    attrStack.addElement( new Integer( currColor ) );
 					currColor = 0x0000FF;
 					g.setColor(currColor);
 					break;
 				case StateInterface.EXP_END:
+                    context.log("End") ;
 					Object temp = attrStack.elementAt(attrStack.size() - 1);
-					if (temp instanceof String) {
-						currColor = temp.equals("red") ? 0xFF0000 : 0x0000FF;
+                    context.log("temp is" + temp.toString() ) ;
+					if (temp instanceof Integer) {
+						currColor = ((Integer) temp).intValue() ;
 						g.setColor(currColor);
 					} else {
 						currUnderline = ((Boolean) temp).booleanValue();
 					}
+                    context.log("popping" ) ;
 					attrStack.removeElementAt(attrStack.size() - 1);
+                    context.log("done End" ) ;
 					break;
 				default:
+                    context.log("Regular") ;
 					g.drawString(String.valueOf(tempArray[i]), advance, baseline);
 					currWidth = fm.stringWidth(String.valueOf(tempArray[i]));
 					if (currUnderline) {
@@ -90,8 +98,8 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			} // For loop
 		} // End if we have an expression
 	} // End drawArea
-
-	public void setState(StateInterface evaluator) {
+	
+    public void setState(StateInterface evaluator) {
 		this.model = evaluator;
 	}
 	
