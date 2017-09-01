@@ -94,6 +94,7 @@ public class TestController implements StateCommander {
             state.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore3() ) ;
+            state.addConsoleLine("Input the first number:");
             count = 3 ;
         } break ;
         case 3 : {

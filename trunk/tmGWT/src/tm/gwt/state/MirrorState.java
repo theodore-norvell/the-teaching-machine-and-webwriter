@@ -20,6 +20,7 @@ public class MirrorState implements StateInterface, IsSerializable {
     private SelectionInterface selection = new Selection(Selection.TokenType.TRUE) ;
     private SourceCoordsI codeFocus = new MirrorCoords(new MirrorTMFile( "" ), 1) ;
     private MirrorStore store = new MirrorStore() ;
+    private ArrayList<String> consoleLines = new ArrayList<String>() ;
 
     public MirrorState() {
         // Create a default state.
@@ -105,19 +106,17 @@ public class MirrorState implements StateInterface, IsSerializable {
     }
 
     public void addConsoleLine( String line ) {
-        // TODO Auto-generated method stub
+        consoleLines.add(line);
     }
 
 	@Override
 	public int getNumConsoleLines() {
-		// TODO Auto-generated method stub
-		return 0;
+		return consoleLines.size();
 	}
 
 	@Override
 	public String getConsoleLine(int l) {
-		// TODO Auto-generated method stub
-		return null;
+		return consoleLines.get(l);
 	}
 
 
