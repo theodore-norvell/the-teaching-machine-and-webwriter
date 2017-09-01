@@ -79,7 +79,7 @@ public class TestController implements StateCommander {
                 int k = this.state.getStackRegion().getNumChildren() ;
                 com.google.gwt.core.client.GWT.log("Stack datums:"+k ) ;
             }
-            state.setExpression( "\ufffetempF\ufffb = (tempC * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_SELECTED+ "tempF" +StateInterface.EXP_END+ " = (tempC * 5 / 9) + 32" );
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
             state.updateStore( makeStore1() ) ;
@@ -87,40 +87,40 @@ public class TestController implements StateCommander {
             count = 1 ;
         } break ;
         case 1 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ "tempC" +StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore2() ) ;
             state.addConsoleLine( "What is your name?"  );
             count = 2 ;
         } break ;
         case 2 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_LVALUE+ "tempC" +StateInterface.EXP_END+ StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore3() ) ;
             state.addConsoleLine( StateInterface.INPUT_MARK + "Zhaoyan" + StateInterface.NORMAL_MARK  );
             count = 3 ;
         } break ;
         case 3 : {
-            state.setExpression( "\ufffctempF\ufffb = (\uffff10\ufffb * \ufffe5\ufffb / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END + " * " +StateInterface.EXP_START_SELECTED+ "5" +StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore4() ) ;
             state.addConsoleLine(  "Hello Zhaoyan");
             count = 4 ;
         } break ;
         case 4 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffe\uffff10\ufffb * \uffff5.0\ufffb\ufffb / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END+ " * " +StateInterface.EXP_START_VALUE+ "5.0" +StateInterface.EXP_END+ StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore5() ) ;
             count = 5 ;
         } break ;
         case 5 : {
-            state.setExpression( "\ufffe\ufffctempF\ufffb = \uffff50.0\ufffb\ufffb" );
+            state.setExpression( "" +StateInterface.EXP_START_SELECTED+ "" +StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = " +StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END+ StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore6() ) ;
             count = 6 ;
         } break ;
         case 6 : {
-            state.setExpression( "\uffff50.0\ufffb" );
+            state.setExpression( StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore0() ) ;
             count = 7 ;
