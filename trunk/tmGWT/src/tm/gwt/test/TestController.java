@@ -32,39 +32,60 @@ public class TestController implements StateCommander {
         Set<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
         
 
-        SourceCoordsI coords = new MirrorCoords(file, 1)  ;
+        SourceCoordsI coords ;
+        CodeLineI line ;
+        
+        int lineNumber = 1 ;
+        
+
+        for( ; lineNumber < 52 ; ) {
+            coords = new MirrorCoords(file, lineNumber)  ;
+            b.setLength( 0 ); 
+            b.append( "// Line " + lineNumber ) ;
+            line = new CodeLine(b, markup, coords, tagSets ) ;
+            lines.add(  line  ) ;
+            ++lineNumber ;
+        }
+
+        b.setLength( 0 );
         b.append( "void main( ) {" ) ;
-        CodeLineI line = new CodeLine(b, markup, coords, tagSets ) ;
+        coords = new MirrorCoords(file, lineNumber)  ;
+        line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "    int first, second;" ) ;
-        coords = new MirrorCoords(file, 2)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "    cout << \"Input the first number: \";" ) ;
-        coords = new MirrorCoords(file, 3)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "     cin >> first;" ) ;
-        coords = new MirrorCoords(file, 4)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "}" ) ;
-        coords = new MirrorCoords(file, 5)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
     }
 
     public TestController(MirrorState state) {
@@ -83,6 +104,7 @@ public class TestController implements StateCommander {
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
             state.updateStore( makeStore1() ) ;
+            for( int i = 0 ; i < 5 ; ++i)  state.addConsoleLine( "" + i );
             state.addConsoleLine( "Hello world"  );
             count = 1 ;
         } break ;
