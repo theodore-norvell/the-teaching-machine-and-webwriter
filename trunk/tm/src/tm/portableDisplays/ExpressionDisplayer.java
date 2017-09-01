@@ -32,7 +32,8 @@ public class ExpressionDisplayer extends PortableDisplayer {
 	public void drawArea(Graphics g) {
 		int advance = LEFTMARGIN;
 		g.setFont(context.getDisplayFont());
-
+		
+		context.log("Displaying expression") ;
 		if (theExpression.length() > 0) {
 			char tempArray[] = theExpression.toCharArray();
 			FontMetrics fm = g.getFontMetrics(g.getFont());
@@ -44,7 +45,9 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			boolean currUnderline = false;
 			Vector<Object> attrStack = new Vector<Object>();
 			for (int i = 0, sz = theExpression.length(); i < sz; ++i) {
+			    context.log("Processing character "+i) ;
 				char c = tempArray[i]; // Next character
+                context.log("character is"+ (int)c) ;
 				switch (c) {
 				case StateInterface.EXP_START_VALUE:
 					attrStack.addElement("red");
