@@ -32,23 +32,6 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
 		myWorkPane.setStyleName("tm-smallScrollPanel");
 	}
 	
-    public void paintComponent(GraphicsGWT g){
-        g.setFont(context.getCodeFont());
-        FontMetrics fm = g.getFontMetrics(g.getFont());
-        for(int i = 0; i <= advances.length; i++){
-        	advances[i] = fm.getHeight();
-        }
-        int baseLine = TOP_MARGIN;
-        int numLines = consoleDisplayer.getNumConsoleLines() ;
-        
-        for (int i = 0; i< numLines; i++) {
-            baseLine += fm.getAscent();
-            String theLine = consoleDisplayer.getConsoleLine(i);
-            if(theLine != null)
-                consoleDisplayer.drawLine(consoleDisplayer.expandTabs(theLine),LEFT_MARGIN,baseLine, g, fm);
-        }
-    }
-	
 	
 	public void refresh(){		
 		
@@ -58,21 +41,21 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
             int width = 0;
             int theWidth = 0;
             String theLine = null;    
-            setScale(1,12);
             for (int i = 0; i <= n; i++) {
                 theLine = consoleDisplayer.getConsoleLine(i);
                 if(theLine != null) {
                     theWidth = stringWidth(theLine);
                     if (theWidth > width) width = theWidth;
                 }
-             
-         }
-		 setScale(1,700);
+            }
+            
+         setScale(width,12); 
          super.refresh(); }
        
         
 	}
     
+	
     private int stringWidth(String theLine){
         int theWidth = 0;
         if (theLine.length() > 0) {
@@ -98,7 +81,7 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
             else {
                 column += 1 ;
                 buf.append(c) ; } }
-        return buf.toString() ; }  
+        return buf.toString() ; } 
 
 	
 
