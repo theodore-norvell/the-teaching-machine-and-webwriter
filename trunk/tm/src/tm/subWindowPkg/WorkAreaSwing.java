@@ -17,16 +17,14 @@ package tm.subWindowPkg;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent ;
 import javax.swing.JScrollPane;
-import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
 import tm.interfaces.ImageSourceInterface;
@@ -65,15 +63,16 @@ routed to the workArea.
 
 
 
-abstract public class WorkAreaSwing extends JPanel implements Scrollable, WorkAreaInterface {
+abstract public class WorkAreaSwing implements WorkAreaInterface {
     
 /**
      * 
      */
     private static final long serialVersionUID = 6714156506043873572L;
     private Dimension mySize = null;
-    protected SubWindow mySubWindow = null;
-    protected JScrollPane myWorkPane = null;
+    protected final SubWindow mySubWindow ;
+    protected final JScrollPane myWorkPane ;
+    protected final JComponent myComponent ;
 //  protected String configId;
     
 // These are private to ensure that a change in them forces a change in
@@ -82,7 +81,8 @@ abstract public class WorkAreaSwing extends JPanel implements Scrollable, WorkAr
 
     
 
-    public WorkAreaSwing(ImageSourceInterface imageSource) {
+    public WorkAreaSwing(JComponent component, ImageSourceInterface imageSource) {
+        myComponent = component ;
         mySubWindow = new SubWindow(imageSource);
         myWorkPane = mySubWindow.getWorkPane();
         horizontalScale = 1;
@@ -91,12 +91,12 @@ abstract public class WorkAreaSwing extends JPanel implements Scrollable, WorkAr
 
         mySubWindow.setVisible(true);
         
-        setBackground(Color.white);
-        this.setOpaque(true);
-        this.setDoubleBuffered(false);
+        myComponent.setBackground(Color.white);
+        myComponent.setOpaque(true);
+        //myComponent.setDoubleBuffered(false);
 //      ScriptManager.getManager().register(this);
         
-        addMouseListener(new MouseAdapter() {
+        myComponent.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 mouseJustClicked(evt);
             }});
@@ -121,22 +121,11 @@ abstract public class WorkAreaSwing extends JPanel implements Scrollable, WorkAr
     
     public void refresh(){
 //      drawArea((Graphics2D)getGraphics());
-        repaint();
+        myComponent.repaint();
 //      System.out.println("refreshing workArea " + this);
 /*      Graphics screen = getGraphics();
         paintComponent(screen);*/
     }
-
-    
- /* Unless a redraw has been triggered paint simply brings forward the existing
-    offscreen image */
-    public void paintComponent(Graphics screen) {
-        if (screen == null) return;
-        super.paintComponent(screen);
-//      System.out.println("drawing " + mySubWindow.getTitle());
-        drawArea((Graphics2D)screen);
-    }
-    
 
 /*  The scrollPane uses preferred size to calculate image sizes and do scrollbar
     manipulations. So here we use the actual image size (rather than the scrollPane
@@ -147,7 +136,7 @@ abstract public class WorkAreaSwing extends JPanel implements Scrollable, WorkAr
         // size has changed
             mySize.width = width;
             mySize.height = height;
-            revalidate();   // I need relaying out
+            myComponent.revalidate();
             myWorkPane.doLayout();
         }
     }
@@ -240,23 +229,6 @@ will then size object to fit inside pane if it is smaller or to its preferred si
         /*DBG System.out.println("Button " + Integer.toString(i) + " has been pushed.");/*DBG*/
     }
     
-/**  subClasses should implement this method INSTEAD OF OVERRIDING PAINT. WorkArea
-    uses paint and update, working in tandem, to deliver consistent, rapid double
-    buffering. These methods call drawArea to do the actual drawing/painting
-
-*/
-    abstract public void drawArea(Graphics2D screen) ;
-    
-    /**
-     * Returns the parameter String of this Container.
-     */
-    protected String paramString() {
-        String str = super.paramString() + ": " + toString();
-        str = str + " " + mySize.width + "x" + mySize.height;
-        return str;
-    }
-    
-// 99.12.13 Changed to return name (invariant) instead of title(mutable)
     
     /* 10.06.17 Over-ride in sub classes. Originally returned
      * getName which is inherited from Component class but
@@ -267,11 +239,12 @@ will then size object to fit inside pane if it is smaller or to its preferred si
      * 
      */
     
-    public String toString(){ return "workArea";}
+    @Override
+    abstract public String toString() ;
     
     @Override
     public Component getSwingComponent() {
-        return this ;
+        return myComponent ;
     }
 }
 

@@ -152,7 +152,7 @@ public class CodeSwingDisplay extends SwingDisplay {
 		/*
 		 * DBG System.out.println("Current file is " + file.getFileName());/*DBG
 		 */
-		Graphics screen = getGraphics();
+		Graphics screen = myComponent.getGraphics();
 		if (screen == null)
 			return;
 		screen.setFont(context.getCodeFont());
@@ -193,7 +193,7 @@ public class CodeSwingDisplay extends SwingDisplay {
 			int bottomLine = topLine + getVScale();
 			int vertValue = myWorkPane.getVerticalScrollBar().getValue();
 			if (topLine < vertValue || bottomLine > vertValue + myWorkPane.getViewport().getHeight()) {
-				paintImmediately(getBounds());
+				// paintImmediately(myComponent.getBounds());
 				myWorkPane.getVerticalScrollBar().setValue(topLine - 3 * getVScale());
 			}
 		}
@@ -250,8 +250,8 @@ public class CodeSwingDisplay extends SwingDisplay {
 	 * offscreen
 	 */
 	public void moveCursor(MouseEvent evt) {
-		cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (getFontMetrics(context.getCodeFont()).getHeight() + LINE_PADDING)
-				- 1;
+	    FontMetrics fm = myComponent.getFontMetrics( context.getCodeFont() ) ;
+		cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (fm.getHeight() + LINE_PADDING) - 1;
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
 //		cursorChar = 0; // Just for now
 		refresh();

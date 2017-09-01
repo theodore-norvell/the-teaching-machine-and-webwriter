@@ -9,12 +9,10 @@ import tm.portableDisplays.ConsoleDisplayer;
 
 public class ConsoleSwingDisplay extends SwingDisplay{
 	
-	private static final long serialVersionUID = 7066880211879266535L;
 	//Printing modes
     private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
 
     private final static int LEFT_MARGIN = 10;
-    private final static int TOP_MARGIN = 10;
     private final static int TABSPACE = 4;
 
     private int numLines = 0;
@@ -34,10 +32,11 @@ public class ConsoleSwingDisplay extends SwingDisplay{
 // Resource Interface Methods
 // =================================================================
 
+    @Override
     public void refresh(){
         // Must be connected.
         if( commandProcessor == null ) return ;
-        Graphics g = getGraphics();
+        Graphics g = myComponent.getGraphics();
         if (g == null) return;
         g.setFont(context.getCodeFont());
         FontMetrics fm = g.getFontMetrics();
@@ -50,7 +49,7 @@ public class ConsoleSwingDisplay extends SwingDisplay{
             int theWidth = 0;
             String theLine = null;
 
-            setScale(1,(fm != null) ? fm.getHeight() + 2 : 12);
+            setScale( 1, fm.getHeight() + 2 );
 
         // Find the rightMost edge of the longest line and use it to set
         // world co-ordinates

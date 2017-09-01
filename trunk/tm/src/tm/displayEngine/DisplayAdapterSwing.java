@@ -18,6 +18,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Vector;
 
+import javax.swing.JComponent ;
+
 import tm.configuration.Configuration;
 import tm.configuration.ConfigurationServer;
 import tm.interfaces.CommandInterface;
@@ -53,8 +55,8 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
  * @param dm the display manager that will display this adapter.
  * @param configId the id used in the config file for this display
  */
-    public DisplayAdapterSwing(DisplayManager dm, String configId) {
-        super(dm.getImageSource());     // Automatic scrollbars
+    public DisplayAdapterSwing(JComponent component, DisplayManager dm, String configId) {
+        super(component, dm.getImageSource());     // Automatic scrollbars
         this.configId = configId;
         context = (DisplayContextInterface)dm;
         commandProcessor = context.getCommandProcessor();       
@@ -76,7 +78,7 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
     public void loadInitConfig(){
         //System.out.println("loadConfig starts on "+this+  "::" +this.hashCode() ) ;
         
-        setName(configId);
+        //setName(configId);
         Configuration config =
             ConfigurationServer.getConfigurationServer().getConfiguration(this);
         if (config != null) {
@@ -169,13 +171,8 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
         //System.out.println("Display adapter "+this+  "::" +this.hashCode() +" DEregistering.") ;  
         ConfigurationServer.getConfigurationServer().deregister(this);
     }
-    
-    /**
-     * This method provides the drawing code 
-     */
-        public abstract void drawArea(Graphics2D screen);
         
-        public String toString(){ return "displayAdapter " + configId;}
+    public String toString(){ return "displayAdapter " + configId;}
 
 }
 
