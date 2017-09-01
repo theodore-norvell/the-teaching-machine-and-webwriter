@@ -38,6 +38,7 @@ public abstract class WorkArea {
 		codeRoot.add(vpanel);
 	}
 
+	// This is not object oriented and need to change.
 	private String getTitleByRootName(String rootName) {
 		String title = TITLE_NAME_UNKNOWN;
 		if (rootName.equalsIgnoreCase("expDisplayPanel")) {
