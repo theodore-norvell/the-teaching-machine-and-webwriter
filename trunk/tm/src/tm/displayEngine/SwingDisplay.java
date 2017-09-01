@@ -5,7 +5,7 @@ import java.awt.Graphics2D ;
 
 import tm.portableDisplays.PortableDisplayer;
 
-public class SwingDisplay extends DisplayAdapter {
+public class SwingDisplay extends DisplayAdapterSwing {
 
     public PortableDisplayer displayer ;
 

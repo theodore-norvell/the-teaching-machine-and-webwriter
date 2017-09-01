@@ -84,13 +84,13 @@ public class SubWindow extends JInternalFrame {
 	}
 	
 
-        /** <p>Each subWindow has a {@link WorkArea} which is where the subWindow is
+        /** <p>Each subWindow has a {@link WorkAreaInterface} which is where the subWindow is
          * specialised. Both objects must know of the other but must be constructed one at
-         * a time. Thus a SubWindow is constructed first, then its {@link WorkArea} then the
-         * {@link WorkArea} must be added to the SubWindow.</p>
-         * @param workArea the {@link WorkArea} associated with the subWindow
+         * a time. Thus a SubWindow is constructed first, then its {@link WorkAreaInterface} then the
+         * {@link WorkAreaInterface} must be added to the SubWindow.</p>
+         * @param workArea the {@link WorkAreaInterface} associated with the subWindow
          */        
-	public void addWorkArea(WorkArea wa){
+	public void addWorkArea(WorkAreaInterface wa){
 		workArea = wa;
 	    workPane.setViewportView( workArea.getSwingComponent() );
 /**
@@ -125,7 +125,7 @@ public class SubWindow extends JInternalFrame {
 	    workPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
 	}
 	
-	public void addWorkArea(WorkArea wa, ToolBar toolBar){
+	public void addWorkArea(WorkAreaInterface wa, ToolBar toolBar){
 		addWorkArea(wa);
 		if (toolBar != null) addToolBar(toolBar);
 	}
