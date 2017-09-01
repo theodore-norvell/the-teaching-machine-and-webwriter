@@ -24,7 +24,7 @@ representing the contents of a program counter. It could possibly
 be combined into a single class with the expressionEngine
 */
 
-public class PCDisplay extends DisplayAdapter{
+public class PCDisplay extends OldDisplayAdapter{
 	/**
 	 * 
 	 */

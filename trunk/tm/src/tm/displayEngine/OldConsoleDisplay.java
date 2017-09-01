@@ -39,7 +39,7 @@ capacity
 */
 // =================================================================
 
-public class OldConsoleDisplay extends DisplayAdapter {
+public class OldConsoleDisplay extends OldDisplayAdapter {
 
 	/**
 		 * 

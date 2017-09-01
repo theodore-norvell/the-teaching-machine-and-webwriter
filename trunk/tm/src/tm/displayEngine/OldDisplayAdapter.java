@@ -24,7 +24,7 @@ import tm.interfaces.CommandInterface;
 import tm.interfaces.Datum;
 import tm.interfaces.DisplayContextInterface;
 import tm.subWindowPkg.ToolBar;
-import tm.subWindowPkg.WorkArea;
+import tm.subWindowPkg.OldWorkArea;
 
 /** Display Adapter is a generic Display PlugIn which can be used as a starting
  * to develop a display plugIn. It is the default adapter for non datum displays.
@@ -39,7 +39,7 @@ import tm.subWindowPkg.WorkArea;
  * @since Feb 4, 2009
  * @author mpbl
  */
-public abstract class DisplayAdapter extends WorkArea implements DisplayInterface{
+public abstract class OldDisplayAdapter extends OldWorkArea implements DisplayInterface{
 	
 	private static final long serialVersionUID = 633568484394506313L;
 	protected String configId;	
@@ -53,7 +53,7 @@ public abstract class DisplayAdapter extends WorkArea implements DisplayInterfac
  * @param dm the display manager that will display this adapter.
  * @param configId the id used in the config file for this display
  */
-	public DisplayAdapter(DisplayManager dm, String configId) {
+	public OldDisplayAdapter(DisplayManager dm, String configId) {
 		super(dm.getImageSource());		// Automatic scrollbars
 		this.configId = configId;
 		context = (DisplayContextInterface)dm;

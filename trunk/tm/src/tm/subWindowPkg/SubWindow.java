@@ -34,7 +34,7 @@ import tm.interfaces.ImageSourceInterface;
  * their parent window.</p>
  *
  * @author Michael Bruce-Lockhart
- * @see WorkArea
+ * @see OldWorkArea
  */
 public class SubWindow extends JInternalFrame {
 

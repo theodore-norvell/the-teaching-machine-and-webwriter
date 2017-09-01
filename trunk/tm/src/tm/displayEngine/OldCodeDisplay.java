@@ -45,7 +45,7 @@ import tm.subWindowPkg.ToolBar ;
 import tm.utilities.Assert ;
 import tm.utilities.Debug ;
 
-public class OldCodeDisplay extends DisplayAdapter {
+public class OldCodeDisplay extends OldDisplayAdapter {
     /**
 	 * 
 	 */

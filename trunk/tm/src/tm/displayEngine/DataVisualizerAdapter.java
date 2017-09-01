@@ -52,7 +52,7 @@ import tm.utilities.Debug;
  * @since March 21, 2007
  * @author mpbl
  */
-public abstract class DataVisualizerAdapter extends DisplayAdapter{
+public abstract class DataVisualizerAdapter extends OldDisplayAdapter{
 	
 	private static final long serialVersionUID = 633568484394506313L;
 	public final int SELECTION = 0; //Rev94 all three

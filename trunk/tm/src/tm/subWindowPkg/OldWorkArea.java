@@ -65,7 +65,7 @@ routed to the workArea.
 
 
 
-abstract public class WorkArea extends JPanel implements Scrollable, WorkAreaInterface {
+abstract public class OldWorkArea extends JPanel implements Scrollable, WorkAreaInterface {
 	
 /**
 	 * 
@@ -82,7 +82,7 @@ abstract public class WorkArea extends JPanel implements Scrollable, WorkAreaInt
 
 	
 
-	public WorkArea(ImageSourceInterface imageSource) {
+	public OldWorkArea(ImageSourceInterface imageSource) {
 	    mySubWindow = new SubWindow(imageSource);
 	    myWorkPane = mySubWindow.getWorkPane();
 	    horizontalScale = 1;

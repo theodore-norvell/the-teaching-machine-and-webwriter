@@ -22,7 +22,7 @@ import tm.interfaces.DisplayContextInterface;
 import tm.plugins.Requirement;
 import tm.subWindowPkg.SubWindow;
 import tm.subWindowPkg.ToolBar;
-import tm.subWindowPkg.WorkArea;
+import tm.subWindowPkg.OldWorkArea;
 
 /**
  * 
