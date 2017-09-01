@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
 import telford.common.Kit;
 import tm.gwt.display.CodeGWTDisplay;
 import tm.gwt.display.ConsoleGWTDisplay;
-import tm.gwt.display.DisplayAdapter ;
+import tm.gwt.display.DisplayAdapterGWT ;
 import tm.gwt.display.ExpressionGWTDisplay;
 import tm.gwt.display.GWTContext;
 import tm.gwt.display.StoreGWTDisplay;
@@ -30,7 +30,7 @@ import tm.portableDisplays.PortableContextInterface;
  */
 public class TmGWT implements EntryPoint {
     
-    ArrayList<DisplayAdapter> displays = new ArrayList<DisplayAdapter>() ;
+    ArrayList<DisplayAdapterGWT> displays = new ArrayList<DisplayAdapterGWT>() ;
     
 	public void onModuleLoad() {
 		
@@ -69,7 +69,7 @@ public class TmGWT implements EntryPoint {
 	
 	private void refresh() {
 	    com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
-	    for( DisplayAdapter d : displays ) {
+	    for( DisplayAdapterGWT d : displays ) {
 	        com.google.gwt.core.client.GWT.log("Refreshing " + d.toString() ) ;
 	        d.refresh(); 
 	    }

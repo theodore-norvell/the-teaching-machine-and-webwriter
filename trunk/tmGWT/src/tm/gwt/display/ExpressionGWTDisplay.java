@@ -8,7 +8,7 @@ import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
-public class ExpressionGWTDisplay extends DisplayAdapter {
+public class ExpressionGWTDisplay extends DisplayAdapterGWT {
 	final StateInterface evaluator;
 	final StateCommander commander ;
 	final PortableContextInterface context ;

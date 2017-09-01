@@ -7,7 +7,7 @@ import tm.interfaces.StateInterface;
 import tm.portableDisplays.ConsoleDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
-public class ConsoleGWTDisplay extends DisplayAdapter {
+public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 
 	private GWTSuperTMFile theFile;
 	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;

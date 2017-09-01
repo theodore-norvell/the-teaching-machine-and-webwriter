@@ -9,7 +9,7 @@ import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.PortableContextInterface;
 
-public class CodeGWTDisplay extends DisplayAdapter {
+public class CodeGWTDisplay extends DisplayAdapterGWT {
 	private GWTSuperTMFile theFile;
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();

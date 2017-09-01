@@ -4,12 +4,12 @@ import com.google.gwt.canvas.client.Canvas;
 
 import tm.portableDisplays.PortableDisplayer;
 
-public class DisplayAdapter extends WorkArea{
+public class DisplayAdapterGWT extends WorkAreaGWT {
 	public PortableDisplayer displayer ;
 	
 	private int verticalScale, horizontalScale;
 	
-	public DisplayAdapter(PortableDisplayer displayer, String rootName, String title, int canvasWidth, int canvasHeight) {
+	public DisplayAdapterGWT(PortableDisplayer displayer, String rootName, String title, int canvasWidth, int canvasHeight) {
 		super(title, rootName);
         this.displayer = displayer ;
         displayer.resetSize(canvasWidth, canvasHeight);

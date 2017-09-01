@@ -41,6 +41,7 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 	public void setStyleName(String styleName) {
 		myCanvas.getPeer().setStyleName(styleName);
 	}
+	
 	@Override
 	public void resetSize(int width, int height) {
 		myCanvas.getPeer().setWidth(width + Unit.PX.getType());

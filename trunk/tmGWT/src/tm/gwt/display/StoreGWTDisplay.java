@@ -15,7 +15,7 @@ import tm.portableDisplays.PortableContextInterface;
 import tm.portableDisplays.StoreDatumDisplay;
 import tm.portableDisplays.StoreDisplayer;
 
-public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
+public class StoreGWTDisplay extends DisplayAdapterGWT implements DataDisplayView{
 
 	public static final int LOGICAL = 0; // each variable gets a similar box
 	public static final int SCALED = 1; // box depth reflects variable's size

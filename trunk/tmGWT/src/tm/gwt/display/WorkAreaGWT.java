@@ -7,7 +7,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
 
-public abstract class WorkArea {
+public abstract class WorkAreaGWT {
 	private RootPanel codeRoot;
 	protected ScrollPanel myWorkPane;
 	protected HorizontalPanel toolBar;
@@ -18,7 +18,7 @@ public abstract class WorkArea {
 	final String TITLE_NAME_STACK = "Stack";
 	final String TITLE_NAME_SCRATCH = "Scratch";
 
-	public WorkArea(String title, String rootName) {
+	public WorkAreaGWT(String title, String rootName) {
 		toolBar = new HorizontalPanel();
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
