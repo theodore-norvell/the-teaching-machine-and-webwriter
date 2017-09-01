@@ -63,4 +63,9 @@ public class GWTContext implements PortableContextInterface {
     public AsserterI getAsserter() {
         return asserter ;
     }
+
+    @Override
+    public void log(String message) {
+        com.google.gwt.core.client.GWT.log( message ) ;
+    }
 }

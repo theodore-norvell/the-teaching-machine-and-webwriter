@@ -239,7 +239,8 @@ public class CodeSwingDisplay extends SwingDisplay {
 		}
 	}
 
-	protected void mouseJustClicked(MouseEvent evt) {
+	@Override
+    protected void mouseJustClicked(MouseEvent evt) {
 		moveCursor(evt);
 	}
 

@@ -15,6 +15,7 @@ import tm.interfaces.CodeLine ;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
 import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
 import tm.interfaces.TagSet ;
 import tm.interfaces.TagSetInterface ;
@@ -82,24 +83,28 @@ public class TestController implements StateCommander {
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
             state.updateStore( makeStore1() ) ;
+            state.addConsoleLine( "Hello world"  );
             count = 1 ;
         } break ;
         case 1 : {
             state.setExpression( "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore2() ) ;
+            state.addConsoleLine( "What is your name?"  );
             count = 2 ;
         } break ;
         case 2 : {
             state.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore3() ) ;
+            state.addConsoleLine( StateInterface.INPUT_MARK + "Zhaoyan" + StateInterface.NORMAL_MARK  );
             count = 3 ;
         } break ;
         case 3 : {
             state.setExpression( "\ufffctempF\ufffb = (\uffff10\ufffb * \ufffe5\ufffb / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore4() ) ;
+            state.addConsoleLine(  "Hello Zhaoyan");
             count = 4 ;
         } break ;
         case 4 : {

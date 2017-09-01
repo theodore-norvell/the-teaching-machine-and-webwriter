@@ -34,7 +34,7 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
 	
 	
 	public void refresh(){		
-		
+	    com.google.gwt.core.client.GWT.log( ">> ConsoleGWTDisplay.refresh") ;
 		int n= consoleDisplayer.getNumConsoleLines();
 		int numLines = 0;
         if (n != numLines) {
@@ -47,12 +47,12 @@ public class ConsoleGWTDisplay extends DisplayAdapter {
                     theWidth = stringWidth(theLine);
                     if (theWidth > width) width = theWidth;
                 }
-            }
-            
-         setScale(width,12); 
-         super.refresh(); }
-       
-        
+            }   
+            setScale(width,12); 
+        }
+        super.refresh();
+
+        com.google.gwt.core.client.GWT.log( "<< ConsoleGWTDisplay.refresh") ;
 	}
     
 	

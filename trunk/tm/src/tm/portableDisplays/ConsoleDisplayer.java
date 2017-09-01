@@ -21,8 +21,6 @@ public class ConsoleDisplayer extends PortableDisplayer{
 	
 	@Override
 	public void refresh() {
-		// TODO Auto-generated method stub
-		
 	}
 
 // =================================================================
@@ -32,6 +30,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
     @Override
     public void paintComponent(Graphics g){
     	//if( model == null ) return ;
+        context.log(">> ConsoleDisplayer.paintComponent.") ;
         g.setFont(context.getCodeFont());
         FontMetrics fm = g.getFontMetrics(g.getFont());
         int baseLine = TOP_MARGIN;
@@ -44,6 +43,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
             if(theLine != null)
                 drawLine(expandTabs(theLine),LEFT_MARGIN,baseLine, g, fm);
         }
+        context.log("<< ConsoleDisplayer.paintComponent.") ;
     }
 
 // Draws a single line, taking mode changes into account

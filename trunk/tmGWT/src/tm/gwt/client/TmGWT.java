@@ -68,7 +68,12 @@ public class TmGWT implements EntryPoint {
 	}
 	
 	private void refresh() {
-	    for( DisplayAdapter d : displays ) d.refresh(); 
+	    com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
+	    for( DisplayAdapter d : displays ) {
+	        com.google.gwt.core.client.GWT.log("Refreshing " + d.toString() ) ;
+	        d.refresh(); 
+	    }
+        com.google.gwt.core.client.GWT.log("<< TmGWT.refresh()" ) ;
 	}
 	
 	public Widget createMenu() {

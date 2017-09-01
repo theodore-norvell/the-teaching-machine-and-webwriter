@@ -4,6 +4,7 @@ import telford.common.Kit ;
 import tm.interfaces.AsserterI ;
 import tm.portableDisplays.PortableContextInterface ;
 import tm.utilities.Asserter ;
+import tm.utilities.Debug ;
 
 public class SwingPortableContext implements PortableContextInterface {
 
@@ -31,5 +32,10 @@ public class SwingPortableContext implements PortableContextInterface {
     @Override
     public AsserterI getAsserter() {
         return asserter ;
+    }
+
+    @Override
+    public void log(String message) {
+        Debug.getInstance().msg( Debug.ALWAYS, message );
     }
 }
