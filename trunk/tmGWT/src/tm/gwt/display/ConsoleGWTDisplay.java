@@ -1,8 +1,8 @@
 package tm.gwt.display;
 
-import telford.common.FontMetrics;
+import com.google.gwt.dom.client.Style.Unit;
+
 import tm.gwt.jsInterface.GWTSuperTMFile;
-import tm.gwt.telford.GraphicsGWT;
 import tm.interfaces.StateInterface;
 import tm.portableDisplays.ConsoleDisplayer;
 import tm.portableDisplays.PortableContextInterface;
@@ -22,7 +22,7 @@ public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 
 	
 	public ConsoleGWTDisplay(StateInterface e, PortableContextInterface context) {
-		super(new ConsoleDisplayer(e,context), "ConsoleDisplayPanel", "Console", 300, 75);
+		super(new ConsoleDisplayer(e,context), "ConsoleDisplayPanel", "Console", 300, 200);
 		this.evaluator = e;
 		this.context = context;	
 		
@@ -30,11 +30,16 @@ public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 	    this.consoleDisplayer = (ConsoleDisplayer)this.displayer;
 	        
 		myWorkPane.setStyleName("tm-smallScrollPanel");
+		myWorkPane.setAlwaysShowScrollBars(true);
+		myWorkPane.setHeight(125 + Unit.PX.getType());
+		myWorkPane.setWidth(280 + Unit.PX.getType());
+	
 	}
 	
 	
 	public void refresh(){		
 	    com.google.gwt.core.client.GWT.log( ">> ConsoleGWTDisplay.refresh") ;
+	    setScale(300,150);
 //		int n= consoleDisplayer.getNumConsoleLines();
 //		int numLines = 0;
 //        if (n != numLines) {

@@ -15,6 +15,7 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
         displayer.resetSize(canvasWidth, canvasHeight);
         
         myWorkPane.add((Canvas)displayer.getPeer().getRepresentative());
+        
         verticalScale = 1;
         horizontalScale = 1;
     }
