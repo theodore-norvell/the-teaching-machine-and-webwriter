@@ -83,8 +83,8 @@ abstract public class OldWorkArea extends JPanel implements Scrollable, WorkArea
 	
 
 	public OldWorkArea(ImageSourceInterface imageSource) {
-	    mySubWindow = new SubWindow(imageSource);
-	    myWorkPane = mySubWindow.getWorkPane();
+        myWorkPane = mySubWindow.getWorkPane();
+	    mySubWindow = new SubWindow(myWorkPane, imageSource);
 	    horizontalScale = 1;
 	    verticalScale = 1;
 	    mySize = new Dimension(0,0);

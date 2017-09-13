@@ -66,7 +66,6 @@ public class CodeSwingDisplay extends SwingDisplay {
 	private static int tabSpaces = 4;
 	
 	private int cursorColor = 0x008000;
-	private int cursorLine; // The line which contains the user-settable cursor
 //	private int cursorChar; // The char which the cursor is on
 	private SourceCoords cursorLineCoords;
 	private TMFile theFile = null; // The file currently being displayed.
@@ -89,8 +88,6 @@ public class CodeSwingDisplay extends SwingDisplay {
 		// super(dm, configId);
 		
 		super(dm, configId, new CodeDisplayer(dm.getCommandProcessor(), dm.getPortableContext()));
-		cursorLine = 0;
-//		cursorChar = 0;
 		cursorLineCoords = null;
 		
 		dm.getPortableContext().getAsserter().check( this.displayer instanceof CodeDisplayer ) ;
@@ -166,8 +163,6 @@ public class CodeSwingDisplay extends SwingDisplay {
 			portWidth = 1000;
 			int portHeight = (n + 2) * lineHeight; // blank line at top and
 													// bottom
-			cursorLine = 0;
-			cursorLineCoords = null;
 			codeDisplayer.getDisplayInfo().setCursorLine(0);
 			theFile = file;
 			theSelection = commandProcessor.getSelection();
@@ -251,7 +246,7 @@ public class CodeSwingDisplay extends SwingDisplay {
 	 */
 	public void moveCursor(MouseEvent evt) {
 	    FontMetrics fm = myComponent.getFontMetrics( context.getCodeFont() ) ;
-		cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (fm.getHeight() + LINE_PADDING) - 1;
+		int cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (fm.getHeight() + LINE_PADDING) - 1;
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
 //		cursorChar = 0; // Just for now
 		refresh();

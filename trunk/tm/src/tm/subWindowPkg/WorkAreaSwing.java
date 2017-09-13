@@ -83,8 +83,8 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 
     public WorkAreaSwing(JComponent component, ImageSourceInterface imageSource) {
         myComponent = component ;
-        mySubWindow = new SubWindow(imageSource);
         myWorkPane = mySubWindow.getWorkPane();
+        mySubWindow = new SubWindow(imageSource, myWorkPane);
         horizontalScale = 1;
         verticalScale = 1;
         mySize = new Dimension(0,0);
