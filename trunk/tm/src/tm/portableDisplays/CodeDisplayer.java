@@ -30,18 +30,18 @@ public class CodeDisplayer extends PortableDisplayer {
 	private final static int BOLD = 1;
 	private final static int ITALIC = 2;
 	private final static int BOLD_ITALIC = 3;
-	private CodeDisplayerInfo displayInfo = new CodeDisplayerInfo();
+	private final CodeDisplayerInfo displayInfo = new CodeDisplayerInfo();
 
 	public CodeDisplayerInfo getDisplayInfo() {
 		return displayInfo;
 	}
 
-	// TODO: This is rather ugly. Why do why can't the displayer get the information
-    // it needs from the portable context and the portable model directly?
-    
-	public void setDisplayInfo(CodeDisplayerInfo displayInfo) {
-		this.displayInfo = displayInfo;
-	}
+//	// TODO: This is rather ugly. Why do why can't the displayer get the information
+//    // it needs from the portable context and the portable model directly?
+//    
+//	public void setDisplayInfo(CodeDisplayerInfo displayInfo) {
+//		this.displayInfo = displayInfo;
+//	}
 
 	private TMFileI theFile = null;
 
@@ -70,6 +70,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				screen.fillRect(0, baseLine - fm.getAscent(), getWidth(), fm.getAscent() + fm.getDescent());
 				screen.setColor(save);
 			}
+			context.log(  "Cursor line is " + displayInfo.getCursorLine() + " and i is " + i);
 			if (displayInfo.getCursorLine() == i) {
 				int save = screen.getColor();
 				screen.setColor(displayInfo.getCursorColor());

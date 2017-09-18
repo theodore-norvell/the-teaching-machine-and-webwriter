@@ -1,7 +1,5 @@
 package tm.gwt.display;
 
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -11,8 +9,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public abstract class WorkAreaGWT {
 	private RootPanel codeRoot;
-	protected ScrollPanel workPane;
-	protected ScrollPanelPeer myWorkPane;
+	protected ScrollPanel myWorkPane;
+	//protected ScrollPanelPeer myWorkPane;
 	protected HorizontalPanel toolBar;
 	final String TITLE_NAME_UNKNOWN = "";
 	final String TITLE_NAME_EXPRESSION = "Expression Engine";
@@ -26,13 +24,13 @@ public abstract class WorkAreaGWT {
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
 
-		workPane = new ScrollPanel();
-		myWorkPane = new ScrollPanelPeer(workPane);
-	    myWorkPane.addClickHandler(new ClickHandler() {
-	        public void onClick(ClickEvent event) {
-	        	MouseJustClicked(event);
-	        }
-	      });
+		myWorkPane = new ScrollPanel();
+//		myWorkPane = new ScrollPanelPeer(workPane);
+//	    myWorkPane.addClickHandler(new ClickHandler() {
+//	        public void onClick(ClickEvent event) {
+//	        	MouseJustClicked(event);
+//	        }
+//	      });
 		
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.setStyleName("tm-vPanel");
@@ -41,7 +39,7 @@ public abstract class WorkAreaGWT {
 			title = getTitleByRootName(rootName);
 		vpanel.add(new HTML(title));
 		vpanel.add(toolBar);
-		vpanel.add(myWorkPane);
+		vpanel.add( myWorkPane );
 
 		codeRoot = RootPanel.get(rootName);
 		codeRoot.add(vpanel);
@@ -64,10 +62,6 @@ public abstract class WorkAreaGWT {
 			title = TITLE_NAME_UNKNOWN;
 		}
 		return title;
-	}
-	
-	public void MouseJustClicked(ClickEvent event){
-		
 	}
 	
 	//Not finished yet

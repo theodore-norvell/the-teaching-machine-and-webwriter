@@ -55,7 +55,7 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	    
 //		myWorkPane.setStyleName("tm-scrollPanel");
 
-	    codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
+	    //codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
 		boolean allowGaps = true;
 		setScale(1, 16);
 
@@ -84,12 +84,15 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	//Listen for mouse click events 
 	@Override
 	public void MouseJustClicked(ClickEvent event){
+	    context.log(  "Mouse clicked " + event.getY() );
 		moveCursor(event);
 	}
 	
 	//Select the line that the mouse clicked inside the code display window 
 	public void moveCursor(ClickEvent event){
 		cursorLine = (event.getY() /*- TOP_MARGIN*/) / (context.getCodeFont().getSize() + LINE_PADDING) - 1;
+		context.log( "font size is " + context.getCodeFont().getSize() ) ;
+        context.log(  "coursorLine is " + cursorLine );
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
 		refresh();
 	}
