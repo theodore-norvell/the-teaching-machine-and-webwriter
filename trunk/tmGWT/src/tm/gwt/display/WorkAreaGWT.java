@@ -1,5 +1,7 @@
 package tm.gwt.display;
 
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -9,7 +11,8 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 
 public abstract class WorkAreaGWT {
 	private RootPanel codeRoot;
-	protected ScrollPanel myWorkPane;
+	protected ScrollPanel workPane;
+	protected ScrollPanelPeer myWorkPane;
 	protected HorizontalPanel toolBar;
 	final String TITLE_NAME_UNKNOWN = "";
 	final String TITLE_NAME_EXPRESSION = "Expression Engine";
@@ -23,8 +26,14 @@ public abstract class WorkAreaGWT {
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
 
-		myWorkPane = new ScrollPanel();
-
+		workPane = new ScrollPanel();
+		myWorkPane = new ScrollPanelPeer(workPane);
+	    myWorkPane.addClickHandler(new ClickHandler() {
+	        public void onClick(ClickEvent event) {
+	        	MouseJustClicked(event);
+	        }
+	      });
+		
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.setStyleName("tm-vPanel");
 		vpanel.setSpacing(5);
@@ -55,6 +64,15 @@ public abstract class WorkAreaGWT {
 			title = TITLE_NAME_UNKNOWN;
 		}
 		return title;
+	}
+	
+	public void MouseJustClicked(ClickEvent event){
+		
+	}
+	
+	//Not finished yet
+	public void setPreferredSize(int width, int heght){
+		
 	}
 
 }
