@@ -9,11 +9,12 @@ import tm.portableDisplays.PortableContextInterface;
 
 public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 
-	private GWTSuperTMFile theFile;
-	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
-    private final static int LEFT_MARGIN = 10;
-    private final static int TOP_MARGIN = 10;
-    private final static int TABSPACE = 4;
+//	private GWTSuperTMFile theFile;
+//	private static final char MARKER_BOUND = StateInterface.INPUT_MARK;
+//  private final static int LEFT_MARGIN = 10;
+//  private final static int TOP_MARGIN = 10;
+//  private final static int TABSPACE = 4;
+    private final static int LINE_PADDING = 1; // Space between lines
     
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
@@ -28,11 +29,11 @@ public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 		
 	    context.getAsserter().check( this.displayer instanceof ConsoleDisplayer ) ;
 	    this.consoleDisplayer = (ConsoleDisplayer)this.displayer;
-	        
+	    
 		myWorkPane.setStyleName("tm-smallScrollPanel");
 		myWorkPane.setAlwaysShowScrollBars(true);
-		myWorkPane.setHeight(125 + Unit.PX.getType());
-		myWorkPane.setWidth(280 + Unit.PX.getType());
+		myWorkPane.setHeight(120 + Unit.PX.getType());
+		myWorkPane.setWidth(290 + Unit.PX.getType());
 	
 	}
 	
@@ -40,6 +41,8 @@ public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 	public void refresh(){		
 	    com.google.gwt.core.client.GWT.log( ">> ConsoleGWTDisplay.refresh") ;
 	    setScale(1,12);
+	    height = evaluator.getNumConsoleLines() * ( context.getCodeFont().getSize() + LINE_PADDING );
+	    consoleDisplayer.resetSize(1000, height);
 //		int n= consoleDisplayer.getNumConsoleLines();
 //		int numLines = 0;
 //        if (n != numLines) {

@@ -62,7 +62,10 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 		SourceCoordsI focus = evaluator.getCodeFocus();
 		int focusLine = 0;
 		boolean found = false;
-		for (int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
+		int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps);
+		height = sz * ( context.getCodeFont().getSize() + LINE_PADDING );
+		codeDisplayer.resetSize(1000, height);
+		for ( ; focusLine < sz; ++focusLine) {
 			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
@@ -90,7 +93,7 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	
 	//Select the line that the mouse clicked inside the code display window 
 	public void moveCursor(ClickEvent event){
-		cursorLine = (event.getY() /*- TOP_MARGIN*/) / (context.getCodeFont().getSize() + LINE_PADDING) - 1;
+		cursorLine = (event.getY() - 12/*- TOP_MARGIN*/) / (context.getCodeFont().getSize() + LINE_PADDING);
 		context.log( "font size is " + context.getCodeFont().getSize() ) ;
         context.log(  "coursorLine is " + cursorLine );
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);

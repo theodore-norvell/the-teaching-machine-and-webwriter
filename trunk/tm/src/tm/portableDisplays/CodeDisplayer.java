@@ -70,8 +70,8 @@ public class CodeDisplayer extends PortableDisplayer {
 				screen.fillRect(0, baseLine - fm.getAscent(), getWidth(), fm.getAscent() + fm.getDescent());
 				screen.setColor(save);
 			}
-			context.log(  "Cursor line is " + displayInfo.getCursorLine() + " and i is " + i);
 			if (displayInfo.getCursorLine() == i) {
+				context.log(  "Cursor line is " + displayInfo.getCursorLine() + " and i is " + i);
 				int save = screen.getColor();
 				screen.setColor(displayInfo.getCursorColor());
 				screen.fillRect(0, baseLine - fm.getAscent(), 10, fm.getAscent() + fm.getDescent());

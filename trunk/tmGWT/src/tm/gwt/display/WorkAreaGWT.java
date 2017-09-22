@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.VerticalPanel;
 public abstract class WorkAreaGWT {
 	private RootPanel codeRoot;
 	protected ScrollPanel myWorkPane;
-	//protected ScrollPanelPeer myWorkPane;
 	protected HorizontalPanel toolBar;
 	final String TITLE_NAME_UNKNOWN = "";
 	final String TITLE_NAME_EXPRESSION = "Expression Engine";
@@ -18,20 +17,14 @@ public abstract class WorkAreaGWT {
 	final String TITLE_NAME_STATIC = "Static Memory";
 	final String TITLE_NAME_STACK = "Stack";
 	final String TITLE_NAME_SCRATCH = "Scratch";
+	public int width, height;
 
 	public WorkAreaGWT(String title, String rootName) {
 		toolBar = new HorizontalPanel();
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
 
-		myWorkPane = new ScrollPanel();
-//		myWorkPane = new ScrollPanelPeer(workPane);
-//	    myWorkPane.addClickHandler(new ClickHandler() {
-//	        public void onClick(ClickEvent event) {
-//	        	MouseJustClicked(event);
-//	        }
-//	      });
-		
+		myWorkPane = new ScrollPanel();		
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.setStyleName("tm-vPanel");
 		vpanel.setSpacing(5);
@@ -64,9 +57,11 @@ public abstract class WorkAreaGWT {
 		return title;
 	}
 	
-	//Not finished yet
-	public void setPreferredSize(int width, int heght){
-		
-	}
-
+    public void setPreferredSize(int width, int height){
+        if (this.width != width || this.height != height) {
+        // resizing when size has changed
+            this.width = width;
+            this.height = height;
+        }
+    }
 }

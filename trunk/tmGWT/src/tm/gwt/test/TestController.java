@@ -36,16 +36,6 @@ public class TestController implements StateCommander {
         CodeLineI line ;
         
         int lineNumber = 1 ;
-        
-
-        for( ; lineNumber < 52 ; ) {
-            coords = new MirrorCoords(file, lineNumber)  ;
-            b.setLength( 0 ); 
-            b.append( "// Line " + lineNumber ) ;
-            line = new CodeLine(b, markup, coords, tagSets ) ;
-            lines.add(  line  ) ;
-            ++lineNumber ;
-        }
 
         b.setLength( 0 );
         b.append( "void main( ) {" ) ;
@@ -86,6 +76,15 @@ public class TestController implements StateCommander {
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
+        
+        for( ; lineNumber < 52 ; ) {
+            coords = new MirrorCoords(file, lineNumber)  ;
+            b.setLength( 0 ); 
+            b.append( "// Line " + lineNumber ) ;
+            line = new CodeLine(b, markup, coords, tagSets ) ;
+            lines.add(  line  ) ;
+            ++lineNumber ;
+        }
     }
 
     public TestController(MirrorState state) {
