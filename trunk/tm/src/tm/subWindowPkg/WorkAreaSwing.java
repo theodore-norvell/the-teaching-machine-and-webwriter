@@ -120,11 +120,7 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 */
     
     public void refresh(){
-//      drawArea((Graphics2D)getGraphics());
         myComponent.repaint();
-//      System.out.println("refreshing workArea " + this);
-/*      Graphics screen = getGraphics();
-        paintComponent(screen);*/
     }
 
 /*  The scrollPane uses preferred size to calculate image sizes and do scrollbar

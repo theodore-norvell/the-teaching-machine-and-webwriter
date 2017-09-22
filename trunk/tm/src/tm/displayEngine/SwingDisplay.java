@@ -18,7 +18,7 @@ public class SwingDisplay extends DisplayAdapterSwing {
     
     @Override 
     public void refresh() {
-        super.refresh(); 
         displayer.refresh( ) ;
+        super.refresh(); 
     }
 }

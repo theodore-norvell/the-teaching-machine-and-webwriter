@@ -26,5 +26,9 @@ public class Canvas extends Component {
 	public void resetSize(int width, int height){
 		this.getPeer().resetSize(width, height);
 	}
+	
+	public FontMetrics getFontMetrics( Font f ) {
+	    return this.getPeer().getFontMetrics( f ) ;
+	}
 
 }

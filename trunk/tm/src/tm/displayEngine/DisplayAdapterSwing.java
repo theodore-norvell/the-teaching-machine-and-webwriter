@@ -102,6 +102,7 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
     /**
      * Default implementation of refresh 
     */
+    @Override
     public void refresh() {
         super.refresh(); 
     }

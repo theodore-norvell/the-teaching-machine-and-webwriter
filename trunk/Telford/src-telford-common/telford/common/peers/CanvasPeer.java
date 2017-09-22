@@ -1,6 +1,8 @@
 package telford.common.peers;
 
 import telford.common.Canvas;
+import telford.common.Font ;
+import telford.common.FontMetrics ;
 
 public abstract class CanvasPeer extends ComponentPeer {
 	
@@ -8,7 +10,7 @@ public abstract class CanvasPeer extends ComponentPeer {
 		super(canvas);
 	}
 	
-	public void resetSize(int width, int height){
-		
-	}
+	abstract public void resetSize(int width, int height) ;
+
+    abstract public FontMetrics getFontMetrics(Font f) ;
 }

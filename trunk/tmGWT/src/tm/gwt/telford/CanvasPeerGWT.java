@@ -1,5 +1,10 @@
 package tm.gwt.telford;
 
+import telford.common.Font ;
+import telford.common.FontMetrics ;
+import telford.jse.FontJSE ;
+import telford.jse.FontMetricsJSE ;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Style.Unit;
@@ -49,6 +54,12 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 		myCanvas.getRepresentative().setCoordinateSpaceWidth(width);
 		myCanvas.getRepresentative().setCoordinateSpaceHeight(height);
 	}
+
+    @Override
+    public FontMetrics getFontMetrics(Font f) {
+        Context2d context2d = myCanvas.canvas.getContext2d() ;
+        return new FontMetricsGWT(context2d, f ) ;
+    }
 
 	class MyCanvas {
 		Canvas canvas;
