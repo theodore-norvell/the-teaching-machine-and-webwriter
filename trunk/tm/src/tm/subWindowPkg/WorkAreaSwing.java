@@ -81,9 +81,9 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 
     
 
-    public WorkAreaSwing(JComponent component, ImageSourceInterface imageSource) {
+    public WorkAreaSwing(JComponent component, JScrollPane scrollPane, ImageSourceInterface imageSource) {
         myComponent = component ;
-        myWorkPane = mySubWindow.getWorkPane();
+        myWorkPane = scrollPane ;
         mySubWindow = new SubWindow(imageSource, myWorkPane);
         horizontalScale = 1;
         verticalScale = 1;
@@ -129,9 +129,9 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 
     public void setPreferredSize(int width, int height){
         if (mySize.width != width || mySize.height != height) {
-        // size has changed
             mySize.width = width;
             mySize.height = height;
+            myComponent.setPreferredSize( new Dimension( width, height ) );
             myComponent.revalidate();
             myWorkPane.doLayout();
         }

@@ -49,7 +49,7 @@ public class SubWindow extends JInternalFrame {
 	final private JScrollPane workPane;
 /** The actual drawing surface for the display from which all displays are
  *  derived */
-	final private WorkAreaInterface workArea;
+	private WorkAreaInterface workArea;
 /** The current location of the mouse */	
 //	private Point mouseAt = new Point(0,0); // Make sure it is initialized
 	private final static int MIN_DIM = 40;
