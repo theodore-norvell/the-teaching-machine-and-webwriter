@@ -17,14 +17,14 @@ public abstract class WorkAreaGWT {
 	final String TITLE_NAME_STATIC = "Static Memory";
 	final String TITLE_NAME_STACK = "Stack";
 	final String TITLE_NAME_SCRATCH = "Scratch";
+	public int width, height;
 
 	public WorkAreaGWT(String title, String rootName) {
 		toolBar = new HorizontalPanel();
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
 
-		myWorkPane = new ScrollPanel();
-
+		myWorkPane = new ScrollPanel();		
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.setStyleName("tm-vPanel");
 		vpanel.setSpacing(5);
@@ -32,7 +32,7 @@ public abstract class WorkAreaGWT {
 			title = getTitleByRootName(rootName);
 		vpanel.add(new HTML(title));
 		vpanel.add(toolBar);
-		vpanel.add(myWorkPane);
+		vpanel.add( myWorkPane );
 
 		codeRoot = RootPanel.get(rootName);
 		codeRoot.add(vpanel);
@@ -56,5 +56,12 @@ public abstract class WorkAreaGWT {
 		}
 		return title;
 	}
-
+	
+    public void setPreferredSize(int width, int height){
+        if (this.width != width || this.height != height) {
+        // resizing when size has changed
+            this.width = width;
+            this.height = height;
+        }
+    }
 }

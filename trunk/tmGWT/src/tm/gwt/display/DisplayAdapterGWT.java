@@ -1,6 +1,8 @@
 package tm.gwt.display;
 
 import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.event.dom.client.ClickEvent ;
+import com.google.gwt.event.dom.client.ClickHandler ;
 
 import tm.portableDisplays.PortableDisplayer;
 
@@ -10,14 +12,20 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	private int verticalScale, horizontalScale;
 	
 	public DisplayAdapterGWT(PortableDisplayer displayer, String rootName, String title, int canvasWidth, int canvasHeight) {
-		super(title, rootName);
-        this.displayer = displayer ;
-        displayer.resetSize(canvasWidth, canvasHeight);
-        
-        myWorkPane.add((Canvas)displayer.getPeer().getRepresentative());
-        verticalScale = 1;
-        horizontalScale = 1;
-    }
+	    super(title, rootName);
+	    this.displayer = displayer ;
+	    displayer.resetSize(canvasWidth, canvasHeight);
+	    Canvas rep = (Canvas)displayer.getPeer().getRepresentative() ;
+	    myWorkPane.add( rep );
+	    rep.addClickHandler(new ClickHandler() {
+	        @Override public void onClick(ClickEvent event) {
+	            MouseJustClicked(event);
+	        }
+	    });
+
+	    verticalScale = 1;
+	    horizontalScale = 1;
+	}
 	
 	public void refresh() {
 //		displayer.refresh();
@@ -32,4 +40,8 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	public int getHScale(){ return horizontalScale;}
 	
 	public int getVScale(){ return verticalScale;}
+    
+    public void MouseJustClicked(ClickEvent event){
+        
+    }
 }

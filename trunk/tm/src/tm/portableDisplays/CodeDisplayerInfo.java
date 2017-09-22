@@ -1,6 +1,7 @@
 package tm.portableDisplays;
 
 import telford.common.Font;
+import telford.common.Kit ;
 import tm.interfaces.TMFileI ;
 
 public class CodeDisplayerInfo {
@@ -9,7 +10,10 @@ public class CodeDisplayerInfo {
 	private final static int BOLD = 1;
 	private final static int ITALIC = 2;
 
-	private Font myFonts[] = { null, null, null, null }; // Indexed by font
+	private Font myFonts[] = { Kit.getKit().getFont("Monospaced", 0, 12),
+	                           Kit.getKit().getFont("Monospaced", 1, 12),
+	                           Kit.getKit().getFont("Monospaced", 2, 12),
+	                           Kit.getKit().getFont("Monospaced", 3, 12) };
 	private int fontMapper[] = { PLAIN, PLAIN, ITALIC, PLAIN, BOLD, PLAIN };
 	private int fontColor[] = { 0x000000, 0x0000FF, 0x000000, 0xFF0000, 0x000000, 0xFF0000 };
 	private int cursorColor = 0x008000;

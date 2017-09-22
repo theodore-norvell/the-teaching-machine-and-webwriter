@@ -8,17 +8,23 @@ import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.PortableContextInterface;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 public class CodeGWTDisplay extends DisplayAdapterGWT {
 	private GWTSuperTMFile theFile;
+	private final static int LINE_PADDING = 1; // Space between lines
+	private int cursorLine; 
+	
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
 	CodeDisplayer codeDisplayer ;
+	
 
 	public CodeGWTDisplay(StateInterface e, PortableContextInterface context) {
 		super(new CodeDisplayer(e, context), "codeDisplayPanel", "Test.java", 300, 600);
 		this.evaluator = e;
 		this.context = context;
+		cursorLine = 0;
 		
 		context.getAsserter().check( this.displayer instanceof CodeDisplayer ) ;
         this.codeDisplayer = (CodeDisplayer)this.displayer;
@@ -49,14 +55,17 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	    
 //		myWorkPane.setStyleName("tm-scrollPanel");
 
-	    codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
+	    //codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
 		boolean allowGaps = true;
 		setScale(1, 16);
 
 		SourceCoordsI focus = evaluator.getCodeFocus();
 		int focusLine = 0;
 		boolean found = false;
-		for (int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
+		int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps);
+		height = sz * ( context.getCodeFont().getSize() + LINE_PADDING );
+		codeDisplayer.resetSize(1000, height);
+		for ( ; focusLine < sz; ++focusLine) {
 			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
@@ -73,6 +82,22 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 			}
 		}
 		super.refresh();
+	}
+	
+	//Listen for mouse click events 
+	@Override
+	public void MouseJustClicked(ClickEvent event){
+	    context.log(  "Mouse clicked " + event.getY() );
+		moveCursor(event);
+	}
+	
+	//Select the line that the mouse clicked inside the code display window 
+	public void moveCursor(ClickEvent event){
+		cursorLine = (event.getY() - 12/*- TOP_MARGIN*/) / (context.getCodeFont().getSize() + LINE_PADDING);
+		context.log( "font size is " + context.getCodeFont().getSize() ) ;
+        context.log(  "coursorLine is " + cursorLine );
+		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
+		refresh();
 	}
 
 }
