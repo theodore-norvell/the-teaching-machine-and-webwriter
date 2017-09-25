@@ -1,8 +1,4 @@
 package tm.portableDisplays;
-
-import java.awt.Dimension;
-
-import telford.common.Color;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
 import tm.interfaces.StateInterface;
@@ -13,6 +9,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
     private final static int LEFT_MARGIN = 10;
     private final static int TOP_MARGIN = 10;
     private final static int TABSPACE = 4;
+    public int delta_y = 12; //The height of each line, which consists of lineHeight and line padding
 	
 	public ConsoleDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);		
@@ -33,6 +30,7 @@ public class ConsoleDisplayer extends PortableDisplayer{
         context.log(">> ConsoleDisplayer.paintComponent.") ;
         g.setFont(context.getCodeFont());
         FontMetrics fm = g.getFontMetrics(g.getFont());
+        delta_y = fm.getHeight() + 1;
         int baseLine = TOP_MARGIN;
 
         int numLines = model.getNumConsoleLines() ;
@@ -94,4 +92,9 @@ public class ConsoleDisplayer extends PortableDisplayer{
     public String getConsoleLine(int i){
     	return model.getConsoleLine(i);
     }
+    
+    public int getDelta_y(){
+    	return delta_y;
+    }
+    
 }

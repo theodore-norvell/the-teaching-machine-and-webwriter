@@ -53,6 +53,7 @@ public class StoreGWTDisplay extends DisplayAdapterGWT implements DataDisplayVie
 		toolBar.add(bScaled);
 		toolBar.add(bBinary);
 		myWorkPane.setStyleName("tm-smallScrollPanel");
+		myWorkPane.setAlwaysShowScrollBars(true);
 		layoutManager = new StoreLayoutManagerGWT(this);
 	}
 

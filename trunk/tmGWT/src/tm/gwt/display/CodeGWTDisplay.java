@@ -7,12 +7,12 @@ import tm.interfaces.CodeLineI ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
+import tm.portableDisplays.CodeDisplayerInfo;
 import tm.portableDisplays.PortableContextInterface;
 import com.google.gwt.event.dom.client.ClickEvent;
 
 public class CodeGWTDisplay extends DisplayAdapterGWT {
 	private GWTSuperTMFile theFile;
-	private final static int LINE_PADDING = 1; // Space between lines
 	private int cursorLine; 
 	
 	StateInterface evaluator;
@@ -63,7 +63,7 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 		int focusLine = 0;
 		boolean found = false;
 		int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps);
-		height = sz * ( context.getCodeFont().getSize() + LINE_PADDING );
+		height = sz * (1 + codeDisplayer.getDisplayInfo().getDelta_y() ) ;
 		codeDisplayer.resetSize(1000, height);
 		for ( ; focusLine < sz; ++focusLine) {
 			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
@@ -93,8 +93,9 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	
 	//Select the line that the mouse clicked inside the code display window 
 	public void moveCursor(ClickEvent event){
-		cursorLine = (event.getY() - 12/*- TOP_MARGIN*/) / (context.getCodeFont().getSize() + LINE_PADDING);
-		context.log( "font size is " + context.getCodeFont().getSize() ) ;
+		CodeDisplayerInfo displayInfo = codeDisplayer.getDisplayInfo() ;
+		cursorLine = (event.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
+        context.log(  "delta_y is " + displayInfo.getDelta_y() );
         context.log(  "coursorLine is " + cursorLine );
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
 		refresh();

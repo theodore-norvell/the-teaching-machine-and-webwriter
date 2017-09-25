@@ -103,7 +103,7 @@ public class TestController implements StateCommander {
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
             state.updateStore( makeStore1() ) ;
-            for( int i = 0 ; i < 5 ; ++i)  state.addConsoleLine( "" + i );
+            for( int i = 0 ; i < 5 ; ++i)  state.addConsoleLine( "Console line " + i );
             state.addConsoleLine( "Hello world"  );
             count = 1 ;
         } break ;
@@ -138,17 +138,20 @@ public class TestController implements StateCommander {
             state.setExpression( "" +StateInterface.EXP_START_SELECTED+ "" +StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = " +StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END+ StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore6() ) ;
+            state.addConsoleLine(  "Testing console 1");
             count = 6 ;
         } break ;
         case 6 : {
             state.setExpression( StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore0() ) ;
+            state.addConsoleLine(  "Testing console 2");
             count = 7 ;
         } break ;
         case 7 : {
             state.setExpression( "" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.addConsoleLine(  "Testing console 3");
             count = 0 ;
         } break ;
         }

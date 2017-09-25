@@ -20,11 +20,11 @@ public class CodeDisplayer extends PortableDisplayer {
 	private final static int LINE_PADDING = 1; // Space between lines
 
 	// Printing modes
-	private final static int NORMAL = 0;
-	private final static int KEYWORD = 1;
-	private final static int COMMENT = 2;
-	private final static int PREPROCESSOR = 3;
-	private final static int CONSTANT = 4;
+	public final static int NORMAL = 0;
+	public final static int KEYWORD = 1;
+	public final static int COMMENT = 2;
+	public final static int PREPROCESSOR = 3;
+	public final static int CONSTANT = 4;
 	
 	private final static int LINE_NUMBER = 5;
 	private final static int BOLD = 1;
@@ -55,14 +55,17 @@ public class CodeDisplayer extends PortableDisplayer {
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 
 		final int lineHeight = fm.getHeight();
-		int baseLine = lineHeight + LINE_PADDING;
+		final int delta_y = lineHeight + LINE_PADDING ;
+		displayInfo.setDelta_y( delta_y );
+		context.log( "painting delta_y is " +delta_y);
+		int baseLine = delta_y ;
 		if (theFile == null)
 			theFile = displayInfo.getTmFile();
 		boolean allowGaps = displayInfo.getLineNumbersCheckStatus();
 		int n = model.getNumSelectedCodeLines(theFile, allowGaps);
 		SourceCoordsI focus = model.getCodeFocus();
 		for (int i = 0; i < n; i++) {
-			baseLine += lineHeight + LINE_PADDING;
+			baseLine += delta_y;
 			CodeLineI theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
 			if (theLine != null && theLine.getCoords().equals( focus )) {
 				int save = screen.getColor();
@@ -77,7 +80,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				screen.fillRect(0, baseLine - fm.getAscent(), 10, fm.getAscent() + fm.getDescent());
 				screen.setColor(save);
 			}
-			drawLine(theLine, LEFT_MARGIN - 0, baseLine - 0, screen);
+			drawLine(theLine, LEFT_MARGIN, baseLine, screen);
 		}
 	}
 
@@ -101,7 +104,7 @@ public class CodeDisplayer extends PortableDisplayer {
 				BOLD_ITALIC);
 	}
 
-	private void drawLine(CodeLineI codeLine, int x, int y, Graphics screen) {
+	private void drawLine(CodeLineI codeLine, int x, final int y, Graphics screen) {
 		setMode(screen, NORMAL);
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());
 		final int em = fm.stringWidth("M");

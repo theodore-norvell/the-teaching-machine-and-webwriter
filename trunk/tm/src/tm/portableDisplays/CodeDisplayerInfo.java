@@ -20,7 +20,12 @@ public class CodeDisplayerInfo {
 	private int cursorLine = 0;
 	private boolean lineNumbersCheckStatus = true;//show line number by default
 	private TMFileI tmFile;
+	private int tabSpaces = 4;
+	private int delta_y = 12 ;
 	private int focusLineNumber = 1;
+	
+	
+	
 	public int getFocusLineNumber() {
 		return focusLineNumber;
 	}
@@ -86,8 +91,6 @@ public class CodeDisplayerInfo {
 		this.cursorColor = cursorColor;
 	}
 
-	private int tabSpaces = 4;
-
 	public int getTabSpaces() {
 		return tabSpaces;
 	}
@@ -119,6 +122,14 @@ public class CodeDisplayerInfo {
 
 	public void setFontColorByIndex(int fontColor, int index) {
 		this.fontColor[index] = fontColor;
+	}
+
+	public int getDelta_y() {
+		return this.delta_y;
+	}
+
+	public void setDelta_y( int newDelta_y) {
+		this.delta_y = newDelta_y ;
 	}
 	
 }

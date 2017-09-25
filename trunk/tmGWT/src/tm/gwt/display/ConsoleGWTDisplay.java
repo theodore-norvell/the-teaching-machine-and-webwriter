@@ -1,8 +1,11 @@
 package tm.gwt.display;
 
+import com.google.gwt.canvas.client.Canvas;
+import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Style.Unit;
-
-import tm.gwt.jsInterface.GWTSuperTMFile;
+import tm.gwt.telford.FontMetricsGWT;
+import tm.gwt.telford.GraphicsGWT;
+import tm.gwt.telford.KitGWT;
 import tm.interfaces.StateInterface;
 import tm.portableDisplays.ConsoleDisplayer;
 import tm.portableDisplays.PortableContextInterface;
@@ -41,8 +44,16 @@ public class ConsoleGWTDisplay extends DisplayAdapterGWT {
 	public void refresh(){		
 	    com.google.gwt.core.client.GWT.log( ">> ConsoleGWTDisplay.refresh") ;
 	    setScale(1,12);
-	    height = evaluator.getNumConsoleLines() * ( context.getCodeFont().getSize() + LINE_PADDING );
+	    int numConsoleLines = evaluator.getNumConsoleLines(); 
+	    height = (numConsoleLines + 1 /*margin*/) * consoleDisplayer.getDelta_y();
 	    consoleDisplayer.resetSize(1000, height);
+	    
+	    Canvas rep = (Canvas)consoleDisplayer.getPeer().getRepresentative() ;
+	    Context2d context2d = rep.getContext2d();
+	    telford.common.Graphics graphicsGWT = new GraphicsGWT(context2d);
+	    FontMetricsGWT fm = (FontMetricsGWT) graphicsGWT.getFontMetrics(new KitGWT().getFont());
+	     
+	    myWorkPane.setVerticalScrollPosition(height);
 //		int n= consoleDisplayer.getNumConsoleLines();
 //		int numLines = 0;
 //        if (n != numLines) {
