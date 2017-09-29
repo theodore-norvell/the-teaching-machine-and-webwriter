@@ -18,7 +18,8 @@ public class MouseListenerJSE extends MouseMotionAdapter implements MouseMotionL
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+        telford.common.MouseEvent tcme = new telford.common.MouseEvent(e.getX(),e.getY(), e.getClickCount()) ;
+        component.fireMouseClicked( tcme ) ;
 		
 	}
 
@@ -30,13 +31,10 @@ public class MouseListenerJSE extends MouseMotionAdapter implements MouseMotionL
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
