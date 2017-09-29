@@ -10,7 +10,7 @@ public class Container extends Component {
 	}
 
 	public Container(boolean makePeer) {
-		super(false);
+		super();
 		if (makePeer) {
 			peer = Kit.getKit().makeContainerPeer(this);
 			setLayoutManager(Kit.getKit().getFlowLayoutManager());

@@ -57,11 +57,6 @@ public class KitJSE extends telford.common.Kit {
 	public CanvasPeer makeCanvasPeer(Canvas canvas) {
 		return new CanvasPeerJSE (canvas);
 	}
-	
-	@Override
-	public ComponentPeer makeComponentPeer(Component component) {
-		return new ComponentPeerJSE(component);
-	}
 
 	@Override
 	public telford.common.BorderLayout getBorderLayoutManager() {

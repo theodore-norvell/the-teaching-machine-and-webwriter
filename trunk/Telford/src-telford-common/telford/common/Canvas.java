@@ -8,7 +8,7 @@ public class Canvas extends Component {
 	}
 
 	public Canvas(boolean makePeer) {
-		super(false);
+		super();
 		if (makePeer) {
 			peer = Kit.getKit().makeCanvasPeer(this);
 		}

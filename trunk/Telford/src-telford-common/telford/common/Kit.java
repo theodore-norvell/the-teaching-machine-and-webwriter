@@ -25,11 +25,7 @@ abstract public class Kit {
 	/** Make a peer for a container */
 	abstract public ContainerPeer makeContainerPeer(Container container);
 	
-//	abstract public ContainerPeer makeContainerPeer(Container container, int type);
-	
 	abstract public CanvasPeer makeCanvasPeer(Canvas canvas);
-	
-	public abstract ComponentPeer makeComponentPeer(Component component);
 	
 	abstract public BorderLayout getBorderLayoutManager();
 
@@ -38,6 +34,4 @@ abstract public class Kit {
 	public abstract LayoutManager getFlowLayoutManager() ;
 
 	public abstract Random getRandom();
-
-
 }
