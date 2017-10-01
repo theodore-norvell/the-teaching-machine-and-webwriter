@@ -6,6 +6,9 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import telford.common.Font ;
+import telford.common.FontMetrics ;
+
 public class CanvasPeerJSE extends telford.common.peers.CanvasPeer {
 
 	MyCanvas myCanvas;
@@ -35,6 +38,19 @@ public class CanvasPeerJSE extends telford.common.peers.CanvasPeer {
 		return UtilJSE.getHeight(myCanvas);
 	}
 
+    @Override
+    public void resetSize(int width, int height) {
+        // TODO Auto-generated method stub
+    }
+
+    @Override
+    public FontMetrics getFontMetrics(Font f) {
+        FontJSE fontJSE = (FontJSE) f ;
+        java.awt.Font javaFont = fontJSE.f ;
+        java.awt.FontMetrics javaFM = myCanvas.getGraphics().getFontMetrics( javaFont ) ;
+        return new FontMetricsJSE( javaFM ) ;
+    }
+
 	@Override
 	public void repaint() {
 		UtilJSE.repaint(myCanvas);
@@ -44,6 +60,7 @@ public class CanvasPeerJSE extends telford.common.peers.CanvasPeer {
 	public void setStyleName(String styleName){
 		
 	}
+	
 	class MyCanvas extends JPanel{
 		@Override public void paintComponent( Graphics g) {
 			setBackground(Color.white);

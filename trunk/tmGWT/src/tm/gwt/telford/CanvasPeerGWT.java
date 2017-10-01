@@ -1,5 +1,10 @@
 package tm.gwt.telford;
 
+import telford.common.Font ;
+import telford.common.FontMetrics ;
+import telford.jse.FontJSE ;
+import telford.jse.FontMetricsJSE ;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Style.Unit;
@@ -20,17 +25,17 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public int getWidth() {
-		return myCanvas.getPeer().getCoordinateSpaceWidth();
+		return myCanvas.getRepresentative().getCoordinateSpaceWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return myCanvas.getPeer().getCoordinateSpaceHeight();
+		return myCanvas.getRepresentative().getCoordinateSpaceHeight();
 	}
 
 	@Override
 	public Object getRepresentative() {
-		return myCanvas.getPeer();
+		return myCanvas.getRepresentative();
 	}
 
 	@Override
@@ -39,16 +44,22 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public void setStyleName(String styleName) {
-		myCanvas.getPeer().setStyleName(styleName);
+		myCanvas.getRepresentative().setStyleName(styleName);
 	}
 	
 	@Override
 	public void resetSize(int width, int height) {
-		myCanvas.getPeer().setWidth(width + Unit.PX.getType());
-		myCanvas.getPeer().setHeight(height + Unit.PX.getType());
-		myCanvas.getPeer().setCoordinateSpaceWidth(width);
-		myCanvas.getPeer().setCoordinateSpaceHeight(height);
+		myCanvas.getRepresentative().setWidth(width + Unit.PX.getType());
+		myCanvas.getRepresentative().setHeight(height + Unit.PX.getType());
+		myCanvas.getRepresentative().setCoordinateSpaceWidth(width);
+		myCanvas.getRepresentative().setCoordinateSpaceHeight(height);
 	}
+
+    @Override
+    public FontMetrics getFontMetrics(Font f) {
+        Context2d context2d = myCanvas.canvas.getContext2d() ;
+        return new FontMetricsGWT(context2d, f ) ;
+    }
 
 	class MyCanvas {
 		Canvas canvas;
@@ -68,7 +79,7 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 			component.paintComponent(tg);
 		}
 
-		public Canvas getPeer() {
+		public Canvas getRepresentative() {
 			return canvas;
 		}
 	}

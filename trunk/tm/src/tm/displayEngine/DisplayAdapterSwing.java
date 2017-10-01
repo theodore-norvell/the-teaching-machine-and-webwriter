@@ -19,6 +19,7 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 import javax.swing.JComponent ;
+import javax.swing.JScrollPane ;
 
 import tm.configuration.Configuration;
 import tm.configuration.ConfigurationServer;
@@ -55,8 +56,8 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
  * @param dm the display manager that will display this adapter.
  * @param configId the id used in the config file for this display
  */
-    public DisplayAdapterSwing(JComponent component, DisplayManager dm, String configId) {
-        super(component, dm.getImageSource());     // Automatic scrollbars
+    public DisplayAdapterSwing(JComponent component, JScrollPane scrollPane, DisplayManager dm, String configId) {
+        super(component, scrollPane, dm.getImageSource());
         this.configId = configId;
         context = (DisplayContextInterface)dm;
         commandProcessor = context.getCommandProcessor();       
@@ -102,6 +103,7 @@ public abstract class DisplayAdapterSwing extends WorkAreaSwing implements Displ
     /**
      * Default implementation of refresh 
     */
+    @Override
     public void refresh() {
         super.refresh(); 
     }

@@ -44,9 +44,9 @@ public class SubWindow extends JInternalFrame {
 	private static final long serialVersionUID = -8039438939872323140L;
 
 /** The area inside the edges, containing the workPane + toolBar */
-    private JPanel contentPane;
+    final private JPanel contentPane;
 /** A scrollable pane that contains the workArea */
-	private JScrollPane workPane;
+	final private JScrollPane workPane;
 /** The actual drawing surface for the display from which all displays are
  *  derived */
 	private WorkAreaInterface workArea;
@@ -63,14 +63,13 @@ public class SubWindow extends JInternalFrame {
          * @param is: the ImageSourceInterface ? from which the buttons gifs come?
          * @param scrollPolicy: the scrolling policy for the workPane
          */        
-	public SubWindow(ImageSourceInterface is/*,
-						int vertScrollPolicy, int horizScrollPolicy*/) {
+	public SubWindow(ImageSourceInterface is, JScrollPane workPane) {
 		super(null,true, true, true, true);
 // Build the inner area for the center which will contain a workArea and possibly a toolbar
 		contentPane = new JPanel(new BorderLayout());
 
 // Create the specialized scrollPane that holds the actual workArea		
-		workPane = new JScrollPane(/*vertScrollPolicy, horizScrollPolicy*/);
+		this.workPane = workPane ;
 
 
 // Add title bar & workPane to inside area
@@ -93,6 +92,7 @@ public class SubWindow extends JInternalFrame {
 	public void addWorkArea(WorkAreaInterface wa){
 		workArea = wa;
 	    workPane.setViewportView( workArea.getSwingComponent() );
+	    workPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
 /**
  * TO BE DONE: If I try to use the new BLIT_SCROLL_MODE clipping doesn't work
  * properly with storeDisplays and the STDisplay (although its fine with the
@@ -122,7 +122,7 @@ public class SubWindow extends JInternalFrame {
  * datums even when datums are expanded. size of the view is changing properly
  * so there's no reason first and last datum can't be more accurate.
  */
-	    workPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
+
 	}
 	
 	public void addWorkArea(WorkAreaInterface wa, ToolBar toolBar){

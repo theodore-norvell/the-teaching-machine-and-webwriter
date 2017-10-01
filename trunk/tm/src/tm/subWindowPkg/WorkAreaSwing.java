@@ -81,10 +81,10 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 
     
 
-    public WorkAreaSwing(JComponent component, ImageSourceInterface imageSource) {
+    public WorkAreaSwing(JComponent component, JScrollPane scrollPane, ImageSourceInterface imageSource) {
         myComponent = component ;
-        mySubWindow = new SubWindow(imageSource);
-        myWorkPane = mySubWindow.getWorkPane();
+        myWorkPane = scrollPane ;
+        mySubWindow = new SubWindow(imageSource, myWorkPane);
         horizontalScale = 1;
         verticalScale = 1;
         mySize = new Dimension(0,0);
@@ -120,11 +120,7 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 */
     
     public void refresh(){
-//      drawArea((Graphics2D)getGraphics());
         myComponent.repaint();
-//      System.out.println("refreshing workArea " + this);
-/*      Graphics screen = getGraphics();
-        paintComponent(screen);*/
     }
 
 /*  The scrollPane uses preferred size to calculate image sizes and do scrollbar
@@ -133,9 +129,9 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
 
     public void setPreferredSize(int width, int height){
         if (mySize.width != width || mySize.height != height) {
-        // size has changed
             mySize.width = width;
             mySize.height = height;
+            myComponent.setPreferredSize( new Dimension( width, height ) );
             myComponent.revalidate();
             myWorkPane.doLayout();
         }
