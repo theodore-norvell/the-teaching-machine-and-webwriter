@@ -2,6 +2,7 @@ package tm.gwt.display;
 
 import com.google.gwt.user.client.ui.Button;
 
+import telford.common.MouseEvent;
 import tm.gwt.jsInterface.GWTSuperTMFile;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.SourceCoordsI ;
@@ -9,7 +10,6 @@ import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
 import tm.portableDisplays.CodeDisplayerInfo;
 import tm.portableDisplays.PortableContextInterface;
-import com.google.gwt.event.dom.client.ClickEvent;
 
 public class CodeGWTDisplay extends DisplayAdapterGWT {
 	private GWTSuperTMFile theFile;
@@ -86,13 +86,13 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	
 	//Listen for mouse click events 
 	@Override
-	public void MouseJustClicked(ClickEvent event){
+	public void MouseJustClicked(MouseEvent event){
 	    context.log(  "Mouse clicked " + event.getY() );
 		moveCursor(event);
 	}
 	
 	//Select the line that the mouse clicked inside the code display window 
-	public void moveCursor(ClickEvent event){
+	public void moveCursor(MouseEvent event){
 		CodeDisplayerInfo displayInfo = codeDisplayer.getDisplayInfo() ;
 		cursorLine = (event.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
         context.log(  "delta_y is " + displayInfo.getDelta_y() );
