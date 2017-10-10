@@ -12,7 +12,7 @@ public abstract class ComponentPeer {
 	
 	public abstract Object getRepresentative() ;
 
-	public abstract void addMouseListener(int count);
+	public abstract void addMouseListener();
 
 	public abstract int getWidth();
 

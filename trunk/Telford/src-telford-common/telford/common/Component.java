@@ -16,8 +16,11 @@ abstract public class Component {
 
 	public void addMouseListener(MouseListener mouseListener){
 		mouseListeners.add(mouseListener) ;
-		getPeer().addMouseListener(mouseListeners.size());
+		getPeer().addMouseListener();
 	}
+	
+	public int mouseListenerCount() {
+	    return mouseListeners.size() ; }
 	
 	public void fireMouseMoved( MouseEvent evt ) {
 		for(MouseListener l : mouseListeners ) l.mouseMoved( evt ) ;

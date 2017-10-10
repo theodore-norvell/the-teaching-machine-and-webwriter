@@ -24,8 +24,8 @@ public class CanvasPeerJSE extends telford.common.peers.CanvasPeer {
 	}
 
 	@Override
-	public void addMouseListener(int count) {
-		UtilJSE.addMouseListener(myCanvas, count, component);
+	public void addMouseListener() {
+		UtilJSE.addMouseListener(myCanvas, component);
 	}
 
 	@Override

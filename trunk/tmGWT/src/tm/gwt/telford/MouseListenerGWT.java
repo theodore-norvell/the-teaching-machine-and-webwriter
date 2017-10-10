@@ -1,24 +1,25 @@
 package tm.gwt.telford;
 
+import com.google.gwt.event.dom.client.ClickEvent ;
+import com.google.gwt.event.dom.client.ClickHandler ;
+
+import telford.common.Component ;
 import telford.common.MouseEvent;
-import telford.common.MouseListener;
 import tm.gwt.display.DisplayAdapterGWT;
 import tm.gwt.display.GWTContext;
-import tm.portableDisplays.PortableContextInterface;
 
-public class MouseListenerGWT implements MouseListener {
-	
-	PortableContextInterface context = new GWTContext();
+public class MouseListenerGWT implements ClickHandler {
 
-	@Override
-	public void mouseMoved(MouseEvent e) {
-		
-	}
+	private Component component ;
 
-	@Override
-	public void mouseClick(MouseEvent e) {
-		DisplayAdapterGWT eventSource = (DisplayAdapterGWT) e.getSource();
-		eventSource.MouseJustClicked(e);
-	}
+    public MouseListenerGWT(Component component) {
+        this.component = component ;
+    }
+
+    @Override
+    public void onClick(ClickEvent event) {
+        MouseEvent me = new MouseEvent() ;
+        component.fireMouseClicked( me );
+    }
 
 }

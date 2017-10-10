@@ -63,8 +63,8 @@ public class ContainerPeerJSE extends telford.common.peers.ContainerPeer {
 	}
 
 	@Override
-	public void addMouseListener(int count) {
-		UtilJSE.addMouseListener(myContainer, count, component);
+	public void addMouseListener() {
+		UtilJSE.addMouseListener(myContainer, component);
 	}
 	
 	@Override

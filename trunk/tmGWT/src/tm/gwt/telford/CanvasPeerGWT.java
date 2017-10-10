@@ -4,6 +4,7 @@ import telford.common.Font ;
 import telford.common.FontMetrics ;
 import telford.jse.FontJSE ;
 import telford.jse.FontMetricsJSE ;
+import telford.jse.UtilJSE ;
 
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
@@ -39,7 +40,8 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 	}
 
 	@Override
-	public void addMouseListener(int count) {
+	public void addMouseListener() {
+        UtilGWT.addMouseListener(myCanvas.getRepresentative(), component);
 	}
 
 	@Override
