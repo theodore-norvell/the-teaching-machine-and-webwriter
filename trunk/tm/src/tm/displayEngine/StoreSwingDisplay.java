@@ -182,9 +182,8 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 		refresh();
 	}
 
-	@Override
-    protected void mouseJustClicked(MouseEvent evt) {
-		super.mouseJustClicked(evt); 
+	protected void mouseJustClicked(MouseEvent evt) {
+		//super.mouseJustClicked(evt); 
 		if (evt == null)
 			return;
 		if (region == null)

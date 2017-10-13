@@ -84,13 +84,6 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 		super.refresh();
 	}
 	
-	//Listen for mouse click events 
-	@Override
-	public void MouseJustClicked(MouseEvent event){
-	    context.log(  "Mouse clicked " + event.getY() );
-		moveCursor(event);
-	}
-	
 	//Select the line that the mouse clicked inside the code display window 
 	public void moveCursor(MouseEvent event){
 		CodeDisplayerInfo displayInfo = codeDisplayer.getDisplayInfo() ;

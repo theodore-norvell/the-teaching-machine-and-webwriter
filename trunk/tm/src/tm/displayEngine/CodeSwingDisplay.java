@@ -234,24 +234,6 @@ public class CodeSwingDisplay extends SwingDisplay {
 		}
 	}
 
-	@Override
-    protected void mouseJustClicked(MouseEvent evt) {
-		moveCursor(evt);
-	}
-
-	/*
-	 * align focus with the line inside which the mouse clicked. The mouse event
-	 * will be correctly located even when part of the display is scrolled
-	 * offscreen
-	 */
-	public void moveCursor(MouseEvent evt) {
-	    FontMetrics fm = myComponent.getFontMetrics( context.getCodeFont() ) ;
-		int cursorLine = (evt.getY() /*- TOP_MARGIN*/) / (fm.getHeight() + LINE_PADDING) - 1;
-		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
-//		cursorChar = 0; // Just for now
-		refresh();
-	}
-
 	public void setLineNumbering(boolean on) {
 		lineNumbersCheckBox.setState(on);
 		codeDisplayer.getDisplayInfo().setLineNumbersCheckStatus(on);
