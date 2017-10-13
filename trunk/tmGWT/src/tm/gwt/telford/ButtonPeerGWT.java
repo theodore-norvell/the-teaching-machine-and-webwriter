@@ -27,7 +27,7 @@ public class ButtonPeerGWT extends telford.common.peers.ButtonPeer {
 	}
 
 	@Override
-	public void addMouseListener(int count) {
+	public void addMouseListener( ) {
 	}
 
 	@Override

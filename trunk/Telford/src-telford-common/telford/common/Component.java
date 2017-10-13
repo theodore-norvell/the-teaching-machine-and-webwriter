@@ -29,6 +29,10 @@ abstract public class Component {
     public void fireMouseClicked( MouseEvent evt ) {
         for(MouseListener l : mouseListeners ) l.mouseClick( evt ) ;
     }
+    
+	public void MouseJustClicked( MouseEvent event ){
+	    
+	}
 	
 	abstract public void paintComponent(Graphics g) ;
 	

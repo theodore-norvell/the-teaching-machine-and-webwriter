@@ -1,8 +1,7 @@
 package tm.gwt.display;
 
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.event.dom.client.ClickEvent ;
-import com.google.gwt.event.dom.client.ClickHandler ;
+import com.google.gwt.event.dom.client.ClickEvent;
 
 import telford.common.MouseEvent;
 import tm.gwt.telford.MouseListenerGWT;
@@ -12,8 +11,6 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	public PortableDisplayer displayer ;
 	
 	private int verticalScale, horizontalScale;
-	private MouseEvent mouseEvent;
-	private MouseListenerGWT mouseListenerGWT = new MouseListenerGWT();
 	
 	public DisplayAdapterGWT(PortableDisplayer displayer, String rootName, String title, int canvasWidth, int canvasHeight) {
 	    super(title, rootName);
@@ -21,14 +18,16 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	    displayer.resetSize(canvasWidth, canvasHeight);
 	    Canvas rep = (Canvas)displayer.getPeer().getRepresentative() ;
 	    myWorkPane.add( rep );
+	        
+	    rep.addClickHandler(new MouseListenerGWT(displayer)/* {
 	    
-	    rep.addClickHandler(new ClickHandler() {
 	        @Override public void onClick(ClickEvent event) {
-	        	mouseEvent = new MouseEvent(event.getClientX(), event.getClientY());
-	        	notifiesMouseListener();
-	        	mouseEvent.setSource(this);
+	        	MouseJustClicked(event);
 	        }
-	    });
+	    }
+	    */
+	    	);
+
 
 /*	   
 	    addGWTMouseListener(new MouseListenerGWT(){
@@ -41,15 +40,6 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	    verticalScale = 1;
 	    horizontalScale = 1;
 	}
-	
-	public void notifiesMouseListener(){
-		mouseListenerGWT.mouseClick(mouseEvent);
-	}
-/*	
-	public void addGWTMouseListener(MouseListenerGWT mouseListener){
-		mouseListenerGWT = mouseListener;
-	}
-*/	
 	
 	public void refresh() {
 //		displayer.refresh();

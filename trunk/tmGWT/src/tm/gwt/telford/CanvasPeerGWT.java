@@ -2,13 +2,12 @@ package tm.gwt.telford;
 
 import telford.common.Font ;
 import telford.common.FontMetrics ;
-import telford.jse.FontJSE ;
-import telford.jse.FontMetricsJSE ;
-import telford.jse.UtilJSE ;
-
+import telford.common.MouseListener;
+import java.util.ArrayList;
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
@@ -41,7 +40,7 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public void addMouseListener() {
-        UtilGWT.addMouseListener(myCanvas.getRepresentative(), component);
+        UtilGWT.addMouseListener(myCanvas, component);
 	}
 
 	@Override
@@ -65,12 +64,13 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	class MyCanvas {
 		Canvas canvas;
+		ArrayList<MouseListener> mouseListeners = new ArrayList<MouseListener>() ;
 
 		public MyCanvas() {
 			if (Canvas.isSupported()) {
 				canvas = Canvas.createIfSupported();
 			} else {
-				GWTUtil.error(GWTUtil.ERROR_NOT_SUPPORT_CANVAS, "MyCanvas constructor");
+				UtilGWT.error(UtilGWT.ERROR_NOT_SUPPORT_CANVAS, "MyCanvas constructor");
 			}
 		}
 
@@ -84,5 +84,22 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 		public Canvas getRepresentative() {
 			return canvas;
 		}
+		
+		public void addMouseListener(MouseListener mouseListener) {
+			 mouseListeners.add(mouseListener);
+			 canvas.addClickHandler( (ClickHandler) mouseListener ) ;
+		}
+		
+		public int mouseListenerCount() {
+		    return mouseListeners.size() ; }
+		
+		public MouseListener getMouseListeners(){
+			return mouseListeners.get(0);
+		}
+		
+		public void removeMouseListener(MouseListener mouseListener){
+			mouseListeners.remove(mouseListener);
+		}
+		
 	}
 }

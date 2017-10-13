@@ -4,6 +4,7 @@ import telford.common.Font;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
 import telford.common.Kit;
+import telford.common.MouseEvent;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
@@ -201,4 +202,21 @@ public class CodeDisplayer extends PortableDisplayer {
 			}
 		}
 	}
+	
+	@Override
+	public void MouseJustClicked(MouseEvent event){
+	    context.log(  "Mouse clicked " + event.getY() );
+		moveCursor(event);
+	}
+	
+	//Select the line that the mouse clicked inside the code display window 
+	public void moveCursor(MouseEvent event){
+		CodeDisplayerInfo displayInfo = this.getDisplayInfo() ;
+		int cursorLine = (event.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
+        context.log(  "delta_y is " + displayInfo.getDelta_y() );
+        context.log(  "coursorLine is " + cursorLine );
+		this.getDisplayInfo().setCursorLine(cursorLine);
+		refresh();
+	}
+	
 }

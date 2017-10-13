@@ -52,7 +52,7 @@ public class ContainerPeerGWT extends telford.common.peers.ContainerPeer {
 	}
 
 	@Override
-	public void addMouseListener(int count) {
+	public void addMouseListener( ) {
 	}
 
 	@Override
