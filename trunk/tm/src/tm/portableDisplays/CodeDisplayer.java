@@ -55,10 +55,6 @@ public class CodeDisplayer extends PortableDisplayer {
 	private TMFileI theFile = null;
 
 	@Override
-	public void refresh() {
-	}
-
-	@Override
 	public void paintComponent(Graphics screen) {
 		setMode(screen, NORMAL); // Always start in normal mode
 		FontMetrics fm = screen.getFontMetrics(screen.getFont());

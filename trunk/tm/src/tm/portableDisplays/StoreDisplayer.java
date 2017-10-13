@@ -21,11 +21,6 @@ public class StoreDisplayer extends PortableDisplayer {
 	}
 
 	@Override
-	public void refresh() {
-		
-	}
-
-	@Override
 	public void paintComponent(Graphics g) {
 		drawArea(g);
 	}

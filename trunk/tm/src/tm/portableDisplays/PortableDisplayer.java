@@ -13,5 +13,7 @@ public abstract class PortableDisplayer extends telford.common.Canvas {
 		this.context = context;
 	}
 
-	public abstract void refresh();
+	public void refresh() {
+	    repaint() ;
+	}
 }

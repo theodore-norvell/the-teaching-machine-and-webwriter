@@ -22,6 +22,7 @@ public class ExpressionDisplayer extends PortableDisplayer {
 			theExpression = "";
 		else
 			theExpression = model.getExpression();
+		super.refresh();
 	}
 
 	@Override
