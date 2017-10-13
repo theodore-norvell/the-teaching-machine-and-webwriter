@@ -61,6 +61,7 @@ public class RootPeerGWT extends telford.common.peers.RootPeer {
 
 	@Override
 	public void addMouseListener() { 
-		// TODO
+        // TODO
+        throw new AssertionError("Mouse listeners for RootPeers, not supported.") ;
 	}
 }

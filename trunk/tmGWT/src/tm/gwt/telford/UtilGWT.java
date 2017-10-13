@@ -41,21 +41,4 @@ public class UtilGWT {
 	public static void wrtLog2Console(String desc){
 		logger.log(Level.INFO, desc);
 	}
-	
-    public static void addMouseListener(MyCanvas canvas, telford.common.Component component){
-        int telfordCount = component.mouseListenerCount() ;
-        //protected
-        //int PlatformCount = widget.getHandlerCount(ClickEvent.getType());
-        int platformCount = canvas.mouseListenerCount();
-        if( platformCount == 0 && telfordCount > 0 ) {
-            MouseListenerGWT mouseListener =  new MouseListenerGWT(component) ;
-            canvas.addMouseListener((MouseListener) mouseListener);
-        }
-        else if( platformCount > 0 && telfordCount == 0 ) {
-            // TODO. get ride of any handlers.
-			MouseListenerGWT old = (MouseListenerGWT) canvas.getMouseListeners() ;
-			canvas.removeMouseListener( (MouseListener) old ); 
-			
-        }
-}
 }

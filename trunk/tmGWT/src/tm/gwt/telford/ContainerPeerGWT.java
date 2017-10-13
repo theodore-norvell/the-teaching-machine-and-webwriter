@@ -53,6 +53,8 @@ public class ContainerPeerGWT extends telford.common.peers.ContainerPeer {
 
 	@Override
 	public void addMouseListener( ) {
+	    // TODO
+	    throw new AssertionError("Mouse listeners for Containers, not supported.") ;
 	}
 
 	@Override
@@ -60,55 +62,7 @@ public class ContainerPeerGWT extends telford.common.peers.ContainerPeer {
 		myContainer.getPeer().setStyleName(styleName);
 	}
 
-	class MyContainer implements ClickHandler {
-
-//		HorizontalPanel hPanel;
-//		ScrollPanel sPanel;
-//		private int type;
-//
-//		public MyContainer() {
-//			this.type = 0;
-//			hPanel = new HorizontalPanel();
-//		}
-//
-//		public MyContainer(int type) {
-//			this.type = type;
-//			switch (type) {
-//			case 0:
-//				hPanel = new HorizontalPanel();
-//				break;
-//			case 1:
-//				sPanel = new ScrollPanel();
-//				break;
-//			default:
-//				break;
-//			}
-//		}
-//
-//		public Object getPeer() {
-//			if (type == 0)
-//				return hPanel;
-//			else
-//				return sPanel;
-//		}
-//
-//		public void addComponent(telford.common.Component component) {
-//			if (type == 0)
-//				hPanel.add((Widget) component.getPeer().getRepresentative());
-//			else
-//				sPanel.add((Widget) component.getPeer().getRepresentative());
-//		}
-//
-//		public void removeComponent(telford.common.Component component) {
-//			if (type == 0)
-//				hPanel.remove((Widget) component.getPeer().getRepresentative());
-//			else
-//				sPanel.remove((Widget) component.getPeer().getRepresentative());
-//		}
-//
-//		public void onClick(ClickEvent event) {
-//		}
-		
+	class MyContainer {		
 		private FlowPanel panel;
 
 		public MyContainer() {
@@ -125,9 +79,6 @@ public class ContainerPeerGWT extends telford.common.peers.ContainerPeer {
 
 		public void removeComponent(telford.common.Component component) {
 			panel.remove((Widget) component.getPeer().getRepresentative());
-		}
-
-		public void onClick(ClickEvent event) {
 		}
 	}
 }

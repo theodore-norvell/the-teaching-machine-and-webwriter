@@ -5,9 +5,8 @@ import com.google.gwt.event.dom.client.ClickHandler ;
 
 import telford.common.Component ;
 import telford.common.MouseEvent;
-import telford.common.MouseListener;
 
-public class MouseListenerGWT implements ClickHandler, MouseListener {
+public class MouseListenerGWT implements ClickHandler {
 
 	private Component component ;
 
@@ -20,15 +19,4 @@ public class MouseListenerGWT implements ClickHandler, MouseListener {
         MouseEvent me = new MouseEvent(event.getX(), event.getY()) ;
         component.fireMouseClicked( me );
     }
-
-	@Override
-	public void mouseMoved(MouseEvent e) {
-	
-	}
-
-	@Override
-	public void mouseClick(MouseEvent e) {
-		component.MouseJustClicked(e);
-	}
-
 }

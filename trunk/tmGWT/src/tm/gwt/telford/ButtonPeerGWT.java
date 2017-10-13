@@ -28,6 +28,8 @@ public class ButtonPeerGWT extends telford.common.peers.ButtonPeer {
 
 	@Override
 	public void addMouseListener( ) {
+        // TODO
+        throw new AssertionError("Mouse listeners for Buttons, not supported.") ;
 	}
 
 	@Override
