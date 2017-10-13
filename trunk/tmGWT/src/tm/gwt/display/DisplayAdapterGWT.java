@@ -16,27 +16,6 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	    super(title, rootName);
 	    this.displayer = displayer ;
 	    displayer.resetSize(canvasWidth, canvasHeight);
-	    Canvas rep = (Canvas)displayer.getPeer().getRepresentative() ;
-	    myWorkPane.add( rep );
-	        
-	    rep.addClickHandler(new MouseListenerGWT(displayer)/* {
-	    
-	        @Override public void onClick(ClickEvent event) {
-	        	MouseJustClicked(event);
-	        }
-	    }
-	    */
-	    	);
-
-
-/*	   
-	    addGWTMouseListener(new MouseListenerGWT(){
-			@Override
-			public void mouseClick(MouseEvent e) {
-				super.mouseClick(e);	
-			} });
-*/
-	    
 	    verticalScale = 1;
 	    horizontalScale = 1;
 	}
@@ -54,8 +33,4 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	public int getHScale(){ return horizontalScale;}
 	
 	public int getVScale(){ return verticalScale;}
-    
-    public void MouseJustClicked(MouseEvent event){
-        
-    }
 }

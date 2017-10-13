@@ -93,25 +93,11 @@ abstract public class WorkAreaSwing implements WorkAreaInterface {
         
         myComponent.setBackground(Color.white);
         myComponent.setOpaque(true);
-        //myComponent.setDoubleBuffered(false);
-//      ScriptManager.getManager().register(this);
-        
-        myComponent.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent evt) {
-                mouseJustClicked(evt);
-            }});
         
     }
     
     public Component getWindowComponent(){return mySubWindow;}
     
-    
-/*  Displays derived from this class that need to intercept mouse events can
-    over-ride this method.
-    
-*/
-    protected void mouseJustClicked(MouseEvent evt) {
-    }
     
     
 /* refresh - update methods. Refresh is the message used within the subWindow package
