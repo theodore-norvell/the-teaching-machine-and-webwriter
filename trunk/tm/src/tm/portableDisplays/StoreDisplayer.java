@@ -19,23 +19,12 @@ public class StoreDisplayer extends PortableDisplayer implements DataDisplayView
 	
 	private int width;
 	private int height;
-	private RegionInterface region; // Reference to client
 	private int view; // Current view being used (LOGICAL, SCALED, etc.)
 	private StoreDisplayerInfo displayInfo = new StoreDisplayerInfo();
 	
 	public StoreDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);
 		view = LOGICAL;
-		
-		addMouseListener( new MouseListener() {
-			@Override
-			public void mouseMoved(telford.common.MouseEvent e) {
-
-			}
-			@Override
-			public void mouseClick(telford.common.MouseEvent e) {
-				mouseJustClicked(e);
-			} } );
 	}
 
 	public StoreDisplayerInfo getDisplayInfo() {
@@ -70,10 +59,11 @@ public class StoreDisplayer extends PortableDisplayer implements DataDisplayView
 	public void mouseJustClicked(MouseEvent evt) {
 		if (evt == null)
 			return;
-		if (region == null)
+		if (displayInfo.getRegion() == null)
 			return;
 
 		Point location = new Point(evt.getX(), evt.getY());
+		RegionInterface region = displayInfo.getRegion() ;
 		for (int i = 0; i < region.getNumChildren(); i++) {
 			Datum kid = region.getChildAt(i);
 			tm.portableDisplays.DatumDisplay dd = tm.portableDisplays.DatumDisplay.getAssociated(kid, this);
