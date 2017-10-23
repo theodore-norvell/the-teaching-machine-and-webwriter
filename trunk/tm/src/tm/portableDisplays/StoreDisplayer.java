@@ -26,16 +26,6 @@ public class StoreDisplayer extends PortableDisplayer implements DataDisplayView
 	public StoreDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);
 		view = LOGICAL;
-		
-		addMouseListener( new MouseListener() {
-			@Override
-			public void mouseMoved(telford.common.MouseEvent e) {
-
-			}
-			@Override
-			public void mouseClick(telford.common.MouseEvent e) {
-				mouseJustClicked(e);
-			} } );
 	}
 
 	public StoreDisplayerInfo getDisplayInfo() {
