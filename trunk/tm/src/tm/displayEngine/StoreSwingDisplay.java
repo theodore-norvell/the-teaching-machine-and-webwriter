@@ -182,6 +182,7 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 		refresh();
 	}
 
+/*
 	protected void mouseJustClicked(MouseEvent evt) {
 		//super.mouseJustClicked(evt); 
 		if (evt == null)
@@ -200,6 +201,7 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 			}
 		}
 	}
+*/
 
 	@Override
     public void notifyOfSave(Configuration config) {

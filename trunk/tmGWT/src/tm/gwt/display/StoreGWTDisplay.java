@@ -131,7 +131,8 @@ public class StoreGWTDisplay extends DisplayAdapterGWT implements DataDisplayVie
 		view = i;
 		refresh();
 	}
-
+	
+/*
 	protected void mouseJustClicked(MouseEvent evt) {
 		if (evt == null)
 			return;
@@ -149,6 +150,7 @@ public class StoreGWTDisplay extends DisplayAdapterGWT implements DataDisplayVie
 			}
 		}
 	}
+*/
 	
 	public String getDisplayString() {
 		return "storeNode";
