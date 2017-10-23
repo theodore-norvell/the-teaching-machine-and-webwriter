@@ -1,10 +1,6 @@
 package tm.gwt.display;
 
 import com.google.gwt.canvas.client.Canvas;
-import com.google.gwt.event.dom.client.ClickEvent;
-
-import telford.common.MouseEvent;
-import tm.gwt.telford.MouseListenerGWT;
 import tm.portableDisplays.PortableDisplayer;
 
 public class DisplayAdapterGWT extends WorkAreaGWT {
@@ -16,6 +12,8 @@ public class DisplayAdapterGWT extends WorkAreaGWT {
 	    super(title, rootName);
 	    this.displayer = displayer ;
 	    displayer.resetSize(canvasWidth, canvasHeight);
+	    Canvas rep = (Canvas)displayer.getPeer().getRepresentative() ;
+	    myWorkPane.add( rep );
 	    verticalScale = 1;
 	    horizontalScale = 1;
 	}

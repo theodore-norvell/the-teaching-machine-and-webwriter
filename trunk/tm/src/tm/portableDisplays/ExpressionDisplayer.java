@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import telford.common.FontMetrics;
 import telford.common.Graphics;
+import telford.common.MouseEvent;
 import tm.interfaces.StateInterface ;
 
 public class ExpressionDisplayer extends PortableDisplayer {
@@ -110,5 +111,11 @@ public class ExpressionDisplayer extends PortableDisplayer {
 	
 	public void updateExp(String exp){
 		theExpression = exp;
+	}
+
+	@Override
+	public void mouseJustClicked(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
 	}
 }

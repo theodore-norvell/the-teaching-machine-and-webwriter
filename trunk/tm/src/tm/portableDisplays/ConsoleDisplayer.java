@@ -1,6 +1,7 @@
 package tm.portableDisplays;
 import telford.common.FontMetrics;
 import telford.common.Graphics;
+import telford.common.MouseEvent;
 import tm.interfaces.StateInterface;
 
 public class ConsoleDisplayer extends PortableDisplayer{
@@ -96,5 +97,12 @@ public class ConsoleDisplayer extends PortableDisplayer{
     public int getDelta_y(){
     	return delta_y;
     }
+
+
+	@Override
+	public void mouseJustClicked(MouseEvent evt) {
+		// TODO Auto-generated method stub
+		
+	}
     
 }

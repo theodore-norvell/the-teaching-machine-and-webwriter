@@ -5,7 +5,6 @@ import telford.common.FontMetrics;
 import telford.common.Graphics;
 import telford.common.Kit;
 import telford.common.MouseEvent;
-import telford.common.MouseListener;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.SelectionInterface ;
@@ -16,13 +15,6 @@ import tm.interfaces.TMFileI ;
 public class CodeDisplayer extends PortableDisplayer {
 	public CodeDisplayer(StateInterface model, PortableContextInterface context) {
 		super(model, context);
-		addMouseListener( new MouseListener() {
-            @Override public void mouseMoved(MouseEvent e) {
-            }
-
-            @Override public void mouseClick(MouseEvent e) {
-                moveCursor( e.getY() ) ;
-            } } );
 	}
 
 	private final static int LEFT_MARGIN = 10; // These units are in pixels
@@ -208,9 +200,9 @@ public class CodeDisplayer extends PortableDisplayer {
 	}
 	
 	//Select the line that the mouse clicked inside the code display window 
-	private void moveCursor(int y){
+	public void mouseJustClicked(MouseEvent e){
 		CodeDisplayerInfo displayInfo = this.getDisplayInfo() ;
-		int cursorLine = (y-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
+		int cursorLine = (e.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
         context.log(  "delta_y is " + displayInfo.getDelta_y() );
         context.log(  "coursorLine is " + cursorLine );
 		this.getDisplayInfo().setCursorLine(cursorLine);
