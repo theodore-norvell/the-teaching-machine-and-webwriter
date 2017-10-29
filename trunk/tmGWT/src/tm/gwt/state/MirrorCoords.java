@@ -10,6 +10,9 @@ public class MirrorCoords implements SourceCoordsI, IsSerializable{
     private MirrorTMFile file ;
     private int line ;
 
+    // Needed for serializability
+    private MirrorCoords() {}
+    
     public MirrorCoords(MirrorTMFile file, int line ) {
         this.file = file ;
         this.line = line ;
