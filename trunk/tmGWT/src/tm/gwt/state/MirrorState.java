@@ -16,7 +16,7 @@ import tm.interfaces.TMFileI ;
 public class MirrorState implements StateInterface, IsSerializable {
 
     private String expression = "" ;
-    private ArrayList<CodeLineI> codeLines = new ArrayList<CodeLineI>() ;
+    private ArrayList<MirrorCodeLine> codeLines = new ArrayList<MirrorCodeLine>() ;
     private SelectionInterface selection = new Selection(Selection.TokenType.TRUE) ;
     private SourceCoordsI codeFocus = new MirrorCoords(new MirrorTMFile( "" ), 1) ;
     private MirrorStore store = new MirrorStore() ;
@@ -38,7 +38,7 @@ public class MirrorState implements StateInterface, IsSerializable {
         return expression ;
     }
     
-    public void putSelectedCodeLines( TMFileI tmFile, ArrayList<CodeLineI> lines ){
+    public void putSelectedCodeLines( TMFileI tmFile, ArrayList<MirrorCodeLine> lines ){
         this.codeLines = lines ;
     }
 

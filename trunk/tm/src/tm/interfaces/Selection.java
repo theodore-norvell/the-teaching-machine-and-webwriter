@@ -17,7 +17,9 @@
  */
 package tm.interfaces;
 
-public class Selection implements SelectionInterface {
+import java.io.Serializable ;
+
+public class Selection implements SelectionInterface, Serializable {
 
     public enum TokenType{ AND, OR, NOT, TRUE, FALSE, TAG }
     

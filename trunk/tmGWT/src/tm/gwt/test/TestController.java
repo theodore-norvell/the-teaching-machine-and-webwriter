@@ -5,6 +5,7 @@ import java.util.Set ;
 import java.util.TreeSet ;
 import java.util.Vector ;
 
+import tm.gwt.state.MirrorCodeLine ;
 import tm.gwt.state.MirrorCoords ;
 import tm.gwt.state.MirrorDatum ;
 import tm.gwt.state.MirrorState ;
@@ -24,23 +25,23 @@ public class TestController implements StateCommander {
     final MirrorState state ;
     int count = 0 ;
     MirrorTMFile file = new MirrorTMFile( "fred.cpp" ) ;
-    ArrayList<CodeLineI> lines = new ArrayList<CodeLineI>() ;
+    ArrayList<MirrorCodeLine> lines = new ArrayList<MirrorCodeLine>() ;
     ArrayList<SourceCoordsI> foci = new ArrayList<SourceCoordsI>() ;
     {
         StringBuffer b = new StringBuffer() ;
         Vector<MarkUp> markup = new Vector<MarkUp>() ;
-        Set<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
+        TreeSet<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
         
 
         MirrorCoords coords ;
-        CodeLineI line ;
+        MirrorCodeLine line ;
         
         int lineNumber = 1 ;
 
         b.setLength( 0 );
         b.append( "void main( ) {" ) ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new CodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -48,7 +49,7 @@ public class TestController implements StateCommander {
         b.setLength( 0 );
         b.append( "    int first, second;" ) ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new CodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -56,7 +57,7 @@ public class TestController implements StateCommander {
         b.setLength( 0 );
         b.append( "    cout << \"Input the first number: \";" ) ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new CodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -64,7 +65,7 @@ public class TestController implements StateCommander {
         b.setLength( 0 );
         b.append( "     cin >> first;" ) ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new CodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -72,7 +73,7 @@ public class TestController implements StateCommander {
         b.setLength( 0 );
         b.append( "}" ) ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new CodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -81,7 +82,7 @@ public class TestController implements StateCommander {
             coords = new MirrorCoords(file, lineNumber)  ;
             b.setLength( 0 ); 
             b.append( "// Line " + lineNumber ) ;
-            line = new CodeLine(b, markup, coords, tagSets ) ;
+            line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
             lines.add(  line  ) ;
             ++lineNumber ;
         }
