@@ -1,12 +1,8 @@
 package tm.gwt.shared;
 
-import java.io.Serializable ;
-
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.gwt.state.MirrorState ;
-import tm.gwt.state.MirrorTMFile ;
-import tm.gwt.state.NotMirrorState ;
 
 public class TMServiceResult implements IsSerializable {
     /** The GUID. This should be the same as the guid in the request
