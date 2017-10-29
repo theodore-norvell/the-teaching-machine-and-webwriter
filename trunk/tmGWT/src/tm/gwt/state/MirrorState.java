@@ -25,6 +25,10 @@ public class MirrorState implements StateInterface, IsSerializable {
     public MirrorState() {
         // Create a default state.
     }
+    
+    public void update( StateInterface newState ) {
+        // TODO
+    }
 
     public void setExpression( String exp ) {
         this.expression = exp ;
@@ -81,6 +85,7 @@ public class MirrorState implements StateInterface, IsSerializable {
         return this.codeFocus ;
     }
     
+    @Deprecated // Should only be needed for testing.
     public void updateStore( StoreInterface store ) {
         this.store.update(  store ) ;
     }
