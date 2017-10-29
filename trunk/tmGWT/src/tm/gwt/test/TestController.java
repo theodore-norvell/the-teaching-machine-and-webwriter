@@ -23,7 +23,7 @@ import tm.interfaces.TagSetInterface ;
 public class TestController implements StateCommander {
     final MirrorState state ;
     int count = 0 ;
-    TMFileI file = new MirrorTMFile( "fred.cpp" ) ;
+    MirrorTMFile file = new MirrorTMFile( "fred.cpp" ) ;
     ArrayList<CodeLineI> lines = new ArrayList<CodeLineI>() ;
     ArrayList<SourceCoordsI> foci = new ArrayList<SourceCoordsI>() ;
     {
@@ -32,7 +32,7 @@ public class TestController implements StateCommander {
         Set<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
         
 
-        SourceCoordsI coords ;
+        MirrorCoords coords ;
         CodeLineI line ;
         
         int lineNumber = 1 ;

@@ -23,7 +23,6 @@ public class MirrorState implements StateInterface, IsSerializable {
     private ArrayList<String> consoleLines = new ArrayList<String>() ;
 
     public MirrorState() {
-        // Create a default state.
     }
     
     public void update( StateInterface newState ) {

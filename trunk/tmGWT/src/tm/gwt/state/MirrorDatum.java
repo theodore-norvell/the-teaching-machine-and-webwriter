@@ -12,11 +12,11 @@ import tm.interfaces.ScalarInterface ;
 
 public class MirrorDatum implements Datum, IsSerializable {
 
-    private final Vector<String> names = new Vector<String>() ;
-    private final Vector<Object> properties = new Vector<Object>() ;
+    private Vector<String> names = new Vector<String>() ;
+    private Vector<Object> properties = new Vector<Object>() ;
 
     protected int address;
-    final protected Datum parent;
+    protected MirrorDatum parent;
     protected String name ;
     protected String typeString ;
     protected String valueString ;
@@ -27,7 +27,9 @@ public class MirrorDatum implements Datum, IsSerializable {
     // Invariant chidren.size() == childLabel.size() 
     protected ArrayList<MirrorDatum> children = new ArrayList<MirrorDatum>() ;
     protected ArrayList<String> childLabel = new ArrayList<String>()  ;
-    final protected MirrorStore store ;
+    protected MirrorStore store ;
+    
+    private MirrorDatum() {}
     
     public static MirrorDatum makeMirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
         if( d instanceof RegionInterface ) return new MirrorRegion((RegionInterface) d, ms ) ;
@@ -76,7 +78,7 @@ public class MirrorDatum implements Datum, IsSerializable {
      * Make a datum with no children. Children can be added later.*/
     public MirrorDatum(
             int address,
-            Datum parent,
+            MirrorDatum parent,
             String name ,
             String typeString ,
             String valueString ,
@@ -283,9 +285,12 @@ public class MirrorDatum implements Datum, IsSerializable {
         return serialNumber ;
     }
     
-    public static class MirrorRegion extends MirrorDatum implements RegionInterface {
+    public static class MirrorRegion extends MirrorDatum
+    implements RegionInterface, IsSerializable {
 
         private int frameBoundary ;
+        
+        private MirrorRegion() { super() ; }
         
         protected MirrorRegion( RegionInterface region, MirrorStore ms ) {
             super( region, null, ms ) ;

@@ -1,2 +1,3 @@
 # Module tmgwt
 # RPC service class, partial path of RPC policy file
+tm.gwt.shared.TMService30Intf, 0E43D61647D961ACCDAEEE147AC11BB6.gwt.rpc

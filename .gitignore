@@ -11,3 +11,4 @@ tmgwt.nocache.js
 *.log
 trunk/tmGWT/war/tmgwt
 trunk/tm/tm-build/
+trunk/tmGWT/war/WEB-INF/deploy

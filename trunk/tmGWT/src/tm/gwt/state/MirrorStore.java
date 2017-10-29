@@ -2,11 +2,13 @@ package tm.gwt.state;
 
 import java.util.HashMap ;
 
+import com.google.gwt.user.client.rpc.IsSerializable ;
+
 import tm.interfaces.RegionInterface ;
 import tm.interfaces.StoreInterface ;
 import tm.virtualMachine.MemRegion ;
 
-public class MirrorStore implements StoreInterface {
+public class MirrorStore implements StoreInterface, IsSerializable {
     private static final long serialVersionUID = -833023456696499362L ;
     private HashMap<Integer,MirrorDatum> map = new HashMap<Integer,MirrorDatum>() ;
     MirrorDatum.MirrorRegion heapRegion ;
