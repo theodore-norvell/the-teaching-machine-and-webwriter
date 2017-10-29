@@ -17,7 +17,7 @@ package tm.displayEngine.tmHigraph;
 import java.awt.Graphics2D;
 
 import tm.backtrack.BTVar;
-import tm.displayEngine.DisplayAdapter;
+import tm.displayEngine.OldDisplayAdapter;
 import tm.displayEngine.DisplayManager;
 import higraph.swing.Animator;
 import higraph.view.HigraphView;
@@ -26,7 +26,7 @@ import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 import tm.utilities.Debug;
 
-public class HigraphVisualizer	extends DisplayAdapter {
+public class HigraphVisualizer	extends OldDisplayAdapter {
 	
 	/**
 	 * 

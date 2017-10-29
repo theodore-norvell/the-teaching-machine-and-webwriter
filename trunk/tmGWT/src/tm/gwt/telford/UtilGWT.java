@@ -5,8 +5,10 @@ import java.util.logging.Level;
  * To provide all logger interface
  * */
 import java.util.logging.Logger;
+import telford.common.MouseListener;
+import tm.gwt.telford.CanvasPeerGWT.MyCanvas;
 
-public class GWTUtil {
+public class UtilGWT {
 	public static Logger logger = Logger.getLogger("gwtLog");
 	
 	//GWT error codes 

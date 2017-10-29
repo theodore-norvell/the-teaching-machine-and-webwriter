@@ -9,7 +9,7 @@ public class Button extends Component{
 	ArrayList<ActionListener> listeners = new ArrayList<ActionListener>() ;
 	
 	public Button ( String title ) {
-		super(false) ;
+		super() ;
 		peer = Kit.getKit().makeButtonPeer(title, this);
 	}
 
@@ -33,5 +33,9 @@ public class Button extends Component{
 	public ButtonPeer getPeer() {
 		return (ButtonPeer) peer;
 	}
+
+    @Override
+    public void paintComponent(Graphics g) {
+    }
 
 }

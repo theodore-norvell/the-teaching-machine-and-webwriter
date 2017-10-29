@@ -1,6 +1,7 @@
 package tm.portableDisplays;
 
 import telford.common.Font;
+import telford.common.Kit ;
 import tm.interfaces.TMFileI ;
 
 public class CodeDisplayerInfo {
@@ -9,14 +10,22 @@ public class CodeDisplayerInfo {
 	private final static int BOLD = 1;
 	private final static int ITALIC = 2;
 
-	private Font myFonts[] = { null, null, null, null }; // Indexed by font
+	private Font myFonts[] = { Kit.getKit().getFont("Monospaced", 0, 12),
+	                           Kit.getKit().getFont("Monospaced", 1, 12),
+	                           Kit.getKit().getFont("Monospaced", 2, 12),
+	                           Kit.getKit().getFont("Monospaced", 3, 12) };
 	private int fontMapper[] = { PLAIN, PLAIN, ITALIC, PLAIN, BOLD, PLAIN };
 	private int fontColor[] = { 0x000000, 0x0000FF, 0x000000, 0xFF0000, 0x000000, 0xFF0000 };
 	private int cursorColor = 0x008000;
 	private int cursorLine = 0;
 	private boolean lineNumbersCheckStatus = true;//show line number by default
 	private TMFileI tmFile;
+	private int tabSpaces = 4;
+	private int delta_y = 12 ;
 	private int focusLineNumber = 1;
+	
+	
+	
 	public int getFocusLineNumber() {
 		return focusLineNumber;
 	}
@@ -82,8 +91,6 @@ public class CodeDisplayerInfo {
 		this.cursorColor = cursorColor;
 	}
 
-	private int tabSpaces = 4;
-
 	public int getTabSpaces() {
 		return tabSpaces;
 	}
@@ -115,6 +122,14 @@ public class CodeDisplayerInfo {
 
 	public void setFontColorByIndex(int fontColor, int index) {
 		this.fontColor[index] = fontColor;
+	}
+
+	public int getDelta_y() {
+		return this.delta_y;
+	}
+
+	public void setDelta_y( int newDelta_y) {
+		this.delta_y = newDelta_y ;
 	}
 	
 }

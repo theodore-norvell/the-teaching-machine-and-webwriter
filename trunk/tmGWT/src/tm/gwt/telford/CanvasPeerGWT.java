@@ -1,8 +1,16 @@
 package tm.gwt.telford;
 
+import telford.common.Font ;
+import telford.common.FontMetrics ;
+import telford.common.MouseListener;
+
+import java.util.ArrayList;
+
 import com.google.gwt.canvas.client.Canvas;
 import com.google.gwt.canvas.dom.client.Context2d;
 import com.google.gwt.dom.client.Style.Unit;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.HandlerRegistration ;
 
 public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
@@ -20,43 +28,65 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 
 	@Override
 	public int getWidth() {
-		return myCanvas.getPeer().getCoordinateSpaceWidth();
+		return myCanvas.getRepresentative().getCoordinateSpaceWidth();
 	}
 
 	@Override
 	public int getHeight() {
-		return myCanvas.getPeer().getCoordinateSpaceHeight();
+		return myCanvas.getRepresentative().getCoordinateSpaceHeight();
 	}
 
 	@Override
 	public Object getRepresentative() {
-		return myCanvas.getPeer();
+		return myCanvas.getRepresentative();
 	}
 
 	@Override
-	public void addMouseListener(int count) {
+	public void addMouseListener() {
+	    myCanvas.addMouseListener(component);
 	}
 
 	@Override
 	public void setStyleName(String styleName) {
-		myCanvas.getPeer().setStyleName(styleName);
+		myCanvas.getRepresentative().setStyleName(styleName);
 	}
+	
 	@Override
 	public void resetSize(int width, int height) {
-		myCanvas.getPeer().setWidth(width + Unit.PX.getType());
-		myCanvas.getPeer().setHeight(height + Unit.PX.getType());
-		myCanvas.getPeer().setCoordinateSpaceWidth(width);
-		myCanvas.getPeer().setCoordinateSpaceHeight(height);
+		myCanvas.getRepresentative().setWidth(width + Unit.PX.getType());
+		myCanvas.getRepresentative().setHeight(height + Unit.PX.getType());
+		myCanvas.getRepresentative().setCoordinateSpaceWidth(width);
+		myCanvas.getRepresentative().setCoordinateSpaceHeight(height);
 	}
+
+    @Override
+    public FontMetrics getFontMetrics(Font f) {
+        Context2d context2d = myCanvas.canvas.getContext2d() ;
+        return new FontMetricsGWT(context2d, f ) ;
+    }
 
 	class MyCanvas {
 		Canvas canvas;
+		HandlerRegistration clickHandlerRegistration = null ;
+	    
+	    public void addMouseListener(telford.common.Component component){
+	        int telfordCount = component.mouseListenerCount() ;
+	        int platformCount = this.clickHandlerRegistration == null ? 0 : 1 ;
+	        if( platformCount == 0 && telfordCount > 0 ) {
+	            MouseListenerGWT mouseListener =  new MouseListenerGWT(component) ;
+	            this.clickHandlerRegistration = canvas.addClickHandler( mouseListener ) ;
+	        }
+	        else if( platformCount > 0 && telfordCount == 0 ) {
+	            this.clickHandlerRegistration.removeHandler(); 
+	            this.clickHandlerRegistration = null ;
+	        }
+	    }
 
 		public MyCanvas() {
 			if (Canvas.isSupported()) {
 				canvas = Canvas.createIfSupported();
 			} else {
-				GWTUtil.error(GWTUtil.ERROR_NOT_SUPPORT_CANVAS, "MyCanvas constructor");
+				UtilGWT.error(UtilGWT.ERROR_NOT_SUPPORT_CANVAS, "MyCanvas constructor");
 			}
 		}
 
@@ -67,8 +97,9 @@ public class CanvasPeerGWT extends telford.common.peers.CanvasPeer {
 			component.paintComponent(tg);
 		}
 
-		public Canvas getPeer() {
+		public Canvas getRepresentative() {
 			return canvas;
 		}
+		
 	}
 }

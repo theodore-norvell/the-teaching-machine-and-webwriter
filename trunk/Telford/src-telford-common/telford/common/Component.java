@@ -4,15 +4,11 @@ import java.util.ArrayList;
 
 import telford.common.peers.ComponentPeer;
 
-public class Component {
+abstract public class Component {
 	ComponentPeer peer;
 	ArrayList<MouseListener> mouseListeners = new ArrayList<MouseListener>() ;
 	
-	public Component() { this(true) ; }
-	
-	public Component (boolean makePeer) {
-		if(makePeer) peer = Kit.getKit().makeComponentPeer(this);
-	}
+	public Component() {}
 	
 	public ComponentPeer getPeer(){
 		return peer;
@@ -20,15 +16,21 @@ public class Component {
 
 	public void addMouseListener(MouseListener mouseListener){
 		mouseListeners.add(mouseListener) ;
-		getPeer().addMouseListener(mouseListeners.size());
+		getPeer().addMouseListener();
 	}
+	
+	public int mouseListenerCount() {
+	    return mouseListeners.size() ; }
 	
 	public void fireMouseMoved( MouseEvent evt ) {
 		for(MouseListener l : mouseListeners ) l.mouseMoved( evt ) ;
 	}
+    
+    public void fireMouseClicked( MouseEvent evt ) {
+        for(MouseListener l : mouseListeners ) l.mouseClick( evt ) ;
+    }
 	
-	public void paintComponent(Graphics g) {
-	}
+	abstract public void paintComponent(Graphics g) ;
 	
 	public void repaint(){
 		getPeer().repaint();
@@ -45,5 +47,4 @@ public class Component {
 	public void setStyleName(String styleName){
 		getPeer().setStyleName(styleName);
 	}
-	
 }

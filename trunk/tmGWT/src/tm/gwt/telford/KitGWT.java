@@ -52,11 +52,6 @@ public class KitGWT extends telford.common.Kit {
 	public CanvasPeer makeCanvasPeer(Canvas canvas) {
 		return new CanvasPeerGWT(canvas);
 	}
-	
-	@Override
-	public ComponentPeer makeComponentPeer(Component component) {
-		return new ComponentPeerGWT(component);
-	}
 
 	@Override
 	public telford.common.BorderLayout getBorderLayoutManager() {

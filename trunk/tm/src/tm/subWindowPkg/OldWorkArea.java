@@ -65,7 +65,7 @@ routed to the workArea.
 
 
 
-abstract public class WorkArea extends JPanel implements Scrollable{
+abstract public class OldWorkArea extends JPanel implements Scrollable, WorkAreaInterface {
 	
 /**
 	 * 
@@ -82,9 +82,9 @@ abstract public class WorkArea extends JPanel implements Scrollable{
 
 	
 
-	public WorkArea(ImageSourceInterface imageSource) {
-	    mySubWindow = new SubWindow(imageSource);
-	    myWorkPane = mySubWindow.getWorkPane();
+	public OldWorkArea(ImageSourceInterface imageSource) {
+        myWorkPane = new JScrollPane() ;
+	    mySubWindow = new SubWindow(imageSource, myWorkPane);
 	    horizontalScale = 1;
 	    verticalScale = 1;
 	    mySize = new Dimension(0,0);
@@ -233,13 +233,14 @@ will then size object to fit inside pane if it is smaller or to its preferred si
 /* Over-ride methods. These are designed to be implemented in subclasses.
 */
 
-/* This method deals with any buttons pushed. 
+/** This method deals with any buttons pushed. 
 */
-	protected void buttonPushed(int i){
+	@Override
+    public void buttonPushed(int i) {
         /*DBG System.out.println("Button " + Integer.toString(i) + " has been pushed.");/*DBG*/
 	}
 	
-/*  subClasses should implement this method INSTEAD OF OVERRIDING PAINT. WorkArea
+/**  subClasses should implement this method INSTEAD OF OVERRIDING PAINT. WorkArea
     uses paint and update, working in tandem, to deliver consistent, rapid double
     buffering. These methods call drawArea to do the actual drawing/painting
 
@@ -268,7 +269,10 @@ will then size object to fit inside pane if it is smaller or to its preferred si
 	
 	public String toString(){ return "workArea";}
 	
-	
+	@Override
+    public Component getSwingComponent() {
+	    return this ;
+	}
 }
 
 

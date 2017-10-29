@@ -39,7 +39,7 @@ capacity
 */
 // =================================================================
 
-public class OldConsoleDisplay extends DisplayAdapter {
+public class OldConsoleDisplay extends OldDisplayAdapter {
 
 	/**
 		 * 
@@ -53,7 +53,6 @@ public class OldConsoleDisplay extends DisplayAdapter {
 	    private final static int TABSPACE = 4;
 
 	    private int numLines = 0;
-	    private int xInsert = 0;
 	    private int advances[];
 
 
@@ -98,9 +97,6 @@ public class OldConsoleDisplay extends DisplayAdapter {
 	            }
 	            setPreferredSize (new Dimension(width+LEFT_MARGIN,n*getVScale()));
 	            numLines = n;
-	            xInsert = (theLine == null || theLine.length() == 0 ||
-	                theLine.charAt(theLine.length()-1) == '\n') ?  // where input goes
-	                0 : theWidth;
 	        }
 	        super.refresh();
 	        g.dispose();
@@ -130,15 +126,13 @@ public class OldConsoleDisplay extends DisplayAdapter {
 	        g.setFont(context.getCodeFont());
 	        FontMetrics fm = g.getFontMetrics();
 	        int baseLine = TOP_MARGIN;
-	        String theLine = null;
-	        Point scroll = getScrollPosition();
 
 	    //	if (getLastShowing() > 0)
 	            for (int i = 0; i< numLines; i++) {
 	                baseLine += fm.getAscent();
-	                theLine = commandProcessor.getConsoleLine(i);
+	                String theLine = commandProcessor.getConsoleLine(i);
 	                if(theLine != null)
-	                    drawLine(expandTabs(theLine),LEFT_MARGIN-scroll.x,baseLine-scroll.y, g);
+	                    drawLine(expandTabs(theLine), LEFT_MARGIN, baseLine, g);
 	            }
 	    }
 

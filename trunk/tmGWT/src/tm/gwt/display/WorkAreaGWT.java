@@ -6,7 +6,8 @@ import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public abstract class WorkArea {
+
+public abstract class WorkAreaGWT {
 	private RootPanel codeRoot;
 	protected ScrollPanel myWorkPane;
 	protected HorizontalPanel toolBar;
@@ -16,14 +17,14 @@ public abstract class WorkArea {
 	final String TITLE_NAME_STATIC = "Static Memory";
 	final String TITLE_NAME_STACK = "Stack";
 	final String TITLE_NAME_SCRATCH = "Scratch";
+	public int width, height;
 
-	public WorkArea(String title, String rootName) {
+	public WorkAreaGWT(String title, String rootName) {
 		toolBar = new HorizontalPanel();
 		toolBar.setStyleName("tm-hPanel");
 		toolBar.setSpacing(3);
 
-		myWorkPane = new ScrollPanel();
-
+		myWorkPane = new ScrollPanel();		
 		VerticalPanel vpanel = new VerticalPanel();
 		vpanel.setStyleName("tm-vPanel");
 		vpanel.setSpacing(5);
@@ -31,12 +32,13 @@ public abstract class WorkArea {
 			title = getTitleByRootName(rootName);
 		vpanel.add(new HTML(title));
 		vpanel.add(toolBar);
-		vpanel.add(myWorkPane);
+		vpanel.add( myWorkPane );
 
 		codeRoot = RootPanel.get(rootName);
 		codeRoot.add(vpanel);
 	}
 
+	// This is not object oriented and need to change.
 	private String getTitleByRootName(String rootName) {
 		String title = TITLE_NAME_UNKNOWN;
 		if (rootName.equalsIgnoreCase("expDisplayPanel")) {
@@ -54,5 +56,12 @@ public abstract class WorkArea {
 		}
 		return title;
 	}
-
+	
+    public void setPreferredSize(int width, int height){
+        if (this.width != width || this.height != height) {
+        // resizing when size has changed
+            this.width = width;
+            this.height = height;
+        }
+    }
 }

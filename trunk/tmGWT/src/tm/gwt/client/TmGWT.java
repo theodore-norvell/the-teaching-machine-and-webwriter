@@ -14,7 +14,8 @@ import com.google.gwt.user.client.ui.Widget;
 
 import telford.common.Kit;
 import tm.gwt.display.CodeGWTDisplay;
-import tm.gwt.display.DisplayAdapter ;
+import tm.gwt.display.ConsoleGWTDisplay;
+import tm.gwt.display.DisplayAdapterGWT ;
 import tm.gwt.display.ExpressionGWTDisplay;
 import tm.gwt.display.GWTContext;
 import tm.gwt.display.StoreGWTDisplay;
@@ -29,7 +30,7 @@ import tm.portableDisplays.PortableContextInterface;
  */
 public class TmGWT implements EntryPoint {
     
-    ArrayList<DisplayAdapter> displays = new ArrayList<DisplayAdapter>() ;
+    ArrayList<DisplayAdapterGWT> displays = new ArrayList<DisplayAdapterGWT>() ;
     
 	public void onModuleLoad() {
 		
@@ -44,6 +45,9 @@ public class TmGWT implements EntryPoint {
 		
 		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, context);
 		displays.add( codeDisplay ) ;
+		
+		ConsoleGWTDisplay consoleDisplay = new ConsoleGWTDisplay(theState, context);
+		displays.add( consoleDisplay ) ;
 		
 		ExpressionGWTDisplay expDisplay = new ExpressionGWTDisplay( theState, commander, context);
         displays.add( expDisplay ) ;
@@ -64,7 +68,12 @@ public class TmGWT implements EntryPoint {
 	}
 	
 	private void refresh() {
-	    for( DisplayAdapter d : displays ) d.refresh(); 
+	    com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
+	    for( DisplayAdapterGWT d : displays ) {
+	        com.google.gwt.core.client.GWT.log("Refreshing " + d.toString() ) ;
+	        d.refresh(); 
+	    }
+        com.google.gwt.core.client.GWT.log("<< TmGWT.refresh()" ) ;
 	}
 	
 	public Widget createMenu() {

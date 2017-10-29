@@ -12,4 +12,6 @@ public interface PortableContextInterface {
     public int getHighlightColor();
     
     public AsserterI getAsserter() ;
+    
+    public void log( String message ) ;
 }

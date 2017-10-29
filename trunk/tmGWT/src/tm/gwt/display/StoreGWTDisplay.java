@@ -15,7 +15,7 @@ import tm.portableDisplays.PortableContextInterface;
 import tm.portableDisplays.StoreDatumDisplay;
 import tm.portableDisplays.StoreDisplayer;
 
-public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
+public class StoreGWTDisplay extends DisplayAdapterGWT implements DataDisplayView{
 
 	public static final int LOGICAL = 0; // each variable gets a similar box
 	public static final int SCALED = 1; // box depth reflects variable's size
@@ -53,6 +53,7 @@ public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
 		toolBar.add(bScaled);
 		toolBar.add(bBinary);
 		myWorkPane.setStyleName("tm-smallScrollPanel");
+		myWorkPane.setAlwaysShowScrollBars(true);
 		layoutManager = new StoreLayoutManagerGWT(this);
 	}
 
@@ -130,7 +131,8 @@ public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
 		view = i;
 		refresh();
 	}
-
+	
+/*
 	protected void mouseJustClicked(MouseEvent evt) {
 		if (evt == null)
 			return;
@@ -148,6 +150,7 @@ public class StoreGWTDisplay extends DisplayAdapter implements DataDisplayView{
 			}
 		}
 	}
+*/
 	
 	public String getDisplayString() {
 		return "storeNode";

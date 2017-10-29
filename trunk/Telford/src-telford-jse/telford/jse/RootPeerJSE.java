@@ -61,8 +61,8 @@ class RootPeerJSE extends telford.common.peers.RootPeer{
 	}
 	
 	@Override
-	public void addMouseListener(int count) {
-		UtilJSE.addMouseListener(myPanel, count, component);
+	public void addMouseListener() {
+		UtilJSE.addMouseListener(myPanel, component);
 
 	}
 

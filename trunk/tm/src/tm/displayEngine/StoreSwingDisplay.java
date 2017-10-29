@@ -26,8 +26,6 @@ import tm.utilities.Assert;
  */
 public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 
-	private static final long serialVersionUID = 9057830260011019321L;
-
 	// There are 3 separate views. The values correspond to the button order
 	public static final int LOGICAL = 0; // each variable gets a similar box
 	public static final int SCALED = 1; // box depth reflects variable's size
@@ -96,7 +94,8 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 	 * 
 	 * @return LOGICAl SCALED or BINARY
 	 */
-	public int getDatumView() {
+	@Override
+    public int getDatumView() {
 		return view;
 	}
 
@@ -106,15 +105,18 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 	 * that results in too small a size. Thus field widths are a function of the
 	 * particular view.
 	 */
-	public int getNameW() {
+	@Override
+    public int getNameW() {
 		return 0;
 	}
 
-	public int getValueW() {
+	@Override
+    public int getValueW() {
 		return 0;
 	}
 
-	public int getAddressW() {
+	@Override
+    public int getAddressW() {
 		return 0;
 	}
 
@@ -140,12 +142,13 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 	// the state changes, thus all code that is state dependent must be called
 	// from here
 	// =================================================================
-	public void refresh() {
+	@Override
+    public void refresh() {
 		if (region == null)
 			return;
 		int frameBoundary = region.getFrameBoundary();
 		OldDatumDisplay.updateFonts(context.getDisplayFont(),
-				getToolkit().getFontMetrics(context.getDisplayFont()).getHeight());
+				myComponent.getFontMetrics(context.getDisplayFont()).getHeight());
 		setScale(1, OldDatumDisplay.baseHeight); // scrolling increment
 		storeDisplayer.getDisplayInfo().getListDD().clear();
 		for (int i = 0; i < region.getNumChildren(); i++) {
@@ -165,7 +168,8 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 	// buttonPushed overide - used to choose between logical, scaled and
 	// binary views
 	// =================================================================
-	public void buttonPushed(int i) {
+	@Override
+    public void buttonPushed(int i) {
 		Assert.check(i >= 0 && i < 3);
 		// Reset other buttons up
 		for (int j = 0; j < 3; j++) {
@@ -178,8 +182,9 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 		refresh();
 	}
 
+/*
 	protected void mouseJustClicked(MouseEvent evt) {
-		super.mouseJustClicked(evt); 
+		//super.mouseJustClicked(evt); 
 		if (evt == null)
 			return;
 		if (region == null)
@@ -196,13 +201,16 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 			}
 		}
 	}
+*/
 
-	public void notifyOfSave(Configuration config) {
+	@Override
+    public void notifyOfSave(Configuration config) {
 		super.notifyOfSave(config);
 		config.setValue("View", Integer.toString(view));
 	}
 
-	public void notifyOfLoad(Configuration config) {
+	@Override
+    public void notifyOfLoad(Configuration config) {
 		super.notifyOfLoad(config);
 		int v;
 		String temp = config.getValue("View");
@@ -213,18 +221,21 @@ public class StoreSwingDisplay extends SwingDisplay implements DataDisplayView {
 		buttonPushed(v);
 	}
 
-	public String toString() {
+	@Override
+    public String toString() {
 		return "StoreDisplay for " + mySubWindow.getTitle();
 	}
 
-	public String getDisplayString() {
+	@Override
+    public String getDisplayString() {
 		return "storeNode";
 	}
 
 	/**
 	 * At the moment only top level datums are included in the selection
 	 */
-	public Vector<Datum> getSelected() {
+	@Override
+    public Vector<Datum> getSelected() {
 		Vector<Datum> selection = new Vector<Datum>();
 		for (int i = 0; i < region.getNumChildren(); i++) {
 			Datum datum = region.getChildAt(i);

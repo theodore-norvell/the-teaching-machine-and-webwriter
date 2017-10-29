@@ -31,7 +31,7 @@ public class ToolBar extends JToolBar implements ActionListener{
 	 * 
 	 */
 	private static final long serialVersionUID = -7389340619003401902L;
-	private WorkArea owner;		// Custom tool events will be sent to the workArea
+	private WorkAreaInterface owner;		// Custom tool events will be sent to the workArea
 	private String border;
 
 	public ToolBar(AbstractButton buttons[]) {
@@ -60,7 +60,7 @@ public class ToolBar extends JToolBar implements ActionListener{
 	public String getSide(){return border;}
 	
 
-	public void setReportTo(WorkArea a){
+	public void setReportTo(WorkAreaInterface a){
 	    owner = a;
 	}
 

@@ -15,6 +15,7 @@ import tm.interfaces.CodeLine ;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
 import tm.interfaces.SourceCoordsI ;
+import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
 import tm.interfaces.TagSet ;
 import tm.interfaces.TagSetInterface ;
@@ -31,39 +32,59 @@ public class TestController implements StateCommander {
         Set<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
         
 
-        SourceCoordsI coords = new MirrorCoords(file, 1)  ;
+        SourceCoordsI coords ;
+        CodeLineI line ;
+        
+        int lineNumber = 1 ;
+
+        b.setLength( 0 );
         b.append( "void main( ) {" ) ;
-        CodeLineI line = new CodeLine(b, markup, coords, tagSets ) ;
+        coords = new MirrorCoords(file, lineNumber)  ;
+        line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "    int first, second;" ) ;
-        coords = new MirrorCoords(file, 2)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "    cout << \"Input the first number: \";" ) ;
-        coords = new MirrorCoords(file, 3)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "     cin >> first;" ) ;
-        coords = new MirrorCoords(file, 4)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
 
         b.setLength( 0 );
         b.append( "}" ) ;
-        coords = new MirrorCoords(file, 5)  ;
+        coords = new MirrorCoords(file, lineNumber)  ;
         line = new CodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
+        ++lineNumber ;
+        
+        for( ; lineNumber < 52 ; ) {
+            coords = new MirrorCoords(file, lineNumber)  ;
+            b.setLength( 0 ); 
+            b.append( "// Line " + lineNumber ) ;
+            line = new CodeLine(b, markup, coords, tagSets ) ;
+            lines.add(  line  ) ;
+            ++lineNumber ;
+        }
     }
 
     public TestController(MirrorState state) {
@@ -78,51 +99,59 @@ public class TestController implements StateCommander {
                 int k = this.state.getStackRegion().getNumChildren() ;
                 com.google.gwt.core.client.GWT.log("Stack datums:"+k ) ;
             }
-            state.setExpression( "\ufffetempF\ufffb = (tempC * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_SELECTED+ "tempF" +StateInterface.EXP_END+ " = (tempC * 5 / 9) + 32" );
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
             state.updateStore( makeStore1() ) ;
+            for( int i = 0 ; i < 5 ; ++i)  state.addConsoleLine( "Console line " + i );
+            state.addConsoleLine( "Hello world"  );
             count = 1 ;
         } break ;
         case 1 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffetempC\ufffb * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ "tempC" +StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore2() ) ;
+            state.addConsoleLine( "What is your name?"  );
             count = 2 ;
         } break ;
         case 2 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffe\ufffctempC\ufffb\ufffb * 5 / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_LVALUE+ "tempC" +StateInterface.EXP_END+ StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore3() ) ;
+            state.addConsoleLine( StateInterface.INPUT_MARK + "Zhaoyan" + StateInterface.NORMAL_MARK  );
             count = 3 ;
         } break ;
         case 3 : {
-            state.setExpression( "\ufffctempF\ufffb = (\uffff10\ufffb * \ufffe5\ufffb / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END + " * " +StateInterface.EXP_START_SELECTED+ "5" +StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore4() ) ;
+            state.addConsoleLine(  "Hello Zhaoyan");
             count = 4 ;
         } break ;
         case 4 : {
-            state.setExpression( "\ufffctempF\ufffb = (\ufffe\uffff10\ufffb * \uffff5.0\ufffb\ufffb / 9) + 32" );
+            state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END+ " * " +StateInterface.EXP_START_VALUE+ "5.0" +StateInterface.EXP_END+ StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore5() ) ;
             count = 5 ;
         } break ;
         case 5 : {
-            state.setExpression( "\ufffe\ufffctempF\ufffb = \uffff50.0\ufffb\ufffb" );
+            state.setExpression( "" +StateInterface.EXP_START_SELECTED+ "" +StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = " +StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END+ StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore6() ) ;
+            state.addConsoleLine(  "Testing console 1");
             count = 6 ;
         } break ;
         case 6 : {
-            state.setExpression( "\uffff50.0\ufffb" );
+            state.setExpression( StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
             state.updateStore( makeStore0() ) ;
+            state.addConsoleLine(  "Testing console 2");
             count = 7 ;
         } break ;
         case 7 : {
             state.setExpression( "" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
+            state.addConsoleLine(  "Testing console 3");
             count = 0 ;
         } break ;
         }

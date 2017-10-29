@@ -38,7 +38,7 @@ names and their locations in memory).
 ===================================================================
 */
 
-public class STDisplay extends DisplayAdapter{
+public class STDisplay extends OldDisplayAdapter{
 	private static final long serialVersionUID = 676949149026767852L;
 	
     private int numEntries = 0;

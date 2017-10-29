@@ -2,23 +2,29 @@ package tm.gwt.display;
 
 import com.google.gwt.user.client.ui.Button;
 
+import telford.common.MouseEvent;
 import tm.gwt.jsInterface.GWTSuperTMFile;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.CodeDisplayer;
+import tm.portableDisplays.CodeDisplayerInfo;
 import tm.portableDisplays.PortableContextInterface;
 
-public class CodeGWTDisplay extends DisplayAdapter {
+public class CodeGWTDisplay extends DisplayAdapterGWT {
 	private GWTSuperTMFile theFile;
+	private int cursorLine; 
+	
 	StateInterface evaluator;
 	PortableContextInterface context = new GWTContext();
 	CodeDisplayer codeDisplayer ;
+	
 
 	public CodeGWTDisplay(StateInterface e, PortableContextInterface context) {
 		super(new CodeDisplayer(e, context), "codeDisplayPanel", "Test.java", 300, 600);
 		this.evaluator = e;
 		this.context = context;
+		cursorLine = 0;
 		
 		context.getAsserter().check( this.displayer instanceof CodeDisplayer ) ;
         this.codeDisplayer = (CodeDisplayer)this.displayer;
@@ -49,14 +55,17 @@ public class CodeGWTDisplay extends DisplayAdapter {
 	    
 //		myWorkPane.setStyleName("tm-scrollPanel");
 
-	    codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
+	    //codeDisplayer.setDisplayInfo(((GWTContext) context).getCodeDisplayerInfo());
 		boolean allowGaps = true;
 		setScale(1, 16);
 
 		SourceCoordsI focus = evaluator.getCodeFocus();
 		int focusLine = 0;
 		boolean found = false;
-		for (int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps); focusLine < sz; ++focusLine) {
+		int sz = evaluator.getNumSelectedCodeLines(theFile, allowGaps);
+		height = sz * (1 + codeDisplayer.getDisplayInfo().getDelta_y() ) ;
+		codeDisplayer.resetSize(1000, height);
+		for ( ; focusLine < sz; ++focusLine) {
 			CodeLineI codeLine = evaluator.getSelectedCodeLine(theFile, allowGaps, focusLine);
 			if (codeLine != null && codeLine.getCoords().equals(focus)) {
 				found = true;
@@ -73,6 +82,16 @@ public class CodeGWTDisplay extends DisplayAdapter {
 			}
 		}
 		super.refresh();
+	}
+	
+	//Select the line that the mouse clicked inside the code display window 
+	public void moveCursor(MouseEvent event){
+		CodeDisplayerInfo displayInfo = codeDisplayer.getDisplayInfo() ;
+		cursorLine = (event.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
+        context.log(  "delta_y is " + displayInfo.getDelta_y() );
+        context.log(  "coursorLine is " + cursorLine );
+		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
+		refresh();
 	}
 
 }

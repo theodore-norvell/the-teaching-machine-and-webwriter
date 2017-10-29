@@ -50,6 +50,13 @@ public class GraphicsGWT implements telford.common.Graphics {
 		return currFont;
 	}
 
+    @Override
+    public void drawString(char[] chars, int i, int count, int x, int y) {
+        String str = new String(chars, i, count) ;
+        drawString( str, x, y ) ;
+        
+    }
+
 	@Override
 	public void drawString(String str, int x, int y) {
 		c.fillText(str, x, y);
@@ -64,7 +71,7 @@ public class GraphicsGWT implements telford.common.Graphics {
 	@Override
 	public int getColor() {
 		if(currColor == null) return 0x0;
-		return currColor.getBlue() << 16 | (currColor.getBlack() << 8) | currColor.getRed();
+		return currColor.getBlue() << 16 | (currColor.getGreen() << 8) | currColor.getRed();
 	}
 
 	@Override
@@ -87,4 +94,5 @@ public class GraphicsGWT implements telford.common.Graphics {
 		c.lineTo(line.p1.getX(), line.p1.getY());
 		c.stroke();
 	}
+
 }

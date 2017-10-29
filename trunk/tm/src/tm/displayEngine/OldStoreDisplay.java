@@ -54,7 +54,7 @@ import tm.utilities.Debug;
  *    be expanded or contracted, which affects the store display inasmuch as
  *    it changes the total number of DatumDisplay objects available for display.
  */
-public class OldStoreDisplay extends DisplayAdapter implements DataDisplayView {
+public class OldStoreDisplay extends OldDisplayAdapter implements DataDisplayView {
 
 	private static final long serialVersionUID = 9057830260011019321L;
 	

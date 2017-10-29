@@ -67,9 +67,9 @@ public interface StateInterface {
     public String getConsoleLine(int l);
     
     /** Indicate console characters are normal (i.e. output) */
-    public static final char NORMAL_MARK = '\uffff';
+    public final char NORMAL_MARK = '\uffff';
     
     /** Indicate console characters are input */
-    public static final char INPUT_MARK = '\ufffe';
+    public final char INPUT_MARK = '\ufffe';
     
 }

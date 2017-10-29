@@ -12,7 +12,6 @@ public class Viewer {
 
 	public void repaint() {
 		displayer.refresh();
-		displayer.repaint();
 	}
 	
 	public PortableDisplayer getPlayer(){

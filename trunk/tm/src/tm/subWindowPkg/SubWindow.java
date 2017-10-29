@@ -34,7 +34,7 @@ import tm.interfaces.ImageSourceInterface;
  * their parent window.</p>
  *
  * @author Michael Bruce-Lockhart
- * @see WorkArea
+ * @see OldWorkArea
  */
 public class SubWindow extends JInternalFrame {
 
@@ -44,12 +44,12 @@ public class SubWindow extends JInternalFrame {
 	private static final long serialVersionUID = -8039438939872323140L;
 
 /** The area inside the edges, containing the workPane + toolBar */
-    private JPanel contentPane;
+    final private JPanel contentPane;
 /** A scrollable pane that contains the workArea */
-	private JScrollPane workPane;
+	final private JScrollPane workPane;
 /** The actual drawing surface for the display from which all displays are
  *  derived */
-	private WorkArea workArea;
+	private WorkAreaInterface workArea;
 /** The current location of the mouse */	
 //	private Point mouseAt = new Point(0,0); // Make sure it is initialized
 	private final static int MIN_DIM = 40;
@@ -63,14 +63,13 @@ public class SubWindow extends JInternalFrame {
          * @param is: the ImageSourceInterface ? from which the buttons gifs come?
          * @param scrollPolicy: the scrolling policy for the workPane
          */        
-	public SubWindow(ImageSourceInterface is/*,
-						int vertScrollPolicy, int horizScrollPolicy*/) {
+	public SubWindow(ImageSourceInterface is, JScrollPane workPane) {
 		super(null,true, true, true, true);
 // Build the inner area for the center which will contain a workArea and possibly a toolbar
 		contentPane = new JPanel(new BorderLayout());
 
 // Create the specialized scrollPane that holds the actual workArea		
-		workPane = new JScrollPane(/*vertScrollPolicy, horizScrollPolicy*/);
+		this.workPane = workPane ;
 
 
 // Add title bar & workPane to inside area
@@ -84,15 +83,16 @@ public class SubWindow extends JInternalFrame {
 	}
 	
 
-        /** <p>Each subWindow has a {@link WorkArea} which is where the subWindow is
+        /** <p>Each subWindow has a {@link WorkAreaInterface} which is where the subWindow is
          * specialised. Both objects must know of the other but must be constructed one at
-         * a time. Thus a SubWindow is constructed first, then its {@link WorkArea} then the
-         * {@link WorkArea} must be added to the SubWindow.</p>
-         * @param workArea the {@link WorkArea} associated with the subWindow
+         * a time. Thus a SubWindow is constructed first, then its {@link WorkAreaInterface} then the
+         * {@link WorkAreaInterface} must be added to the SubWindow.</p>
+         * @param workArea the {@link WorkAreaInterface} associated with the subWindow
          */        
-	public void addWorkArea(WorkArea wa){
+	public void addWorkArea(WorkAreaInterface wa){
 		workArea = wa;
-	    workPane.setViewportView(workArea);
+	    workPane.setViewportView( workArea.getSwingComponent() );
+	    workPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
 /**
  * TO BE DONE: If I try to use the new BLIT_SCROLL_MODE clipping doesn't work
  * properly with storeDisplays and the STDisplay (although its fine with the
@@ -122,10 +122,10 @@ public class SubWindow extends JInternalFrame {
  * datums even when datums are expanded. size of the view is changing properly
  * so there's no reason first and last datum can't be more accurate.
  */
-	    workPane.getViewport().setScrollMode(JViewport.BACKINGSTORE_SCROLL_MODE);
+
 	}
 	
-	public void addWorkArea(WorkArea wa, ToolBar toolBar){
+	public void addWorkArea(WorkAreaInterface wa, ToolBar toolBar){
 		addWorkArea(wa);
 		if (toolBar != null) addToolBar(toolBar);
 	}

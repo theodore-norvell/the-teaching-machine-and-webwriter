@@ -23,6 +23,12 @@ public class FontMetricsGWT extends telford.common.FontMetrics {
 		return (int) context.measureText(str).getWidth();
 	}
 
+    @Override
+    public int stringWidth(char[] chars, int i, int len) {
+        String str = new String( chars, i, len ) ;
+        return stringWidth( str ) ;
+    }
+
 	@Override
 	public int getAscent() {
 		return (int) context.measureText("M").getWidth();

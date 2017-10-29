@@ -24,7 +24,7 @@ import tm.interfaces.StateInterface ;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
 
-public class OldExpressionDisplay extends DisplayAdapter {
+public class OldExpressionDisplay extends OldDisplayAdapter {
 
 	/**
 	 * 

@@ -14,6 +14,9 @@ public interface Graphics {
 	
 	public Font getFont() ;
 
+    public void drawString( char[] chars, int i, int count, int x, int y ) ;
+
+
 	public void drawString( String message, int x, int y ) ;
 	
 	public FontMetrics getFontMetrics( Font f ) ;

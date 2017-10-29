@@ -20,9 +20,14 @@ public class MirrorState implements StateInterface, IsSerializable {
     private SelectionInterface selection = new Selection(Selection.TokenType.TRUE) ;
     private SourceCoordsI codeFocus = new MirrorCoords(new MirrorTMFile( "" ), 1) ;
     private MirrorStore store = new MirrorStore() ;
+    private ArrayList<String> consoleLines = new ArrayList<String>() ;
 
     public MirrorState() {
         // Create a default state.
+    }
+    
+    public void update( StateInterface newState ) {
+        // TODO
     }
 
     public void setExpression( String exp ) {
@@ -80,6 +85,7 @@ public class MirrorState implements StateInterface, IsSerializable {
         return this.codeFocus ;
     }
     
+    @Deprecated // Should only be needed for testing.
     public void updateStore( StoreInterface store ) {
         this.store.update(  store ) ;
     }
@@ -104,16 +110,21 @@ public class MirrorState implements StateInterface, IsSerializable {
         return this.store.scratchRegion ;
     }
 
-    @Override
-    public int getNumConsoleLines() {
-        // TODO Auto-generated method stub
-        return 0 ;
+    public void addConsoleLine( String line ) {
+        consoleLines.add(line);
     }
 
-    @Override
-    public String getConsoleLine(int l) {
-        // TODO Auto-generated method stub
-        return null ;
-    }
+	@Override
+	public int getNumConsoleLines() {
+		return consoleLines.size();
+	}
+
+	@Override
+	public String getConsoleLine(int l) {
+		return consoleLines.get(l);
+	}
+
+
+
 
 }

@@ -38,8 +38,8 @@ class ButtonPeerJSE extends telford.common.peers.ButtonPeer {
 	}
 	
 	@Override
-	public void addMouseListener(int count) {
-		UtilJSE.addMouseListener(myButton, count, component);
+	public void addMouseListener() {
+		UtilJSE.addMouseListener(myButton, component);
 	}
 	
 	@Override

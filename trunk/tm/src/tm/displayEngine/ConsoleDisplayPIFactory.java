@@ -36,7 +36,7 @@ public class ConsoleDisplayPIFactory implements DisplayPIFactoryIntf{
     }
 	
 	public DisplayInterface createPlugin(DisplayManager dm) {		
-		return new OldConsoleDisplay(dm, configId);
+		return new ConsoleSwingDisplay(dm, configId);
 	}
 
 	public Requirement[] getRequirements() {
