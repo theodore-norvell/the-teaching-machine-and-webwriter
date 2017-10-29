@@ -7,13 +7,13 @@
 
   <!-- Servlets -->
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>tm.gwt.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>tmService30Servlet</servlet-name>
+    <servlet-class>tm.gwt.server.TMService30</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/tmgwt/greet</url-pattern>
+    <servlet-name>tmService30Servlet</servlet-name>
+    <url-pattern>/tmgwt/tmService30</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->

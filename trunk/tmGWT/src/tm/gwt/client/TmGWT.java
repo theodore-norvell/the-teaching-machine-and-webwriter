@@ -33,8 +33,14 @@ public class TmGWT implements EntryPoint {
     ArrayList<DisplayAdapterGWT> displays = new ArrayList<DisplayAdapterGWT>() ;
     
 	public void onModuleLoad() {
-		
 		GWT.log("Start GWT test.", null);
+		
+		String url = GWT.getModuleBaseURL() + "tmService30" ;
+		GWT.log(  "URL is now " + url );
+		TMServiceAdapter adapter = new TMServiceAdapter( url ) ;
+		adapter.ping() ;
+		
+		
 		Kit.setKit(new KitGWT());
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
