@@ -26,7 +26,7 @@ public class TestController implements StateCommander {
     int count = 0 ;
     MirrorTMFile file = new MirrorTMFile( "fred.cpp" ) ;
     ArrayList<MirrorCodeLine> lines = new ArrayList<MirrorCodeLine>() ;
-    ArrayList<SourceCoordsI> foci = new ArrayList<SourceCoordsI>() ;
+    ArrayList<MirrorCoords> foci = new ArrayList<MirrorCoords>() ;
     {
         StringBuffer b = new StringBuffer() ;
         Vector<MarkUp> markup = new Vector<MarkUp>() ;

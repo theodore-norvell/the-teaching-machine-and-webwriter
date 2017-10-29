@@ -75,7 +75,7 @@ public class MirrorState implements StateInterface, IsSerializable {
         return selection ;
     }
 
-    public void setCodeFocus(SourceCoordsI coords) {
+    public void setCodeFocus(MirrorCoords coords) {
         this.codeFocus = coords ;
     }
 

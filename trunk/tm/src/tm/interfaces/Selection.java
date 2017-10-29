@@ -29,6 +29,8 @@ public class Selection implements SelectionInterface, Serializable {
     
     private Selection[] children ;
     
+    private Selection() {} ;
+    
     public Selection( TokenType t ) { type = t ; }
     
     public Selection( String tag ) {
