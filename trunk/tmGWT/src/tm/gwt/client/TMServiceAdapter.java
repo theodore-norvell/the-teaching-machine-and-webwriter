@@ -48,23 +48,27 @@ public class TMServiceAdapter extends Observable implements StateCommander {
     }
     
     public void createEvaluator( ) {
+        GWT.log( "createEvaluator sent to proxy" );
         proxy.createEvaluator( callback ) ;
     }
     
     public void loadString( String fileName, String programSource) {
         if( this.latestResult.guid != null ) {
+            GWT.log( "loadString sent to proxy" );
             proxy.loadString( this.latestResult.guid, fileName, programSource, callback );
         }
     }
     
     public void loadRemoteFile( String root, String fileName ) {
         if( this.latestResult.guid != null ) {
+            GWT.log( "loadRemoteFile sent to proxy" );
             proxy.loadRemoteFile( this.latestResult.guid, root, fileName, callback );
         }
     }
     
     public void initializeTheState( ) {
         if( this.latestResult.guid != null ) {
+            GWT.log( "initializeTheState sent to proxy" );
             proxy.initializeTheState( this.latestResult.guid, callback );
         }
     }
@@ -72,6 +76,7 @@ public class TMServiceAdapter extends Observable implements StateCommander {
     @Override
     public void go( String commandString ) {
         if( this.latestResult.guid != null ) {
+            GWT.log( "go sent to proxy" );
             proxy.go( this.latestResult.guid, commandString, callback );
         }
     }
@@ -79,6 +84,7 @@ public class TMServiceAdapter extends Observable implements StateCommander {
     @Override
     public void goBack() {
         if( this.latestResult.guid != null ) {
+            GWT.log( "goBack sent to proxy" );
             proxy.goBack( this.latestResult.guid, callback );
         }
     }
@@ -105,6 +111,7 @@ public class TMServiceAdapter extends Observable implements StateCommander {
     private class Callback implements AsyncCallback<TMServiceResult> {
         @Override
         public void onFailure(Throwable caught) {
+            GWT.log("Failure") ;
             TMServiceAdapter.this.latestResult.attentionMessage =
                  "Communication with server failed." ;
             // TODO. For the exceptionInformation, we really need
@@ -117,6 +124,7 @@ public class TMServiceAdapter extends Observable implements StateCommander {
 
         @Override
         public void onSuccess(TMServiceResult result) {
+            GWT.log("Success") ;
             TMServiceAdapter.this.latestResult = result ;
             mirrorState.update( result.resultState ) ;
             TMServiceAdapter.this.setChanged();
