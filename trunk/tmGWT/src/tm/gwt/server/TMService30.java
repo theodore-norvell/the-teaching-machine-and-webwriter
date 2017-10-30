@@ -18,7 +18,6 @@ public class TMService30 extends RemoteServiceServlet
 
     @Override
     public TMServiceResult createEvaluator() {
-        GWT.log( "In  createEvaluator" );
         System.out.println( "In  createEvaluator ") ;
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
@@ -34,7 +33,7 @@ public class TMService30 extends RemoteServiceServlet
     @Override
     public TMServiceResult loadString(String guid, String fileName,
             String programSource) {
-        GWT.log( "In  loadString" );
+        System.out.println( "In  loadString" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
@@ -49,7 +48,7 @@ public class TMService30 extends RemoteServiceServlet
     @Override
     public TMServiceResult loadRemoteFile(String guid, String root,
             String fileName) {
-        GWT.log( "In  loadRemoteFile" );
+        System.out.println( "In  loadRemoteFile" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
@@ -63,7 +62,7 @@ public class TMService30 extends RemoteServiceServlet
 
     @Override
     public TMServiceResult initializeTheState(String guid) {
-        GWT.log( "In  initializeTheState" );
+        System.out.println( "In  initializeTheState" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
@@ -77,7 +76,7 @@ public class TMService30 extends RemoteServiceServlet
 
     @Override
     public TMServiceResult go(String guid, String commandString) {
-        GWT.log( "In  go" );
+        System.out.println( "In  go" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
@@ -91,7 +90,7 @@ public class TMService30 extends RemoteServiceServlet
 
     @Override
     public TMServiceResult goBack(String guid) {
-        GWT.log( "In  goBack" );
+        System.out.println( "In  goBack" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
@@ -105,7 +104,7 @@ public class TMService30 extends RemoteServiceServlet
 
     @Override
     public TMServiceResult toCursor(String guid, String fileName, int cursor) {
-        GWT.log( "In  toCursor" );
+        System.out.println( "In  toCursor" );
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
         result.attentionMessage = null ;
