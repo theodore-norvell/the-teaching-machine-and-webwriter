@@ -34,4 +34,8 @@ public interface TMService30IntfAsync {
     public void goBack(
             String guid,
             AsyncCallback<TMServiceResult> callback ) ;
+
+    /** See {@link tm.gwt.shared.TMService30Intf} */
+    public void toCursor(String guid, String fileName, int cursor,
+            AsyncCallback<TMServiceResult> callback) ;
 }

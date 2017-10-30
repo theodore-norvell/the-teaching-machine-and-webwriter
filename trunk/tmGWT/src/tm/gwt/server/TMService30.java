@@ -51,4 +51,10 @@ public class TMService30 extends RemoteServiceServlet
         return null ;
     }
 
+    @Override
+    public TMServiceResult toCursor(String guid, String fileName, int cursor) {
+        // TODO Auto-generated method stub
+        return null ;
+    }
+
 }

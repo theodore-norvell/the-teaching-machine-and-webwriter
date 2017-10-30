@@ -28,34 +28,41 @@ import tm.portableDisplays.PortableContextInterface;
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
  */
-public class TmGWT implements EntryPoint {
+public class TmGWT implements EntryPoint, Observer {
     
     ArrayList<DisplayAdapterGWT> displays = new ArrayList<DisplayAdapterGWT>() ;
+
+    TMServiceAdapter adapter ;
     
-	public void onModuleLoad() {
+    private Scheduler.ScheduledCommand refreshCommand
+    = new Scheduler.ScheduledCommand() {
+        @Override public void execute() { TmGWT.this.refresh() ; } } ;
+    
+	@Override
+    public void onModuleLoad() {
 		GWT.log("Start GWT test.", null);
+	
+        MirrorState theState = new MirrorState() ;
 		
 		String url = GWT.getModuleBaseURL() + "tmService30" ;
 		GWT.log(  "URL is now " + url );
-		TMServiceAdapter adapter = new TMServiceAdapter( url ) ;
+		adapter = new TMServiceAdapter( url, theState ) ;
+		adapter.addObserver(  this );
 		adapter.ping() ;
-		
+		adapter.createEvaluator();
 		
 		Kit.setKit(new KitGWT());
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
-		MirrorState theState = new MirrorState() ;
-		StateCommander controller = new TestController( theState ) ;
-		StateCommander commander = this.new TestStateCommander(controller) ;
-		
-		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, context);
+
+		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, adapter, context);
 		displays.add( codeDisplay ) ;
 		
 		ConsoleGWTDisplay consoleDisplay = new ConsoleGWTDisplay(theState, context);
 		displays.add( consoleDisplay ) ;
 		
-		ExpressionGWTDisplay expDisplay = new ExpressionGWTDisplay( theState, commander, context);
+		ExpressionGWTDisplay expDisplay = new ExpressionGWTDisplay( theState, adapter, context);
         displays.add( expDisplay ) ;
 		
 		StoreGWTDisplay staticDisplay = new StoreGWTDisplay(theState, context, "Static");
@@ -72,8 +79,27 @@ public class TmGWT implements EntryPoint {
 		
 		refresh() ;
 	}
+
+    @Override
+    public void update(Observable o, Object arg) {
+        // TODO  Is the following really needed?
+        // Couldn't we just call refresh?
+        Scheduler.get().scheduleDeferred( refreshCommand );
+    }
 	
 	private void refresh() {
+	    // TODO  We need to pop up some sort of alert if
+	    // the attention line is not null.
+	    // For now, try just an browser alert.
+	    String message = adapter.getAttentionMessage() ;
+	    if( message != null ) {
+	        String exeptionInformation = adapter.getExceptionInformation() ;
+	        if( exeptionInformation != null ) {
+	            message += "\n" + exeptionInformation ;
+	        }
+	        Window.alert( message );
+	    }
+	    
 	    com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
 	    for( DisplayAdapterGWT d : displays ) {
 	        com.google.gwt.core.client.GWT.log("Refreshing " + d.toString() ) ;
@@ -88,7 +114,8 @@ public class TmGWT implements EntryPoint {
 	      private int curPhrase = 0;
 	      private final String[] phrases = {"Don't click me","Simple menu sample","Try another one"};
 
-	      public void execute() {
+	      @Override
+          public void execute() {
 	        Window.alert(phrases[curPhrase]);
 	        curPhrase = (curPhrase + 1) % phrases.length;
 	      }
@@ -168,6 +195,7 @@ public class TmGWT implements EntryPoint {
             Scheduler.get().scheduleDeferred( refreshCommand );
         }
         
+        
         @Override
         public void goForward() {
             controller.goForward();
@@ -196,6 +224,19 @@ public class TmGWT implements EntryPoint {
         public void intoSub() {
             controller.intoSub();
             refresh() ;
+        }
+
+
+        @Override
+        public void go(String commandString) {
+            // TODO Auto-generated method stub
+        }
+
+
+        @Override
+        public void toCursor(String fileName, int cursor) {
+            // TODO Auto-generated method stub
+            
         }
 	    
 	}

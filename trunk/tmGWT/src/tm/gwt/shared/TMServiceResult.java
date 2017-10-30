@@ -30,6 +30,6 @@ public class TMServiceResult implements IsSerializable {
     public String exceptionInformation ;
     
     /** The state of the machine after the request.
-     * This should be null iff the statusCode is NO_EVALUATOR.*/
+     * This field should never be null. */
     public MirrorState resultState ;
 }

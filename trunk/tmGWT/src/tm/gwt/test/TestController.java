@@ -254,6 +254,18 @@ public class TestController implements StateCommander {
     MirrorStore makeStore6() {
         return makeStore1() ;
     }
+
+    @Override
+    public void go(String commandString) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void toCursor(String fileName, int cursor) {
+        // TODO Auto-generated method stub
+        
+    }
     
     
 }

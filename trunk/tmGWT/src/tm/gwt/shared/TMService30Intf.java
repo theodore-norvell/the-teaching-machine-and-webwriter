@@ -24,6 +24,9 @@ public interface TMService30Intf extends RemoteService {
     /** Go. See {@link tm.interfaces.ExternalCommandInterface} */
     public TMServiceResult go( String guid, String commandString ) ;
     
-    /** Go. See {@link tm.interfaces.ExternalCommandInterface} */
+    /** Undo. See {@link tm.interfaces.ExternalCommandInterface} */
     public TMServiceResult goBack( String guid ) ;
+    
+    /** To Cursor. See {@link tm.interfaces.ExternalCommandInterface} */
+    public TMServiceResult toCursor(String guid, String fileName, int cursor) ;
 }
