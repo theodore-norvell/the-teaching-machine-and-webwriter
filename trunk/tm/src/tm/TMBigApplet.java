@@ -118,7 +118,7 @@ parts of the Teaching Machine
     COMPILED
   
                    any go-forward operation,goBack, redo
-   NO_EVALUATOR ------------------------------------------> NO_FILE_LOADED
+   NO_EVALUATOR ------------------------------------------> NO_EVALUATOR
    
                                      go_back [if undo is possible]
    (any state but no evaluator) ----------------------------------->(the previous state)

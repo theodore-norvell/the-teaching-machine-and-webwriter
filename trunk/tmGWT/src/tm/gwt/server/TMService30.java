@@ -9,7 +9,7 @@ import com.google.gwt.core.shared.GWT ;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet ;
 
 public class TMService30 extends RemoteServiceServlet
-    implements TMService30Intf{
+    implements TMService30Intf {
 
     @Override
     public String ping() {
