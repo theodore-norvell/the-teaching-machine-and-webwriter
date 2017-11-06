@@ -1,15 +1,18 @@
 package tm.gwt.server;
 
+import tm.gwt.shared.EvaluatorWrapper;
 import tm.gwt.shared.TMService30Intf ;
 import tm.gwt.shared.TMServiceResult ;
 import tm.gwt.state.MirrorState ;
 import tm.interfaces.TMStatusCode ;
-
-import com.google.gwt.core.shared.GWT ;
+import java.util.HashMap;
+import java.util.UUID;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet ;
 
 public class TMService30 extends RemoteServiceServlet
     implements TMService30Intf {
+
+	private HashMap<String, EvaluatorWrapper> evaluators = new HashMap<String, EvaluatorWrapper>();
 
     @Override
     public String ping() {
@@ -21,27 +24,24 @@ public class TMService30 extends RemoteServiceServlet
         System.out.println( "In  createEvaluator ") ;
         // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = "Could not create Evaluator" ;
         result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
-        return result ;
+        result.attentionMessage = null ;
+        EvaluatorWrapper evaluator = new EvaluatorWrapper();
+        String guid = UUID.randomUUID().toString();
+        evaluators.put(guid, evaluator);
+        result.guid = guid;
+        result.resultState = new MirrorState();
+        result.statusCode = TMStatusCode.READY;
+        result.statusMessage = "Evaluator is already created." ;
+        return result;
     }
 
     @Override
     public TMServiceResult loadString(String guid, String fileName,
             String programSource) {
         System.out.println( "In  loadString" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).loadString(fileName, programSource);
         return result ;
     }
 
@@ -49,70 +49,40 @@ public class TMService30 extends RemoteServiceServlet
     public TMServiceResult loadRemoteFile(String guid, String root,
             String fileName) {
         System.out.println( "In  loadRemoteFile" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).loadRemoteFile(root, fileName);
         return result ;
     }
 
     @Override
     public TMServiceResult initializeTheState(String guid) {
         System.out.println( "In  initializeTheState" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).initializeTheState();
         return result ;
     }
 
     @Override
     public TMServiceResult go(String guid, String commandString) {
         System.out.println( "In  go" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).go(commandString);
         return result ;
     }
 
     @Override
     public TMServiceResult goBack(String guid) {
         System.out.println( "In  goBack" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).goBack();
         return result ;
     }
 
     @Override
     public TMServiceResult toCursor(String guid, String fileName, int cursor) {
         System.out.println( "In  toCursor" );
-        // TODO Complete this method
         TMServiceResult result = new TMServiceResult() ;
-        result.attentionMessage = null ;
-        result.exceptionInformation = null ;
-        result.guid = null ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        result.statusMessage = "Could not create evaluator." ;
-        result.resultState = new MirrorState() ;
+        evaluators.get(guid).toCursor(fileName, cursor);
         return result ;
     }
 
