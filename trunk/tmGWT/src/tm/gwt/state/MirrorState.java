@@ -12,6 +12,7 @@ import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.StoreInterface ;
 import tm.interfaces.TMFileI ;
+import tm.utilities.TMFile;
 
 public class MirrorState implements StateInterface, IsSerializable {
 
@@ -27,6 +28,15 @@ public class MirrorState implements StateInterface, IsSerializable {
     
     public void update( StateInterface newState ) {
         // TODO
+    	
+    	codeLines
+    	selection
+    	codeFocus
+    	store.update( newState.getStore() ); //???
+    	
+    	for(int i = 0; i < consoleLines.size(); i++){
+    		consoleLines.set(i, newState.getConsoleLine(i));
+    	}
     }
 
     public void setExpression( String exp ) {

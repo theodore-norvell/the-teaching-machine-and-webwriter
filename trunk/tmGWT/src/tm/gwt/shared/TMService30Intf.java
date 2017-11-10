@@ -10,7 +10,7 @@ public interface TMService30Intf extends RemoteService {
     public String ping() ;
     
     /** Create a new evaluator. */
-    public TMServiceResult createEvaluator() ;
+    public TMServiceResult createEvaluator(int language) ;
 
     /** Compile a string. See {@link tm.interfaces.ExternalCommandInterface} */
     public TMServiceResult loadString( String guid, String fileName, String programSource);

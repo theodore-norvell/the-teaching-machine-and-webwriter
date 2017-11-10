@@ -8,7 +8,7 @@ public interface TMService30IntfAsync {
     public void ping( AsyncCallback<String> callback ) ;
 
     /** See {@link tm.gwt.shared.TMService30Intf} */
-    public void createEvaluator( AsyncCallback<TMServiceResult> callback ) ;
+    public void createEvaluator( int language, AsyncCallback<TMServiceResult> callback ) ;
 
     /** See {@link tm.gwt.shared.TMService30Intf} */
     public void loadString(

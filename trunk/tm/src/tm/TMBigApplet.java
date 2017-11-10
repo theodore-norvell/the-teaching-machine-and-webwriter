@@ -182,14 +182,14 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             public void refresh() { TMBigApplet.this.refresh() ; }
         } ;
 
-    static final int boStatic = 0 ;
-    static final int toStatic = 16384-1 ;
-    static final int boHeap = toStatic+1 ;
-    static final int toHeap = boHeap+16384-1 ;
-    static final int boStack = toHeap+1 ;
-    static final int toStack = boStack+16384-1 ;
-    static final int boScratch = toStack+1 ;
-    static final int toScratch = boScratch+16384-1 ;
+    static public final int boStatic = 0 ;
+    static public final int toStatic = 16384-1 ;
+    static public final int boHeap = toStatic+1 ;
+    static public final int toHeap = boHeap+16384-1 ;
+    static public final int boStack = toHeap+1 ;
+    static public final int toStack = boStack+16384-1 ;
+    static public final int boScratch = toStack+1 ;
+    static public final int toScratch = boScratch+16384-1 ;
 
 // CONSTRUCTORS //
 //////////////////

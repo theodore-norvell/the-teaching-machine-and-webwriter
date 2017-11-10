@@ -3,6 +3,7 @@ package tm.gwt.state;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.TagSetInterface ;
 
+// Delete this class
 public class MirrorSelection implements SelectionInterface {
 
     @Override

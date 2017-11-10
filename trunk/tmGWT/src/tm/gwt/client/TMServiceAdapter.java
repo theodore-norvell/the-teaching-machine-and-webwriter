@@ -47,9 +47,9 @@ public class TMServiceAdapter extends Observable implements StateCommander {
         proxy.ping( new PingCallback() ) ;
     }
     
-    public void createEvaluator( ) {
+    public void createEvaluator(int language ) {
         GWT.log( "createEvaluator sent to proxy" );
-        proxy.createEvaluator( callback ) ;
+        proxy.createEvaluator(language, callback ) ;
     }
     
     public void loadString( String fileName, String programSource) {
