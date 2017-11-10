@@ -82,7 +82,7 @@ public class AttentionFrame extends JFrame
 	}
 
     
-    private static String formatStackTrace(Throwable th) {
+    public static String formatStackTrace(Throwable th) {
         StringWriter w = new StringWriter() ;
         PrintWriter pw = new PrintWriter(w) ;
         th.printStackTrace( pw ) ;
