@@ -25,7 +25,6 @@ public class TMService30 extends RemoteServiceServlet
         result.attentionMessage = "" ;
         String guid = UUID.randomUUID().toString();
         result.guid = guid;
-        result.statusCode = TMStatusCode.READY_TO_COMPILE ;
         result.statusMessage = "" ;
         TMServiceStatusReporter reporter = new TMServiceStatusReporter( result ) ;
         try {
@@ -36,6 +35,8 @@ public class TMService30 extends RemoteServiceServlet
             result.statusCode = TMStatusCode.NO_EVALUATOR ;
             result.statusMessage = "Evaluator not created" ;
         }
+        result.statusCode = TMStatusCode.READY_TO_COMPILE ;
+        //Is the file ready to compile after evaluator is created?
         return result ;
     }
 

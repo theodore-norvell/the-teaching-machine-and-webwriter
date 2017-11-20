@@ -73,6 +73,8 @@ public class EvaluatorWrapper {
         TMFile tmFile = new TMFile( fs, fileName ) ;
         if(result.statusCode == TMStatusCode.READY_TO_COMPILE){
         	evaluator.compile( tmFile ) ;
+        	result.statusCode = evaluator.getStatusCode();
+        	result.statusMessage = evaluator.getStatusMessage();
         }
     	result.resultState = new MirrorState() ;
     	result.resultState.update( evaluator ); 
@@ -95,6 +97,8 @@ public class EvaluatorWrapper {
         TMFile tmFile = new TMFile( fs, fileName ) ;
         if(result.statusCode == TMStatusCode.READY_TO_COMPILE){
         	evaluator.compile( tmFile ) ;
+        	result.statusCode = evaluator.getStatusCode();
+        	result.statusMessage = evaluator.getStatusMessage();
         } 
     	result.resultState.update( evaluator );  
     	return result;
@@ -104,10 +108,12 @@ public class EvaluatorWrapper {
     public TMServiceResult initializeTheState(TMServiceResult result) {
         statusReporter.getResult().resultState = new MirrorState() ;
     	statusReporter.setResult( result ) ;
-        if( result.statusCode ==  TMStatusCode.COMPILED )
+        if( result.statusCode ==  TMStatusCode.COMPILED ){
             evaluator.initialize() ;
-        	statusReporter.setStatus(TMStatusCode.READY, "Evaluator starts.");
-        statusReporter.getResult().resultState.update( evaluator ); 
+    		result.statusCode = evaluator.getStatusCode();
+    		result.statusMessage = evaluator.getStatusMessage();
+        }
+        result.resultState.update( evaluator );  
         return statusReporter.getResult();
     }
 
@@ -116,10 +122,16 @@ public class EvaluatorWrapper {
         if( evaluator != null ) {
         	int statusCode = statusReporter.getStatusCode() ;
             if( statusCode == TMStatusCode.COMPILED ) {
-                evaluator.initialize() ; }
+                evaluator.initialize() ;
+            	result.statusCode = evaluator.getStatusCode();
+            	result.statusMessage = evaluator.getStatusMessage();
+                
+            }
             else if( statusCode == TMStatusCode.READY ){
-            	evaluator.go(commandString);} }  
-        statusReporter.getResult().resultState = new MirrorState() ;
+            	evaluator.go(commandString);
+            	result.statusCode = evaluator.getStatusCode();
+            	result.statusMessage = evaluator.getStatusMessage();          	
+            } }  
         statusReporter.getResult().resultState.update( evaluator ); 
         return statusReporter.getResult() ;
     }
@@ -127,8 +139,10 @@ public class EvaluatorWrapper {
 
     public TMServiceResult goBack(TMServiceResult result) {
     	if( evaluator != null ) {
-            evaluator.goBack() ; }
-        statusReporter.getResult().resultState = new MirrorState() ;
+            evaluator.goBack() ;
+        	result.statusCode = evaluator.getStatusCode();
+        	result.statusMessage = evaluator.getStatusMessage();
+        	}
         statusReporter.getResult().resultState.update( evaluator ); 
     	return statusReporter.getResult() ;
     }
@@ -136,7 +150,8 @@ public class EvaluatorWrapper {
 
     public TMServiceResult toCursor(TMServiceResult result, String fileName, int cursor) {
         evaluator.toCursor(fileName, cursor);
-        statusReporter.getResult().resultState = new MirrorState() ;
+    	result.statusCode = evaluator.getStatusCode();
+    	result.statusMessage = evaluator.getStatusMessage();
         statusReporter.getResult().resultState.update( evaluator ); 
         return statusReporter.getResult() ;
     }

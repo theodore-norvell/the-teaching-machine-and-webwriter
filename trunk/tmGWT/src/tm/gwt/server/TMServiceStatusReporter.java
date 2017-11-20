@@ -31,6 +31,7 @@ class TMServiceStatusReporter implements StatusConsumer {
 	@Override
 	public void setStatus(int statusCode, String message) {
 		result.statusCode = statusCode ;
+		result.statusMessage = message;
 	}
 
 	@Override
