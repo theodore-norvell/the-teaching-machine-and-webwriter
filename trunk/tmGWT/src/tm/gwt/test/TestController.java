@@ -15,6 +15,7 @@ import tm.gwt.state.StateCommander ;
 import tm.interfaces.CodeLine ;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
+import tm.interfaces.MarkUpI;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
 import tm.interfaces.TMFileI ;
@@ -29,7 +30,7 @@ public class TestController implements StateCommander {
     ArrayList<MirrorCoords> foci = new ArrayList<MirrorCoords>() ;
     {
         StringBuffer b = new StringBuffer() ;
-        Vector<MarkUp> markup = new Vector<MarkUp>() ;
+        Vector<MarkUpI> markup = new Vector<MarkUpI>() ;
         TreeSet<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
         
 

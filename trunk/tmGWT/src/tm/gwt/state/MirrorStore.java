@@ -28,7 +28,17 @@ public class MirrorStore implements StoreInterface, IsSerializable {
         this.heapRegion.update( store.getHeap(), this ) ;
         this.scratchRegion.update( store.getScratch(), this ) ;
         this.stackRegion.update( store.getStack(), this ) ;
-        this.heapRegion.update( store.getHeap(), this ) ;
+        this.staticRegion.update( store.getStatic(), this ) ;
+        com.google.gwt.core.client.GWT.log("<<< MirrorStore.update") ;
+    }
+    
+    void update( RegionInterface heapRegion, RegionInterface scratchRegion, 
+    		RegionInterface stackRegion, RegionInterface staticRegion ){
+        com.google.gwt.core.client.GWT.log(">>> MirrorStore.update") ;
+        this.heapRegion.update( heapRegion, this ) ;
+        this.scratchRegion.update( scratchRegion, this ) ;
+        this.stackRegion.update( stackRegion, this ) ;
+        this.staticRegion.update( staticRegion, this ) ;
         com.google.gwt.core.client.GWT.log("<<< MirrorStore.update") ;
     }
     

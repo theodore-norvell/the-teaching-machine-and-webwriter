@@ -49,7 +49,7 @@ public class TmGWT implements EntryPoint, Observer {
 		adapter = new TMServiceAdapter( url, theState ) ;
 		adapter.addObserver(  this );
 		adapter.ping() ;
-		adapter.createEvaluator();
+		adapter.createEvaluator(2); //JAVA_LANG
 		
 		Kit.setKit(new KitGWT());
 		RootPanel menu = RootPanel.get("menuBar");

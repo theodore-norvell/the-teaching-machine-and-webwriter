@@ -4,6 +4,7 @@ import java.util.ArrayList ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
+import tm.evaluator.Evaluator;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.RegionInterface ;
 import tm.interfaces.Selection ;
@@ -27,12 +28,22 @@ public class MirrorState implements StateInterface, IsSerializable {
     }
     
     public void update( StateInterface newState ) {
-        // TODO
     	
-    	codeLines
-    	selection
-    	codeFocus
-    	store.update( newState.getStore() ); //???
+    	expression = newState.getExpression();
+    	
+    	TMFileI tmFile = newState.getCodeFocus().getFile();
+    	MirrorTMFile mirrorTMFile = new MirrorTMFile(tmFile.getFileName());
+    	codeLines.clear();
+    	int size = newState.getNumSelectedCodeLines(tmFile, true);
+    	for(int i = 0; i < size; i++){
+    		MirrorCodeLine line = new MirrorCodeLine(newState.getSelectedCodeLine(tmFile, true, i), mirrorTMFile);
+    		codeLines.add(line);
+    	}
+    	
+    	codeFocus = new MirrorCoords(mirrorTMFile, newState.getCodeFocus().getLineNumber());
+    	
+    	store.update( newState.getHeapRegion(), newState.getScratchRegion(), 
+    			newState.getStackRegion(), newState.getStaticRegion() ); 
     	
     	for(int i = 0; i < consoleLines.size(); i++){
     		consoleLines.set(i, newState.getConsoleLine(i));

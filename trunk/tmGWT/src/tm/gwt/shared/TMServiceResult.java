@@ -1,8 +1,11 @@
 package tm.gwt.shared;
 
+import java.util.UUID;
+
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.gwt.state.MirrorState ;
+import tm.interfaces.TMStatusCode;
 
 public class TMServiceResult implements IsSerializable {
     /** The GUID. This should be the same as the guid in the request
@@ -32,4 +35,13 @@ public class TMServiceResult implements IsSerializable {
     /** The state of the machine after the request.
      * This field should never be null. */
     public MirrorState resultState ;
+    
+    public TMServiceResult(){
+    	guid = null;
+    	statusCode = TMStatusCode.NO_EVALUATOR;
+    	statusMessage = "Evaluator not created";
+    	attentionMessage = null;
+    	exceptionInformation = null;
+    	resultState = new MirrorState();   	
+    }
 }

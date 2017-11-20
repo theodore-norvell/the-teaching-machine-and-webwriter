@@ -5,6 +5,7 @@ import java.util.Vector ;
 
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
+import tm.interfaces.MarkUpI;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.TagSetInterface ;
 
@@ -12,14 +13,23 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 
 public class MirrorCodeLine implements IsSerializable, CodeLineI {
     private char[] chars ;
-    private MarkUp[] markUp ;
+    private MarkUpI[] markUp ;
     private MirrorCoords coords ;
     /** A list of all tag sets that apply anywhere on this line */
     private TreeSet<TagSetInterface> tagSets ;
 
     private MirrorCodeLine() {}
     
-    public MirrorCodeLine( StringBuffer buff, Vector<MarkUp> markUpVector, MirrorCoords sc, TreeSet<TagSetInterface> tagSets) {
+    public MirrorCodeLine(CodeLineI codeLineI, MirrorTMFile file){
+    	chars = new char[codeLineI.getChars().length];
+    	chars = codeLineI.getChars();
+    	markUp = new MarkUp[ codeLineI.markUp().length];
+    	markUp = codeLineI.markUp();
+    	coords = new MirrorCoords(file, codeLineI.getCoords().getLineNumber());
+    	tagSets = new TreeSet<TagSetInterface>(); //Is there any tag set we can get from CodeLineI?  	
+    }
+    
+    public MirrorCodeLine( StringBuffer buff, Vector<MarkUpI> markUpVector, MirrorCoords sc, TreeSet<TagSetInterface> tagSets) {
         chars = new char[ buff.length() ] ;
         if( buff.length() > 0 ) // Work around jview bug!
             buff.getChars(0, buff.length(), chars, 0);
@@ -39,7 +49,7 @@ public class MirrorCodeLine implements IsSerializable, CodeLineI {
     public SourceCoordsI getCoords() { return coords ; }
 
     @Override
-    public MarkUp[] markUp() { return markUp ; }
+    public MarkUpI[] markUp() { return markUp ; }
 
     @Override
     public String toString() {

@@ -44,9 +44,13 @@ public class TMService30 extends RemoteServiceServlet
             String programSource) {
         System.out.println( "In  loadString" );
         EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        // TODO Check guid.  And be synchronized.
         TMServiceResult result = new TMServiceResult() ;
+        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
+        if( wrappers == null){
+        	result.statusCode = TMStatusCode.NO_EVALUATOR ;
+        	result.statusMessage = "Bad or stale GUID.";
+        }
+        // TODO Check guid.  And be synchronized.
         wrapper.loadString(result, fileName, programSource);
         return result ;
     }
@@ -65,40 +69,42 @@ public class TMService30 extends RemoteServiceServlet
     @Override
     public TMServiceResult initializeTheState(String guid) {
         System.out.println( "In  initializeTheState" );
-        TMServiceResult result = new TMServiceResult() ;
+        /*TMServiceResult result = new TMServiceResult() ;*/
+        //Why should every time create a new result? There's no information in it
         EvaluatorWrapper wrapper ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        wrapper.initializeTheState();
+        TMServiceResult result = wrapper.getResult();
+        wrapper.initializeTheState(result);
         return result ;
     }
 
     @Override
     public TMServiceResult go(String guid, String commandString) {
         System.out.println( "In  go" );
-        TMServiceResult result = new TMServiceResult() ;
         EvaluatorWrapper wrapper ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        wrapper.go(commandString);
+        TMServiceResult result = wrapper.getResult();
+        wrapper.go(result, commandString);
         return result ;
     }
 
     @Override
     public TMServiceResult goBack(String guid) {
         System.out.println( "In  goBack" );
-        TMServiceResult result = new TMServiceResult() ;
         EvaluatorWrapper wrapper ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        wrapper.goBack();
+        TMServiceResult result = wrapper.getResult();
+        wrapper.goBack(result);
         return result ;
     }
 
     @Override
     public TMServiceResult toCursor(String guid, String fileName, int cursor) {
         System.out.println( "In  toCursor" );
-        TMServiceResult result = new TMServiceResult() ;
         EvaluatorWrapper wrapper ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        wrapper.toCursor(fileName, cursor);
+        TMServiceResult result = wrapper.getResult();
+        wrapper.toCursor(result, fileName, cursor);
         return result ;
     }
 

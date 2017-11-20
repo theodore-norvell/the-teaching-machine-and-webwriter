@@ -16,7 +16,6 @@ import tm.languageInterface.LanguagePIFactoryIntf;
 import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
 import tm.utilities.Assert;
-import tm.utilities.CachingFileSource;
 import tm.utilities.FileSource;
 import tm.utilities.StringFileSource;
 import tm.utilities.TMFile;
@@ -62,6 +61,9 @@ public class EvaluatorWrapper {
                 TMBigApplet.boHeap, TMBigApplet.toHeap,
                 TMBigApplet.boStack, TMBigApplet.toStack,
                 TMBigApplet.boScratch, TMBigApplet.toScratch ) ;
+		
+		statusReporter.setStatus( TMStatusCode.READY_TO_COMPILE, "Evaluator is built. Ready to compile.") ;
+
 	}
 	
     public void loadString(TMServiceResult result, String fileName, String programSource) {
@@ -69,52 +71,48 @@ public class EvaluatorWrapper {
         StringFileSource fs = new StringFileSource() ;
         fs.addString( fileName, programSource ) ;
         TMFile tmFile = new TMFile( fs, fileName ) ;
-    	evaluator.compile( tmFile ) ;
+        if(result.statusCode == TMStatusCode.READY_TO_COMPILE){
+        	evaluator.compile( tmFile ) ;
+        }
     	result.resultState = new MirrorState() ;
     	result.resultState.update( evaluator ); 
     	statusReporter.setResult( null ) ; //One line source code
     }
 
 
-    public TMServiceResult loadRemoteFile(TMServiceResult result,String root, String fileName) {
-    	//Do we need to pass in URL?
+    public TMServiceResult loadRemoteFile(TMServiceResult result,String urlInString, String fileName) {
+    	result.resultState = new MirrorState() ;
     	statusReporter.setResult( result ) ;
-        URL url = null;
-		try {
-			url = new URL(fileName);
+        URL url ;
+		try {			
+			url = new URL(urlInString);
 		} catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			statusReporter.setStatus(TMStatusCode.NO_EVALUATOR, "Malformed URL");
+			return result;
 		}
-        URL rootURL;
-        try {
-        	rootURL = new URL( url, root ) ; }
-        catch( MalformedURLException e ) {
-        	result.statusCode = TMStatusCode.NO_EVALUATOR;
-        	statusReporter.setStatus(result.statusCode, "Malformed URL");
-            return result ; }
-        FileSource fs = new CachingFileSource( new URLFileSource( rootURL ) ) ;
-        result.statusCode = TMStatusCode.NO_EVALUATOR;
+        FileSource fs =  new URLFileSource( url )  ;
         statusReporter.setStatus(TMStatusCode.NO_EVALUATOR, "Loading..." );
         TMFile tmFile = new TMFile( fs, fileName ) ;
-        evaluator.compile( tmFile ) ; 
-    	result.resultState = new MirrorState() ;
+        if(result.statusCode == TMStatusCode.READY_TO_COMPILE){
+        	evaluator.compile( tmFile ) ;
+        } 
     	result.resultState.update( evaluator );  
     	return result;
     }
 
 
-    public TMServiceResult initializeTheState() {
-        if( statusReporter.getStatusCode() ==  TMStatusCode.COMPILED )
+    public TMServiceResult initializeTheState(TMServiceResult result) {
+        statusReporter.getResult().resultState = new MirrorState() ;
+    	statusReporter.setResult( result ) ;
+        if( result.statusCode ==  TMStatusCode.COMPILED )
             evaluator.initialize() ;
         	statusReporter.setStatus(TMStatusCode.READY, "Evaluator starts.");
-        statusReporter.getResult().resultState = new MirrorState() ;
         statusReporter.getResult().resultState.update( evaluator ); 
         return statusReporter.getResult();
     }
 
 
-    public TMServiceResult go(String commandString) {
+    public TMServiceResult go(TMServiceResult result, String commandString) {
         if( evaluator != null ) {
         	int statusCode = statusReporter.getStatusCode() ;
             if( statusCode == TMStatusCode.COMPILED ) {
@@ -127,7 +125,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult goBack() {
+    public TMServiceResult goBack(TMServiceResult result) {
     	if( evaluator != null ) {
             evaluator.goBack() ; }
         statusReporter.getResult().resultState = new MirrorState() ;
@@ -136,7 +134,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult toCursor(String fileName, int cursor) {
+    public TMServiceResult toCursor(TMServiceResult result, String fileName, int cursor) {
         evaluator.toCursor(fileName, cursor);
         statusReporter.getResult().resultState = new MirrorState() ;
         statusReporter.getResult().resultState.update( evaluator ); 
@@ -158,18 +156,10 @@ public class EvaluatorWrapper {
 			// Do nothing
 		}
     }
+    public TMServiceResult getResult(){
+    	return statusReporter.getResult();
+    }
+
     
-    private int determineLanguage( String fileName ) {
-        fileName = fileName.toLowerCase() ;
-        if(    fileName.endsWith(".jav")
-            || fileName.endsWith( ".java" ) )
-            return TMBigApplet.JAVA_LANG ;
-        else if(    fileName.endsWith( ".cpp" )
-                 || fileName.endsWith( ".cxx")
-                 || fileName.endsWith( ".c++" )
-                 || fileName.endsWith( ".c" ))
-            return TMBigApplet.CPP_LANG ;
-        else
-            return TMBigApplet.UNKNOWN_LANG ; }
 
 }
