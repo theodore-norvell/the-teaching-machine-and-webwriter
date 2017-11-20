@@ -29,6 +29,7 @@ import tm.interfaces.STEntry;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
+import tm.interfaces.StoreInterface ;
 import tm.interfaces.TMFileI ;
 import tm.interfaces.TMStatusCode;
 import tm.interfaces.CodeLine ;
@@ -94,42 +95,42 @@ abstract class StopTest {
 
 class microStepTest extends StopTest {
         // One step.
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ; }
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ; }
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ; } }
 
 class initialTest extends StopTest {
         // Don't do anything yet
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ;}
 
         // Don't do any thing yet
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             return false ; }
 
         // Advance until the top is an expression and
         // either there is a selected node, or the evaluation is
         // done.
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return stopWorthyTop( vms )
                 && currentLineIsInCurrentDisplaySelection( vms )
                 && doneOrSelectedAndInteresting(vms) ; } }
 
 class goForwardTest extends StopTest {
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ;}
 
         // Do at least one advance.
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ; }
 
         // Advance until the top is an expression and
         // either there is a selected node, or the evaluation is
         // done.
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return stopWorthyTop( vms )
                 && currentLineIsInCurrentDisplaySelection( vms )
                 && doneOrSelectedAndInteresting(vms) ; } }
@@ -137,48 +138,48 @@ class goForwardTest extends StopTest {
 /** Step to next expression on same or outer level */
 class intoExpTest extends StopTest {
 
-    boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
         if( initialTop instanceof ExpressionEvaluation )
             return vms.stackSize() <= initStackSize
               && !( vms.top() instanceof ExpressionEvaluation )  ;
         else
             return true ; }
-    boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
         if( initialTop instanceof ExpressionEvaluation )
             return false ;
         else
             return true ; }
-    boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
         return stopWorthyTop( vms )
             && currentLineIsInCurrentDisplaySelection( vms )
             && doneOrSelectedAndInteresting(vms) ; } }
 
 /** Step to next expression regardless of level */
 class intoSubTest extends StopTest {
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             if( initialTop instanceof ExpressionEvaluation )
                 return !( vms.top() instanceof ExpressionEvaluation) ;
             else
                 return true ; }
 
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             if( initialTop instanceof ExpressionEvaluation )
                 return false ;
             else
                 return true ; }
 
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return stopWorthyTop( vms )
                 && currentLineIsInCurrentDisplaySelection( vms )
                 && doneOrSelectedAndInteresting(vms) ; } }
 
 class overAllTest extends StopTest {
         // Step to next expression on shallower level
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             return true ; }
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             return false ; }
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+    @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return vms.stackSize() < initStackSize
                 && stopWorthyTop( vms )
                 && currentLineIsInCurrentDisplaySelection( vms )
@@ -189,13 +190,13 @@ class toCursorTest extends StopTest {
         private String fileName ;
         private int lineNumber ;
         toCursorTest(String fn, int ln ) { fileName = fn; lineNumber = ln ; }
-        boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
+        @Override boolean stop0( VMState vms, int initStackSize, Evaluation initialTop ) {
             SourceCoords sc = vms.getCurrentCoords() ;
             return lineNumber==sc.getLineNumber()
                 && sc.getFile().getFileName().equals( fileName ) ; }
-        boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
+        @Override boolean midstep( VMState vms, int initStackSize, Evaluation initialTop ) {
             return false ; }
-        boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
+        @Override boolean stop1( VMState vms, int initStackSize, Evaluation initialTop ) {
             return stopWorthyTop( vms )
                 && doneOrSelectedAndInteresting(vms) ; } }
 
@@ -315,6 +316,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         initialSteps() ;
     }
 
+    @Override
     public void addInputString( String input ) {
         vms.checkpoint() ;
         vms.getConsole().addInputString( input ) ;
@@ -358,7 +360,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.microStep()" ) ; /**/}
 	
 	/** Not really for public use*/
-	public void microStepCommand() { stepForward ( new microStepTest() ) ; }
+	@Override
+    public void microStepCommand() { stepForward ( new microStepTest() ) ; }
 
     public void goForward() {
         /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.goForward()" ) ; /**/
@@ -370,7 +373,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.goForward()" ) ; /**/ }
 	
 	/** Not really for public use*/
-	public void goForwardCommand() { stepForward ( new goForwardTest() ) ;  }
+    @Override
+    public void goForwardCommand() { stepForward ( new goForwardTest() ) ;  }
 
     private void initialSteps() {
         /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.initialSteps()" ) ; /**/
@@ -391,7 +395,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.intoExp()" ) ; /**/ }
 	
 	/** Not really for public use*/
-	public void intoExpCommand() { stepForward ( new intoExpTest() ) ;  }
+    @Override
+    public void intoExpCommand() { stepForward ( new intoExpTest() ) ;  }
 
     public void intoSub() {
         /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.intoSub()" ) ; /**/
@@ -403,7 +408,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.intoSub()" ) ; /**/ }
 	
 	/** Not really for public use*/
-	public void intoSubCommand() { stepForward ( new intoSubTest() ) ;  }
+    @Override
+    public void intoSubCommand() { stepForward ( new intoSubTest() ) ;  }
 
     public void overAll() {
         /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.overAll()" ) ; /**/
@@ -415,7 +421,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         /**/Debug.getInstance().msg(Debug.BACKTRACK, "<<Evaluator.overAll()" ) ; /**/ }
 	
 	/** Not really for public use*/
-	public void overAllCommand() { stepForward ( new overAllTest() ) ;  }
+    @Override
+    public void overAllCommand() { stepForward ( new overAllTest() ) ;  }
 
     public void toCursor(String fileName, int lineNumOneBased) {
         /**/Debug.getInstance().msg(Debug.BACKTRACK, ">>Evaluator.toCursor()" ) ; /**/
@@ -434,7 +441,8 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     }
 	
 	/** Not really for public use*/
-	public void toBreakPointCommand() { Assert.toBeDone() ;  }
+    @Override
+    public void toBreakPointCommand() { Assert.toBeDone() ;  }
     
     public void autoStep() {
         if( statusReporter.getStatusCode() != TMStatusCode.READY ) return ;
@@ -442,6 +450,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         vms.checkpoint() ;
         autoStepStopRequested = false ;
         ActionListener listener = new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 autoStepAdvance() ;
             }} ;
@@ -494,36 +503,45 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
         }
     }
 
+    @Override
     public void setSelection(SelectionInterface selection) {
         vms.getCodeStore().setSelection( selection ) ; }
 
+    @Override
     public SelectionInterface getSelection() {
         return vms.getCodeStore().getSelection() ; }
 
 // The Evaluator Interface //
 /////////////////////////////
+    @Override
     public int getNumSTEntries() {
         return vms.getSymbolTable().size() ; }
 
+    @Override
     public STEntry getSymTabEntry(int index) {
         return vms.getSymbolTable().getEntry( index ) ; }
 
 
     /** The number of entries in the current stack frame */
+    @Override
     public int varsInCurrentFrame() {
          return vms.getSymbolTable().varsInCurrentFrame() ; }
 
     /** The number of entries in the global frame. */
+    @Override
     public int varsInGlobalFrame() {
         return vms.getSymbolTable().varsInGlobalFrame() ; }
 
+    @Override
     public Enumeration<TMFile> getSourceFiles() {
         return vms.getCodeStore().getSourceFiles() ; 
     }
     
+    @Override
     public SourceCoords getCodeFocus() {
         return vms.getCurrentSelectedCoords() ; }
 
+    @Override
     public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
         return vms.getCodeStore().getNumSelectedCodeLines( (TMFile)tmFile, allowGaps ) ;
     }
@@ -532,6 +550,7 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
 //        return vms.getCodeStore().getSelectedCodeLine( tmFile, allowGaps, index ) ;
 //    }
     
+    @Override
     public CodeLineI getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
         return vms.getCodeStore().getSelectedCodeLine( (TMFile)tmFile, allowGaps, index ) ;
     }
@@ -542,15 +561,19 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
     public int getNumOutputLines() {
         return vms.getConsole().getOutputSize() ; }
 
+    @Override
     public String getConsoleLine(int l) {
         return vms.getConsole().getConsoleLine( l ) ; }
 
+    @Override
     public int getNumConsoleLines() {
         return vms.getConsole().getConsoleSize() ; }
 
+    @Override
     public String getPCLocation() {
         return Integer.toString( getCodeFocus().getLineNumber() ) ; }
 
+    @Override
     public String getExpression() {
         String exprString ;
         if( ! vms.isEmpty() && vms.top() instanceof ExpressionEvaluation ) {
@@ -560,26 +583,39 @@ public class Evaluator implements EvaluatorInterface, CommandStringInterpreter.C
             exprString = "" ; }
         return exprString ; }
 
+
+    @Override
+    public StoreInterface getStore() {
+        return vms.getStore() ;
+    }
+    
+    @Override
     public RegionInterface getStaticRegion() {
         return vms.getStore().getStatic() ; }
 
+    @Override
     public RegionInterface getStackRegion() {
         return vms.getStore().getStack() ; }
 
+    @Override
     public RegionInterface getHeapRegion() {
         return vms.getStore().getHeap() ; }
 
+    @Override
     public RegionInterface getScratchRegion() {
         return vms.getStore().getScratch() ; }
 
+    @Override
     public int getLanguage() {
         return lang.getLanguage() ;
     }
 
+    @Override
     public boolean isInAuto() {
         return autoStepTimer != null ;
     }
     
+    @Override
     public int getAutoStepRate() {
         return autoStepRate ;
     }

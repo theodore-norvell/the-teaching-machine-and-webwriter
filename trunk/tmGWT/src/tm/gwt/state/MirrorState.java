@@ -144,6 +144,11 @@ public class MirrorState implements StateInterface, IsSerializable {
         return consoleLines.get(l);
     }
 
+    @Override
+    public MirrorStore getStore() {
+        return store ;
+    }
+
 
 
 

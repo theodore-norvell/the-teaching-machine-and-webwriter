@@ -32,6 +32,8 @@ public interface StateInterface {
     
 	public SourceCoordsI getCodeFocus() ;
 	
+	public StoreInterface getStore() ;
+	
     /** Get the current selection expression.
      * <p>The selection determines which code lines are visible and
      * which parts of selected lines are visible.

@@ -54,6 +54,7 @@ import tm.interfaces.Scriptable;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoords;
 import tm.interfaces.StatusConsumer;
+import tm.interfaces.StoreInterface ;
 import tm.interfaces.TMFileI ;
 import tm.interfaces.TMStatusCode;
 import tm.languageInterface.Language;
@@ -347,15 +348,17 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 
     private DataFiles dataFiles = new DataFiles() ;
 
+    @Override
     public void setStatus(int statusCode, String message) {
-    	if( statusCode == TMStatusCode.NO_EVALUATOR ) {
-    		removeTheDisplayManagerAndEvaluator() ;
-    		statusLine.setText(message) ;
-    	} else {
-    		evaluator.setStatusCode( statusCode ) ; 
-    		evaluator.setStatusMessage(message) ; 
-    		statusLine.setText( evaluator.getStatusMessage() ) ; } }
+        	if( statusCode == TMStatusCode.NO_EVALUATOR ) {
+            removeTheDisplayManagerAndEvaluator() ;
+    		    statusLine.setText(message) ;
+    	    } else {
+    		    evaluator.setStatusCode( statusCode ) ; 
+    		    evaluator.setStatusMessage(message) ; 
+    		    statusLine.setText( evaluator.getStatusMessage() ) ; } }
     
+    @Override
     public void attention(String message, Throwable th ) {
         if( ! testMode ) {
             java.awt.Frame d = new AttentionFrame( "Attention", message, th ) ;
@@ -363,17 +366,20 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         
     }
     
+    @Override
     public void attention(String message ) {
         if( ! testMode ) {
             java.awt.Frame d = new AttentionFrame( "Attention", message ) ;
             d.setVisible( true ) ; }
     }
     
+    @Override
     public int getStatusCode() {
-    	if( evaluator==null ) return TMStatusCode.NO_EVALUATOR ;
-    	else return evaluator.getStatusCode() ;
+        	if( evaluator==null ) return TMStatusCode.NO_EVALUATOR ;
+      	else return evaluator.getStatusCode() ;
     }
     
+    @Override
     public String getStatusMessage() {
         if( evaluator==null) return statusLine.getText() ;
         else return evaluator.getStatusMessage() ; }
@@ -381,6 +387,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 // Implementing ExternalCommandInterface //
 ///////////////////////////////////////////
     
+    @Override
     public void setTestMode( final boolean turnOn ) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -391,6 +398,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void loadString( final String fileName, final String programSource) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -415,6 +423,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }}
     
+    @Override
     public void loadRemoteFile( final String root, final String fileName ) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -433,9 +442,11 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 
     }
 
+    @Override
     public void loadRemoteFile( String fileName ) {
         loadRemoteFile( getDocumentBase(), fileName ) ; }
 
+    @Override
     public void loadLocalFile( final File directory, final String fileName ) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -494,6 +505,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void readRemoteConfiguration( final String fileName )
     {
         try {
@@ -512,6 +524,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
     
+    @Override
     public void clearRemoteDataFiles() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -522,6 +535,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void registerRemoteDataFile(final String fileName) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -532,6 +546,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void addInputString( final String input) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -543,6 +558,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); }}
     
+    @Override
     public void addProgramArgument(final String argument) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -554,6 +570,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); } }
     
     /** Get output */
+    @Override
     public String getOutputString( ) {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<String>() {
@@ -572,6 +589,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return "" ; }
     }
 
+    @Override
     public void reStart() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -582,6 +600,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); } }
 
+    @Override
     public void editCurrentFile() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -610,6 +629,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
     
+    @Override
     public Image getSnap(final String plugIn, final String id) {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Image>() {
@@ -622,6 +642,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return null ;}
     }
 	
+    @Override
     public boolean isRunDone(){
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
@@ -634,6 +655,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return false ;}
     }
 
+    @Override
     public int getLastSnapWidth() {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Integer>() {
@@ -645,7 +667,8 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return 1 ;}	
     }
 	
-	public int getLastSnapHeight() {
+    @Override
+    public int getLastSnapHeight() {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Integer>() {
                 @Override public Integer run() {
@@ -656,7 +679,8 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return 1 ;}	
 	}
 	
-	public boolean getComparison(final String plugIn, final int n) {
+	@Override
+    public boolean getComparison(final String plugIn, final int n) {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
                 @Override public Boolean run() {
@@ -667,7 +691,8 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             return false ; }
 	}
 	
-	public long getLocalInt(final String datumName){
+	@Override
+    public long getLocalInt(final String datumName){
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Long>() {
                 @Override public Long run() {
@@ -679,8 +704,10 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 	}
 
 	
+	@Override
     public void quit( ) { /*Handled in TMMainFrame */ }
     
+    @Override
     public void initializeTheState() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -692,6 +719,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void goBack() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -702,6 +730,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         catch (InvocationTargetException e1) {
             e1.getTargetException().printStackTrace(); } }
 
+    @Override
     public void redo() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -727,44 +756,54 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
     
+    @Override
     public void go( final String commandString ) {
         go( new Command() {
             public void doIt() { evaluator.go(commandString); } ; } ) ; }
 
+    @Override
     public void goForward(){
         go( new Command() {
                 public void doIt() { evaluator.goForward(); } ; } ) ; }
 
+    @Override
     public void microStep() {
         go( new Command() {
                 public void doIt() { evaluator.microStep(); } ; } ) ; }
 
+    @Override
     public void overAll() {
         go( new Command() {
                 public void doIt() { evaluator.overAll(); } ; } ) ; }
 
+    @Override
     public void intoExp() {
         go( new Command() {
                 public void doIt() { evaluator.intoExp(); } ; } ) ; }
 
+    @Override
     public void intoSub() {
         go( new Command() {
                 public void doIt() { evaluator.intoSub(); } ; } ) ; }
     
+    @Override
     public void toBreakPoint() {
         go( new Command() {
             public void doIt() { evaluator.toBreakPoint(); } ; } ) ; }
 
+    @Override
     public void toCursor( final String fileName, final int cursor ) {
         go( new Command() {
                 public void doIt() { evaluator.toCursor( fileName, cursor ); } ; } ) ;
     }
 
+    @Override
     public void autoStep() {
         go( new Command() {
             public void doIt() { evaluator.autoStep( ) ; } } ) ;
     }
 
+    @Override
     public void autoStep(String fileName, int lineNo) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -775,6 +814,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void setAutoStepRate( final int rate ) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -785,15 +825,18 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
-	public boolean isInAuto() {
+    @Override
+    public boolean isInAuto() {
         return evaluator != null && evaluator.isInAuto() ;
 	}
     
+	@Override
     public int getAutoStepRate() {
         if( evaluator != null ) return evaluator.getAutoStepRate() ;
         else return 0 ;
     }
 
+    @Override
     public void autoRun() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -805,6 +848,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
     
+    @Override
     public void stopAuto() {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -815,6 +859,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public void showTM(final boolean visible) {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -827,6 +872,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
 	}
     
+    @Override
     public boolean isTMShowing() {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<Boolean>() {
@@ -849,18 +895,21 @@ public class TMBigApplet extends JApplet implements CommandInterface,
         if( evaluator != null ) 
     		statusLine.setText( evaluator.getStatusMessage() ) ; }
 
+    @Override
     public void setSelection(SelectionInterface selection) {
         if( evaluator != null ) {
             evaluator.setSelection( selection );
             refresh() ; }
     }
 
+    @Override
     public SelectionInterface getSelection() {
         if( evaluator != null ) {
             return evaluator.getSelection(  ); }
         else return null ;
     }
 
+    @Override
     public void setSelectionString(final String string)  {
         try {
             ConcurUtilities.doOnSwingThread( new Runnable() {
@@ -876,6 +925,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
             e1.getTargetException().printStackTrace(); }
     }
 
+    @Override
     public String getSelectionString() {
         try {
             return ConcurUtilities.doOnSwingThread( new ResultThunk<String>() {
@@ -940,56 +990,78 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 // IMPLEMENTING THE EVALUATOR INTERFACE //
 //////////////////////////////////////////
 
+    @Override
     public int getNumSTEntries() {
         return evaluator.getNumSTEntries() ; }
 
+    @Override
     public tm.interfaces.STEntry getSymTabEntry(int index) {
         return evaluator.getSymTabEntry( index ) ; }
 
+    @Override
     public int varsInCurrentFrame() {
          return evaluator.varsInCurrentFrame() ; }
 
+    @Override
     public int varsInGlobalFrame() {
         return evaluator.varsInGlobalFrame() ; }
 
+    @Override
     public SourceCoords getCodeFocus() {
         return evaluator.getCodeFocus() ; }
     
+    @Override
     public Enumeration<TMFile> getSourceFiles() {
         return evaluator.getSourceFiles() ; }
 
+    @Override
     public int getNumSelectedCodeLines(TMFileI tmFile, boolean allowGaps) {
         return evaluator.getNumSelectedCodeLines( tmFile, allowGaps ) ;
     }
 
+    @Override
     public CodeLineI getSelectedCodeLine(TMFileI tmFile, boolean allowGaps, int index) {
         return evaluator.getSelectedCodeLine( tmFile, allowGaps, index ) ; }
 
+    @Override
     public int getNumConsoleLines() {
         return evaluator.getNumConsoleLines() ; }
 
+    @Override
     public String getConsoleLine(int l) {
         return evaluator.getConsoleLine( l ) ; }
 
+    @Override
     public String getPCLocation() {
         return evaluator.getPCLocation() ; }
 
+    @Override
     public String getExpression() {
         return evaluator.getExpression() ; }
 
+    @Override
+    public StoreInterface getStore() {
+        return evaluator.getStore() ;
+    }
+
+    @Override
     public RegionInterface getStaticRegion() {
         return evaluator.getStaticRegion() ; }
 
+    @Override
     public RegionInterface getStackRegion() {
         return evaluator.getStackRegion() ; }
 
+    @Override
     public RegionInterface getHeapRegion() {
         return evaluator.getHeapRegion() ; }
 
+    @Override
     public RegionInterface getScratchRegion() {
         // The scratch region is not snooped on!
         return evaluator.getScratchRegion() ; }
 
+    @Override
     public int getLanguage() {
         return evaluator.getLanguage() ;
     }
@@ -998,6 +1070,7 @@ public class TMBigApplet extends JApplet implements CommandInterface,
 // IMPLEMENTING THE IMAGE SOURCE INTERFACE  //
 //////////////////////////////////////////////
 
+    @Override
     public java.awt.Image fetchImage(String name) {
         java.net.URL imgURL = this.getClass().getResource(name);
         if (imgURL != null) {
