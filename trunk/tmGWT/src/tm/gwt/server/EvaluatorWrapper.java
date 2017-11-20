@@ -1,9 +1,11 @@
 package tm.gwt.server;
 
+import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import tm.TMBigApplet;
 import tm.TMBigAppletPIFactory;
+import tm.TMMainFrameAppletStub;
 import tm.evaluator.Evaluator;
 import tm.gwt.shared.TMServiceResult;
 import tm.gwt.state.MirrorState;
@@ -17,6 +19,7 @@ import tm.plugins.PlugInManager;
 import tm.plugins.PlugInNotFound;
 import tm.utilities.Assert;
 import tm.utilities.FileSource;
+import tm.utilities.LocalResourceFileSource;
 import tm.utilities.StringFileSource;
 import tm.utilities.TMFile;
 import tm.utilities.URLFileSource;
@@ -31,6 +34,18 @@ public class EvaluatorWrapper {
 	
 	public EvaluatorWrapper(int language, TMServiceStatusReporter statusReporter ) throws Throwable {
 		this.statusReporter = statusReporter ;
+		// Read the configuration file.
+
+        FileSource source = new LocalResourceFileSource(this.getClass(), "", ".tmcfg") ;
+        TMFile configFile = new TMFile( source, "default" ) ;
+        
+        Reader reader = configFile.toReader() ;
+        Assert.apology( reader != null, "Can not open " + configFile);
+        tm.configuration.ConfigurationServer server = tm.configuration.ConfigurationServer.getConfigurationServer();
+        server.readConfiguration( reader ) ;
+        //        System.out.println("reconfigure with "+configFile.toString());server.dump();
+        reader.close() ;
+	
         // Get the appropriate factory object from the plug-in manager
         PlugInManager pim = PlugInManager.getSingleton() ;
         LanguagePIFactoryIntf languageFactory = null ;
@@ -66,7 +81,7 @@ public class EvaluatorWrapper {
 
 	}
 	
-    public void loadString(TMServiceResult result, String fileName, String programSource) {
+    public synchronized void loadString(TMServiceResult result, String fileName, String programSource) {
     	statusReporter.setResult( result ) ; 
         StringFileSource fs = new StringFileSource() ;
         fs.addString( fileName, programSource ) ;
@@ -82,7 +97,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult loadRemoteFile(TMServiceResult result,String urlInString, String fileName) {
+    public synchronized TMServiceResult loadRemoteFile(TMServiceResult result,String urlInString, String fileName) {
     	result.resultState = new MirrorState() ;
     	statusReporter.setResult( result ) ;
         URL url ;
@@ -105,7 +120,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult initializeTheState(TMServiceResult result) {
+    public synchronized TMServiceResult initializeTheState(TMServiceResult result) {
         statusReporter.getResult().resultState = new MirrorState() ;
     	statusReporter.setResult( result ) ;
         if( result.statusCode ==  TMStatusCode.COMPILED ){
@@ -118,7 +133,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult go(TMServiceResult result, String commandString) {
+    public synchronized TMServiceResult go(TMServiceResult result, String commandString) {
         if( evaluator != null ) {
         	int statusCode = statusReporter.getStatusCode() ;
             if( statusCode == TMStatusCode.COMPILED ) {
@@ -137,7 +152,7 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult goBack(TMServiceResult result) {
+    public synchronized TMServiceResult goBack(TMServiceResult result) {
     	if( evaluator != null ) {
             evaluator.goBack() ;
         	result.statusCode = evaluator.getStatusCode();
@@ -148,12 +163,16 @@ public class EvaluatorWrapper {
     }
 
 
-    public TMServiceResult toCursor(TMServiceResult result, String fileName, int cursor) {
+    public synchronized TMServiceResult toCursor(TMServiceResult result, String fileName, int cursor) {
         evaluator.toCursor(fileName, cursor);
     	result.statusCode = evaluator.getStatusCode();
     	result.statusMessage = evaluator.getStatusMessage();
         statusReporter.getResult().resultState.update( evaluator ); 
         return statusReporter.getResult() ;
+    }
+    
+    public synchronized  TMServiceResult getResult(){
+    	return statusReporter.getResult();
     }
     
     private class NullInputter implements Inputter {
@@ -171,10 +190,4 @@ public class EvaluatorWrapper {
 			// Do nothing
 		}
     }
-    public TMServiceResult getResult(){
-    	return statusReporter.getResult();
-    }
-
-    
-
 }

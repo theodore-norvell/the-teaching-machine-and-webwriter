@@ -20,12 +20,8 @@ public class TMService30 extends RemoteServiceServlet
     @Override
     public TMServiceResult createEvaluator(int language) {
         System.out.println( "In  createEvaluator ") ;
-        TMServiceResult result = new TMServiceResult() ;
-        result.exceptionInformation = "" ;
-        result.attentionMessage = "" ;
         String guid = UUID.randomUUID().toString();
-        result.guid = guid;
-        result.statusMessage = "" ;
+        TMServiceResult result = new TMServiceResult(guid) ;
         TMServiceStatusReporter reporter = new TMServiceStatusReporter( result ) ;
         try {
         	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, reporter );
@@ -45,14 +41,14 @@ public class TMService30 extends RemoteServiceServlet
             String programSource) {
         System.out.println( "In  loadString" );
         EvaluatorWrapper wrapper ;
-        TMServiceResult result = new TMServiceResult() ;
+        TMServiceResult result = new TMServiceResult(guid) ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
         if( wrappers == null){
         	result.statusCode = TMStatusCode.NO_EVALUATOR ;
         	result.statusMessage = "Bad or stale GUID.";
+        } else {
+        	wrapper.loadString(result, fileName, programSource);
         }
-        // TODO Check guid.  And be synchronized.
-        wrapper.loadString(result, fileName, programSource);
         return result ;
     }
 
@@ -60,10 +56,16 @@ public class TMService30 extends RemoteServiceServlet
     public TMServiceResult loadRemoteFile(String guid, String root,
             String fileName) {
         System.out.println( "In  loadRemoteFile" );
-        TMServiceResult result = new TMServiceResult() ;
+        TMServiceResult result = new TMServiceResult(guid) ;
         EvaluatorWrapper wrapper ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        wrapper.loadRemoteFile(result, root, fileName);
+
+        if( wrappers == null){
+        	result.statusCode = TMStatusCode.NO_EVALUATOR ;
+        	result.statusMessage = "Bad or stale GUID.";
+        } else {
+        	wrapper.loadRemoteFile(result, root, fileName);
+        }
         return result ;
     }
 

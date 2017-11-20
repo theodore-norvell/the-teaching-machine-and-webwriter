@@ -36,8 +36,8 @@ public class TMServiceResult implements IsSerializable {
      * This field should never be null. */
     public MirrorState resultState ;
     
-    public TMServiceResult(){
-    	guid = null;
+    public TMServiceResult(String guid){
+    	this.guid = guid;
     	statusCode = TMStatusCode.NO_EVALUATOR;
     	statusMessage = "Evaluator not created";
     	attentionMessage = null;

@@ -99,9 +99,5 @@ public interface EvaluatorInterface extends StateInterface {
      * @return the current time manager
      */
     BTTimeManager getTimeManager(); 
-    
-    public static final int UNKNOWN_LANG = 0;
-    public static final int CPP_LANG = 1 ;
-    public static final int JAVA_LANG = 2 ;
 
 }

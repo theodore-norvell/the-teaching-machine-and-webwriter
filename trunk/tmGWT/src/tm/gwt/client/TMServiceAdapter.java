@@ -20,11 +20,7 @@ public class TMServiceAdapter extends Observable implements StateCommander {
     
     TMServiceAdapter( String url, MirrorState mirrorState ) {
         this.mirrorState = mirrorState ;
-        this.latestResult = new TMServiceResult() ;
-        this.latestResult.attentionMessage = null ;
-        this.latestResult.exceptionInformation = null ;
-        this.latestResult.guid = null ;
-        this.latestResult.statusCode = TMStatusCode.NO_EVALUATOR ;
+        this.latestResult = new TMServiceResult( null ) ;
         this.latestResult.statusMessage = "Server not yet contacted." ;
         this.proxy = GWT.create(TMService30Intf.class) ;
         this.endpoint = (ServiceDefTarget)( this.proxy );

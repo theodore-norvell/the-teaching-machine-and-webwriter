@@ -70,7 +70,7 @@ public class ConfigurationServer extends DefaultHandler{
     //private static XMLDocument document;
     private static final String XMLDeclaration = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>";
     private static final String configFileTag = "<configFile version=\"2.0\">";
-    private static boolean applet;
+    private static boolean applet = false ;
     /* Note: This is an error. The lead <xml> is not part of the document
     and thus not a tag.
     */
