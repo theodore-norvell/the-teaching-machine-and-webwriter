@@ -13,32 +13,28 @@ import tm.interfaces.TMStatusCode;
 
 public class EvaluatorWrapperTest {
 	
-	EvaluatorWrapper evaluatorWrapper;
-	TMServiceStatusReporter statusReporter;
-	TMServiceResult result ;
-	String guid ;
-
-	@Before
-	public void setUp() throws Throwable {
-        guid = UUID.randomUUID().toString();
-        result = new TMServiceResult(guid) ;
-		statusReporter = new TMServiceStatusReporter( result ) ;
+	public EvaluatorWrapper makeEvaluatorWrapper(String guid ) throws Throwable {
+        TMServiceResult result = new TMServiceResult(guid) ;
+        TMServiceStatusReporter statusReporter = new TMServiceStatusReporter( result ) ;
 		statusReporter.setResult(result);
-		evaluatorWrapper = new EvaluatorWrapper( EvaluatorInterface.CPP_LANG, statusReporter); 
+		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( EvaluatorInterface.CPP_LANG, statusReporter); 
+		assertEquals(TMStatusCode.READY_TO_COMPILE, result.statusCode );
+		return evaluatorWrapper ;
 	}
 
 	@Test
 	public void testEvaluatorWrapper() throws Throwable {
-		assertEquals(TMStatusCode.READY_TO_COMPILE, statusReporter.getStatusCode());
-		System.out.print(result.statusMessage);
+        String guid = UUID.randomUUID().toString();
+	    EvaluatorWrapper wrapper = makeEvaluatorWrapper(guid) ;
 	}
 
 	@Test
-	public void testLoadString() {
-		assertEquals(TMStatusCode.READY_TO_COMPILE, statusReporter.getStatusCode());
-		result = new TMServiceResult(guid) ;
-		evaluatorWrapper.loadString(result, "newFile", "// This is a comment");
-		assertEquals(TMStatusCode.COMPILED, statusReporter.getStatusCode());
+	public void testLoadString()  throws Throwable {
+        String guid = UUID.randomUUID().toString();
+        EvaluatorWrapper wrapper = makeEvaluatorWrapper(guid) ;
+        TMServiceResult result = new TMServiceResult(guid) ;
+        wrapper.loadString(result, "newFile", "// This is a comment");
+		assertEquals(TMStatusCode.COMPILED, result.statusCode );
 		System.out.print(result.statusMessage);
 	}
 
