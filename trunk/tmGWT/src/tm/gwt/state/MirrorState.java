@@ -26,39 +26,39 @@ public class MirrorState implements StateInterface, IsSerializable {
 
     public MirrorState() {
     }
-    
+
     public void update( StateInterface newState ) {
-    	
-    	expression = newState.getExpression();
-    	
-    	TMFileI tmFile = newState.getCodeFocus().getFile();
-    	MirrorTMFile mirrorTMFile = new MirrorTMFile(tmFile.getFileName());
-    	codeLines.clear();
-    	int size = newState.getNumSelectedCodeLines(tmFile, true);
-    	for(int i = 0; i < size; i++){
-    		MirrorCodeLine line = new MirrorCodeLine(newState.getSelectedCodeLine(tmFile, true, i), mirrorTMFile);
-    		codeLines.add(line);
-    	}
-    	
-    	codeFocus = new MirrorCoords(mirrorTMFile, newState.getCodeFocus().getLineNumber());
-    	
-    	store.update( newState.getHeapRegion(), newState.getScratchRegion(), 
-    			newState.getStackRegion(), newState.getStaticRegion() ); 
-    	
-    	for(int i = 0; i < consoleLines.size(); i++){
-    		consoleLines.set(i, newState.getConsoleLine(i));
-    	}
+
+        expression = newState.getExpression();
+
+        TMFileI tmFile = newState.getCodeFocus().getFile();
+        MirrorTMFile mirrorTMFile = new MirrorTMFile(tmFile.getFileName());
+        codeLines.clear();
+        int size = newState.getNumSelectedCodeLines(tmFile, true);
+        for(int i = 0; i < size; i++){
+            MirrorCodeLine line = new MirrorCodeLine(newState.getSelectedCodeLine(tmFile, true, i), mirrorTMFile);
+            codeLines.add(line);
+        }
+
+        codeFocus = new MirrorCoords(mirrorTMFile, newState.getCodeFocus().getLineNumber());
+
+        store.update( newState.getHeapRegion(), newState.getScratchRegion(), 
+                newState.getStackRegion(), newState.getStaticRegion() ); 
+
+        for(int i = 0; i < consoleLines.size(); i++){
+            consoleLines.set(i, newState.getConsoleLine(i));
+        }
     }
 
     public void setExpression( String exp ) {
         this.expression = exp ;
     }
-    
+
     @Override
     public String getExpression() {
         return expression ;
     }
-    
+
     public void putSelectedCodeLines( TMFileI tmFile, ArrayList<MirrorCodeLine> lines ){
         this.codeLines = lines ;
     }
@@ -86,7 +86,7 @@ public class MirrorState implements StateInterface, IsSerializable {
                 if( codeLines.get( i ) != null ) c++ ;
             return c ; }
     }
-    
+
     public void setSelection( Selection selection ) {
         this.selection = selection ;
     }
@@ -104,7 +104,7 @@ public class MirrorState implements StateInterface, IsSerializable {
     public SourceCoordsI getCodeFocus() {
         return this.codeFocus ;
     }
-    
+
     @Deprecated // Should only be needed for testing.
     public void updateStore( StoreInterface store ) {
         this.store.update(  store ) ;
@@ -134,15 +134,15 @@ public class MirrorState implements StateInterface, IsSerializable {
         consoleLines.add(line);
     }
 
-	@Override
-	public int getNumConsoleLines() {
-		return consoleLines.size();
-	}
+    @Override
+    public int getNumConsoleLines() {
+        return consoleLines.size();
+    }
 
-	@Override
-	public String getConsoleLine(int l) {
-		return consoleLines.get(l);
-	}
+    @Override
+    public String getConsoleLine(int l) {
+        return consoleLines.get(l);
+    }
 
 
 
