@@ -42,8 +42,7 @@ public class MirrorState implements StateInterface, IsSerializable {
 
         codeFocus = new MirrorCoords(mirrorTMFile, newState.getCodeFocus().getLineNumber());
 
-        store.update( newState.getHeapRegion(), newState.getScratchRegion(), 
-                newState.getStackRegion(), newState.getStaticRegion() ); 
+        store.update( newState.getStore() ); 
 
         for(int i = 0; i < consoleLines.size(); i++){
             consoleLines.set(i, newState.getConsoleLine(i));
@@ -103,11 +102,6 @@ public class MirrorState implements StateInterface, IsSerializable {
     @Override
     public SourceCoordsI getCodeFocus() {
         return this.codeFocus ;
-    }
-
-    @Deprecated // Should only be needed for testing.
-    public void updateStore( StoreInterface store ) {
-        this.store.update(  store ) ;
     }
 
     @Override

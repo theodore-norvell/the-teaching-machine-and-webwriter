@@ -24,8 +24,8 @@ public class TMService30 extends RemoteServiceServlet
         TMServiceResult result = new TMServiceResult(guid) ;
         TMServiceStatusReporter reporter = new TMServiceStatusReporter( result ) ;
         try {
-        	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, reporter );
-        	synchronized(wrappers){ wrappers.put(guid, wrapper);}
+            	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, reporter );
+            	synchronized(wrappers){ wrappers.put(guid, wrapper);}
         }
         catch( Throwable th ) {
             result.statusCode = TMStatusCode.NO_EVALUATOR ;
@@ -44,10 +44,10 @@ public class TMService30 extends RemoteServiceServlet
         TMServiceResult result = new TMServiceResult(guid) ;
         synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
         if( wrappers == null){
-        	result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        	result.statusMessage = "Bad or stale GUID.";
+            result.statusCode = TMStatusCode.NO_EVALUATOR ;
+            result.statusMessage = "Bad or stale GUID.";
         } else {
-        	wrapper.loadString(result, fileName, programSource);
+            wrapper.loadString(result, fileName, programSource);
         }
         return result ;
     }

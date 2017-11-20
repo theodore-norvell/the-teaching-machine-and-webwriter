@@ -29,8 +29,6 @@ public class MirrorDatum implements Datum, IsSerializable {
     protected ArrayList<String> childLabel = new ArrayList<String>()  ;
     protected MirrorStore store ;
     
-    private MirrorDatum() {}
-    
     public static MirrorDatum makeMirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
         if( d instanceof RegionInterface ) return new MirrorRegion((RegionInterface) d, ms ) ;
         if( d instanceof PointerInterface ) return new MirrorPointerDatum( (PointerInterface)d, parent, ms ) ;
@@ -38,6 +36,8 @@ public class MirrorDatum implements Datum, IsSerializable {
         else if( parent instanceof RegionInterface ) return new MirrorDatum( d, null, ms ) ;
         else return new MirrorDatum( d, parent, ms ) ;
     }
+    
+    private MirrorDatum() {}
 
     private MirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
         address = d.getAddress() ;
@@ -116,7 +116,8 @@ public class MirrorDatum implements Datum, IsSerializable {
         this.highlight = d.getHighlight() ;
         // birthOrder and parent must be the same.
         com.google.gwt.core.client.GWT.log("   b") ;
-        if( this.birthOrder != d.getBirthOrder() ) throw new AssertionError() ;
+        if( !(this instanceof RegionInterface) && this.birthOrder != d.getBirthOrder() )
+            throw new AssertionError() ;
         // Check that the parents match up.
         if( this.parent == null && d.getParent() != null ) {com.google.gwt.core.client.GWT.log("   x") ; throw new AssertionError() ; }
         else if ( this.parent != null && d.getParent() == null ) {com.google.gwt.core.client.GWT.log("   y") ; throw new AssertionError() ; }
@@ -307,8 +308,8 @@ public class MirrorDatum implements Datum, IsSerializable {
         }
         
         @Override public void update( Datum d, MirrorStore mirrorStore ) {
-            super.update( d, mirrorStore );
             if( !(d instanceof RegionInterface ) ) throw new AssertionError() ;
+            super.update( d, mirrorStore ) ; 
             this.frameBoundary = ((RegionInterface)d).getFrameBoundary() ;
         }
         

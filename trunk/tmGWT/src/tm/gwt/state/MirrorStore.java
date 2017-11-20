@@ -23,18 +23,20 @@ public class MirrorStore implements StoreInterface, IsSerializable {
         this.staticRegion = new MirrorDatum.MirrorRegion(this) ;
     }
     
-    void update( StoreInterface store) {
+    public void update( StoreInterface store ){
         com.google.gwt.core.client.GWT.log(">>> MirrorStore.update") ;
-        this.heapRegion.update( store.getHeap(), this ) ;
-        this.scratchRegion.update( store.getScratch(), this ) ;
-        this.stackRegion.update( store.getStack(), this ) ;
-        this.staticRegion.update( store.getStatic(), this ) ;
-        com.google.gwt.core.client.GWT.log("<<< MirrorStore.update") ;
-    }
-    
-    void update( RegionInterface heapRegion, RegionInterface scratchRegion, 
-    		RegionInterface stackRegion, RegionInterface staticRegion ){
-        com.google.gwt.core.client.GWT.log(">>> MirrorStore.update") ;
+        
+        RegionInterface heapRegion = store.getHeap() ;
+        RegionInterface scratchRegion = store.getScratch() ;
+        RegionInterface stackRegion = store.getStack() ;
+        RegionInterface staticRegion = store.getStatic() ;
+        
+        // Since the regions never change, they should have the same serial numbers,
+        // even if they don't.
+        this.heapRegion.serialNumber = heapRegion.getSerialNumber() ;
+        this.scratchRegion.serialNumber = scratchRegion.getSerialNumber() ;
+        this.stackRegion.serialNumber = stackRegion.getSerialNumber() ;
+        this.staticRegion.serialNumber = staticRegion.getSerialNumber() ;
         this.heapRegion.update( heapRegion, this ) ;
         this.scratchRegion.update( scratchRegion, this ) ;
         this.stackRegion.update( stackRegion, this ) ;

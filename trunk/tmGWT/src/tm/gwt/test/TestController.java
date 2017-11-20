@@ -91,7 +91,7 @@ public class TestController implements StateCommander {
 
     public TestController(MirrorState state) {
         this.state = state ;
-        state.updateStore( makeStore0() ) ;
+        state.getStore().update( makeStore0() ) ;
     }
     
     void next() {
@@ -104,7 +104,7 @@ public class TestController implements StateCommander {
             state.setExpression( StateInterface.EXP_START_SELECTED+ "tempF" +StateInterface.EXP_END+ " = (tempC * 5 / 9) + 32" );
             state.putSelectedCodeLines( file, lines );
             state.setCodeFocus( foci.get(  count % foci.size() ) ) ;
-            state.updateStore( makeStore1() ) ;
+            state.getStore().update( makeStore1() ) ;
             for( int i = 0 ; i < 5 ; ++i)  state.addConsoleLine( "Console line " + i );
             state.addConsoleLine( "Hello world"  );
             count = 1 ;
@@ -112,41 +112,41 @@ public class TestController implements StateCommander {
         case 1 : {
             state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ "tempC" +StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore2() ) ;
+            state.getStore().update( makeStore2() ) ;
             state.addConsoleLine( "What is your name?"  );
             count = 2 ;
         } break ;
         case 2 : {
             state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_LVALUE+ "tempC" +StateInterface.EXP_END+ StateInterface.EXP_END+ " * 5 / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore3() ) ;
+            state.getStore().update( makeStore3() ) ;
             state.addConsoleLine( StateInterface.INPUT_MARK + "Zhaoyan" + StateInterface.NORMAL_MARK  );
             count = 3 ;
         } break ;
         case 3 : {
             state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END + " * " +StateInterface.EXP_START_SELECTED+ "5" +StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore4() ) ;
+            state.getStore().update( makeStore4() ) ;
             state.addConsoleLine(  "Hello Zhaoyan");
             count = 4 ;
         } break ;
         case 4 : {
             state.setExpression( StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = (" +StateInterface.EXP_START_SELECTED+ StateInterface.EXP_START_VALUE+ "10" +StateInterface.EXP_END+ " * " +StateInterface.EXP_START_VALUE+ "5.0" +StateInterface.EXP_END+ StateInterface.EXP_END+ " / 9) + 32" );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore5() ) ;
+            state.getStore().update( makeStore5() ) ;
             count = 5 ;
         } break ;
         case 5 : {
             state.setExpression( "" +StateInterface.EXP_START_SELECTED+ "" +StateInterface.EXP_START_LVALUE+ "tempF" +StateInterface.EXP_END+ " = " +StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END+ StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore6() ) ;
+            state.getStore().update( makeStore6() ) ;
             state.addConsoleLine(  "Testing console 1");
             count = 6 ;
         } break ;
         case 6 : {
             state.setExpression( StateInterface.EXP_START_VALUE+ "50.0" +StateInterface.EXP_END );
             state.setCodeFocus( foci.get(  count % foci.size() ) );
-            state.updateStore( makeStore0() ) ;
+            state.getStore().update( makeStore0() ) ;
             state.addConsoleLine(  "Testing console 2");
             count = 7 ;
         } break ;
