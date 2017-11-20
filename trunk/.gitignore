@@ -1,1 +1,3 @@
 tmWebAPI/bin/
+tmGWT/war/WEB-INF/classes
+*.class
