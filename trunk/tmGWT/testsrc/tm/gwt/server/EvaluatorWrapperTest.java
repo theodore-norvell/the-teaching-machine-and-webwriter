@@ -4,18 +4,17 @@ import static org.junit.Assert.*;
 
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
 
 import tm.gwt.shared.TMServiceResult;
-import tm.interfaces.EvaluatorInterface;
+import tm.interfaces.LanguageCodes ;
 import tm.interfaces.TMStatusCode;
 
 public class EvaluatorWrapperTest {
 	
 	public EvaluatorWrapper makeEvaluatorWrapper(String guid ) throws Throwable {
         TMServiceResult result = new TMServiceResult(guid) ;
-		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( EvaluatorInterface.CPP_LANG, result); 
+		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( LanguageCodes.CPP_LANG, result); 
 		assertEquals(TMStatusCode.READY_TO_COMPILE, result.statusCode );
 		return evaluatorWrapper ;
 	}

@@ -20,7 +20,7 @@ import tm.backtrack.BTTimeManager;
 import tm.displayEngine.OldConsoleDisplay;
 import tm.utilities.TMFile;
 
-public interface EvaluatorInterface extends StateInterface {
+public interface EvaluatorInterface extends StateInterface,  LanguageCodes {
 	
 // Mutators
 	

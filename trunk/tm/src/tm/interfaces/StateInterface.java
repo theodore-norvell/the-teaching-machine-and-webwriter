@@ -73,9 +73,4 @@ public interface StateInterface {
     
     /** Indicate console characters are input */
     public final char INPUT_MARK = '\ufffe';
-
-    
-    public static final int UNKNOWN_LANG = 0;
-    public static final int CPP_LANG = 1 ;
-    public static final int JAVA_LANG = 2 ;
 }

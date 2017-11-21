@@ -11,7 +11,7 @@ import tm.gwt.state.MirrorState;
 import tm.interfaces.CommandInterface;
 import tm.interfaces.EvaluatorInterface;
 import tm.interfaces.Inputter;
-import tm.interfaces.StateInterface ;
+import tm.interfaces.LanguageCodes ;
 import tm.interfaces.TMStatusCode;
 import tm.languageInterface.Language;
 import tm.languageInterface.LanguagePIFactoryIntf;
@@ -51,10 +51,10 @@ public class EvaluatorWrapper {
         LanguagePIFactoryIntf languageFactory = null ;
         String languageName = null ;
         try {
-            if( language == StateInterface.CPP_LANG ) {
+            if( language == LanguageCodes.CPP_LANG ) {
                 languageName = "C++" ;
                 languageFactory = pim.getFactory( TMBigAppletPIFactory.jackNameForCPP, LanguagePIFactoryIntf.class, true ); }
-            else if( language == StateInterface.JAVA_LANG ) {
+            else if( language == LanguageCodes.JAVA_LANG ) {
                 languageName = "Java" ;
                 languageFactory = pim.getFactory( TMBigAppletPIFactory.jackNameForJava, LanguagePIFactoryIntf.class, true );  }
             else {
