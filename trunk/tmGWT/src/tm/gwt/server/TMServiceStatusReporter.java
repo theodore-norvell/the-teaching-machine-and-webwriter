@@ -6,8 +6,8 @@ import tm.interfaces.StatusConsumer ;
 import tm.interfaces.TMStatusCode ;
 
 class TMServiceStatusReporter implements StatusConsumer {
-	private TMServiceResult result ; // Must not be null
-	private Evaluator evaluator = null ;
+	private TMServiceResult result = null ; // May be null.
+	private Evaluator evaluator = null ; // May be null.
 	
 	TMServiceStatusReporter( TMServiceResult result ) { 
 		this.result = result ;

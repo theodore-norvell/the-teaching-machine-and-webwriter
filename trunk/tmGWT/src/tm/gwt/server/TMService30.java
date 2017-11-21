@@ -40,13 +40,9 @@ public class TMService30 extends RemoteServiceServlet
     public TMServiceResult loadString(String guid, String fileName,
             String programSource) {
         System.out.println( "In  loadString" );
-        EvaluatorWrapper wrapper ;
         TMServiceResult result = new TMServiceResult(guid) ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        if( wrappers == null){
-            result.statusCode = TMStatusCode.NO_EVALUATOR ;
-            result.statusMessage = "Bad or stale GUID.";
-        } else {
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
             wrapper.loadString(result, fileName, programSource);
         }
         return result ;
@@ -57,14 +53,9 @@ public class TMService30 extends RemoteServiceServlet
             String fileName) {
         System.out.println( "In  loadRemoteFile" );
         TMServiceResult result = new TMServiceResult(guid) ;
-        EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-
-        if( wrappers == null){
-        	result.statusCode = TMStatusCode.NO_EVALUATOR ;
-        	result.statusMessage = "Bad or stale GUID.";
-        } else {
-        	wrapper.loadRemoteFile(result, root, fileName);
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
+            wrapper.loadRemoteFile(result, root, fileName);
         }
         return result ;
     }
@@ -72,43 +63,50 @@ public class TMService30 extends RemoteServiceServlet
     @Override
     public TMServiceResult initializeTheState(String guid) {
         System.out.println( "In  initializeTheState" );
-        /*TMServiceResult result = new TMServiceResult() ;*/
-        //Why should every time create a new result? There's no information in it
-        EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        TMServiceResult result = wrapper.getResult();
-        wrapper.initializeTheState(result);
+        TMServiceResult result = new TMServiceResult(guid) ;
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
+            wrapper.initializeTheState(result); }
         return result ;
     }
 
     @Override
     public TMServiceResult go(String guid, String commandString) {
         System.out.println( "In  go" );
-        EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        TMServiceResult result = wrapper.getResult();
-        wrapper.go(result, commandString);
+        TMServiceResult result = new TMServiceResult(guid) ;
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
+            wrapper.go(result, commandString); }
         return result ;
     }
 
     @Override
     public TMServiceResult goBack(String guid) {
         System.out.println( "In  goBack" );
-        EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        TMServiceResult result = wrapper.getResult();
-        wrapper.goBack(result);
+        TMServiceResult result = new TMServiceResult(guid) ;
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
+            wrapper.goBack(result);
+        }
         return result ;
     }
 
     @Override
     public TMServiceResult toCursor(String guid, String fileName, int cursor) {
         System.out.println( "In  toCursor" );
-        EvaluatorWrapper wrapper ;
-        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
-        TMServiceResult result = wrapper.getResult();
-        wrapper.toCursor(result, fileName, cursor);
+        TMServiceResult result = new TMServiceResult(guid) ;
+        EvaluatorWrapper wrapper = getWrapper( guid, result ) ;
+        if( wrapper != null) {
+            wrapper.toCursor(result, fileName, cursor); }
         return result ;
     }
 
+    private EvaluatorWrapper getWrapper( String guid, TMServiceResult result ) {
+        EvaluatorWrapper wrapper ;
+        synchronized(wrappers) { wrapper = wrappers.get(guid) ; }
+        if( wrapper == null){
+            result.statusCode = TMStatusCode.NO_EVALUATOR ;
+            result.statusMessage = "Bad or stale GUID."; }
+        return wrapper ;
+    }
 }
