@@ -48,7 +48,7 @@ public class MirrorDatum implements Datum, IsSerializable {
         bytes = new byte[d.getNumBytes() ] ;
         for( int i=0 ; i < bytes.length ; ++i ) bytes[i] = (byte) d.getByte( i ) ;
         highlight = d.getHighlight() ;
-        birthOrder = d.getBirthOrder() ;
+        if( d.getParent() != null ) birthOrder = d.getBirthOrder() ; else birthOrder = 0 ;
         serialNumber = d.getSerialNumber() ;
         int numChildren = d.getNumChildren() ;
         for( int i = 0 ; i < numChildren ; ++i ) {

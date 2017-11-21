@@ -93,7 +93,7 @@ public class EvaluatorWrapper {
         }
         result.resultState = new MirrorState() ;
         result.resultState.update( evaluator ); 
-        statusReporter.setResult( null ) ; //One line source code
+        statusReporter.setResult( null ) ;
     }
 
 
@@ -120,59 +120,53 @@ public class EvaluatorWrapper {
     }
 
 
-    public synchronized TMServiceResult initializeTheState(TMServiceResult result) {
-        statusReporter.getResult().resultState = new MirrorState() ;
+    public synchronized void initializeTheState(TMServiceResult result) {
         statusReporter.setResult( result ) ;
-        if( result.statusCode ==  TMStatusCode.COMPILED ){
+        if( evaluator.getStatusCode() ==  TMStatusCode.COMPILED ){
+            evaluator.initialize() ; }
+        result.statusCode = evaluator.getStatusCode();
+        result.statusMessage = evaluator.getStatusMessage();
+        result.resultState = new MirrorState() ;
+        result.resultState.update( evaluator ); 
+        statusReporter.setResult( null ) ;
+    }
+
+
+    public synchronized void go(TMServiceResult result, String commandString) {
+        statusReporter.setResult( result ) ;
+        if( evaluator.getStatusCode() ==  TMStatusCode.COMPILED ) {
             evaluator.initialize() ;
-            result.statusCode = evaluator.getStatusCode();
-            result.statusMessage = evaluator.getStatusMessage();
+        } else if( evaluator.getStatusCode() == TMStatusCode.READY ){
+            evaluator.go(commandString);         	
         }
-        result.resultState.update( evaluator );  
-        return statusReporter.getResult();
+        result.statusCode = evaluator.getStatusCode();
+        result.statusMessage = evaluator.getStatusMessage();
+        result.resultState = new MirrorState() ;
+        result.resultState.update( evaluator ); 
+        statusReporter.setResult( null ) ;
     }
 
 
-    public synchronized TMServiceResult go(TMServiceResult result, String commandString) {
-        if( evaluator != null ) {
-            int statusCode = statusReporter.getStatusCode() ;
-            if( statusCode == TMStatusCode.COMPILED ) {
-                evaluator.initialize() ;
-                result.statusCode = evaluator.getStatusCode();
-                result.statusMessage = evaluator.getStatusMessage();
+    public synchronized void goBack(TMServiceResult result) {
+        statusReporter.setResult( result ) ;
+        evaluator.goBack() ;
 
-            }
-            else if( statusCode == TMStatusCode.READY ){
-                evaluator.go(commandString);
-                result.statusCode = evaluator.getStatusCode();
-                result.statusMessage = evaluator.getStatusMessage();          	
-            } }  
-        statusReporter.getResult().resultState.update( evaluator ); 
-        return statusReporter.getResult() ;
+        result.statusCode = evaluator.getStatusCode();
+        result.statusMessage = evaluator.getStatusMessage();
+        result.resultState = new MirrorState() ;
+        result.resultState.update( evaluator ); 
+        statusReporter.setResult( null ) ;
     }
 
 
-    public synchronized TMServiceResult goBack(TMServiceResult result) {
-        if( evaluator != null ) {
-            evaluator.goBack() ;
-            result.statusCode = evaluator.getStatusCode();
-            result.statusMessage = evaluator.getStatusMessage();
-        }
-        statusReporter.getResult().resultState.update( evaluator ); 
-        return statusReporter.getResult() ;
-    }
-
-
-    public synchronized TMServiceResult toCursor(TMServiceResult result, String fileName, int cursor) {
+    public synchronized void toCursor(TMServiceResult result, String fileName, int cursor) {
+        statusReporter.setResult( result ) ;
         evaluator.toCursor(fileName, cursor);
         result.statusCode = evaluator.getStatusCode();
         result.statusMessage = evaluator.getStatusMessage();
-        statusReporter.getResult().resultState.update( evaluator ); 
-        return statusReporter.getResult() ;
-    }
-
-    public synchronized  TMServiceResult getResult(){
-        return statusReporter.getResult();
+        result.resultState = new MirrorState() ;
+        result.resultState.update( evaluator ); 
+        statusReporter.setResult( null ) ;
     }
 
     private class NullInputter implements Inputter {

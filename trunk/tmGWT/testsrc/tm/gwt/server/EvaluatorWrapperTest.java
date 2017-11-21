@@ -4,13 +4,29 @@ import static org.junit.Assert.*;
 
 import java.util.UUID;
 
+import org.junit.Before ;
 import org.junit.Test;
 
 import tm.gwt.shared.TMServiceResult;
 import tm.interfaces.LanguageCodes ;
+import tm.interfaces.RegionInterface ;
 import tm.interfaces.TMStatusCode;
+import tm.utilities.Debug ;
 
 public class EvaluatorWrapperTest {
+    
+
+    String sourceCodeFortyTwo = "#include <iostream>\n"
+                              + "int main() {\n"
+                              + "    int x = 41 ;\n"
+                              + "    x = x + 1 ;\n"
+                              + "    cout<<x ;\n"
+                              + "    return 0 ; }\n" ;
+    
+    @Before
+    public void before() {
+        Debug.getInstance().turnOffAll();
+    }
 	
 	private EvaluatorWrapper makeEvaluatorWrapper(String guid ) throws Throwable {
         TMServiceResult result = new TMServiceResult(guid) ;
@@ -19,27 +35,27 @@ public class EvaluatorWrapperTest {
 		return evaluatorWrapper ;
 	}
 
-    private EvaluatorWrapper loadString(String guid, String sourceCode) throws Throwable {
+    private EvaluatorWrapper loadString(String guid, String sourceCode, int expectedStatus) throws Throwable {
         EvaluatorWrapper wrapper = makeEvaluatorWrapper(guid) ;
         TMServiceResult result = new TMServiceResult(guid) ;
         wrapper.loadString(result, "newFile", sourceCode );
-        if( result.statusCode != TMStatusCode.COMPILED ) {
-            System.out.printf( result.statusMessage ) ;
-            System.out.printf( result.attentionMessage ) ; 
+        if( result.statusCode != expectedStatus ) {
+            System.out.println( result.statusMessage ) ;
+            System.out.println( result.attentionMessage ) ; 
         }
-        assertEquals(TMStatusCode.COMPILED, result.statusCode );
+        assertEquals(expectedStatus, result.statusCode );
         return wrapper ;
     }
     
-    private EvaluatorWrapper loadAndInitialize(String guid, String sourceCode) throws Throwable {
-        EvaluatorWrapper wrapper = loadString( guid, sourceCode ) ;
+    private EvaluatorWrapper loadAndInitialize(String guid, String sourceCode, int expectedStatus) throws Throwable {
+        EvaluatorWrapper wrapper = loadString( guid, sourceCode, TMStatusCode.COMPILED ) ;
         TMServiceResult result = new TMServiceResult(guid) ;
         wrapper.initializeTheState( result ) ;
-        if( result.statusCode != TMStatusCode.READY ) {
-            System.out.printf( result.statusMessage ) ;
-            System.out.printf( result.attentionMessage ) ; 
+        if( result.statusCode != expectedStatus ) {
+            System.out.println( result.statusMessage ) ;
+            System.out.println( result.attentionMessage ) ; 
         }
-        assertEquals(TMStatusCode.READY, result.statusCode );
+        assertEquals( expectedStatus, result.statusCode );
         return wrapper ;
     }
 
@@ -53,8 +69,7 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testLoadString()  throws Throwable {
         String guid = UUID.randomUUID().toString();
-        String sourceCode = "int main() { }" ;
-        EvaluatorWrapper wrapper = loadString( guid, sourceCode ) ;
+        EvaluatorWrapper wrapper = loadString( guid, sourceCodeFortyTwo, TMStatusCode.COMPILED ) ;
 	}
 	
 	@Test
@@ -65,23 +80,51 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testInitializeTheState() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        String sourceCode = "int main() { }" ;
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCode ) ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY ) ;
 	}
 
 	@Test
 	public void testGo() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        String sourceCode = "int main() { }" ;
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCode ) ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
         int status = TMStatusCode.READY ;
-        for( int i = 0 ; i < 10 && status==TMStatusCode.READY ; ++i ) {
-            TMServiceResult result = new TMServiceResult(guid) ;
+        TMServiceResult result = null ;
+        for( int i = 0 ; i < 100 && status==TMStatusCode.READY ; ++i ) {
+            result = new TMServiceResult(guid) ;
             wrapper.go( result, "f" ) ;
             status = result.statusCode ;
         }
         assertEquals(TMStatusCode.EXECUTION_COMPLETE, status );
+        // TODO. Next line fails because of a bug in the update method.
+        assertEquals( 1, result.resultState.getNumConsoleLines() ) ;
+        assertEquals( "42", result.resultState.getConsoleLine( 0 ) )  ;
 	}
+
+    @Test
+    public void testDatumCopying0() throws Throwable {
+        // A very minimal test that dataums are copied.
+        String guid = UUID.randomUUID().toString();
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        int status = TMStatusCode.READY ;
+        TMServiceResult result = null ;
+        // Go forward 9 steps after initialization.
+        for( int i = 0 ; i < 9 && status==TMStatusCode.READY ; ++i ) {
+            result = new TMServiceResult(guid) ;
+            wrapper.go( result, "f" ) ;
+            status = result.statusCode ;
+        }
+        assertEquals(TMStatusCode.READY, status );
+        RegionInterface stackRegion = result.resultState.getStackRegion() ;
+        assertEquals( 1, stackRegion.getNumChildren() ) ;
+        assertEquals( "42", stackRegion.getChildAt( 0 ).getValueString() )  ;
+        assertEquals( "x", stackRegion.getChildAt( 0 ).getName() )  ;
+        assertEquals( "int", stackRegion.getChildAt( 0 ).getTypeString() )  ;
+        assertEquals( 4, stackRegion.getChildAt( 0 ).getNumBytes() )  ;
+        assertEquals( 42, stackRegion.getChildAt( 0 ).getByte( 0 ) )  ;
+        assertEquals( 0, stackRegion.getChildAt( 0 ).getByte( 1 ) )  ;
+        assertEquals( 0, stackRegion.getChildAt( 0 ).getByte( 2 ) )  ;
+        assertEquals( 0, stackRegion.getChildAt( 0 ).getByte( 3 ) )  ;
+    }
 
 	@Test
 	public void testGoBack() {
@@ -90,11 +133,6 @@ public class EvaluatorWrapperTest {
 
 	@Test
 	public void testToCursor() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetResult() {
 		fail("Not yet implemented");
 	}
 
