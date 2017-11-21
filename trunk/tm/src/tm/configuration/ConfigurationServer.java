@@ -83,11 +83,11 @@ public class ConfigurationServer extends DefaultHandler{
         if (myVector == null) myVector = new Vector<Configuration>();
         //if (commentBlock == null) commentBlock = new Vector<String>();
         try {
-	    	xr = XMLReaderFactory.createXMLReader();
-	    	xr.setContentHandler(this);
-	    	xr.setErrorHandler(this);
-        }catch (SAXException e) {
-        	attention("Error parsing configuation file: "+e.getMessage(), e);
+            xr = XMLReaderFactory.createXMLReader();
+            xr.setContentHandler(this);
+            xr.setErrorHandler(this);
+        } catch (SAXException e) {
+            attention("Error parsing configuation file: "+e.getMessage(), e);
         }
     }
 /**
@@ -326,13 +326,14 @@ public class ConfigurationServer extends DefaultHandler{
     }
     
     
-
+    // TODO. Eliminate this dependence on Swing
     static void attention(String message){
         java.awt.Frame d = new AttentionFrame( "Attention - Configuration Error:", message ) ;
         d.setVisible( true );
     	
     }
-    
+
+    // TODO. Eliminate this dependence on Swing
     static void attention(String message, Throwable th ){
         java.awt.Frame d = new AttentionFrame( "Attention - Configuration Error:", message, th ) ;
         d.setVisible( true );
