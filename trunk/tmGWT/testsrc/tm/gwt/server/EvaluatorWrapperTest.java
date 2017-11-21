@@ -15,9 +15,7 @@ public class EvaluatorWrapperTest {
 	
 	public EvaluatorWrapper makeEvaluatorWrapper(String guid ) throws Throwable {
         TMServiceResult result = new TMServiceResult(guid) ;
-        TMServiceStatusReporter statusReporter = new TMServiceStatusReporter( result ) ;
-		statusReporter.setResult(result);
-		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( EvaluatorInterface.CPP_LANG, statusReporter); 
+		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( EvaluatorInterface.CPP_LANG, result); 
 		assertEquals(TMStatusCode.READY_TO_COMPILE, result.statusCode );
 		return evaluatorWrapper ;
 	}
@@ -33,9 +31,13 @@ public class EvaluatorWrapperTest {
         String guid = UUID.randomUUID().toString();
         EvaluatorWrapper wrapper = makeEvaluatorWrapper(guid) ;
         TMServiceResult result = new TMServiceResult(guid) ;
-        wrapper.loadString(result, "newFile", "// This is a comment");
+        String sourceCode = "int main() { }" ;
+        wrapper.loadString(result, "newFile", sourceCode );
+        if( result.statusCode != TMStatusCode.COMPILED ) {
+            System.out.printf( result.statusMessage ) ;
+            System.out.printf( result.attentionMessage ) ; 
+        }
 		assertEquals(TMStatusCode.COMPILED, result.statusCode );
-		System.out.print(result.statusMessage);
 	}
 
 	@Test

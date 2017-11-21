@@ -22,11 +22,11 @@ public class TMService30 extends RemoteServiceServlet
         System.out.println( "In  createEvaluator ") ;
         String guid = UUID.randomUUID().toString();
         TMServiceResult result = new TMServiceResult(guid) ;
-        TMServiceStatusReporter reporter = new TMServiceStatusReporter( result ) ;
         try {
-            	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, reporter );
-            	synchronized(wrappers){ wrappers.put(guid, wrapper);}
-        }
+            	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, result );
+            	if( result.statusCode == TMStatusCode.READY_TO_COMPILE ) {
+            	    synchronized(wrappers){ 
+            	        wrappers.put(guid, wrapper);} } }
         catch( Throwable th ) {
             result.statusCode = TMStatusCode.NO_EVALUATOR ;
             result.statusMessage = "Evaluator not created" ;
