@@ -9,7 +9,6 @@ import tm.gwt.shared.TMService30IntfAsync ;
 import tm.gwt.shared.TMServiceResult ;
 import tm.gwt.state.MirrorState ;
 import tm.gwt.state.StateCommander ;
-import tm.interfaces.TMStatusCode ;
 
 public class TMServiceAdapter extends Observable implements StateCommander {
     private TMService30IntfAsync proxy ;
