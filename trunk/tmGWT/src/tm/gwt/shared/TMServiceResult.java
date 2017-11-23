@@ -34,6 +34,9 @@ public class TMServiceResult implements IsSerializable {
      * This field should never be null. */
     public MirrorState resultState ;
     
+    // For GWT serialization
+    private TMServiceResult() {}
+    
     public TMServiceResult(String guid){
     	this.guid = guid;
     	statusCode = TMStatusCode.NO_EVALUATOR;

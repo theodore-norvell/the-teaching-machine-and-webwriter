@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler ;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Label ;
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -30,6 +31,7 @@ import tm.portableDisplays.PortableContextInterface;
 public class TmGWT implements EntryPoint, Observer {
     
     ArrayList<DisplayAdapterGWT> displays = new ArrayList<DisplayAdapterGWT>() ;
+    Label statusLineLabel = new Label("", true) ;
 
     TMServiceAdapter adapter ;
     
@@ -48,12 +50,15 @@ public class TmGWT implements EntryPoint, Observer {
 		adapter = new TMServiceAdapter( url, theState ) ;
 		adapter.addObserver(  this );
 		adapter.ping() ;
-		adapter.createEvaluator(2); //JAVA_LANG
+		adapter.createEvaluator(1); //C++
 		
 		Kit.setKit(new KitGWT());
 		RootPanel menu = RootPanel.get("menuBar");
 		menu.add(this.createMenu());
 		PortableContextInterface context = new GWTContext();
+		
+		RootPanel statusLine = RootPanel.get("statusLine") ;
+		statusLine.add(  statusLineLabel );
 
 		CodeGWTDisplay codeDisplay = new CodeGWTDisplay(theState, adapter, context);
 		displays.add( codeDisplay ) ;
@@ -87,38 +92,51 @@ public class TmGWT implements EntryPoint, Observer {
     }
 	
 	private void refresh() {
-	    // TODO  We need to pop up some sort of alert if
-	    // the attention line is not null.
-	    // For now, try just an browser alert.
-	    String message = adapter.getAttentionMessage() ;
-	    if( message != null ) {
-	        String exeptionInformation = adapter.getExceptionInformation() ;
-	        if( exeptionInformation != null ) {
-	            message += "\n" + exeptionInformation ;
-	        }
-	        Window.alert( message );
-	    }
+        com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
+        
+        // Update the statusLine 
+        statusLineLabel.setText( adapter.getStatusMessage() );
 	    
-	    com.google.gwt.core.client.GWT.log(">> TmGWT.refresh()" ) ;
 	    for( DisplayAdapterGWT d : displays ) {
 	        com.google.gwt.core.client.GWT.log("Refreshing " + d.toString() ) ;
 	        d.refresh(); 
 	    }
+
+        
+        // TODO  We need to pop up some sort of nice alert if
+        // the attention line is not null.
+        // For now, try just an browser alert.
+        String message = adapter.getAttentionMessage() ;
+        if( message != null ) {
+            String exeptionInformation = adapter.getExceptionInformation() ;
+            if( exeptionInformation != null ) {
+                message += "\n" + exeptionInformation ;
+            }
+            Window.alert( message );
+        }
+        
         com.google.gwt.core.client.GWT.log("<< TmGWT.refresh()" ) ;
 	}
 	
 	public Widget createMenu() {
-	    // Create a command that will execute on menu item selection
-	    Command menuCommand = new Command() {
-	      private int curPhrase = 0;
-	      private final String[] phrases = {"Don't click me","Simple menu sample","Try another one"};
-
+	    Command loadCommand = new Command() {
 	      @Override
           public void execute() {
-	        Window.alert(phrases[curPhrase]);
-	        curPhrase = (curPhrase + 1) % phrases.length;
+	          String sourceCode = "#include <iostream>\n"
+                      + "int main() {\n"
+                      + "    int x = 41 ;\n"
+                      + "    x = x + 1 ;\n"
+                      + "    cout<<x ;\n"
+                      + "    return 0 ; }\n" ;
+	          adapter.loadString( "foo.cpp", sourceCode );
 	      }
 	    };
+	    Command dummyCommand = new Command() {
+	        @Override
+	        public void execute() {
+	            Window.alert("Not yet implemented");
+	        }
+	    } ;
 
 	    // Create a menu bar
 	    MenuBar menu = new MenuBar();
@@ -128,32 +146,25 @@ public class TmGWT implements EntryPoint, Observer {
 
 	    // Create a sub menu of recent documents
 	    MenuBar recentDocsMenu = new MenuBar(true);
-	    String[] recentDocs = {"Finishing","How to","Guide"};
+	    String[] recentDocs = {"A","B","C"};
 	    for (int i = 0; i < recentDocs.length; i++) {
-	      recentDocsMenu.addItem(recentDocs[i], menuCommand);
+	      recentDocsMenu.addItem(recentDocs[i], dummyCommand);
 	    }
 
 	    // Create the file menu
 	    MenuBar fileMenu = new MenuBar(true);
 	    fileMenu.setAnimationEnabled(true);
 	    menu.addItem(new MenuItem("File", fileMenu));
-	    String[] fileOptions = {"New","Open","Close","Recent","Exit"};
-	    for (int i = 0; i < fileOptions.length; i++) {
-	      if (i == 3) {
-	        fileMenu.addSeparator();
-	        fileMenu.addItem(fileOptions[i], recentDocsMenu);
-	        fileMenu.addSeparator();
-	      } else {
-	        fileMenu.addItem(fileOptions[i], menuCommand);
-	      }
-	    }
+	    fileMenu.addItem( "Load", loadCommand ) ;
+        fileMenu.addSeparator();
+        fileMenu.addItem("Recent", recentDocsMenu);
 	    
 	 // Create the edit menu
 	    MenuBar editMenu = new MenuBar(true);
 	    menu.addItem(new MenuItem("Edit", editMenu));
 	    String[] editOptions = {"Undo","Redo","Cut","Copy","Paste"};
 	    for (int i = 0; i < editOptions.length; i++) {
-	      editMenu.addItem(editOptions[i], menuCommand);
+	      editMenu.addItem(editOptions[i], dummyCommand);
 	    }
 
 	    // Create the GWT menu
@@ -161,7 +172,7 @@ public class TmGWT implements EntryPoint, Observer {
 	    menu.addItem(new MenuItem("GWT", true, gwtMenu));
 	    String[] gwtOptions = {"Download","Examples","Source Code","GWT wit's the program"};
 	    for (int i = 0; i < gwtOptions.length; i++) {
-	      gwtMenu.addItem(gwtOptions[i], menuCommand);
+	      gwtMenu.addItem(gwtOptions[i], dummyCommand);
 	    }
 
 	    // Create the help menu
@@ -170,7 +181,7 @@ public class TmGWT implements EntryPoint, Observer {
 	    menu.addItem(new MenuItem("Help", helpMenu));
 	    String[] helpOptions = {"Contents","Cookies","About GWT"};
 	    for (int i = 0; i < helpOptions.length; i++) {
-	      helpMenu.addItem(helpOptions[i], menuCommand);
+	      helpMenu.addItem(helpOptions[i], dummyCommand);
 	    }
 
 	    // Return the menu

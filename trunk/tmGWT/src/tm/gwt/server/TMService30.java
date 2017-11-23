@@ -10,11 +10,13 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet ;
 public class TMService30 extends RemoteServiceServlet
     implements TMService30Intf {
 
-	private HashMap<String, EvaluatorWrapper> wrappers = new HashMap<String, EvaluatorWrapper>();
+	private static HashMap<String, EvaluatorWrapper> wrappers = new HashMap<String, EvaluatorWrapper>();
 
     @Override
     public String ping() {
-        return "TMService30 is operating" ;
+        int size ;
+        synchronized(wrappers) { size = wrappers.size() ; } 
+        return "TMService30 is operating. There are " +size+ " evaluators in existence.";
     }
 
     @Override
@@ -23,16 +25,13 @@ public class TMService30 extends RemoteServiceServlet
         String guid = UUID.randomUUID().toString();
         TMServiceResult result = new TMServiceResult(guid) ;
         try {
-            	EvaluatorWrapper wrapper = new EvaluatorWrapper(language, result );
-            	if( result.statusCode == TMStatusCode.READY_TO_COMPILE ) {
-            	    synchronized(wrappers){ 
-            	        wrappers.put(guid, wrapper);} } }
+            EvaluatorWrapper wrapper = new EvaluatorWrapper(language, result );
+            synchronized(wrappers){ wrappers.put(guid, wrapper); }
+        }
         catch( Throwable th ) {
             result.statusCode = TMStatusCode.NO_EVALUATOR ;
             result.statusMessage = "Evaluator not created" ;
         }
-        result.statusCode = TMStatusCode.READY_TO_COMPILE ;
-        //Is the file ready to compile after evaluator is created?
         return result ;
     }
 

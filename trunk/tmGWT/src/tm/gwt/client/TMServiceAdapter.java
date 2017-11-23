@@ -37,6 +37,10 @@ public class TMServiceAdapter extends Observable implements StateCommander {
         return this.latestResult.statusCode ;
     }
     
+    public String getStatusMessage() {
+        return this.latestResult.statusMessage ;
+    }
+    
     public void ping() {
         proxy.ping( new PingCallback() ) ;
     }
