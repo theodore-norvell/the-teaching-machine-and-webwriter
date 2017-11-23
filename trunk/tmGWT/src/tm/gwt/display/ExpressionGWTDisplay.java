@@ -3,7 +3,7 @@ package tm.gwt.display;
 import telford.common.ActionEvent;
 import telford.common.ActionListener;
 import telford.common.Button;
-import tm.gwt.state.StateCommander ;
+import tm.gwt.client.StateCommander ;
 import tm.interfaces.StateInterface ;
 import tm.portableDisplays.ExpressionDisplayer;
 import tm.portableDisplays.PortableContextInterface;

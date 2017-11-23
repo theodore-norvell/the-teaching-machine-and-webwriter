@@ -1,10 +1,8 @@
 package tm.gwt.shared;
 
-import java.util.UUID;
-
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
-import tm.gwt.state.MirrorState ;
+import tm.gwt.shared.state.MirrorState ;
 import tm.interfaces.TMStatusCode;
 
 public class TMServiceResult implements IsSerializable {

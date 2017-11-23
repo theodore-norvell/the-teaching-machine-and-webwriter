@@ -1,4 +1,4 @@
-package tm.gwt.state;
+package tm.gwt.shared.state;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 

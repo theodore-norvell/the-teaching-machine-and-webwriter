@@ -1,11 +1,11 @@
-package tm.gwt.state;
+package tm.gwt.shared.state;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.TMFileI ;
 
-public class MirrorCoords implements SourceCoordsI, IsSerializable{
+public class MirrorCoords implements SourceCoordsI, IsSerializable {
 
     private MirrorTMFile file ;
     private int line ;

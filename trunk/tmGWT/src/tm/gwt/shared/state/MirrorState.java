@@ -1,19 +1,16 @@
-package tm.gwt.state;
+package tm.gwt.shared.state;
 
 import java.util.ArrayList ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
-import tm.evaluator.Evaluator;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.RegionInterface ;
 import tm.interfaces.Selection ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.SourceCoordsI ;
 import tm.interfaces.StateInterface ;
-import tm.interfaces.StoreInterface ;
 import tm.interfaces.TMFileI ;
-import tm.utilities.TMFile;
 
 public class MirrorState implements StateInterface, IsSerializable {
 

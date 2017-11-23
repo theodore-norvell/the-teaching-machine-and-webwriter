@@ -7,7 +7,7 @@ import tm.TMBigApplet;
 import tm.TMBigAppletPIFactory;
 import tm.evaluator.Evaluator;
 import tm.gwt.shared.TMServiceResult;
-import tm.gwt.state.MirrorState;
+import tm.gwt.shared.state.MirrorState ;
 import tm.interfaces.CommandInterface;
 import tm.interfaces.EvaluatorInterface;
 import tm.interfaces.Inputter;

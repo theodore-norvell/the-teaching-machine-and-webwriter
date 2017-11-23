@@ -1,4 +1,4 @@
-package tm.gwt.state;
+package tm.gwt.shared.state;
 
 import java.util.TreeSet ;
 import java.util.Vector ;

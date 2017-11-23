@@ -1,4 +1,4 @@
-package tm.gwt.state;
+package tm.gwt.shared.state;
 
 import java.util.HashMap ;
 
@@ -24,8 +24,6 @@ public class MirrorStore implements StoreInterface, IsSerializable {
     }
     
     public void update( StoreInterface store ){
-        com.google.gwt.core.client.GWT.log(">>> MirrorStore.update") ;
-        
         RegionInterface heapRegion = store.getHeap() ;
         RegionInterface scratchRegion = store.getScratch() ;
         RegionInterface stackRegion = store.getStack() ;
@@ -41,7 +39,6 @@ public class MirrorStore implements StoreInterface, IsSerializable {
         this.scratchRegion.update( scratchRegion, this ) ;
         this.stackRegion.update( stackRegion, this ) ;
         this.staticRegion.update( staticRegion, this ) ;
-        com.google.gwt.core.client.GWT.log("<<< MirrorStore.update") ;
     }
     
     MirrorDatum get( int serialNumber ) { return map.get( serialNumber ) ; }
