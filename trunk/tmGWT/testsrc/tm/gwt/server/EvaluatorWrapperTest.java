@@ -127,9 +127,9 @@ public class EvaluatorWrapperTest {
     }
 
 	@Test
-	public void testGoBack() {
+	public void testGoBack() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        valuatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         result = new TMServiceResult(guid) ;
@@ -159,16 +159,16 @@ public class EvaluatorWrapperTest {
 	}
 
 	@Test
-	public void testToCursor() {
+	public void testToCursor() throws Throwable  {
         String guid = UUID.randomUUID().toString();
-        valuatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         result = new TMServiceResult(guid) ;
         
         wrapper.toCursor(result,"sourceCodeFortyTwo", 2 );
         int expectedCursorLine = 2;
-        assertEquals(expectedCursorLine, result.resultState.getCodeFocus().getLineNumber();)
+        assertEquals(expectedCursorLine, result.resultState.getCodeFocus().getLineNumber() );
         
 	}
 
