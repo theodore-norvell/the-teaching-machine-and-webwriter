@@ -128,12 +128,48 @@ public class EvaluatorWrapperTest {
 
 	@Test
 	public void testGoBack() {
-		fail("Not yet implemented");
+        String guid = UUID.randomUUID().toString();
+        valuatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        int status = TMStatusCode.READY ;
+        TMServiceResult result = null ;
+        result = new TMServiceResult(guid) ;
+        if(status == TMStatusCode.READY){
+        	wrapper.go(result, "f");
+        	status = result.statusCode ;
+        }
+        
+        result = new TMServiceResult(guid) ;
+        wrapper.goBack(result);
+        assertEquals(TMStatusCode.READY, status );
+        
+        for( int i = 0 ; i < 100 && status==TMStatusCode.READY ; ++i ) {
+            result = new TMServiceResult(guid) ;
+            wrapper.go( result, "f" ) ;
+            status = result.statusCode ;
+        }
+        
+        
+        for( int i = 0 ; i < 100 ; ++i ) {
+            result = new TMServiceResult(guid) ;
+            wrapper.goBack( result) ;
+            status = result.statusCode ;
+        }
+        assertEquals(TMStatusCode.EXECUTION_COMPLETE, status );
+        assertEquals( 0, result.resultState.getNumConsoleLines() ) ;
 	}
 
 	@Test
 	public void testToCursor() {
-		fail("Not yet implemented");
+        String guid = UUID.randomUUID().toString();
+        valuatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        int status = TMStatusCode.READY ;
+        TMServiceResult result = null ;
+        result = new TMServiceResult(guid) ;
+        
+        wrapper.toCursor(result,"sourceCodeFortyTwo", 2 );
+        int expectedCursorLine = 2;
+        assertEquals(expectedCursorLine, result.resultState.getCodeFocus().getLineNumber();)
+        
 	}
 
 }
