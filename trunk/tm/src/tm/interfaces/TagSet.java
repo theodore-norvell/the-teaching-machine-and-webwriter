@@ -25,7 +25,7 @@ import java.util.TreeSet;
  *  a boolean expression is valid or not.
  * @author theo
  */
-public class TagSet implements TagSetInterface{
+public class TagSet implements TagSetInterface {
     private Set<String> rep = new TreeSet<String> () ;
 
     private TagSet( ) {
