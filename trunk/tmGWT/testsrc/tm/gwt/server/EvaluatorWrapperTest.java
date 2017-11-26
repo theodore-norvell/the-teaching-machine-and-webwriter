@@ -7,11 +7,6 @@ import java.util.UUID;
 import org.junit.Before ;
 import org.junit.Test;
 
-import com.google.gwt.core.shared.GWT ;
-import com.google.gwt.user.client.rpc.SerializationException ;
-import com.google.gwt.user.client.rpc.SerializationStreamFactory ;
-import com.google.gwt.user.client.rpc.SerializationStreamWriter ;
-
 import tm.gwt.shared.TMServiceResult;
 import tm.gwt.shared.state.MirrorState ;
 import tm.interfaces.LanguageCodes ;
@@ -38,7 +33,6 @@ public class EvaluatorWrapperTest {
         TMServiceResult result = new TMServiceResult(guid) ;
 		EvaluatorWrapper evaluatorWrapper = new EvaluatorWrapper( LanguageCodes.CPP_LANG, result); 
 		assertEquals(TMStatusCode.READY_TO_COMPILE, result.statusCode );
-		//serialize( result ) ;
 		return evaluatorWrapper ;
 	}
 
@@ -151,12 +145,6 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testToCursor() {
 		fail("Not yet implemented");
-	}
-	
-	void serialize( Object ob ) throws SerializationException {
-	    SerializationStreamFactory f =  null ;
-	    SerializationStreamWriter stream = f.createStreamWriter();
-	    stream.writeObject( ob );
 	}
 
 }

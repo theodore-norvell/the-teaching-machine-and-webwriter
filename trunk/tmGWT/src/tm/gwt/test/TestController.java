@@ -9,9 +9,11 @@ import tm.gwt.client.StateCommander ;
 import tm.gwt.shared.state.MirrorCodeLine ;
 import tm.gwt.shared.state.MirrorCoords ;
 import tm.gwt.shared.state.MirrorDatum ;
+import tm.gwt.shared.state.MirrorMarkUp ;
 import tm.gwt.shared.state.MirrorState ;
 import tm.gwt.shared.state.MirrorStore ;
 import tm.gwt.shared.state.MirrorTMFile ;
+import tm.gwt.shared.state.MirrorTagSet ;
 import tm.interfaces.CodeLine ;
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.MarkUp ;
@@ -29,9 +31,9 @@ public class TestController implements StateCommander {
     ArrayList<MirrorCodeLine> lines = new ArrayList<MirrorCodeLine>() ;
     ArrayList<MirrorCoords> foci = new ArrayList<MirrorCoords>() ;
     {
-        StringBuffer b = new StringBuffer() ;
-        Vector<MarkUpI> markup = new Vector<MarkUpI>() ;
-        TreeSet<TagSetInterface> tagSets = new TreeSet<TagSetInterface>()  ;
+        String b ;
+        MirrorMarkUp[] markup = new MirrorMarkUp[0] ;
+        TreeSet<MirrorTagSet> tagSets = new TreeSet<MirrorTagSet>()  ;
         
 
         MirrorCoords coords ;
@@ -39,40 +41,35 @@ public class TestController implements StateCommander {
         
         int lineNumber = 1 ;
 
-        b.setLength( 0 );
-        b.append( "void main( ) {" ) ;
+        b = "void main( ) {" ;
         coords = new MirrorCoords(file, lineNumber)  ;
         line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
-        b.setLength( 0 );
-        b.append( "    int first, second;" ) ;
+        b = "    int first, second;" ;
         coords = new MirrorCoords(file, lineNumber)  ;
         line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
-        b.setLength( 0 );
-        b.append( "    cout << \"Input the first number: \";" ) ;
+        b =  "    cout << \"Input the first number: \";" ;
         coords = new MirrorCoords(file, lineNumber)  ;
         line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
-        b.setLength( 0 );
-        b.append( "     cin >> first;" ) ;
+        b =  "     cin >> first;" ;
         coords = new MirrorCoords(file, lineNumber)  ;
         line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
-        b.setLength( 0 );
-        b.append( "}" ) ;
+        b =  "}" ;
         coords = new MirrorCoords(file, lineNumber)  ;
         line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
         lines.add(  line  ) ;
@@ -81,8 +78,7 @@ public class TestController implements StateCommander {
         
         for( ; lineNumber < 52 ; ) {
             coords = new MirrorCoords(file, lineNumber)  ;
-            b.setLength( 0 ); 
-            b.append( "// Line " + lineNumber ) ;
+            b =  "// Line " + lineNumber ;
             line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
             lines.add(  line  ) ;
             ++lineNumber ;

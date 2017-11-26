@@ -84,4 +84,9 @@ public class TagSet implements TagSetInterface {
     public boolean isEmpty() {
         return rep.isEmpty() ;
     }
+
+    @Override
+    public Set<String> getRep() {
+        return rep ;
+    }
 }

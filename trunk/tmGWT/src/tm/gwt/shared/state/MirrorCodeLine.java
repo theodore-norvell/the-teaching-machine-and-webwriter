@@ -13,30 +13,28 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 
 public class MirrorCodeLine implements IsSerializable, CodeLineI {
     private char[] chars ;
-    private MarkUpI[] markUp ;
+    private MirrorMarkUp[] markUp ;
     private MirrorCoords coords ;
     /** A list of all tag sets that apply anywhere on this line */
-    private TreeSet<TagSetInterface> tagSets ;
+    private TreeSet<MirrorTagSet> tagSets ;
 
     private MirrorCodeLine() {}
-    
-    public MirrorCodeLine(CodeLineI codeLineI, MirrorTMFile file){
-    	chars = new char[codeLineI.getChars().length];
-    	chars = codeLineI.getChars();
-    	markUp = new MarkUp[ codeLineI.markUp().length];
-    	markUp = codeLineI.markUp();
-    	coords = new MirrorCoords(file, codeLineI.getCoords().getLineNumber());
-    	tagSets = new TreeSet<TagSetInterface>(); //Is there any tag set we can get from CodeLineI?  	
-    }
-    
-    public MirrorCodeLine( StringBuffer buff, Vector<MarkUpI> markUpVector, MirrorCoords sc, TreeSet<TagSetInterface> tagSets) {
-        chars = new char[ buff.length() ] ;
-        if( buff.length() > 0 ) // Work around jview bug!
-            buff.getChars(0, buff.length(), chars, 0);
 
-        markUp = new MarkUp[ markUpVector.size() ] ;
-        for( int i = 0, sz = markUpVector.size() ; i < sz ; ++i ) {
-            markUp[i] = markUpVector.elementAt(i) ; }
+    public MirrorCodeLine(CodeLineI codeLineI, MirrorTMFile file){
+        chars = codeLineI.getChars();
+        MarkUpI[] codeLineMarkUp = codeLineI.markUp() ;
+        markUp = new MirrorMarkUp[ codeLineMarkUp.length ] ;
+        for( int i=0, sz=codeLineMarkUp.length ; i<sz ; ++i ) {
+            markUp[i] = new MirrorMarkUp( codeLineMarkUp[i] ) ;
+        }
+        coords = new MirrorCoords(file, codeLineI.getCoords().getLineNumber());
+        tagSets = new TreeSet<MirrorTagSet>(); // TODO. Copy the tag sets.
+    }
+
+    public MirrorCodeLine( String str, MirrorMarkUp[] markUp, MirrorCoords sc, TreeSet<MirrorTagSet> tagSets) {
+        chars = str.toCharArray() ;
+
+        this.markUp = markUp ;
 
         coords = sc ;
         this.tagSets = tagSets ;
