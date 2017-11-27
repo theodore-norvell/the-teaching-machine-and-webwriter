@@ -8,6 +8,7 @@ import tm.gwt.shared.TMService30Intf ;
 import tm.gwt.shared.TMService30IntfAsync ;
 import tm.gwt.shared.TMServiceResult ;
 import tm.gwt.shared.state.MirrorState ;
+import tm.interfaces.StateFormatter ;
 
 public class TMServiceAdapter extends Observable implements StateCommander {
     private TMService30IntfAsync proxy ;
@@ -124,7 +125,19 @@ public class TMServiceAdapter extends Observable implements StateCommander {
         public void onSuccess(TMServiceResult result) {
             GWT.log("Success") ;
             TMServiceAdapter.this.latestResult = result ;
+            /*DGB*/ GWT.log("New state from server is"); /*DBG*/
+            /*DGB*/ StringBuffer b = new StringBuffer() ; /*DBG*/
+            /*DGB*/ StateFormatter.formatState( result.resultState, b, "    |" ) ; /*DBG*/
+            /*DGB*/ GWT.log( b.toString() ) ; /*DBG*/
+            /*DGB*/ GWT.log("Before update, mirrorState is"); /*DBG*/
+            /*DGB*/ b = new StringBuffer() ; /*DBG*/
+            /*DGB*/ StateFormatter.formatState( mirrorState, b, "    |" ) ; /*DBG*/
+            /*DGB*/ GWT.log( b.toString() ) ; /*DBG*/
             mirrorState.update( result.resultState ) ;
+            /*DGB*/ GWT.log("After update, mirrorState is"); /*DBG*/
+            /*DGB*/ b = new StringBuffer() ; /*DBG*/
+            /*DGB*/ StateFormatter.formatState( mirrorState, b, "    |" ) ; /*DBG*/
+            /*DGB*/ GWT.log( b.toString() ) ; /*DBG*/
             TMServiceAdapter.this.setChanged();
             TMServiceAdapter.this.notifyObservers();
         }
