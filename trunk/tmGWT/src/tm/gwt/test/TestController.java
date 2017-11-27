@@ -33,7 +33,6 @@ public class TestController implements StateCommander {
     {
         String b ;
         MirrorMarkUp[] markup = new MirrorMarkUp[0] ;
-        TreeSet<MirrorTagSet> tagSets = new TreeSet<MirrorTagSet>()  ;
         
 
         MirrorCoords coords ;
@@ -43,35 +42,35 @@ public class TestController implements StateCommander {
 
         b = "void main( ) {" ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
         b = "    int first, second;" ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
         b =  "    cout << \"Input the first number: \";" ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
         b =  "     cin >> first;" ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
 
         b =  "}" ;
         coords = new MirrorCoords(file, lineNumber)  ;
-        line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+        line = new MirrorCodeLine(b, markup, coords ) ;
         lines.add(  line  ) ;
         foci.add( coords ) ;
         ++lineNumber ;
@@ -79,7 +78,7 @@ public class TestController implements StateCommander {
         for( ; lineNumber < 52 ; ) {
             coords = new MirrorCoords(file, lineNumber)  ;
             b =  "// Line " + lineNumber ;
-            line = new MirrorCodeLine(b, markup, coords, tagSets ) ;
+            line = new MirrorCodeLine(b, markup, coords ) ;
             lines.add(  line  ) ;
             ++lineNumber ;
         }

@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 import tm.interfaces.MarkUpI ;
 import tm.interfaces.TagSetInterface ;
 
+// TODO Delete this class
 public class MirrorMarkUp implements MarkUpI, IsSerializable {
 
     private int column ;

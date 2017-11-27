@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.IsSerializable ;
 import tm.interfaces.SelectionInterface ;
 import tm.interfaces.TagSetInterface ;
 
+// TODO Delete this class
 public class MirrorTagSet implements TagSetInterface, IsSerializable {
 
     private Set<String> rep ;

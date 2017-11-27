@@ -8,12 +8,11 @@ import tm.interfaces.SourceCoordsI ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
+// TODO. Consider deleting this class.
 public class MirrorCodeLine implements IsSerializable, CodeLineI {
     private char[] chars ;
     private MirrorMarkUp[] markUp ;
     private MirrorCoords coords ;
-    /** A list of all tag sets that apply anywhere on this line */
-    private TreeSet<MirrorTagSet> tagSets ;
 
     private MirrorCodeLine() {}
 
@@ -25,16 +24,14 @@ public class MirrorCodeLine implements IsSerializable, CodeLineI {
             markUp[i] = new MirrorMarkUp( codeLineMarkUp[i] ) ;
         }
         coords = new MirrorCoords(file, codeLineI.getCoords().getLineNumber());
-        tagSets = new TreeSet<MirrorTagSet>(); // TODO. Copy the tag sets.
     }
 
-    public MirrorCodeLine( String str, MirrorMarkUp[] markUp, MirrorCoords sc, TreeSet<MirrorTagSet> tagSets) {
+    public MirrorCodeLine( String str, MirrorMarkUp[] markUp, MirrorCoords sc) {
         chars = str.toCharArray() ;
 
         this.markUp = markUp ;
 
         coords = sc ;
-        this.tagSets = tagSets ;
     }
 
     @Override
@@ -53,5 +50,5 @@ public class MirrorCodeLine implements IsSerializable, CodeLineI {
         for(int i=0 ; i < markUp.length ; ++i ) {
             if( i>0 ) mu.append(", ") ; mu.append( markUp[i] ) ; }
         mu.append("]") ;
-        return "ClcCodeLine "+coords+" <"+ch+">, "+tagSets+", "+mu ; }
+        return "MirrorCodeLine "+coords+" <"+ch+">, "+mu ; }
 }
