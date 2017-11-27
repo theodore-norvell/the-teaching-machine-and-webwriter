@@ -8,6 +8,7 @@ import org.junit.Before ;
 import org.junit.Test;
 
 import tm.gwt.shared.TMServiceResult;
+import tm.gwt.shared.state.MirrorState ;
 import tm.interfaces.LanguageCodes ;
 import tm.interfaces.RegionInterface ;
 import tm.interfaces.TMStatusCode;
@@ -35,7 +36,7 @@ public class EvaluatorWrapperTest {
 		return evaluatorWrapper ;
 	}
 
-    private EvaluatorWrapper loadString(String guid, String sourceCode, int expectedStatus) throws Throwable {
+    private EvaluatorWrapper loadString(String guid, String sourceCode, int expectedStatus, MirrorState clientSideMirrorState) throws Throwable {
         EvaluatorWrapper wrapper = makeEvaluatorWrapper(guid) ;
         TMServiceResult result = new TMServiceResult(guid) ;
         wrapper.loadString(result, "newFile", sourceCode );
@@ -44,11 +45,12 @@ public class EvaluatorWrapperTest {
             System.out.println( result.attentionMessage ) ; 
         }
         assertEquals(expectedStatus, result.statusCode );
+        clientSideMirrorState.update( result.resultState ) ;
         return wrapper ;
     }
     
-    private EvaluatorWrapper loadAndInitialize(String guid, String sourceCode, int expectedStatus) throws Throwable {
-        EvaluatorWrapper wrapper = loadString( guid, sourceCode, TMStatusCode.COMPILED ) ;
+    private EvaluatorWrapper loadAndInitialize(String guid, String sourceCode, int expectedStatus, MirrorState clientSideMirrorState) throws Throwable {
+        EvaluatorWrapper wrapper = loadString( guid, sourceCode, TMStatusCode.COMPILED, clientSideMirrorState ) ;
         TMServiceResult result = new TMServiceResult(guid) ;
         wrapper.initializeTheState( result ) ;
         if( result.statusCode != expectedStatus ) {
@@ -56,6 +58,7 @@ public class EvaluatorWrapperTest {
             System.out.println( result.attentionMessage ) ; 
         }
         assertEquals( expectedStatus, result.statusCode );
+        clientSideMirrorState.update( result.resultState ) ;
         return wrapper ;
     }
 
@@ -69,7 +72,8 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testLoadString()  throws Throwable {
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadString( guid, sourceCodeFortyTwo, TMStatusCode.COMPILED ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadString( guid, sourceCodeFortyTwo, TMStatusCode.COMPILED, clientSideMirrorState ) ;
 	}
 	
 	@Test
@@ -80,31 +84,37 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testInitializeTheState() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY, clientSideMirrorState ) ;
 	}
 
 	@Test
 	public void testGo() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY, clientSideMirrorState  ) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         for( int i = 0 ; i < 100 && status==TMStatusCode.READY ; ++i ) {
             result = new TMServiceResult(guid) ;
             wrapper.go( result, "f" ) ;
             status = result.statusCode ;
+            clientSideMirrorState.update(  result.resultState );
         }
         assertEquals(TMStatusCode.EXECUTION_COMPLETE, status );
         // TODO. Next line fails because of a bug in the update method.
         assertEquals( 1, result.resultState.getNumConsoleLines() ) ;
         assertEquals( "42", result.resultState.getConsoleLine( 0 ) )  ;
+        assertEquals( 1, clientSideMirrorState.getNumConsoleLines() ) ;
+        assertEquals( "42", clientSideMirrorState.getConsoleLine( 0 ) )  ;
 	}
 
     @Test
     public void testDatumCopying0() throws Throwable {
         // A very minimal test that dataums are copied.
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY, clientSideMirrorState  ) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         // Go forward 9 steps after initialization.
@@ -112,9 +122,10 @@ public class EvaluatorWrapperTest {
             result = new TMServiceResult(guid) ;
             wrapper.go( result, "f" ) ;
             status = result.statusCode ;
+            clientSideMirrorState.update( result.resultState ) ;
         }
         assertEquals(TMStatusCode.READY, status );
-        RegionInterface stackRegion = result.resultState.getStackRegion() ;
+        RegionInterface stackRegion = clientSideMirrorState.getStackRegion() ;
         assertEquals( 1, stackRegion.getNumChildren() ) ;
         assertEquals( "42", stackRegion.getChildAt( 0 ).getValueString() )  ;
         assertEquals( "x", stackRegion.getChildAt( 0 ).getName() )  ;

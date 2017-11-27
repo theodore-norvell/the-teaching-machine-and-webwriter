@@ -17,9 +17,12 @@
  */
 package tm.interfaces;
 
+import java.io.Serializable ;
+import java.util.Set ;
 
-public interface TagSetInterface {
+public interface TagSetInterface extends Serializable {
     boolean selectionIsValid( SelectionInterface seletion ) ;
     boolean contains( String tag ) ;
     boolean isEmpty() ;
+    Set<String> getRep() ;
 }

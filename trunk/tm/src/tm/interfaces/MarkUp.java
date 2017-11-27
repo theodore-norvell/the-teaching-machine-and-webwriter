@@ -22,6 +22,8 @@ public class MarkUp implements MarkUpI {
     private int command ;
     
 	private TagSetInterface tagSet ;
+	
+	private MarkUp() { }
 
     public MarkUp( int col, short comm ) {
         column = col ;

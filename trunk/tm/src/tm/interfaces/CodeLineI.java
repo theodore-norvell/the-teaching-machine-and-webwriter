@@ -14,7 +14,6 @@
 
 package tm.interfaces;
 
-
 /** Represents a single marked-up line. */
 public interface CodeLineI {
    char [] getChars() ;

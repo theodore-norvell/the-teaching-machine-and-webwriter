@@ -1,6 +1,8 @@
 package tm.interfaces ;
 
-public interface MarkUpI {
+import java.io.Serializable ;
+
+public interface MarkUpI extends Serializable {
 
     public static final short CHANGE_TAG_SET = 5 ;
     public static final short COMMENT = 2 ;

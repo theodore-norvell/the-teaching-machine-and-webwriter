@@ -25,6 +25,8 @@ public class CodeLine implements CodeLineI {
     /** A list of all tag sets that apply anywhere on this line */
     private Set<TagSetInterface> tagSets ;
 
+    // TODO Replace Vector with ArrayList
+    
     public CodeLine( StringBuffer buff, Vector<MarkUp> markUpVector, SourceCoordsI sc, Set<TagSetInterface> tagSets) {
         chars = new char[ buff.length() ] ;
         if( buff.length() > 0 ) // Work around jview bug!
@@ -38,10 +40,12 @@ public class CodeLine implements CodeLineI {
         this.tagSets = tagSets ;
     }
 
+    // TODO Not safe.
     public char[] getChars() { return chars ; }
 
     public SourceCoordsI getCoords() { return coords ; }
 
+    // TODO Not safe
     public MarkUp[] markUp() { return markUp ; }
 
     /** Return true if the selection expression is valid anywhere on this line. */
