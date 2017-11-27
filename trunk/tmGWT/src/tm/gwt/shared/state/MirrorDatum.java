@@ -1,7 +1,6 @@
 package tm.gwt.shared.state;
 
 import java.util.ArrayList ;
-import java.util.Vector ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
@@ -12,8 +11,8 @@ import tm.interfaces.ScalarInterface ;
 
 public class MirrorDatum implements Datum, IsSerializable {
 
-    private Vector<String> names = new Vector<String>() ;
-    private Vector<Object> properties = new Vector<Object>() ;
+    private ArrayList<String> names = new ArrayList<String>() ;
+    private ArrayList<Object> properties = new ArrayList<Object>() ;
 
     protected int address;
     protected MirrorDatum parent;
@@ -246,13 +245,13 @@ public class MirrorDatum implements Datum, IsSerializable {
         int i ;
         int sz = names.size() ;
         for( i=0 ; i < sz ; ++i ) {
-            String nm = names.elementAt(i) ;
+            String nm = names.get( i ) ;
             if( nm.equals( name ) ) break ; }
         if( i == sz ) {
-            names.addElement( name ) ;
-            properties.addElement( info ) ; }
+            names.add( name ) ;
+            properties.add( info ) ; }
         else {
-            properties.setElementAt( info, i ) ; }
+            properties.set( i, info ) ; }
     }
     
     @Override
@@ -261,12 +260,12 @@ public class MirrorDatum implements Datum, IsSerializable {
         int i ;
         int sz = names.size() ;
         for( i=0 ; i < sz ; ++i ) {
-            String nm = (String) names.elementAt(i) ;
+            String nm = (String) names.get(i) ;
             if( nm.equals( name ) ) break ; }
         if( i == sz ) {
             return null ; }
         else {
-            return properties.elementAt( i ) ; }
+            return properties.get( i ) ; }
     }
 
     @Override
@@ -279,7 +278,7 @@ public class MirrorDatum implements Datum, IsSerializable {
 
         private int frameBoundary ;
         
-        private MirrorRegion() { super() ; }
+        private MirrorRegion() { }
         
         protected MirrorRegion( RegionInterface region, MirrorStore ms ) {
             super( region, null, ms ) ;
@@ -304,15 +303,20 @@ public class MirrorDatum implements Datum, IsSerializable {
     }
     
     protected static class MirrorScalarDatum extends MirrorDatum implements ScalarInterface {
-         protected MirrorScalarDatum( ScalarInterface datum, MirrorDatum parent, MirrorStore ms ) {
+        
+        private MirrorScalarDatum() {}
+        
+        protected MirrorScalarDatum( ScalarInterface datum, MirrorDatum parent, MirrorStore ms ) {
              super( datum, parent, ms ) ;
-         }
+        }
     }
     
     protected static class MirrorPointerDatum extends MirrorDatum implements PointerInterface {
         
         private boolean isNull ;
         private int targetSerialNumber ;
+        
+        private MirrorPointerDatum() {} 
         
         protected MirrorPointerDatum( PointerInterface datum, MirrorDatum parent, MirrorStore ms ) {
             super( datum, parent, ms ) ;

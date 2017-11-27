@@ -11,6 +11,8 @@ public class MirrorMarkUp implements MarkUpI, IsSerializable {
     private int command ;
     private MirrorTagSet tagSet ;
     
+    private MirrorMarkUp() {}
+    
     public MirrorMarkUp(MarkUpI that ) {
         column = that.getColumn() ;
         command = that.getCommand() ;

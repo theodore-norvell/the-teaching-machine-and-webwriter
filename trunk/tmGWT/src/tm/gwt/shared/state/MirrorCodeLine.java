@@ -1,13 +1,10 @@
 package tm.gwt.shared.state;
 
 import java.util.TreeSet ;
-import java.util.Vector ;
 
 import tm.interfaces.CodeLineI ;
-import tm.interfaces.MarkUp ;
 import tm.interfaces.MarkUpI;
 import tm.interfaces.SourceCoordsI ;
-import tm.interfaces.TagSetInterface ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
 
