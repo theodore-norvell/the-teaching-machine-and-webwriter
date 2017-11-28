@@ -140,7 +140,8 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testGoBack() throws Throwable {
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY, clientSideMirrorState) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         result = new TMServiceResult(guid) ;
@@ -172,7 +173,8 @@ public class EvaluatorWrapperTest {
 	@Test
 	public void testToCursor() throws Throwable  {
         String guid = UUID.randomUUID().toString();
-        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY  ) ;
+        MirrorState clientSideMirrorState = new MirrorState() ;
+        EvaluatorWrapper wrapper = loadAndInitialize( guid, sourceCodeFortyTwo, TMStatusCode.READY, clientSideMirrorState ) ;
         int status = TMStatusCode.READY ;
         TMServiceResult result = null ;
         result = new TMServiceResult(guid) ;

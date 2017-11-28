@@ -35,6 +35,7 @@ public class TMServiceResult implements IsSerializable {
     public MirrorState resultState ;
     
     // For GWT serialization
+    // a default (zero argument) constructor with any access modifier
     private TMServiceResult() {}
     
     public TMServiceResult(String guid){
