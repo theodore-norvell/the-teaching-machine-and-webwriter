@@ -12,6 +12,7 @@ import tm.interfaces.CommandInterface;
 import tm.interfaces.EvaluatorInterface;
 import tm.interfaces.Inputter;
 import tm.interfaces.LanguageCodes ;
+import tm.interfaces.StateFormatter ;
 import tm.interfaces.TMStatusCode;
 import tm.languageInterface.Language;
 import tm.languageInterface.LanguagePIFactoryIntf;
@@ -91,8 +92,16 @@ public class EvaluatorWrapper {
             result.statusCode = evaluator.getStatusCode();
             result.statusMessage = evaluator.getStatusMessage();
         }
+        /*DGB*/ System.out.println("Evaluator is"); /*DBG*/
+        /*DGB*/ StringBuffer b = new StringBuffer() ; /*DBG*/
+        /*DGB*/ StateFormatter.formatState( evaluator, b, "    |" ) ; /*DBG*/
+        /*DGB*/ System.out.println( b.toString() ) ; /*DBG*/
         result.resultState = new MirrorState() ;
-        result.resultState.update( evaluator ); 
+        result.resultState.update( evaluator );
+        /*DGB*/ System.out.println("State to client is"); /*DBG*/
+        /*DGB*/ b = new StringBuffer() ; /*DBG*/
+        /*DGB*/ StateFormatter.formatState( result.resultState, b, "    |" ) ; /*DBG*/
+        /*DGB*/ System.out.println( b.toString() ) ; /*DBG*/
         statusReporter.setResult( null ) ;
     }
 

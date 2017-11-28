@@ -29,10 +29,13 @@ public class MirrorDatum implements Datum, IsSerializable {
     protected MirrorStore store ;
     
     public static MirrorDatum makeMirrorDatum( Datum d, MirrorDatum parent, MirrorStore ms ) {
+        // For legacy reasons the children of a region must have null parents.
+        if( parent instanceof RegionInterface ) parent = null ;
+        
+        // Now pick the appropriate constructor.
         if( d instanceof RegionInterface ) return new MirrorRegion((RegionInterface) d, ms ) ;
-        if( d instanceof PointerInterface ) return new MirrorPointerDatum( (PointerInterface)d, parent, ms ) ;
+        else if( d instanceof PointerInterface ) return new MirrorPointerDatum( (PointerInterface)d, parent, ms ) ;
         else if( d instanceof ScalarInterface ) return new MirrorScalarDatum( (ScalarInterface)d, parent, ms ) ;
-        else if( parent instanceof RegionInterface ) return new MirrorDatum( d, null, ms ) ;
         else return new MirrorDatum( d, parent, ms ) ;
     }
     
@@ -108,7 +111,7 @@ public class MirrorDatum implements Datum, IsSerializable {
         this.typeString = d.getTypeString() ;
         this.valueString = d.getValueString() ;
         int len = d.getNumBytes() ;
-        this.bytes = new byte[len] ;
+        if( this.bytes==null || this.bytes.length != len ) this.bytes = new byte[len] ;
         for( int i=0 ; i < len ; ++i ) this.bytes[i] = (byte)d.getByte( i ) ;
         this.highlight = d.getHighlight() ;
         // birthOrder and parent must be the same.
