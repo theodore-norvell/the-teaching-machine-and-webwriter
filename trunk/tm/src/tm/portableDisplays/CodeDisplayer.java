@@ -54,7 +54,7 @@ public class CodeDisplayer extends PortableDisplayer {
 		final int lineHeight = fm.getHeight();
 		final int delta_y = lineHeight + LINE_PADDING ;
 		displayInfo.setDelta_y( delta_y );
-		context.log( "painting delta_y is " +delta_y);
+		//context.log( "painting delta_y is " +delta_y);
 		int baseLine = delta_y ;
 		if (theFile == null)
 			theFile = displayInfo.getTmFile();
@@ -65,13 +65,14 @@ public class CodeDisplayer extends PortableDisplayer {
 			baseLine += delta_y;
 			CodeLineI theLine = model.getSelectedCodeLine(theFile, allowGaps, i);
 			if (theLine != null && theLine.getCoords().equals( focus )) {
+				context.log("focus line found");
 				int save = screen.getColor();
 				screen.setColor(context.getHighlightColor());
 				screen.fillRect(0, baseLine - fm.getAscent(), getWidth(), fm.getAscent() + fm.getDescent());
 				screen.setColor(save);
 			}
 			if (displayInfo.getCursorLine() == i) {
-				context.log(  "Cursor line is " + displayInfo.getCursorLine() + " and i is " + i);
+				//context.log(  "Cursor line is " + displayInfo.getCursorLine() + " and i is " + i);
 				int save = screen.getColor();
 				screen.setColor(displayInfo.getCursorColor());
 				screen.fillRect(0, baseLine - fm.getAscent(), 10, fm.getAscent() + fm.getDescent());
@@ -203,7 +204,7 @@ public class CodeDisplayer extends PortableDisplayer {
 	public void mouseJustClicked(MouseEvent e){
 		CodeDisplayerInfo displayInfo = this.getDisplayInfo() ;
 		int cursorLine = (e.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
-        context.log(  "delta_y is " + displayInfo.getDelta_y() );
+        //context.log(  "delta_y is " + displayInfo.getDelta_y() );
         context.log(  "coursorLine is " + cursorLine );
 		this.getDisplayInfo().setCursorLine(cursorLine);
 		refresh();

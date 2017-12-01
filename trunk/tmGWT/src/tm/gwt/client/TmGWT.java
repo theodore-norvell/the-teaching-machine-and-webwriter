@@ -125,8 +125,11 @@ public class TmGWT implements EntryPoint, Observer {
 	          String sourceCode = "#include <iostream>\n"
                       + "int main() {\n"
                       + "    int x = 41 ;\n"
+                      + "    int y = 20 ;\n"
                       + "    x = x + 1 ;\n"
-                      + "    cout<<x ;\n"
+                      + "    y = x + y ;\n"
+                      + "    cout<< x ;\n"
+                      + "    cout<< y ;\n"
                       + "    return 0 ; }\n" ;
 	          adapter.loadString( "foo.cpp", sourceCode );
 	      }

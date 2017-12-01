@@ -35,13 +35,17 @@ public class ConsoleDisplayer extends PortableDisplayer{
         int baseLine = TOP_MARGIN;
 
         int numLines = model.getNumConsoleLines() ;
+        context.log("<<<<<< " +  "On server side," );
+        context.log("<<<<<< " + numLines + " lines in console." );
         
         for (int i = 0; i< numLines; i++) {
             baseLine += fm.getAscent();
             String theLine = model.getConsoleLine(i);
             if(theLine != null)
+            	//context.log("We have console lines.");
                 drawLine(expandTabs(theLine),LEFT_MARGIN,baseLine, g, fm);
         }
+        
         context.log("<< ConsoleDisplayer.paintComponent.") ;
     }
 

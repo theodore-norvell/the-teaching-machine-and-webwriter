@@ -138,6 +138,12 @@ public class TMServiceAdapter extends Observable implements StateCommander {
             /*DGB*/ b = new StringBuffer() ; /*DBG*/
             /*DGB*/ StateFormatter.formatState( mirrorState, b, "    |" ) ; /*DBG*/
             /*DGB*/ GWT.log( b.toString() ) ; /*DBG*/
+            
+            /*DGB*/ GWT.log("After update, console lines are"); /*DBG*/
+            /*DGB*/ b = new StringBuffer() ; /*DBG*/
+            /*DGB*/ StateFormatter.formatConsoleLines( mirrorState, b, "    |" ) ; /*DBG*/
+            /*DGB*/ GWT.log( b.toString() ) ; /*DBG*/
+            
             TMServiceAdapter.this.setChanged();
             TMServiceAdapter.this.notifyObservers();
         }

@@ -52,4 +52,21 @@ public class StateFormatter {
                 formatDatum( d.getChildAt( i ), b, indent+"   |" ) ; } }
     }
     
+    static public void formatConsoleLines(StateInterface state, StringBuffer b, String indent){
+    	b.append( indent );
+    	if(state.getNumConsoleLines() != 0){
+    		for(int i = 0; i<state.getNumConsoleLines(); ++i){
+    			b.append("Line " + i + " is");
+    			b.append( newline ) ;
+    			b.append(state.getConsoleLine(i));
+    		}
+    	}
+    	else{
+    		b.append("No lines in console.");
+    	}
+    	b.append( newline ) ;
+    	b.append( indent );
+    	b.append("On client side");
+    }
+    
 }

@@ -126,8 +126,8 @@ public class CodeGWTDisplay extends DisplayAdapterGWT {
 	public void moveCursor(MouseEvent event){
 		CodeDisplayerInfo displayInfo = codeDisplayer.getDisplayInfo() ;
 		cursorLine = (event.getY()-displayInfo.getDelta_y()) / displayInfo.getDelta_y();
-        context.log(  "delta_y is " + displayInfo.getDelta_y() );
-        context.log(  "coursorLine is " + cursorLine );
+        //context.log(  "delta_y is " + displayInfo.getDelta_y() );
+        //context.log(  "coursorLine is " + cursorLine );
 		codeDisplayer.getDisplayInfo().setCursorLine(cursorLine);
 		refresh();
 	}

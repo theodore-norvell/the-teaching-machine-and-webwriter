@@ -3,7 +3,6 @@ package tm.gwt.shared.state;
 import java.util.ArrayList ;
 
 import com.google.gwt.user.client.rpc.IsSerializable ;
-
 import tm.interfaces.CodeLineI ;
 import tm.interfaces.RegionInterface ;
 import tm.interfaces.Selection ;
@@ -36,13 +35,15 @@ public class MirrorState implements StateInterface, IsSerializable {
             MirrorCodeLine line = new MirrorCodeLine(newState.getSelectedCodeLine(tmFile, true, i), mirrorTMFile);
             codeLines.add(line);
         }
-
+        
         codeFocus = new MirrorCoords(mirrorTMFile, newState.getCodeFocus().getLineNumber());
 
         store.update( newState.getStore() ); 
-
-        for(int i = 0; i < consoleLines.size(); i++){
-            consoleLines.set(i, newState.getConsoleLine(i));
+        
+        consoleLines.clear();
+        for(int j = 0; j < newState.getNumConsoleLines(); j++){
+        	//consoleLines.add(newState.getConsoleLine(j));
+            consoleLines.set(j, newState.getConsoleLine(j));
         }
     }
 

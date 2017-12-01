@@ -18,10 +18,10 @@ public class MirrorCodeLine implements IsSerializable, CodeLineI {
 
     public MirrorCodeLine(CodeLineI codeLineI, MirrorTMFile file){
         chars = codeLineI.getChars();
-        MarkUpI[] codeLineMarkUp = codeLineI.markUp() ;
-        markUp = new MirrorMarkUp[ codeLineMarkUp.length ] ;
-        for( int i=0, sz=codeLineMarkUp.length ; i<sz ; ++i ) {
-            markUp[i] = new MirrorMarkUp( codeLineMarkUp[i] ) ;
+
+        markUp = new MirrorMarkUp[ codeLineI.markUp().length ] ;
+        for( int i=0, sz=codeLineI.markUp().length ; i<sz ; ++i ) {
+            markUp[i] = new MirrorMarkUp( codeLineI.markUp()[i] ) ;
         }
         coords = new MirrorCoords(file, codeLineI.getCoords().getLineNumber());
     }
