@@ -8,9 +8,9 @@
 	  <!-- Use The Eclipse compiler -->
 	  <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
 	  
-	  <!-- Source and target are 1.6 -->
-	  <property name="source.version" value="1.6"/>
-	  <property name="target.version" value="1.6"/>
+	  <!-- Source and target are 1.8 -->
+	  <property name="source.version" value="1.8"/>
+	  <property name="target.version" value="1.8"/>
 	  
 	  <!-- Names for directories and files -->
 	  <property name="src" location="src"/>

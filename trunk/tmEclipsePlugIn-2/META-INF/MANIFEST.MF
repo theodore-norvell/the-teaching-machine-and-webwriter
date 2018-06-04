@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.8.2
+Created-By: 1.6.0_35-b10-428-11M3811 (Apple Inc.)
+Built-By: theo
+Built-On: 2018 June 1
+Main-Class: tm.TMMainFrame
+Provide-Package: tmeclipseplugin_2,
+ tmeclipseplugin_2.actions
+Bundle-ClassPath: .,
+ lib/tm.jar
+Bundle-SymbolicName: TeachingMachinePlugIn2;singleton=true
+Bundle-Vendor: Theodore Norvell
+Bundle-Version: 2018.06.01.b
+Import-Package: org.eclipse.core.resources,
+ org.eclipse.core.runtime;specification-version="3.4.0",
+ org.eclipse.jface.action,
+ org.eclipse.jface.dialogs,
+ org.eclipse.jface.resource,
+ org.eclipse.jface.viewers,
+ org.eclipse.swt.widgets,
+ org.eclipse.ui,
+ org.eclipse.ui.plugin,
+ org.osgi.framework;specification-version="1.6.0"
+Bundle-Name: The Teaching Machine Plug-In
+Export-Package: tmeclipseplugin_2,
+ tmeclipseplugin_2.actions
+Bundle-Activator: tmeclipseplugin_2.TMActivator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Eclipse-AutoStart: true
+
