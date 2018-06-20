@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/tmEclipseFeature_2018.6.1.b.jar" id="tmEclipseFeature" version="2018.06.01.b"/>
+</site>
