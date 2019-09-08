@@ -3,3 +3,5 @@ trunk/tmGWT/war/tmgwt
 trunk/tmGWT/war/WEB-INF/deploy/tmgwt/symbolMaps
 trunk/tmGWT/.settings
 trunk/tmEclipsePlugIn-2/.settings
+trunk/OOSE-with-Java/.metadata
+.gitignore
