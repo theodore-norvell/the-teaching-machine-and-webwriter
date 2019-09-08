@@ -198,10 +198,9 @@ TOKEN_MGR_DECLS : {
   "\n"
   {colourClass = PLAIN; CommonTokenAction( matchedToken ) ; } 
 }
-
-<IN_PEDAGOGICAL_COMMENT> SKIP:
-{
-  < ~[] >
+<IN_PEDAGOGICAL_COMMENT> SKIP : {
+   "*/" : DEFAULT
+|  < ~[] >
 }
 /* WHITE SPACE */
 

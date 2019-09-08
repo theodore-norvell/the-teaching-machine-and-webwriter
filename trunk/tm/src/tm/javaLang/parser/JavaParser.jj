@@ -123,19 +123,25 @@ TOKEN_MGR_DECLS : {
 ////////////
 // STATES //
 ////////////
-//       /---------------------------------------------------\
+//       /-------------------------------------------------<-\
 //       |                                                   |
 //       V        /*#                               */       |
-//    DEFAULT   ---------> IN_PEDAGOGICAL_COMMENT -----------+
+//    DEFAULT -----------> IN_PEDAGOGICAL_COMMENT --------->-+
 //    |                                                      |
 //    |           //                                 newline |
-//    +------------------> IN_SINGLE_LINE_COMMENT -----------+
+//    +------------------> IN_SINGLE_LINE_COMMENT --------->-+
 //    |                                                      |
 //    |      /*                                      */      |
-//    +-------------------> IN_MULTI_LINE_COMMENT -----------+
+//    +-------------------> IN_MULTI_LINE_COMMENT --------->-+
 //    |                                                      |
 //    |        /**                                  */       |
-//    \--------------------> IN_FORMAL_COMMENT --------------/
+//    +--------------------> IN_FORMAL_COMMENT ------------>-+
+//    |                                                      |
+//    |        /*#I               invisible:=true            |
+//    +---------------------------------------------------->-+
+//    |                                                      |
+//    |   */   if invisible then invisible:=false else error |
+//    \---------------------------------------------------->-/
 
 
 /////////////////
@@ -196,10 +202,9 @@ TOKEN_MGR_DECLS : {
   "\n"
   {colourClass = PLAIN; CommonTokenAction( matchedToken ) ; } 
 }
-
-<IN_PEDAGOGICAL_COMMENT> SKIP:
-{
-  < ~[] >
+<IN_PEDAGOGICAL_COMMENT> SKIP : {
+   "*/" : DEFAULT
+|  < ~[] >
 }
 /* WHITE SPACE */
 
