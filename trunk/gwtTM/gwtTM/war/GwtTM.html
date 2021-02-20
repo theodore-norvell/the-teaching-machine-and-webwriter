@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<link type="text/css" rel="stylesheet" href="GwtTM.css">
+<title>GWT Teaching Machine</title>
+<script src="JSTM.js"></script>
+<script src="GWTJSTM.js"></script>
+<script src="MirrorState.js"></script>
+<script src="go.js"></script>
+<script src="addTM.js"></script>
+<link rel="stylesheet" type="text/css" href="tm.css" />
+<script type="text/javascript" src="gwttm/gwttm.nocache.js"></script>
+</head>
+<body>
+	<p>
+		<label for="exp-q42">Expression Engine</label>
+		 <!-- <button id="exp-q42" onclick="go()">Check</button>  -->
+	</p>
+	<table id="expEngine">
+		<tr>
+			<td vertical-align: top>
+				<button id="tm-goBack" onclick="backForward()">&lt;-</button> 
+				<button id="tm-goForward" onclick="goForward()">-&gt;</button>
+			</td>
+			<td><canvas class="tm-canvas" id="tm-expEngineCanvas" name="tm-expEngineCanvas"></canvas></td>
+		</tr>
+	</table>
+</body>
+</html>

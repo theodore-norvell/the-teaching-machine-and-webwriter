@@ -19,7 +19,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.util.Vector;
 
-import tm.interfaces.DisplayContextInterface;
 import tm.interfaces.ImageSourceInterface;
 import tm.subWindowPkg.SmallButton;
 import tm.subWindowPkg.ToolBar;
@@ -98,10 +97,8 @@ public class ExpressionDisplay extends DisplayAdapter {
 	// Must convert expression to array of characters as drawChars can only work with
 	// char arrays
 		if (theExpression.length() > 0) {
-//			System.out.println("Expression: " + theExpression);
 			char tempArray[] = theExpression.toCharArray();
   
-//			g.setFont(myFont);
 			FontMetrics fm = g.getFontMetrics();
 			advances = fm.getWidths();	// Widths of every character
 			int baseline = TOPMARGIN + fm.getAscent();
